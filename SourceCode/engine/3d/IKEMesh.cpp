@@ -63,7 +63,7 @@ void IKEMesh::SetMaterial(IKEMaterial* material)
 void IKEMesh::CreateBuffers()
 {
 	HRESULT result;
-
+	//
 	UINT sizeVB = static_cast<UINT>(sizeof(VertexPosNormalUv) * vertices.size());
 	// 頂点バッファ生成
 	result = device->CreateCommittedResource(
