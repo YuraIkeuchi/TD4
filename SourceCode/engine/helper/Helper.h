@@ -30,5 +30,19 @@ public:
 	XMFLOAT3 Float3SubFloat(const XMFLOAT3& Num, const float Sub);
 	//XMFLOAT3とXMFLOAT3を減算する関数
 	XMFLOAT3 Float3SubFloat3(const XMFLOAT3& Num, const XMFLOAT3& Sub);
+
+public:
+	//割合を返す
+	float GetPercent(const float amount, const float num);
+
+	//2D->3D変換に使う(スプライトの座標をプレイヤーのワールド座標に表示したりするのに使う)
+	//座標系が明確でない場合->行列から計算->W除算
+	XMVECTOR WDivision(const XMVECTOR& pos, const XMMATRIX& mat, const bool sub);
+	//座標系が明確な場合->そのまま計算->W除算
+	XMVECTOR WDivision(const XMVECTOR& pos, const bool sub);
+
+	//ワールド座標に変換
+	XMVECTOR PosDivi(const XMVECTOR& pos, const XMMATRIX& mat, const bool sub);
+	
 };
 
