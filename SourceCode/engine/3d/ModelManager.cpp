@@ -11,6 +11,7 @@ ModelManager* ModelManager::GetInstance() {
 void ModelManager::StartInitialize() {
 	LoadModel(Ground, "ground");
 	LoadModel(Cube, "cube");
+	LoadFBXModel(PLAYER, "PlayerFBXNew");
 }
 //ƒ‚ƒfƒ‹“Ç‚İ‚İ
 void ModelManager::SecondInitialize() {

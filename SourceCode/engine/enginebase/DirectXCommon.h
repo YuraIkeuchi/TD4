@@ -63,9 +63,11 @@ public:
 
 	ID3D12Device* GetDev() { return dev.Get(); }
 
-	ID3D12GraphicsCommandList* GetCmdList() { return cmdList.Get(); }
+	
 public:
 	const bool& GetFullScreen() { return  FullScreen; }
+
+	ID3D12GraphicsCommandList* GetCmdList() { return cmdList.Get(); }
 
 	void SetFullScreen(const bool& FullScreen) { this->FullScreen = FullScreen; }
 private:

@@ -282,6 +282,7 @@
     <ClCompile Include="SourceCode\gamesystem\actor\EditorSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\IntroductionSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\LoadSceneActor.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\actor\Player.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\PlaySceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\TitleSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\gamecamera\CameraWork.cpp" />
@@ -360,6 +361,7 @@
     <ClInclude Include="SourceCode\gamesystem\actor\EditorSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\IntroductionSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\LoadSceneActor.h" />
+    <ClInclude Include="SourceCode\gamesystem\actor\Player.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\PlaySceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\TitleSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\gamecamera\CameraWork.h" />

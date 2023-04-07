@@ -124,8 +124,10 @@ public:	//メンバ関数
 	/// <param name="position">スケール</param>
 	void SetScale(const XMFLOAT3& scale) { this->scale = scale; }
 
-
-
+	//FBXタイムの終了値
+	int GetFbxTime_End() { return endTime.GetSecondCount(); }
+	//
+	int GetFbxTime_Current() { return currentTime.GetSecondCount(); }
 protected:	//メンバ変数
 	//定数バッファ
 	ComPtr<ID3D12Resource> constBuffTransform;
@@ -170,7 +172,7 @@ public:	//定数
 	FbxTime SetCurrent() { return currentTime = startTime; }
 	//ボーンの最大数
 	static const int MAX_BONES = 70;
-	int BoneNumber = 39;
+	int BoneNumber = 0;
 	int m_FBXTimer = 0;
 	//定数バッファ用データ構造体（スキニング）
 	struct ConstBufferDataSkin

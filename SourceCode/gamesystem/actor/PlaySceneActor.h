@@ -5,6 +5,8 @@
 #include "IKEModel.h"
 #include <vector>
 #include<windows.h>
+#include"Player.h"
+
 /// タイトルシーン
 class PlaySceneActor : public BaseActor {
 public:
@@ -33,6 +35,7 @@ private:
 	//OBJ
 	unique_ptr<IKEObject3d> objGround;
 	unique_ptr<IKEObject3d> objCube;
+	unique_ptr<Player>player;
 	IKEModel* modelGround = nullptr;
 	IKEModel* modelCube = nullptr;
 };

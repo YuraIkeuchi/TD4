@@ -38,6 +38,8 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	objGround->Initialize();
 	objGround->SetModel(modelGround);
 	objGround->SetPosition({ 0.0f,0.0f,0.0f });
+
+	player.reset(new Player());
 }
 //更新
 void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
@@ -56,6 +58,7 @@ void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	objCube->Update();
 	objGround->Update();
 
+	player->Upda();
 }
 //普通の更新
 void PlaySceneActor::NormalUpdate() {
@@ -103,6 +106,7 @@ void PlaySceneActor::ModelDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
 	objCube->Draw();
 	objGround->Draw();
+	player->Draw(dxCommon);
 	IKEObject3d::PostDraw();
 }
 //後ろの描画
