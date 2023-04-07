@@ -240,13 +240,10 @@ void IKEFBXObject3d::Update(bool Loop,int Speed,bool& Stop)
 	ConstBufferDataTransform* constMap = nullptr;
 	result = constBuffTransform->Map(0, nullptr, (void**)&constMap);
 	if (SUCCEEDED(result)) {
-		constMap->ChangeColor = ChangeColor;
-		constMap->Disolve = Disolve;
 		constMap->ShadeSet = ShadeSet;
 		constMap->viewproj = matViewProjection;
 		constMap->world = modelTransform * matWorld;
 		constMap->cameraPos = cameraPos;
-		constMap->Addcolor = Addcolor;
 		constMap->color = color;
 		constBuffTransform->Unmap(0, nullptr);
 	}
@@ -324,13 +321,10 @@ void IKEFBXObject3d::FollowUpdate(bool Loop, int Speed, bool& Stop)
 	matWorld = modelTransform * matWorld;
 
 	if (SUCCEEDED(result)) {
-		constMap->ChangeColor = ChangeColor;
-		constMap->Disolve = Disolve;
 		constMap->ShadeSet = ShadeSet;
 		constMap->viewproj = matViewProjection;
 		constMap->world = matWorld;
 		constMap->cameraPos = cameraPos;
-		constMap->Addcolor = Addcolor;
 		constMap->color = color;
 		constBuffTransform->Unmap(0, nullptr);
 	}

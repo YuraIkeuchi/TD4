@@ -46,13 +46,6 @@ public: // サブクラス
 		XMFLOAT3 cameraPos; // カメラ座標（ワールド座標）
 		float pad;//パディング
 		XMFLOAT4 color;//色情報
-		XMFLOAT4 Addcolor;//加算色情報
-		bool ChangeColor;
-		float Disolve;//ディゾルブ値
-		bool Fog;//フォグ
-		float Tiling;//タイリング
-		bool LightEfffect;//ライトの影響
-		float lightPower;//ライトの強さ
 	};
 
 private: // 定数
