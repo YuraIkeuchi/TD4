@@ -5,13 +5,6 @@ cbuffer cbuff0 : register(b0)
 	matrix world; // ワールド行列
 	float3 cameraPos; // カメラ座標（ワールド座標）
 	float4 color;//色情報
-	float4 Addcolor;//色情報
-	bool ChangeColor;//色変更
-	float Disolve;//ディゾルブ
-	bool Fog;//フォグ
-	float Tiling;//タイリング
-	bool LightEffect;//ライトの影響を受けるか
-	float LightPower;//ライトの力
 };
 
 cbuffer cbuff1 : register(b1)

@@ -1,12 +1,9 @@
 cbuffer cbuff0 : register(b0)
 {
-    bool ChangeColor;
-    float Disolve;
     bool ShadeSet;
     matrix viewproj; //ビュープロジェクション行列
     matrix world; //ワールド行列
     float3 cameraPos; //カメラ座標（ワールド座標）
-    float4 Addcolor;//色情報
     float4 color;//色情報
 };
 

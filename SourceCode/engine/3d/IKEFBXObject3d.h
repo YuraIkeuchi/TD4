@@ -45,14 +45,11 @@ public:	//サブクラス
 	//定数バッファ用データ構造体（座標変換行列）
 	struct ConstBufferDataTransform
 	{
-		bool ChangeColor;
-		float Disolve;//ディゾルブ
 		bool ShadeSet;
 		XMMATRIX viewproj;	//ビュープロジェクション行列
 		XMMATRIX world;		//ワールド行列
 		XMFLOAT3 cameraPos;	//カメラ行列（ワールド座標）
 		float pad;//パディング
-		XMFLOAT4 Addcolor;//色情報
 		XMFLOAT4 color;//色情報
 	};
 

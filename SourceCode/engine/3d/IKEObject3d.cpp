@@ -87,65 +87,9 @@ IKEObject3d* IKEObject3d::Create()
 		assert(0);
 		return nullptr;
 	}
-	//float scale_val = 5;
-	//object3d->scale = { scale_val , scale_val , scale_val };
-
+	
 	return object3d;
 }
-
-//void IKEObject3d::SetEye(XMFLOAT3 eye)
-//{
-//	IKEObject3d::eye = eye;
-//
-//	UpdateViewMatrix();
-//}
-//
-//void IKEObject3d::SetTarget(XMFLOAT3 target)
-//{
-//	IKEObject3d::target = target;
-//
-//	UpdateViewMatrix();
-//}
-//
-//void IKEObject3d::CameraMoveVector(XMFLOAT3 move)
-//{
-//	XMFLOAT3 eye_moved = GetEye();
-//	XMFLOAT3 target_moved = GetTarget();
-//
-//	eye_moved.x += move.x;
-//	eye_moved.y += move.y;
-//	eye_moved.z += move.z;
-//
-//	target_moved.x += move.x;
-//	target_moved.y += move.y;
-//	target_moved.z += move.z;
-//
-//	SetEye(eye_moved);
-//	SetTarget(target_moved);
-//}
-//
-
-
-//void IKEObject3d::InitializeCamera(int window_width, int window_height)
-//{
-//	// ビュー行列の生成
-//	matView = XMMatrixLookAtLH(
-//		XMLoadFloat3(&eye),
-//		XMLoadFloat3(&target),
-//		XMLoadFloat3(&up));
-//
-//	// 平行投影による射影行列の生成
-//	//constMap->mat = XMMatrixOrthographicOffCenterLH(
-//	//	0, window_width,
-//	//	window_height, 0,
-//	//	0, 1);
-//	// 透視投影による射影行列の生成
-//	matProjection = XMMatrixPerspectiveFovLH(
-//		XMConvertToRadians(60.0f),
-//		(float)window_width / window_height,
-//		0.1f, 1000.0f
-//	);
-//}
 
 void IKEObject3d::CreateGraphicsPipeline()
 {
@@ -369,13 +313,6 @@ void IKEObject3d::Update()
 	constMap->world = matWorld;
 	constMap->cameraPos = cameraPos;
 	constMap->color = color;
-	constMap->Addcolor = Addcolor;
-	constMap->ChangeColor = ChangeColor;
-	constMap->Disolve = Disolve;
-	constMap->Fog = Fog;
-	constMap->Tiling = Tiling;
-	constMap->LightEfffect = LightEffect;
-	constMap->lightPower = lightPower;
 	constBuffB0->Unmap(0, nullptr);
 	//当たり判定更新
 	if (collider) {
@@ -405,12 +342,6 @@ void IKEObject3d::FollowUpdate(XMMATRIX matworld)
 	constMap->world = matWorld * matworld;
 	constMap->cameraPos = cameraPos;
 	constMap->color = color;
-	constMap->Addcolor = Addcolor;
-	constMap->ChangeColor = ChangeColor;
-	constMap->Disolve = Disolve;
-	constMap->Fog = Fog;
-	constMap->Tiling = Tiling;
-	constMap->LightEfffect = LightEffect;
 	constBuffB0->Unmap(0, nullptr);
 	//当たり判定更新
 	if (collider) {
@@ -441,12 +372,6 @@ void IKEObject3d::AffineUpdate() {
 	constMap->world = matWorld;
 	constMap->cameraPos = cameraPos;
 	constMap->color = color;
-	constMap->Addcolor = Addcolor;
-	constMap->ChangeColor = ChangeColor;
-	constMap->Disolve = Disolve;
-	constMap->Fog = Fog;
-	constMap->Tiling = Tiling;
-	constMap->LightEfffect = LightEffect;
 	constBuffB0->Unmap(0, nullptr);
 	//当たり判定更新
 	if (collider) {
