@@ -19,7 +19,7 @@ public:
 	};
 	//FBX‚Ì–¼‘O
 	enum FBXName {
-		
+		PLAYER
 	};
 
 public:

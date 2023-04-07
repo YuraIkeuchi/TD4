@@ -270,6 +270,9 @@
     <ClCompile Include="SourceCode\engine\helper\Spline.cpp">
       <Filter>SourceCords\engine\helper</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\Player.cpp">
+      <Filter>SourceCords\gamesystem\Common\CharaManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
@@ -500,6 +503,9 @@
     <ClInclude Include="SourceCode\engine\helper\VariableCommon.h">
       <Filter>SourceCords\engine\helper</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\Player.h">
+      <Filter>SourceCords\gamesystem\Common\CharaManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Gaussian.hlsli">
@@ -659,6 +665,12 @@
     </Filter>
     <Filter Include="SourceCords\engine\helper">
       <UniqueIdentifier>{e4560388-f8e0-4327-a0d3-a39c92801f49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\Common\Player">
+      <UniqueIdentifier>{dbc638aa-0de0-4478-8903-969978cabfb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\Common\CharaManager">
+      <UniqueIdentifier>{3db66692-fb81-4436-9749-8daca032bc34}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
