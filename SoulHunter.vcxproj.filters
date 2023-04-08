@@ -270,8 +270,11 @@
     <ClCompile Include="SourceCode\engine\helper\Spline.cpp">
       <Filter>SourceCords\engine\helper</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\actor\Player.cpp">
-      <Filter>SourceCords\gamesystem\Common\CharaManager</Filter>
+    <ClCompile Include="SourceCode\gamesystem\character\CharactorManager.cpp">
+      <Filter>SourceCords\gamesystem\character\Various</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\Player.cpp">
+      <Filter>SourceCords\gamesystem\character\Various</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -503,8 +506,11 @@
     <ClInclude Include="SourceCode\engine\helper\VariableCommon.h">
       <Filter>SourceCords\engine\helper</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\actor\Player.h">
-      <Filter>SourceCords\gamesystem\Common\CharaManager</Filter>
+    <ClInclude Include="SourceCode\gamesystem\character\CharactorManager.h">
+      <Filter>SourceCords\gamesystem\character\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\Player.h">
+      <Filter>SourceCords\gamesystem\character\Various</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -666,11 +672,14 @@
     <Filter Include="SourceCords\engine\helper">
       <UniqueIdentifier>{e4560388-f8e0-4327-a0d3-a39c92801f49}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\Common\Player">
-      <UniqueIdentifier>{dbc638aa-0de0-4478-8903-969978cabfb9}</UniqueIdentifier>
+    <Filter Include="SourceCords\gamesystem\character">
+      <UniqueIdentifier>{39fd625d-4760-4e9f-b200-7d0888e708b3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\Common\CharaManager">
-      <UniqueIdentifier>{3db66692-fb81-4436-9749-8daca032bc34}</UniqueIdentifier>
+    <Filter Include="SourceCords\gamesystem\character\Base">
+      <UniqueIdentifier>{39abc437-0174-40b8-92bb-e4ee096d0073}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\character\Various">
+      <UniqueIdentifier>{fa09b3c8-7695-424f-918a-a01fc91d9f8f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
