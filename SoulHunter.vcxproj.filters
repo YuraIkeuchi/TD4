@@ -270,11 +270,11 @@
     <ClCompile Include="SourceCode\engine\helper\Spline.cpp">
       <Filter>SourceCords\engine\helper</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\CharactorManager.cpp">
-      <Filter>SourceCords\gamesystem\character\Various</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\Player.cpp">
       <Filter>SourceCords\gamesystem\character\Various</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\CharactorManager.cpp">
+      <Filter>SourceCords\gamesystem\character\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -506,11 +506,11 @@
     <ClInclude Include="SourceCode\engine\helper\VariableCommon.h">
       <Filter>SourceCords\engine\helper</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\CharactorManager.h">
-      <Filter>SourceCords\gamesystem\character\Various</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\Player.h">
       <Filter>SourceCords\gamesystem\character\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\CharactorManager.h">
+      <Filter>SourceCords\gamesystem\character\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
