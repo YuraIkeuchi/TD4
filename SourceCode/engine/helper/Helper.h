@@ -4,6 +4,13 @@
 #include <d3d12.h>
 #include <DirectXMath.h>
 
+/*--‰~ü‚Æ‚©‹‚ß‚é—p--*/
+#define PI 3.14f
+#define PI_90 90.00f
+#define PI_180 180.00f
+#define PI_360 360.00f
+/*-----------------*/
+
 //•â•ƒNƒ‰ƒX
 class Helper
 {

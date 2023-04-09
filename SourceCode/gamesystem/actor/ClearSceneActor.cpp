@@ -24,7 +24,7 @@ void ClearSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 //XV
 void ClearSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
-	if (input->TriggerButton(input->Button_X)) {
+	if (input->TriggerButton(input->X)) {
 		SceneManager::GetInstance()->ChangeScene("TITLE");
 		Audio::GetInstance()->StopWave(3);
 	}

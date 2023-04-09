@@ -39,13 +39,14 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	objGround->SetModel(modelGround);
 	objGround->SetPosition({ 0.0f,0.0f,0.0f });
 
-	player.reset(new Player());
+
+	player.reset(new Player({0.f,0.f,0.f}));
 }
 //更新
 void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
 	Input* input = Input::GetInstance();
-	if (input->TriggerButton(input->Button_A)) {
+	if (input->TriggerButton(input->A)) {
 		//SceneManager::GetInstance()->ChangeScene("GAMECLEAR");
 		//Audio::GetInstance()->StopWave(1);
 	}
