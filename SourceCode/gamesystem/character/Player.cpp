@@ -28,6 +28,7 @@ Player::~Player()
 //‰Šú‰»
 void Player::Init()
 {
+	//ƒ‚ƒfƒ‹‰Šú‰»‚Æ“Ç‚Ýž‚Ý
 	Model.reset(new IKEFBXObject3d());
 	Model->Initialize();
 	Model->SetModel(ModelManager::GetInstance()->GetFBXModel(ModelManager::PLAYER));
