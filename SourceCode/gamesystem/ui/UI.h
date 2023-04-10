@@ -6,7 +6,7 @@ using namespace DirectX;
 class UI
 {
 public:
-	UI();
+	UI(){};
 	~UI();
 
 private:
@@ -14,17 +14,19 @@ private:
 	struct Debug
 	{
 		//画像
-		IKESprite* Tex;
+		std::unique_ptr<IKESprite> Tex;
 		//基礎パラメータ
 		XMFLOAT2 Position;
 		XMFLOAT2 Scale;
-		XMFLOAT2 Rotation;
+		float Rotation;
+		XMFLOAT4 Color;
 		//適当なフラグ
 		bool OtherF;
 	};
 	//仮
-	static std::unique_ptr<Debug>TexA;
+	Debug TexA;
 
+	std::vector<Debug>TexList;
 public:
 	//初期化
 	void Initialize();
