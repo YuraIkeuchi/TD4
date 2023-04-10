@@ -301,6 +301,7 @@
     <ClCompile Include="SourceCode\gamesystem\scene\LoadScene.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\SceneManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\TitleScene.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\ui\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\2d\DebugText.h" />
@@ -382,6 +383,7 @@
     <ClInclude Include="SourceCode\gamesystem\scene\LoadScene.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\SceneManager.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\TitleScene.h" />
+    <ClInclude Include="SourceCode\gamesystem\ui\UI.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="imgui\imgui.vcxproj">

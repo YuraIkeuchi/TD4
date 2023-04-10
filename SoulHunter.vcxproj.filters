@@ -207,9 +207,6 @@
     <ClCompile Include="SourceCode\engine\3d\IKEMesh.cpp">
       <Filter>SourceCords\engine\3d\Obj</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\engine\3d\IKEModel.cpp">
-      <Filter>SourceCords\engine\3d\Obj</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\engine\3d\IKEObject3d.cpp">
       <Filter>SourceCords\engine\3d\Obj</Filter>
     </ClCompile>
@@ -278,6 +275,12 @@
     </ClCompile>
     <ClCompile Include="SourceCode\engine\enginebase\CsvLoader.cpp">
       <Filter>SourceCords\engine\enginebase</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\ui\UI.cpp">
+      <Filter>SourceCords\gamesystem\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\3d\IKEModel.cpp">
+      <Filter>SourceCords\engine\3d\Obj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -518,6 +521,9 @@
     <ClInclude Include="SourceCode\engine\enginebase\CsvLoader.h">
       <Filter>SourceCords\engine\enginebase</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\ui\UI.h">
+      <Filter>SourceCords\gamesystem\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Gaussian.hlsli">
@@ -686,6 +692,9 @@
     </Filter>
     <Filter Include="SourceCords\gamesystem\character\Various">
       <UniqueIdentifier>{fa09b3c8-7695-424f-918a-a01fc91d9f8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\UI">
+      <UniqueIdentifier>{53dd2bb5-38db-41e7-b7e7-216e102a40fd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

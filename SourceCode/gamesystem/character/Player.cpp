@@ -12,10 +12,10 @@
 
 //コンストラクタ
 Player::Player(XMFLOAT3 StartPos)
-	:Position(StartPos)//シーンまたいだ時初期座標とか設定用(流石にインスタンス一つで回さないと思うので)
+	:CharactorManager(StartPos)//シーンまたいだ時初期座標とか設定用(流石にインスタンス一つで回さないと思うので)
 {
 	//初期化ぶち込み
-	Init();
+	Initialize();
 	//移動処理用
 	velocity /= 5.0f;
 	//大きさ
@@ -29,7 +29,7 @@ Player::~Player()
 }
 
 //初期化
-void Player::Init()
+void Player::Initialize()
 {
 	//モデル初期化と読み込み
 	Model.reset(new IKEFBXObject3d());
@@ -56,12 +56,12 @@ void (Player::* Player::stateTable[])() = {
 };
 
 //更新処理
-void Player::Upda()
+void Player::Update()
 {
 	//any_castはdouble型なのでそれをstatic_castでfloatに
 	//doubleがatof()関数の戻り値なので変更できない<any_cast<float>で処理通らなかった>
 	//つまるところstd::any_cast<double>(〇〇)は固定(static_castで変換)
-	/*①*///m_AddSpeed= static_cast<float>(std::any_cast<double>(sp));
+	/*①*/m_AddSpeed= static_cast<float>(std::any_cast<double>(sp));
 
 	input = Input::GetInstance();
 	/*FBXのカウンタdoubleにしたほうが調整ききやすそう*/
@@ -175,6 +175,7 @@ void Player::Walk()
 		Position.x += move.m128_f32[0] *m_AddSpeed;
 		Position.z += move.m128_f32[2] * m_AddSpeed;
 
+		AnimationControl(AnimeName::WALK, true, 1);
 }
 
 XMFLOAT3 Player::MoveVECTOR(XMVECTOR v, float angle)
@@ -197,13 +198,20 @@ void Player::Attack()
 void Player::Idle()
 {
 	//条件少しおかしいので後で修正
-	if (_animeName != AnimeName::IDLE)
-	{
-		//FBXのタイムが最終フレーム到達したらアイドル状態に
-		if (Model->GetFbxTime_Current() >= Model->GetFbxTime_End())
+	if (_animeName == AnimeName::IDLE)return;
+
+		//攻撃ー＞スティック離し
+		if (_animeName == AnimeName::ATTACK) {
+			//FBXのタイムが最終フレーム到達したらアイドル状態に
+			if (Model->GetFbxTime_Current() >= Model->GetFbxTime_End())
+			{
+				AnimationControl(AnimeName::IDLE, true, 1);
+			}
+		}
+		//歩きー＞スティック離したら止まる
+		else
 		{
 			AnimationControl(AnimeName::IDLE, true, 1);
 		}
-	}
 }
 
