@@ -38,6 +38,11 @@ public:
 	//XMFLOAT3‚ÆXMFLOAT3‚ğŒ¸Z‚·‚éŠÖ”
 	XMFLOAT3 Float3SubFloat3(const XMFLOAT3& Num, const XMFLOAT3& Sub);
 
+	//’Ç]ŠÖ”
+	XMFLOAT3 FollowMove(const XMFLOAT3& pos, const XMFLOAT3& pos2, const float vel);
+
+	//‰~‰^“®
+	XMFLOAT3 CircleMove(const XMFLOAT3& basepos, const float scale, const float speed);
 public:
 	//Š„‡‚ğ•Ô‚·
 	float GetPercent(const float amount, const float num);
