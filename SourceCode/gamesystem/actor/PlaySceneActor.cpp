@@ -41,6 +41,8 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 
 
 	player.reset(new Player({0.f,0.f,0.f}));
+	ui.reset(new UI());
+	ui->Initialize();
 }
 //更新
 void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
@@ -120,7 +122,7 @@ void PlaySceneActor::BackDraw(DirectXCommon* dxCommon)
 void PlaySceneActor::FrontDraw(DirectXCommon* dxCommon) {
 	//完全に前に書くスプライト
 	IKESprite::PreDraw();
-	//PlaySprite->Draw();
+	ui->Draw();
 	IKESprite::PostDraw();
 }
 //IMGuiの描画
