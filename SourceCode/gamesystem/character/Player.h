@@ -1,28 +1,21 @@
 #pragma once
 #include <any>
 
-#include"DirectXCommon.h"
-#include <DirectXMath.h>
 #include"IKEFBXObject3d.h"
 #include<memory>
+#include "CharactorManager.h"
 #include "Input.h"
 using namespace DirectX;
-class Player
+class Player:public CharactorManager
 {
 public:
 	Player(XMFLOAT3 StartPos = {0.f,0.f,0.f});
-	~Player();
+	~Player()override;
 
 private:
 	//キーのインスタンス取得用
 	Input* input;
-
 private:
-	//基礎パラメータ
-	XMFLOAT3 Position;
-	XMFLOAT3 Rotation;
-	XMFLOAT3 Scale;
-
 	//体力
 	static int HP;
 
@@ -31,12 +24,16 @@ private:
 	int m_AnimationSpeed = 1;
 	bool m_StopFlag=false;
 
+	static void (Player::* stateTable[])();
 private:
 	std::unique_ptr<IKEFBXObject3d>Model;
 public:
-	void Init();
-	void Upda();
-	void Draw(DirectXCommon* dxCommon);
+	//初期化
+	void Initialize()override;
+	//更新
+	void Update()override;
+	//描画
+	void Draw(DirectXCommon* dxCommon)override;
 
 	//キャラの状態
 	enum CharaState
@@ -46,20 +43,20 @@ public:
 		STATE_ATTACK
 	}_charaState;
 
-	static void (Player::* stateTable[])();
-
 private:
 	//歩きまたは走り状態
 	float velocity;
 	//移動方向指定用
 	float angle;
-	//あるき処理
-	void Walk();
-	XMFLOAT3 MoveVECTOR(XMVECTOR v, float angle);
 	//移動加算値
 	float m_AddSpeed;
 	//↑の値をCSVから読み込むときの格納用
 	std::any sp;
+
+	//あるき処理
+	void Walk();
+	XMFLOAT3 MoveVECTOR(XMVECTOR v, float angle);
+
 private:
 	//攻撃諸々
 	void Attack();
@@ -70,6 +67,7 @@ private:
 	enum class AnimeName
 	{
 		IDLE=7,
+		WALK=5,
 		ATTACK=0
 	}_animeName;
 

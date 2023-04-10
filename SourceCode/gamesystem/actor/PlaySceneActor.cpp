@@ -59,7 +59,7 @@ void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	objCube->Update();
 	objGround->Update();
 
-	player->Upda();
+	player->Update();
 }
 //普通の更新
 void PlaySceneActor::NormalUpdate() {
