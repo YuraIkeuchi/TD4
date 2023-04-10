@@ -1,4 +1,6 @@
 #pragma once
+#include <any>
+
 #include"DirectXCommon.h"
 #include <DirectXMath.h>
 #include"IKEFBXObject3d.h"
@@ -49,10 +51,15 @@ public:
 private:
 	//歩きまたは走り状態
 	float velocity;
+	//移動方向指定用
 	float angle;
+	//あるき処理
 	void Walk();
 	XMFLOAT3 MoveVECTOR(XMVECTOR v, float angle);
-
+	//移動加算値
+	float m_AddSpeed;
+	//↑の値をCSVから読み込むときの格納用
+	std::any sp;
 private:
 	//攻撃諸々
 	void Attack();

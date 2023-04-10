@@ -276,6 +276,9 @@
     <ClCompile Include="SourceCode\gamesystem\character\CharactorManager.cpp">
       <Filter>SourceCords\gamesystem\character\Base</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\engine\enginebase\CsvLoader.cpp">
+      <Filter>SourceCords\engine\enginebase</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
@@ -511,6 +514,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\CharactorManager.h">
       <Filter>SourceCords\gamesystem\character\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\enginebase\CsvLoader.h">
+      <Filter>SourceCords\engine\enginebase</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
