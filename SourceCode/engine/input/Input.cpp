@@ -106,7 +106,7 @@ void Input::Update()
 
 	//コントローラー
 	oldXinputState = xinputState;
-	//	ZeroMemory(&xinputState, sizeof(XINPUT_STATE));
+	ZeroMemory(&xinputState, sizeof(XINPUT_STATE));
 
 	DWORD dwResult = XInputGetState(0, &xinputState);
 	if (dwResult == ERROR_SUCCESS)

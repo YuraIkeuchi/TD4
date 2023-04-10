@@ -259,6 +259,7 @@
     <ClCompile Include="SourceCode\engine\collision\TouchableObject.cpp" />
     <ClCompile Include="SourceCode\engine\ease\Easing.cpp" />
     <ClCompile Include="SourceCode\engine\enginebase\AbstractSceneFactory.cpp" />
+    <ClCompile Include="SourceCode\engine\enginebase\CsvLoader.cpp" />
     <ClCompile Include="SourceCode\engine\enginebase\DirectXCommon.cpp" />
     <ClCompile Include="SourceCode\engine\enginebase\JsonLoader.cpp" />
     <ClCompile Include="SourceCode\engine\enginebase\main.cpp" />
@@ -337,6 +338,7 @@
     <ClInclude Include="SourceCode\engine\collision\TouchableObject.h" />
     <ClInclude Include="SourceCode\engine\ease\Easing.h" />
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h" />
+    <ClInclude Include="SourceCode\engine\enginebase\CsvLoader.h" />
     <ClInclude Include="SourceCode\engine\enginebase\DirectXCommon.h" />
     <ClInclude Include="SourceCode\engine\enginebase\JsonLoader.h" />
     <ClInclude Include="SourceCode\engine\enginebase\OpenBrowser.h" />

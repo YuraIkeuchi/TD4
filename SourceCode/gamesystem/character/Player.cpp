@@ -1,7 +1,10 @@
 #include "Player.h"
+
+#include <any>
+
+#include "CsvLoader.h"
 #include"Helper.h"
 #include"ModelManager.h"
-
 
 /*-----------------*/
 /*松本エンジン慣れる用*/
@@ -33,6 +36,15 @@ void Player::Init()
 	Model->Initialize();
 	Model->SetModel(ModelManager::GetInstance()->GetFBXModel(ModelManager::PLAYER));
 	Model->LoadAnimation();
+
+	/*CSV読み込み(CSVファイル名,読み込むパラメータの名前,受け取る値)　今は単一の方のみ対応(int float double charとか)*/
+
+	//spから間接的にアクセスする方法 (Update()内で専用の変数に代入する必要あり)
+	/*①*/LoadCSV::LoadCsvParam("Resources/csv/chara/player.csv", "speed1", sp);/*m_AddSpeedにspを代入*/
+
+	//関数の戻り値から直接値を取る方法(こっちのほうが楽ではある　ただ行数が少し長くなる)
+	/*②*/m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player.csv", "speed2")));
+	
 }
 
 //状態遷移
@@ -46,6 +58,11 @@ void (Player::* Player::stateTable[])() = {
 //更新処理
 void Player::Upda()
 {
+	//any_castはdouble型なのでそれをstatic_castでfloatに
+	//doubleがatof()関数の戻り値なので変更できない<any_cast<float>で処理通らなかった>
+	//つまるところstd::any_cast<double>(〇〇)は固定(static_castで変換)
+	/*①*///m_AddSpeed= static_cast<float>(std::any_cast<double>(sp));
+
 	input = Input::GetInstance();
 	/*FBXのカウンタdoubleにしたほうが調整ききやすそう*/
 
@@ -114,7 +131,8 @@ void Player::Walk()
 	XMFLOAT3 pos = Position;
 	XMFLOAT3 rot = Rotation;
 
-	constexpr float AddSpeed=2.f;
+	float AddSpeed=2.f;
+
 
 	float StickX = input->GetLeftControllerX();
 	float StickY = input->GetLeftControllerY();
@@ -154,8 +172,8 @@ void Player::Walk()
 		move = XMVector3TransformNormal(move, matRot);
 
 		//向いた方向に進む
-		Position.x += move.m128_f32[0] * AddSpeed;
-		Position.z += move.m128_f32[2] * AddSpeed;
+		Position.x += move.m128_f32[0] *m_AddSpeed;
+		Position.z += move.m128_f32[2] * m_AddSpeed;
 
 }
 
