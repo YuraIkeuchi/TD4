@@ -43,6 +43,8 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	player.reset(new Player({0.f,0.f,0.f}));
 	ui.reset(new UI());
 	ui->Initialize();
+
+	enemymanager.reset(new EnemyManager());
 }
 //更新
 void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
@@ -62,6 +64,7 @@ void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	objGround->Update();
 
 	player->Update();
+	enemymanager->Update();
 }
 //普通の更新
 void PlaySceneActor::NormalUpdate() {
@@ -107,9 +110,10 @@ void PlaySceneActor::Finalize()
 //モデルの描画
 void PlaySceneActor::ModelDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
-	objCube->Draw();
+	//objCube->Draw();
 	objGround->Draw();
 	player->Draw(dxCommon);
+	enemymanager->Draw(dxCommon);
 	IKEObject3d::PostDraw();
 }
 //後ろの描画
@@ -122,17 +126,12 @@ void PlaySceneActor::BackDraw(DirectXCommon* dxCommon)
 void PlaySceneActor::FrontDraw(DirectXCommon* dxCommon) {
 	//完全に前に書くスプライト
 	IKESprite::PreDraw();
-	ui->Draw();
+	//ui->Draw();
 	IKESprite::PostDraw();
 }
 //IMGuiの描画
 void PlaySceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	ImGui::Begin("Pos");
-	ImGui::Text("POSX:%f", objCube->GetPosition().x);
-	ImGui::Text("POSY:%f", objCube->GetPosition().y);
-	ImGui::Text("POSZ:%f", objCube->GetPosition().z);
-	ImGui::End();
-	camerawork->ImGuiDraw();
+	enemymanager->ImGuiDraw();
 }
 //普通の描画
 void PlaySceneActor::NormalDraw(DirectXCommon* dxCommon) {

@@ -7,10 +7,7 @@
 
 ObjCommon::~ObjCommon()
 {
-	//Destroy_unique(m_Object);
-	//Destroy_unique(m_fbxObject);
-	////Destroy(m_Model);
-	////Destroy(m_fbxModel);
+
 }
 
 bool ObjCommon::Initialize() {
@@ -19,9 +16,7 @@ bool ObjCommon::Initialize() {
 
 void ObjCommon::SetCollider()
 {
-	//float radius = 5.0f;
-	//m_Object->SetCollider(new SphereCollider(XMVECTOR({ 0,radius,0,0 }), radius));
-	//m_Object->collider->SetAttribute(COLLISION_ATTR_ALLIES);
+
 }
 //オブジェクトのセット
 void ObjCommon::Obj_SetParam() {
@@ -38,8 +33,6 @@ void ObjCommon::Obj_SetParam() {
 
 //オブジェクトのセット
 void ObjCommon::FollowObj_SetParam(XMMATRIX matworld) {
-	//m_FollowObject->SetScale(m_Scale);
-	//m_FollowObject->SetColor(m_Color);
 	m_FollowObject->SetAddColor(m_Addcolor);
 	m_FollowObject->SetDisolve(m_AddDisolve);
 	m_FollowObject->SetChangeColor(m_ChangeColor);
@@ -51,7 +44,6 @@ void ObjCommon::FollowObj_SetParam(XMMATRIX matworld) {
 void ObjCommon::Fbx_SetParam() {
 	m_fbxObject->SetPosition(m_Position);
 	m_fbxObject->SetRotation(m_Rotation);
-	//m_fbxObject->SetScale(m_Scale);
 	m_fbxObject->SetAddColor(m_Addcolor);
 	m_fbxObject->SetDisolve(m_AddDisolve);
 	m_fbxObject->SetChangeColor(m_ChangeColor);

@@ -7,6 +7,7 @@
 #include<windows.h>
 #include"Player.h"
 #include "UI.h"
+#include "EnemyManager.h"
 
 /// タイトルシーン
 class PlaySceneActor : public BaseActor {
@@ -37,6 +38,7 @@ private:
 	unique_ptr<IKEObject3d> objGround;
 	unique_ptr<IKEObject3d> objCube;
 	unique_ptr<Player>player;
+	unique_ptr<EnemyManager> enemymanager;
 	unique_ptr<UI>ui;
 	IKEModel* modelGround = nullptr;
 	IKEModel* modelCube = nullptr;
