@@ -1,21 +1,25 @@
 #include "LoadSceneActor.h"
-#include "Audio.h"
-#include "input.h"
 #include "SceneManager.h"
 #include "ImageManager.h"
-#include "imgui.h"
-#include "VariableCommon.h"
-#include <random>
 //‰Šú‰»
 void LoadSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 
 	BaseInitialize(dxCommon);
+	if (!s_GameLoop) {
+		SceneManager::GetInstance()->SetLoad(true);
+	}
 }
 //XV
 void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
-
 	Input* input = Input::GetInstance();
 	lightgroup->Update();
+
+	m_LoadTimer++;
+
+	//ˆê’èŽžŠÔ‚ÅƒV[ƒ“‚ª•Ï‚í‚é
+	if (m_LoadTimer >= 200 && !SceneManager::GetInstance()->GetLoad()) {
+		SceneManager::GetInstance()->ChangeScene("GAMESCENE");
+	}
 }
 //•`‰æ
 void LoadSceneActor::Draw(DirectXCommon* dxCommon) {
@@ -28,6 +32,7 @@ void LoadSceneActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
 		SpriteDraw();
+		ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 	else {
@@ -35,6 +40,7 @@ void LoadSceneActor::Draw(DirectXCommon* dxCommon) {
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
+		ImGuiDraw(dxCommon);
 		GameDraw(dxCommon);
 		SpriteDraw();
 		dxCommon->PostDraw();
@@ -56,6 +62,11 @@ void LoadSceneActor::GameDraw(DirectXCommon* dxCommon)
 }
 //ImGui‚Ì•`‰æ
 void LoadSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
+	ImGui::Begin("Load");
+	ImGui::SetWindowPos(ImVec2(0, 0));
+	ImGui::SetWindowSize(ImVec2(1280, 720));
+	ImGui::SliderInt("LoadTimer", &m_LoadTimer, 0, 200);
+	ImGui::End();
 }
 //‰ð•ú
 void LoadSceneActor::Finalize() {

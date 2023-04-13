@@ -1,6 +1,6 @@
 #include "BaseActor.h"
 #include "VariableCommon.h"
-
+bool BaseActor::s_GameLoop = false;
 //共通初期化
 void BaseActor::BaseInitialize(DirectXCommon* dxCommon) {
 	//ポストエフェクトの初期化

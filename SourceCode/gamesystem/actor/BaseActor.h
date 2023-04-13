@@ -34,6 +34,9 @@ public:
 	virtual void Draw(DirectXCommon* dxCommon) = 0;
 	//‹¤’Ê‰Šú‰»
 	void BaseInitialize(DirectXCommon* dxCommon);
+public:
+	//ƒQ[ƒ€ƒ‹[ƒv‚µ‚½‚©‚Ç‚¤‚©
+	static bool s_GameLoop;
 protected:
 
 	float ambientColor0[3] = { 1,1,1 };
@@ -60,4 +63,5 @@ protected:
 	unique_ptr<PostEffect> postEffect = nullptr;
 	unique_ptr<CameraWork> camerawork;
 	bool PlayPostEffect = false;
+	
 };

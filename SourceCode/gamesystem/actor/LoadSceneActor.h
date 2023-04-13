@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseActor.h"
 #include "IKESprite.h"
+#include <array>
 /// タイトルシーン
 class LoadSceneActor : public BaseActor {
 public:
@@ -17,8 +18,7 @@ public:
 	void ImGuiDraw(DirectXCommon* dxCommon);
 	void SpriteDraw();
 private:
-	//定数
-	static const int Now_Max = 4;
-	static const int Load_Max = 5;
+
 private://メンバ変数
+	int m_LoadTimer = 0;
 };
