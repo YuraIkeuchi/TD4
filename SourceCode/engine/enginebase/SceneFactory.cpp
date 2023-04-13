@@ -18,7 +18,7 @@ BaseScene* SceneFactory::CreateScene(const std::string& sceneName) {
 	else if (sceneName == "LOAD") {
 		newScene = new LoadScene();
 	}
-	else if(sceneName == "FIRSTSTAGE"){
+	else if(sceneName == "GAMESCENE"){
 		newScene = new FirstStage();
 	}
 	else if (sceneName == "EDITORSCENE") {

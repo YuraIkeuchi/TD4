@@ -31,7 +31,6 @@ public:
 	};
 public:
 	static ImageManager* GetInstance();		//Žæ“¾—p
-	static bool m_Load;
 	void StartLoad2D();
 	void SecondLoad2D();
 	void StartLoadTex2D();

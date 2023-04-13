@@ -8,13 +8,16 @@ ModelManager* ModelManager::GetInstance() {
 	static ModelManager instans;
 	return &instans;
 }
+
+//ƒ‚ƒfƒ‹“Ç‚İ‚İ(Å‰‚©‚ç“Ç‚İ‚Ş‚à‚Ì)
 void ModelManager::StartInitialize() {
+	
+}
+//ƒ‚ƒfƒ‹“Ç‚İ‚İ(”ñ“¯Šúˆ—‚Å“Ç‚İ‚Ş‚à‚Ì)
+void ModelManager::SecondInitialize() {
 	LoadModel(Ground, "ground");
 	LoadModel(Cube, "cube");
 	LoadFBXModel(PLAYER, "PlayerFBXNew");
-}
-//ƒ‚ƒfƒ‹“Ç‚İ‚İ
-void ModelManager::SecondInitialize() {
 }
 
 void ModelManager::Finalize() {

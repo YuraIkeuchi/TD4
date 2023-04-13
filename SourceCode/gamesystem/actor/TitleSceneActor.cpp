@@ -28,7 +28,12 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
 	if (input->TriggerButton(input->B)) {
-		SceneManager::GetInstance()->ChangeScene("FIRSTSTAGE");
+		if (!s_GameLoop) {
+			SceneManager::GetInstance()->ChangeScene("LOAD");
+		}
+		else {
+			SceneManager::GetInstance()->ChangeScene("GAMESCENE");
+		}
 		Audio::GetInstance()->StopWave(0);
 	}
 	lightgroup->Update();
