@@ -267,9 +267,6 @@
     <ClCompile Include="SourceCode\engine\helper\Spline.cpp">
       <Filter>SourceCords\engine\helper</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\Player.cpp">
-      <Filter>SourceCords\gamesystem\character\Various</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\CharactorManager.cpp">
       <Filter>SourceCords\gamesystem\character\Base</Filter>
     </ClCompile>
@@ -281,6 +278,18 @@
     </ClCompile>
     <ClCompile Include="SourceCode\engine\3d\IKEModel.cpp">
       <Filter>SourceCords\engine\3d\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\Player.cpp">
+      <Filter>SourceCords\gamesystem\character\Various\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\InterEnemy.cpp">
+      <Filter>SourceCords\gamesystem\character\Various\Enemy\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\NormalEnemy.cpp">
+      <Filter>SourceCords\gamesystem\character\Various\Enemy\Various</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\EnemyManager.cpp">
+      <Filter>SourceCords\gamesystem\character\Various\Enemy\Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -512,9 +521,6 @@
     <ClInclude Include="SourceCode\engine\helper\VariableCommon.h">
       <Filter>SourceCords\engine\helper</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\Player.h">
-      <Filter>SourceCords\gamesystem\character\Various</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\CharactorManager.h">
       <Filter>SourceCords\gamesystem\character\Base</Filter>
     </ClInclude>
@@ -523,6 +529,18 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\ui\UI.h">
       <Filter>SourceCords\gamesystem\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\Player.h">
+      <Filter>SourceCords\gamesystem\character\Various\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\InterEnemy.h">
+      <Filter>SourceCords\gamesystem\character\Various\Enemy\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\NormalEnemy.h">
+      <Filter>SourceCords\gamesystem\character\Various\Enemy\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\EnemyManager.h">
+      <Filter>SourceCords\gamesystem\character\Various\Enemy\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -695,6 +713,18 @@
     </Filter>
     <Filter Include="SourceCords\gamesystem\UI">
       <UniqueIdentifier>{53dd2bb5-38db-41e7-b7e7-216e102a40fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\character\Various\Player">
+      <UniqueIdentifier>{be41491b-a7e0-42bb-aae6-04a03acc8286}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\character\Various\Enemy">
+      <UniqueIdentifier>{5a09d7a5-5461-4a00-a620-44cad0cf3d44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\character\Various\Enemy\Common">
+      <UniqueIdentifier>{10f1a669-063d-4cff-837a-fb1995c2c59a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\character\Various\Enemy\Various">
+      <UniqueIdentifier>{ee8df4ef-edfa-49db-804b-84c524fd4308}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

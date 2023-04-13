@@ -23,6 +23,7 @@ private:
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public:
+	static Helper* GetInstance();
 	//ŒvŽZŒn
 	bool CheckMax(float& Num, const float Max, const float Add);
 	bool CheckMin(float& Num, const float Min, const float Add);

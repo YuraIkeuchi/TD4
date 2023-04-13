@@ -1,5 +1,12 @@
 #include "Helper.h"
 
+Helper* Helper::GetInstance()
+{
+	static Helper instance;
+
+	return &instance;
+}
+
 //max min‚ðbool•ª‚Å•Ô‚·
 bool Helper::CheckMax(float& Num, const float Max,const float Add) {
 	Num += Add;
@@ -177,6 +184,6 @@ Helper::XMFLOAT3 Helper::CircleMove(const XMFLOAT3& basepos, const float scale, 
 	l_AddVel.z = sinf(l_Radius) * scale;
 	l_Result.x = l_AddVel.x + basepos.x;
 	l_Result.z = l_AddVel.z + basepos.z;
-
+	l_Result.y = basepos.y;
 	return l_Result;
 }

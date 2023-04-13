@@ -7,7 +7,8 @@ void BaseActor::BaseInitialize(DirectXCommon* dxCommon) {
 	//(普通)
 	postEffect = make_unique<PostEffect>();
 	postEffect->Initialize();
-	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/SepiaPS.hlsl");
+	//ポストエフェクトのファイル指定
+	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/NewToneMapPS.hlsl");
 
 	camerawork = make_unique<CameraWork>();
 }

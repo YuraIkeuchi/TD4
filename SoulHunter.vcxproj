@@ -286,6 +286,9 @@
     <ClCompile Include="SourceCode\gamesystem\actor\PlaySceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\TitleSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\CharactorManager.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\character\EnemyManager.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\character\InterEnemy.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\character\NormalEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\Player.cpp" />
     <ClCompile Include="SourceCode\gamesystem\gamecamera\CameraWork.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleEmitter.cpp" />
@@ -368,6 +371,9 @@
     <ClInclude Include="SourceCode\gamesystem\actor\PlaySceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\TitleSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\character\CharactorManager.h" />
+    <ClInclude Include="SourceCode\gamesystem\character\EnemyManager.h" />
+    <ClInclude Include="SourceCode\gamesystem\character\InterEnemy.h" />
+    <ClInclude Include="SourceCode\gamesystem\character\NormalEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\character\Player.h" />
     <ClInclude Include="SourceCode\gamesystem\gamecamera\CameraWork.h" />
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleEmitter.h" />
