@@ -20,9 +20,12 @@ public:
 	CameraWork();
 	void Update(DebugCamera* camera);//更新
 	void ImGuiDraw();
+
+public:
+	void EditorCamera();
 public:
 	//getter setter
-
+	
 private:
 	//クラス
 	unique_ptr<Helper> helper;

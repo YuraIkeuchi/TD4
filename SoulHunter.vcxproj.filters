@@ -297,6 +297,18 @@
     <ClCompile Include="SourceCode\gamesystem\mapchip\MapChip.cpp">
       <Filter>SourceCords\gamesystem\mapchip</Filter>
     </ClCompile>
+    <ClCompile Include="Editor.cpp">
+      <Filter>SourceCords\gamesystem\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="PlaceEditorScene.cpp">
+      <Filter>SourceCords\gamesystem\scene\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\PlaceManager.cpp">
+      <Filter>SourceCords\gamesystem\Editor\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\PlaceBox.cpp">
+      <Filter>SourceCords\gamesystem\Editor\Box</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
@@ -554,6 +566,19 @@
     <ClInclude Include="SourceCode\gamesystem\mapchip\MapChip.h">
       <Filter>SourceCords\gamesystem\mapchip</Filter>
     </ClInclude>
+    <ClInclude Include="Editor.h">
+      <Filter>SourceCords\gamesystem\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="PlaceEditorScene.h">
+      <Filter>SourceCords\gamesystem\scene\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\PlaceManager.h">
+      <Filter>SourceCords\gamesystem\Editor\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\PlaceBox.h">
+      <Filter>SourceCords\gamesystem\Editor\Box</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Gaussian.hlsli">
@@ -741,5 +766,20 @@
     <Filter Include="SourceCords\gamesystem\mapchip">
       <UniqueIdentifier>{4b1ac776-46cd-4e6e-bceb-f7bad3ac6ccb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SourceCords\gamesystem\Editor">
+      <UniqueIdentifier>{1bbfa6ac-044d-4804-bd5e-381928a30f3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\Editor\Box">
+      <UniqueIdentifier>{4fc62bce-66fd-4228-943a-b1efe21f6e02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\Editor\Base">
+      <UniqueIdentifier>{30f2956c-0ef7-4bea-b4c5-26fc4f6bf2fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\scene\Editor">
+      <UniqueIdentifier>{16b35e6a-87a3-4af8-ac92-d79df5901c11}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SoulHunter.rc" />
   </ItemGroup>
 </Project>

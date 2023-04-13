@@ -1,6 +1,8 @@
 #pragma once
 #include "BaseActor.h"
 #include "OpenBrowser.h"
+#include"PlaceManager.h"
+#include"PlaceBox.h"
 /// タイトルシーン
 class EditorSceneActor : public BaseActor {
 public:
@@ -18,6 +20,7 @@ public:
 	void ImGuiDraw(DirectXCommon* dxCommon);
 private:
 
-
+	unique_ptr<PlaceBox>placeObj;
+	unique_ptr<IKEObject3d>ground;
 	unique_ptr<OpenBrowser> openbrowser;
 };

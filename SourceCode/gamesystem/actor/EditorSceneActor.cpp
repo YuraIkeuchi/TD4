@@ -2,15 +2,17 @@
 #include "Audio.h"
 #include "SceneManager.h"
 #include "imgui.h"
+#include "ModelManager.h"
 #include "VariableCommon.h"
 #include "ParticleEmitter.h"
+
 //初期化
 void EditorSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
 	OpenBrowser* openbrowser_;
 	openbrowser_ = new OpenBrowser();
 	openbrowser.reset(openbrowser_);
-	dxCommon->SetFullScreen(false);
+	dxCommon->SetFullScreen(true);
 	//共通の初期化
 	BaseInitialize(dxCommon);
 
@@ -19,12 +21,30 @@ void EditorSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 
 	ParticleEmitter::GetInstance()->AllDelete();
 
+	placeObj.reset(new PlaceBox());
+	placeObj->Initialize();
+
+	ground.reset(new IKEObject3d());
+	ground->Initialize();
+	ground->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Ground));
+	ground->SetRotation({ 0.f,0.f,0.f });
+	ground->SetScale({ 1.f,1.f,1.f });
 	PlayPostEffect = true;
 }
 //更新
 void EditorSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
+
+	lightgroup->Update();
+	//camerawork->SetTarget({ camera->GetEye().x,0.0f,camera->GetEye().z });
+	//camera->SetTarget({ camera->GetEye().x,camera->GetEye().y - 10.f,camera->GetEye().z + 20.f, });
+	camerawork->EditorCamera();
+	camerawork->Update(camera);
+
+	ground->Update();
 	//音楽の音量が変わる
+	placeObj->Update();
+
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 }
 //描画
@@ -49,6 +69,7 @@ void EditorSceneActor::Draw(DirectXCommon* dxCommon)
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
 		ImGuiDraw(dxCommon);
+
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
 		dxCommon->PostDraw();
@@ -62,11 +83,16 @@ void EditorSceneActor::Finalize()
 void EditorSceneActor::ModelDraw(DirectXCommon* dxCommon) {
 #pragma region 3Dオブジェクト描画
 	//背景は先に描画する
+	IKEObject3d::PreDraw();
+	placeObj->Draw(dxCommon);
 
+	ground->Draw();
+	IKEObject3d::PostDraw();
 }
 //後ろの描画
 void EditorSceneActor::BackDraw(DirectXCommon* dxCommon)
 {
+	ModelDraw(dxCommon);
 }
 //ポストエフェクトがかからない
 void EditorSceneActor::FrontDraw(DirectXCommon* dxCommon) {
@@ -76,4 +102,7 @@ void EditorSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void EditorSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
+
+	placeObj->ImGui_Draw();
+	camerawork->ImGuiDraw();
 }

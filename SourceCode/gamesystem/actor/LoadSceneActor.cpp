@@ -18,7 +18,7 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 
 	//ˆê’èŽžŠÔ‚ÅƒV[ƒ“‚ª•Ï‚í‚é
 	if (m_LoadTimer >= 200 && !SceneManager::GetInstance()->GetLoad()) {
-		SceneManager::GetInstance()->ChangeScene("GAMESCENE");
+		SceneManager::GetInstance()->ChangeScene("EDITORSCENE");
 	}
 }
 //•`‰æ
