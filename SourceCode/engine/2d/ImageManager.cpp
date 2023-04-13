@@ -1,5 +1,6 @@
 ﻿#include "ImageManager.h"
 
+bool ImageManager::m_Load = false;
 
 ImageManager* ImageManager::GetInstance() {
 	static ImageManager instans;
@@ -32,5 +33,6 @@ void ImageManager::LoadParticle() {
 
 	ParticleManager::LoadTexture(Normal, "effect1");
 	ParticleManager::LoadTexture(Smoke, "hootEffect");
+	m_Load = true;
 }
 

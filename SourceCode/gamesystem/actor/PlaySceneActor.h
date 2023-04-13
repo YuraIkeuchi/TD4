@@ -25,11 +25,7 @@ public:
 	void FrontDraw(DirectXCommon* dxCommon);
 	void BackDraw(DirectXCommon* dxCommon);
 	void NormalDraw(DirectXCommon* dxCommon);//普通の描画
-	void BossAppDraw(DirectXCommon* dxCommon);//ボス登場シーンの描画
-	void BossEndDraw(DirectXCommon* dxCommon);//ボス登場シーンの描画
 	void NormalUpdate();//普通の更新
-	void BossAppUpdate();//ボス登場シーンの更新
-	void BossEndUpdate();//ボス終了シーンの更新
 	void ImGuiDraw(DirectXCommon* dxCommon);
 private:
 	//スプライト

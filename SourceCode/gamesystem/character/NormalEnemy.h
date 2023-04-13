@@ -13,6 +13,8 @@ public:
 	//void Follow();//í«è]
 	void Draw(DirectXCommon* dxCommon) override;//ï`âÊ
 private:
+	void Particle();
+private:
 	float m_CircleAngle = 0.0f;
 	float m_CircleRadius = 0.0f;
 	float m_CircleSpeed = 0.0f;

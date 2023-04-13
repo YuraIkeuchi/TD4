@@ -1,6 +1,7 @@
 #include "NormalEnemy.h"
 #include "ModelManager.h"
 #include "Helper.h"
+#include "ParticleEmitter.h"
 //モデル読み込み
 NormalEnemy::NormalEnemy() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Cube);
@@ -20,6 +21,7 @@ void NormalEnemy::Action() {
 	m_CircleSpeed += 1.0f;
 	m_Position = Helper::GetInstance()->CircleMove({ 0.0f,5.0f,0.0f }, m_CircleScale, m_CircleSpeed);
 	Obj_SetParam();
+	Particle();
 }
 //描画
 void NormalEnemy::Draw(DirectXCommon* dxCommon) {
@@ -37,4 +39,12 @@ void NormalEnemy::ImGuiDraw() {
 //開放
 void NormalEnemy::Finalize() {
 
+}
+//パーティクル
+void NormalEnemy::Particle() {
+	XMFLOAT4 s_color = { 1.0f,0.5f,1.0f,1.5f };
+	XMFLOAT4 e_color = { 1.0f,0.5f,1.0f,1.5f };
+	float s_scale = 3.0f;
+	float e_scale = 0.0f;
+	ParticleEmitter::GetInstance()->FireEffect(50, m_Position, s_scale, e_scale, s_color, e_color);
 }

@@ -16,11 +16,10 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	BaseInitialize(dxCommon);
 	//オーディオ
 	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/Boss.wav");
-	//ポストエフェクトのファイル指定
-	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/NewToneMapPS.hlsl");
 
 	PlayPostEffect = true;
-
+	ParticleEmitter::GetInstance()->AllDelete();
+	
 	//タイトル
 	IKESprite* PlaySprite_;
 	PlaySprite_ = IKESprite::Create(ImageManager::PLAY, { 0.0f,0.0f });
@@ -63,19 +62,16 @@ void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	objCube->Update();
 	objGround->Update();
 
+	//各クラス更新
 	player->Update();
 	enemymanager->Update();
+	ParticleEmitter::GetInstance()->Update();
 }
 //普通の更新
 void PlaySceneActor::NormalUpdate() {
 	VolumManager::GetInstance()->Update();
 }
-//ボス登場の更新
-void PlaySceneActor::BossAppUpdate() {
-}
-//ボス終了の更新
-void PlaySceneActor::BossEndUpdate() {
-}
+
 //描画
 void PlaySceneActor::Draw(DirectXCommon* dxCommon)
 {
@@ -112,8 +108,10 @@ void PlaySceneActor::ModelDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
 	//objCube->Draw();
 	objGround->Draw();
+	//各クラスの描画
 	player->Draw(dxCommon);
 	enemymanager->Draw(dxCommon);
+	
 	IKEObject3d::PostDraw();
 }
 //後ろの描画
@@ -126,6 +124,8 @@ void PlaySceneActor::BackDraw(DirectXCommon* dxCommon)
 void PlaySceneActor::FrontDraw(DirectXCommon* dxCommon) {
 	//完全に前に書くスプライト
 	IKESprite::PreDraw();
+	//パーティクル描画
+	ParticleEmitter::GetInstance()->FlontDrawAll();
 	//ui->Draw();
 	IKESprite::PostDraw();
 }
@@ -135,11 +135,4 @@ void PlaySceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 }
 //普通の描画
 void PlaySceneActor::NormalDraw(DirectXCommon* dxCommon) {
-}
-//ボス登場シーンの描画
-void PlaySceneActor::BossAppDraw(DirectXCommon* dxCommon) {
-}
-//ボス終了シーンの描画
-void PlaySceneActor::BossEndDraw(DirectXCommon* dxCommon) {
-	ParticleEmitter::GetInstance()->FlontDrawAll();
 }
