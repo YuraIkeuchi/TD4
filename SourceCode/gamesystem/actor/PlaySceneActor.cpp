@@ -7,6 +7,7 @@
 #include "ParticleEmitter.h"
 #include "ModelManager.h"
 #include <algorithm>
+#include "Block.h"
 
 //初期化
 void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
@@ -44,6 +45,9 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	ui->Initialize();
 
 	enemymanager.reset(new EnemyManager());
+
+	//Block::GetInstance()->ModelInit();
+	Block::GetInstance()->Initialize(map, 0, 0);
 }
 //更新
 void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
@@ -66,6 +70,8 @@ void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	player->Update();
 	enemymanager->Update();
 	ParticleEmitter::GetInstance()->Update();
+
+	Block::GetInstance()->Update();
 }
 //普通の更新
 void PlaySceneActor::NormalUpdate() {
@@ -106,12 +112,12 @@ void PlaySceneActor::Finalize()
 //モデルの描画
 void PlaySceneActor::ModelDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
-	//objCube->Draw();
-	objGround->Draw();
-	//各クラスの描画
-	player->Draw(dxCommon);
-	enemymanager->Draw(dxCommon);
-	
+	////objCube->Draw();
+	//objGround->Draw();
+	////各クラスの描画
+	//player->Draw(dxCommon);
+	//enemymanager->Draw(dxCommon);
+	Block::GetInstance()->Draw();
 	IKEObject3d::PostDraw();
 }
 //後ろの描画

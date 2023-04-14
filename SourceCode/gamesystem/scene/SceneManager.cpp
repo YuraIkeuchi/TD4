@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 #include "ImageManager.h"
 #include "ModelManager.h"
+#include "Block.h"
 #include<cassert>
 void SceneManager::Finalize() {
 	//最後のシーンの終了と開放
@@ -62,7 +63,7 @@ void SceneManager::ChangeScene(const std::string& sceneName) {
 void SceneManager::AsyncLoad()
 {
 	std::thread t = std::thread([&] {
-		ImageManager::GetInstance()->SecondLoad2D(), ImageManager::GetInstance()->SecondLoadTex2D(), ModelManager::GetInstance()->SecondInitialize(); });
+		ImageManager::GetInstance()->SecondLoad2D(), ImageManager::GetInstance()->SecondLoadTex2D(), ModelManager::GetInstance()->SecondInitialize(), Block::GetInstance()->ModelInit(); });
 
 	//ダミーで1秒待つ
 	auto sleepTime = std::chrono::seconds(1);

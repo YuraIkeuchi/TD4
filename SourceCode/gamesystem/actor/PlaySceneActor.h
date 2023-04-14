@@ -36,6 +36,7 @@ private:
 	unique_ptr<Player>player;
 	unique_ptr<EnemyManager> enemymanager;
 	unique_ptr<UI>ui;
+	std::vector<std::vector<int>> map; //マップチップ(1マップ)
 	IKEModel* modelGround = nullptr;
 	IKEModel* modelCube = nullptr;
 };

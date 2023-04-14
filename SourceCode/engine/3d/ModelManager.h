@@ -16,6 +16,7 @@ public:
 	enum ModelName {
 		Ground,
 		Cube,
+		Box
 	};
 	//FBX‚Ì–¼‘O
 	enum FBXName {
