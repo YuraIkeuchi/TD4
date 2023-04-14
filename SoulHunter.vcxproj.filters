@@ -291,6 +291,12 @@
     <ClCompile Include="SourceCode\gamesystem\character\EnemyManager.cpp">
       <Filter>SourceCords\gamesystem\character\Various\Enemy\Common</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\mapchip\Block.cpp">
+      <Filter>SourceCords\gamesystem\mapchip</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\mapchip\MapChip.cpp">
+      <Filter>SourceCords\gamesystem\mapchip</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
@@ -542,6 +548,12 @@
     <ClInclude Include="SourceCode\gamesystem\character\EnemyManager.h">
       <Filter>SourceCords\gamesystem\character\Various\Enemy\Common</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\mapchip\Block.h">
+      <Filter>SourceCords\gamesystem\mapchip</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\mapchip\MapChip.h">
+      <Filter>SourceCords\gamesystem\mapchip</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Gaussian.hlsli">
@@ -725,6 +737,9 @@
     </Filter>
     <Filter Include="SourceCords\gamesystem\character\Various\Enemy\Various">
       <UniqueIdentifier>{ee8df4ef-edfa-49db-804b-84c524fd4308}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\mapchip">
+      <UniqueIdentifier>{4b1ac776-46cd-4e6e-bceb-f7bad3ac6ccb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

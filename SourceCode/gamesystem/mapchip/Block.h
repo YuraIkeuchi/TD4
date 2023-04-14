@@ -31,7 +31,7 @@ public:
 
 private:
 	//マップチップ1つの大きさ
-	const float LAND_SCALE = 5.0f;
+	const float LAND_SCALE = 2.0f;
 	//マップチップ関係
 	IKEModel* modelNormalBlock = nullptr;
 	//各マップの読み込み

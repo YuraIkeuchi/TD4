@@ -11,7 +11,7 @@ Block* Block::GetInstance()
 
 //モデル読み込み
 void Block::ModelInit() {
-	modelNormalBlock = ModelManager::GetInstance()->GetModel(ModelManager::Block);
+	modelNormalBlock = ModelManager::GetInstance()->GetModel(ModelManager::Box);
 	//マップチップ用のオブジェクトの初期化
 	for (int y = 0; y < map_max_y; y++)
 	{

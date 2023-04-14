@@ -17,6 +17,7 @@ void ModelManager::StartInitialize() {
 void ModelManager::SecondInitialize() {
 	LoadModel(Ground, "ground");
 	LoadModel(Cube, "cube");
+	LoadModel(Box, "BackBox");
 	LoadFBXModel(PLAYER, "PlayerFBXNew");
 }
 
