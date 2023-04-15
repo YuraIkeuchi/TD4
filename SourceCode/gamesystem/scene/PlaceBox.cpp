@@ -12,8 +12,8 @@ void PlaceBox::Initialize()
 
 
 void PlaceBox::Update()
-{SampleObj->SetScale({ 5.0f,5.0f,5.0f });
-
+{
+	SampleObj->SetScale({ 5.0f,5.0f,5.0f });
 	SampleObj->SetPosition(S_Pos);
 	SampleObj->SetColor({ 1.f,1.f,1.f,1.f });
 	SampleObj->Update();

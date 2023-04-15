@@ -41,6 +41,7 @@ void EditorSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	camerawork->EditorCamera();
 	camerawork->Update(camera);
 
+	ground->SetColor({ 0.5f,0.5f,0.5f,1.0f });
 	ground->Update();
 	//‰¹Šy‚Ì‰¹—Ê‚ª•Ï‚í‚é
 	placeObj->Update();
