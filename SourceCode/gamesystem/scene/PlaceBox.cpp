@@ -26,6 +26,12 @@ void PlaceBox::Update()
 
 	SampleObj->CollisionField();
 	SampleObj->SetColor({ 1.f,1.f,1.f,0.5f });
+
+	if (ArgmentFlag) {
+
+		ArgmentObj(ArgmentFlag, ModelManager::GetInstance()->GetModel(ModelManager::Box));
+		
+	}
 	for (auto i = 0; i < boxes.size(); i++)
 	{
 		if (boxes[i] == nullptr)continue;
@@ -34,32 +40,6 @@ void PlaceBox::Update()
 		boxes[i]->Update();
 		boxes[i]->CollisionField();
 	}
-	if (ArgmentFlag) {
-		SampleObj->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Box));
-		std::unique_ptr<IKEObject3d> newobj;
-		newobj = std::make_unique<IKEObject3d>();
-
-		newobj->Initialize();
-		newobj->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Box));
-
-		newobj->SetPosition(S_Pos);
-		float radius = 5.0f;
-		newobj->SetCollider(new SphereCollider(XMVECTOR({ 10, radius, 10, 0 }), radius));
-		newobj->collider->SetAttribute(COLLISION_ATTR_ALLIES);
-		boxes.push_back(std::move(newobj));
-
-		std::unique_ptr<CreateImGui> newlist;
-		newlist = std::make_unique<CreateImGui>("BOX"+std::to_string(static_cast<int>(boxes.size())), 0.02f, S_Pos);
-		newlist->SetModelName("BOX");
-		newlist->SetImguiNumber(static_cast<int>(boxes.size() - 1));
-
-		imguilist.push_back(std::move(newlist));
-		SelThis.push_back(false);
-
-		
-		ArgmentFlag = false;
-	}
-
 	if (StoneArgment) {
 		SampleObj->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Cube));
 		std::unique_ptr<IKEObject3d> newobj;
@@ -100,17 +80,19 @@ void PlaceBox::Draw(DirectXCommon* DxCommon)
 
 void PlaceBox::FileWriting()
 {
-	file.open("box.csv");
+	if (!LoadFlag)return;
+
+	file.open("stage1.csv");
 	popcom << file.rdbuf();
 
 	file.close();
 	//std::ofstream pofs("EnemyParam_CSV/position.csv");
-	std::ofstream ofs("Param_CSV/box.csv"); // ファイルパスを指定する
+	std::ofstream ofs("Resources/csv/stage/stage1.csv"); // ファイルパスを指定する
 	ofs << "Wood_Quantity" << "," << boxes.size() << std::endl;
 
 	for (int i = 0; i < boxes.size(); i++)
 	{
-		ofs << "Number" << "," << Number[i] << std::endl;
+		//ofs << "Number" << "," << Number[i] << std::endl;
 		ofs << "POSITION" << "," << boxes[i]->GetPosition().x
 			<< "," << boxes[i]->GetPosition().y
 			<< "," << boxes[i]->GetPosition().z << std::endl;
@@ -140,7 +122,6 @@ void PlaceBox::ImGui_Draw()
 	{
 		OtherArgment = true;
 	}
-
 	ImGui::Text("Position");
 	ImGui::SliderFloat("Position_X", &S_Pos.x, -2000.f, 2000.f);
 	ImGui::SliderFloat("Position_Y", &S_Pos.y, -20.f, 20.f);
@@ -235,4 +216,34 @@ void PlaceBox::CreateImGui::CreateImguiList()
 		std::string selname = "SelectThis" + TitName;
 		ImGui::Checkbox(selname.c_str(), &Select);
 	}
+}
+
+
+void PlaceBox::ArgmentObj(bool& aflag, IKEModel* model)
+{
+
+	SampleObj->SetModel(model);
+
+	std::unique_ptr<IKEObject3d> newobj;
+	newobj = std::make_unique<IKEObject3d>();
+	newobj->Initialize();
+	newobj->SetModel(model);
+	newobj->SetPosition(SampleObj->GetPosition());
+
+
+	float radius = 5.0f;
+	newobj->SetCollider(new SphereCollider(XMVECTOR({ 10, radius, 10, 0 }), radius));
+	newobj->collider->SetAttribute(COLLISION_ATTR_ALLIES);
+	boxes.push_back(std::move(newobj));
+
+	std::unique_ptr<CreateImGui> newlist;
+	newlist = std::make_unique<CreateImGui>("BOX" + std::to_string(static_cast<int>(boxes.size())), 0.02f, S_Pos);
+	newlist->SetModelName("BOX");
+	newlist->SetImguiNumber(static_cast<int>(boxes.size() - 1));
+
+	imguilist.push_back(std::move(newlist));
+
+	aflag = false;
+
+
 }

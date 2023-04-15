@@ -107,5 +107,23 @@ void EditorSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 
 	placeObj->ImGui_Draw();
 	camerawork->ImGuiDraw();
+
+	ImGui::Begin("LoadObject");
+
+	ImGui::SetWindowPos(ImVec2(1000, 0));
+	ImGui::SetWindowSize(ImVec2(300, 200));
+
+	if(ImGui::Button("Load", ImVec2(100, 50)))
+	{
+		placeObj->FileWriting();
+	}
+	
+	ImGui::Checkbox("WoodBox", &item[0]);
+	ImGui::Checkbox("ACube", &item[1]);
+
+	placeObj->SetLoad(item[0]);
+
+	ImGui::End();
+
 }
 

@@ -20,7 +20,7 @@ public:
 	void ImGuiDraw(DirectXCommon* dxCommon);
 	void CollisionField();
 private:
-
+	bool item[3] = { false,false,false };
 	unique_ptr<PlaceBox>placeObj;
 	unique_ptr<IKEObject3d>ground;
 	unique_ptr<OpenBrowser> openbrowser;
