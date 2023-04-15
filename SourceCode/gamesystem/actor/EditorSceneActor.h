@@ -18,6 +18,7 @@ public:
 	void FrontDraw(DirectXCommon* dxCommon);
 	void BackDraw(DirectXCommon* dxCommon);
 	void ImGuiDraw(DirectXCommon* dxCommon);
+	void CollisionField();
 private:
 
 	unique_ptr<PlaceBox>placeObj;

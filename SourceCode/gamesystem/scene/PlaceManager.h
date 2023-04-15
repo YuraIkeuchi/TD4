@@ -32,6 +32,8 @@ public:
 
 	virtual void ImGui_Draw() = 0;
 
+	void ArgmentObj(bool &aflag,IKEModel*model);
+
 	void SetP(XMFLOAT3 pos) { S_Pos = pos; }
 protected:
 	int Quantity;
@@ -43,5 +45,8 @@ protected:
 	//íœƒtƒ‰ƒO
 	bool DeleteFlag;
 
+	void CollisionField();
+
+	std::vector<std::unique_ptr<IKEObject3d>> boxes;
 };
 

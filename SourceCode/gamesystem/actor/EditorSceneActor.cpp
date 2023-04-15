@@ -5,6 +5,7 @@
 #include "ModelManager.h"
 #include "VariableCommon.h"
 #include "ParticleEmitter.h"
+#include "TouchableObject.h"
 
 //‰Šú‰»
 void EditorSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
@@ -24,7 +25,7 @@ void EditorSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	placeObj.reset(new PlaceBox());
 	placeObj->Initialize();
 
-	ground.reset(new IKEObject3d());
+	ground.reset(TouchableObject::Create(ModelManager::GetInstance()->GetModel(ModelManager::Ground)));
 	ground->Initialize();
 	ground->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Ground));
 	ground->SetRotation({ 0.f,0.f,0.f });
@@ -85,9 +86,9 @@ void EditorSceneActor::ModelDraw(DirectXCommon* dxCommon) {
 #pragma region 3DƒIƒuƒWƒFƒNƒg•`‰æ
 	//”wŒi‚Íæ‚É•`‰æ‚·‚é
 	IKEObject3d::PreDraw();
-	placeObj->Draw(dxCommon);
 
 	ground->Draw();
+	placeObj->Draw(dxCommon);
 	IKEObject3d::PostDraw();
 }
 //Œã‚ë‚Ì•`‰æ
@@ -107,3 +108,4 @@ void EditorSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	placeObj->ImGui_Draw();
 	camerawork->ImGuiDraw();
 }
+
