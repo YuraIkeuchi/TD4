@@ -32,7 +32,7 @@ public:
 
 	virtual void ImGui_Draw() = 0;
 
-	virtual void ArgmentObj(bool &aflag,IKEModel*model)=0;
+	virtual void ArgmentObj(bool &aflag, std::string mname, IKEModel*model)=0;
 
 	void SetP(XMFLOAT3 pos) { S_Pos = pos; }
 
@@ -56,7 +56,7 @@ protected:
 	class CreateImGui
 	{
 	public:
-		CreateImGui(std::string num, float scl, XMFLOAT3 pos);
+		CreateImGui(std::string num,float scl, XMFLOAT3 pos);
 		void CreateImguiList();
 	private:
 		std::vector<std::string> listnum;
@@ -74,7 +74,9 @@ protected:
 	public:
 		float GetScl() { return Scl; }
 		XMFLOAT3 GetPos() { return Pos; }
+		XMFLOAT3 GetRot() { return Rot; }
 		bool GetDelF() { return Del; }
+		void SetDelF(bool f) {  Del=f; }
 		bool GetSelectThis() { return Select; }
 		void SetModelName(std::string name) { modelname = name; }
 		void SetImguiNumber(int index) { imnumber = index; }

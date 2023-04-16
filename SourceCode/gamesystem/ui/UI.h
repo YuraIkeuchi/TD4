@@ -26,6 +26,11 @@ private:
 	//‰¼
 	Debug TexA;
 
+	enum class SpriteName
+	{
+		TITLE,
+		ARROW
+	};
 	std::vector<Debug>TexList;
 public:
 	//‰Šú‰»
@@ -34,5 +39,6 @@ public:
 	void Update();
 	//•`‰æ
 	void Draw();
+	void ArrowRota();
 };
 

@@ -28,45 +28,43 @@ void PlaceBox::Update()
 	SampleObj->SetColor({ 1.f,1.f,1.f,0.5f });
 
 	if (ArgmentFlag) {
-
-		ArgmentObj(ArgmentFlag, ModelManager::GetInstance()->GetModel(ModelManager::Box));
-		
+		ArgmentObj(ArgmentFlag, "Box", ModelManager::GetInstance()->GetModel(ModelManager::Box));
 	}
+	if(StoneArgment)
+	{
+		ArgmentObj(StoneArgment, "Cube", ModelManager::GetInstance()->GetModel(ModelManager::Cube));
+	}
+
 	for (auto i = 0; i < boxes.size(); i++)
 	{
+		if (imguilist[i] == nullptr)continue;
 		if (boxes[i] == nullptr)continue;
+
 		boxes[i]->SetColor({ 1.f,1.f,1.f,1.f });
+		boxes[i]->SetPosition(imguilist[i]->GetPos());
+		boxes[i]->SetRotation(imguilist[i]->GetRot());
 		boxes[i]->SetScale({ 5.0f,5.0f,5.0f });
 		boxes[i]->Update();
 		boxes[i]->CollisionField();
-	}
-	if (StoneArgment) {
-		SampleObj->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Cube));
-		std::unique_ptr<IKEObject3d> newobj;
-		newobj = std::make_unique<IKEObject3d>();
 
-		newobj->Initialize();
-		newobj->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Cube));
-
-		newobj->SetPosition(S_Pos);
-		float radius = 5.0f;
-		newobj->SetCollider(new SphereCollider(XMVECTOR({ 10, radius, 10, 0 }), radius));
-		newobj->collider->SetAttribute(COLLISION_ATTR_ALLIES);
-		boxes.push_back(std::move(newobj));
-
-		std::unique_ptr<CreateImGui> newlist;
-		newlist = std::make_unique<CreateImGui>(std::to_string(static_cast<int>(boxes.size())), 0.02f, S_Pos);
-		newlist->SetModelName("CUBE");
-		newlist->SetImguiNumber(static_cast<int>(boxes.size() - 1));
-
-		imguilist.push_back(std::move(newlist));
-		SelThis.push_back(false);
-
-
-		StoneArgment = false;
 	}
 
-	
+	for (int i = 0; i < imguilist.size(); i++)
+	{
+		if (i < 0)break;
+		if (imguilist[i] == nullptr)
+		{
+			continue; // {
+		}
+		if (imguilist[i]->GetDelF())
+		{
+			boxes.erase(boxes.begin() + i);
+			//SelThis.erase(std::cbegin(SelThis) + i);
+			imguilist.erase(imguilist.begin() + i);// erase(std::cbegin(enemys) + i);
+			//continue;
+
+		}
+	}
 }
 
 void PlaceBox::Draw(DirectXCommon* DxCommon)
@@ -96,6 +94,9 @@ void PlaceBox::FileWriting()
 		ofs << "POSITION" << "," << boxes[i]->GetPosition().x
 			<< "," << boxes[i]->GetPosition().y
 			<< "," << boxes[i]->GetPosition().z << std::endl;
+		ofs << "ROTATION" << "," << boxes[i]->GetRotation().x
+			<< "," << boxes[i]->GetRotation().y
+			<< "," << boxes[i]->GetRotation().z << std::endl;
 	}
 }
 
@@ -123,7 +124,7 @@ void PlaceBox::ImGui_Draw()
 		OtherArgment = true;
 	}
 	ImGui::Text("Position");
-	ImGui::SliderFloat("Position_X", &S_Pos.x, -2000.f, 2000.f);
+	ImGui::SliderFloat("Position_X", &S_Pos.x, -200.f, 200.f);
 	ImGui::SliderFloat("Position_Y", &S_Pos.y, -20.f, 20.f);
 	ImGui::SliderFloat("Position_Z", &S_Pos.z, -200.f, 200.f);
 
@@ -179,8 +180,8 @@ void PlaceBox::CreateImGui::CreateImguiList()
 		float pos[3] = { Pos.x, Pos.y, Pos.z };
 		std::string posname_x = "Pos.x" + TitName;
 		std::string posname_z = "Pos.z" + TitName;
-		ImGui::SliderFloat(posname_x.c_str(), &Pos.x, -800.f, 800.f);
-		ImGui::SliderFloat(posname_z.c_str(), &Pos.z, -700.f, 700.f);
+		ImGui::SliderFloat(posname_x.c_str(), &Pos.x, -200.f,200.f);
+		ImGui::SliderFloat(posname_z.c_str(), &Pos.z, -200.f, 200.f);
 
 		ImGui::Text("Rotation");
 		std::string rotname = "Rot" + TitName;
@@ -219,7 +220,7 @@ void PlaceBox::CreateImGui::CreateImguiList()
 }
 
 
-void PlaceBox::ArgmentObj(bool& aflag, IKEModel* model)
+void PlaceBox::ArgmentObj(bool& aflag, std::string mname, IKEModel* model)
 {
 
 	SampleObj->SetModel(model);
@@ -237,8 +238,8 @@ void PlaceBox::ArgmentObj(bool& aflag, IKEModel* model)
 	boxes.push_back(std::move(newobj));
 
 	std::unique_ptr<CreateImGui> newlist;
-	newlist = std::make_unique<CreateImGui>("BOX" + std::to_string(static_cast<int>(boxes.size())), 0.02f, S_Pos);
-	newlist->SetModelName("BOX");
+	newlist = std::make_unique<CreateImGui>(mname + std::to_string(static_cast<int>(boxes.size())), 0.02f, S_Pos);
+	newlist->SetModelName(mname);
 	newlist->SetImguiNumber(static_cast<int>(boxes.size() - 1));
 
 	imguilist.push_back(std::move(newlist));

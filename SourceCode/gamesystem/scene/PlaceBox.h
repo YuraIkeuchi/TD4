@@ -14,7 +14,7 @@ public:
 
 	void FileWriting() override;
 	ImVec4 p;
-	void ArgmentObj(bool& aflag, IKEModel* model) override;;
+	void ArgmentObj(bool& aflag, std::string mname, IKEModel* model) override;;
 private:
 	std::vector<std::unique_ptr<IKEObject3d>> boxes;
 
