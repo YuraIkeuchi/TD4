@@ -291,6 +291,10 @@ public:
 	//FBX
 	int FallGroundTime = 0;
 
-
+private:
+	std::string modelname;
+public:
+	 void SetModeName(std::string name) { modelname= name; }
+	 std::string GetModelName() { return modelname; }
 };
 

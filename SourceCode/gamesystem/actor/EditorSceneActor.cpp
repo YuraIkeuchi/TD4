@@ -115,6 +115,7 @@ void EditorSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 
 	if(ImGui::Button("Load", ImVec2(100, 50)))
 	{
+		if(item[0])
 		placeObj->FileWriting();
 	}
 	

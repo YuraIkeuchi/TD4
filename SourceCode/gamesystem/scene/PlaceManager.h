@@ -84,10 +84,8 @@ protected:
 	public:
 		enum BoxNumber
 		{
-			NON,
 			WOOD,
 			STONE,
-			OTHER
 		} bnumber;
 
 

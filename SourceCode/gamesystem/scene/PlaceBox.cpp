@@ -28,10 +28,12 @@ void PlaceBox::Update()
 	SampleObj->SetColor({ 1.f,1.f,1.f,0.5f });
 
 	if (ArgmentFlag) {
+		BoxsList.push_back(Boxs::WOOD);
 		ArgmentObj(ArgmentFlag, "Box", ModelManager::GetInstance()->GetModel(ModelManager::Box));
 	}
-	if(StoneArgment)
-	{
+
+	if (StoneArgment) {
+		BoxsList.push_back(Boxs::CUBE);
 		ArgmentObj(StoneArgment, "Cube", ModelManager::GetInstance()->GetModel(ModelManager::Cube));
 	}
 
@@ -51,25 +53,43 @@ void PlaceBox::Update()
 
 	for (int i = 0; i < imguilist.size(); i++)
 	{
-		if (i < 0)break;
 		if (imguilist[i] == nullptr)
-		{
-			continue; // {
+			continue;
+		if (i != 0) {
+			if (imguilist[i]->GetImguiNumber() - imguilist[i - 1]->GetImguiNumber() > 1)
+			{
+				imguilist[i]->SetImguiNumber(imguilist[i - 1]->GetImguiNumber() + 1);
+			}
 		}
+
+		/**/
+		if(imguilist[i]->GetBoxnumber()==CreateImGui::WOOD&&BoxsList[i]!=Boxs::WOOD)
+		{
+			boxes[i]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Box));
+			BoxsList[i] = Boxs::WOOD;
+		}
+		if (imguilist[i]->GetBoxnumber() == CreateImGui::STONE && BoxsList[i] != Boxs::CUBE)
+		{
+			boxes[i]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Cube));
+			BoxsList[i] = Boxs::CUBE;
+		}
+		/**/
+
 		if (imguilist[i]->GetDelF())
 		{
 			boxes.erase(boxes.begin() + i);
-			//SelThis.erase(std::cbegin(SelThis) + i);
 			imguilist.erase(imguilist.begin() + i);// erase(std::cbegin(enemys) + i);
-			//continue;
-
 		}
 	}
+
+	//BoxsList.resize(imguilist.size());
+
 }
 
 void PlaceBox::Draw(DirectXCommon* DxCommon)
 {
 	SampleObj->Draw();
+
 	for (auto i = 0; i < boxes.size(); i++)
 	{
 		boxes[i]->Draw();
@@ -90,6 +110,7 @@ void PlaceBox::FileWriting()
 
 	for (int i = 0; i < boxes.size(); i++)
 	{
+		ofs << "*---------------------------*" << std::endl;
 		//ofs << "Number" << "," << Number[i] << std::endl;
 		ofs << "POSITION" << "," << boxes[i]->GetPosition().x
 			<< "," << boxes[i]->GetPosition().y
@@ -97,6 +118,9 @@ void PlaceBox::FileWriting()
 		ofs << "ROTATION" << "," << boxes[i]->GetRotation().x
 			<< "," << boxes[i]->GetRotation().y
 			<< "," << boxes[i]->GetRotation().z << std::endl;
+
+		ofs << "ModelName" << "," << boxes[i]->GetModelName()<<std::endl;
+		ofs << "*---------------------------*" << std::endl;
 	}
 }
 
@@ -201,12 +225,8 @@ void PlaceBox::CreateImGui::CreateImguiList()
 		{
 			bnumber = STONE;
 		}
-		ImGui::SameLine();
-		if (ImGui::Button(enumynum_t.c_str(), ImVec2(70, 30)))
-		{
-			bnumber = OTHER;
-		}
-		
+		//ImGui::SameLine();
+
 		ImGui::Text("DeleteInstance");
 		std::string delname = "Delete" + TitName;
 		if (ImGui::Button(delname.c_str(), ImVec2(100, 30)))
@@ -229,6 +249,7 @@ void PlaceBox::ArgmentObj(bool& aflag, std::string mname, IKEModel* model)
 	newobj = std::make_unique<IKEObject3d>();
 	newobj->Initialize();
 	newobj->SetModel(model);
+	newobj->SetModeName(mname);
 	newobj->SetPosition(SampleObj->GetPosition());
 
 

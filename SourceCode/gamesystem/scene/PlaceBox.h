@@ -23,7 +23,11 @@ private:
 
 	std::vector<bool> SelThis;
 public:
-
-
+	enum class Boxs
+	{
+		WOOD,
+		CUBE
+	};
+	std::vector<Boxs>BoxsList;
 };
 
