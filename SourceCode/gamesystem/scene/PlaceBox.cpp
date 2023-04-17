@@ -65,15 +65,16 @@ void PlaceBox::Update()
 		/**/
 		if(imguilist[i]->GetBoxnumber()==CreateImGui::WOOD&&BoxsList[i]!=Boxs::WOOD)
 		{
+			boxes[i]->SetModeName("Wood");
 			boxes[i]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Box));
 			BoxsList[i] = Boxs::WOOD;
 		}
 		if (imguilist[i]->GetBoxnumber() == CreateImGui::STONE && BoxsList[i] != Boxs::CUBE)
 		{
+			boxes[i]->SetModeName("Cube");
 			boxes[i]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Cube));
 			BoxsList[i] = Boxs::CUBE;
 		}
-		/**/
 
 		if (imguilist[i]->GetDelF())
 		{
@@ -81,9 +82,6 @@ void PlaceBox::Update()
 			imguilist.erase(imguilist.begin() + i);// erase(std::cbegin(enemys) + i);
 		}
 	}
-
-	//BoxsList.resize(imguilist.size());
-
 }
 
 void PlaceBox::Draw(DirectXCommon* DxCommon)

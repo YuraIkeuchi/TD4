@@ -3,6 +3,8 @@
 #include "OpenBrowser.h"
 #include"PlaceManager.h"
 #include"PlaceBox.h"
+class LoadBox;
+
 /// タイトルシーン
 class EditorSceneActor : public BaseActor {
 public:
@@ -21,6 +23,7 @@ public:
 	void CollisionField();
 private:
 	bool item[3] = { false,false,false };
+	LoadBox* load;
 	unique_ptr<PlaceBox>placeObj;
 	unique_ptr<IKEObject3d>ground;
 	unique_ptr<OpenBrowser> openbrowser;

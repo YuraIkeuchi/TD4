@@ -309,6 +309,7 @@
     <ClCompile Include="SourceCode\gamesystem\scene\PlaceBox.cpp">
       <Filter>SourceCords\gamesystem\Editor\Box</Filter>
     </ClCompile>
+    <ClCompile Include="LoadBox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
@@ -579,6 +580,7 @@
     <ClInclude Include="SourceCode\gamesystem\scene\PlaceBox.h">
       <Filter>SourceCords\gamesystem\Editor\Box</Filter>
     </ClInclude>
+    <ClInclude Include="LoadBox.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Gaussian.hlsli">

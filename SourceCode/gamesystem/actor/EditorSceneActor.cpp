@@ -6,6 +6,7 @@
 #include "VariableCommon.h"
 #include "ParticleEmitter.h"
 #include "TouchableObject.h"
+#include "../../../LoadBox.h"
 
 //‰Šú‰»
 void EditorSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
@@ -31,6 +32,9 @@ void EditorSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	ground->SetRotation({ 0.f,0.f,0.f });
 	ground->SetScale({ 1.f,1.f,1.f });
 	PlayPostEffect = true;
+
+	load = new LoadBox();
+	load->Initialize();
 }
 //XV
 void EditorSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
@@ -45,8 +49,9 @@ void EditorSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	ground->SetColor({ 0.5f,0.5f,0.5f,1.0f });
 	ground->Update();
 	//‰¹Šy‚Ì‰¹—Ê‚ª•Ï‚í‚é
-	placeObj->Update();
+	//placeObj->Update();
 
+	load->Update();
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 }
 //•`‰æ
@@ -70,7 +75,7 @@ void EditorSceneActor::Draw(DirectXCommon* dxCommon)
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
-		ImGuiDraw(dxCommon);
+	//	ImGuiDraw(dxCommon);
 
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
@@ -86,9 +91,9 @@ void EditorSceneActor::ModelDraw(DirectXCommon* dxCommon) {
 #pragma region 3DƒIƒuƒWƒFƒNƒg•`‰æ
 	//”wŒi‚Íæ‚É•`‰æ‚·‚é
 	IKEObject3d::PreDraw();
-
+	load->Draw();
 	ground->Draw();
-	placeObj->Draw(dxCommon);
+	//placeObj->Draw(dxCommon);
 	IKEObject3d::PostDraw();
 }
 //Œã‚ë‚Ì•`‰æ
@@ -112,7 +117,7 @@ void EditorSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 
 	ImGui::SetWindowPos(ImVec2(1000, 0));
 	ImGui::SetWindowSize(ImVec2(300, 200));
-
+	ImGui::Text("pos  %f", load->GetBox(1)->GetPosition().x);
 	if(ImGui::Button("Load", ImVec2(100, 50)))
 	{
 		if(item[0])
