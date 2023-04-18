@@ -8,6 +8,15 @@ public:
 	CharactorManager(XMFLOAT3 StartPos = { 0.f,0.f,0.f });
 	virtual ~CharactorManager(){};
 
+public:
+	//gettersetter
+	const XMFLOAT3& GetPosition() { return Position; }
+	const XMFLOAT3& GetRotation() { return Rotation; }
+	const XMFLOAT3& GetScale() { return Scale; }
+	void SetPosition(const XMFLOAT3& position) { Position = position; }
+	void SetRotation(const XMFLOAT3& rotation) { Rotation = rotation; }
+	void SetScale(const XMFLOAT3& scale) { Scale = scale; }
+
 protected:
 	//äÓëbÉpÉâÉÅÅ[É^
 	XMFLOAT3 Position;
