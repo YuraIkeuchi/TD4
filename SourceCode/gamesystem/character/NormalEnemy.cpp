@@ -8,6 +8,7 @@ NormalEnemy::NormalEnemy() {
 }
 //‰Šú‰»
 bool NormalEnemy::Initialize() {
+
 	m_Object = make_unique<IKEObject3d>();
 	m_Object->Initialize();
 	m_Object->SetModel(m_Model);
@@ -18,6 +19,7 @@ bool NormalEnemy::Initialize() {
 }
 //s“®
 void NormalEnemy::Action() {
+	XMFLOAT3 l_player = player->GetPosition();
 	m_CircleSpeed += 1.0f;
 	m_Position = Helper::GetInstance()->CircleMove({ 0.0f,5.0f,0.0f }, m_CircleScale, m_CircleSpeed);
 	Obj_SetParam();
@@ -31,9 +33,9 @@ void NormalEnemy::Draw(DirectXCommon* dxCommon) {
 //ImGui•`‰æ
 void NormalEnemy::ImGuiDraw() {
 	ImGui::Begin("Enemy");
-	ImGui::Text("PosX:%f",m_Position.x);
-	ImGui::Text("PosY:%f", m_Position.y);
-	ImGui::Text("PosZ:%f", m_Position.z);
+	ImGui::Text("PosX:%f", player->GetPosition().x);
+	ImGui::Text("PosY:%f", player->GetPosition().y);
+	ImGui::Text("PosZ:%f", player->GetPosition().z);
 	ImGui::End();
 }
 //ŠJ•ú

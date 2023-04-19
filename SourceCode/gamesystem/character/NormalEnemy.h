@@ -14,6 +14,8 @@ public:
 	void Draw(DirectXCommon* dxCommon) override;//•`‰æ
 private:
 	void Particle();
+protected:
+
 private:
 	float m_CircleAngle = 0.0f;
 	float m_CircleRadius = 0.0f;

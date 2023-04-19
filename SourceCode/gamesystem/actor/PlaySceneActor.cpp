@@ -45,8 +45,8 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	ui.reset(new UI());
 	ui->Initialize();
 
-	enemymanager.reset(new EnemyManager());
-
+	enemymanager.reset(new EnemyManager(player.get()));
+	//enemymanager->SetPlayer(player.get());
 	//Block::GetInstance()->ModelInit();
 	Block::GetInstance()->Initialize(map, 0, 0);
 }
@@ -117,7 +117,7 @@ void PlaySceneActor::ModelDraw(DirectXCommon* dxCommon) {
 	objGround->Draw();
 	////各クラスの描画
 	player->Draw(dxCommon);
-	//enemymanager->Draw(dxCommon);
+	enemymanager->Draw(dxCommon);
 	//Block::GetInstance()->Draw();
 	IKEObject3d::PostDraw();
 }
