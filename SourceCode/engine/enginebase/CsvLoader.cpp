@@ -72,7 +72,7 @@ std::any LoadCSV::LoadCsvParam(std::string FileName, std::string LoadName)
 }
 
 
-XMFLOAT3 LoadCSV::LoadCsvParam_XMFLOAT3(std::string FileName, std::string LoadName)
+void LoadCSV::LoadCsvParam_XMFLOAT3(std::string FileName,std::vector<XMFLOAT3>&obj, std::string LoadName)
 {
 	std::string line;
 	std::stringstream popcom;
@@ -84,7 +84,8 @@ XMFLOAT3 LoadCSV::LoadCsvParam_XMFLOAT3(std::string FileName, std::string LoadNa
 
 	file.close();
 
-	XMFLOAT3 pos;
+	std::vector<XMFLOAT3>l_obj(obj.size());
+	for (int i = 0; i < obj.size(); i++) {
 		while (std::getline(popcom, line))
 		{
 			std::istringstream line_stream(line);
@@ -106,9 +107,50 @@ XMFLOAT3 LoadCSV::LoadCsvParam_XMFLOAT3(std::string FileName, std::string LoadNa
 				std::getline(line_stream, word, ',');
 				float z = static_cast<float>(std::atof(word.c_str()));
 
-				pos = { x, y, z };
-				//break;
+				l_obj[i] = {x, y, z};
+				break;
 			}
 		}
-		return pos;
+	}
+	for (int i = 0; i <obj.size(); i++) {
+		obj[i] = l_obj[i];
+	}
+}
+
+
+void LoadCSV::LoadCsvParam_String(std::string FileName, std::vector<std::string>& obj, std::string LoadName)
+{
+	std::string line;
+	std::stringstream popcom;
+	std::ifstream file;
+
+	file.open(FileName);
+
+	popcom << file.rdbuf();
+
+	file.close();
+
+	std::vector<std::string>l_obj(obj.size());
+	for (int i = 0; i < obj.size(); i++) {
+		while (std::getline(popcom, line))
+		{
+			std::istringstream line_stream(line);
+			std::string word;
+			std::getline(line_stream, word, ',');
+
+			if (word.find("//") == 0)
+			{
+				continue;
+			}
+			if (word.find(LoadName) == 0)
+			{
+				std::getline(line_stream, word, ',');
+				l_obj[i] = word;
+				break;
+			}
+		}
+	}
+	for (int i = 0; i < obj.size(); i++) {
+		obj[i] = l_obj[i];
+	}
 }

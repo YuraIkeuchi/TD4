@@ -7,19 +7,20 @@
 
 ObjCommon::~ObjCommon()
 {
-
 }
 
-bool ObjCommon::Initialize() {
+bool ObjCommon::Initialize()
+{
 	return true;
 }
 
 void ObjCommon::SetCollider()
 {
-
 }
+
 //オブジェクトのセット
-void ObjCommon::Obj_SetParam() {
+void ObjCommon::Obj_SetParam()
+{
 	m_Object->SetPosition(m_Position);
 	m_Object->SetRotation(m_Rotation);
 	m_Object->SetScale(m_Scale);
@@ -32,7 +33,8 @@ void ObjCommon::Obj_SetParam() {
 }
 
 //オブジェクトのセット
-void ObjCommon::FollowObj_SetParam(XMMATRIX matworld) {
+void ObjCommon::FollowObj_SetParam(XMMATRIX matworld)
+{
 	m_FollowObject->SetAddColor(m_Addcolor);
 	m_FollowObject->SetDisolve(m_AddDisolve);
 	m_FollowObject->SetChangeColor(m_ChangeColor);
@@ -41,7 +43,8 @@ void ObjCommon::FollowObj_SetParam(XMMATRIX matworld) {
 }
 
 //FBXのセット
-void ObjCommon::Fbx_SetParam() {
+void ObjCommon::Fbx_SetParam()
+{
 	m_fbxObject->SetPosition(m_Position);
 	m_fbxObject->SetRotation(m_Rotation);
 	m_fbxObject->SetAddColor(m_Addcolor);
@@ -51,20 +54,19 @@ void ObjCommon::Fbx_SetParam() {
 
 void ObjCommon::Obj_Draw()
 {
-	IKEObject3d::PreDraw();
+	PreDraw();
 	m_Object->Draw();
-	IKEObject3d::PostDraw();
+	PostDraw();
 }
 
 void ObjCommon::FollowObj_Draw()
 {
-	IKEObject3d::PreDraw();
+	PreDraw();
 	m_FollowObject->Draw();
-	IKEObject3d::PostDraw();
+	PostDraw();
 }
 
 void ObjCommon::Fbx_Draw(DirectXCommon* dxCommon)
 {
 	m_fbxObject->Draw(dxCommon->GetCmdList());
 }
-

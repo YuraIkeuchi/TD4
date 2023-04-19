@@ -12,7 +12,8 @@ class ShadowMap
 {
 private: // エイリアス
 	// Microsoft::WRL::を省略
-	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+	template <class T>
+	using ComPtr = Microsoft::WRL::ComPtr<T>;
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -22,15 +23,15 @@ private: // エイリアス
 public: //サブクラス
 	struct VertexPosUv
 	{
-		XMFLOAT3 pos;	//xyz座標
-		XMFLOAT2 uv;	//uv座標
+		XMFLOAT3 pos; //xyz座標
+		XMFLOAT2 uv; //uv座標
 	};
 
 	//定数バッファ用データ構造体
 	struct ConstBufferData
 	{
-		XMFLOAT4 color;	//色(RGBA)
-		XMMATRIX mat;	//3変換行列
+		XMFLOAT4 color; //色(RGBA)
+		XMMATRIX mat; //3変換行列
 	};
 
 public:
@@ -101,9 +102,9 @@ private:
 	//DSV用デスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> descHeapDSV;
 	//グラフィックスパイプライン
-	ComPtr<ID3D12PipelineState>pipelineState;
+	ComPtr<ID3D12PipelineState> pipelineState;
 	//ルートシグネチャ
-	ComPtr<ID3D12RootSignature>rootSignature;
+	ComPtr<ID3D12RootSignature> rootSignature;
 	//色(RGBA)
-	XMFLOAT4 color = { 1, 1, 1, 1 };
+	XMFLOAT4 color = {1, 1, 1, 1};
 };

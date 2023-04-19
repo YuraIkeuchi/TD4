@@ -49,7 +49,7 @@ void EditorSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	ground->SetColor({ 0.5f,0.5f,0.5f,1.0f });
 	ground->Update();
 	//‰¹Šy‚Ì‰¹—Ê‚ª•Ï‚í‚é
-	//placeObj->Update();
+	placeObj->Update();
 
 	load->Update();
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
@@ -75,7 +75,7 @@ void EditorSceneActor::Draw(DirectXCommon* dxCommon)
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
-	//	ImGuiDraw(dxCommon);
+		ImGuiDraw(dxCommon);
 
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
@@ -91,9 +91,9 @@ void EditorSceneActor::ModelDraw(DirectXCommon* dxCommon) {
 #pragma region 3DƒIƒuƒWƒFƒNƒg•`‰æ
 	//”wŒi‚Íæ‚É•`‰æ‚·‚é
 	IKEObject3d::PreDraw();
-	load->Draw();
+	///load->Draw();
 	ground->Draw();
-	//placeObj->Draw(dxCommon);
+	placeObj->Draw(dxCommon);
 	IKEObject3d::PostDraw();
 }
 //Œã‚ë‚Ì•`‰æ
@@ -128,6 +128,15 @@ void EditorSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	ImGui::Checkbox("ACube", &item[1]);
 
 	placeObj->SetLoad(item[0]);
+
+	ImGui::End();
+
+	ImGui::Begin("ScneChange");
+
+	if(ImGui::Button("PlayScene",ImVec2(100,50)))
+	{
+		
+	}
 
 	ImGui::End();
 

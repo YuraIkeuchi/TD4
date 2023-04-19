@@ -4,6 +4,9 @@
 class PlaceBox:public PlaceManager
 {
 public:
+	PlaceBox(){};
+	~PlaceBox(){};
+public:
 	void Initialize() override;
 
 	void Update() override;

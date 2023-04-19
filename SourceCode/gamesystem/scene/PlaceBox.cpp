@@ -1,8 +1,11 @@
 #include "PlaceBox.h"
 
+#include <atlstr.h>
+
 #include "CollisionAttribute.h"
 #include "ModelManager.h"
 #include "SphereCollider.h"
+
 
 void PlaceBox::Initialize()
 {
@@ -26,16 +29,6 @@ void PlaceBox::Update()
 
 	SampleObj->CollisionField();
 	SampleObj->SetColor({ 1.f,1.f,1.f,0.5f });
-
-	if (ArgmentFlag) {
-		BoxsList.push_back(Boxs::WOOD);
-		ArgmentObj(ArgmentFlag, "Box", ModelManager::GetInstance()->GetModel(ModelManager::Box));
-	}
-
-	if (StoneArgment) {
-		BoxsList.push_back(Boxs::CUBE);
-		ArgmentObj(StoneArgment, "Cube", ModelManager::GetInstance()->GetModel(ModelManager::Cube));
-	}
 
 	for (auto i = 0; i < boxes.size(); i++)
 	{
@@ -63,12 +56,13 @@ void PlaceBox::Update()
 		}
 
 		/**/
-		if(imguilist[i]->GetBoxnumber()==CreateImGui::WOOD&&BoxsList[i]!=Boxs::WOOD)
+		if (imguilist[i]->GetBoxnumber() == CreateImGui::WOOD && BoxsList[i] != Boxs::WOOD)
 		{
 			boxes[i]->SetModeName("Wood");
 			boxes[i]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Box));
 			BoxsList[i] = Boxs::WOOD;
 		}
+
 		if (imguilist[i]->GetBoxnumber() == CreateImGui::STONE && BoxsList[i] != Boxs::CUBE)
 		{
 			boxes[i]->SetModeName("Cube");
@@ -82,6 +76,18 @@ void PlaceBox::Update()
 			imguilist.erase(imguilist.begin() + i);// erase(std::cbegin(enemys) + i);
 		}
 	}
+
+
+	if (ArgmentFlag) {
+		BoxsList.push_back(Boxs::WOOD);
+		ArgmentObj(ArgmentFlag, "Box", ModelManager::GetInstance()->GetModel(ModelManager::Box));
+	}
+
+	if (StoneArgment) {
+		BoxsList.push_back(Boxs::CUBE);
+		ArgmentObj(StoneArgment, "Cube", ModelManager::GetInstance()->GetModel(ModelManager::Cube));
+	}
+
 }
 
 void PlaceBox::Draw(DirectXCommon* DxCommon)
@@ -104,27 +110,31 @@ void PlaceBox::FileWriting()
 	file.close();
 	//std::ofstream pofs("EnemyParam_CSV/position.csv");
 	std::ofstream ofs("Resources/csv/stage/stage1.csv"); // ファイルパスを指定する
-	ofs << "Wood_Quantity" << "," << boxes.size() << std::endl;
+	ofs << "Quantity" << "," << boxes.size() << std::endl;
 
 	for (int i = 0; i < boxes.size(); i++)
 	{
 		ofs << "*---------------------------*" << std::endl;
-		//ofs << "Number" << "," << Number[i] << std::endl;
+		//座標
 		ofs << "POSITION" << "," << boxes[i]->GetPosition().x
 			<< "," << boxes[i]->GetPosition().y
 			<< "," << boxes[i]->GetPosition().z << std::endl;
+		//回転
 		ofs << "ROTATION" << "," << boxes[i]->GetRotation().x
 			<< "," << boxes[i]->GetRotation().y
 			<< "," << boxes[i]->GetRotation().z << std::endl;
-
-		ofs << "ModelName" << "," << boxes[i]->GetModelName()<<std::endl;
+		//スケール
+		ofs << "SCALE" << "," << boxes[i]->GetScale().x
+			<< "," << boxes[i]->GetScale().y
+			<< "," << boxes[i]->GetScale().z << std::endl;
+		ofs << "ModelName" << "," << boxes[i]->GetModelName() << std::endl;
 		ofs << "*---------------------------*" << std::endl;
 	}
 }
-
+#include<stdio.h>
 void PlaceBox::ImGui_Draw()
 {
-	
+
 
 	ImGui::Begin("BoxParam");
 
@@ -159,8 +169,19 @@ void PlaceBox::ImGui_Draw()
 	ImGui::SliderFloat("Sclae_X", &S_Scl.x, 0.f, 10.f);
 	ImGui::SliderFloat("Scale_Y", &S_Scl.y, 0.f, 10.f);
 	ImGui::SliderFloat("Scale_Z", &S_Scl.z, 0.f, 10.f);
+
+
+	/*CSV開く*/
+	ImGui::Text("OpenCSV");
+	if(ImGui::Button("BoxCSV", ImVec2(100, 50)))
+	{
+		CString default = _T("TD4\\Resources\\csv\\stage\\stage1");
+
+		ShellExecute(nullptr, _T("open"), default ,nullptr, nullptr, SW_SHOW);
+	}
 	ImGui::End();
 
+	//配置されたBOXに対応付けれるImguiのリスト(要素ごとの編集が可能)
 	ImGui::Begin("BoxList");
 	ImGui::SetWindowPos(ImVec2(300, 400));
 	ImGui::SetWindowSize(ImVec2(300, 300));
@@ -170,10 +191,11 @@ void PlaceBox::ImGui_Draw()
 		{
 			continue;
 		}
-		
+
 		imguilist[i]->CreateImguiList();
-}
-ImGui::End();
+	}
+
+	ImGui::End();
 }
 
 
@@ -184,31 +206,32 @@ PlaceBox::CreateImGui::CreateImGui(std::string num, float scl, XMFLOAT3 pos)
 	Pos = pos;
 	listnum.push_back("Box" + num);
 }
-
 void PlaceBox::CreateImGui::CreateImguiList()
 {
-	std::string TitName =modelname+ std::to_string(imnumber) + "----------------------";
+	std::string TitName = modelname + std::to_string(imnumber) + "----------------------";
 	ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), TitName.c_str());
 	//ImGui::StyleColorsClassic();
 
 	if (ImGui::CollapsingHeader(TitName.c_str()))
 	{
-		ImGui::Text("Scale");
+		/*ImGui::Text("Scale");
 		std::string sclname = "Scl" + TitName;
-		ImGui::SliderFloat(sclname.c_str(), &Scl, 0.f, 1.f);
+		ImGui::SliderFloat(sclname.c_str(), &Scl, 0.f, 1.f);*/
 
 		ImGui::Text("Position");
 
 		float pos[3] = { Pos.x, Pos.y, Pos.z };
 		std::string posname_x = "Pos.x" + TitName;
 		std::string posname_z = "Pos.z" + TitName;
-		ImGui::SliderFloat(posname_x.c_str(), &Pos.x, -200.f,200.f);
+		ImGui::SliderFloat(posname_x.c_str(), &Pos.x, -200.f, 200.f);
 		ImGui::SliderFloat(posname_z.c_str(), &Pos.z, -200.f, 200.f);
 
+		/*回転*/
 		ImGui::Text("Rotation");
 		std::string rotname = "Rot" + TitName;
 		ImGui::SliderFloat(rotname.c_str(), &Rot.y, 0.f, 360.f);
 
+		/*モデル変更*/
 		ImGui::Text("SelectBox");
 		std::string enumynum_g = "WoodBox" + TitName;
 		std::string enumynum_l = "StoneBox" + TitName;
@@ -216,14 +239,16 @@ void PlaceBox::CreateImGui::CreateImguiList()
 
 		if (ImGui::Button(enumynum_g.c_str(), ImVec2(70, 30)))
 		{
+			//
 			bnumber = WOOD;
 		}
 		ImGui::SameLine();
 		if (ImGui::Button(enumynum_l.c_str(), ImVec2(70, 30)))
 		{
+			//
 			bnumber = STONE;
 		}
-		//ImGui::SameLine();
+		ImGui::SameLine();
 
 		ImGui::Text("DeleteInstance");
 		std::string delname = "Delete" + TitName;
@@ -232,9 +257,15 @@ void PlaceBox::CreateImGui::CreateImguiList()
 			Del = true;
 		}
 
-		std::string selname = "SelectThis" + TitName;
-		ImGui::Checkbox(selname.c_str(), &Select);
-	}
+	//	 s=TitName;
+	//std::string  nowname = "NowModel" + TitName;
+	// std::string inputname="now" + TitName;
+	////strcat_s(input,sizeof input, inputname.c_str());
+	//strncpy_s( buf, s.c_str(), sizeof(buf)-1 );
+	//ImGui::InputText(inputname.c_str(), buf, sizeof(buf));
+	//s = buf;
+	}	
+	//ImGui::InputText(nowname.c_str(), input, 256);
 }
 
 

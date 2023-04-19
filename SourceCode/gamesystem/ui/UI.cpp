@@ -25,6 +25,7 @@ void UI::Initialize()
 //çXêV
 void UI::Update()
 {
+
 	for (auto i = 0; i < TexList.size(); i++)
 	{
 		if (TexList[i].Tex == nullptr)continue;
@@ -44,5 +45,23 @@ void UI::Draw()
 		TexList[i].Tex->Draw();
 	}
 }
+
+//ñÓàÛÇÃå¸Ç´
+//void UI::ArrowRota() {
+//	XMFLOAT2 l_MovePos = ikeplayer->GetMovePos();
+//	XMFLOAT2 l_SavePos = ikeplayer->GetSavePos();
+//
+//	XMFLOAT2 l_Rot{};
+//	float radius = 0;
+//
+//	l_Rot.x = (l_MovePos.x - l_SavePos.x);
+//	l_Rot.y = (l_MovePos.y - l_SavePos.y);
+//
+//	radius = atan2f(l_Rot.x, l_Rot.y);
+//
+//	Arrow.Rotation = (radius * (180.0f / XM_PI));
+//
+//	TexList[ARROW].Rotation = ArrowRota().Rotation;
+//}
 
 

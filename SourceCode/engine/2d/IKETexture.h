@@ -11,7 +11,8 @@ class IKETexture
 {
 private: // エイリアス
 	// Microsoft::WRL::を省略
-	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+	template <class T>
+	using ComPtr = Microsoft::WRL::ComPtr<T>;
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -24,26 +25,27 @@ public: // サブクラス
 	{
 		XMFLOAT3 pos; // xyz座標
 		XMFLOAT3 normal; // 法線ベクトル
-		XMFLOAT2 uv;  // uv座標
+		XMFLOAT2 uv; // uv座標
 	};
 
 	// 定数バッファ用データ構造体
 	struct ConstBufferData
 	{
-		XMFLOAT4 color;	// 色 (RGBA)
-		XMMATRIX mat;	// ３Ｄ変換行列
+		XMFLOAT4 color; // 色 (RGBA)
+		XMMATRIX mat; // ３Ｄ変換行列
 	};
 
 private: // 定数
-	static const int division = 50;					// 分割数
-	static const float radius;				// 底面の半径
-	static const float prizmHeight;			// 柱の高さ
-	static const int planeCount = division * 2 + division * 2;		// 面の数
-	static const int vertexCount = 4;		// 頂点数
+	static const int division = 50; // 分割数
+	static const float radius; // 底面の半径
+	static const float prizmHeight; // 柱の高さ
+	static const int planeCount = division * 2 + division * 2; // 面の数
+	static const int vertexCount = 4; // 頂点数
 	static const int indexCount = 3 * 2;
 public: // 静的メンバ関数
 	/// 静的初期化
-	static bool StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, int window_width, int window_height, Camera* camera = nullptr);
+	static bool StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, int window_width,
+	                             int window_height, Camera* camera = nullptr);
 
 	/// テクスチャ読み込み
 	static bool LoadTexture(UINT texnumber, const wchar_t* filename);
@@ -64,7 +66,8 @@ public: // 静的メンバ関数
 /// カメラセット
 /// </summary>
 /// <returns></returns>
-	static void SetCamera(Camera* camera) {
+	static void SetCamera(Camera* camera)
+	{
 		IKETexture::camera = camera;
 	}
 
@@ -78,7 +81,8 @@ public: // 静的メンバ関数
 	static void CameraMoveVector(const XMFLOAT3& move);
 
 	/// スプライト生成
-	static IKETexture* Create(UINT texNumber, const XMFLOAT2& position, const XMFLOAT4& color = { 1, 1, 1, 1 }, const XMFLOAT2& anchorpoint = { 0.0f, 0.0f }, bool isFlipX = false, bool isFlipY = false);
+	static IKETexture* Create(UINT texNumber, const XMFLOAT2& position, const XMFLOAT4& color = {1, 1, 1, 1},
+	                          const XMFLOAT2& anchorpoint = {0.0f, 0.0f}, bool isFlipX = false, bool isFlipY = false);
 
 
 private: // 静的メンバ変数
@@ -130,12 +134,12 @@ private: // 静的メンバ変数
 	// 頂点インデックス配列
 	static unsigned short indices[indexCount];
 	static ComPtr<ID3DBlob> vsBlob; // 頂点シェーダオブジェクト
-	static ComPtr<ID3DBlob> psBlob;	// ピクセルシェーダオブジェクト
+	static ComPtr<ID3DBlob> psBlob; // ピクセルシェーダオブジェクト
 	static ComPtr<ID3DBlob> errorBlob; // エラーオブジェクト
 private:
 	UINT texNumber = 0;
 
-private:// 静的メンバ関数
+private: // 静的メンバ関数
 	/// デスクリプタヒープの初期化
 	static bool InitializeDescriptorHeap();
 
@@ -177,12 +181,14 @@ public: // メンバ関数
 
 	/// 座標の設定
 	void SetPosition(const XMFLOAT3& position) { this->position = position; }
+
 	void SetPosition(float x, float y, float z)
 	{
 		this->position.x = x;
 		this->position.y = y;
 		this->position.z = z;
 	}
+
 	void SetIsBillboard(bool isBillboard);
 	void SetColor(const XMFLOAT4& color) { this->color = color; }
 	void SetRotation(const XMFLOAT3& rotation) { this->rotation = rotation; }
@@ -217,24 +223,26 @@ public: // メンバ関数
 		l_mat.r[2].m128_f32[2] *= l_scale.z;
 		return l_mat;
 	}
+
 private: // メンバ変数
-	
+
 
 	ComPtr<ID3D12Resource> constBuff; // 定数バッファ
 	// 色
-	XMFLOAT4 color = { 1,1,1,1 };
+	XMFLOAT4 color = {1, 1, 1, 1};
 	// ローカルスケール
-	XMFLOAT3 scale = { 1,1,1 };
+	XMFLOAT3 scale = {1, 1, 1};
 	// X,Y,Z軸回りのローカル回転角
-	XMFLOAT3 rotation = { 0,0,0 };
+	XMFLOAT3 rotation = {0, 0, 0};
 	// ローカル座標
-	XMFLOAT3 position = { 0,0,0 };
+	XMFLOAT3 position = {0, 0, 0};
 	// ローカルワールド変換行列
 	XMMATRIX matWorld;
 	// ビルボード
 	bool isBillboard = false;
 
-	enum DrawType {
+	enum DrawType
+	{
 		ALPHA,
 		ADD,
 		SUB
@@ -247,5 +255,3 @@ private: // メンバ変数
 	//親子構造用
 	XMMATRIX matrix = {};
 };
-
-

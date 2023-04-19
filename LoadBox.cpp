@@ -6,58 +6,52 @@
 void LoadBox::Load()
 {
 	auto Size= static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/stage/stage1.csv", "Quantity")));
-	boxes.resize(Size);
 
+	boxes.resize(Size);
+	
+	/**/
+	Pos.resize(Size);
+	Rot.resize(Size);
+	Scl.resize(Size);
+	/**/
+
+	Name.resize(Size);
+
+
+	//èâä˙âª
 	for (auto i = 0; i < boxes.size(); i++) {
 		boxes[i].reset(new IKEObject3d());
 		boxes[i]->Initialize();
-		boxes[i]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Box));
-		
 	}
-	file.open("Resources/csv/stage/stage1.csv");
 
-	popcom << file.rdbuf();
 
-	file.close();
+	LoadCSV::LoadCsvParam_XMFLOAT3("Resources/csv/stage/stage1.csv", Pos, "POSITION");
+	LoadCSV::LoadCsvParam_XMFLOAT3("Resources/csv/stage/stage1.csv", Rot, "ROTATION");
+	LoadCSV::LoadCsvParam_XMFLOAT3("Resources/csv/stage/stage1.csv", Scl, "SCALE");
 
-	std::vector<XMFLOAT3>Pos(Size);
+	//
+	LoadCSV::LoadCsvParam_String("Resources/csv/stage/stage1.csv", Name, "Model");
+
+	//ÉÇÉfÉãïœçXÇ…ëŒâû
 	for (auto i = 0; i < boxes.size(); i++) {
-		while (std::getline(popcom, line))
+		if(Name[i]=="Box")
 		{
-			std::istringstream line_stream(line);
-			std::string word;
-			std::getline(line_stream, word, ',');
-
-			if (word.find("//") == 0)
-			{
-				continue;
-			}
-			if (word.find("POSITION") == 0)
-			{
-				std::getline(line_stream, word, ',');
-				float x = static_cast<float>(std::atof(word.c_str()));
-
-				std::getline(line_stream, word, ',');
-				float y = static_cast<float>(std::atof(word.c_str()));
-
-				std::getline(line_stream, word, ',');
-				float z = static_cast<float>(std::atof(word.c_str()));
-
-				Pos[i] = { x, y, z };
-				break;
-			}
+			boxes[i]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Box));
 		}
-		
+		else if(Name[i]=="Cube")
+		{
+			boxes[i]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Cube));
+		}
+
+		boxes[i]->SetPosition(Pos[i]);
+		boxes[i]->SetRotation(Rot[i]);
+		boxes[i]->SetScale(Scl[i]);
 	}
-	for (auto i = 0; i < boxes.size(); i++) {
-			boxes[i]->SetPosition(Pos[i]);
-		}
 }
 
 void LoadBox::Initialize()
 {
 	Load();
-	
 }
 
 void LoadBox::Update()

@@ -310,6 +310,7 @@
       <Filter>SourceCords\gamesystem\Editor\Box</Filter>
     </ClCompile>
     <ClCompile Include="LoadBox.cpp" />
+    <ClCompile Include="LoadManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
@@ -581,6 +582,7 @@
       <Filter>SourceCords\gamesystem\Editor\Box</Filter>
     </ClInclude>
     <ClInclude Include="LoadBox.h" />
+    <ClInclude Include="LoadManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Gaussian.hlsli">

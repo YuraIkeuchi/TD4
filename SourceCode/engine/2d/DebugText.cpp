@@ -7,7 +7,8 @@ DebugText::DebugText()
 
 DebugText::~DebugText()
 {
-	for (int i = 0; i < _countof(spriteDatas); i++) {
+	for (int i = 0; i < _countof(spriteDatas); i++)
+	{
 		delete spriteDatas[i];
 	}
 }
@@ -24,7 +25,7 @@ void DebugText::Initialize(UINT texnumber)
 	for (int i = 0; i < _countof(spriteDatas); i++)
 	{
 		// スプライトを生成する
-		spriteDatas[i] = IKESprite::Create(texnumber, { 0,0 });
+		spriteDatas[i] = IKESprite::Create(texnumber, {0, 0});
 	}
 }
 
@@ -35,7 +36,8 @@ void DebugText::Print(const std::string& text, float x, float y, float scale = 1
 	for (int i = 0; i < text.size(); i++)
 	{
 		// 最大文字数超過
-		if (spriteIndex >= maxCharCount) {
+		if (spriteIndex >= maxCharCount)
+		{
 			break;
 		}
 
@@ -43,7 +45,8 @@ void DebugText::Print(const std::string& text, float x, float y, float scale = 1
 		const unsigned char& character = text[i];
 
 		int fontIndex = character - 32;
-		if (character >= 0x7f) {
+		if (character >= 0x7f)
+		{
 			fontIndex = 0;
 		}
 
@@ -51,9 +54,12 @@ void DebugText::Print(const std::string& text, float x, float y, float scale = 1
 		int fontIndexX = fontIndex % fontLineCount;
 
 		// 座標計算
-		spriteDatas[spriteIndex]->SetPosition({ x + fontWidth * scale * i, y });
-		spriteDatas[spriteIndex]->SetTextureRect({ (float)fontIndexX * fontWidth, (float)fontIndexY * fontHeight }, { (float)fontWidth, (float)fontHeight });
-		spriteDatas[spriteIndex]->SetSize({ fontWidth * scale, fontHeight * scale });
+		spriteDatas[spriteIndex]->SetPosition({x + fontWidth * scale * i, y});
+		spriteDatas[spriteIndex]->SetTextureRect(
+			{static_cast<float>(fontIndexX) * fontWidth, static_cast<float>(fontIndexY) * fontHeight}, {
+				static_cast<float>(fontWidth), static_cast<float>(fontHeight)
+			});
+		spriteDatas[spriteIndex]->SetSize({fontWidth * scale, fontHeight * scale});
 
 		// 文字を１つ進める
 		spriteIndex++;

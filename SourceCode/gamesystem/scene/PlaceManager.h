@@ -71,6 +71,8 @@ protected:
 		bool Select;
 		int imnumber;
 		std::string modelname;
+		std::string ChangeModelName; char buf[255]{};
+		static std::string s;
 	public:
 		float GetScl() { return Scl; }
 		XMFLOAT3 GetPos() { return Pos; }
@@ -81,9 +83,11 @@ protected:
 		void SetModelName(std::string name) { modelname = name; }
 		void SetImguiNumber(int index) { imnumber = index; }
 		int GetImguiNumber() { return imnumber; }
+		std::string GetChangeName() { return ChangeModelName; }
 	public:
 		enum BoxNumber
 		{
+			NON,
 			WOOD,
 			STONE,
 		} bnumber;
@@ -91,6 +95,7 @@ protected:
 
 		BoxNumber GetBoxnumber() { return bnumber; }
 	};
+
 
 	std::vector<std::unique_ptr<CreateImGui>> imguilist;
 };

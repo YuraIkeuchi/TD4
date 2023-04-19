@@ -230,6 +230,7 @@
   <ItemGroup>
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="LoadBox.cpp" />
+    <ClCompile Include="LoadManager.cpp" />
     <ClCompile Include="PlaceEditorScene.cpp" />
     <ClCompile Include="SourceCode\engine\2d\DebugText.cpp" />
     <ClCompile Include="SourceCode\engine\2d\ImageManager.cpp" />
@@ -316,6 +317,7 @@
   <ItemGroup>
     <ClInclude Include="Editor.h" />
     <ClInclude Include="LoadBox.h" />
+    <ClInclude Include="LoadManager.h" />
     <ClInclude Include="PlaceEditorScene.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SourceCode\engine\2d\DebugText.h" />

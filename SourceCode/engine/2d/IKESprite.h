@@ -12,7 +12,8 @@ class IKESprite
 {
 protected: // エイリアス
 	// Microsoft::WRL::を省略
-	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+	template <class T>
+	using ComPtr = Microsoft::WRL::ComPtr<T>;
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -25,7 +26,7 @@ public: // サブクラス
 	struct VertexPosUv
 	{
 		XMFLOAT3 pos; // xyz座標
-		XMFLOAT2 uv;  // uv座標
+		XMFLOAT2 uv; // uv座標
 	};
 
 
@@ -33,12 +34,13 @@ public: // サブクラス
 
 	struct ConstBufferData
 	{
-		XMFLOAT4 color;	// 色 (RGBA)
-		XMMATRIX mat;	// ３Ｄ変換行列
+		XMFLOAT4 color; // 色 (RGBA)
+		XMMATRIX mat; // ３Ｄ変換行列
 	};
 
 public: // 静的メンバ関数
-	static bool StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, int window_width, int window_height);
+	static bool StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, int window_width,
+	                             int window_height);
 
 	/// テクスチャ読み込み
 	static bool LoadTexture(UINT texnumber, const wchar_t* filename);
@@ -50,7 +52,8 @@ public: // 静的メンバ関数
 	static void PostDraw();
 
 	/// スプライト生成
-	static IKESprite* Create(UINT texNumber, const XMFLOAT2& position, const XMFLOAT4& color = { 1, 1, 1, 1 }, const XMFLOAT2& anchorpoint = { 0.0f, 0.0f }, bool isFlipX = false, bool isFlipY = false);
+	static IKESprite* Create(UINT texNumber, const XMFLOAT2& position, const XMFLOAT4& color = {1, 1, 1, 1},
+	                         const XMFLOAT2& anchorpoint = {0.0f, 0.0f}, bool isFlipX = false, bool isFlipY = false);
 
 protected: // 静的メンバ変数
 	// テクスチャの最大枚数
@@ -77,7 +80,8 @@ protected: // 静的メンバ変数
 public: // メンバ関数
 
 	/// コンストラクタ
-	IKESprite(UINT texNumber, const XMFLOAT2& position, const XMFLOAT2& size, const XMFLOAT4& color, const XMFLOAT2& anchorpoint, bool isFlipX, bool isFlipY);
+	IKESprite(UINT texNumber, const XMFLOAT2& position, const XMFLOAT2& size, const XMFLOAT4& color,
+	          const XMFLOAT2& anchorpoint, bool isFlipX, bool isFlipY);
 
 
 	/// 初期化
@@ -150,21 +154,21 @@ protected: // メンバ変数
 	// 座標
 	XMFLOAT2 position{};
 	// スプライト幅、高さ
-	XMFLOAT2 size = { 100.0f, 100.0f };
+	XMFLOAT2 size = {100.0f, 100.0f};
 	// アンカーポイント
-	XMFLOAT2 anchorpoint = { 0, 0 };
+	XMFLOAT2 anchorpoint = {0, 0};
 	// ワールド行列
 	XMMATRIX matWorld{};
 	// 色
-	XMFLOAT4 color = { 1, 1, 1, 1 };
+	XMFLOAT4 color = {1, 1, 1, 1};
 	// 左右反転
 	bool isFlipX = false;
 	// 上下反転
 	bool isFlipY = false;
 	// テクスチャ始点
-	XMFLOAT2 texBase = { 0, 0 };
+	XMFLOAT2 texBase = {0, 0};
 	// テクスチャ幅、高さ
-	XMFLOAT2 texSize = { 100.0f, 100.0f };
+	XMFLOAT2 texSize = {100.0f, 100.0f};
 
 private: // メンバ関数
 	/// 頂点データ転送

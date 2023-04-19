@@ -7,12 +7,14 @@
 #include<string>
 #include<sstream>
 
+#include "LoadManager.h"
+
 using namespace DirectX;
-class LoadBox
+class LoadBox:public LoadManager
 {
 private:
-	//XMFLOAT3 Pos;
-	XMFLOAT3 Rot;
+	
+	std::vector<std::string> Name;
 
 	std::vector<std::unique_ptr< IKEObject3d>>boxes;
 	std::string line;
@@ -22,11 +24,11 @@ private:
 public:
 	void Load();
 
-	void Initialize();
+	void Initialize()override;
 
-	void Update();
+	void Update()override;
 
-	void Draw();
+	void Draw()override;
 
 	IKEObject3d* GetBox(int i) { return boxes[i].get(); }
 };
