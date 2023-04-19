@@ -34,3 +34,14 @@ public:
 	std::vector<Boxs>BoxsList;
 };
 
+#include"IKESprite.h"
+class PlaceMap
+{
+public:
+	void Initialize();
+	void Update();
+	void Draw();
+private:
+	std::unique_ptr<IKESprite>MapStage[25][25];
+
+};

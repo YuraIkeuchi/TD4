@@ -3,6 +3,7 @@
 #include <atlstr.h>
 
 #include "CollisionAttribute.h"
+#include "ImageManager.h"
 #include "ModelManager.h"
 #include "SphereCollider.h"
 
@@ -298,3 +299,32 @@ void PlaceBox::ArgmentObj(bool& aflag, std::string mname, IKEModel* model)
 
 
 }
+
+
+void PlaceMap::Initialize()
+{
+	int size = 25;
+	for(int i=0;i<size;i++)
+	{
+		for(int j=0;j<size;j++)
+		{
+			MapStage[i][j].reset(IKESprite::Create(ImageManager::GAMECLEAR, { 0.f,0.f }));
+			MapStage[i][j]->SetAnchorPoint({ 0.5f,0.5f });
+			MapStage[i][j]->SetSize({ 50.f,50.f });
+
+			MapStage[i][j]->SetPosition({ i * 50.f,j * 50.f });
+		}
+	}
+
+}
+
+void PlaceMap::Update()
+{
+	
+}
+
+void PlaceMap::Draw()
+{
+	
+}
+

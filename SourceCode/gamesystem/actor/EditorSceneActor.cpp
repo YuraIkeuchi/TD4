@@ -90,11 +90,14 @@ void EditorSceneActor::Finalize()
 void EditorSceneActor::ModelDraw(DirectXCommon* dxCommon) {
 #pragma region 3DƒIƒuƒWƒFƒNƒg•`‰æ
 	//”wŒi‚Íæ‚É•`‰æ‚·‚é
+	
+	///
 	IKEObject3d::PreDraw();
-	///load->Draw();
 	ground->Draw();
-	placeObj->Draw(dxCommon);
+	load->Draw();
+	//placeObj->Draw(dxCommon);
 	IKEObject3d::PostDraw();
+	
 }
 //Œã‚ë‚Ì•`‰æ
 void EditorSceneActor::BackDraw(DirectXCommon* dxCommon)
