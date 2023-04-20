@@ -152,32 +152,29 @@ Helper::XMVECTOR Helper::PosDivi(const XMVECTOR& pos, const XMMATRIX& mat, const
 	return XMVECTOR{ x, y, z, w };
 }
 
-Helper::XMFLOAT3 Helper::FollowMove(const XMFLOAT3& pos, const XMFLOAT3& pos2, const float vel) {
+void Helper::FollowMove(XMFLOAT3& pos, const XMFLOAT3& pos2, const float vel) {
 	XMFLOAT3 l_Distance;//ìÒì_ÇÃãóó£
 	XMFLOAT3 l_AddVel;//â¡éZÇ≥ÇÍÇÈà⁄ìÆó 
-	XMFLOAT3 l_Result{};//ï‘Ç∑íl
-
+	
 	//Ç∆ÇËÇ†Ç¶Ç∏Xé≤Ç∆Zé≤ÇÃÇ›í«è]
 	l_Distance.x = pos.x - pos2.x;
 	l_Distance.z = pos.z - pos2.z;
 
-	l_AddVel.x = (float)(sin(atan2f(l_Distance.x, l_Distance.z)) * vel);
-	l_AddVel.z = (float)(cos(atan2f(l_Distance.x, l_Distance.z)) * vel);
-
-	l_Result.y = pos.y;
-	l_Result.x += l_AddVel.x;
-	l_Result.z += l_AddVel.z;
+	l_AddVel.x = float(sin(-atan2f(l_Distance.x, l_Distance.z)) * 0.15f);
+	l_AddVel.z = float(-cos(atan2f(l_Distance.x, l_Distance.z)) * 0.15f);
+	l_AddVel.y = 0.0f;
+	pos.y += 0.0f;
+	pos.x += l_AddVel.x;
+	pos.z += l_AddVel.z;
 
 	//Ç‹ÇæâÒì]Ç∆Ç©ÇÕçló∂ÇµÇƒÇ»Ç¢ÇÊ
-
-	return l_Result;
+	//return l_Result;
 }
 
 Helper::XMFLOAT3 Helper::CircleMove(const XMFLOAT3& basepos, const float scale, const float speed) {
 	float l_Radius;//
 	XMFLOAT3 l_AddVel;//à⁄ìÆó 
 	XMFLOAT3 l_Result{};//ï‘Ç∑íl
-
 	//â~â^ìÆÇÃèàóù(Xé≤Ç∆Zé≤)
 	l_Radius = speed * PI / PI_180;
 	l_AddVel.x = cosf(l_Radius) * scale;

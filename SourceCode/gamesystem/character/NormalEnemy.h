@@ -21,5 +21,6 @@ private:
 	float m_CircleRadius = 0.0f;
 	float m_CircleSpeed = 0.0f;
 	float m_CircleScale = 20.0f;
+	XMFLOAT3 m_FollowVel{};
 };
 
