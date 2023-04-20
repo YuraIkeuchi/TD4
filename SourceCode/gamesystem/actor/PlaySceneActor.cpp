@@ -113,11 +113,11 @@ void PlaySceneActor::Finalize()
 void PlaySceneActor::ModelDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
 	////objCube->Draw();
-	//objGround->Draw();
+	objGround->Draw();
 	////各クラスの描画
-	//player->Draw(dxCommon);
-	//enemymanager->Draw(dxCommon);
-	Block::GetInstance()->Draw();
+	player->Draw(dxCommon);
+	enemymanager->Draw(dxCommon);
+	//Block::GetInstance()->Draw();
 	IKEObject3d::PostDraw();
 }
 //後ろの描画
