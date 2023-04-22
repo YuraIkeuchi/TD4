@@ -1,4 +1,4 @@
-#include "Helper.h"
+﻿#include "Helper.h"
 #include"WinApp.h"
 
 Helper* Helper::GetInstance()
