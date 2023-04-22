@@ -122,7 +122,13 @@ public: // メンバ関数
 	inline void SetUp(const XMFLOAT3& up) {
 		this->up = up; viewDirty = true;
 	}
-
+	/// <summary>
+	/// ビューポート
+	/// </summary>
+	XMMATRIX GetViewPort()
+	{
+		return ViewPort;
+	}
 	/// <summary>
 	/// ベクトルによる視点移動
 	/// </summary>
@@ -136,6 +142,8 @@ public: // メンバ関数
 	/// <param name="move">移動量</param>
 	void MoveVector(const XMFLOAT3& move);
 	void MoveVector(const XMVECTOR& move);
+
+	XMVECTOR CameraNormalize(const XMVECTOR& offset, const float distance);
 
 protected: // メンバ変数
 	// ビュー行列
@@ -160,5 +168,7 @@ protected: // メンバ変数
 	XMFLOAT3 up = { 0, 1, 0 };
 	// アスペクト比
 	float aspectRatio = 1.0f;
+	//びゅーぽーと
+	XMMATRIX ViewPort = {};
 };
 

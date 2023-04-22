@@ -88,6 +88,7 @@ void PlaySceneActor::Draw(DirectXCommon* dxCommon)
 void PlaySceneActor::Finalize()
 {
 }
+
 //後ろの描画
 void PlaySceneActor::BackDraw(DirectXCommon* dxCommon)
 {

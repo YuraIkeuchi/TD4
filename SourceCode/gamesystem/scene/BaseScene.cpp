@@ -2,7 +2,7 @@
 #include "ImageManager.h"
 #include "VariableCommon.h"
 #include "ParticleEmitter.h"
-
+#include "Helper.h"
 //共通の初期化
 void BaseScene::BaseInitialize(DirectXCommon* dxCommon) {
 	// デバイスをセット
@@ -16,6 +16,7 @@ void BaseScene::BaseInitialize(DirectXCommon* dxCommon) {
 	IKEObject3d::SetCamera(camera);
 	IKEFBXObject3d::SetCamera(camera);
 	ParticleManager::SetCamera(camera);
+	Helper::GetInstance()->SetCamera(camera);
 	// ライト生成
 	lightGroup = LightGroup::Create();
 	// 3Dオブエクトにライトをセット

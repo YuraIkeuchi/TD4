@@ -42,7 +42,7 @@ public:
 	///ゲームシーン用
 	DebugCamera* camera = nullptr;
 	//ポストエフェクトをかけるか
-	bool PlayPostEffect = false;
+	bool m_PlayPostEffect = false;
 	//ライト
 	LightGroup* lightGroup = nullptr;
 };

@@ -11,7 +11,7 @@ CameraWork::CameraWork() {
 	shake.reset(shake_);
 	helper = make_unique< Helper> ();
 }
-//更新
+//ﾂ更ﾂ新
 void CameraWork::Update(DebugCamera* camera) {
 	m_eyePos.x = player->GetPosition().x;
 	m_eyePos.z = player->GetPosition().z - 2.0f;
