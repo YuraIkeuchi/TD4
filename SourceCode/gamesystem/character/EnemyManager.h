@@ -1,5 +1,6 @@
 #pragma once
 #include "NormalEnemy.h"
+#include "Player.h"
 //敵の管理系クラス
 class EnemyManager {
 private:
@@ -11,13 +12,19 @@ private:
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public:
-	EnemyManager();
+	EnemyManager(Player* _player);
 	//更新
 	void Update();
 	//描画
 	void Draw(DirectXCommon* dxCommon);
 	//ImGui
 	void ImGuiDraw();
+
+	
+public://getter setter
+	//static void SetPlayer(Player* player) { EnemyManager::player = player; }
+protected: //静的メンバ変数
+	static Player* player;
 private:
 	unique_ptr<InterEnemy> enemy;
 };

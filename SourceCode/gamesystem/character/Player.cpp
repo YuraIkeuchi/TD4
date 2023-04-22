@@ -19,7 +19,7 @@ Player::Player(XMFLOAT3 StartPos)
 	//移動処理用
 	velocity /= 5.0f;
 	//大きさ
-	Scale = { 2.f,2.f,2.f };
+	m_Scale = { 2.f,2.f,2.f };
 }
 
 //デストラクタ
@@ -95,9 +95,9 @@ void Player::Update()
 	(this->*stateTable[_charaState])();
 
 	//基礎パラメータ設定
-	Model->SetPosition(Position);
-	Model->SetRotation(Rotation);
-	Model->SetScale(Scale);
+	Model->SetPosition(m_Position);
+	Model->SetRotation(m_Rotation);
+	Model->SetScale(m_Scale);
 
 	//どっち使えばいいか分からなかったから保留
 	Model->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
@@ -109,6 +109,12 @@ void Player::Draw(DirectXCommon* dxCommon)
 	Model->Draw(dxCommon->GetCmdList());
 }
 
+//ImGui
+void Player::ImGuiDraw() {
+	ImGui::Begin("Player");
+	ImGui::Text("PosX:%f", m_Position.x);
+	ImGui::Text("PosZ:%f", m_Position.z);
+}
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
 {
@@ -128,8 +134,8 @@ void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
 //歩き(コントローラー)
 void Player::Walk()
 {
-	XMFLOAT3 pos = Position;
-	XMFLOAT3 rot = Rotation;
+	XMFLOAT3 pos = m_Position;
+	XMFLOAT3 rot = m_Rotation;
 
 	float AddSpeed=2.f;
 
@@ -165,15 +171,18 @@ void Player::Walk()
 		rot.y = angle + atan2f(StickX, StickY) * (PI_180 / PI);
 
 		//プレイヤーの回転角を取る
-		Rotation = { rot.x, rot.y, rot.z };
+		m_Rotation = { rot.x, rot.y, rot.z };
 
 		XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
-		XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(Rotation.y));
+		XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
 		move = XMVector3TransformNormal(move, matRot);
 
+		//リミット制限
+		Helper::GetInstance()->FloatClamp(m_Position.x, -41.0f, 50.0f);
+		Helper::GetInstance()->FloatClamp(m_Position.z, -45.0f, 45.0f);
 		//向いた方向に進む
-		Position.x += move.m128_f32[0] *m_AddSpeed;
-		Position.z += move.m128_f32[2] * m_AddSpeed;
+		m_Position.x += move.m128_f32[0] *m_AddSpeed;
+		m_Position.z += move.m128_f32[2] * m_AddSpeed;
 
 		AnimationControl(AnimeName::WALK, true, 1);
 }

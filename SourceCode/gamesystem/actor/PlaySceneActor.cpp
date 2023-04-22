@@ -20,33 +20,18 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 
 	PlayPostEffect = true;
 	ParticleEmitter::GetInstance()->AllDelete();
-	
-	//タイトル
-	IKESprite* PlaySprite_;
-	PlaySprite_ = IKESprite::Create(ImageManager::PLAY, { 0.0f,0.0f });
-	PlaySprite.reset(PlaySprite_);
-
-	modelGround = ModelManager::GetInstance()->GetModel(ModelManager::Ground);
-	modelCube = ModelManager::GetInstance()->GetModel(ModelManager::Cube);
-
-	objCube = make_unique<IKEObject3d>();
-	objCube->Initialize();
-	objCube->SetModel(modelCube);
-	objCube->SetPosition({ 0.0f,5.0f,0.0f });
-
-	objGround = make_unique<IKEObject3d>();
-	objGround->Initialize();
-	objGround->SetModel(modelGround);
-	objGround->SetPosition({ 0.0f,0.0f,0.0f });
-
 
 	player.reset(new Player({0.f,0.f,0.f}));
+	camerawork->SetPlayer(player.get());
 	ui.reset(new UI());
 	ui->Initialize();
 
-	enemymanager.reset(new EnemyManager());
+	boss.reset(new FirstBoss());
+	boss->Initialize();
+	enemymanager.reset(new EnemyManager(player.get()));
 
-	//Block::GetInstance()->ModelInit();
+	backobj.reset(new BackObj());
+	backobj->Initialize();
 	Block::GetInstance()->Initialize(map, 0, 0);
 }
 //更新
@@ -59,23 +44,17 @@ void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	}
 	//音楽の音量が変わる
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
+	VolumManager::GetInstance()->Update();
 	camerawork->Update(camera);
 
 	lightgroup->Update();
 
-	objCube->Update();
-	objGround->Update();
-
 	//各クラス更新
 	player->Update();
 	enemymanager->Update();
+	boss->Update();
+	backobj->Update();
 	ParticleEmitter::GetInstance()->Update();
-
-	Block::GetInstance()->Update();
-}
-//普通の更新
-void PlaySceneActor::NormalUpdate() {
-	VolumManager::GetInstance()->Update();
 }
 
 //描画
@@ -109,22 +88,17 @@ void PlaySceneActor::Draw(DirectXCommon* dxCommon)
 void PlaySceneActor::Finalize()
 {
 }
-//モデルの描画
-void PlaySceneActor::ModelDraw(DirectXCommon* dxCommon) {
-	IKEObject3d::PreDraw();
-	////objCube->Draw();
-	objGround->Draw();
-	////各クラスの描画
-	player->Draw(dxCommon);
-	enemymanager->Draw(dxCommon);
-	//Block::GetInstance()->Draw();
-	IKEObject3d::PostDraw();
-}
+
 //後ろの描画
 void PlaySceneActor::BackDraw(DirectXCommon* dxCommon)
 {
-#pragma endregion
-	ModelDraw(dxCommon);
+	IKEObject3d::PreDraw();
+	////各クラスの描画
+	player->Draw(dxCommon);
+	boss->Draw(dxCommon);
+	enemymanager->Draw(dxCommon);
+	backobj->Draw(dxCommon);
+	IKEObject3d::PostDraw();
 }
 //ポストエフェクトがかからない
 void PlaySceneActor::FrontDraw(DirectXCommon* dxCommon) {
@@ -137,8 +111,5 @@ void PlaySceneActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void PlaySceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	enemymanager->ImGuiDraw();
-}
-//普通の描画
-void PlaySceneActor::NormalDraw(DirectXCommon* dxCommon) {
+	player->ImGuiDraw();
 }

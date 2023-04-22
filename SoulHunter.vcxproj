@@ -285,8 +285,11 @@
     <ClCompile Include="SourceCode\gamesystem\actor\LoadSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\PlaySceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\TitleSceneActor.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\backobj\BackObj.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\CharactorManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\EnemyManager.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\character\FirstBoss.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\character\InterBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\InterEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\NormalEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\Player.cpp" />
@@ -372,8 +375,11 @@
     <ClInclude Include="SourceCode\gamesystem\actor\LoadSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\PlaySceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\TitleSceneActor.h" />
+    <ClInclude Include="SourceCode\gamesystem\backobj\BackObj.h" />
     <ClInclude Include="SourceCode\gamesystem\character\CharactorManager.h" />
     <ClInclude Include="SourceCode\gamesystem\character\EnemyManager.h" />
+    <ClInclude Include="SourceCode\gamesystem\character\FirstBoss.h" />
+    <ClInclude Include="SourceCode\gamesystem\character\InterBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\InterEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\character\NormalEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\character\Player.h" />

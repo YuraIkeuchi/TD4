@@ -297,6 +297,15 @@
     <ClCompile Include="SourceCode\gamesystem\mapchip\MapChip.cpp">
       <Filter>SourceCords\gamesystem\mapchip</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\InterBoss.cpp">
+      <Filter>SourceCords\gamesystem\character\Various\Boss\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\FirstBoss.cpp">
+      <Filter>SourceCords\gamesystem\character\Various\Boss\Various</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\backobj\BackObj.cpp">
+      <Filter>SourceCords\gamesystem\backobj</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
@@ -554,6 +563,15 @@
     <ClInclude Include="SourceCode\gamesystem\mapchip\MapChip.h">
       <Filter>SourceCords\gamesystem\mapchip</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\InterBoss.h">
+      <Filter>SourceCords\gamesystem\character\Various\Boss\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\FirstBoss.h">
+      <Filter>SourceCords\gamesystem\character\Various\Boss\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\backobj\BackObj.h">
+      <Filter>SourceCords\gamesystem\backobj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Gaussian.hlsli">
@@ -740,6 +758,18 @@
     </Filter>
     <Filter Include="SourceCords\gamesystem\mapchip">
       <UniqueIdentifier>{4b1ac776-46cd-4e6e-bceb-f7bad3ac6ccb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\character\Various\Boss">
+      <UniqueIdentifier>{f544365a-2de9-466f-91a5-2cf88f609396}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\character\Various\Boss\Common">
+      <UniqueIdentifier>{80058758-48f5-4cf5-986b-f540016a70e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\character\Various\Boss\Various">
+      <UniqueIdentifier>{d5686d84-7ad1-4aa0-b309-89045c66ee33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\backobj">
+      <UniqueIdentifier>{efc5f175-01d2-44e3-97a2-4d6b33cdf6b4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -1,6 +1,7 @@
 #pragma once
 #include "DirectXCommon.h"
 #include "ObjCommon.h"
+#include "Player.h"
 //“GŠî’ê
 class InterEnemy :
 	public ObjCommon {
@@ -14,6 +15,8 @@ protected:
 
 public://getter setter
 
+public://getter setter
+	void SetPlayer(Player* player) { this->player.reset(player); }
 protected:
 	
 public:
@@ -40,4 +43,8 @@ public:
 	virtual void Draw(DirectXCommon* dxCommon)override;
 
 	virtual void ImGuiDraw() = 0;
+
+	//void PlayerGet(Player* player);
+protected: //Ã“Iƒƒ“ƒo•Ï”
+	unique_ptr<Player> player;
 };

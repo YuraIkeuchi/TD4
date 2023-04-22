@@ -34,6 +34,9 @@ public:
 	void Update()override;
 	//•`‰æ
 	void Draw(DirectXCommon* dxCommon)override;
+	//ImGui
+	void ImGuiDraw();
+
 
 	//ƒLƒƒƒ‰‚Ìó‘Ô
 	enum CharaState

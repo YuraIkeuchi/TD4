@@ -39,7 +39,7 @@ public:
 	XMFLOAT3 Float3SubFloat3(const XMFLOAT3& Num, const XMFLOAT3& Sub);
 
 	//í«è]ä÷êî
-	XMFLOAT3 FollowMove(const XMFLOAT3& pos, const XMFLOAT3& pos2, const float vel);
+	void FollowMove(XMFLOAT3& pos, const XMFLOAT3& pos2, const float vel);
 
 	//â~â^ìÆ
 	XMFLOAT3 CircleMove(const XMFLOAT3& basepos, const float scale, const float speed);

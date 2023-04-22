@@ -7,7 +7,7 @@ Helper* Helper::GetInstance()
 
 	return &instance;
 }
-//max min‚ğbool•ª‚Å•Ô‚·
+//max minã‚’boolåˆ†ã§è¿”ã™
 bool Helper::CheckMax(float& Num, const float Max, const float Add) {
 	Num += Add;
 
@@ -23,7 +23,7 @@ bool Helper::CheckMax(float& Num, const float Max, const float Add) {
 
 	return false;
 }
-//Min‚ğŒŸõ
+//Minã‚’æ¤œç´¢
 bool Helper::CheckMin(float& Num, const float Min, const float Add) {
 	Num += Add;
 	Num = min(Num, Min);
@@ -37,16 +37,16 @@ bool Helper::CheckMin(float& Num, const float Min, const float Add) {
 
 	return false;
 }
-//Clamp‚ğ•Ô‚·ŠÖ”
-//intŒ^
+//Clampã‚’è¿”ã™é–¢æ•°
+//intå‹
 void Helper::IntClamp(int& Num, const int Min, const int Max) {
 	Num = min(max(Num, Min), Max);
 }
-//floatŒ^
+//floatå‹
 void Helper::FloatClamp(float& Num, const float Min, const float Max) {
 	Num = min(max(Num, Min), Max);
 }
-//XMFLOAT3‚Æfloat‚ğ‰ÁZ‚·‚éŠÖ”
+//XMFLOAT3ã¨floatã‚’åŠ ç®—ã™ã‚‹é–¢æ•°
 Helper::XMFLOAT3 Helper::Float3AddFloat(const XMFLOAT3& Num, float Add) {
 	XMFLOAT3 l_Result;
 	l_Result.x = Num.x + Add;
@@ -55,7 +55,7 @@ Helper::XMFLOAT3 Helper::Float3AddFloat(const XMFLOAT3& Num, float Add) {
 
 	return l_Result;
 }
-//XMFLOAT3‚ÆXMFLOAT3‚ğ‰ÁZ‚·‚éŠÖ”
+//XMFLOAT3ã¨XMFLOAT3ã‚’åŠ ç®—ã™ã‚‹é–¢æ•°
 Helper::XMFLOAT3 Helper::Float3AddFloat3(const XMFLOAT3& Num, const XMFLOAT3& Add) {
 	XMFLOAT3 l_Result;
 	l_Result.x = Num.x + Add.x;
@@ -64,7 +64,7 @@ Helper::XMFLOAT3 Helper::Float3AddFloat3(const XMFLOAT3& Num, const XMFLOAT3& Ad
 
 	return l_Result;
 }
-//XMFLOAT3‚Æfloat‚ğŒ¸Z‚·‚éŠÖ”
+//XMFLOAT3ã¨floatã‚’æ¸›ç®—ã™ã‚‹é–¢æ•°
 Helper::XMFLOAT3 Helper::Float3SubFloat(const XMFLOAT3& Num, float Sub) {
 	XMFLOAT3 l_Result;
 	l_Result.x = Num.x - Sub;
@@ -73,7 +73,7 @@ Helper::XMFLOAT3 Helper::Float3SubFloat(const XMFLOAT3& Num, float Sub) {
 
 	return l_Result;
 }
-//XMFLOAT3‚ÆXMFLOAT3‚ğŒ¸Z‚·‚éŠÖ”
+//XMFLOAT3ã¨XMFLOAT3ã‚’æ¸›ç®—ã™ã‚‹é–¢æ•°
 Helper::XMFLOAT3 Helper::Float3SubFloat3(const XMFLOAT3& Num, const XMFLOAT3& Sub) {
 	XMFLOAT3 l_Result;
 	l_Result.x = Num.x - Sub.x;
@@ -82,13 +82,13 @@ Helper::XMFLOAT3 Helper::Float3SubFloat3(const XMFLOAT3& Num, const XMFLOAT3& Su
 
 	return l_Result;
 }
-//Š„‡‚ğ•Ô‚·
+//å‰²åˆã‚’è¿”ã™
 float Helper::GetPercent(const float amount, const float num)
 {
 	return num / amount * 100.00f;
 }
-//2D->3D•ÏŠ·‚Ég‚¤(ƒXƒvƒ‰ƒCƒg‚ÌÀ•W‚ğƒvƒŒƒCƒ„[‚Ìƒ[ƒ‹ƒhÀ•W‚É•\¦‚µ‚½‚è‚·‚é‚Ì‚Ég‚¤)
-//À•WŒn‚ª–¾Šm‚Å‚È‚¢ê‡->s—ñ‚©‚çŒvZ->WœZ
+//2D->3Då¤‰æ›ã«ä½¿ã†(ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®åº§æ¨™ã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã«è¡¨ç¤ºã—ãŸã‚Šã™ã‚‹ã®ã«ä½¿ã†)
+//åº§æ¨™ç³»ãŒæ˜ç¢ºã§ãªã„å ´åˆ->è¡Œåˆ—ã‹ã‚‰è¨ˆç®—->Wé™¤ç®—
 Helper::XMVECTOR Helper::WDivision(const XMVECTOR& pos, const XMMATRIX& mat, const bool sub)
 {
 	float x, y, z, w;
@@ -108,7 +108,7 @@ Helper::XMVECTOR Helper::WDivision(const XMVECTOR& pos, const XMMATRIX& mat, con
 
 	return XMVECTOR{ x, y, z, w };
 }
-//À•WŒn‚ª–¾Šm
+//åº§æ¨™ç³»ãŒæ˜ç¢º
 Helper::XMVECTOR Helper::WDivision(const XMVECTOR& pos, const bool sub)
 {
 	float x, y, z, w;
@@ -128,7 +128,7 @@ Helper::XMVECTOR Helper::WDivision(const XMVECTOR& pos, const bool sub)
 
 	return XMVECTOR{ x, y, z, w };
 }
-//ƒ[ƒ‹ƒhÀ•W‚É•ÏŠ·
+//ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã«å¤‰æ›
 Helper::XMVECTOR Helper::PosDivi(const XMVECTOR& pos, const XMMATRIX& mat, const bool sub)
 {
 	float x, y, z, w;
@@ -156,34 +156,30 @@ Helper::XMVECTOR Helper::WorldDivision(const XMVECTOR& pos, const bool sub) {
 	return l_Result;
 }
 
-//’Ç]
-Helper::XMFLOAT3 Helper::FollowMove(const XMFLOAT3& pos, const XMFLOAT3& pos2, const float vel) {
-	XMFLOAT3 l_Distance;//“ñ“_‚Ì‹——£
-	XMFLOAT3 l_AddVel;//‰ÁZ‚³‚ê‚éˆÚ“®—Ê
-	XMFLOAT3 l_Result{};//•Ô‚·’l
-
-	//‚Æ‚è‚ ‚¦‚¸X²‚ÆZ²‚Ì‚İ’Ç]
+void Helper::FollowMove(XMFLOAT3& pos, const XMFLOAT3& pos2, const float vel) {
+	XMFLOAT3 l_Distance;//äºŒç‚¹ã®è·é›¢
+	XMFLOAT3 l_AddVel;//åŠ ç®—ã•ã‚Œã‚‹ç§»å‹•é‡
+	
+	//ã¨ã‚Šã‚ãˆãšXè»¸ã¨Zè»¸ã®ã¿è¿½å¾“
 	l_Distance.x = pos.x - pos2.x;
 	l_Distance.z = pos.z - pos2.z;
 
-	l_AddVel.x = (float)(sin(atan2f(l_Distance.x, l_Distance.z)) * vel);
-	l_AddVel.z = (float)(cos(atan2f(l_Distance.x, l_Distance.z)) * vel);
+	l_AddVel.x = float(sin(-atan2f(l_Distance.x, l_Distance.z)) * 0.15f);
+	l_AddVel.z = float(-cos(atan2f(l_Distance.x, l_Distance.z)) * 0.15f);
+	l_AddVel.y = 0.0f;
+	pos.y += 0.0f;
+	pos.x += l_AddVel.x;
+	pos.z += l_AddVel.z;
 
-	l_Result.y = pos.y;
-	l_Result.x += l_AddVel.x;
-	l_Result.z += l_AddVel.z;
-
-	//‚Ü‚¾‰ñ“]‚Æ‚©‚Íl—¶‚µ‚Ä‚È‚¢‚æ
-
-	return l_Result;
+	//ã¾ã å›è»¢ã¨ã‹ã¯è€ƒæ…®ã—ã¦ãªã„ã‚ˆ
+	//return l_Result;
 }
-//‰~‰^“®
+//å††é‹å‹•
 Helper::XMFLOAT3 Helper::CircleMove(const XMFLOAT3& basepos, const float scale, const float speed) {
 	float l_Radius;//
-	XMFLOAT3 l_AddVel;//ˆÚ“®—Ê
-	XMFLOAT3 l_Result{};//•Ô‚·’l
-
-	//‰~‰^“®‚Ìˆ—(X²‚ÆZ²)
+	XMFLOAT3 l_AddVel;//ç§»å‹•é‡
+	XMFLOAT3 l_Result{};//è¿”ã™å€¤
+	//å††é‹å‹•ã®å‡¦ç†(Xè»¸ã¨Zè»¸)
 	l_Radius = speed * PI / PI_180;
 	l_AddVel.x = cosf(l_Radius) * scale;
 	l_AddVel.z = sinf(l_Radius) * scale;
@@ -192,7 +188,7 @@ Helper::XMFLOAT3 Helper::CircleMove(const XMFLOAT3& basepos, const float scale, 
 	l_Result.y = basepos.y;
 	return l_Result;
 }
-//’l‚ª”ÍˆÍŠO‚É‚ ‚é‚©
+//å€¤ãŒç¯„å›²å¤–ã«ã‚ã‚‹ã‹
 bool Helper::CheckNotValueRange(float& Num, const float Min, const float Max) {
 	if ((Num > Max || Num < Min)) {
 		return true;
@@ -203,7 +199,7 @@ bool Helper::CheckNotValueRange(float& Num, const float Min, const float Max) {
 
 	return true;
 }
-//’l‚ª”ÍˆÍ“à‚É‚ ‚é‚©
+//å€¤ãŒç¯„å›²å†…ã«ã‚ã‚‹ã‹
 bool Helper::CheckValueRange(float& Num, const float Min, const float Max) {
 	if ((Num < Max && Num > Min)) {
 		return true;
@@ -214,7 +210,7 @@ bool Helper::CheckValueRange(float& Num, const float Min, const float Max) {
 
 	return true;
 }
-//ƒXƒNƒŠ[ƒ“À•W‚É•ÏŠ·
+//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã«å¤‰æ›
 Helper::XMFLOAT2 Helper::WorldtoScreen(const XMVECTOR& pos, const XMMATRIX& mat) {
 	const float kDistancePlayerTo3DReticle = 50.0f;
 	XMVECTOR l_OffSet;
@@ -241,7 +237,7 @@ Helper::XMFLOAT2 Helper::WorldtoScreen(const XMVECTOR& pos, const XMMATRIX& mat)
 
 	return get2dposition;
 }
-//ƒrƒ…[ƒ|[ƒg•ÏŠ·
+//ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆå¤‰æ›
 void Helper::ChangeViewPort(XMMATRIX& matviewport, const XMVECTOR& offset) {
 	matviewport.r[0].m128_f32[0] = WinApp::window_width / 2;
 	matviewport.r[0].m128_f32[1] = 0;
@@ -263,7 +259,7 @@ void Helper::ChangeViewPort(XMMATRIX& matviewport, const XMVECTOR& offset) {
 	matviewport.r[3].m128_f32[2] = 0;
 	matviewport.r[3].m128_f32[3] = 1;
 }
-//XMFLOAT‚ğXMVECTOR‚É•ÏŠ·
+//XMFLOATã‚’XMVECTORã«å¤‰æ›
 Helper::XMVECTOR Helper::ChangeFLOAT(const XMFLOAT3& pos) {
 	XMVECTOR l_Result;
 	l_Result.m128_f32[0] = pos.x;
@@ -272,7 +268,7 @@ Helper::XMVECTOR Helper::ChangeFLOAT(const XMFLOAT3& pos) {
 
 	return l_Result;
 }
-//XMFLOAT‚ğXMVECTOR‚É•ÏŠ·
+//XMFLOATã‚’XMVECTORã«å¤‰æ›
 Helper::XMFLOAT3 Helper::ChangeVECTOR(const XMVECTOR& pos) {
 	XMFLOAT3 l_Result;
 	l_Result.x = pos.m128_f32[0];

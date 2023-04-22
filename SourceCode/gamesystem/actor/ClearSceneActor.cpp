@@ -41,7 +41,7 @@ void ClearSceneActor::Draw(DirectXCommon* dxCommon) {
 	//ポストエフェクトをかけるか
 	if (PlayPostEffect) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
-		GameDraw(dxCommon);
+		BackDraw(dxCommon);
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
@@ -55,14 +55,10 @@ void ClearSceneActor::Draw(DirectXCommon* dxCommon) {
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
 		ImGuiDraw(dxCommon);
-		GameDraw(dxCommon);
+		BackDraw(dxCommon);
 		FrontDraw();
 		dxCommon->PostDraw();
 	}
-}
-//背景
-void ClearSceneActor::ModelDraw(DirectXCommon* dxCommon) {
-
 }
 //前面描画
 void ClearSceneActor::FrontDraw() {
@@ -70,11 +66,9 @@ void ClearSceneActor::FrontDraw() {
 	ClearSprite->Draw();
 	IKESprite::PostDraw();
 }
-//上の描画にスプライトなども混ぜた
-void ClearSceneActor::GameDraw(DirectXCommon* dxCommon)
+//背面
+void ClearSceneActor::BackDraw(DirectXCommon* dxCommon)
 {
-	//スプライトの描画
-	ModelDraw(dxCommon);
 }
 //ImGui描画
 void ClearSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
