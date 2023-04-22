@@ -21,14 +21,6 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	PlayPostEffect = true;
 	ParticleEmitter::GetInstance()->AllDelete();
 
-	modelGround = ModelManager::GetInstance()->GetModel(ModelManager::Ground);
-
-	objGround = make_unique<IKEObject3d>();
-	objGround->Initialize();
-	objGround->SetModel(modelGround);
-	objGround->SetPosition({ 0.0f,0.0f,0.0f });
-	objGround->SetScale({ 0.5f,0.5f,0.5f });
-
 	player.reset(new Player({0.f,0.f,0.f}));
 	camerawork->SetPlayer(player.get());
 	ui.reset(new UI());
@@ -37,7 +29,9 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	boss.reset(new FirstBoss());
 	boss->Initialize();
 	enemymanager.reset(new EnemyManager(player.get()));
-	//enemymanager->SetPlayer(player.get());
+
+	backobj.reset(new BackObj());
+	backobj->Initialize();
 	Block::GetInstance()->Initialize(map, 0, 0);
 }
 //更新
@@ -50,21 +44,17 @@ void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	}
 	//音楽の音量が変わる
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
+	VolumManager::GetInstance()->Update();
 	camerawork->Update(camera);
 
 	lightgroup->Update();
-
-	objGround->Update();
 
 	//各クラス更新
 	player->Update();
 	enemymanager->Update();
 	boss->Update();
+	backobj->Update();
 	ParticleEmitter::GetInstance()->Update();
-}
-//普通の更新
-void PlaySceneActor::NormalUpdate() {
-	VolumManager::GetInstance()->Update();
 }
 
 //描画
@@ -98,21 +88,16 @@ void PlaySceneActor::Draw(DirectXCommon* dxCommon)
 void PlaySceneActor::Finalize()
 {
 }
-//モデルの描画
-void PlaySceneActor::ModelDraw(DirectXCommon* dxCommon) {
+//後ろの描画
+void PlaySceneActor::BackDraw(DirectXCommon* dxCommon)
+{
 	IKEObject3d::PreDraw();
-	objGround->Draw();
 	////各クラスの描画
 	player->Draw(dxCommon);
 	boss->Draw(dxCommon);
 	enemymanager->Draw(dxCommon);
+	backobj->Draw(dxCommon);
 	IKEObject3d::PostDraw();
-}
-//後ろの描画
-void PlaySceneActor::BackDraw(DirectXCommon* dxCommon)
-{
-#pragma endregion
-	ModelDraw(dxCommon);
 }
 //ポストエフェクトがかからない
 void PlaySceneActor::FrontDraw(DirectXCommon* dxCommon) {
@@ -125,9 +110,5 @@ void PlaySceneActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void PlaySceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	//enemymanager->ImGuiDraw();
 	player->ImGuiDraw();
-}
-//普通の描画
-void PlaySceneActor::NormalDraw(DirectXCommon* dxCommon) {
 }

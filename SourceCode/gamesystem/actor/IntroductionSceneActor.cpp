@@ -42,7 +42,7 @@ void IntroductionSceneActor::Draw(DirectXCommon* dxCommon) {
 	//ポストエフェクトをかけるか
 	if (PlayPostEffect) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
-		GameDraw(dxCommon);
+		BackDraw(dxCommon);
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
@@ -55,24 +55,21 @@ void IntroductionSceneActor::Draw(DirectXCommon* dxCommon) {
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
 		ImGuiDraw(dxCommon);
-		GameDraw(dxCommon);
+		BackDraw(dxCommon);
 		FrontDraw();
 		dxCommon->PostDraw();
 	}
 }
-//背景
-void IntroductionSceneActor::ModelDraw(DirectXCommon* dxCommon) {
-}
+
 //前面描画
 void IntroductionSceneActor::FrontDraw() {
 	IKESprite::PreDraw();
 	IKESprite::PostDraw();
 }
-//上の描画にスプライトなども混ぜた
-void IntroductionSceneActor::GameDraw(DirectXCommon* dxCommon)
+//背面
+void IntroductionSceneActor::BackDraw(DirectXCommon* dxCommon)
 {
-	//スプライトの描画
-	ModelDraw(dxCommon);
+	
 }
 //ImGui描画
 void IntroductionSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {

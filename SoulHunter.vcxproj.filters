@@ -303,6 +303,9 @@
     <ClCompile Include="SourceCode\gamesystem\character\FirstBoss.cpp">
       <Filter>SourceCords\gamesystem\character\Various\Boss\Various</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\backobj\BackObj.cpp">
+      <Filter>SourceCords\gamesystem\backobj</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
@@ -566,6 +569,9 @@
     <ClInclude Include="SourceCode\gamesystem\character\FirstBoss.h">
       <Filter>SourceCords\gamesystem\character\Various\Boss\Various</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\backobj\BackObj.h">
+      <Filter>SourceCords\gamesystem\backobj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Gaussian.hlsli">
@@ -761,6 +767,9 @@
     </Filter>
     <Filter Include="SourceCords\gamesystem\character\Various\Boss\Various">
       <UniqueIdentifier>{d5686d84-7ad1-4aa0-b309-89045c66ee33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\backobj">
+      <UniqueIdentifier>{efc5f175-01d2-44e3-97a2-4d6b33cdf6b4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

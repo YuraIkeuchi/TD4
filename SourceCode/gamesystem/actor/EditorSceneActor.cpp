@@ -58,12 +58,7 @@ void EditorSceneActor::Draw(DirectXCommon* dxCommon)
 void EditorSceneActor::Finalize()
 {
 }
-//モデルの描画
-void EditorSceneActor::ModelDraw(DirectXCommon* dxCommon) {
-#pragma region 3Dオブジェクト描画
-	//背景は先に描画する
 
-}
 //後ろの描画
 void EditorSceneActor::BackDraw(DirectXCommon* dxCommon)
 {
