@@ -4,7 +4,7 @@
 #include  "imgui.h"
 Player* CameraWork::player = nullptr;
 CameraWork::CameraWork() {
-	m_eyePos = { 2.0f,60.0f,2.0f };
+	m_eyePos = { 2.0f,30.0f,2.0f };
 	m_targetPos = { 2.0f,0.0f,3.0f };
 	
 	Shake* shake_ = new Shake();

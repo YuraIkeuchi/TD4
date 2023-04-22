@@ -8,6 +8,7 @@
 #include"Player.h"
 #include "UI.h"
 #include "EnemyManager.h"
+#include "FirstBoss.h"
 
 /// タイトルシーン
 class PlaySceneActor : public BaseActor {
@@ -28,15 +29,12 @@ public:
 	void NormalUpdate();//普通の更新
 	void ImGuiDraw(DirectXCommon* dxCommon);
 private:
-	//スプライト
-	unique_ptr<IKESprite> PlaySprite;
 	//OBJ
 	unique_ptr<IKEObject3d> objGround;
-	unique_ptr<IKEObject3d> objCube;
 	unique_ptr<Player>player;
 	unique_ptr<EnemyManager> enemymanager;
+	unique_ptr<InterBoss> boss;
 	unique_ptr<UI>ui;
 	std::vector<std::vector<int>> map; //マップチップ(1マップ)
 	IKEModel* modelGround = nullptr;
-	IKEModel* modelCube = nullptr;
 };

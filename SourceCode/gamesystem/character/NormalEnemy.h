@@ -13,14 +13,16 @@ public:
 	//void Follow();//追従
 	void Draw(DirectXCommon* dxCommon) override;//描画
 private:
-	void Particle();
+	void Particle();//パーティクル
 protected:
 
 private:
+	//円運動の変数
 	float m_CircleAngle = 0.0f;
 	float m_CircleRadius = 0.0f;
 	float m_CircleSpeed = 0.0f;
 	float m_CircleScale = 20.0f;
+	//追従用変数
 	XMFLOAT3 m_FollowVel{};
 };
 

@@ -20,19 +20,8 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 
 	PlayPostEffect = true;
 	ParticleEmitter::GetInstance()->AllDelete();
-	
-	//タイトル
-	IKESprite* PlaySprite_;
-	PlaySprite_ = IKESprite::Create(ImageManager::PLAY, { 0.0f,0.0f });
-	PlaySprite.reset(PlaySprite_);
 
 	modelGround = ModelManager::GetInstance()->GetModel(ModelManager::Ground);
-	modelCube = ModelManager::GetInstance()->GetModel(ModelManager::Cube);
-
-	objCube = make_unique<IKEObject3d>();
-	objCube->Initialize();
-	objCube->SetModel(modelCube);
-	objCube->SetPosition({ 0.0f,5.0f,0.0f });
 
 	objGround = make_unique<IKEObject3d>();
 	objGround->Initialize();
@@ -45,9 +34,10 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	ui.reset(new UI());
 	ui->Initialize();
 
+	boss.reset(new FirstBoss());
+	boss->Initialize();
 	enemymanager.reset(new EnemyManager(player.get()));
 	//enemymanager->SetPlayer(player.get());
-	//Block::GetInstance()->ModelInit();
 	Block::GetInstance()->Initialize(map, 0, 0);
 }
 //更新
@@ -64,15 +54,13 @@ void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 
 	lightgroup->Update();
 
-	objCube->Update();
 	objGround->Update();
 
 	//各クラス更新
 	player->Update();
 	enemymanager->Update();
+	boss->Update();
 	ParticleEmitter::GetInstance()->Update();
-
-	Block::GetInstance()->Update();
 }
 //普通の更新
 void PlaySceneActor::NormalUpdate() {
@@ -113,12 +101,11 @@ void PlaySceneActor::Finalize()
 //モデルの描画
 void PlaySceneActor::ModelDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
-	////objCube->Draw();
 	objGround->Draw();
 	////各クラスの描画
 	player->Draw(dxCommon);
+	boss->Draw(dxCommon);
 	enemymanager->Draw(dxCommon);
-	//Block::GetInstance()->Draw();
 	IKEObject3d::PostDraw();
 }
 //後ろの描画
