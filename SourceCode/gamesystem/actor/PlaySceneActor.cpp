@@ -38,7 +38,7 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	objGround->Initialize();
 	objGround->SetModel(modelGround);
 	objGround->SetPosition({ 0.0f,0.0f,0.0f });
-
+	objGround->SetScale({ 0.5f,0.5f,0.5f });
 
 	player.reset(new Player({0.f,0.f,0.f}));
 	camerawork->SetPlayer(player.get());
@@ -138,7 +138,8 @@ void PlaySceneActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void PlaySceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	enemymanager->ImGuiDraw();
+	//enemymanager->ImGuiDraw();
+	player->ImGuiDraw();
 }
 //普通の描画
 void PlaySceneActor::NormalDraw(DirectXCommon* dxCommon) {
