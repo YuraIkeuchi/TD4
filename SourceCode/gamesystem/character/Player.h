@@ -1,10 +1,10 @@
 #pragma once
 #include <any>
-
 #include"IKEFBXObject3d.h"
 #include<memory>
 #include "CharactorManager.h"
 #include "Input.h"
+#include "Bullet.h"
 using namespace DirectX;
 class Player:public CharactorManager
 {
@@ -43,7 +43,8 @@ public:
 	{
 		STATE_IDLE,
 		STATE_RUN,
-		STATE_ATTACK
+		STATE_ATTACK,
+		STATE_SHOT
 	}_charaState;
 
 private:
@@ -63,6 +64,8 @@ private:
 private:
 	//攻撃諸々
 	void Attack();
+	//弾を打つ処理
+	void Shot();
 private:
 	void Idle();
 private:
@@ -75,5 +78,8 @@ private:
 	}_animeName;
 
 	void AnimationControl(AnimeName name, const bool& loop, int speed);
+
+private://各クラス
+	vector<Bullet*> bullets;
 };
 

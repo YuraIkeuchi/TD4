@@ -1,6 +1,5 @@
 #pragma once
 #include "InterBoss.h"
-
 class FirstBoss :
 	public InterBoss {
 public:
