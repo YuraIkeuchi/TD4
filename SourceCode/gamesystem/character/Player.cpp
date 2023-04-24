@@ -3,7 +3,7 @@
 #include "CsvLoader.h"
 #include"Helper.h"
 #include"ModelManager.h"
-
+#include "VariableCommon.h"
 /*-----------------*/
 /*松本エンジン慣れる用*/
 /*-----------------*/
@@ -129,8 +129,22 @@ void Player::Draw(DirectXCommon* dxCommon)
 //ImGui
 void Player::ImGuiDraw() {
 	ImGui::Begin("Player");
-	ImGui::Text("PosX:%f", m_Position.x);
-	ImGui::Text("PosZ:%f", m_Position.z);
+	if (ImGui::TreeNode("BULLET")) {
+		if (ImGui::RadioButton("BULLET_FORROW", &m_BulletType, BULLET_FORROW)) {
+			m_BulletType = BULLET_FORROW;
+		}
+		if (ImGui::RadioButton("BULLET_SEARCH", &m_BulletType, BULLET_SEARCH)) {
+			m_BulletType = BULLET_SEARCH;
+		}
+
+		if (m_BulletType == BULLET_FORROW) {
+			ImGui::Text("BULLET_FORROW");
+		}
+		else {
+			ImGui::Text("BULLET_SEARCH");
+		}
+		ImGui::TreePop();
+	}
 	ImGui::End();
 
 
@@ -238,10 +252,13 @@ void Player::Shot() {
 	XMFLOAT2 l_Angle;
 	l_Angle.x = move.m128_f32[0];
 	l_Angle.y = move.m128_f32[2];
+
+	//弾の生成
 	Bullet* newbullet;
 	newbullet = new Bullet();
 	newbullet->Initialize();
 	newbullet->SetPosition(m_Position);
+	newbullet->SetBulletType(m_BulletType);
 	newbullet->SetAngle(l_Angle);
 	bullets.push_back(newbullet);
 }

@@ -80,6 +80,7 @@ private:
 	void AnimationControl(AnimeName name, const bool& loop, int speed);
 
 private://ŠeƒNƒ‰ƒX
+	int m_BulletType = 0;
 	vector<Bullet*> bullets;
 
 };
