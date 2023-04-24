@@ -70,6 +70,8 @@ private:
 	void Idle();
 	//インターバル管理
 	void InterVal();
+	//弾を選ぶ
+	void SelectBullet();
 private:
 	//各アニメーション
 	enum class AnimeName
@@ -85,8 +87,10 @@ private://各クラス
 	vector<Bullet*> bullets;
 
 	//弾関係の変数
-	int m_BulletType = 0;
-	int m_InterVal = 0;
-	int m_RigidityTime = 0;
+	int m_BulletType = {};//弾の種類
+	int m_InterVal = {};//弾の発射のインターバル
+	int m_RigidityTime = {};//硬直時間
+	int m_TargetInterVal = {};//インターバルの目標時間
+	int m_TargetRigidityTime = {};//硬直時間の目標時間
 };
 

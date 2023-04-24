@@ -19,13 +19,11 @@ Player::Player(XMFLOAT3 StartPos)
 	//大きさ
 	m_Scale = { 2.f,2.f,2.f };
 }
-
 //デストラクタ
 Player::~Player()
 {
 	Model.reset(nullptr);
 }
-
 //初期化
 void Player::Initialize()
 {
@@ -42,9 +40,10 @@ void Player::Initialize()
 
 	//関数の戻り値から直接値を取る方法(こっちのほうが楽ではある　ただ行数が少し長くなる)
 	/*②*/m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player.csv", "speed2")));
-	
-}
 
+	m_TargetInterVal = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player.csv", "InterVal")));
+	m_TargetRigidityTime = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player.csv", "Rigidity")));
+}
 //状態遷移
 /*CharaStateのState並び順に合わせる*/
 void (Player::* Player::stateTable[])() = {
@@ -53,7 +52,6 @@ void (Player::* Player::stateTable[])() = {
 	&Player::Attack,//攻撃
 	&Player::Shot,
 };
-
 //更新処理
 void Player::Update()
 {
@@ -91,8 +89,8 @@ void Player::Update()
 	//Xが押されたら弾を撃つ
 	if (Input::GetInstance()->TriggerButton(Input::X) && m_InterVal == 0)
 	{
-		m_InterVal = 30;
-		m_RigidityTime = 10;
+		m_InterVal = m_TargetInterVal;
+		m_RigidityTime = m_TargetRigidityTime;
 		_charaState = CharaState::STATE_SHOT;
 	}
 
@@ -114,10 +112,23 @@ void Player::Update()
 			bullet->Update();
 		}
 	}
+	//弾の削除
+	for (int i = 0; i < bullets.size(); i++) {
+		if (bullets[i] == nullptr) {
+			continue;
+		}
 
+		if (!bullets[i]->GetAlive()) {
+			bullets.erase(cbegin(bullets) + i);
+		}
+	}
+
+	//Stateに入れなくていいやつ
+	//攻撃のインターバル
 	InterVal();
+	//弾の種類選択
+	SelectBullet();
 }
-
 //描画
 void Player::Draw(DirectXCommon* dxCommon)
 {
@@ -130,20 +141,12 @@ void Player::Draw(DirectXCommon* dxCommon)
 		}
 	}
 }
-
 //ImGui
 void Player::ImGuiDraw() {
 	ImGui::Begin("Player");
 	ImGui::Text("InterVal:%d", m_InterVal);
 	ImGui::Text("RigidityTime:%d", m_RigidityTime);
 	if (ImGui::TreeNode("BULLET")) {
-		if (ImGui::RadioButton("BULLET_FORROW", &m_BulletType, BULLET_FORROW)) {
-			m_BulletType = BULLET_FORROW;
-		}
-		if (ImGui::RadioButton("BULLET_SEARCH", &m_BulletType, BULLET_SEARCH)) {
-			m_BulletType = BULLET_SEARCH;
-		}
-
 		if (m_BulletType == BULLET_FORROW) {
 			ImGui::Text("BULLET_FORROW");
 		}
@@ -177,7 +180,6 @@ void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
 	m_AnimationSpeed = speed;
 	
 }
-
 //歩き(コントローラー)
 void Player::Walk()
 {
@@ -234,7 +236,7 @@ void Player::Walk()
 		}
 		AnimationControl(AnimeName::WALK, true, 1);
 }
-
+//VECTOR
 XMFLOAT3 Player::MoveVECTOR(XMVECTOR v, float angle)
 {
 	XMMATRIX rot2 = {};
@@ -243,14 +245,12 @@ XMFLOAT3 Player::MoveVECTOR(XMVECTOR v, float angle)
 	XMFLOAT3 pos = { v.m128_f32[0], v.m128_f32[1], v.m128_f32[2] };
 	return pos;
 }
-
 //攻撃アクション
 void Player::Attack()
 {
 	//アニメーションを攻撃に
 	AnimationControl(AnimeName::ATTACK, false, 1);
 }
-
 //弾を打つ処理
 void Player::Shot() {
 	//弾を撃つ方向を算出するために回転を求める
@@ -294,4 +294,13 @@ void Player::Idle()
 void Player::InterVal() {
 	Helper::GetInstance()->CheckMaxINT(m_InterVal, 0, -1);
 	Helper::GetInstance()->CheckMaxINT(m_RigidityTime, 0, -1);
+}
+//弾を選ぶ
+void Player::SelectBullet() {
+	if (Input::GetInstance()->TriggerButton(Input::RB)) {
+		m_BulletType = BULLET_FORROW;
+	}
+	else if (Input::GetInstance()->TriggerButton(Input::LB)) {
+		m_BulletType = BULLET_SEARCH;
+	}
 }

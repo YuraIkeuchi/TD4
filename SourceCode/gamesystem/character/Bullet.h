@@ -32,11 +32,15 @@ private:
 	//弾の動く処理
 	void Move();
 public:
+	//gettersetter
+	const bool& GetAlive() { return m_Alive; }
 	void SetAngle(const XMFLOAT2& Angle) { m_Angle = Angle; }
 	void SetBulletType(const int BulletType) { m_BulletType = BulletType; }
 private:
-	XMFLOAT2 m_Angle = {};
-	float m_AddSpeed = {};
-	int m_BulletType = {};
-	bool m_Alive = true;
+	XMFLOAT2 m_Angle = {};//弾の角度
+	float m_AddSpeed = {};//加速度
+	int m_BulletType = {};//弾の種類
+	int m_Timer = {};//出現時間
+	int m_TargetTimer = {};//出現時間の目標
+	bool m_Alive = true;//生存フラグ
 };
