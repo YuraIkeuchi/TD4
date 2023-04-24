@@ -7,8 +7,9 @@ Helper* Helper::GetInstance()
 
 	return &instance;
 }
+//float型
 //max minをbool分で返す
-bool Helper::CheckMax(float& Num, const float Max, const float Add) {
+bool Helper::CheckMaxFLOAT(float& Num, const float Max, const float Add) {
 	Num += Add;
 
 	Num = max(Num, Max);
@@ -24,7 +25,38 @@ bool Helper::CheckMax(float& Num, const float Max, const float Add) {
 	return false;
 }
 //Minを検索
-bool Helper::CheckMin(float& Num, const float Min, const float Add) {
+bool Helper::CheckMinFLOAT(float& Num, const float Min, const float Add) {
+	Num += Add;
+	Num = min(Num, Min);
+
+	if (Num >= Min) {
+		return true;
+	}
+	else {
+		return false;
+	}
+
+	return false;
+}
+//int型
+//max minをbool分で返す
+bool Helper::CheckMaxINT(int& Num, const int Max, const int Add) {
+	Num += Add;
+
+	Num = max(Num, Max);
+
+
+	if (Num <= Max) {
+		return true;
+	}
+	else {
+		return false;
+	}
+
+	return false;
+}
+//Minを検索
+bool Helper::CheckMinINT(int& Num, const int Min, const int Add) {
 	Num += Add;
 	Num = min(Num, Min);
 

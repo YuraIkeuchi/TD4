@@ -24,8 +24,10 @@ public:
 		m_Camera = camera;
 	}
 	//ŒvZŒn
-	bool CheckMax(float& Num, const float Max, const float Add);
-	bool CheckMin(float& Num, const float Min, const float Add);
+	bool CheckMaxFLOAT(float& Num, const float Max, const float Add);
+	bool CheckMinFLOAT(float& Num, const float Min, const float Add);
+	bool CheckMinINT(int& Num, const int Min, const int Add);
+	bool CheckMaxINT(int& Num, const int Max, const int Add);
 	//Clamp‚ğ•Ô‚·ŠÖ”
 	void IntClamp(int& Num, const int Min, const int Max);
 	void FloatClamp(float& Num, const float Min, const float Max);
