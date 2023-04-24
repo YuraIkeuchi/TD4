@@ -81,5 +81,6 @@ private:
 
 private://ŠeƒNƒ‰ƒX
 	vector<Bullet*> bullets;
+
 };
 

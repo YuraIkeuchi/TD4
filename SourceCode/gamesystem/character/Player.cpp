@@ -131,6 +131,8 @@ void Player::ImGuiDraw() {
 	ImGui::Begin("Player");
 	ImGui::Text("PosX:%f", m_Position.x);
 	ImGui::Text("PosZ:%f", m_Position.z);
+	ImGui::End();
+
 
 	//íeÇÃçXêV
 	for (Bullet* bullet : bullets) {

@@ -33,8 +33,9 @@ private:
 	void Move();
 public:
 	void SetAngle(const XMFLOAT2& Angle) { m_Angle = Angle; }
-
+	void SetBulletType(const int BulletType) { m_BulletType = BulletType; }
 private:
 	XMFLOAT2 m_Angle = {};
 	float m_AddSpeed = {};
+	int m_BulletType = {};
 };
