@@ -306,6 +306,9 @@
     <ClCompile Include="SourceCode\gamesystem\backobj\BackObj.cpp">
       <Filter>SourceCords\gamesystem\backobj</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\Bullet.cpp">
+      <Filter>SourceCords\gamesystem\character\Various\Bullet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
@@ -572,6 +575,9 @@
     <ClInclude Include="SourceCode\gamesystem\backobj\BackObj.h">
       <Filter>SourceCords\gamesystem\backobj</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\Bullet.h">
+      <Filter>SourceCords\gamesystem\character\Various\Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Gaussian.hlsli">
@@ -770,6 +776,9 @@
     </Filter>
     <Filter Include="SourceCords\gamesystem\backobj">
       <UniqueIdentifier>{efc5f175-01d2-44e3-97a2-4d6b33cdf6b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\character\Various\Bullet">
+      <UniqueIdentifier>{de86b2d5-e474-4324-8544-06b7094703cc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
