@@ -35,11 +35,15 @@ void EditorSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 
 	load = new LoadBox();
 	load->Initialize();
+
+
+	load2 = new PlaceMap();
+	load2->Initialize();
 }
 //更新
 void EditorSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
-
+load2->Update();
 	lightgroup->Update();
 	//camerawork->SetTarget({ camera->GetEye().x,0.0f,camera->GetEye().z });
 	//camera->SetTarget({ camera->GetEye().x,camera->GetEye().y - 10.f,camera->GetEye().z + 20.f, });
@@ -49,9 +53,12 @@ void EditorSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	ground->SetColor({ 0.5f,0.5f,0.5f,1.0f });
 	ground->Update();
 	//音楽の音量が変わる
-	placeObj->Update();
 
-	load->Update();
+
+	//placeObj->Update();
+
+	
+	//load->Update();
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 }
 //描画
@@ -107,15 +114,16 @@ void EditorSceneActor::BackDraw(DirectXCommon* dxCommon)
 //ポストエフェクトがかからない
 void EditorSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 	IKESprite::PreDraw();
+	load2->Draw();
 	IKESprite::PostDraw();
 #pragma endregion
 }
 //IMGuiの描画
 void EditorSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 
-	placeObj->ImGui_Draw();
+	//placeObj->ImGui_Draw();
 	camerawork->ImGuiDraw();
-
+	load2->ImguiDraw();
 	ImGui::Begin("LoadObject");
 
 	ImGui::SetWindowPos(ImVec2(1000, 0));

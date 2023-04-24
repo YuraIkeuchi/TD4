@@ -24,6 +24,8 @@ public:
 private:
 	bool item[3] = { false,false,false };
 	LoadBox* load;
+	PlaceMap* load2;
+
 	unique_ptr<PlaceBox>placeObj;
 	unique_ptr<IKEObject3d>ground;
 	unique_ptr<OpenBrowser> openbrowser;

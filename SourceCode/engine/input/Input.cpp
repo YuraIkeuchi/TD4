@@ -302,6 +302,21 @@ bool Input::RightTiltStick(int stick)
 	return false;
 }
 
+
+void Input::MouseMovePos(XMFLOAT2& MovePos)
+{
+	POINT mousePosition;
+
+	GetCursorPos(&mousePosition);
+
+	HWND hwnd = winapp->GetHwnd();
+
+	ScreenToClient(hwnd, &mousePosition);
+
+	MovePos.x = (float)mousePosition.x;
+	MovePos.y = (float)mousePosition.y;
+}
+
 bool Input::RightTriggerStick(int stick)
 {
 	//ç∂
@@ -563,5 +578,5 @@ bool Input::StickInDeadZone(StickPos& Thumb)
 
 void Input::Finalize()
 {
-	
+
 }

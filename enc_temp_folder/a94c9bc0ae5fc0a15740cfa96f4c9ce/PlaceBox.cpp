@@ -302,6 +302,10 @@ void PlaceBox::ArgmentObj(bool& aflag, std::string mname, IKEModel* model)
 
 
 }
+PlaceMap::~PlaceMap()
+{
+	MapStage.clear();
+}
 
 
 void PlaceMap::Initialize()
@@ -326,6 +330,7 @@ void PlaceMap::Initialize()
 
 void PlaceMap::Update()
 {
+	if (Change)return;
 	int size = 25;
 	CollideMap();
 }
@@ -368,6 +373,8 @@ UINT PlaceMap::ChangeSprite()
 
 void PlaceMap::Draw()
 {
+	if (Change)return;
+
 	for (int i = 0; i < MapStage.size(); i++)
 	{
 		for (int j = 0; j < MapStage[i].size(); j++)
@@ -383,29 +390,13 @@ void PlaceMap::ImguiDraw()
 	ImGui::Begin("2DEditor");
 
 	ImGui::InputInt("SizeX", &size);
-	if(ImGui::RadioButton("CheckSize",false))
+	if(ImGui::Button("CheckSize",ImVec2(100,100)))
 	{
+		Change = true;
 		
-			MapStage.resize(5);
-			for(int i=0;i<size;i++)
-		{
-			
-		}
-	//	if(OldSize<=size)
-			for (int i = 0; i < MapStage.size(); i++)
-			{MapStage[i].resize(size);
-				for (int j = 0; j < MapStage[i].size(); j++)
-				{
-					if (MapStage[i][j] == nullptr)
-					{
-						MapStage[i][j].reset(IKESprite::Create(ImageManager::NON, { 0.f,0.f }));
-						MapStage[i][j]->SetAnchorPoint({ 0.50f,0.50f });
-						MapStage[i][j]->SetSize({ 50.f,50.f });
-
-						MapStage[i][j]->SetPosition({ i * 50.f,j * 50.f });
-					}
-		}
-		}
+		MapStage[5][5].reset();
+		
+	
 		
 		OldSize = size;
 

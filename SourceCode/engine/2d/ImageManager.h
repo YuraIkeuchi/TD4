@@ -22,6 +22,9 @@ public:
 		PLAY,
 		GAMEOVER,
 		GAMECLEAR,
+		BOX,
+		CUBE,
+		NON
 	};
 
 	//テクスチャの名前

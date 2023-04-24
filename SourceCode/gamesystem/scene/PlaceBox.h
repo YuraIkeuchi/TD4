@@ -38,10 +38,25 @@ public:
 class PlaceMap
 {
 public:
+	~PlaceMap();
 	void Initialize();
 	void Update();
 	void Draw();
+	void ImguiDraw();
 private:
-	std::unique_ptr<IKESprite>MapStage[25][25];
+	enum class Icon
+	{
+		NON,
+		BOX,
+		CUBE
+	}_icon;
+	XMFLOAT2 MousePoint;
+	bool Change;
 
+	UINT ChangeSprite();
+	void CollideMap();
+private:
+	std::vector<std::vector<std::unique_ptr<IKESprite>>>MapStage;
+	int OldSize;
+	int size = 15;
 };

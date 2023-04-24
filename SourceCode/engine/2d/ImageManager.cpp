@@ -18,6 +18,10 @@ void ImageManager::SecondLoad2D()
 	IKESprite::LoadTexture(PLAY, L"Resources/2d/sceneback/game.png");
 	IKESprite::LoadTexture(GAMEOVER, L"Resources/2d/sceneback/over.png");
 	IKESprite::LoadTexture(GAMECLEAR, L"Resources/2d/sceneback/clear.png");
+
+	IKESprite::LoadTexture(BOX, L"Resources/2d/objicon/box.png");
+	IKESprite::LoadTexture(CUBE, L"Resources/2d/objicon/cube.png");
+	IKESprite::LoadTexture(NON, L"Resources/2d/objicon/non.png");
 }
 
 //テクスチャの読み込み
