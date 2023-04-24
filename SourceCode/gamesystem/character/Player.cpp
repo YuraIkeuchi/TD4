@@ -86,10 +86,13 @@ void Player::Update()
 	{
 		_charaState = CharaState::STATE_IDLE;
 	}
+
 	/*-----------------------------*/
 	//Xが押されたら弾を撃つ
-	if (Input::GetInstance()->TriggerButton(Input::X))
+	if (Input::GetInstance()->TriggerButton(Input::X) && m_InterVal == 0)
 	{
+		m_InterVal = 30;
+		m_RigidityTime = 10;
 		_charaState = CharaState::STATE_SHOT;
 	}
 
@@ -111,6 +114,8 @@ void Player::Update()
 			bullet->Update();
 		}
 	}
+
+	InterVal();
 }
 
 //描画
@@ -129,6 +134,8 @@ void Player::Draw(DirectXCommon* dxCommon)
 //ImGui
 void Player::ImGuiDraw() {
 	ImGui::Begin("Player");
+	ImGui::Text("InterVal:%d", m_InterVal);
+	ImGui::Text("RigidityTime:%d", m_RigidityTime);
 	if (ImGui::TreeNode("BULLET")) {
 		if (ImGui::RadioButton("BULLET_FORROW", &m_BulletType, BULLET_FORROW)) {
 			m_BulletType = BULLET_FORROW;
@@ -221,9 +228,10 @@ void Player::Walk()
 		Helper::GetInstance()->FloatClamp(m_Position.x, -41.0f, 50.0f);
 		Helper::GetInstance()->FloatClamp(m_Position.z, -45.0f, 45.0f);
 		//向いた方向に進む
-		m_Position.x += move.m128_f32[0] *m_AddSpeed;
-		m_Position.z += move.m128_f32[2] * m_AddSpeed;
-
+		if (m_RigidityTime == m_ResetNumber) {
+			m_Position.x += move.m128_f32[0] * m_AddSpeed;
+			m_Position.z += move.m128_f32[2] * m_AddSpeed;
+		}
 		AnimationControl(AnimeName::WALK, true, 1);
 }
 
@@ -282,4 +290,8 @@ void Player::Idle()
 			AnimationControl(AnimeName::IDLE, true, 1);
 		}
 }
-
+//インターバル
+void Player::InterVal() {
+	Helper::GetInstance()->CheckMaxINT(m_InterVal, 0, -1);
+	Helper::GetInstance()->CheckMaxINT(m_RigidityTime, 0, -1);
+}

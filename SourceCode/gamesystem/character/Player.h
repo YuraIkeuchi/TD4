@@ -68,6 +68,8 @@ private:
 	void Shot();
 private:
 	void Idle();
+	//インターバル管理
+	void InterVal();
 private:
 	//各アニメーション
 	enum class AnimeName
@@ -80,8 +82,11 @@ private:
 	void AnimationControl(AnimeName name, const bool& loop, int speed);
 
 private://各クラス
-	int m_BulletType = 0;
 	vector<Bullet*> bullets;
 
+	//弾関係の変数
+	int m_BulletType = 0;
+	int m_InterVal = 0;
+	int m_RigidityTime = 0;
 };
 
