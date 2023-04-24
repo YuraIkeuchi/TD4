@@ -286,6 +286,7 @@
     <ClCompile Include="SourceCode\gamesystem\actor\PlaySceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\TitleSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\backobj\BackObj.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\character\Bullet.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\CharactorManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\EnemyManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\FirstBoss.cpp" />
@@ -376,6 +377,7 @@
     <ClInclude Include="SourceCode\gamesystem\actor\PlaySceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\TitleSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\backobj\BackObj.h" />
+    <ClInclude Include="SourceCode\gamesystem\character\Bullet.h" />
     <ClInclude Include="SourceCode\gamesystem\character\CharactorManager.h" />
     <ClInclude Include="SourceCode\gamesystem\character\EnemyManager.h" />
     <ClInclude Include="SourceCode\gamesystem\character\FirstBoss.h" />

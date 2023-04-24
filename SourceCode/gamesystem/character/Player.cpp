@@ -1,7 +1,5 @@
 #include "Player.h"
-
 #include <any>
-
 #include "CsvLoader.h"
 #include"Helper.h"
 #include"ModelManager.h"
@@ -53,6 +51,7 @@ void (Player::* Player::stateTable[])() = {
 	&Player::Idle,//待機
 	&Player::Walk,//移動
 	&Player::Attack,//攻撃
+	&Player::Shot,
 };
 
 //更新処理
@@ -88,7 +87,11 @@ void Player::Update()
 		_charaState = CharaState::STATE_IDLE;
 	}
 	/*-----------------------------*/
-
+	//Xが押されたら弾を撃つ
+	if (Input::GetInstance()->TriggerButton(Input::X))
+	{
+		_charaState = CharaState::STATE_SHOT;
+	}
 
 
 	//状態移行(charastateに合わせる)
@@ -101,12 +104,26 @@ void Player::Update()
 
 	//どっち使えばいいか分からなかったから保留
 	Model->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+
+	//弾の更新
+	for (Bullet* bullet : bullets) {
+		if (bullet != nullptr) {
+			bullet->Update();
+		}
+	}
 }
 
 //描画
 void Player::Draw(DirectXCommon* dxCommon)
 {
 	Model->Draw(dxCommon->GetCmdList());
+
+	//弾の描画
+	for (Bullet* bullet : bullets) {
+		if (bullet != nullptr) {
+			bullet->Draw(dxCommon);
+		}
+	}
 }
 
 //ImGui
@@ -114,6 +131,15 @@ void Player::ImGuiDraw() {
 	ImGui::Begin("Player");
 	ImGui::Text("PosX:%f", m_Position.x);
 	ImGui::Text("PosZ:%f", m_Position.z);
+	ImGui::End();
+
+
+	//弾の更新
+	for (Bullet* bullet : bullets) {
+		if (bullet != nullptr) {
+			bullet->ImGuiDraw();
+		}
+	}
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
@@ -203,7 +229,23 @@ void Player::Attack()
 	AnimationControl(AnimeName::ATTACK, false, 1);
 }
 
-//待機ション
+//弾を打つ処理
+void Player::Shot() {
+	//弾を撃つ方向を算出するために回転を求める
+	XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
+	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
+	move = XMVector3TransformNormal(move, matRot);
+	XMFLOAT2 l_Angle;
+	l_Angle.x = move.m128_f32[0];
+	l_Angle.y = move.m128_f32[2];
+	Bullet* newbullet;
+	newbullet = new Bullet();
+	newbullet->Initialize();
+	newbullet->SetPosition(m_Position);
+	newbullet->SetAngle(l_Angle);
+	bullets.push_back(newbullet);
+}
+//待機モーション
 void Player::Idle()
 {
 	//条件少しおかしいので後で修正
