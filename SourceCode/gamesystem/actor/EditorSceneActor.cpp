@@ -55,7 +55,7 @@ load2->Update();
 	//音楽の音量が変わる
 
 
-	//placeObj->Update();
+	placeObj->Update();
 
 	
 	//load->Update();
@@ -102,7 +102,7 @@ void EditorSceneActor::ModelDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
 	ground->Draw();
 	load->Draw();
-	//placeObj->Draw(dxCommon);
+	placeObj->Draw(dxCommon);
 	IKEObject3d::PostDraw();
 	
 }
@@ -114,14 +114,14 @@ void EditorSceneActor::BackDraw(DirectXCommon* dxCommon)
 //ポストエフェクトがかからない
 void EditorSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 	IKESprite::PreDraw();
-	load2->Draw();
+	//load2->Draw();
 	IKESprite::PostDraw();
 #pragma endregion
 }
 //IMGuiの描画
 void EditorSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 
-	//placeObj->ImGui_Draw();
+	placeObj->ImGui_Draw();
 	camerawork->ImGuiDraw();
 	load2->ImguiDraw();
 	ImGui::Begin("LoadObject");
