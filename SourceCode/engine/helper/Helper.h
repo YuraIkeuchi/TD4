@@ -1,9 +1,5 @@
 #pragma once
-
-#include <Windows.h>
-#include <d3d12.h>
-#include <DirectXMath.h>
-
+#include "Camera.h"
 /*--円周とか求める用--*/
 #define PI 3.14f
 #define PI_90 90.00f
@@ -24,9 +20,14 @@ private:
 
 public:
 	static Helper* GetInstance();
+	void SetCamera(Camera* camera) {
+		m_Camera = camera;
+	}
 	//計算系
-	bool CheckMax(float& Num, const float Max, const float Add);
-	bool CheckMin(float& Num, const float Min, const float Add);
+	bool CheckMaxFLOAT(float& Num, const float Max, const float Add);
+	bool CheckMinFLOAT(float& Num, const float Min, const float Add);
+	bool CheckMinINT(int& Num, const int Min, const int Add);
+	bool CheckMaxINT(int& Num, const int Max, const int Add);
 	//Clampを返す関数
 	void IntClamp(int& Num, const int Min, const int Max);
 	void FloatClamp(float& Num, const float Min, const float Max);
@@ -40,10 +41,14 @@ public:
 	XMFLOAT3 Float3SubFloat3(const XMFLOAT3& Num, const XMFLOAT3& Sub);
 
 	//追従関数
-	XMFLOAT3 FollowMove(const XMFLOAT3& pos, const XMFLOAT3& pos2, const float vel);
+	void FollowMove(XMFLOAT3& pos, const XMFLOAT3& pos2, const float vel);
 
 	//円運動
 	XMFLOAT3 CircleMove(const XMFLOAT3& basepos, const float scale, const float speed);
+	//if文の判定の関数(値が範囲外にあるか)
+	bool CheckNotValueRange(float& Num, const float Min, const float Max);
+	//逆に範囲内にあるか
+	bool CheckValueRange(float& Num, const float Min, const float Max);
 public:
 	//割合を返す
 	float GetPercent(const float amount, const float num);
@@ -53,9 +58,21 @@ public:
 	XMVECTOR WDivision(const XMVECTOR& pos, const XMMATRIX& mat, const bool sub);
 	//座標系が明確な場合->そのまま計算->W除算
 	XMVECTOR WDivision(const XMVECTOR& pos, const bool sub);
-
 	//ワールド座標に変換
 	XMVECTOR PosDivi(const XMVECTOR& pos, const XMMATRIX& mat, const bool sub);
-	
+	//座標変換
+	XMVECTOR WorldDivision(const XMVECTOR& pos, const bool sub);
+	//3D座標を2Dに変える(レティクルなどの当たり判定などに使う
+	XMFLOAT2 WorldtoScreen(const XMVECTOR& pos, const XMMATRIX& mat);
+	//XMFLOATをXMVECTORに変換する
+	XMVECTOR ChangeFLOAT(const XMFLOAT3& pos);
+	//XMFLOATをXMVECTORに変換する
+	XMFLOAT3 ChangeVECTOR(const XMVECTOR& pos);
+	void ChangeViewPort(XMMATRIX& matviewport, const XMVECTOR& offset);
+private:
+
+	//カメラ
+	Camera* m_Camera;
+
 };
 

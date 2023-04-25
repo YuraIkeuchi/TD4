@@ -8,17 +8,17 @@
 #include "TouchableObject.h"
 #include "../../../LoadBox.h"
 
-//‰Šú‰»
+//åˆæœŸåŒ–
 void EditorSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
 	OpenBrowser* openbrowser_;
 	openbrowser_ = new OpenBrowser();
 	openbrowser.reset(openbrowser_);
 	dxCommon->SetFullScreen(true);
-	//‹¤’Ê‚Ì‰Šú‰»
+	//å…±é€šã®åˆæœŸåŒ–
 	BaseInitialize(dxCommon);
 
-	//ƒ|ƒXƒgƒGƒtƒFƒNƒg‚Ìƒtƒ@ƒCƒ‹Žw’è
+	//ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ãƒ•ã‚¡ã‚¤ãƒ«æŒ‡å®š
 	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/NewToneMapPS.hlsl");
 
 	ParticleEmitter::GetInstance()->AllDelete();
@@ -40,7 +40,7 @@ void EditorSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	load2 = new PlaceMap();
 	load2->Initialize();
 }
-//XV
+//æ›´æ–°
 void EditorSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
 load2->Update();
@@ -52,7 +52,7 @@ load2->Update();
 
 	ground->SetColor({ 0.5f,0.5f,0.5f,1.0f });
 	ground->Update();
-	//‰¹Šy‚Ì‰¹—Ê‚ª•Ï‚í‚é
+	//éŸ³æ¥½ã®éŸ³é‡ãŒå¤‰ã‚ã‚‹
 
 
 	placeObj->Update();
@@ -61,11 +61,11 @@ load2->Update();
 	//load->Update();
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 }
-//•`‰æ
+//æç”»
 void EditorSceneActor::Draw(DirectXCommon* dxCommon)
 {
-	//•`‰æ•û–@
-	//ƒ|ƒXƒgƒGƒtƒFƒNƒg‚ð‚©‚¯‚é‚©
+	//æç”»æ–¹æ³•
+	//ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’ã‹ã‘ã‚‹ã‹
 	if (PlayPostEffect) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
@@ -89,14 +89,14 @@ void EditorSceneActor::Draw(DirectXCommon* dxCommon)
 		dxCommon->PostDraw();
 	}
 }
-//‰ð•ú
+//è§£æ”¾
 void EditorSceneActor::Finalize()
 {
 }
-//ƒ‚ƒfƒ‹‚Ì•`‰æ
+//ãƒ¢ãƒ‡ãƒ«ã®æç”»
 void EditorSceneActor::ModelDraw(DirectXCommon* dxCommon) {
-#pragma region 3DƒIƒuƒWƒFƒNƒg•`‰æ
-	//”wŒi‚Íæ‚É•`‰æ‚·‚é
+#pragma region 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»
+	//èƒŒæ™¯ã¯å…ˆã«æç”»ã™ã‚‹
 	
 	///
 	IKEObject3d::PreDraw();
@@ -106,19 +106,20 @@ void EditorSceneActor::ModelDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PostDraw();
 	
 }
-//Œã‚ë‚Ì•`‰æ
+
+//å¾Œã‚ã®æç”»
 void EditorSceneActor::BackDraw(DirectXCommon* dxCommon)
 {
 	ModelDraw(dxCommon);
 }
-//ƒ|ƒXƒgƒGƒtƒFƒNƒg‚ª‚©‚©‚ç‚È‚¢
+//ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆãŒã‹ã‹ã‚‰ãªã„
 void EditorSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 	IKESprite::PreDraw();
 	//load2->Draw();..
 	IKESprite::PostDraw();
 #pragma endregion
 }
-//IMGui‚Ì•`‰æ
+//IMGuiã®æç”»
 void EditorSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 
 	placeObj->ImGui_Draw();

@@ -23,11 +23,10 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 }
 //描画
 void LoadSceneActor::Draw(DirectXCommon* dxCommon) {
-
 	//ポストエフェクトをかけるか
 	if (PlayPostEffect) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
-		GameDraw(dxCommon);
+		BackDraw(dxCommon);
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
@@ -41,24 +40,20 @@ void LoadSceneActor::Draw(DirectXCommon* dxCommon) {
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
 		ImGuiDraw(dxCommon);
-		GameDraw(dxCommon);
+		BackDraw(dxCommon);
 		SpriteDraw();
 		dxCommon->PostDraw();
 	}
-}
-//背景描画
-void LoadSceneActor::ModelDraw(DirectXCommon* dxCommon) {
 }
 //前面描画
 void LoadSceneActor::SpriteDraw() {
 	IKESprite::PreDraw();
 	IKESprite::PostDraw();
 }
-//上の描画にスプライトなども混ぜた
-void LoadSceneActor::GameDraw(DirectXCommon* dxCommon)
+//背面描画
+void LoadSceneActor::BackDraw(DirectXCommon* dxCommon)
 {
-	//スプライトの描画
-	ModelDraw(dxCommon);
+
 }
 //ImGuiの描画
 void LoadSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {

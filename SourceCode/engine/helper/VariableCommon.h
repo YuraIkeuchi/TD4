@@ -46,25 +46,6 @@ const int TutorialHeight_Cut = 128;
 const int PartsWidth_Cut = 640;
 const int PartsHeight_Cut = 128;
 
-//ステージナンバー
-enum StageNumber {
-	Map1,
-	Map2,
-	Map3,
-	Map4,
-	Map5,
-	Map6,
-	BossMap,
-	TutoRial,
-};
-//攻撃を食らった向き
-enum HitDir {
-	NoHit,
-	HitRight,
-	HitLeft,
-	HitUp,
-	HitDown,
-};
 //ブレンドタイプ
 enum BlendType
 {
@@ -73,38 +54,7 @@ enum BlendType
 	SubBlendType,
 };
 
-//敵の種類
-enum EnemyType {
-	Normal,
-	Thorn,
-	Bound,
-	Bird,
-	Follow,
-	FakeChest,
-};
-
-//背景OBJの種類
-enum BackObjType {
-	BackOBJRock,
-	BackOBJBox,
-	BackOBJTorch,
-};
-
-//プレイヤーのアニメーション
-enum AnimationType {
-	FirstAttack,
-	SecondAttack,
-	Rolling,
-	ThirdAttack,
-	UpAttack,
-	Walk,
-	FirstJump,
-	Wait,
-	Death,
-	SecondJump,
-	ThirdJump,
-	FinalJump,
-	Dush,
-	Damage,
-	Fall,
+enum Bullettype {
+	BULLET_FORROW,//追従
+	BULLET_SEARCH,//探索
 };

@@ -1,11 +1,9 @@
 #include "Player.h"
-
 #include <any>
-
 #include "CsvLoader.h"
 #include"Helper.h"
 #include"ModelManager.h"
-
+#include "VariableCommon.h"
 /*-----------------*/
 /*松本エンジン慣れる用*/
 /*-----------------*/
@@ -19,7 +17,7 @@ Player::Player(XMFLOAT3 StartPos)
 	//移動処理用
 	velocity /= 5.0f;
 	//大きさ
-	Scale = { 2.f,2.f,2.f };
+	m_Scale = { 2.f,2.f,2.f };
 }
 
 //デストラクタ
@@ -53,6 +51,7 @@ void (Player::* Player::stateTable[])() = {
 	&Player::Idle,//待機
 	&Player::Walk,//移動
 	&Player::Attack,//攻撃
+	&Player::Shot,
 };
 
 //更新処理
@@ -87,28 +86,82 @@ void Player::Update()
 	{
 		_charaState = CharaState::STATE_IDLE;
 	}
-	/*-----------------------------*/
 
+	/*-----------------------------*/
+	//Xが押されたら弾を撃つ
+	if (Input::GetInstance()->TriggerButton(Input::X) && m_InterVal == 0)
+	{
+		m_InterVal = 30;
+		m_RigidityTime = 10;
+		_charaState = CharaState::STATE_SHOT;
+	}
 
 
 	//状態移行(charastateに合わせる)
 	(this->*stateTable[_charaState])();
 
 	//基礎パラメータ設定
-	Model->SetPosition(Position);
-	Model->SetRotation(Rotation);
-	Model->SetScale(Scale);
+	Model->SetPosition(m_Position);
+	Model->SetRotation(m_Rotation);
+	Model->SetScale(m_Scale);
 
 	//どっち使えばいいか分からなかったから保留
 	Model->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+
+	//弾の更新
+	for (Bullet* bullet : bullets) {
+		if (bullet != nullptr) {
+			bullet->Update();
+		}
+	}
+
+	InterVal();
 }
 
 //描画
 void Player::Draw(DirectXCommon* dxCommon)
 {
 	Model->Draw(dxCommon->GetCmdList());
+
+	//弾の描画
+	for (Bullet* bullet : bullets) {
+		if (bullet != nullptr) {
+			bullet->Draw(dxCommon);
+		}
+	}
 }
 
+//ImGui
+void Player::ImGuiDraw() {
+	ImGui::Begin("Player");
+	ImGui::Text("InterVal:%d", m_InterVal);
+	ImGui::Text("RigidityTime:%d", m_RigidityTime);
+	if (ImGui::TreeNode("BULLET")) {
+		if (ImGui::RadioButton("BULLET_FORROW", &m_BulletType, BULLET_FORROW)) {
+			m_BulletType = BULLET_FORROW;
+		}
+		if (ImGui::RadioButton("BULLET_SEARCH", &m_BulletType, BULLET_SEARCH)) {
+			m_BulletType = BULLET_SEARCH;
+		}
+
+		if (m_BulletType == BULLET_FORROW) {
+			ImGui::Text("BULLET_FORROW");
+		}
+		else {
+			ImGui::Text("BULLET_SEARCH");
+		}
+		ImGui::TreePop();
+	}
+	ImGui::End();
+
+
+	//弾の更新
+	for (Bullet* bullet : bullets) {
+		if (bullet != nullptr) {
+			bullet->ImGuiDraw();
+		}
+	}
+}
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
 {
@@ -128,8 +181,8 @@ void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
 //歩き(コントローラー)
 void Player::Walk()
 {
-	XMFLOAT3 pos = Position;
-	XMFLOAT3 rot = Rotation;
+	XMFLOAT3 pos = m_Position;
+	XMFLOAT3 rot = m_Rotation;
 
 	float AddSpeed=2.f;
 
@@ -165,16 +218,20 @@ void Player::Walk()
 		rot.y = angle + atan2f(StickX, StickY) * (PI_180 / PI);
 
 		//プレイヤーの回転角を取る
-		Rotation = { rot.x, rot.y, rot.z };
+		m_Rotation = { rot.x, rot.y, rot.z };
 
 		XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
-		XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(Rotation.y));
+		XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
 		move = XMVector3TransformNormal(move, matRot);
 
+		//リミット制限
+		Helper::GetInstance()->FloatClamp(m_Position.x, -41.0f, 50.0f);
+		Helper::GetInstance()->FloatClamp(m_Position.z, -45.0f, 45.0f);
 		//向いた方向に進む
-		Position.x += move.m128_f32[0] *m_AddSpeed;
-		Position.z += move.m128_f32[2] * m_AddSpeed;
-
+		if (m_RigidityTime == m_ResetNumber) {
+			m_Position.x += move.m128_f32[0] * m_AddSpeed;
+			m_Position.z += move.m128_f32[2] * m_AddSpeed;
+		}
 		AnimationControl(AnimeName::WALK, true, 1);
 }
 
@@ -194,7 +251,26 @@ void Player::Attack()
 	AnimationControl(AnimeName::ATTACK, false, 1);
 }
 
-//待機ション
+//弾を打つ処理
+void Player::Shot() {
+	//弾を撃つ方向を算出するために回転を求める
+	XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
+	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
+	move = XMVector3TransformNormal(move, matRot);
+	XMFLOAT2 l_Angle;
+	l_Angle.x = move.m128_f32[0];
+	l_Angle.y = move.m128_f32[2];
+
+	//弾の生成
+	Bullet* newbullet;
+	newbullet = new Bullet();
+	newbullet->Initialize();
+	newbullet->SetPosition(m_Position);
+	newbullet->SetBulletType(m_BulletType);
+	newbullet->SetAngle(l_Angle);
+	bullets.push_back(newbullet);
+}
+//待機モーション
 void Player::Idle()
 {
 	//条件少しおかしいので後で修正
@@ -214,4 +290,8 @@ void Player::Idle()
 			AnimationControl(AnimeName::IDLE, true, 1);
 		}
 }
-
+//インターバル
+void Player::InterVal() {
+	Helper::GetInstance()->CheckMaxINT(m_InterVal, 0, -1);
+	Helper::GetInstance()->CheckMaxINT(m_RigidityTime, 0, -1);
+}
