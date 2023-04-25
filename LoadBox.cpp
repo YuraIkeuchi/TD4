@@ -65,7 +65,7 @@ void LoadBox::Update()
 
 
 void LoadBox::Draw()
-{
+{//tes
 	for (auto i = 0; i < boxes.size(); i++)
 	{
 		boxes[i]->Draw();
