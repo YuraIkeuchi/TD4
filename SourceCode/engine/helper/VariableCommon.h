@@ -56,5 +56,5 @@ enum BlendType
 
 enum Bullettype {
 	BULLET_FORROW,//í«è]
-	BULLET_SWARCH,//íTçı
+	BULLET_SEARCH,//íTçı
 };

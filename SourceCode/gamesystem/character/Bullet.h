@@ -38,4 +38,5 @@ private:
 	XMFLOAT2 m_Angle = {};
 	float m_AddSpeed = {};
 	int m_BulletType = {};
+	bool m_Alive = true;
 };
