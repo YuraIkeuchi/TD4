@@ -12,6 +12,7 @@ BackObj::BackObj() {
 bool BackObj::Initialize() {
 	m_Position = { 0.0f,0.0f,0.0f };
 	m_Scale = { 0.5f,0.5f,0.5f };
+	m_Color = { 0.0f,0.0f,0.0f,1.0f };
 	return true;
 }
 

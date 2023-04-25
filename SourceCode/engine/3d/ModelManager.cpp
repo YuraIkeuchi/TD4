@@ -20,7 +20,7 @@ void ModelManager::SecondInitialize()
 {
 	LoadModel(Ground, "ground");
 	LoadModel(Cube, "cube");
-	LoadModel(Box, "BackBox");
+	LoadModel(Box, "UVSphere");
 	LoadModel(Boss, "chr_knight");
 	LoadFBXModel(PLAYER, "PlayerFBXNew");
 }
