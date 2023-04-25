@@ -15,11 +15,11 @@ struct Node
 	//名前
 	std::string name;
 	//ローカルスケール
-	DirectX::XMVECTOR scaling = { 1, 1, 1, 0 };
+	DirectX::XMVECTOR scaling = {1, 1, 1, 0};
 	//ローカル回転角
-	DirectX::XMVECTOR rotation = { 0, 0, 0, 0 };
+	DirectX::XMVECTOR rotation = {0, 0, 0, 0};
 	//ローカル移動
-	DirectX::XMVECTOR translation = { 0, 0, 0, 1 };
+	DirectX::XMVECTOR translation = {0, 0, 0, 1};
 	//ローカル変形行列
 	DirectX::XMMATRIX transform;
 	//グローバル変形行列
@@ -31,9 +31,10 @@ struct Node
 
 class IKEFBXModel
 {
-private:	//エイリアス
+private: //エイリアス
 	//Microsoft::WRL::を省略
-	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+	template <class T>
+	using ComPtr = Microsoft::WRL::ComPtr<T>;
 	//DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -43,7 +44,8 @@ private:	//エイリアス
 	using ScratchImge = DirectX::ScratchImage;
 	//std::を省力
 	using string = std::string;
-	template <class T> using vector = std::vector<T>;
+	template <class T>
+	using vector = std::vector<T>;
 
 	//頂点バッファ
 	ComPtr<ID3D12Resource> vertBuff;
@@ -69,7 +71,8 @@ public:
 		//クラスター（FBX側のボーン情報）
 		FbxCluster* fbxCluster;
 		//コンストラクタ
-		Bone(const std::string& name) {
+		Bone(const std::string& name)
+		{
 			this->name = name;
 		}
 	};
@@ -93,9 +96,9 @@ private:
 	//ノード配列
 	std::vector<Node> nodes;
 	//アンビエント係数
-	DirectX::XMFLOAT3 ambient = { 1, 1, 1 };
+	DirectX::XMFLOAT3 ambient = {1, 1, 1};
 	//ディフューズ係数
-	DirectX::XMFLOAT3 diffuse = { 1, 1, 1 };
+	DirectX::XMFLOAT3 diffuse = {1, 1, 1};
 	//テクスチャデータ
 	DirectX::TexMetadata metadata = {};
 	//スクラッチイメージ
@@ -103,19 +106,19 @@ private:
 	//ボーン配列
 	std::vector<Bone> bones;
 
-public:	//定数
+public: //定数
 	//ボーンインデックスの最大数
 	static const int MAX_BONE_INDICES = 4;
 
-public:	//サブクラス
+public: //サブクラス
 	//頂点データ構造体
 	struct VertexPosNormalUvSkin
 	{
-		DirectX::XMFLOAT3 pos;				//xyz座標
-		DirectX::XMFLOAT3 normal;			//法線ベクトル
-		DirectX::XMFLOAT2 uv;				//uv座標
-		UINT boneIndex[MAX_BONE_INDICES];	//ボーン番号
-		float boneWeight[MAX_BONE_INDICES];	//ボーン重み
+		DirectX::XMFLOAT3 pos; //xyz座標
+		DirectX::XMFLOAT3 normal; //法線ベクトル
+		DirectX::XMFLOAT2 uv; //uv座標
+		UINT boneIndex[MAX_BONE_INDICES]; //ボーン番号
+		float boneWeight[MAX_BONE_INDICES]; //ボーン重み
 	};
 
 	//メッシュを持つノード
@@ -129,4 +132,3 @@ public:	//サブクラス
 	//getter
 	std::vector<Bone>& GetBones() { return bones; }
 };
-

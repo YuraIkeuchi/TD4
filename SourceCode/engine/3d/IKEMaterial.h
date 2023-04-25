@@ -11,7 +11,8 @@ class IKEMaterial
 {
 private: // エイリアス
 	// Microsoft::WRL::を省略
-	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+	template <class T>
+	using ComPtr = Microsoft::WRL::ComPtr<T>;
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -27,7 +28,7 @@ public: // サブクラス
 		XMFLOAT3 diffuse; // ディフューズ係数
 		float pad2; // パディング
 		XMFLOAT3 specular; // スペキュラー係数
-		float alpha;	// アルファ
+		float alpha; // アルファ
 	};
 
 public: // 静的メンバ関数
@@ -43,20 +44,20 @@ private: // 静的メンバ変数
 	static ID3D12Device* device;
 
 public:
-	std::string name;	// マテリアル名
-	XMFLOAT3 ambient;	// アンビエント影響度
-	XMFLOAT3 diffuse;	// ディフューズ影響度
-	XMFLOAT3 specular;	// スペキュラー影響度
-	float alpha;		// アルファ
-	std::string textureFilename;	// テクスチャファイル名
+	std::string name; // マテリアル名
+	XMFLOAT3 ambient; // アンビエント影響度
+	XMFLOAT3 diffuse; // ディフューズ影響度
+	XMFLOAT3 specular; // スペキュラー影響度
+	float alpha; // アルファ
+	std::string textureFilename; // テクスチャファイル名
 
 public:
-
 	// 定数バッファの取得
 	ID3D12Resource* GetConstantBuffer() { return constBuff.Get(); }
 
 	// テクスチャ読み込み
-	void LoadTexture(const std::string& directoryPath, CD3DX12_CPU_DESCRIPTOR_HANDLE cpuHandle, CD3DX12_GPU_DESCRIPTOR_HANDLE gpuHandle);
+	void LoadTexture(const std::string& directoryPath, CD3DX12_CPU_DESCRIPTOR_HANDLE cpuHandle,
+	                 CD3DX12_GPU_DESCRIPTOR_HANDLE gpuHandle);
 
 	// 更新
 	void Update();
@@ -75,15 +76,16 @@ private:
 
 private:
 	// コンストラクタ
-	IKEMaterial() {
-		ambient = { 0.3f, 0.3f, 0.3f };
-		diffuse = { 0.0f, 0.0f, 0.0f };
-		specular = { 0.0f, 0.0f, 0.0f };
+	IKEMaterial()
+	{
+		ambient = {0.3f, 0.3f, 0.3f};
+		diffuse = {0.0f, 0.0f, 0.0f};
+		specular = {0.0f, 0.0f, 0.0f};
 		alpha = 1.0f;
 	}
+
 	// 初期化
 	void Initialize();
 	// 定数バッファの生成
 	void CreateConstantBuffer();
 };
-

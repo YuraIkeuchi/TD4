@@ -21,7 +21,8 @@ XMMATRIX IKESprite::matProjection;
 ComPtr<ID3D12DescriptorHeap> IKESprite::descHeap;
 ComPtr<ID3D12Resource> IKESprite::texBuff[srvCount];
 
-bool IKESprite::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, int window_width, int window_height)
+bool IKESprite::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, int window_width,
+                                 int window_height)
 {
 	// nullptrチェック
 	assert(device);
@@ -34,26 +35,27 @@ bool IKESprite::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList
 
 	HRESULT result = S_FALSE;
 	ComPtr<ID3DBlob> vsBlob; // 頂点シェーダオブジェクト
-	ComPtr<ID3DBlob> psBlob;	// ピクセルシェーダオブジェクト
+	ComPtr<ID3DBlob> psBlob; // ピクセルシェーダオブジェクト
 	ComPtr<ID3DBlob> errorBlob; // エラーオブジェクト
 
 	// 頂点シェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/Shaders/SpriteVS.hlsl",	// シェーダファイル名
+		L"Resources/Shaders/SpriteVS.hlsl", // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"main", "vs_5_0",	// エントリーポイント名、シェーダーモデル指定
+		"main", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
 		0,
 		&vsBlob, &errorBlob);
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		// errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
 
-		std::copy_n((char*)errorBlob->GetBufferPointer(),
-			errorBlob->GetBufferSize(),
-			errstr.begin());
+		std::copy_n(static_cast<char*>(errorBlob->GetBufferPointer()),
+		            errorBlob->GetBufferSize(),
+		            errstr.begin());
 		errstr += "\n";
 		// エラー内容を出力ウィンドウに表示
 		OutputDebugStringA(errstr.c_str());
@@ -63,21 +65,22 @@ bool IKESprite::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList
 
 	// ピクセルシェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/Shaders/SpritePS.hlsl",	// シェーダファイル名
+		L"Resources/Shaders/SpritePS.hlsl", // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"main", "ps_5_0",	// エントリーポイント名、シェーダーモデル指定
+		"main", "ps_5_0", // エントリーポイント名、シェーダーモデル指定
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
 		0,
 		&psBlob, &errorBlob);
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		// errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
 
-		std::copy_n((char*)errorBlob->GetBufferPointer(),
-			errorBlob->GetBufferSize(),
-			errstr.begin());
+		std::copy_n(static_cast<char*>(errorBlob->GetBufferPointer()),
+		            errorBlob->GetBufferSize(),
+		            errstr.begin());
 		errstr += "\n";
 		// エラー内容を出力ウィンドウに表示
 		OutputDebugStringA(errstr.c_str());
@@ -87,12 +90,14 @@ bool IKESprite::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList
 
 	// 頂点レイアウト
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
-		{ // xy座標(1行で書いたほうが見やすい)
+		{
+			// xy座標(1行で書いたほうが見やすい)
 			"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
-		{ // uv座標(1行で書いたほうが見やすい)
+		{
+			// uv座標(1行で書いたほうが見やすい)
 			"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0,
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
@@ -116,7 +121,7 @@ bool IKESprite::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList
 
 	// レンダーターゲットのブレンド設定
 	D3D12_RENDER_TARGET_BLEND_DESC blenddesc{};
-	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;	// RBGA全てのチャンネルを描画
+	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL; // RBGA全てのチャンネルを描画
 	blenddesc.BlendEnable = true;
 	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
 	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
@@ -127,8 +132,8 @@ bool IKESprite::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList
 	//blenddesc.SrcBlend = D3D12_BLEND_ZERO;//加算
 
 	//blenddesc.SrcBlend = D3D12_BLEND_INV_DEST_COLOR;//反転
-	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;//半透明
-	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;//半透明
+	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA; //半透明
+	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA; //半透明
 	//blenddesc.DestBlend = D3D12_BLEND_ZERO;
 	//blenddesc.DestBlend = D3D12_BLEND_ONE;
 	//blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
@@ -152,7 +157,7 @@ bool IKESprite::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList
 	// 図形の形状設定（三角形）
 	gpipeline.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
-	gpipeline.NumRenderTargets = 1;	// 描画対象は1つ
+	gpipeline.NumRenderTargets = 1; // 描画対象は1つ
 	gpipeline.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM; // 0～255指定のRGBA
 	gpipeline.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
 
@@ -166,22 +171,27 @@ bool IKESprite::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList
 	rootparams[1].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
 
 	// スタティックサンプラー
-	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0, D3D12_FILTER_MIN_MAG_MIP_POINT); // s0 レジスタ
+	auto samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0, D3D12_FILTER_MIN_MAG_MIP_POINT); // s0 レジスタ
 
 	// ルートシグネチャの設定
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
-	rootSignatureDesc.Init_1_0(_countof(rootparams), rootparams, 1, &samplerDesc, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+	rootSignatureDesc.Init_1_0(_countof(rootparams), rootparams, 1, &samplerDesc,
+	                           D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
 	ComPtr<ID3DBlob> rootSigBlob;
 	// バージョン自動判定のシリアライズ
-	result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSigBlob, &errorBlob);
-	if (FAILED(result)) {
+	result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSigBlob,
+	                                               &errorBlob);
+	if (FAILED(result))
+	{
 		assert(0);
 		return false;
 	}
 	// ルートシグネチャの生成
-	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature));
-	if (FAILED(result)) {
+	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
+	                                     IID_PPV_ARGS(&rootSignature));
+	if (FAILED(result))
+	{
 		assert(0);
 		return false;
 	}
@@ -191,24 +201,26 @@ bool IKESprite::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList
 	// グラフィックスパイプラインの生成
 	result = device->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelineState));
 
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		assert(0);
 		return false;
 	}
 
 	// 射影行列計算
 	matProjection = XMMatrixOrthographicOffCenterLH(
-		0.0f, (float)window_width,
-		(float)window_height, 0.0f,
+		0.0f, static_cast<float>(window_width),
+		static_cast<float>(window_height), 0.0f,
 		0.0f, 1.0f);
 
 	// デスクリプタヒープを生成	
 	D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc = {};
 	descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;//シェーダから見えるように
+	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE; //シェーダから見えるように
 	descHeapDesc.NumDescriptors = srvCount;
-	result = device->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeap));//生成
-	if (FAILED(result)) {
+	result = device->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeap)); //生成
+	if (FAILED(result))
+	{
 		assert(0);
 		return false;
 	}
@@ -229,7 +241,8 @@ bool IKESprite::LoadTexture(UINT texnumber, const wchar_t* filename)
 	result = LoadFromWICFile(
 		filename, WIC_FLAGS_NONE,
 		&metadata, scratchImg);
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		assert(0);
 		return false;
 	}
@@ -240,9 +253,9 @@ bool IKESprite::LoadTexture(UINT texnumber, const wchar_t* filename)
 	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
 		metadata.format,
 		metadata.width,
-		(UINT)metadata.height,
-		(UINT16)metadata.arraySize,
-		(UINT16)metadata.mipLevels
+		static_cast<UINT>(metadata.height),
+		static_cast<UINT16>(metadata.arraySize),
+		static_cast<UINT16>(metadata.mipLevels)
 	);
 
 	// テクスチャ用バッファの生成
@@ -253,7 +266,8 @@ bool IKESprite::LoadTexture(UINT texnumber, const wchar_t* filename)
 		D3D12_RESOURCE_STATE_GENERIC_READ, // テクスチャ用指定
 		nullptr,
 		IID_PPV_ARGS(&texBuff[texnumber]));
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		assert(0);
 		return false;
 	}
@@ -262,11 +276,13 @@ bool IKESprite::LoadTexture(UINT texnumber, const wchar_t* filename)
 	result = texBuff[texnumber]->WriteToSubresource(
 		0,
 		nullptr, // 全領域へコピー
-		img->pixels,    // 元データアドレス
-		(UINT)img->rowPitch,  // 1ラインサイズ
-		(UINT)img->slicePitch // 1枚サイズ
+		img->pixels, // 元データアドレス
+		static_cast<UINT>(img->rowPitch), // 1ラインサイズ
+		static_cast<UINT>(img->slicePitch // 1枚サイズ
+		) // 1枚サイズ
 	);
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		assert(0);
 		return false;
 	}
@@ -277,12 +293,13 @@ bool IKESprite::LoadTexture(UINT texnumber, const wchar_t* filename)
 
 	srvDesc.Format = resDesc.Format;
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
+	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D; //2Dテクスチャ
 	srvDesc.Texture2D.MipLevels = 1;
 
 	device->CreateShaderResourceView(texBuff[texnumber].Get(), //ビューと関連付けるバッファ
-		&srvDesc, //テクスチャ設定情報
-		CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeap->GetCPUDescriptorHandleForHeapStart(), texnumber, descriptorHandleIncrementSize)
+	                                 &srvDesc, //テクスチャ設定情報
+	                                 CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeap->GetCPUDescriptorHandleForHeapStart(),
+	                                                               texnumber, descriptorHandleIncrementSize)
 	);
 
 	return true;
@@ -310,27 +327,30 @@ void IKESprite::PostDraw()
 	//IKESprite::cmdList = nullptr;
 }
 
-IKESprite* IKESprite::Create(UINT texNumber, const XMFLOAT2& position, const XMFLOAT4& color, const XMFLOAT2& anchorpoint, bool isFlipX, bool isFlipY)
+IKESprite* IKESprite::Create(UINT texNumber, const XMFLOAT2& position, const XMFLOAT4& color,
+                             const XMFLOAT2& anchorpoint, bool isFlipX, bool isFlipY)
 {
 	// 仮サイズ
-	XMFLOAT2 size = { 100.0f, 100.0f };
+	XMFLOAT2 size = {100.0f, 100.0f};
 
 	if (texBuff[texNumber])
 	{
 		// テクスチャ情報取得
 		D3D12_RESOURCE_DESC resDesc = texBuff[texNumber]->GetDesc();
 		// スプライトのサイズをテクスチャのサイズに設定
-		size = { (float)resDesc.Width, (float)resDesc.Height };
+		size = {static_cast<float>(resDesc.Width), static_cast<float>(resDesc.Height)};
 	}
 
 	// Spriteのインスタンスを生成
-	IKESprite* sprite = new IKESprite(texNumber, position, size, color, anchorpoint, isFlipX, isFlipY);
-	if (sprite == nullptr) {
+	auto sprite = new IKESprite(texNumber, position, size, color, anchorpoint, isFlipX, isFlipY);
+	if (sprite == nullptr)
+	{
 		return nullptr;
 	}
 
 	// 初期化
-	if (!sprite->Initialize()) {
+	if (!sprite->Initialize())
+	{
 		delete sprite;
 		assert(0);
 		return nullptr;
@@ -339,7 +359,8 @@ IKESprite* IKESprite::Create(UINT texNumber, const XMFLOAT2& position, const XMF
 	return sprite;
 }
 
-IKESprite::IKESprite(UINT texNumber, const XMFLOAT2& position, const XMFLOAT2& size, const XMFLOAT4& color, const XMFLOAT2& anchorpoint, bool isFlipX, bool isFlipY)
+IKESprite::IKESprite(UINT texNumber, const XMFLOAT2& position, const XMFLOAT2& size, const XMFLOAT4& color,
+                     const XMFLOAT2& anchorpoint, bool isFlipX, bool isFlipY)
 {
 	this->position = position;
 	this->size = size;
@@ -373,13 +394,14 @@ bool IKESprite::Initialize()
 
 	// 定数バッファの生成
 	result = device->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), 	// アップロード可能
+		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), // アップロード可能
 		D3D12_HEAP_FLAG_NONE,
 		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferData) + 0xff) & ~0xff),
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&constBuff));
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		assert(0);
 		return false;
 	}
@@ -387,7 +409,8 @@ bool IKESprite::Initialize()
 	// 定数バッファにデータ転送
 	ConstBufferData* constMap = nullptr;
 	result = constBuff->Map(0, nullptr, (void**)&constMap);
-	if (SUCCEEDED(result)) {
+	if (SUCCEEDED(result))
+	{
 		constMap->color = color;
 		constMap->mat = matProjection;
 		constBuff->Unmap(0, nullptr);
@@ -420,7 +443,8 @@ void IKESprite::SetSize(const XMFLOAT2& size)
 	TransferVertices();
 }
 
-void IKESprite::SetScale(float scale) {
+void IKESprite::SetScale(float scale)
+{
 	size.x *= scale;
 	size.y *= scale;
 }
@@ -468,22 +492,25 @@ void IKESprite::Draw()
 	// 定数バッファにデータ転送
 	ConstBufferData* constMap = nullptr;
 	HRESULT result = this->constBuff->Map(0, nullptr, (void**)&constMap);
-	if (SUCCEEDED(result)) {
+	if (SUCCEEDED(result))
+	{
 		constMap->color = this->color;
-		constMap->mat = this->matWorld * matProjection;	// 行列の合成	
+		constMap->mat = this->matWorld * matProjection; // 行列の合成	
 		this->constBuff->Unmap(0, nullptr);
 	}
 
 	// 頂点バッファの設定
 	cmdList->IASetVertexBuffers(0, 1, &this->vbView);
 
-	ID3D12DescriptorHeap* ppHeaps[] = { descHeap.Get() };
+	ID3D12DescriptorHeap* ppHeaps[] = {descHeap.Get()};
 	// デスクリプタヒープをセット
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 	// 定数バッファビューをセット
 	cmdList->SetGraphicsRootConstantBufferView(0, this->constBuff->GetGPUVirtualAddress());
 	// シェーダリソースビューをセット
-	cmdList->SetGraphicsRootDescriptorTable(1, CD3DX12_GPU_DESCRIPTOR_HANDLE(descHeap->GetGPUDescriptorHandleForHeapStart(), this->texNumber, descriptorHandleIncrementSize));
+	cmdList->SetGraphicsRootDescriptorTable(1, CD3DX12_GPU_DESCRIPTOR_HANDLE(
+		                                        descHeap->GetGPUDescriptorHandleForHeapStart(), this->texNumber,
+		                                        descriptorHandleIncrementSize));
 	// 描画コマンド
 	cmdList->DrawInstanced(4, 1, 0, 0);
 }
@@ -494,7 +521,8 @@ void IKESprite::SetColor(const XMFLOAT4& color)
 	// 定数バッファにデータ転送
 	ConstBufferData* constMap = nullptr;
 	HRESULT result = this->constBuff->Map(0, nullptr, (void**)&constMap);
-	if (SUCCEEDED(result)) {
+	if (SUCCEEDED(result))
+	{
 		constMap->color = this->color;
 		this->constBuff->Unmap(0, nullptr);
 	}
@@ -512,13 +540,15 @@ void IKESprite::TransferVertices()
 	float top = (0.0f - anchorpoint.y) * size.y;
 	float bottom = (1.0f - anchorpoint.y) * size.y;
 	if (isFlipX)
-	{// 左右入れ替え
+	{
+		// 左右入れ替え
 		left = -left;
 		right = -right;
 	}
 
 	if (isFlipY)
-	{// 上下入れ替え
+	{
+		// 上下入れ替え
 		top = -top;
 		bottom = -bottom;
 	}
@@ -526,10 +556,10 @@ void IKESprite::TransferVertices()
 	// 頂点データ
 	VertexPosUv vertices[vertNum];
 
-	vertices[LB].pos = { left,	bottom,	0.0f }; // 左下
-	vertices[LT].pos = { left,	top,	0.0f }; // 左上
-	vertices[RB].pos = { right,	bottom,	0.0f }; // 右下
-	vertices[RT].pos = { right,	top,	0.0f }; // 右上
+	vertices[LB].pos = {left, bottom, 0.0f}; // 左下
+	vertices[LT].pos = {left, top, 0.0f}; // 左上
+	vertices[RB].pos = {right, bottom, 0.0f}; // 右下
+	vertices[RT].pos = {right, top, 0.0f}; // 右上
 
 	// テクスチャ情報取得
 	if (texBuff[texNumber])
@@ -541,22 +571,24 @@ void IKESprite::TransferVertices()
 		float tex_top = texBase.y / resDesc.Height;
 		float tex_bottom = (texBase.y + texSize.y) / resDesc.Height;
 
-		vertices[LB].uv = { tex_left,	tex_bottom }; // 左下
-		vertices[LT].uv = { tex_left,	tex_top }; // 左上
-		vertices[RB].uv = { tex_right,	tex_bottom }; // 右下
-		vertices[RT].uv = { tex_right,	tex_top }; // 右上
+		vertices[LB].uv = {tex_left, tex_bottom}; // 左下
+		vertices[LT].uv = {tex_left, tex_top}; // 左上
+		vertices[RB].uv = {tex_right, tex_bottom}; // 右下
+		vertices[RT].uv = {tex_right, tex_top}; // 右上
 	}
 
 	// 頂点バッファへのデータ転送
 	VertexPosUv* vertMap = nullptr;
 	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
-	if (SUCCEEDED(result)) {
+	if (SUCCEEDED(result))
+	{
 		memcpy(vertMap, vertices, sizeof(vertices));
 		vertBuff->Unmap(0, nullptr);
 	}
 }
 
-bool IKESprite::CreateVertices() {
+bool IKESprite::CreateVertices()
+{
 	HRESULT result = S_FALSE;
 
 	// 頂点バッファ生成
@@ -567,15 +599,18 @@ bool IKESprite::CreateVertices() {
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&vertBuff));
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		assert(0);
 		return false;
 	}
 	return true;
 }
 
-bool IKESprite::Finalize() {
-	for (int i = srvCount - 1; i < 0; i--) {
+bool IKESprite::Finalize()
+{
+	for (int i = srvCount - 1; i < 0; i--)
+	{
 		texBuff[i].Reset();
 	}
 	return true;

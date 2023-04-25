@@ -2,36 +2,70 @@
 #include "Audio.h"
 #include "SceneManager.h"
 #include "imgui.h"
+#include "ModelManager.h"
 #include "VariableCommon.h"
 #include "ParticleEmitter.h"
-//‰Šú‰»
+#include "TouchableObject.h"
+#include "../../../LoadBox.h"
+
+//åˆæœŸåŒ–
 void EditorSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
 	OpenBrowser* openbrowser_;
 	openbrowser_ = new OpenBrowser();
 	openbrowser.reset(openbrowser_);
-	dxCommon->SetFullScreen(false);
-	//‹¤’Ê‚Ì‰Šú‰»
+	dxCommon->SetFullScreen(true);
+	//å…±é€šã®åˆæœŸåŒ–
 	BaseInitialize(dxCommon);
 
-	//ƒ|ƒXƒgƒGƒtƒFƒNƒg‚Ìƒtƒ@ƒCƒ‹Žw’è
+	//ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ãƒ•ã‚¡ã‚¤ãƒ«æŒ‡å®š
 	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/NewToneMapPS.hlsl");
 
 	ParticleEmitter::GetInstance()->AllDelete();
 
+	placeObj.reset(new PlaceBox());
+	placeObj->Initialize();
+
+	ground.reset(TouchableObject::Create(ModelManager::GetInstance()->GetModel(ModelManager::Ground)));
+	ground->Initialize();
+	ground->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Ground));
+	ground->SetRotation({ 0.f,0.f,0.f });
+	ground->SetScale({ 1.f,1.f,1.f });
 	PlayPostEffect = true;
+
+	load = new LoadBox();
+	load->Initialize();
+
+
+	load2 = new PlaceMap();
+	load2->Initialize();
 }
-//XV
+//æ›´æ–°
 void EditorSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
-	//‰¹Šy‚Ì‰¹—Ê‚ª•Ï‚í‚é
+load2->Update();
+	lightgroup->Update();
+	//camerawork->SetTarget({ camera->GetEye().x,0.0f,camera->GetEye().z });
+	//camera->SetTarget({ camera->GetEye().x,camera->GetEye().y - 10.f,camera->GetEye().z + 20.f, });
+	camerawork->EditorCamera();
+	camerawork->Update(camera);
+
+	ground->SetColor({ 0.5f,0.5f,0.5f,1.0f });
+	ground->Update();
+	//éŸ³æ¥½ã®éŸ³é‡ãŒå¤‰ã‚ã‚‹
+
+
+	placeObj->Update();
+
+	
+	//load->Update();
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 }
-//•`‰æ
+//æç”»
 void EditorSceneActor::Draw(DirectXCommon* dxCommon)
 {
-	//•`‰æ•û–@
-	//ƒ|ƒXƒgƒGƒtƒFƒNƒg‚ð‚©‚¯‚é‚©
+	//æç”»æ–¹æ³•
+	//ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’ã‹ã‘ã‚‹ã‹
 	if (PlayPostEffect) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
@@ -49,26 +83,74 @@ void EditorSceneActor::Draw(DirectXCommon* dxCommon)
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
 		ImGuiDraw(dxCommon);
+
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 }
-//‰ð•ú
+//è§£æ”¾
 void EditorSceneActor::Finalize()
 {
 }
+//ãƒ¢ãƒ‡ãƒ«ã®æç”»
+void EditorSceneActor::ModelDraw(DirectXCommon* dxCommon) {
+#pragma region 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»
+	//èƒŒæ™¯ã¯å…ˆã«æç”»ã™ã‚‹
+	
+	///
+	IKEObject3d::PreDraw();
+	ground->Draw();
+	load->Draw();
+	placeObj->Draw(dxCommon);
+	IKEObject3d::PostDraw();
+	
+}
 
-//Œã‚ë‚Ì•`‰æ
+//å¾Œã‚ã®æç”»
 void EditorSceneActor::BackDraw(DirectXCommon* dxCommon)
 {
+	ModelDraw(dxCommon);
 }
-//ƒ|ƒXƒgƒGƒtƒFƒNƒg‚ª‚©‚©‚ç‚È‚¢
+//ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆãŒã‹ã‹ã‚‰ãªã„
 void EditorSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 	IKESprite::PreDraw();
+	//load2->Draw();..
 	IKESprite::PostDraw();
 #pragma endregion
 }
-//IMGui‚Ì•`‰æ
+//IMGuiã®æç”»
 void EditorSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
+
+	placeObj->ImGui_Draw();
+	camerawork->ImGuiDraw();
+	load2->ImguiDraw();
+	ImGui::Begin("LoadObject");
+
+	ImGui::SetWindowPos(ImVec2(1000, 0));
+	ImGui::SetWindowSize(ImVec2(300, 200));
+	ImGui::Text("pos  %f", load->GetBox(1)->GetPosition().x);
+	if(ImGui::Button("Load", ImVec2(100, 50)))
+	{
+		if(item[0])
+		placeObj->FileWriting();
+	}
+	
+	ImGui::Checkbox("WoodBox", &item[0]);
+	ImGui::Checkbox("ACube", &item[1]);
+
+	placeObj->SetLoad(item[0]);
+
+	ImGui::End();
+
+	ImGui::Begin("ScneChange");
+
+	if(ImGui::Button("PlayScene",ImVec2(100,50)))
+	{
+		
+	}
+
+	ImGui::End();
+
 }
+

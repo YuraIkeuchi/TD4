@@ -228,6 +228,10 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Editor.cpp" />
+    <ClCompile Include="LoadBox.cpp" />
+    <ClCompile Include="LoadManager.cpp" />
+    <ClCompile Include="PlaceEditorScene.cpp" />
     <ClCompile Include="SourceCode\engine\2d\DebugText.cpp" />
     <ClCompile Include="SourceCode\engine\2d\ImageManager.cpp" />
     <ClCompile Include="SourceCode\engine\2d\PostEffect.cpp" />
@@ -308,11 +312,18 @@
     <ClCompile Include="SourceCode\gamesystem\scene\IkeGame.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\IntroductionScene.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\LoadScene.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\scene\PlaceBox.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\scene\PlaceManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\SceneManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\TitleScene.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ui\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Editor.h" />
+    <ClInclude Include="LoadBox.h" />
+    <ClInclude Include="LoadManager.h" />
+    <ClInclude Include="PlaceEditorScene.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="SourceCode\engine\2d\DebugText.h" />
     <ClInclude Include="SourceCode\engine\2d\ImageManager.h" />
     <ClInclude Include="SourceCode\engine\2d\PostEffect.h" />
@@ -399,6 +410,8 @@
     <ClInclude Include="SourceCode\gamesystem\scene\IkeGame.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\IntroductionScene.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\LoadScene.h" />
+    <ClInclude Include="SourceCode\gamesystem\scene\PlaceBox.h" />
+    <ClInclude Include="SourceCode\gamesystem\scene\PlaceManager.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\SceneManager.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\TitleScene.h" />
     <ClInclude Include="SourceCode\gamesystem\ui\UI.h" />
@@ -407,6 +420,9 @@
     <ProjectReference Include="imgui\imgui.vcxproj">
       <Project>{23101fbf-b209-43f0-bebd-d26107edea31}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SoulHunter.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

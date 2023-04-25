@@ -14,7 +14,8 @@ class IKEMesh
 {
 private: // エイリアス
 	// Microsoft::WRL::を省略
-	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+	template <class T>
+	using ComPtr = Microsoft::WRL::ComPtr<T>;
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -28,7 +29,7 @@ public: // サブクラス
 	{
 		XMFLOAT3 pos; // xyz座標
 		XMFLOAT3 normal; // 法線ベクトル
-		XMFLOAT2 uv;  // uv座標
+		XMFLOAT2 uv; // uv座標
 	};
 
 public: // 静的メンバ関数
@@ -50,7 +51,7 @@ public: // メンバ関数
 	void AddIndex(unsigned short index);
 	// 頂点データの数を取得
 	// <returns>頂点データの数</returns>
-	inline size_t GetVertexCount() { return vertices.size(); }
+	size_t GetVertexCount() { return vertices.size(); }
 	//エッジ平滑化データの追加
 	void AddSmoothData(const unsigned short& indexPosition, const unsigned short& indexVertex);
 	//平滑化された頂点法線の計算
@@ -69,13 +70,13 @@ public: // メンバ関数
 	void Draw(ID3D12GraphicsCommandList* cmdList);
 	/// </summary>
 /// <returns>頂点配列</returns>
-	inline const std::vector<VertexPosNormalUv>& GetVertices() { return vertices; }
+	const std::vector<VertexPosNormalUv>& GetVertices() { return vertices; }
 
 	/// <summary>
 	/// インデックス配列を取得
 	/// </summary>
 	/// <returns>インデックス配列</returns>
-	inline const std::vector<unsigned short>& GetIndices() { return indices; }
+	const std::vector<unsigned short>& GetIndices() { return indices; }
 
 
 private: // メンバ変数
@@ -98,4 +99,3 @@ private: // メンバ変数
 	// マテリアル
 	IKEMaterial* material = nullptr;
 };
-

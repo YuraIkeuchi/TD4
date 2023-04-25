@@ -32,7 +32,7 @@ void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 			SceneManager::GetInstance()->ChangeScene("LOAD");
 		}
 		else {
-			SceneManager::GetInstance()->ChangeScene("GAMESCENE");
+			SceneManager::GetInstance()->ChangeScene("EDITORSCENE");
 		}
 		Audio::GetInstance()->StopWave(0);
 	}

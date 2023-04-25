@@ -12,16 +12,17 @@
 
 class IKEFBXObject3d
 {
-protected:	//エイリアス
+protected: //エイリアス
 	//Microosoft::WRL::を省略
-	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+	template <class T>
+	using ComPtr = Microsoft::WRL::ComPtr<T>;
 	//DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
 
-public:	//静的メンバ関数
+public: //静的メンバ関数
 	//setter
 	static void SetDevice(ID3D12Device* device) { IKEFBXObject3d::device = device; }
 	static void SetCamera(Camera* camera) { IKEFBXObject3d::camera = camera; }
@@ -31,7 +32,7 @@ public:	//静的メンバ関数
 	/// </summary>
 	static void CreateGraphicsPipeline();
 
-private:	//静的メンバ変数
+private: //静的メンバ変数
 	//デバイス
 	static ID3D12Device* device;
 	//カメラ
@@ -41,16 +42,16 @@ private:	//静的メンバ変数
 	//パイプラインステートオブジェクト
 	static ComPtr<ID3D12PipelineState> pipelinestate;
 
-public:	//サブクラス
+public: //サブクラス
 	//定数バッファ用データ構造体（座標変換行列）
 	struct ConstBufferDataTransform
 	{
 		bool ShadeSet;
-		XMMATRIX viewproj;	//ビュープロジェクション行列
-		XMMATRIX world;		//ワールド行列
-		XMFLOAT3 cameraPos;	//カメラ行列（ワールド座標）
-		float pad;//パディング
-		XMFLOAT4 color;//色情報
+		XMMATRIX viewproj; //ビュープロジェクション行列
+		XMMATRIX world; //ワールド行列
+		XMFLOAT3 cameraPos; //カメラ行列（ワールド座標）
+		float pad; //パディング
+		XMFLOAT4 color; //色情報
 	};
 
 	// アニメーション用データ構造体
@@ -60,7 +61,7 @@ public:	//サブクラス
 		FbxTakeInfo* info;
 	};
 
-public:	//メンバ関数
+public: //メンバ関数
 
 	/// <summary>
 	/// 初期化
@@ -128,25 +129,25 @@ public:	//メンバ関数
 	int GetFbxTime_End() { return endTime.GetSecondCount(); }
 	//
 	int GetFbxTime_Current() { return currentTime.GetSecondCount(); }
-protected:	//メンバ変数
+protected: //メンバ変数
 	//定数バッファ
 	ComPtr<ID3D12Resource> constBuffTransform;
 	//ディゾルブ
 	float Disolve = -1.0f;
-	XMFLOAT4 Addcolor = { 1,1,1,1 };
+	XMFLOAT4 Addcolor = {1, 1, 1, 1};
 	//ローカルスケール
-	XMFLOAT3 scale = { 1, 1, 1 };
+	XMFLOAT3 scale = {1, 1, 1};
 	//X,Y,Z軸回りのローカル回転角
-	XMFLOAT3 rotation = { 0, 0, 0 };
+	XMFLOAT3 rotation = {0, 0, 0};
 	//ローカル座標
-	XMFLOAT3 position = { 0, 0, 0 };
+	XMFLOAT3 position = {0, 0, 0};
 	//色
-	XMFLOAT4 color = { 1.0f,1.0f,1.0f,1.0f };
+	XMFLOAT4 color = {1.0f, 1.0f, 1.0f, 1.0f};
 	//ローカルワールド変換行列
 	XMMATRIX matWorld;
 	//モデル
 	IKEFBXModel* model = nullptr;
-	bool ChangeColor = false;//色変更
+	bool ChangeColor = false; //色変更
 
 	bool ShadeSet = true;
 	//定数バッファ（スキン）
@@ -165,7 +166,7 @@ protected:	//メンバ変数
 	std::vector<Animation> animationData;
 	//逆再生かどうか
 	bool m_Reverse = false;
-public:	//定数
+public: //定数
 	//主に追従関係
 	XMMATRIX matScale, matRot, matTrans;
 	XMMATRIX WorldMat;
@@ -174,6 +175,7 @@ public:	//定数
 	static const int MAX_BONES = 70;
 	int BoneNumber = 0;
 	int m_FBXTimer = 0;
+
 	//定数バッファ用データ構造体（スキニング）
 	struct ConstBufferDataSkin
 	{

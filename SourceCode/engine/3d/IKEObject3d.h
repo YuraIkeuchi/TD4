@@ -184,6 +184,8 @@ public: // メンバ関数
 	//当たり判定セット
 	void SetCollider(BaseCollider* collider);
 
+	void CollisionField();
+
 	//コールバック
 	virtual void OnCollision(const CollisionInfo& info) {}
 
@@ -268,8 +270,7 @@ protected: // メンバ変数
 	bool isBillboard = false;
 	//クラス名
 	const char* name = nullptr;
-	//コライダー
-	BaseCollider* collider = nullptr;
+
 	//アフィン変換用
 	bool Affine = false;
 
@@ -278,6 +279,22 @@ protected: // メンバ変数
 private:
 	XMMATRIX matScale, matRot, matTrans;
 
+public:
+	//コライダー
+	BaseCollider* collider = nullptr;
+	private:
+	//接地フラグ
+	bool onGround = true;
+	//落下ベクトル
+	DirectX::XMVECTOR fallV = {};
+	float radius_adjustment = 0.0f;
+	//FBX
+	int FallGroundTime = 0;
 
+private:
+	std::string modelname;
+public:
+	 void SetModeName(std::string name) { modelname= name; }
+	 std::string GetModelName() { return modelname; }
 };
 

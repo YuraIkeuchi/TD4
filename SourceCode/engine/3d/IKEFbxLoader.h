@@ -9,8 +9,8 @@
 
 class IKEFbxLoader
 {
-private:	//エイリアス
-//std::を省略
+private: //エイリアス
+	//std::を省略
 	using string = std::string;
 
 
@@ -88,7 +88,7 @@ private:
 	FbxImporter* fbxImporter = nullptr;
 
 
-public:	//定数
+public: //定数
 	//モデル格納ルートパス
 	static const string baseDirectory;
 	//上記のテクスチャ版

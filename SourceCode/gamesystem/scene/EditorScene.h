@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseScene.h"
+
 #include "EditorSceneActor.h"
 //ゲームプレイシーン
 class EditorScene : public BaseScene

@@ -3,14 +3,13 @@
 #include "Camera.h"
 #include "Shake.h"
 #include <memory>
-#include "Helper.h"
 #include "Player.h"
-using namespace std;         //  –¼‘O‹óŠÔw’è
+using namespace std;         //  åå‰ç©ºé–“æŒ‡å®š
 
-//ƒQ[ƒ€‚ÌƒJƒƒ‰‚Ì“®‚«
+//ã‚²ãƒ¼ãƒ ã®ã‚«ãƒ¡ãƒ©ã®å‹•ã
 class CameraWork {
 private:
-	// DirectX::‚ğÈ—ª
+	// DirectX::ã‚’çœç•¥
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
@@ -19,23 +18,26 @@ private:
 
 public:
 	CameraWork();
-	void Update(DebugCamera* camera);//XV
+	void Update(DebugCamera* camera);//æ›´æ–°
 	void ImGuiDraw();
+
+public:
+	void EditorCamera();
 public:
 	//getter setter
+
 	static void SetPlayer(Player* player) { CameraWork::player = player; }
-protected: //Ã“Iƒƒ“ƒo•Ï”
+protected: //é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°
 	static Player* player;
 private:
-	//ƒNƒ‰ƒX
-	unique_ptr<Helper> helper;
+	//ã‚¯ãƒ©ã‚¹
 	unique_ptr<Shake> shake = nullptr;
-	//ƒC[ƒWƒ“ƒO‚Ì•Ï”
+	//ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã®å¤‰æ•°
 	float m_Frame = 0.0f;
 	XMFLOAT3 m_AfterEye = { 0.0f,0.0f,0.0f };
 	XMFLOAT3 m_AfterTarget = { 0.0f,0.0f,0.0f };
-	//‹“_À•W
+	//è¦–ç‚¹åº§æ¨™
 	XMFLOAT3 m_eyePos = { 0.0f,0.0f,0.0f };
-	//’‹“_À•W
+	//æ³¨è¦–ç‚¹åº§æ¨™
 	XMFLOAT3 m_targetPos = { 0.0f,0.0f,0.0f };
 };

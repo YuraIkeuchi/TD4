@@ -1,4 +1,3 @@
-
 #include "IKETexture.h"
 
 #include <d3dcompiler.h>
@@ -10,10 +9,10 @@ using namespace DirectX;
 using namespace Microsoft::WRL;
 
 /// 静的メンバ変数の実体
-const float IKETexture::radius = 5.0f;				// 底面の半径
-const float IKETexture::prizmHeight = 8.0f;			// 柱の高さ
+const float IKETexture::radius = 5.0f; // 底面の半径
+const float IKETexture::prizmHeight = 8.0f; // 柱の高さ
 ComPtr<ID3DBlob> IKETexture::vsBlob; // 頂点シェーダオブジェクト
-ComPtr<ID3DBlob> IKETexture::psBlob;	// ピクセルシェーダオブジェクト
+ComPtr<ID3DBlob> IKETexture::psBlob; // ピクセルシェーダオブジェクト
 ComPtr<ID3DBlob> IKETexture::errorBlob; // エラーオブジェクト
 ID3D12Device* IKETexture::device = nullptr;
 UINT IKETexture::descriptorHandleIncrementSize = 0;
@@ -28,9 +27,9 @@ CD3DX12_CPU_DESCRIPTOR_HANDLE IKETexture::cpuDescHandleSRV;
 CD3DX12_GPU_DESCRIPTOR_HANDLE IKETexture::gpuDescHandleSRV;
 XMMATRIX IKETexture::matView{};
 XMMATRIX IKETexture::matProjection{};
-XMFLOAT3 IKETexture::eye = { 0, 0, -50.0f };
-XMFLOAT3 IKETexture::target = { 0, 0, 0 };
-XMFLOAT3 IKETexture::up = { 0, 1, 0 };
+XMFLOAT3 IKETexture::eye = {0, 0, -50.0f};
+XMFLOAT3 IKETexture::target = {0, 0, 0};
+XMFLOAT3 IKETexture::up = {0, 1, 0};
 D3D12_VERTEX_BUFFER_VIEW IKETexture::vbView{};
 D3D12_INDEX_BUFFER_VIEW IKETexture::ibView{};
 IKETexture::VertexPosNormalUv IKETexture::vertices[vertexCount];
@@ -42,7 +41,6 @@ Camera* IKETexture::camera = nullptr;
 
 IKETexture::IKETexture(UINT texNumber, const XMFLOAT3& position, const XMFLOAT3& size, const XMFLOAT4& color)
 {
-
 	this->position = position;
 	this->scale = size;
 	//this->anchorpoint = anchorpoint;//
@@ -52,7 +50,8 @@ IKETexture::IKETexture(UINT texNumber, const XMFLOAT3& position, const XMFLOAT3&
 	//this->texSize = size;
 }
 
-bool IKETexture::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, int window_width, int window_height, Camera* camera)
+bool IKETexture::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, int window_width,
+                                  int window_height, Camera* camera)
 {
 	// nullptrチェック
 	assert(device);
@@ -90,7 +89,7 @@ void IKETexture::PreDraw(int DrawNumber)
 void IKETexture::PostDraw()
 {
 	// コマンドリストを解除
-	IKETexture::cmdList = nullptr;
+	cmdList = nullptr;
 }
 
 IKETexture* IKETexture::Create(UINT texNumber, const XMFLOAT3& position, const XMFLOAT3& size, const XMFLOAT4& color)
@@ -103,17 +102,18 @@ IKETexture* IKETexture::Create(UINT texNumber, const XMFLOAT3& position, const X
 		// テクスチャ情報取得
 		D3D12_RESOURCE_DESC resDesc = texbuff[texNumber]->GetDesc();
 		// スプライトのサイズをテクスチャのサイズに設定
-
 	}
 
 	// Spriteのインスタンスを生成
-	IKETexture* texture = new IKETexture(texNumber, position, size, color);
-	if (texture == nullptr) {
+	auto texture = new IKETexture(texNumber, position, size, color);
+	if (texture == nullptr)
+	{
 		return nullptr;
 	}
 
 	// 初期化
-	if (!texture->Initialize()) {
+	if (!texture->Initialize())
+	{
 		delete texture;
 		assert(0);
 		return nullptr;
@@ -160,10 +160,11 @@ bool IKETexture::InitializeDescriptorHeap()
 	// デスクリプタヒープを生成	
 	D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc = {};
 	descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;//シェーダから見えるように
+	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE; //シェーダから見えるように
 	descHeapDesc.NumDescriptors = srvCount; // シェーダーリソースビュー1つ
-	result = device->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeap));//生成
-	if (FAILED(result)) {
+	result = device->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeap)); //生成
+	if (FAILED(result))
+	{
 		assert(0);
 		return false;
 	}
@@ -190,31 +191,33 @@ void IKETexture::InitializeCamera(int window_width, int window_height)
 	// 透視投影による射影行列の生成
 	matProjection = XMMatrixPerspectiveFovLH(
 		XMConvertToRadians(60.0f),
-		(float)window_width / window_height,
+		static_cast<float>(window_width) / window_height,
 		0.1f, 1000.0f
 	);
 }
 
-bool IKETexture::LoadShader() {
+bool IKETexture::LoadShader()
+{
 	HRESULT result = S_FALSE;
 
 	// 頂点シェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shaders/OBJVertexShader.hlsl",	// シェーダファイル名
+		L"Resources/shaders/OBJVertexShader.hlsl", // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"main", "vs_5_0",	// エントリーポイント名、シェーダーモデル指定
+		"main", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
 		0,
 		&vsBlob, &errorBlob);
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		// errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
 
-		std::copy_n((char*)errorBlob->GetBufferPointer(),
-			errorBlob->GetBufferSize(),
-			errstr.begin());
+		std::copy_n(static_cast<char*>(errorBlob->GetBufferPointer()),
+		            errorBlob->GetBufferSize(),
+		            errstr.begin());
 		errstr += "\n";
 		// エラー内容を出力ウィンドウに表示
 		OutputDebugStringA(errstr.c_str());
@@ -223,27 +226,29 @@ bool IKETexture::LoadShader() {
 
 	// ピクセルシェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shaders/OBJPixelShader.hlsl",	// シェーダファイル名
+		L"Resources/shaders/OBJPixelShader.hlsl", // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"main", "ps_5_0",	// エントリーポイント名、シェーダーモデル指定
+		"main", "ps_5_0", // エントリーポイント名、シェーダーモデル指定
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
 		0,
 		&psBlob, &errorBlob);
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		// errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
 
-		std::copy_n((char*)errorBlob->GetBufferPointer(),
-			errorBlob->GetBufferSize(),
-			errstr.begin());
+		std::copy_n(static_cast<char*>(errorBlob->GetBufferPointer()),
+		            errorBlob->GetBufferSize(),
+		            errstr.begin());
 		errstr += "\n";
 		// エラー内容を出力ウィンドウに表示
 		OutputDebugStringA(errstr.c_str());
 		exit(1);
 	}
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		return result;
 	}
 
@@ -256,17 +261,20 @@ bool IKETexture::AlphaInitializeGraphicsPipeline()
 
 	// 頂点レイアウト
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
-		{ // xy座標(1行で書いたほうが見やすい)
+		{
+			// xy座標(1行で書いたほうが見やすい)
 			"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
-		{ // 法線ベクトル(1行で書いたほうが見やすい)
+		{
+			// 法線ベクトル(1行で書いたほうが見やすい)
 			"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
-		{ // uv座標(1行で書いたほうが見やすい)
+		{
+			// uv座標(1行で書いたほうが見やすい)
 			"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0,
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
@@ -291,7 +299,7 @@ bool IKETexture::AlphaInitializeGraphicsPipeline()
 
 	// レンダーターゲットのブレンド設定
 	D3D12_RENDER_TARGET_BLEND_DESC blenddesc{};
-	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;	// RBGA全てのチャンネルを描画
+	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL; // RBGA全てのチャンネルを描画
 	blenddesc.BlendEnable = true;
 	//半合成
 	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
@@ -322,7 +330,7 @@ bool IKETexture::AlphaInitializeGraphicsPipeline()
 	// 図形の形状設定（三角形）
 	gpipeline.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
-	gpipeline.NumRenderTargets = 1;	// 描画対象は1つ
+	gpipeline.NumRenderTargets = 1; // 描画対象は1つ
 	gpipeline.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM; // 0～255指定のRGBA
 	//DXGI_FORMAT_R8G8B8A8_UNORM_SRGB
 	gpipeline.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
@@ -337,18 +345,22 @@ bool IKETexture::AlphaInitializeGraphicsPipeline()
 	rootparams[1].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
 
 	// スタティックサンプラー
-	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
+	auto samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
 
 	// ルートシグネチャの設定
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
-	rootSignatureDesc.Init_1_0(_countof(rootparams), rootparams, 1, &samplerDesc, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+	rootSignatureDesc.Init_1_0(_countof(rootparams), rootparams, 1, &samplerDesc,
+	                           D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
 	ComPtr<ID3DBlob> rootSigBlob;
 	// バージョン自動判定のシリアライズ
-	result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSigBlob, &errorBlob);
+	result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSigBlob,
+	                                               &errorBlob);
 	// ルートシグネチャの生成
-	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(), IID_PPV_ARGS(&rootsignature[ALPHA]));
-	if (FAILED(result)) {
+	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
+	                                     IID_PPV_ARGS(&rootsignature[ALPHA]));
+	if (FAILED(result))
+	{
 		return result;
 	}
 
@@ -357,7 +369,8 @@ bool IKETexture::AlphaInitializeGraphicsPipeline()
 	// グラフィックスパイプラインの生成
 	result = device->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelinestate[ALPHA]));
 
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		return result;
 	}
 
@@ -371,17 +384,20 @@ bool IKETexture::AddInitializeGraphicsPipeline()
 
 	// 頂点レイアウト
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
-		{ // xy座標(1行で書いたほうが見やすい)
+		{
+			// xy座標(1行で書いたほうが見やすい)
 			"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
-		{ // 法線ベクトル(1行で書いたほうが見やすい)
+		{
+			// 法線ベクトル(1行で書いたほうが見やすい)
 			"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
-		{ // uv座標(1行で書いたほうが見やすい)
+		{
+			// uv座標(1行で書いたほうが見やすい)
 			"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0,
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
@@ -406,7 +422,7 @@ bool IKETexture::AddInitializeGraphicsPipeline()
 
 	// レンダーターゲットのブレンド設定
 	D3D12_RENDER_TARGET_BLEND_DESC blenddesc{};
-	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;	// RBGA全てのチャンネルを描画
+	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL; // RBGA全てのチャンネルを描画
 	blenddesc.BlendEnable = true;
 	//半合成
 	//blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
@@ -437,7 +453,7 @@ bool IKETexture::AddInitializeGraphicsPipeline()
 	// 図形の形状設定（三角形）
 	gpipeline.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
-	gpipeline.NumRenderTargets = 1;	// 描画対象は1つ
+	gpipeline.NumRenderTargets = 1; // 描画対象は1つ
 	gpipeline.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM; // 0～255指定のRGBA
 	//DXGI_FORMAT_R8G8B8A8_UNORM_SRGB
 	gpipeline.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
@@ -452,18 +468,22 @@ bool IKETexture::AddInitializeGraphicsPipeline()
 	rootparams[1].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
 
 	// スタティックサンプラー
-	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
+	auto samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
 
 	// ルートシグネチャの設定
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
-	rootSignatureDesc.Init_1_0(_countof(rootparams), rootparams, 1, &samplerDesc, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+	rootSignatureDesc.Init_1_0(_countof(rootparams), rootparams, 1, &samplerDesc,
+	                           D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
 	ComPtr<ID3DBlob> rootSigBlob;
 	// バージョン自動判定のシリアライズ
-	result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSigBlob, &errorBlob);
+	result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSigBlob,
+	                                               &errorBlob);
 	// ルートシグネチャの生成
-	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(), IID_PPV_ARGS(&rootsignature[ADD]));
-	if (FAILED(result)) {
+	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
+	                                     IID_PPV_ARGS(&rootsignature[ADD]));
+	if (FAILED(result))
+	{
 		return result;
 	}
 
@@ -472,7 +492,8 @@ bool IKETexture::AddInitializeGraphicsPipeline()
 	// グラフィックスパイプラインの生成
 	result = device->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelinestate[ADD]));
 
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		return result;
 	}
 
@@ -486,17 +507,20 @@ bool IKETexture::SubInitializeGraphicsPipeline()
 
 	// 頂点レイアウト
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
-		{ // xy座標(1行で書いたほうが見やすい)
+		{
+			// xy座標(1行で書いたほうが見やすい)
 			"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
-		{ // 法線ベクトル(1行で書いたほうが見やすい)
+		{
+			// 法線ベクトル(1行で書いたほうが見やすい)
 			"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
-		{ // uv座標(1行で書いたほうが見やすい)
+		{
+			// uv座標(1行で書いたほうが見やすい)
 			"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0,
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
@@ -521,7 +545,7 @@ bool IKETexture::SubInitializeGraphicsPipeline()
 
 	// レンダーターゲットのブレンド設定
 	D3D12_RENDER_TARGET_BLEND_DESC blenddesc{};
-	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;	// RBGA全てのチャンネルを描画
+	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL; // RBGA全てのチャンネルを描画
 	blenddesc.BlendEnable = true;
 	//半合成
 	//blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
@@ -552,7 +576,7 @@ bool IKETexture::SubInitializeGraphicsPipeline()
 	// 図形の形状設定（三角形）
 	gpipeline.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
-	gpipeline.NumRenderTargets = 1;	// 描画対象は1つ
+	gpipeline.NumRenderTargets = 1; // 描画対象は1つ
 	gpipeline.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM; // 0～255指定のRGBA
 	//DXGI_FORMAT_R8G8B8A8_UNORM_SRGB
 	gpipeline.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
@@ -567,18 +591,22 @@ bool IKETexture::SubInitializeGraphicsPipeline()
 	rootparams[1].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
 
 	// スタティックサンプラー
-	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
+	auto samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
 
 	// ルートシグネチャの設定
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
-	rootSignatureDesc.Init_1_0(_countof(rootparams), rootparams, 1, &samplerDesc, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+	rootSignatureDesc.Init_1_0(_countof(rootparams), rootparams, 1, &samplerDesc,
+	                           D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
 	ComPtr<ID3DBlob> rootSigBlob;
 	// バージョン自動判定のシリアライズ
-	result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSigBlob, &errorBlob);
+	result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSigBlob,
+	                                               &errorBlob);
 	// ルートシグネチャの生成
-	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(), IID_PPV_ARGS(&rootsignature[SUB]));
-	if (FAILED(result)) {
+	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
+	                                     IID_PPV_ARGS(&rootsignature[SUB]));
+	if (FAILED(result))
+	{
 		return result;
 	}
 
@@ -587,7 +615,8 @@ bool IKETexture::SubInitializeGraphicsPipeline()
 	// グラフィックスパイプラインの生成
 	result = device->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelinestate[SUB]));
 
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		return result;
 	}
 
@@ -607,7 +636,8 @@ bool IKETexture::LoadTexture(UINT texnumber, const wchar_t* filename)
 	result = LoadFromWICFile(
 		filename, WIC_FLAGS_NONE,
 		&metadata, scratchImg);
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		assert(0);
 		return false;
 	}
@@ -618,9 +648,9 @@ bool IKETexture::LoadTexture(UINT texnumber, const wchar_t* filename)
 	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
 		metadata.format,
 		metadata.width,
-		(UINT)metadata.height,
-		(UINT16)metadata.arraySize,
-		(UINT16)metadata.mipLevels
+		static_cast<UINT>(metadata.height),
+		static_cast<UINT16>(metadata.arraySize),
+		static_cast<UINT16>(metadata.mipLevels)
 	);
 
 	// テクスチャ用バッファの生成
@@ -631,7 +661,8 @@ bool IKETexture::LoadTexture(UINT texnumber, const wchar_t* filename)
 		D3D12_RESOURCE_STATE_GENERIC_READ, // テクスチャ用指定
 		nullptr,
 		IID_PPV_ARGS(&texbuff[texnumber]));
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		assert(0);
 		return false;
 	}
@@ -640,11 +671,13 @@ bool IKETexture::LoadTexture(UINT texnumber, const wchar_t* filename)
 	result = texbuff[texnumber]->WriteToSubresource(
 		0,
 		nullptr, // 全領域へコピー
-		img->pixels,    // 元データアドレス
-		(UINT)img->rowPitch,  // 1ラインサイズ
-		(UINT)img->slicePitch // 1枚サイズ
+		img->pixels, // 元データアドレス
+		static_cast<UINT>(img->rowPitch), // 1ラインサイズ
+		static_cast<UINT>(img->slicePitch // 1枚サイズ
+		) // 1枚サイズ
 	);
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		assert(0);
 		return false;
 	}
@@ -655,12 +688,13 @@ bool IKETexture::LoadTexture(UINT texnumber, const wchar_t* filename)
 
 	srvDesc.Format = resDesc.Format;
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
+	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D; //2Dテクスチャ
 	srvDesc.Texture2D.MipLevels = 1;
 
 	device->CreateShaderResourceView(texbuff[texnumber].Get(), //ビューと関連付けるバッファ
-		&srvDesc, //テクスチャ設定情報
-		CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeap->GetCPUDescriptorHandleForHeapStart(), texnumber, descriptorHandleIncrementSize)
+	                                 &srvDesc, //テクスチャ設定情報
+	                                 CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeap->GetCPUDescriptorHandleForHeapStart(),
+	                                                               texnumber, descriptorHandleIncrementSize)
 	);
 
 	return true;
@@ -672,16 +706,16 @@ void IKETexture::TextureCreate()
 
 	std::vector<VertexPosNormalUv> realVertices;
 	VertexPosNormalUv verticesSquare[] = {
-		{{-5.0f,-5.0f,0.0f}, { 0,0,1}, {0,1}},
-		{{-5.0f,+5.0f,0.0f}, { 0,0,1}, {0,0}},
-		{{+5.0f,-5.0f,0.0f}, { 0,0,1}, {1,1}},
-		{{+5.0f,+5.0f,0.0f}, { 0,0,1}, {1,0}},
+		{{-5.0f, -5.0f, 0.0f}, {0, 0, 1}, {0, 1}},
+		{{-5.0f, +5.0f, 0.0f}, {0, 0, 1}, {0, 0}},
+		{{+5.0f, -5.0f, 0.0f}, {0, 0, 1}, {1, 1}},
+		{{+5.0f, +5.0f, 0.0f}, {0, 0, 1}, {1, 0}},
 	};
 	std::copy(std::begin(verticesSquare), std::end(verticesSquare), vertices);
 
 	unsigned short indicesSquare[] = {
-		0,1,2,
-		2,1,3,
+		0, 1, 2,
+		2, 1, 3,
 	};
 	std::copy(std::begin(indicesSquare), std::end(indicesSquare), indices);
 
@@ -693,7 +727,8 @@ void IKETexture::TextureCreate()
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&vertBuff));
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		assert(0);
 		return;
 	}
@@ -706,7 +741,8 @@ void IKETexture::TextureCreate()
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&indexBuff));
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		assert(0);
 		return;
 	}
@@ -714,7 +750,8 @@ void IKETexture::TextureCreate()
 	// 頂点バッファへのデータ転送
 	VertexPosNormalUv* vertMap = nullptr;
 	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
-	if (SUCCEEDED(result)) {
+	if (SUCCEEDED(result))
+	{
 		memcpy(vertMap, vertices, sizeof(vertices));
 		vertBuff->Unmap(0, nullptr);
 	}
@@ -722,12 +759,12 @@ void IKETexture::TextureCreate()
 	// インデックスバッファへのデータ転送
 	unsigned short* indexMap = nullptr;
 	result = indexBuff->Map(0, nullptr, (void**)&indexMap);
-	if (SUCCEEDED(result)) {
-
+	if (SUCCEEDED(result))
+	{
 		// 全インデックスに対して
 		for (int i = 0; i < _countof(indices); i++)
 		{
-			indexMap[i] = indices[i];	// インデックスをコピー
+			indexMap[i] = indices[i]; // インデックスをコピー
 		}
 
 		indexBuff->Unmap(0, nullptr);
@@ -745,7 +782,8 @@ void IKETexture::TextureCreate()
 }
 
 
-void IKETexture::UpdateViewMatrix() {
+void IKETexture::UpdateViewMatrix()
+{
 	// ビュー行列の更新
 	//matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
 
@@ -794,9 +832,9 @@ void IKETexture::UpdateViewMatrix() {
 	// 視点座標に-1を掛けた座標
 	XMVECTOR reverseEyePosition = XMVectorNegate(eyePosition);
 	// カメラの位置からワールド原点へのベクトル（カメラ座標系）
-	XMVECTOR tX = XMVector3Dot(cameraAxisX, reverseEyePosition);	// X成分
-	XMVECTOR tY = XMVector3Dot(cameraAxisY, reverseEyePosition);	// Y成分
-	XMVECTOR tZ = XMVector3Dot(cameraAxisZ, reverseEyePosition);	// Z成分
+	XMVECTOR tX = XMVector3Dot(cameraAxisX, reverseEyePosition); // X成分
+	XMVECTOR tY = XMVector3Dot(cameraAxisY, reverseEyePosition); // Y成分
+	XMVECTOR tZ = XMVector3Dot(cameraAxisZ, reverseEyePosition); // Z成分
 	// 一つのベクトルにまとめる
 	XMVECTOR translation = XMVectorSet(tX.m128_f32[0], tY.m128_f32[1], tZ.m128_f32[2], 1.0f);
 	// ビュー行列に平行移動成分を設定
@@ -837,7 +875,7 @@ bool IKETexture::Initialize()
 	HRESULT result;
 	// 定数バッファの生成
 	result = device->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), 	// アップロード可能
+		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), // アップロード可能
 		D3D12_HEAP_FLAG_NONE,
 		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferData) + 0xff) & ~0xff),
 		D3D12_RESOURCE_STATE_GENERIC_READ,
@@ -847,7 +885,8 @@ bool IKETexture::Initialize()
 	return true;
 }
 
-void IKETexture::Update() {
+void IKETexture::Update()
+{
 	assert(camera);
 
 	HRESULT result;
@@ -859,11 +898,12 @@ void IKETexture::Update() {
 	ConstBufferData* constMap = nullptr;
 	result = constBuff->Map(0, nullptr, (void**)&constMap);
 	constMap->color = color;
-	constMap->mat = matWorld * matViewProjection;	// 行列の合成
+	constMap->mat = matWorld * matViewProjection; // 行列の合成
 	constBuff->Unmap(0, nullptr);
 }
 
-void IKETexture::AffineUpdate() {
+void IKETexture::AffineUpdate()
+{
 	HRESULT result;
 	const XMMATRIX& matViewProjection = camera->GetViewProjectionMatrix();
 	const XMFLOAT3& cameraPos = camera->GetEye();
@@ -876,9 +916,10 @@ void IKETexture::AffineUpdate() {
 	ConstBufferData* constMap = nullptr;
 	result = constBuff->Map(0, nullptr, (void**)&constMap);
 	constMap->color = color;
-	constMap->mat = matWorld * matViewProjection;	// 行列の合成
+	constMap->mat = matWorld * matViewProjection; // 行列の合成
 	constBuff->Unmap(0, nullptr);
 }
+
 void IKETexture::Draw()
 {
 	// nullptrチェック
@@ -891,37 +932,44 @@ void IKETexture::Draw()
 	cmdList->IASetIndexBuffer(&ibView);
 
 	// デスクリプタヒープの配列
-	ID3D12DescriptorHeap* ppHeaps[] = { descHeap.Get() };
+	ID3D12DescriptorHeap* ppHeaps[] = {descHeap.Get()};
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 	// 定数バッファビューをセット
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
 	// シェーダリソースビューをセット
-	cmdList->SetGraphicsRootDescriptorTable(1, CD3DX12_GPU_DESCRIPTOR_HANDLE(descHeap->GetGPUDescriptorHandleForHeapStart(), this->texNumber, descriptorHandleIncrementSize));
+	cmdList->SetGraphicsRootDescriptorTable(1, CD3DX12_GPU_DESCRIPTOR_HANDLE(
+		                                        descHeap->GetGPUDescriptorHandleForHeapStart(), this->texNumber,
+		                                        descriptorHandleIncrementSize));
 
 	// 描画コマンド
 	cmdList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
 }
 
-void IKETexture::Finalize() {
-	for (int i = 0; i < 3; i++) {
+void IKETexture::Finalize()
+{
+	for (int i = 0; i < 3; i++)
+	{
 		rootsignature[i].Reset();
 	}
 	descHeap.Reset();
 	vertBuff.Reset();
 	indexBuff.Reset();
-	for (int i = srvCount - 1; i <= 0; i--) {
+	for (int i = srvCount - 1; i <= 0; i--)
+	{
 		texbuff[i].Reset();
 	}
 }
 
-void IKETexture::SetIsBillboard(bool isBillboard) {
+void IKETexture::SetIsBillboard(bool isBillboard)
+{
 	this->isBillboard = isBillboard;
 	UpdateViewMatrix();
 }
 
 
-void IKETexture::UpdateWorldMatrix() {
+void IKETexture::UpdateWorldMatrix()
+{
 	assert(camera);
 
 	XMMATRIX matScale, matRot, matTrans;
@@ -939,7 +987,8 @@ void IKETexture::UpdateWorldMatrix() {
 	matWorld *= matScale; // ワールド行列にスケーリングを反映
 	matWorld *= matRot; // ワールド行列に回転を反映
 	matWorld *= matTrans; // ワールド行列に平行移動を反映
-	if (isBillboard) {
+	if (isBillboard)
+	{
 		const XMMATRIX& matBillboard = camera->GetBillboardMatrix();
 
 		matWorld = XMMatrixIdentity();
@@ -948,5 +997,4 @@ void IKETexture::UpdateWorldMatrix() {
 		matWorld *= matBillboard;
 		matWorld *= matTrans; // ワールド行列に平行移動を反映
 	}
-
 }

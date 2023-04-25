@@ -10,7 +10,8 @@ class IKEModel
 {
 private: // エイリアス
 	// Microsoft::WRL::を省略
-	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+	template <class T>
+	using ComPtr = Microsoft::WRL::ComPtr<T>;
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -42,7 +43,7 @@ public: // メンバ関数
 /// メッシュコンテナを取得
 /// </summary>
 /// <returns>メッシュコンテナ</returns>
-	inline const std::vector<IKEMesh*>& GetMeshes() { return meshes; }
+	const std::vector<IKEMesh*>& GetMeshes() { return meshes; }
 
 
 private: // メンバ変数
@@ -69,4 +70,3 @@ private: // メンバ関数
 	// テクスチャ読み込み
 	void LoadTextures();
 };
-

@@ -1,6 +1,10 @@
 #pragma once
 #include "BaseActor.h"
 #include "OpenBrowser.h"
+#include"PlaceManager.h"
+#include"PlaceBox.h"
+class LoadBox;
+
 /// タイトルシーン
 class EditorSceneActor : public BaseActor {
 public:
@@ -15,8 +19,13 @@ public:
 	void FrontDraw(DirectXCommon* dxCommon);
 	void BackDraw(DirectXCommon* dxCommon);
 	void ImGuiDraw(DirectXCommon* dxCommon);
+	void CollisionField();
 private:
+	bool item[3] = { false,false,false };
+	LoadBox* load;
+	PlaceMap* load2;
 
-
+	unique_ptr<PlaceBox>placeObj;
+	unique_ptr<IKEObject3d>ground;
 	unique_ptr<OpenBrowser> openbrowser;
 };

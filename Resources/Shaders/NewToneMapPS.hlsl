@@ -1,5 +1,5 @@
 #include"PostEffectTest.hlsli"
-Texture2D<float4>tex0:register(t0);//0番スロットに設定されたテクスチャ
+Texture2D<float4> tex0:register(t0); //0番スロットに設定されたテクスチャ
 SamplerState smp:register(s0);
 
 struct TonemapParams
@@ -8,33 +8,17 @@ struct TonemapParams
 	float2 mMid;
 	float3 mShoulder;
 	float2 mBx;
-	float2 mBy;	// only used for InvTonemap
+	float2 mBy; // only used for InvTonemap
 };
-float3 ToneMap(const TonemapParams tc, float3 x);
-float3 InvToneMap(const TonemapParams tc, float3 y);
-bool HasSingularity(const float2 p1, const float2 p2, const float2 p3, const TonemapParams tc);
+
+float3 InvToneMap(TonemapParams tc, float3 y);
+bool HasSingularity(float2 p1, float2 p2, float2 p3, TonemapParams tc);
 void PrepareTonemapParams(float2 p1, float2 p2, float2 p3, out TonemapParams tc);
-float4 main(VSOutput input) : SV_TARGET
+
+
+
+float3 ToneMap(const TonemapParams tc, float3 x)
 {
-	float4 colortex0 = tex0.Sample(smp,input.uv);
-	float3 color = float3(0.0f,0.0f,0.0f);
-	color = colortex0.rgb;
-	float4 outputcolor;
-	float2 p1 = P_1;
-	float2 p2 = P_2;
-	float2 p3 = P_3;
-
-
-	TonemapParams tc;
-	PrepareTonemapParams(p1, p2, p3, tc);
-	color = pow(color,2.2);
-	color = ToneMap(tc, color);
-	color = pow(color, 1.0 / 2.2);
-	outputcolor = float4(color, 1.0);
-	return outputcolor;
-}
-
-float3 ToneMap(const TonemapParams tc, float3 x) {
 	float3 toe = -tc.mToe.x / (x + tc.mToe.y) + tc.mToe.z;
 	float3 mid = tc.mMid.x * x + tc.mMid.y;
 	float3 shoulder = -tc.mShoulder.x / (x + tc.mShoulder.y) + tc.mShoulder.z;
@@ -44,7 +28,8 @@ float3 ToneMap(const TonemapParams tc, float3 x) {
 	return result;
 }
 
-float3 InvToneMap(const TonemapParams tc, float3 y) {
+float3 InvToneMap(const TonemapParams tc, float3 y)
+{
 	float3 inv_toe = -tc.mToe.x / (y - tc.mToe.z) - tc.mToe.y;
 	float3 inv_mid = (y - tc.mMid.y) / tc.mMid.x;
 	float3 inv_shoulder = -tc.mShoulder.x / (y - tc.mShoulder.z) - tc.mShoulder.y;
@@ -54,7 +39,8 @@ float3 InvToneMap(const TonemapParams tc, float3 y) {
 	return result;
 }
 
-bool HasSingularity(const float2 p1, const float2 p2, const float2 p3, const TonemapParams tc) {
+bool HasSingularity(const float2 p1, const float2 p2, const float2 p3, const TonemapParams tc)
+{
 	float2 pointAtInfinity = float2(1e6, 1e6);
 
 	bool hasSingularity = false;
@@ -74,7 +60,8 @@ bool HasSingularity(const float2 p1, const float2 p2, const float2 p3, const Ton
 	return hasSingularity;
 }
 
-void PrepareTonemapParams(float2 p1, float2 p2, float2 p3, out TonemapParams tc) {
+void PrepareTonemapParams(float2 p1, float2 p2, float2 p3, out TonemapParams tc)
+{
 	float denom = p2.x - p1.x;
 	denom = abs(denom) > 1e-5 ? denom : 1e-5;
 	float slope = (p2.y - p1.y) / denom;
@@ -102,4 +89,24 @@ void PrepareTonemapParams(float2 p1, float2 p2, float2 p3, out TonemapParams tc)
 
 	tc.mBx = float2(p1.x, p2.x);
 	tc.mBy = float2(p1.y, p2.y);
+}
+
+float4 main(VSOutput input) : SV_TARGET
+{
+	float4 colortex0 = tex0.Sample(smp, input.uv);
+	float3 color = float3(0.0f, 0.0f, 0.0f);
+	color = colortex0.rgb;
+	float4 outputcolor;
+	float2 p1 = P_1;
+	float2 p2 = P_2;
+	float2 p3 = P_3;
+
+
+	TonemapParams tc;
+	PrepareTonemapParams(p1, p2, p3, tc);
+	color = pow(color, 2.2);
+	color = ToneMap(tc, color);
+	color = pow(color, 1.0 / 2.2);
+	outputcolor = float4(color, 1.0);
+	return outputcolor;
 }

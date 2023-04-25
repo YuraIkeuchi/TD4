@@ -4,6 +4,7 @@
 #include<dinput.h>
 #include"WinApp.h"
 #include <Xinput.h>
+#include<DirectXMath.h>
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
 using namespace Microsoft::WRL;
@@ -11,6 +12,15 @@ using namespace Microsoft::WRL;
 
 class Input
 {
+public:
+	//namespace省略
+	template<class T>using ComPtr = Microsoft::WRL::ComPtr<T>;
+	// DirectX::を省略
+	using XMFLOAT2 = DirectX::XMFLOAT2;
+	using XMFLOAT3 = DirectX::XMFLOAT3;
+	using XMFLOAT4 = DirectX::XMFLOAT4;
+	using XMMATRIX = DirectX::XMMATRIX;
+	using XMVECTOR = DirectX::XMVECTOR;
 public:
 	enum XBOX
 	{
@@ -145,6 +155,8 @@ public:
 	/// <returns>マウス移動量</returns>
 	MouseMove GetMouseMove();
 
+	void MouseMovePos(XMFLOAT2& MovePos);
+
 public:
 	//ゲームパッド
 	bool LeftTriggerStick(int stick);
@@ -159,6 +171,8 @@ public:
 	const LONG& GetPositionY() { return gamePadState2.lY; }
 	const float& GetPosX() { return posX; }
 	const float& GetPosY() { return posY; }
+	const float& GetMousePosX() { return MousePosX; }
+	const float& GetMousePosY() { return MousePosY; }
 	const float& GetRPosX() { return static_cast<float>(xinputState.Gamepad.sThumbLX); }
 	const float& GetRPosY() { return static_cast<float>(xinputState.Gamepad.sThumbLY); }
 	//プッシュ
@@ -182,6 +196,8 @@ private:
 	LONG unresponsive_range2 = 200;
 	float posX = 0;
 	float posY = 0;
+	float MousePosX = 0.0f;
+	float MousePosY = 0.0f;
 	float LeftControllerX = 0;
 	float LeftControllerY = 0;
 
