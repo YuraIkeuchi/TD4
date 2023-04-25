@@ -63,7 +63,7 @@ void SceneManager::ChangeScene(const std::string& sceneName) {
 void SceneManager::AsyncLoad()
 {
 	std::thread t = std::thread([&] {
-		ImageManager::GetInstance()->SecondLoad2D(), ImageManager::GetInstance()->SecondLoadTex2D(), ModelManager::GetInstance()->SecondInitialize(), Block::GetInstance()->ModelInit(); });
+		ImageManager::GetInstance()->SecondLoad2D(), ImageManager::GetInstance()->SecondLoadTex2D(), ModelManager::GetInstance()->SecondInitialize(); });
 
 	//ƒ_ƒ~[‚Å1•b‘Ò‚Â
 	auto sleepTime = std::chrono::seconds(1);

@@ -32,7 +32,6 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 
 	backobj.reset(new BackObj());
 	backobj->Initialize();
-	Block::GetInstance()->Initialize(map, 0, 0);
 }
 //更新
 void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)

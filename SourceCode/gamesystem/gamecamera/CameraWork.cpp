@@ -9,7 +9,6 @@ CameraWork::CameraWork() {
 	
 	Shake* shake_ = new Shake();
 	shake.reset(shake_);
-	helper = make_unique< Helper> ();
 }
 //XV
 void CameraWork::Update(DebugCamera* camera) {

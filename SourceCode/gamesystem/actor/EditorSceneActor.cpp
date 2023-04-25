@@ -1,4 +1,4 @@
-#include "EditorSceneActor.h"
+﻿#include "EditorSceneActor.h"
 #include "Audio.h"
 #include "SceneManager.h"
 #include "imgui.h"
@@ -93,24 +93,16 @@ void EditorSceneActor::Draw(DirectXCommon* dxCommon)
 void EditorSceneActor::Finalize()
 {
 }
-//モデルの描画
-void EditorSceneActor::ModelDraw(DirectXCommon* dxCommon) {
-#pragma region 3Dオブジェクト描画
-	//背景は先に描画する
-	
-	///
+
+//後ろの描画
+void EditorSceneActor::BackDraw(DirectXCommon* dxCommon)
+{
 	IKEObject3d::PreDraw();
 	ground->Draw();
 	load->Draw();
 	placeObj->Draw(dxCommon);
 	IKEObject3d::PostDraw();
-	
-}
 
-//後ろの描画
-void EditorSceneActor::BackDraw(DirectXCommon* dxCommon)
-{
-	ModelDraw(dxCommon);
 }
 //ポストエフェクトがかからない
 void EditorSceneActor::FrontDraw(DirectXCommon* dxCommon) {
