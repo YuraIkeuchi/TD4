@@ -114,7 +114,7 @@ void EditorSceneActor::BackDraw(DirectXCommon* dxCommon)
 //ポストエフェクトがかからない
 void EditorSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 	IKESprite::PreDraw();
-	//load2->Draw();
+	//load2->Draw();..
 	IKESprite::PostDraw();
 #pragma endregion
 }
