@@ -124,22 +124,9 @@ void LoadSceneActor::CreateStage() {
 }
 
 void LoadSceneActor::IntroUpdate() {
-
-	m_SceneState = SceneState::MainState;
-}
-void LoadSceneActor::MainUpdate() {
-
-	//ã‰º‰^“®‚Ì’†S
-	constexpr XMFLOAT2 CenterPos = { 100.f,630.0f };
-	//‰Á‘¬“x
-	constexpr float AddMovingVal = 4.0f;
 	//Å‰‚Ì•¶š‚¾‚¯‚¸‚Á‚Æ“®‚©‚·
 	m_SpritesAngle[0] += AddMovingVal;
 
-	//•¶š‚ÌŠÔŠu
-	constexpr float WordsInter = 100.f;
-	//c²‚ÌŠÔŠu
-	const float space = 30.0f;
 	for (int i = 0; i < SpriteMax; i++) {
 		if (i != 0 && m_SpritesAngle[i - 1] > AddMovingVal * 5.0f) {
 			m_SpritesAngle[i] += AddMovingVal;
@@ -148,11 +135,28 @@ void LoadSceneActor::MainUpdate() {
 		m_SpritesPos[i].y = CenterPos.y + sinf(m_SpritesAngle[i] * PI / PI_180) * space;
 		m_Sprites[i]->SetPosition(m_SpritesPos[i]);
 	}
-
-
 	if (!SceneManager::GetInstance()->GetLoad()) {
+		for (int i = 0; i < SpriteMax; i++) {
+			m_StopPos[i] = m_SpritesPos[i];
+		}
+		m_SceneState = SceneState::MainState;
+	}
+}
+void LoadSceneActor::MainUpdate() {
+	m_LoadTimer++;
+	float frame = (float)m_LoadTimer / (float)LoadTimerMax;
+	for (int i = 0; i < SpriteMax; i++) {
+		m_SpritesPos[i].x = Ease(In,Linear,frame, m_StopPos[i].x, CenterPos.x + static_cast<float>(i) * WordsInter);
+		m_SpritesPos[i].y = Ease(In, Linear, frame, m_StopPos[i].y, 630.0f);
+		m_Sprites[i]->SetPosition(m_SpritesPos[i]); 
+
+	}
+	//ˆê’èŠÔ‚ÅƒV[ƒ“‚ª•Ï‚í‚é
+	if (m_LoadTimer >= LoadTimerMax) {
+		m_LoadTimer = 0;
 		m_SceneState = SceneState::FinishState;
 	}
+
 }
 void LoadSceneActor::FinishUpdate() {
 	m_LoadTimer++;
