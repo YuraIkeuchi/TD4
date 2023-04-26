@@ -314,7 +314,6 @@
     <ClCompile Include="SourceCode\gamesystem\scene\IntroductionScene.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\LoadScene.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\PlaceBox.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\scene\PlaceEditorScene.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\PlaceManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\SceneManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\TitleScene.cpp" />
@@ -344,7 +343,6 @@
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h" />
     <ClInclude Include="SourceCode\engine\camera\ShadowCamera.h" />
     <ClInclude Include="SourceCode\engine\collision\BaseCollider.h" />
-    <ClInclude Include="SourceCode\engine\collision\BlockCollision.h" />
     <ClInclude Include="SourceCode\engine\collision\Collision.h" />
     <ClInclude Include="SourceCode\engine\collision\CollisionAttribute.h" />
     <ClInclude Include="SourceCode\engine\collision\CollisionInfo.h" />
@@ -414,7 +412,6 @@
     <ClInclude Include="SourceCode\gamesystem\scene\IntroductionScene.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\LoadScene.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\PlaceBox.h" />
-    <ClInclude Include="SourceCode\gamesystem\scene\PlaceEditorScene.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\PlaceManager.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\SceneManager.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\TitleScene.h" />
