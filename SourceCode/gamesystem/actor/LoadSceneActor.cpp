@@ -1,4 +1,4 @@
-#include "LoadSceneActor.h"
+﻿#include "LoadSceneActor.h"
 #include "SceneManager.h"
 #include "ImageManager.h"
 #include"Easing.h"
@@ -33,6 +33,7 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	(this->*stateTable[static_cast<size_t>(m_SceneState)])();
 	for (std::unique_ptr<IKEObject3d>& obj : grounds) {
 		obj->Update();
+	}
 	//一定時間でシーンが変わる
 	if (m_LoadTimer >= 200 && !SceneManager::GetInstance()->GetLoad()) {
 		SceneManager::GetInstance()->ChangeScene("GAMESCENE");
