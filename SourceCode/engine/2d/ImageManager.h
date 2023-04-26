@@ -19,6 +19,7 @@ public:
 	enum texName
 	{
 		TITLE,
+		LOADING,
 		PLAY,
 		GAMEOVER,
 		GAMECLEAR,

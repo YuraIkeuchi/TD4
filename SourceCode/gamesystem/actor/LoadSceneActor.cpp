@@ -1,35 +1,46 @@
 #include "LoadSceneActor.h"
 #include "SceneManager.h"
 #include "ImageManager.h"
-//‰Šú‰»
+#include"Easing.h"
+#include "Helper.h"
+
+//åˆæœŸåŒ–
 void LoadSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 
-	BaseInitialize(dxCommon, { 0,10,200 }, {0,0,-200});
+	BaseInitialize(dxCommon, { 0,10,200 }, { 0,0,-200 });
 	if (!s_GameLoop) {
 		SceneManager::GetInstance()->SetLoad(true);
 	}
 	CreateStage();
 
+
+
+
+	for (int i = 0; i < SpriteMax; i++) {
+		m_SpritesPos[i].x = (i + 1) * 100.0f;
+		m_SpritesPos[i].y = 630.0f;
+		m_Sprites[i] = IKESprite::Create(ImageManager::LOADING, m_SpritesPos[i]);
+		m_Sprites[i]->SetAnchorPoint({ 0.5f,0.5f });
+		m_Sprites[i]->SetSize({ 96.0f, 96.0f });
+	}
 }
-//XV
+//æ›´æ–°
 void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
-	Input* input = Input::GetInstance();
 	lightgroup->Update();
 	camerawork->LoadActorUpdate(camera);
+
+	//é–¢æ•°ãƒã‚¤ãƒ³ã‚¿ã§çŠ¶æ…‹ç®¡ç†
+	(this->*stateTable[static_cast<size_t>(m_SceneState)])();
 	for (std::unique_ptr<IKEObject3d>& obj : grounds) {
 		obj->Update();
-	}
-
-	m_LoadTimer++;
-
-	//ˆê’èŠÔ‚ÅƒV[ƒ“‚ª•Ï‚í‚é
+	//ä¸€å®šæ™‚é–“ã§ã‚·ãƒ¼ãƒ³ãŒå¤‰ã‚ã‚‹
 	if (m_LoadTimer >= 200 && !SceneManager::GetInstance()->GetLoad()) {
 		SceneManager::GetInstance()->ChangeScene("GAMESCENE");
 	}
 }
-//•`‰æ
+//æç”»
 void LoadSceneActor::Draw(DirectXCommon* dxCommon) {
-	//ƒ|ƒXƒgƒGƒtƒFƒNƒg‚ğ‚©‚¯‚é‚©
+	//ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’ã‹ã‘ã‚‹ã‹
 	if (PlayPostEffect) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
@@ -39,8 +50,7 @@ void LoadSceneActor::Draw(DirectXCommon* dxCommon) {
 		SpriteDraw();
 		ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
-	}
-	else {
+	} else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
@@ -51,18 +61,22 @@ void LoadSceneActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PostDraw();
 	}
 }
-//‘O–Ê•`‰æ
+//å‰é¢æç”»
 void LoadSceneActor::SpriteDraw() {
 	IKESprite::PreDraw();
+	for (std::unique_ptr<IKESprite>& sprite : m_Sprites) {
+		sprite->Draw();
+	}
+
 	IKESprite::PostDraw();
 }
 void LoadSceneActor::CreateStage() {
 	m_JsonData = JsonLoader::LoadFile("Introduction");
 
 
-	// ƒ‚ƒfƒ‹“Ç‚İ‚İ
+	// ãƒ¢ãƒ‡ãƒ«èª­ã¿è¾¼ã¿
 	modelSkydome = make_unique<IKEModel>();
-	modelSkydome->Initialize("skydome",false);
+	modelSkydome->Initialize("skydome", false);
 	modelGround = make_unique<IKEModel>();
 	modelGround->Initialize("ground", false);
 	modelFighter = make_unique<IKEModel>();
@@ -76,58 +90,107 @@ void LoadSceneActor::CreateStage() {
 	models.insert(std::make_pair("Pine", std::move(modelPine)));
 
 
-	// ƒŒƒxƒ‹ƒf[ƒ^‚©‚çƒIƒuƒWƒFƒNƒg‚ğ¶¬A”z’u
+	// ãƒ¬ãƒ™ãƒ«ãƒ‡ãƒ¼ã‚¿ã‹ã‚‰ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã€é…ç½®
 	for (auto& objectData : m_JsonData->objects) {
-		// ƒtƒ@ƒCƒ‹–¼‚©‚ç“o˜^Ï‚İƒ‚ƒfƒ‹‚ğŒŸõ
+		// ãƒ•ã‚¡ã‚¤ãƒ«åã‹ã‚‰ç™»éŒ²æ¸ˆã¿ãƒ¢ãƒ‡ãƒ«ã‚’æ¤œç´¢
 		IKEModel* model = nullptr;
 		decltype(models)::iterator it = models.find(objectData.fileName);
 		if (it != models.end()) {
 			model = it->second.get();
 		}
 
-		// ƒ‚ƒfƒ‹‚ğw’è‚µ‚Ä3DƒIƒuƒWƒFƒNƒg‚ğ¶¬
-		std::unique_ptr<IKEObject3d> newObj=make_unique<IKEObject3d>();
+		// ãƒ¢ãƒ‡ãƒ«ã‚’æŒ‡å®šã—ã¦3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆ
+		std::unique_ptr<IKEObject3d> newObj = make_unique<IKEObject3d>();
 		newObj->Initialize();
 		newObj->SetModel(model);
 
-		// À•W
+		// åº§æ¨™
 		DirectX::XMFLOAT3 pos;
 		DirectX::XMStoreFloat3(&pos, objectData.translation);
 		newObj->SetPosition(pos);
 
-		// ‰ñ“]Šp
+		// å›è»¢è§’
 		DirectX::XMFLOAT3 rot;
 		DirectX::XMStoreFloat3(&rot, objectData.rotation);
 		newObj->SetRotation(rot);
 
-		// À•W
+		// åº§æ¨™
 		DirectX::XMFLOAT3 scale;
 		DirectX::XMStoreFloat3(&scale, objectData.scaling);
 		newObj->SetScale(scale);
 
-		// ”z—ñ‚É“o˜^
+		// é…åˆ—ã«ç™»éŒ²
 		grounds.push_back(std::move(newObj));
 	}
 
 }
-//”w–Ê•`‰æ
-void LoadSceneActor::BackDraw(DirectXCommon* dxCommon)
-{
+
+void LoadSceneActor::IntroUpdate() {
+
+	m_SceneState = SceneState::MainState;
+}
+void LoadSceneActor::MainUpdate() {
+
+	//ä¸Šä¸‹é‹å‹•ã®ä¸­å¿ƒ
+	constexpr XMFLOAT2 CenterPos = { 100.f,630.0f };
+	//åŠ é€Ÿåº¦
+	constexpr float AddMovingVal = 4.0f;
+	//æœ€åˆã®æ–‡å­—ã ã‘ãšã£ã¨å‹•ã‹ã™
+	m_SpritesAngle[0] += AddMovingVal;
+
+	//æ–‡å­—ã®é–“éš”
+	constexpr float WordsInter = 100.f;
+	//ç¸¦è»¸ã®é–“éš”
+	const float space = 30.0f;
+	for (int i = 0; i < SpriteMax; i++) {
+		if (i != 0 && m_SpritesAngle[i - 1] > AddMovingVal * 5.0f) {
+			m_SpritesAngle[i] += AddMovingVal;
+		}
+		m_SpritesPos[i].x = CenterPos.x + static_cast<float>(i) * WordsInter;
+		m_SpritesPos[i].y = CenterPos.y + sinf(m_SpritesAngle[i] * PI / PI_180) * space;
+		m_Sprites[i]->SetPosition(m_SpritesPos[i]);
+	}
+
+
+	if (!SceneManager::GetInstance()->GetLoad()) {
+		m_SceneState = SceneState::FinishState;
+	}
+}
+void LoadSceneActor::FinishUpdate() {
+	m_LoadTimer++;
+
+	float frame = (float)m_LoadTimer / (float)LoadTimerMax;
+	for (int i = 0; i < SpriteMax; i++) {
+		m_SpritesPos[i].x = (i + 1) * 100.0f;
+		m_SpritesPos[i].y = 630.0f;
+		m_Sprites[i]->SetPosition(m_SpritesPos[i]);
+
+		float rot = Ease(In, Quad, frame, 0, PI_360);
+		m_Sprites[i]->SetRotation(rot);
+	}
+
+	//ä¸€å®šæ™‚é–“ã§ã‚·ãƒ¼ãƒ³ãŒå¤‰ã‚ã‚‹
+	if (m_LoadTimer >= LoadTimerMax) {
+		SceneManager::GetInstance()->ChangeScene("GAMESCENE");
+	}
+}
+//èƒŒé¢æç”»
+void LoadSceneActor::BackDraw(DirectXCommon* dxCommon) {
 	for (std::unique_ptr<IKEObject3d>& obj : grounds) {
 		obj->Draw();
 	}
 
 }
-//ImGui‚Ì•`‰æ
+//ImGuiã®æç”»
 void LoadSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	ImGui::Begin("Load");
 	ImGui::SetWindowPos(ImVec2(0, 0));
 	ImGui::SetWindowSize(ImVec2(200, 200));
 	ImGui::SliderInt("LoadTimer", &m_LoadTimer, 0, 200);
-	
+
 	ImGui::End();
 	camerawork->ImGuiDraw();
 }
-//‰ğ•ú
+//è§£æ”¾
 void LoadSceneActor::Finalize() {
 }

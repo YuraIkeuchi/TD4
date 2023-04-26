@@ -17,9 +17,7 @@ void ClearSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	helper = make_unique< Helper>();
 
 	//タイトル
-	IKESprite* ClearSprite_;
-	ClearSprite_ = IKESprite::Create(ImageManager::GAMECLEAR, { 0.0f,0.0f });
-	ClearSprite.reset(ClearSprite_);
+	ClearSprite = IKESprite::Create(ImageManager::GAMECLEAR, { 0.0f,0.0f });
 }
 //更新
 void ClearSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {

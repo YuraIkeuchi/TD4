@@ -327,7 +327,7 @@ void IKESprite::PostDraw()
 	//IKESprite::cmdList = nullptr;
 }
 
-IKESprite* IKESprite::Create(UINT texNumber, const XMFLOAT2& position, const XMFLOAT4& color,
+std::unique_ptr<IKESprite> IKESprite::Create(UINT texNumber, const XMFLOAT2& position, const XMFLOAT4& color,
                              const XMFLOAT2& anchorpoint, bool isFlipX, bool isFlipY)
 {
 	// 仮サイズ
@@ -342,7 +342,7 @@ IKESprite* IKESprite::Create(UINT texNumber, const XMFLOAT2& position, const XMF
 	}
 
 	// Spriteのインスタンスを生成
-	auto sprite = new IKESprite(texNumber, position, size, color, anchorpoint, isFlipX, isFlipY);
+	auto sprite = std::make_unique<IKESprite>(texNumber, position, size, color, anchorpoint, isFlipX, isFlipY);
 	if (sprite == nullptr)
 	{
 		return nullptr;
@@ -351,7 +351,6 @@ IKESprite* IKESprite::Create(UINT texNumber, const XMFLOAT2& position, const XMF
 	// 初期化
 	if (!sprite->Initialize())
 	{
-		delete sprite;
 		assert(0);
 		return nullptr;
 	}
