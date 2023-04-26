@@ -36,6 +36,9 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 
 	loadfood.reset(new LoadFood());
 	loadfood->Load(player);
+
+	loadghost.reset(new LoadGhost());
+	loadghost->Load(player);
 }
 //更新
 void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
@@ -58,6 +61,7 @@ void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	boss->Update();
 	backobj->Update();
 	loadfood->Update();
+	loadghost->Update();
 	ParticleEmitter::GetInstance()->Update();
 }
 
@@ -101,6 +105,7 @@ void PlaySceneActor::BackDraw(DirectXCommon* dxCommon)
 	player->Draw(dxCommon);
 	boss->Draw(dxCommon);
 	loadfood->Draw(dxCommon);
+	loadghost->Draw(dxCommon);
 	//enemymanager->Draw(dxCommon);
 	backobj->Draw(dxCommon);
 	IKEObject3d::PostDraw();

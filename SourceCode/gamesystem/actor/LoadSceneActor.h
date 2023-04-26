@@ -2,7 +2,6 @@
 #include "BaseActor.h"
 #include "IKESprite.h"
 #include "JsonLoader.h"
-
 #include <array>
 /// タイトルシーン
 class LoadSceneActor : public BaseActor {
@@ -49,7 +48,7 @@ private://メンバ変数
 
 	//Loading
 	enum {
-		text_L=0,
+		text_L = 0,
 		text_O,
 		text_A,
 		text_D,
