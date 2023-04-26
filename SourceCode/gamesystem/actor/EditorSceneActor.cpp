@@ -93,7 +93,6 @@ void EditorSceneActor::Draw(DirectXCommon* dxCommon)
 void EditorSceneActor::Finalize()
 {
 }
-
 //後ろの描画
 void EditorSceneActor::BackDraw(DirectXCommon* dxCommon)
 {
@@ -145,4 +144,3 @@ void EditorSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	ImGui::End();
 
 }
-

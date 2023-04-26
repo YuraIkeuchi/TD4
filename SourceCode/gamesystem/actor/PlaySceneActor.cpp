@@ -35,7 +35,7 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	backobj->Initialize();
 
 	loadfood.reset(new LoadFood());
-	loadfood->Initialize();
+	loadfood->Load(player);
 }
 //更新
 void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
@@ -100,7 +100,7 @@ void PlaySceneActor::BackDraw(DirectXCommon* dxCommon)
 	////各クラスの描画
 	player->Draw(dxCommon);
 	boss->Draw(dxCommon);
-	//loadfood->Draw(dxCommon);
+	loadfood->Draw(dxCommon);
 	//enemymanager->Draw(dxCommon);
 	backobj->Draw(dxCommon);
 	IKEObject3d::PostDraw();

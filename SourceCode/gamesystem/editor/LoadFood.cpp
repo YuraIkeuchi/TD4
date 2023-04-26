@@ -2,7 +2,7 @@
 #include "CsvLoader.h"
 
 //ロード
-void LoadFood::Load()
+void LoadFood::Load(Player* player)
 {
 	auto Size = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/food/food.csv", "Quantity")));
 
@@ -21,6 +21,7 @@ void LoadFood::Load()
 	for (auto i = 0; i < foods.size(); i++) {
 		foods[i] = new Food();
 		foods[i]->Initialize();
+		foods[i]->SetPlayer(player);
 	}
 
 
@@ -28,19 +29,19 @@ void LoadFood::Load()
 	LoadCSV::LoadCsvParam_XMFLOAT3("Resources/csv/food/food.csv", Rot, "ROTATION");
 	LoadCSV::LoadCsvParam_XMFLOAT3("Resources/csv/food/food.csv", Scl, "SCALE");
 
-	//モデル変更に対応
-	for (auto i = 0; i < foods.size(); i++) {
-	
-		//foods[i]->SetPosition(Pos[i]);
-		foods[i]->SetRotation(Rot[i]);
-		foods[i]->SetScale(Scl[i]);
-	}
+	////モデル変更に対応
+	//for (auto i = 0; i < foods.size(); i++) {
+	//
+	//	//foods[i]->SetPosition(Pos[i]);
+	//	foods[i]->SetRotation(Rot[i]);
+	//	foods[i]->SetScale(Scl[i]);
+	//}
 }
 
 //初期化
 void LoadFood::Initialize()
 {
-	Load();
+	//Load();
 }
 
 //更新

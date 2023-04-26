@@ -7,7 +7,7 @@
 #include<sstream>
 #include "Food.h"
 #include "LoadManager.h"
-
+#include "Player.h"
 using namespace DirectX;
 class LoadFood :public LoadManager
 {
@@ -19,7 +19,7 @@ private:
 	std::ifstream file;
 
 public:
-	void Load();
+	void Load(Player* player);
 
 	void Initialize()override;
 

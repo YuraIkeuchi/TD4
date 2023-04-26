@@ -1,5 +1,6 @@
 #pragma once
 #include "ObjCommon.h"
+#include "Player.h"
 //背景の岩など共通背景のクラス
 class Food :
 	public ObjCommon {
@@ -29,17 +30,19 @@ public:
 	/// </summary>
 	void ImGuiDraw();
 private:
-
+	//パーティクル
+	void Particle();
+	//当たり判定
+	bool Collision();
+	//食料生産
+	void BirthFood();
+public://getter setter
+	void SetPlayer(Player* player) { this->player.reset(player); }
 public:
 	//gettersetter
 	const bool& GetAlive() { return m_Alive; }
-	void SetAngle(const XMFLOAT2& Angle) { m_Angle = Angle; }
-	void SetFoodType(const int FoodType) { m_FoodType = FoodType; }
 private:
-	XMFLOAT2 m_Angle = {};//弾の角度
-	float m_AddSpeed = {};//加速度
-	int m_FoodType = {};//弾の種類
-	int m_Timer = {};//出現時間
-	int m_TargetTimer = {};//出現時間の目標
+	unique_ptr<Player> player;
 	bool m_Alive = true;//生存フラグ
+	int m_Timer = 0;
 };
