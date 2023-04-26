@@ -834,7 +834,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="SoulHunter.rc" />
+    <ResourceCompile Include="Kotodama.rc" />
     <Filter Include="SourceCords\gamesystem\character\Various\Boss">
       <UniqueIdentifier>{f544365a-2de9-466f-91a5-2cf88f609396}</UniqueIdentifier>
     </Filter>

@@ -3,6 +3,13 @@
 #include "VariableCommon.h"
 #include "ParticleEmitter.h"
 #include "Helper.h"
+
+void (BaseScene::* BaseScene::stateTable[])() = {
+	&BaseScene::IntroUpdate,//要素0
+	&BaseScene::MainUpdate, //要素1
+	&BaseScene::FinishUpdate,
+};
+
 //共通の初期化
 void BaseScene::BaseInitialize(DirectXCommon* dxCommon) {
 	// デバイスをセット

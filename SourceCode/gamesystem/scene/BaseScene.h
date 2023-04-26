@@ -11,8 +11,7 @@ using namespace std;         //  名前空間指定
 class SceneManager;
 
 //シーンインターフェース
-class BaseScene
-{
+class BaseScene {
 protected:
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -20,6 +19,19 @@ protected:
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
+
+	enum class SceneState : int {
+		IntroState = 0,
+		MainState,
+		FinishState,
+	};
+
+	//関数ポインタ
+	static void(BaseScene::* stateTable[])();
+	//メンバ関数
+	virtual void IntroUpdate() {};
+	virtual void MainUpdate() {};
+	virtual void FinishUpdate() {};
 
 public:
 	//仮想デストラクタ
@@ -45,4 +57,6 @@ public:
 	bool m_PlayPostEffect = false;
 	//ライト
 	LightGroup* lightGroup = nullptr;
+	//シーンでの遷移
+	SceneState m_SceneState = SceneState::IntroState;
 };
