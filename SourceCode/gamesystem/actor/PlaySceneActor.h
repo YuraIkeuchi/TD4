@@ -7,6 +7,7 @@
 #include "EnemyManager.h"
 #include "FirstBoss.h"
 #include "BackObj.h"
+#include "LoadFood.h"
 /// タイトルシーン
 class PlaySceneActor : public BaseActor {
 public:
@@ -23,10 +24,11 @@ public:
 	void ImGuiDraw(DirectXCommon* dxCommon);
 private:
 	//クラス
-	unique_ptr<Player>player;
+	Player* player = nullptr;
 	unique_ptr<EnemyManager> enemymanager;
 	unique_ptr<InterBoss> boss;
 	unique_ptr<UI>ui;
 	unique_ptr<BackObj> backobj;
+	unique_ptr<LoadFood> loadfood;
 	std::vector<std::vector<int>> map; //マップチップ(1マップ)
 };

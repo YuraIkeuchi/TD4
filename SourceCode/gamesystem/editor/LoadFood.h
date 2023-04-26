@@ -1,35 +1,34 @@
 #pragma once
 #include<DirectXMath.h>
-#include"IKEObject3d.h"
 #include<memory>
 
 #include<fstream>
 #include<string>
 #include<sstream>
-
+#include "Food.h"
 #include "LoadManager.h"
-
+#include "Player.h"
 using namespace DirectX;
-class LoadBox:public LoadManager
+class LoadFood :public LoadManager
 {
 private:
-	
-	std::vector<std::string> Name;
 
-	std::vector<std::unique_ptr< IKEObject3d>>boxes;
+	std::vector<std::string> Name;
 	std::string line;
 	std::stringstream popcom;
 	std::ifstream file;
 
 public:
-	void Load();
+	void Load(Player* player);
 
 	void Initialize()override;
 
 	void Update()override;
 
-	void Draw()override;
+	void Draw(DirectXCommon* dxCommon)override;
 
-	IKEObject3d* GetBox(int i) { return boxes[i].get(); }
+	void ImGuiDraw();
+private:
+	std::vector<Food*> foods;
 };
 

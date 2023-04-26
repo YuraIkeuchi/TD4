@@ -300,17 +300,12 @@
     <ClCompile Include="Editor.cpp">
       <Filter>SourceCords\gamesystem\Editor</Filter>
     </ClCompile>
-    <ClCompile Include="PlaceEditorScene.cpp">
-      <Filter>SourceCords\gamesystem\scene\Editor</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\scene\PlaceManager.cpp">
       <Filter>SourceCords\gamesystem\Editor\Base</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\scene\PlaceBox.cpp">
       <Filter>SourceCords\gamesystem\Editor\Box</Filter>
     </ClCompile>
-    <ClCompile Include="LoadBox.cpp" />
-    <ClCompile Include="LoadManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\InterBoss.cpp">
       <Filter>SourceCords\gamesystem\character\Various\Boss\Common</Filter>
     </ClCompile>
@@ -322,6 +317,21 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\Bullet.cpp">
       <Filter>SourceCords\gamesystem\character\Various\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\Food.cpp">
+      <Filter>SourceCords\gamesystem\character\Various\Food</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\editor\LoadManager.cpp">
+      <Filter>SourceCords\gamesystem\Editor\Load</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\editor\LoadBox.cpp">
+      <Filter>SourceCords\gamesystem\Editor\Load</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\PlaceEditorScene.cpp">
+      <Filter>SourceCords\gamesystem\scene\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\editor\LoadFood.cpp">
+      <Filter>SourceCords\gamesystem\Editor\Load</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -584,17 +594,12 @@
       <Filter>SourceCords\gamesystem\Editor</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
-    <ClInclude Include="PlaceEditorScene.h">
-      <Filter>SourceCords\gamesystem\scene\Editor</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\PlaceManager.h">
       <Filter>SourceCords\gamesystem\Editor\Base</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\PlaceBox.h">
       <Filter>SourceCords\gamesystem\Editor\Box</Filter>
     </ClInclude>
-    <ClInclude Include="LoadBox.h" />
-    <ClInclude Include="LoadManager.h" />
     <ClInclude Include="SourceCode\gamesystem\character\InterBoss.h">
       <Filter>SourceCords\gamesystem\character\Various\Boss\Common</Filter>
     </ClInclude>
@@ -606,6 +611,21 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\Bullet.h">
       <Filter>SourceCords\gamesystem\character\Various\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\Food.h">
+      <Filter>SourceCords\gamesystem\character\Various\Food</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\editor\LoadManager.h">
+      <Filter>SourceCords\gamesystem\Editor\Load</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\editor\LoadBox.h">
+      <Filter>SourceCords\gamesystem\Editor\Load</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\PlaceEditorScene.h">
+      <Filter>SourceCords\gamesystem\scene\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\editor\LoadFood.h">
+      <Filter>SourceCords\gamesystem\Editor\Load</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -805,6 +825,12 @@
     </Filter>
     <Filter Include="SourceCords\gamesystem\scene\Editor">
       <UniqueIdentifier>{16b35e6a-87a3-4af8-ac92-d79df5901c11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\character\Various\Food">
+      <UniqueIdentifier>{683ab215-ed20-4d44-9417-2fa886118ef5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\Editor\Load">
+      <UniqueIdentifier>{f8879eb4-b6b9-451c-bc74-08709a37c95d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

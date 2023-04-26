@@ -15,6 +15,7 @@ public:
 	//バッファストリームの再生終了時
 	STDMETHOD_(void, OnStreamEnd) (THIS) {};
 
+
 	//バッファの使用次
 	STDMETHOD_(void, OnBufferStart) (THIS_ void* pBufferContext) {};
 	//バッファの末尾に達したとき

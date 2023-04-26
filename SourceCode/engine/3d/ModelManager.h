@@ -17,7 +17,8 @@ public:
 		Ground,
 		Cube,
 		Box,
-		Boss
+		Boss,
+		Bullet
 	};
 	//FBX‚Ì–¼‘O
 	enum FBXName {
