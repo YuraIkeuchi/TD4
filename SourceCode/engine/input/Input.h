@@ -1,6 +1,7 @@
 #pragma once
 #include<Windows.h>
 #include<wrl.h>
+#define DIRECTINPUT_VERSION 0x0800
 #include<dinput.h>
 #include"WinApp.h"
 #include <Xinput.h>
@@ -8,6 +9,7 @@
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
 using namespace Microsoft::WRL;
+
 
 
 class Input

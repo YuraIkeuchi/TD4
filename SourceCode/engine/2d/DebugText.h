@@ -26,7 +26,7 @@ public: // 静的メンバ関数
 
 private:
 	// スプライトデータの配列
-	IKESprite* spriteDatas[maxCharCount] = {};
+	std::unique_ptr<IKESprite> spriteDatas[maxCharCount] = {};
 	// スプライトデータ配列の添え字番号
 	int spriteIndex = 0;
 };

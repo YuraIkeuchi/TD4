@@ -11,7 +11,7 @@ void UI::Initialize()
 {
 	//‰Šú‰»
 	{
-		TexA.Tex.reset(IKESprite::Create(ImageManager::GAMECLEAR, { 0.f,0.f }));
+		TexA.Tex=IKESprite::Create(ImageManager::GAMECLEAR, { 0.f,0.f });
 		TexA.Tex->SetAnchorPoint({ 0.5f,0.5f });
 		TexA.Scale = { 1000.f,1000.f };
 		TexA.Position = {0.f,0.f};

@@ -2,7 +2,6 @@
 #include <cmath>
 
 #define STICK_MAX 32768.0f
-
 #pragma comment (lib, "xinput.lib")
 Input* Input::GetInstance()
 {

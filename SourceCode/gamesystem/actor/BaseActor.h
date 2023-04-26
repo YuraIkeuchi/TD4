@@ -8,6 +8,8 @@
 #include "IKEFBXObject3d.h"
 #include "IKEObject3d.h"
 #include "CameraWork.h"
+
+
 using namespace std;         //  名前空間指定
 //Actorクラスの既定
 class BaseActor
@@ -19,6 +21,19 @@ protected:
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
+
+	enum class SceneState : int {
+		IntroState = 0,
+		MainState,
+		FinishState,
+	};
+
+	//関数ポインタ
+	static void(BaseActor::* stateTable[])();
+	//メンバ関数
+	virtual void IntroUpdate() {};
+	virtual void MainUpdate() {};
+	virtual void FinishUpdate() {};
 
 public:
 	//仮想デストラクタ
@@ -64,4 +79,6 @@ protected:
 	unique_ptr<CameraWork> camerawork;
 	bool PlayPostEffect = false;
 	
+	//シーンでの遷移
+	SceneState m_SceneState = SceneState::IntroState;
 };
