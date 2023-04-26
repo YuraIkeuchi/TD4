@@ -4,7 +4,7 @@
 //‰Šú‰»
 void LoadSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 
-	BaseInitialize(dxCommon);
+	BaseInitialize(dxCommon, { 0,10,200 }, {0,0,-200});
 	if (!s_GameLoop) {
 		SceneManager::GetInstance()->SetLoad(true);
 	}
@@ -15,6 +15,7 @@ void LoadSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
 	lightgroup->Update();
+	camerawork->LoadActorUpdate(camera);
 	for (std::unique_ptr<IKEObject3d>& obj : grounds) {
 		obj->Update();
 	}
@@ -23,7 +24,7 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 
 	//ˆê’èŽžŠÔ‚ÅƒV[ƒ“‚ª•Ï‚í‚é
 	if (m_LoadTimer >= 200 && !SceneManager::GetInstance()->GetLoad()) {
-		SceneManager::GetInstance()->ChangeScene("GAMESCENE");
+		//SceneManager::GetInstance()->ChangeScene("GAMESCENE");
 	}
 }
 //•`‰æ
@@ -121,10 +122,11 @@ void LoadSceneActor::BackDraw(DirectXCommon* dxCommon)
 void LoadSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	ImGui::Begin("Load");
 	ImGui::SetWindowPos(ImVec2(0, 0));
-	ImGui::SetWindowSize(ImVec2(1280, 720));
+	ImGui::SetWindowSize(ImVec2(200, 200));
 	ImGui::SliderInt("LoadTimer", &m_LoadTimer, 0, 200);
 	
 	ImGui::End();
+	camerawork->ImGuiDraw();
 }
 //‰ð•ú
 void LoadSceneActor::Finalize() {

@@ -17,9 +17,10 @@ private:
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public:
-	CameraWork();
+	CameraWork(XMFLOAT3 eye = { 2.0f, 30.0f, 2.0f }, XMFLOAT3 target = { 2.0f, 0.0f, 3.0f });
 	void Update(DebugCamera* camera);//更新
 	void ImGuiDraw();
+	void LoadActorUpdate(DebugCamera* camera);//更新
 
 public:
 	void EditorCamera();
