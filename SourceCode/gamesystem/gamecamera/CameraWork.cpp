@@ -3,9 +3,9 @@
 #include <Easing.h>
 #include  "imgui.h"
 Player* CameraWork::player = nullptr;
-CameraWork::CameraWork() {
-	m_eyePos = { 2.0f,30.0f,2.0f };
-	m_targetPos = { 2.0f,0.0f,3.0f };
+CameraWork::CameraWork(XMFLOAT3 eye, XMFLOAT3 target) {
+	m_eyePos = eye;
+	m_targetPos = target;
 	
 	Shake* shake_ = new Shake();
 	shake.reset(shake_);
@@ -36,8 +36,14 @@ void CameraWork::ImGuiDraw() {
 	ImGui::SliderFloat("PosY", &m_eyePos.y, 0.f, 20.f);
 	ImGui::SliderFloat("PosZ", &m_eyePos.z, -200.f, 200.f);
 	ImGui::Text("targetX:%f", m_targetPos.x);
-	ImGui::SliderFloat("PosX", &m_targetPos.x, -200.f, 200.f);
+	ImGui::SliderFloat("tPosX", &m_targetPos.x, -200.f, 200.f);
 	ImGui::SliderFloat("tPosY", &m_targetPos.y, 0.0f, 20.0f);
 	ImGui::SliderFloat("tPosZ", &m_targetPos.z, -200.0f, 200.0f);
 	ImGui::End();
+}
+
+void CameraWork::LoadActorUpdate(DebugCamera* camera) {
+	camera->SetEye(m_eyePos);
+	camera->SetTarget(m_targetPos);
+	camera->Update();
 }
