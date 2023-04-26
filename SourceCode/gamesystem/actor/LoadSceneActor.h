@@ -27,6 +27,14 @@ private:
 private://ƒƒ“ƒo•Ï”
 	int m_LoadTimer = 0;
 	const int LoadTimerMax = 60;
+	//ã‰º‰^“®‚Ì’†S
+	const XMFLOAT2 CenterPos = { 100.f,630.0f };
+	//‰Á‘¬“x
+	const float AddMovingVal = 4.0f;
+	//•¶š‚ÌŠÔŠu
+	const float WordsInter = 100.f;
+	//c²‚ÌŠÔŠu
+	const float space = 30.0f;
 
 	JsonData* m_JsonData = nullptr;
 	std::list<std::unique_ptr<IKEObject3d>> grounds;
@@ -54,5 +62,7 @@ private://ƒƒ“ƒo•Ï”
 	std::array<std::unique_ptr<IKESprite>, SpriteMax> m_Sprites = {};
 	std::array<XMFLOAT2, SpriteMax> m_SpritesPos = {};
 	std::array<float, SpriteMax> m_SpritesAngle = {};
+	std::array<XMFLOAT2, SpriteMax> m_StopPos = {};
 
 };
+//m_SceneState = SceneState::FinishState;
