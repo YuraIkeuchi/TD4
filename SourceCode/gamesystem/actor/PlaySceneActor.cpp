@@ -21,17 +21,21 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	PlayPostEffect = true;
 	ParticleEmitter::GetInstance()->AllDelete();
 
-	player.reset(new Player({0.f,0.f,0.f}));
-	camerawork->SetPlayer(player.get());
+	player = new Player({ 0.0f, 0.0f, 0.0f });
+	//player.reset(new Player({0.f,0.f,0.f}));
+	camerawork->SetPlayer(player);
 	ui.reset(new UI());
 	ui->Initialize();
 
 	boss.reset(new FirstBoss());
 	boss->Initialize();
-	enemymanager.reset(new EnemyManager(player.get()));
+	enemymanager.reset(new EnemyManager(player));
 
 	backobj.reset(new BackObj());
 	backobj->Initialize();
+
+	loadfood.reset(new LoadFood());
+	loadfood->Initialize();
 }
 //更新
 void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
@@ -50,9 +54,10 @@ void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 
 	//各クラス更新
 	player->Update();
-	enemymanager->Update();
+	//enemymanager->Update();
 	boss->Update();
 	backobj->Update();
+	loadfood->Update();
 	ParticleEmitter::GetInstance()->Update();
 }
 
@@ -95,7 +100,8 @@ void PlaySceneActor::BackDraw(DirectXCommon* dxCommon)
 	////各クラスの描画
 	player->Draw(dxCommon);
 	boss->Draw(dxCommon);
-	enemymanager->Draw(dxCommon);
+	//loadfood->Draw(dxCommon);
+	//enemymanager->Draw(dxCommon);
 	backobj->Draw(dxCommon);
 	IKEObject3d::PostDraw();
 }
@@ -111,4 +117,5 @@ void PlaySceneActor::FrontDraw(DirectXCommon* dxCommon) {
 //IMGuiの描画
 void PlaySceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	player->ImGuiDraw();
+	loadfood->ImGuiDraw();
 }

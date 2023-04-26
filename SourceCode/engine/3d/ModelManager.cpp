@@ -19,9 +19,10 @@ void ModelManager::StartInitialize()
 void ModelManager::SecondInitialize()
 {
 	LoadModel(Ground, "ground");
-	LoadModel(Cube, "cube");
+	LoadModel(Cube, "box1x1x1");
 	LoadModel(Box, "UVSphere");
 	LoadModel(Boss, "chr_knight");
+	LoadModel(Bullet, "UVSphere");
 	LoadFBXModel(PLAYER, "PlayerFBXNew");
 }
 

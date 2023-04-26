@@ -1,6 +1,7 @@
 #pragma once
 #include"IKEObject3d.h"
 #include<DirectXMath.h>
+#include "DirectXCommon.h"
 #include<memory>
 
 using namespace DirectX;
@@ -22,7 +23,7 @@ public:
 	virtual void Update() = 0;
 
 	/*•`‰æ*/
-	virtual void Draw()=0;
+	virtual void Draw(DirectXCommon* dxCommon)=0;
 
 
 };

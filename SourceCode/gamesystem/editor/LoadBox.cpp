@@ -1,5 +1,4 @@
 #include "LoadBox.h"
-
 #include "CsvLoader.h"
 #include "ModelManager.h"
 
@@ -63,8 +62,7 @@ void LoadBox::Update()
 	}
 }
 
-
-void LoadBox::Draw()
+void LoadBox::Draw(DirectXCommon* dxCommon)
 {//tes
 	for (auto i = 0; i < boxes.size(); i++)
 	{
@@ -72,5 +70,3 @@ void LoadBox::Draw()
 	}
 	
 }
-
-

@@ -6,7 +6,7 @@
 #include "VariableCommon.h"
 #include "ParticleEmitter.h"
 #include "TouchableObject.h"
-#include "../../../LoadBox.h"
+#include "LoadBox.h"
 
 //初期化
 void EditorSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
@@ -99,7 +99,7 @@ void EditorSceneActor::BackDraw(DirectXCommon* dxCommon)
 {
 	IKEObject3d::PreDraw();
 	ground->Draw();
-	load->Draw();
+	load->Draw(dxCommon);
 	placeObj->Draw(dxCommon);
 	IKEObject3d::PostDraw();
 

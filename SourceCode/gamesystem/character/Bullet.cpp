@@ -5,7 +5,7 @@
 #include "CsvLoader.h"
 #include "Helper.h"
 Bullet::Bullet() {
-	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Box);
+	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Bullet);
 	m_Object.reset(new IKEObject3d());
 	m_Object->Initialize();
 	m_Object->SetModel(m_Model);
