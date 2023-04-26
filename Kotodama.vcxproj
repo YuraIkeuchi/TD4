@@ -228,7 +228,6 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Editor.cpp" />
     <ClCompile Include="SourceCode\engine\2d\DebugText.cpp" />
     <ClCompile Include="SourceCode\engine\2d\ImageManager.cpp" />
     <ClCompile Include="SourceCode\engine\2d\PostEffect.cpp" />
@@ -292,12 +291,15 @@
     <ClCompile Include="SourceCode\gamesystem\character\EnemyManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\FirstBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\Food.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\character\Ghost.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\InterBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\InterEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\NormalEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\Player.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\editor\Editor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\editor\LoadBox.cpp" />
     <ClCompile Include="SourceCode\gamesystem\editor\LoadFood.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\editor\LoadGhost.cpp" />
     <ClCompile Include="SourceCode\gamesystem\editor\LoadManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\gamecamera\CameraWork.cpp" />
     <ClCompile Include="SourceCode\gamesystem\mapchip\Block.cpp" />
@@ -320,7 +322,6 @@
     <ClCompile Include="SourceCode\gamesystem\ui\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Editor.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SourceCode\engine\2d\DebugText.h" />
     <ClInclude Include="SourceCode\engine\2d\ImageManager.h" />
@@ -390,12 +391,15 @@
     <ClInclude Include="SourceCode\gamesystem\character\EnemyManager.h" />
     <ClInclude Include="SourceCode\gamesystem\character\FirstBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\Food.h" />
+    <ClInclude Include="SourceCode\gamesystem\character\Ghost.h" />
     <ClInclude Include="SourceCode\gamesystem\character\InterBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\InterEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\character\NormalEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\character\Player.h" />
+    <ClInclude Include="SourceCode\gamesystem\editor\Editor.h" />
     <ClInclude Include="SourceCode\gamesystem\editor\LoadBox.h" />
     <ClInclude Include="SourceCode\gamesystem\editor\LoadFood.h" />
+    <ClInclude Include="SourceCode\gamesystem\editor\LoadGhost.h" />
     <ClInclude Include="SourceCode\gamesystem\editor\LoadManager.h" />
     <ClInclude Include="SourceCode\gamesystem\gamecamera\CameraWork.h" />
     <ClInclude Include="SourceCode\gamesystem\mapchip\Block.h" />
