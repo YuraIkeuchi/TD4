@@ -20,11 +20,15 @@ public:
 	void SpriteDraw();
 private:
 	void CreateStage();
+	void IntroUpdate()override;
+	void MainUpdate()override;
+	void FinishUpdate()override;
 
 
 private://ƒƒ“ƒo•Ï”
 	int m_LoadTimer = 0;
-	
+	const int LoadTimerMax = 60;
+
 	JsonData* m_JsonData = nullptr;
 	std::list<std::unique_ptr<IKEObject3d>> grounds;
 	std::map<std::string, std::unique_ptr<IKEModel>> models;
@@ -34,5 +38,22 @@ private://ƒƒ“ƒo•Ï”
 	std::unique_ptr<IKEModel> modelFighter = nullptr;
 	std::unique_ptr<IKEModel> modelSphere = nullptr;
 	std::unique_ptr<IKEModel> modelPine = nullptr;
+
+	//Loading
+	enum {
+		text_L=0,
+		text_O,
+		text_A,
+		text_D,
+		text_I,
+		text_N,
+		text_G,
+		SpriteMax
+	};
+
+
+	std::array<std::unique_ptr<IKESprite>, SpriteMax> m_Sprites = {};
+	std::array<XMFLOAT2, SpriteMax> m_SpritesPos = {};
+	std::array<float, SpriteMax> m_SpritesAngle = {};
 
 };

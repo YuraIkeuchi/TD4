@@ -20,9 +20,7 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	helper = make_unique< Helper>();
 
 	//タイトル
-	IKESprite* TitleSprite_;
-	TitleSprite_ = IKESprite::Create(ImageManager::TITLE, { 0.0f,0.0f });
-	TitleSprite.reset(TitleSprite_);
+	TitleSprite = IKESprite::Create(ImageManager::TITLE, { 0.0f,0.0f });
 }
 //更新
 void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {

@@ -314,7 +314,7 @@ void PlaceMap::Initialize()
 
 		for(int j=0;j<MapStage[i].size();j++)
 		{
-			MapStage[i][j].reset(IKESprite::Create(ImageManager::NON, { 0.f,0.f }));
+			MapStage[i][j]=IKESprite::Create(ImageManager::NON, { 0.f,0.f });
 			MapStage[i][j]->SetAnchorPoint({ 0.50f,0.50f });
 			MapStage[i][j]->SetSize({ 50.f,50.f });
 
@@ -341,7 +341,7 @@ void PlaceMap::CollideMap()
 			if (MapStage[i][j] == nullptr)continue;
 			if(Input::GetInstance()->TriggerMouseLeft()&& Collision::CircleCollision(MousePoint.x,MousePoint.y,10.f,MapStage[i][j]->GetPosition().x, MapStage[i][j]->GetPosition().y,10))
 			{
-				MapStage[i][j].reset(IKESprite::Create(ChangeSprite(), { 0.f,0.f }));
+				MapStage[i][j]=IKESprite::Create(ChangeSprite(), { 0.f,0.f });
 				MapStage[i][j]->SetAnchorPoint({ 0.50f,0.50f });
 				MapStage[i][j]->SetSize({ 50.f,50.f });
 				MapStage[i][j]->SetPosition({ i * 50.f,j * 50.f });
@@ -398,7 +398,7 @@ void PlaceMap::ImguiDraw()
 				{
 					if (MapStage[i][j] == nullptr)
 					{
-						MapStage[i][j].reset(IKESprite::Create(ImageManager::NON, { 0.f,0.f }));
+						MapStage[i][j]=IKESprite::Create(ImageManager::NON, { 0.f,0.f });
 						MapStage[i][j]->SetAnchorPoint({ 0.50f,0.50f });
 						MapStage[i][j]->SetSize({ 50.f,50.f });
 

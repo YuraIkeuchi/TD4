@@ -52,7 +52,7 @@ public: // 静的メンバ関数
 	static void PostDraw();
 
 	/// スプライト生成
-	static IKESprite* Create(UINT texNumber, const XMFLOAT2& position, const XMFLOAT4& color = {1, 1, 1, 1},
+	static std::unique_ptr<IKESprite> Create(UINT texNumber, const XMFLOAT2& position, const XMFLOAT4& color = {1, 1, 1, 1},
 	                         const XMFLOAT2& anchorpoint = {0.0f, 0.0f}, bool isFlipX = false, bool isFlipY = false);
 
 protected: // 静的メンバ変数

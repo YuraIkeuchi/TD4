@@ -10,6 +10,8 @@ ImageManager* ImageManager::GetInstance()
 void ImageManager::StartLoad2D()
 {
 	IKESprite::LoadTexture(TITLE, L"Resources/2d/sceneback/title.png");
+	IKESprite::LoadTexture(LOADING, L"Resources/2d/objicon/box.png");
+
 }
 
 //非同期処理で読み込むスプライト
