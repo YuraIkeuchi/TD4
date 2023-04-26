@@ -267,9 +267,6 @@
     <ClCompile Include="SourceCode\gamesystem\editor\LoadManager.cpp">
       <Filter>SourceCords\gamesystem\Editor\Base</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\editor\LoadFood.cpp">
-      <Filter>SourceCords\gamesystem\Editor\Load</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\gamecamera\CameraWork.cpp">
       <Filter>SourceCords\gamesystem\GameCamera</Filter>
     </ClCompile>
@@ -324,11 +321,20 @@
     <ClCompile Include="SourceCode\gamesystem\scene\SceneManager.cpp">
       <Filter>SourceCords\gamesystem\Scene\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Editor.cpp">
-      <Filter>SourceCords\gamesystem\Editor\Base</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\scene\PlaceBox.cpp">
       <Filter>SourceCords\gamesystem\Editor\Box</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\editor\LoadFood.cpp">
+      <Filter>SourceCords\gamesystem\Editor\Load\Food</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\Ghost.cpp">
+      <Filter>SourceCords\gamesystem\character\Various\Ghost</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\editor\LoadGhost.cpp">
+      <Filter>SourceCords\gamesystem\Editor\Load\Ghost</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\editor\Editor.cpp">
+      <Filter>SourceCords\gamesystem\Editor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -552,9 +558,6 @@
     <ClInclude Include="SourceCode\gamesystem\editor\LoadManager.h">
       <Filter>SourceCords\gamesystem\Editor\Base</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\editor\LoadFood.h">
-      <Filter>SourceCords\gamesystem\Editor\Load</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\gamecamera\CameraWork.h">
       <Filter>SourceCords\gamesystem\GameCamera</Filter>
     </ClInclude>
@@ -609,14 +612,23 @@
     <ClInclude Include="SourceCode\gamesystem\scene\SceneManager.h">
       <Filter>SourceCords\gamesystem\Scene\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Editor.h">
-      <Filter>SourceCords\gamesystem\Editor\Base</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\PlaceBox.h">
       <Filter>SourceCords\gamesystem\Editor\Box</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\engine\helper\VariableCommon.h">
       <Filter>SourceCords\gamesystem\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\editor\LoadFood.h">
+      <Filter>SourceCords\gamesystem\Editor\Load\Food</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\Ghost.h">
+      <Filter>SourceCords\gamesystem\character\Various\Ghost</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\editor\LoadGhost.h">
+      <Filter>SourceCords\gamesystem\Editor\Load\Ghost</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\editor\Editor.h">
+      <Filter>SourceCords\gamesystem\Editor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -861,6 +873,15 @@
     </Filter>
     <Filter Include="SourceCords\gamesystem\Common">
       <UniqueIdentifier>{2344019a-f8d2-4966-9d60-c6f4749cf12b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\character\Various\Ghost">
+      <UniqueIdentifier>{bb2631e7-4d39-4aef-af87-4bbdd5fdd43b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\Editor\Load\Food">
+      <UniqueIdentifier>{0671f28d-68da-431f-a943-f42ae6505ab9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\Editor\Load\Ghost">
+      <UniqueIdentifier>{e2b34f10-2860-4897-ab0d-a8ea18a57829}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
