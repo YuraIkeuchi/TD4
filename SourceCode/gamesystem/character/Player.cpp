@@ -151,8 +151,6 @@ void Player::Draw(DirectXCommon* dxCommon)
 //ImGui
 void Player::ImGuiDraw() {
 	ImGui::Begin("Player");
-	ImGui::Text("InterVal:%d", m_InterVal);
-	ImGui::Text("RigidityTime:%d", m_RigidityTime);
 	if (ImGui::TreeNode("BULLET")) {
 		if (m_BulletType == BULLET_FORROW) {
 			ImGui::Text("BULLET_FORROW");

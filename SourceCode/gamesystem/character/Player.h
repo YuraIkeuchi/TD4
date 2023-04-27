@@ -85,7 +85,7 @@ private:
 public:
 	bool BulletCollide(XMFLOAT3 pos);
 public:
-	Bullet* GetBullet(int i) { return bullets[i]; }
+	const int& GetBulletType() { return m_BulletType; }
 private://ŠeƒNƒ‰ƒX
 	vector<Bullet*> bullets;
 
