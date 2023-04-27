@@ -1,6 +1,6 @@
 #pragma once
 #include "ObjCommon.h"
-//”wŒi‚ÌŠâ‚È‚Ç‹¤’Ê”wŒi‚ÌƒNƒ‰ƒX
+//Œ¾—ìƒNƒ‰ƒX
 class Bullet :
 	public ObjCommon {
 protected:
@@ -34,6 +34,7 @@ private:
 public:
 	//gettersetter
 	const bool& GetAlive() { return m_Alive; }
+	const int& GetBulletType() { return m_BulletType; }
 	void SetAngle(const XMFLOAT2& Angle) { m_Angle = Angle; }
 	void SetBulletType(const int BulletType) { m_BulletType = BulletType; }
 private:

@@ -121,6 +121,7 @@ void PlaySceneActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void PlaySceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	player->ImGuiDraw();
-	loadfood->ImGuiDraw();
+	//player->ImGuiDraw();
+	//loadfood->ImGuiDraw();
+	loadghost->ImGuiDraw();
 }

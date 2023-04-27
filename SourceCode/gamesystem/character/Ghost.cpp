@@ -1,6 +1,6 @@
 #include "Ghost.h"
 #include "ModelManager.h"
-#include "imgui.h"
+#include "VariableCommon.h"
 #include "CsvLoader.h"
 #include "ParticleEmitter.h"
 #include "Collision.h"
@@ -20,11 +20,20 @@ bool Ghost::Initialize() {
 	m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
 	m_Scale = { 1.0f,1.0f,1.0f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
+	_charaState = CharaState::STATE_NONE;
 	return true;
 }
-
+//状態遷移
+/*CharaStateのState並び順に合わせる*/
+void (Ghost::* Ghost::stateTable[])() = {
+	&Ghost::None,//待機
+	&Ghost::Follow,//移動
+	&Ghost::Search,//攻撃
+};
 //更新
 void Ghost::Update() {
+	//状態移行(charastateに合わせる)
+	(this->*stateTable[_charaState])();
 	//タイプによって色を一旦変えてる
 	Obj_SetParam();
 	//食料生成
@@ -32,7 +41,7 @@ void Ghost::Update() {
 	//パーティクル
 	Particle();
 	//当たり判定
-	//Collision();
+	Collision();
 }
 
 //描画
@@ -44,11 +53,7 @@ void Ghost::Draw(DirectXCommon* dxCommon) {
 //ImGui描画
 void Ghost::ImGuiDraw() {
 	ImGui::Begin("Ghost");
-	ImGui::Text("Pos.X:%f", m_Position.x);
-	ImGui::Text("Timer:%d", m_Timer);
-	if (m_Alive) {
-
-	}
+	ImGui::Text("State:%d", _charaState);
 	ImGui::End();
 }
 //パーティクル
@@ -58,21 +63,24 @@ void Ghost::Particle() {
 	float s_scale = 3.0f;
 	float e_scale = 0.0f;
 	if (m_Alive) {
-		ParticleEmitter::GetInstance()->FireEffect(50, m_Position, s_scale, e_scale, s_color, e_color);
+		ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color, e_color);
 	}
 }
 //当たり判定
 bool Ghost::Collision() {
-	float l_Radius = 1.0f;
-	XMFLOAT3 m_PlayerPos = player->GetPosition();
-	if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, m_PlayerPos.x, m_PlayerPos.z, l_Radius) && m_Alive) {
+	if (player->BulletCollide(m_Position) && m_Alive) {
 		m_Alive = false;
+		if (player->GetBulletType() == BULLET_FORROW) {
+			_charaState = CharaState::STATE_FOLLOW;
+		}
+		else {
+			_charaState = CharaState::STATE_SEARCH;
+		}
 		return true;
 	}
 	else {
 		return false;
 	}
-
 	return true;
 }
 //食料生成
@@ -89,8 +97,21 @@ void Ghost::BirthGhost() {
 		}
 		//一定時間で生成される
 		if (m_Timer == 100) {
+			_charaState = CharaState::STATE_NONE;
 			m_Alive = true;
 			m_Timer = 0;
 		}
 	}
+}
+//何もない状態
+void Ghost::None() {
+
+}
+//追従
+void Ghost::Follow() {
+
+}
+//探索
+void Ghost::Search() {
+
 }

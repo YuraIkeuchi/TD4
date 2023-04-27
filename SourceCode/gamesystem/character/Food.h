@@ -1,7 +1,7 @@
 #pragma once
 #include "ObjCommon.h"
 #include "Player.h"
-//背景の岩など共通背景のクラス
+//食べ物のクラス
 class Food :
 	public ObjCommon {
 protected:

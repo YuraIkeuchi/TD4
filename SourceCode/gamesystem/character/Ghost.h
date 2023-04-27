@@ -1,7 +1,7 @@
 #pragma once
 #include "ObjCommon.h"
 #include "Player.h"
-//背景の岩など共通背景のクラス
+//ゴーストクラス
 class Ghost :
 	public ObjCommon {
 protected:
@@ -29,6 +29,8 @@ public:
 	/// ImGui描画
 	/// </summary>
 	void ImGuiDraw();
+private://ステート
+	static void (Ghost::* stateTable[])();
 private:
 	//パーティクル
 	void Particle();
@@ -36,6 +38,13 @@ private:
 	bool Collision();
 	//食料生産
 	void BirthGhost();
+	//何もない状態
+	void None();
+	//追従
+	void Follow();
+	//探索
+	void Search();
+
 public://getter setter
 	void SetPlayer(Player* player) { this->player.reset(player); }
 public:
@@ -45,4 +54,13 @@ private:
 	unique_ptr<Player> player;
 	bool m_Alive = true;//生存フラグ
 	int m_Timer = 0;
+	int m_Type = 0;
+private:
+	//キャラの状態
+	enum CharaState
+	{
+		STATE_NONE,
+		STATE_FOLLOW,
+		STATE_SEARCH,
+	}_charaState;
 };

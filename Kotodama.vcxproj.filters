@@ -336,6 +336,9 @@
     <ClCompile Include="SourceCode\gamesystem\editor\Editor.cpp">
       <Filter>SourceCords\gamesystem\Editor</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\HungerGauge.cpp">
+      <Filter>SourceCords\gamesystem\character\Various\HungerGauge</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -630,6 +633,9 @@
     <ClInclude Include="SourceCode\gamesystem\editor\Editor.h">
       <Filter>SourceCords\gamesystem\Editor</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\HungerGauge.h">
+      <Filter>SourceCords\gamesystem\character\Various\HungerGauge</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Kotodama.rc" />
@@ -882,6 +888,9 @@
     </Filter>
     <Filter Include="SourceCords\gamesystem\Editor\Load\Ghost">
       <UniqueIdentifier>{e2b34f10-2860-4897-ab0d-a8ea18a57829}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\character\Various\HungerGauge">
+      <UniqueIdentifier>{fab9938a-fb4a-463c-95fa-d970e1f917e8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
