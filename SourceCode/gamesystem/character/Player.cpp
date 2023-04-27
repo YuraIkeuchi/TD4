@@ -5,6 +5,7 @@
 #include"ModelManager.h"
 #include "VariableCommon.h"
 #include "HungerGauge.h"
+#include "Collision.h"
 /*-----------------*/
 /*松本エンジン慣れる用*/
 /*-----------------*/
@@ -309,4 +310,21 @@ void Player::SelectBullet() {
 	else if (Input::GetInstance()->TriggerButton(Input::LB)) {
 		m_BulletType = BULLET_SEARCH;
 	}
+}
+
+bool Player::BulletCollide(XMFLOAT3 pos) {
+	float l_Radius = 1.0f;
+	//弾の更新
+	for (Bullet* bullet : bullets) {
+		if (bullet != nullptr) {
+			if (Collision::CircleCollision(bullet->GetPosition().x, bullet->GetPosition().z, l_Radius, pos.x, pos.z, l_Radius)) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+	}
+
+	return false;
 }

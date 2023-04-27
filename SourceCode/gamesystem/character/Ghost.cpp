@@ -32,7 +32,7 @@ void Ghost::Update() {
 	//パーティクル
 	Particle();
 	//当たり判定
-	//Collision();
+	Collision();
 }
 
 //描画
@@ -43,13 +43,13 @@ void Ghost::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui描画
 void Ghost::ImGuiDraw() {
-	//ImGui::Begin("Ghost");
-	//ImGui::Text("Pos.X:%f", m_Position.x);
-	//ImGui::Text("Timer:%d", m_Timer);
-	//if (m_Alive) {
+	ImGui::Begin("Ghost");
+	ImGui::Text("Pos.X:%f", m_Position.x);
+	ImGui::Text("Timer:%d", m_Timer);
+	if (m_Alive) {
 
-	//}
-	//ImGui::End();
+	}
+	ImGui::End();
 }
 //パーティクル
 void Ghost::Particle() {
@@ -63,15 +63,22 @@ void Ghost::Particle() {
 }
 //当たり判定
 bool Ghost::Collision() {
-	float l_Radius = 1.0f;
-	XMFLOAT3 m_PlayerPos = player->GetPosition();
-	if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, m_PlayerPos.x, m_PlayerPos.z, l_Radius) && m_Alive) {
+	if (player->BulletCollide(m_Position) && m_Alive) {
 		m_Alive = false;
 		return true;
 	}
 	else {
 		return false;
 	}
+	/*float l_Radius = 1.0f;
+	XMFLOAT3 m_PlayerPos = player->GetPosition();
+	if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, BulletPos.x, BulletPos.z, l_Radius) && m_Alive) {
+		m_Alive = false;
+		return true;
+	}
+	else {
+		return false;
+	}*/
 
 	return true;
 }

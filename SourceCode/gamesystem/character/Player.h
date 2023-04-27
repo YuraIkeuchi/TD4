@@ -82,7 +82,10 @@ private:
 	}_animeName;
 
 	void AnimationControl(AnimeName name, const bool& loop, int speed);
-
+public:
+	bool BulletCollide(XMFLOAT3 pos);
+public:
+	Bullet* GetBullet(int i) { return bullets[i]; }
 private://ŠeƒNƒ‰ƒX
 	vector<Bullet*> bullets;
 
