@@ -43,13 +43,13 @@ void Ghost::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui描画
 void Ghost::ImGuiDraw() {
-	ImGui::Begin("Ghost");
-	ImGui::Text("Pos.X:%f", m_Position.x);
-	ImGui::Text("Timer:%d", m_Timer);
-	if (m_Alive) {
+	//ImGui::Begin("Ghost");
+	//ImGui::Text("Pos.X:%f", m_Position.x);
+	//ImGui::Text("Timer:%d", m_Timer);
+	//if (m_Alive) {
 
-	}
-	ImGui::End();
+	//}
+	//ImGui::End();
 }
 //パーティクル
 void Ghost::Particle() {
@@ -58,7 +58,7 @@ void Ghost::Particle() {
 	float s_scale = 3.0f;
 	float e_scale = 0.0f;
 	if (m_Alive) {
-		ParticleEmitter::GetInstance()->FireEffect(50, m_Position, s_scale, e_scale, s_color, e_color);
+		ParticleEmitter::GetInstance()->FireEffect(10, m_Position, s_scale, e_scale, s_color, e_color);
 	}
 }
 //当たり判定

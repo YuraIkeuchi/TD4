@@ -4,6 +4,7 @@
 #include "CsvLoader.h"
 #include "ParticleEmitter.h"
 #include "Collision.h"
+#include "HungerGauge.h"
 #include <random>
 Food::Food() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Cube);
@@ -43,13 +44,13 @@ void Food::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui描画
 void Food::ImGuiDraw() {
-	ImGui::Begin("Food");
-	ImGui::Text("Pos.X:%f", m_Position.x);
-	ImGui::Text("Timer:%d", m_Timer);
-	if (m_Alive) {
+	//ImGui::Begin("Food");
+	//ImGui::Text("Pos.X:%f", m_Position.x);
+	//ImGui::Text("Timer:%d", m_Timer);
+	//if (m_Alive) {
 
-	}
-	ImGui::End();
+	//}
+	//ImGui::End();
 }
 //パーティクル
 void Food::Particle() {
@@ -58,15 +59,16 @@ void Food::Particle() {
 	float s_scale = 3.0f;
 	float e_scale = 0.0f;
 	if (m_Alive) {
-		ParticleEmitter::GetInstance()->FireEffect(50, m_Position, s_scale, e_scale, s_color, e_color);
+		ParticleEmitter::GetInstance()->FireEffect(10, m_Position, s_scale, e_scale, s_color, e_color);
 	}
 }
 //当たり判定
 bool Food::Collision() {
-	float l_Radius = 1.0f;
+	float l_Radius = 1.5f;
 	XMFLOAT3 m_PlayerPos = player->GetPosition();
 	if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, m_PlayerPos.x, m_PlayerPos.z, l_Radius) && m_Alive) {
 		m_Alive = false;
+		HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() + 1.0f);
 		return true;
 	}
 	else {

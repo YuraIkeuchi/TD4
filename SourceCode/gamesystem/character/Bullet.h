@@ -1,6 +1,6 @@
 #pragma once
 #include "ObjCommon.h"
-//背景の岩など共通背景のクラス
+//言霊クラス
 class Bullet :
 	public ObjCommon {
 protected:

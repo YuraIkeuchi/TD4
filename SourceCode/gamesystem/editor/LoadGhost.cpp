@@ -4,7 +4,7 @@
 //ロード
 void LoadGhost::Load(Player* player)
 {
-	auto Size = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/ghost/ghost.csv", "Quantity")));
+	auto Size = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/ghost.csv", "Quantity")));
 
 	ghosts.resize(Size);
 
@@ -25,9 +25,9 @@ void LoadGhost::Load(Player* player)
 	}
 
 
-	LoadCSV::LoadCsvParam_XMFLOAT3("Resources/csv/ghost/ghost.csv", Pos, "POSITION");
-	LoadCSV::LoadCsvParam_XMFLOAT3("Resources/csv/ghost/ghost.csv", Rot, "ROTATION");
-	LoadCSV::LoadCsvParam_XMFLOAT3("Resources/csv/ghost/ghost.csv", Scl, "SCALE");
+	LoadCSV::LoadCsvParam_XMFLOAT3("Resources/csv/chara/ghost.csv", Pos, "POSITION");
+	LoadCSV::LoadCsvParam_XMFLOAT3("Resources/csv/chara/ghost.csv", Rot, "ROTATION");
+	LoadCSV::LoadCsvParam_XMFLOAT3("Resources/csv/chara/ghost.csv", Scl, "SCALE");
 
 	////モデル変更に対応
 	//for (auto i = 0; i < ghosts.size(); i++) {

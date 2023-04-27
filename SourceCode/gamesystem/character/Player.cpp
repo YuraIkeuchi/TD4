@@ -4,6 +4,7 @@
 #include"Helper.h"
 #include"ModelManager.h"
 #include "VariableCommon.h"
+#include "HungerGauge.h"
 /*-----------------*/
 /*松本エンジン慣れる用*/
 /*-----------------*/
@@ -43,6 +44,9 @@ void Player::Initialize()
 
 	m_TargetInterVal = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player.csv", "InterVal")));
 	m_TargetRigidityTime = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player.csv", "Rigidity")));
+
+	//飢餓ゲージはプレイヤーで管理する
+	HungerGauge::GetInstance()->Initialize();
 }
 //状態遷移
 /*CharaStateのState並び順に合わせる*/
@@ -128,6 +132,8 @@ void Player::Update()
 	InterVal();
 	//弾の種類選択
 	SelectBullet();
+	//飢餓ゲージ更新
+	HungerGauge::GetInstance()->Update();
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon)
@@ -157,7 +163,7 @@ void Player::ImGuiDraw() {
 	}
 	ImGui::End();
 
-
+	HungerGauge::GetInstance()->ImGuiDraw();
 	//弾の更新
 	for (Bullet* bullet : bullets) {
 		if (bullet != nullptr) {
