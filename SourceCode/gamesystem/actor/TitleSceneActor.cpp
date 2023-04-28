@@ -41,7 +41,7 @@ void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		} else {
 			str = "EDITORSCENE";
 		}
-		sceneChanger_->ChangeScene(str, SceneChanger::NonReverse);
+		sceneChanger_->ChangeSceneExtra(str, SceneChanger::NonReverse);
 	}
 	lightgroup->Update();
 	ParticleEmitter::GetInstance()->FireEffect(100, { 0.0f,23.0f,0.0f }, 5.0f, 0.0f, { 1.0f,0.5f,0.0f,0.5f }, { 1.0f,0.5f,0.0f,0.5f });

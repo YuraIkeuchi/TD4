@@ -8,8 +8,7 @@
 #include<string>
 #include <list>
 
-class SceneChanger
-{
+class SceneChanger {
 public:
 	SceneChanger();
 	~SceneChanger();
@@ -27,15 +26,20 @@ public:
 	/// 描画
 	/// </summary>
 	void Draw();
-	enum ReverseType{
-		NonReverse=1,
-		Reverse=-1
+	enum ReverseType {
+		NonReverse = 1,
+		Reverse = -1
 	};
 	/// <summary>
 	/// シーン切り替え
 	/// </summary>
 	/// <param name="sceneName"></param>
 	bool ChangeScene(const std::string& sceneName, const ReverseType _reverse);
+	/// <summary>
+/// シーン切り替え
+/// </summary>
+/// <param name="sceneName"></param>
+	bool ChangeSceneExtra(const std::string& sceneName, const ReverseType _reverse);
 
 	/// <summary>
 	/// シーン切り替え
@@ -45,25 +49,26 @@ public:
 
 
 
-
 	/// <summary>
 	/// イージングスタート
 	/// </summary>
 	void  ChangeStart() { easing_start = true; }
 	const bool& GetEasingStart() { return easing_start; }
 private:
-	std::list<std::unique_ptr<IKESprite>> sprites;
+	std::vector<std::unique_ptr<IKESprite>> sprites;
 
 	std::list<std::unique_ptr<IKESprite>> over_sprites;
 
-	float width = WinApp::window_width;
-	float height = WinApp::window_height;
-
+	const float width = WinApp::window_width;
+	const float height = WinApp::window_height;
 
 
 	const int base_size = 80;
-	int width_num  = (int)width / base_size;
-	int height_num = (int)height / base_size;
+	const int width_num = (int)width / base_size;
+	const int height_num = (int)height / base_size;
+
+	std::vector<float> frame;
+	std::vector<DirectX::XMFLOAT4> color_;
 
 	bool easing_start = false;
 	float ease_frame = 0.0f;
