@@ -234,12 +234,6 @@
     <ClCompile Include="SourceCode\gamesystem\backobj\BackObj.cpp">
       <Filter>SourceCords\gamesystem\backobj</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\CharactorManager.cpp">
-      <Filter>SourceCords\gamesystem\character\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\Bullet.cpp">
-      <Filter>SourceCords\gamesystem\character\Various\Bullet</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\Food.cpp">
       <Filter>SourceCords\gamesystem\character\Various\Food</Filter>
     </ClCompile>
@@ -269,12 +263,6 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\gamecamera\CameraWork.cpp">
       <Filter>SourceCords\gamesystem\GameCamera</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\mapchip\MapChip.cpp">
-      <Filter>SourceCords\gamesystem\MapChip</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\mapchip\Block.cpp">
-      <Filter>SourceCords\gamesystem\MapChip</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\ui\UI.cpp">
       <Filter>SourceCords\gamesystem\UI</Filter>
@@ -324,20 +312,26 @@
     <ClCompile Include="SourceCode\gamesystem\scene\PlaceBox.cpp">
       <Filter>SourceCords\gamesystem\Editor\Box</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\editor\LoadFood.cpp">
-      <Filter>SourceCords\gamesystem\Editor\Load\Food</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\Ghost.cpp">
       <Filter>SourceCords\gamesystem\character\Various\Ghost</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\editor\LoadGhost.cpp">
-      <Filter>SourceCords\gamesystem\Editor\Load\Ghost</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\editor\Editor.cpp">
       <Filter>SourceCords\gamesystem\Editor</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\HungerGauge.cpp">
       <Filter>SourceCords\gamesystem\character\Various\HungerGauge</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\GhostBullet.cpp">
+      <Filter>SourceCords\gamesystem\character\Various\Bullet\Various</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\AttackBullet.cpp">
+      <Filter>SourceCords\gamesystem\character\Various\Bullet\Various</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\InterBullet.cpp">
+      <Filter>SourceCords\gamesystem\character\Various\Bullet\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\editor\LoadStageObj.cpp">
+      <Filter>SourceCords\gamesystem\Editor\Load\StageObj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -528,12 +522,6 @@
     <ClInclude Include="SourceCode\gamesystem\backobj\BackObj.h">
       <Filter>SourceCords\gamesystem\backobj</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\CharactorManager.h">
-      <Filter>SourceCords\gamesystem\character\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\Bullet.h">
-      <Filter>SourceCords\gamesystem\character\Various\Bullet</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\Food.h">
       <Filter>SourceCords\gamesystem\character\Various\Food</Filter>
     </ClInclude>
@@ -542,9 +530,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\InterEnemy.h">
       <Filter>SourceCords\gamesystem\character\Various\Enemy\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\NormalEnemy.h">
-      <Filter>SourceCords\gamesystem\character\Various\Enemy\Various</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\FirstBoss.h">
       <Filter>SourceCords\gamesystem\character\Various\Boss\Various</Filter>
@@ -563,12 +548,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\gamecamera\CameraWork.h">
       <Filter>SourceCords\gamesystem\GameCamera</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\mapchip\MapChip.h">
-      <Filter>SourceCords\gamesystem\MapChip</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\mapchip\Block.h">
-      <Filter>SourceCords\gamesystem\MapChip</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\ui\UI.h">
       <Filter>SourceCords\gamesystem\UI</Filter>
@@ -621,20 +600,29 @@
     <ClInclude Include="SourceCode\engine\helper\VariableCommon.h">
       <Filter>SourceCords\gamesystem\Common</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\editor\LoadFood.h">
-      <Filter>SourceCords\gamesystem\Editor\Load\Food</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\Ghost.h">
       <Filter>SourceCords\gamesystem\character\Various\Ghost</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\editor\LoadGhost.h">
-      <Filter>SourceCords\gamesystem\Editor\Load\Ghost</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\editor\Editor.h">
       <Filter>SourceCords\gamesystem\Editor</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\HungerGauge.h">
       <Filter>SourceCords\gamesystem\character\Various\HungerGauge</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\NormalEnemy.h">
+      <Filter>SourceCords\gamesystem\character\Various\Enemy\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\GhostBullet.h">
+      <Filter>SourceCords\gamesystem\character\Various\Bullet\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\AttackBullet.h">
+      <Filter>SourceCords\gamesystem\character\Various\Bullet\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\InterBullet.h">
+      <Filter>SourceCords\gamesystem\character\Various\Bullet\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\editor\LoadStageObj.h">
+      <Filter>SourceCords\gamesystem\Editor\Load\StageObj</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -739,9 +727,6 @@
     <Filter Include="SourceCords\gamesystem\character">
       <UniqueIdentifier>{edf53ab5-ded3-4420-b1a9-034728710351}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Base">
-      <UniqueIdentifier>{5198a0b3-be9b-46c1-a405-c0b8840f867d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SourceCords\gamesystem\character\Various">
       <UniqueIdentifier>{4911dc9d-229f-4c45-9839-96e7fd892c71}</UniqueIdentifier>
     </Filter>
@@ -786,9 +771,6 @@
     </Filter>
     <Filter Include="SourceCords\gamesystem\GameCamera">
       <UniqueIdentifier>{36b65622-126d-437c-8ec9-4fd9fff00600}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\MapChip">
-      <UniqueIdentifier>{a171f4dd-75e0-4c33-9f74-e4e672bea6b5}</UniqueIdentifier>
     </Filter>
     <Filter Include="SourceCords\gamesystem\Particle">
       <UniqueIdentifier>{f0fbe216-e1ff-4c96-bc85-a9ffc0bc0d80}</UniqueIdentifier>
@@ -883,14 +865,17 @@
     <Filter Include="SourceCords\gamesystem\character\Various\Ghost">
       <UniqueIdentifier>{bb2631e7-4d39-4aef-af87-4bbdd5fdd43b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\Editor\Load\Food">
-      <UniqueIdentifier>{0671f28d-68da-431f-a943-f42ae6505ab9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\Editor\Load\Ghost">
-      <UniqueIdentifier>{e2b34f10-2860-4897-ab0d-a8ea18a57829}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SourceCords\gamesystem\character\Various\HungerGauge">
       <UniqueIdentifier>{fab9938a-fb4a-463c-95fa-d970e1f917e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\character\Various\Bullet\Base">
+      <UniqueIdentifier>{9809b329-7958-4857-99a3-4c62fde68b72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\character\Various\Bullet\Various">
+      <UniqueIdentifier>{2fa70ba3-447a-4d5e-9a24-c47a2e0f7c2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\Editor\Load\StageObj">
+      <UniqueIdentifier>{952d0f7f-df11-42dd-a187-f6112a1d8b5d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -34,8 +34,12 @@ private://ステート
 private:
 	//パーティクル
 	void Particle();
-	//当たり判定
-	bool Collision();
+	//当たり判定(弾)
+	bool BulletCollision();
+	//当たり判定(プレイヤー)
+	bool PlayerCollision();
+	//ゴースト同士の当たり判定
+	bool GhostCollision(const XMFLOAT3& pos);
 	//食料生産
 	void BirthGhost();
 	//何もない状態
@@ -50,11 +54,14 @@ public://getter setter
 public:
 	//gettersetter
 	const bool& GetAlive() { return m_Alive; }
+	void Setma(const bool ma) { m_ma = ma; }
 private:
 	unique_ptr<Player> player;
 	bool m_Alive = true;//生存フラグ
+	bool m_Catch = true;//捕獲フラグ
 	int m_Timer = 0;
-	int m_Type = 0;
+	XMFLOAT3 m_BasePos = {};
+	bool m_ma = false;
 private:
 	//キャラの状態
 	enum CharaState
@@ -63,4 +70,12 @@ private:
 		STATE_FOLLOW,
 		STATE_SEARCH,
 	}_charaState;
+
+	//円運動(仮)
+	float m_CircleSpeed = 0.0f;
+	float m_CircleScale = 5.0f;
+
+private:
+	XMFLOAT3 m_OldPos = {};
+	bool m_Follow = false;
 };
