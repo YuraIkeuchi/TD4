@@ -5,7 +5,7 @@
 #include "IKETexture.h"
 #include "ParticleManager.h"
 
-//2D�̓ǂݍ��ݏ���
+//2Dの読み込み処理
 class ImageManager final
 {
 private:
@@ -15,7 +15,7 @@ private:
 	ImageManager& operator=(const ImageManager& r) = default;
 
 public:
-	//�X�v���C�g�̖��O
+	//スプライトの名前
 	enum texName
 	{
 		TITLE,
@@ -25,11 +25,13 @@ public:
 		GAMECLEAR,
 		BOX,
 		CUBE,
+		NON,
+		WHITE,
 		WINDOW,
 		NON
 	};
 
-	//�e�N�X�`���̖��O
+	//テクスチャの名前
 	enum tex2dName
 	{
 	};
@@ -41,7 +43,7 @@ public:
 	};
 
 public:
-	static ImageManager* GetInstance(); //�擾�p
+	static ImageManager* GetInstance(); //取得用
 	void StartLoad2D();
 	void SecondLoad2D();
 	void StartLoadTex2D();

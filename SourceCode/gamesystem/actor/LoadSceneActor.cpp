@@ -14,6 +14,8 @@ void LoadSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	CreateStage();
 
 
+	sceneChanger_ = make_unique<SceneChanger>();
+	sceneChanger_->Initialize();
 
 
 	for (int i = 0; i < SpriteMax; i++) {
@@ -68,8 +70,9 @@ void LoadSceneActor::SpriteDraw() {
 	for (std::unique_ptr<IKESprite>& sprite : m_Sprites) {
 		sprite->Draw();
 	}
-
 	IKESprite::PostDraw();
+	sceneChanger_->Draw();
+
 }
 void LoadSceneActor::CreateStage() {
 	m_JsonData = JsonLoader::LoadFile("Introduction");
@@ -161,6 +164,12 @@ void LoadSceneActor::MainUpdate() {
 
 }
 void LoadSceneActor::FinishUpdate() {
+	//一定時間でシーンが変わる
+	if (m_LoadTimer >= LoadTimerMax) {
+		sceneChanger_->ChangeStart();
+		sceneChanger_->ChangeScene("GAMESCENE", SceneChanger::NonReverse);
+		return;
+	}
 	m_LoadTimer++;
 
 	float frame = (float)m_LoadTimer / (float)LoadTimerMax;
@@ -173,10 +182,6 @@ void LoadSceneActor::FinishUpdate() {
 		m_Sprites[i]->SetRotation(rot);
 	}
 
-	//一定時間でシーンが変わる
-	if (m_LoadTimer >= LoadTimerMax) {
-		SceneManager::GetInstance()->ChangeScene("GAMESCENE");
-	}
 }
 //背面描画
 void LoadSceneActor::BackDraw(DirectXCommon* dxCommon) {

@@ -321,6 +321,9 @@
     <ClCompile Include="SourceCode\gamesystem\character\HungerGauge.cpp">
       <Filter>SourceCords\gamesystem\character\Various\HungerGauge</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\SceneChanger.cpp">
+      <Filter>SourceCords\gamesystem\Scene\Base</Filter>
+    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\GhostBullet.cpp">
       <Filter>SourceCords\gamesystem\character\Various\Bullet\Various</Filter>
     </ClCompile>
@@ -608,6 +611,10 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\HungerGauge.h">
       <Filter>SourceCords\gamesystem\character\Various\HungerGauge</Filter>
+    </ClInclude>
+
+    <ClInclude Include="SourceCode\gamesystem\scene\SceneChanger.h">
+      <Filter>SourceCords\gamesystem\Scene\Base</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\NormalEnemy.h">
       <Filter>SourceCords\gamesystem\character\Various\Enemy\Various</Filter>
