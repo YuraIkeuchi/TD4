@@ -25,4 +25,5 @@ private://メンバ変数
 	unique_ptr<Helper> helper;
 	//スプライト
 	unique_ptr<IKESprite> TitleSprite;
+
 };
