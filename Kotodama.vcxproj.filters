@@ -234,9 +234,6 @@
     <ClCompile Include="SourceCode\gamesystem\backobj\BackObj.cpp">
       <Filter>SourceCords\gamesystem\backobj</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\Bullet.cpp">
-      <Filter>SourceCords\gamesystem\character\Various\Bullet</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\Food.cpp">
       <Filter>SourceCords\gamesystem\character\Various\Food</Filter>
     </ClCompile>
@@ -329,6 +326,15 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\HungerGauge.cpp">
       <Filter>SourceCords\gamesystem\character\Various\HungerGauge</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\GhostBullet.cpp">
+      <Filter>SourceCords\gamesystem\character\Various\Bullet\Various</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\AttackBullet.cpp">
+      <Filter>SourceCords\gamesystem\character\Various\Bullet\Various</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\InterBullet.cpp">
+      <Filter>SourceCords\gamesystem\character\Various\Bullet\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -519,9 +525,6 @@
     <ClInclude Include="SourceCode\gamesystem\backobj\BackObj.h">
       <Filter>SourceCords\gamesystem\backobj</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\Bullet.h">
-      <Filter>SourceCords\gamesystem\character\Various\Bullet</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\Food.h">
       <Filter>SourceCords\gamesystem\character\Various\Food</Filter>
     </ClInclude>
@@ -617,6 +620,15 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\NormalEnemy.h">
       <Filter>SourceCords\gamesystem\character\Various\Enemy\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\GhostBullet.h">
+      <Filter>SourceCords\gamesystem\character\Various\Bullet\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\AttackBullet.h">
+      <Filter>SourceCords\gamesystem\character\Various\Bullet\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\InterBullet.h">
+      <Filter>SourceCords\gamesystem\character\Various\Bullet\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -867,6 +879,12 @@
     </Filter>
     <Filter Include="SourceCords\gamesystem\character\Various\HungerGauge">
       <UniqueIdentifier>{fab9938a-fb4a-463c-95fa-d970e1f917e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\character\Various\Bullet\Base">
+      <UniqueIdentifier>{9809b329-7958-4857-99a3-4c62fde68b72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\character\Various\Bullet\Various">
+      <UniqueIdentifier>{2fa70ba3-447a-4d5e-9a24-c47a2e0f7c2c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

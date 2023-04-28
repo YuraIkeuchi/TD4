@@ -1,7 +1,9 @@
 #pragma once
 #include "ObjCommon.h"
-//言霊クラス
-class Bullet :
+using namespace std;         //  名前空間指定
+
+//弾の基底クラス
+class InterBullet :
 	public ObjCommon {
 protected:
 	// DirectX::を省略
@@ -11,33 +13,27 @@ protected:
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
-	Bullet();
+	//初期化
+	virtual bool Initialize() = 0;
+	//更新
+	void Update();
+	
+	//描画
+	void Draw(DirectXCommon* dxCommon);
 
-	bool Initialize() override;//初期化
-	/// <summary>
-	/// 毎フレーム処理
-	/// </summary>
-	void Update() override;
-
-	/// <summary>
-	/// 描画
-	/// </summary>
-	void Draw(DirectXCommon* dxCommon) override;
-
-	/// <summary>
-	/// ImGui描画
-	/// </summary>
+	virtual void Action() = 0;//弾特有の処理
+	//ImGui既定
 	void ImGuiDraw();
-private:
-	//弾の動く処理
-	void Move();
+	//特有のImGui
+	virtual void ImGui_Origin() = 0;
 public:
 	//gettersetter
 	const bool& GetAlive() { return m_Alive; }
 	const int& GetBulletType() { return m_BulletType; }
 	void SetAngle(const XMFLOAT2& Angle) { m_Angle = Angle; }
 	void SetBulletType(const int BulletType) { m_BulletType = BulletType; }
-private:
+
+public:
 	XMFLOAT2 m_Angle = {};//弾の角度
 	float m_AddSpeed = {};//加速度
 	int m_BulletType = {};//弾の種類

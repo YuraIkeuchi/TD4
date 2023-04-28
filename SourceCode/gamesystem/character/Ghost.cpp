@@ -71,10 +71,10 @@ void Ghost::Particle() {
 bool Ghost::BulletCollision() {
 	float l_AddHungerMax = 5.0f;//‰ÁŽZ‚³‚ê‚éÅ‘å‹Q‰ìƒQ[ƒW
 	if (player->BulletCollide(m_Position) && m_Alive) {
-		HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() + l_AddHungerMax);
 		m_Alive = false;
 		m_Catch = true;
 		if (player->GetBulletType() == BULLET_FORROW) {
+			HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() + l_AddHungerMax);
 			_charaState = CharaState::STATE_FOLLOW;
 		}
 		else {
@@ -132,7 +132,7 @@ void Ghost::None() {
 void Ghost::Follow() {
 	m_OldPos = m_Position;
 	XMFLOAT3 l_player = player->GetPosition();
-	float l_Vel = 0.15f;
+	float l_Vel = 0.15f;//‘¬“x
 	//’Ç]
 	if (!m_ma) {
 		Helper::GetInstance()->FollowMove(m_Position, l_player, l_Vel);

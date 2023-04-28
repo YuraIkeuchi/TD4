@@ -53,8 +53,8 @@ bool Player::Initialize()
 void (Player::* Player::stateTable[])() = {
 	&Player::Idle,//待機
 	&Player::Walk,//移動
-	&Player::Attack,//攻撃
-	&Player::Shot,
+	&Player::GhostShot,//ゴーストを捕まえる
+	&Player::AttackShot,//攻撃
 };
 //更新処理
 void Player::Update()
@@ -78,26 +78,13 @@ void Player::Update()
 	{
 		_charaState = CharaState::STATE_RUN;
 	}
-	//Yが押されたら攻撃状態(まず作るゲーム攻撃あるのかどうか分からんから普通に後で消すかも)
-	else if (Input::GetInstance()->TriggerButton(Input::Y))
-	{
-		_charaState = CharaState::STATE_ATTACK;
-	}
 	//何もアクションがなかったらアイドル状態
 	else
 	{
 		_charaState = CharaState::STATE_IDLE;
 	}
-
-	/*-----------------------------*/
-	//Xが押されたら弾を撃つ
-	if (Input::GetInstance()->TriggerButton(Input::X) && m_InterVal == 0)
-	{
-		m_InterVal = m_TargetInterVal;
-		m_RigidityTime = m_TargetRigidityTime;
-		_charaState = CharaState::STATE_SHOT;
-	}
-
+	//弾の更新
+	BulletUpdate();
 
 	//状態移行(charastateに合わせる)
 	(this->*stateTable[_charaState])();
@@ -107,23 +94,6 @@ void Player::Update()
 	
 	//どっち使えばいいか分からなかったから保留
 	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
-
-	//弾の更新
-	for (Bullet* bullet : bullets) {
-		if (bullet != nullptr) {
-			bullet->Update();
-		}
-	}
-	//弾の削除
-	for (int i = 0; i < bullets.size(); i++) {
-		if (bullets[i] == nullptr) {
-			continue;
-		}
-
-		if (!bullets[i]->GetAlive()) {
-			bullets.erase(cbegin(bullets) + i);
-		}
-	}
 
 	//Stateに入れなくていいやつ
 	//攻撃のインターバル
@@ -137,10 +107,17 @@ void Player::Update()
 void Player::Draw(DirectXCommon* dxCommon)
 {
 	Fbx_Draw(dxCommon);
-	//弾の描画
-	for (Bullet* bullet : bullets) {
-		if (bullet != nullptr) {
-			bullet->Draw(dxCommon);
+	//弾の描画(言霊)
+	for (InterBullet* ghostbullet : ghostbullets) {
+		if (ghostbullet != nullptr) {
+			ghostbullet->Draw(dxCommon);
+		}
+	}
+
+	//弾の描画(言霊)
+	for (InterBullet* attackbullet : attackbullets) {
+		if (attackbullet != nullptr) {
+			attackbullet->Draw(dxCommon);
 		}
 	}
 }
@@ -159,8 +136,8 @@ void Player::ImGuiDraw() {
 	ImGui::End();
 
 	HungerGauge::GetInstance()->ImGuiDraw();
-	//弾の更新
-	for (Bullet* bullet : bullets) {
+	//弾ImGui
+	for (InterBullet* bullet : ghostbullets) {
 		if (bullet != nullptr) {
 			bullet->ImGuiDraw();
 		}
@@ -246,14 +223,63 @@ XMFLOAT3 Player::MoveVECTOR(XMVECTOR v, float angle)
 	XMFLOAT3 pos = { v.m128_f32[0], v.m128_f32[1], v.m128_f32[2] };
 	return pos;
 }
-//攻撃アクション
-void Player::Attack()
-{
-	//アニメーションを攻撃に
-	AnimationControl(AnimeName::ATTACK, false, 1);
+//弾の更新
+void Player::BulletUpdate() {
+	/*-----------------------------*/
+	//Aが押されたら弾を撃つ(言霊)
+	if (Input::GetInstance()->TriggerButton(Input::A) && m_InterVal == 0)
+	{
+		m_InterVal = m_TargetInterVal;
+		m_RigidityTime = m_TargetRigidityTime;
+		_charaState = CharaState::STATE_GHOST;
+	}
+	//Bが押されたら弾を撃つ(攻撃)
+	if (Input::GetInstance()->TriggerButton(Input::B) && m_InterVal == 0)
+	{
+		m_InterVal = m_TargetInterVal;
+		m_RigidityTime = m_TargetRigidityTime;
+		_charaState = CharaState::STATE_SHOT;
+	}
+
+	//言弾の更新
+	for (InterBullet* ghostbullet : ghostbullets) {
+		if (ghostbullet != nullptr) {
+			ghostbullet->Update();
+		}
+	}
+
+
+	//攻撃弾の更新
+	for (InterBullet* attackbullet : attackbullets) {
+		if (attackbullet != nullptr) {
+			attackbullet->Update();
+		}
+	}
+
+	//弾の削除(言霊)
+	for (int i = 0; i < ghostbullets.size(); i++) {
+		if (ghostbullets[i] == nullptr) {
+			continue;
+		}
+
+		if (!ghostbullets[i]->GetAlive()) {
+			ghostbullets.erase(cbegin(ghostbullets) + i);
+		}
+	}
+
+	//弾の削除(言霊)
+	for (int i = 0; i < attackbullets.size(); i++) {
+		if (attackbullets[i] == nullptr) {
+			continue;
+		}
+
+		if (!attackbullets[i]->GetAlive()) {
+			attackbullets.erase(cbegin(attackbullets) + i);
+		}
+	}
 }
-//弾を打つ処理
-void Player::Shot() {
+//弾を打つ処理(ゴーストを捕まえる)
+void Player::GhostShot() {
 	//弾を撃つ方向を算出するために回転を求める
 	XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
 	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
@@ -263,33 +289,39 @@ void Player::Shot() {
 	l_Angle.y = move.m128_f32[2];
 
 	//弾の生成
-	Bullet* newbullet;
-	newbullet = new Bullet();
+	GhostBullet* newbullet;
+	newbullet = new GhostBullet();
 	newbullet->Initialize();
 	newbullet->SetPosition(m_Position);
 	newbullet->SetBulletType(m_BulletType);
 	newbullet->SetAngle(l_Angle);
-	bullets.push_back(newbullet);
+	ghostbullets.push_back(newbullet);
+}
+//弾を打つ処理(ゴーストを捕まえる)
+void Player::AttackShot() {
+	//弾を撃つ方向を算出するために回転を求める
+	XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
+	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
+	move = XMVector3TransformNormal(move, matRot);
+	XMFLOAT2 l_Angle;
+	l_Angle.x = move.m128_f32[0];
+	l_Angle.y = move.m128_f32[2];
+
+	//弾の生成
+	InterBullet* newbullet;
+	newbullet = new AttackBullet();
+	newbullet->Initialize();
+	newbullet->SetPosition(m_Position);
+	newbullet->SetBulletType(m_BulletType);
+	newbullet->SetAngle(l_Angle);
+	attackbullets.push_back(newbullet);
 }
 //待機モーション
 void Player::Idle()
 {
 	//条件少しおかしいので後で修正
 	if (_animeName == AnimeName::IDLE)return;
-
-		//攻撃ー＞スティック離し
-		if (_animeName == AnimeName::ATTACK) {
-			//FBXのタイムが最終フレーム到達したらアイドル状態に
-			if (m_fbxObject->GetFbxTime_Current() >= m_fbxObject->GetFbxTime_End())
-			{
-				AnimationControl(AnimeName::IDLE, true, 1);
-			}
-		}
-		//歩きー＞スティック離したら止まる
-		else
-		{
-			AnimationControl(AnimeName::IDLE, true, 1);
-		}
+	AnimationControl(AnimeName::IDLE, true, 1);
 }
 //インターバル
 void Player::InterVal() {
@@ -309,7 +341,7 @@ void Player::SelectBullet() {
 bool Player::BulletCollide(const XMFLOAT3& pos) {
 	float l_Radius = 1.0f;//当たり範囲
 	//弾の更新
-	for (Bullet* bullet : bullets) {
+	for (InterBullet* bullet : ghostbullets) {
 		if (bullet != nullptr) {
 			if (Collision::CircleCollision(bullet->GetPosition().x, bullet->GetPosition().z, l_Radius, pos.x, pos.z, l_Radius)) {
 				return true;
@@ -322,6 +354,7 @@ bool Player::BulletCollide(const XMFLOAT3& pos) {
 
 	return false;
 }
+//プレイヤーとの当たり判定
 bool Player::PlayerCollide(const XMFLOAT3& pos) {
 	float l_Radius = 2.0f;//当たり範囲
 	if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, pos.x, pos.z, l_Radius)) {

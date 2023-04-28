@@ -4,7 +4,8 @@
 #include<memory>
 #include "ObjCommon.h"
 #include "Input.h"
-#include "Bullet.h"
+#include "GhostBullet.h"
+#include "AttackBullet.h"
 using namespace DirectX;
 class Player:public ObjCommon
 {
@@ -41,7 +42,7 @@ public:
 	{
 		STATE_IDLE,
 		STATE_RUN,
-		STATE_ATTACK,
+		STATE_GHOST,
 		STATE_SHOT
 	}_charaState;
 
@@ -60,23 +61,24 @@ private:
 	XMFLOAT3 MoveVECTOR(XMVECTOR v, float angle);
 
 private:
-	//攻撃諸々
-	void Attack();
-	//弾を打つ処理
-	void Shot();
+	//弾を打つ処理(ゴーストを捕まえる)
+	void GhostShot();
+	//弾を打つ処理(攻撃)
+	void AttackShot();
 private:
 	void Idle();
 	//インターバル管理
 	void InterVal();
 	//弾を選ぶ
 	void SelectBullet();
+	//弾の更新
+	void BulletUpdate();
 private:
 	//各アニメーション
 	enum class AnimeName
 	{
 		IDLE=7,
 		WALK=5,
-		ATTACK=0
 	}_animeName;
 
 	void AnimationControl(AnimeName name, const bool& loop, int speed);
@@ -87,8 +89,8 @@ public:
 public:
 	const int& GetBulletType() { return m_BulletType; }
 private://各クラス
-	vector<Bullet*> bullets;
-
+	vector<InterBullet*> ghostbullets;//言霊
+	vector<InterBullet*> attackbullets;//攻撃
 	//弾関係の変数
 	int m_BulletType = {};//弾の種類
 	int m_InterVal = {};//弾の発射のインターバル
