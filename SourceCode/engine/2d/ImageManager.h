@@ -25,7 +25,8 @@ public:
 		GAMECLEAR,
 		BOX,
 		CUBE,
-		NON
+		NON,
+		WHITE,
 	};
 
 	//テクスチャの名前
