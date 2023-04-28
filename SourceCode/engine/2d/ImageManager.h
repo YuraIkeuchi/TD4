@@ -25,6 +25,7 @@ public:
 		GAMECLEAR,
 		BOX,
 		CUBE,
+		WINDOW,
 		NON
 	};
 
