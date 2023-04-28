@@ -2,13 +2,10 @@
 #include "Audio.h"
 #include"Easing.h"
 #include "SceneManager.h"
-#include "ImageManager.h"
 #include "imgui.h"
-#include "VariableCommon.h"
 #include "ParticleEmitter.h"
-#include "ModelManager.h"
+#include "ImageManager.h"
 #include <algorithm>
-#include "Block.h"
 
 //初期化
 void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
@@ -18,12 +15,13 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	BaseInitialize(dxCommon);
 	//オーディオ
 	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/Boss.wav");
-
+	//ポストエフェクト
 	PlayPostEffect = true;
+	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
 
+	//各クラス
 	player = new Player({ 0.0f, 0.0f, 0.0f });
-	//player.reset(new Player({0.f,0.f,0.f}));
 	camerawork->SetPlayer(player);
 	ui.reset(new UI());
 	ui->Initialize();
@@ -42,26 +40,17 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	backobj.reset(new BackObj());
 	backobj->Initialize();
 
-	loadfood.reset(new LoadFood());
-	loadfood->Load(player);
-
-	loadghost.reset(new LoadGhost());
-	loadghost->Load(player);
+	loadobj.reset(new LoadStageObj());
+	loadobj->AllLoad(player);
 }
 //更新
 void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
 	Input* input = Input::GetInstance();
-	if (input->TriggerButton(input->A)) {
-		//SceneManager::GetInstance()->ChangeScene("GAMECLEAR");
-		//Audio::GetInstance()->StopWave(1);
-	}
+	
 	//音楽の音量が変わる
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 	VolumManager::GetInstance()->Update();
-	camerawork->Update(camera);
-
-	lightgroup->Update();
 
 	if (input->Pushkey(DIK_A)&&
 		nowstate!=CONVERSATION) {
@@ -108,10 +97,11 @@ void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 		player->Update();
 		//enemymanager->Update();
 		boss->Update();
-		loadfood->Update();
-		loadghost->Update();
+		loadobj->Update();
 		ParticleEmitter::GetInstance()->Update();
 	}
+	camerawork->Update(camera);
+	lightgroup->Update();
 }
 
 //描画
@@ -153,8 +143,7 @@ void PlaySceneActor::BackDraw(DirectXCommon* dxCommon)
 	////各クラスの描画
 	player->Draw(dxCommon);
 	boss->Draw(dxCommon);
-	loadfood->Draw(dxCommon);
-	loadghost->Draw(dxCommon);
+	loadobj->Draw(dxCommon);
 	//enemymanager->Draw(dxCommon);
 	backobj->Draw(dxCommon);
 	IKEObject3d::PostDraw();
@@ -172,7 +161,6 @@ void PlaySceneActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void PlaySceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	//player->ImGuiDraw();
-	//loadfood->ImGuiDraw();
-	loadghost->ImGuiDraw();
+	player->ImGuiDraw();
+	loadobj->ImGuiDraw();
 }

@@ -25,9 +25,6 @@ void ObjCommon::Obj_SetParam()
 	m_Object->SetRotation(m_Rotation);
 	m_Object->SetScale(m_Scale);
 	m_Object->SetColor(m_Color);
-	m_Object->SetAddColor(m_Addcolor);
-	m_Object->SetDisolve(m_AddDisolve);
-	m_Object->SetChangeColor(m_ChangeColor);
 	m_Object->Update();
 	UpdateWorldMatrix();
 }
@@ -47,9 +44,7 @@ void ObjCommon::Fbx_SetParam()
 {
 	m_fbxObject->SetPosition(m_Position);
 	m_fbxObject->SetRotation(m_Rotation);
-	m_fbxObject->SetAddColor(m_Addcolor);
-	m_fbxObject->SetDisolve(m_AddDisolve);
-	m_fbxObject->SetChangeColor(m_ChangeColor);
+	m_fbxObject->SetScale(m_Scale);
 }
 
 void ObjCommon::Obj_Draw()
