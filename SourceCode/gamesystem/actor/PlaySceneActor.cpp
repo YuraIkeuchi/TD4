@@ -91,7 +91,6 @@ void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	blackwindow->SetColor(black_color);
 
 	//各クラス更新
-	backobj->SetColor({ 0.5f,0.5f,0.5f,1.f});
 	backobj->Update();
 	if (nowstate != CONVERSATION) {
 		player->Update();

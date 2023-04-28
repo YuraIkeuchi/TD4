@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <map>
 #include <string>
 #include "IKESprite.h"
@@ -29,7 +29,6 @@ public:
 		WHITE,
 		WINDOW,
 		BLACKWINDOW,
-		NON
 	};
 
 	//テクスチャの名前
