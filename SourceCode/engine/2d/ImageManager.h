@@ -26,6 +26,7 @@ public:
 		BOX,
 		CUBE,
 		WINDOW,
+		BLACKWINDOW,
 		NON
 	};
 
