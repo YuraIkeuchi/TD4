@@ -13,6 +13,7 @@ void ImageManager::StartLoad2D()
 	IKESprite::LoadTexture(LOADING, L"Resources/2d/objicon/box.png");
 	IKESprite::LoadTexture(WHITE, L"Resources/2d/effect/white1x1.png");
 	IKESprite::LoadTexture(WINDOW, L"Resources/2d/objicon/ConversationWindow.png");
+	IKESprite::LoadTexture(BLACKWINDOW, L"Resources/2d/objicon/BlackWindow.png");
 }
 
 //非同期処理で読み込むスプライト

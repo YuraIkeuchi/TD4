@@ -30,6 +30,9 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	conversationwindow->SetAnchorPoint({ 0.5f,0.5f });
 	conversationwindow->SetSize(window_size);
 
+	blackwindow = IKESprite::Create(ImageManager::BLACKWINDOW,{});
+
+
 	boss.reset(new FirstBoss());
 	boss->Initialize();
 	enemymanager.reset(new EnemyManager(player));
@@ -49,31 +52,56 @@ void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 	VolumManager::GetInstance()->Update();
 
-	if (input->Pushkey(DIK_A)) {
-		test = true;
+	if (input->Pushkey(DIK_A)&&
+		nowstate!=CONVERSATION) {
+		nowstate = CONVERSATION;
+		frame = {};
 	}
-	if (test) {
+	if (input->Pushkey(DIK_S)&&
+		nowstate!=FIGHT) {
+		nowstate = FIGHT;
+		frame = {};
+	}
+	if (nowstate==CONVERSATION) {
 		frame++;
 		nowframe = frame / maxframe;
 		if (frame >= maxframe) {
 			frame = maxframe;
 		}
+		window_pos.y = Ease(Out, Sine, nowframe, WinApp::window_height + 100, WinApp::window_height - 100);
+		window_size.x = Ease(Out, Sine, nowframe, 0, 1300);
+		window_size.y = Ease(Out, Sine, nowframe, 0, 223);
+		black_color.w = Ease(Out, Sine, nowframe,0, 1);
 	}
-	window_pos.y = Ease(Out, Sine, nowframe, WinApp::window_height+100, WinApp::window_height-100);
-	window_size.x= Ease(Out, Sine, nowframe,0, 700);
-	window_size.y = Ease(Out, Sine, nowframe, 0, 150);
+	else if(nowstate ==FIGHT) {
+		frame++;
+		nowframe = frame / maxframe;
+		if (frame >= maxframe) {
+			frame = maxframe;
+		}
+		window_pos.y = Ease(Out, Sine, nowframe, WinApp::window_height - 100, WinApp::window_height + 100);
+		window_size.x = Ease(Out, Sine, nowframe, 1300, 0);
+		window_size.y = Ease(Out, Sine, nowframe, 225, 0);
+		black_color.w = Ease(Out, Sine, nowframe, 1, 0);
+	}
+
+	
 	conversationwindow->SetPosition(window_pos);
 	conversationwindow->SetSize(window_size);
+	blackwindow->SetColor(black_color);
 
 	//各クラス更新
+	backobj->SetColor({ 0.5f,0.5f,0.5f,1.f});
+	backobj->Update();
+	if (nowstate != CONVERSATION) {
+		player->Update();
+		//enemymanager->Update();
+		boss->Update();
+		loadobj->Update();
+		ParticleEmitter::GetInstance()->Update();
+	}
 	camerawork->Update(camera);
 	lightgroup->Update();
-	player->Update();
-	//enemymanager->Update();
-	boss->Update();
-	backobj->Update();
-	loadobj->Update();
-	ParticleEmitter::GetInstance()->Update();
 }
 
 //描画
@@ -126,6 +154,7 @@ void PlaySceneActor::FrontDraw(DirectXCommon* dxCommon) {
 	ParticleEmitter::GetInstance()->FlontDrawAll();
 	//完全に前に書くスプライト
 	IKESprite::PreDraw();
+	blackwindow->Draw();
 	conversationwindow->Draw();
 	//ui->Draw();
 	IKESprite::PostDraw();

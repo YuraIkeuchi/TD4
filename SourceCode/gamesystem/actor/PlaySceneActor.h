@@ -10,6 +10,12 @@
 #include "LoadStageObj.h"
 /// タイトルシーン
 class PlaySceneActor : public BaseActor {
+private:
+	enum state {
+		CONVERSATION=0,
+		FIGHT,
+		NONE,
+	};
 public:
 	/// 初期化
 	void Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) override;
@@ -31,11 +37,16 @@ private:
 	unique_ptr<BackObj> backobj;
 	unique_ptr<LoadStageObj> loadobj;
 	unique_ptr<IKESprite> conversationwindow;
+	unique_ptr<IKESprite> blackwindow;
+	//��W
 	XMFLOAT2 window_pos{ WinApp::window_width/2.f,WinApp::window_height+100 };
 	XMFLOAT2 window_size{ 0.f,0.f };
+
+	XMFLOAT4 black_color{ 1.f,1.f,1.f,0.f };
+
 	float maxframe = 20.f;
 	float nowframe = 0.f;
 	float frame = 0.f;
+	int nowstate = NONE;
 	bool test = false;
-	std::vector<std::vector<int>> map; //マップチップ(1マップ)
 };

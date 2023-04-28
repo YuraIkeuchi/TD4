@@ -28,6 +28,7 @@ public:
 		NON,
 		WHITE,
 		WINDOW,
+		BLACKWINDOW,
 		NON
 	};
 
