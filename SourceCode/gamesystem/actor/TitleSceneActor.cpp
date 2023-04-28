@@ -19,20 +19,29 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 
 	helper = make_unique< Helper>();
 
+	sceneChanger_ = make_unique<SceneChanger>();
+	sceneChanger_->Initialize();
 	//タイトル
 	TitleSprite = IKESprite::Create(ImageManager::TITLE, { 0.0f,0.0f });
 }
 //更新
 void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
-	if (input->TriggerButton(input->B)) {
-		if (!s_GameLoop) {
-			SceneManager::GetInstance()->ChangeScene("LOAD");
-		}
-		else {
-			SceneManager::GetInstance()->ChangeScene("EDITORSCENE");
-		}
+	if (input->TriggerButton(input->B)||input->Pushkey(DIK_SPACE)) {
+		sceneChanger_->ChangeStart();
 		Audio::GetInstance()->StopWave(0);
+	}
+
+
+
+	if (sceneChanger_->GetEasingStart()) {
+		string str = "LOAD";
+		if (!s_GameLoop) {
+			str = "LOAD";
+		} else {
+			str = "EDITORSCENE";
+		}
+		sceneChanger_->ChangeScene(str, SceneChanger::NonReverse);
 	}
 	lightgroup->Update();
 	ParticleEmitter::GetInstance()->FireEffect(100, { 0.0f,23.0f,0.0f }, 5.0f, 0.0f, { 1.0f,0.5f,0.0f,0.5f }, { 1.0f,0.5f,0.0f,0.5f });
@@ -67,6 +76,7 @@ void TitleSceneActor::FrontDraw() {
 	IKESprite::PreDraw();
 	TitleSprite->Draw();
 	IKESprite::PostDraw();
+	sceneChanger_->Draw();
 }
 //背面描画
 void TitleSceneActor::BackDraw(DirectXCommon* dxCommon)

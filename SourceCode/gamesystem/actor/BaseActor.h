@@ -8,7 +8,7 @@
 #include "IKEFBXObject3d.h"
 #include "IKEObject3d.h"
 #include "CameraWork.h"
-
+#include "SceneChanger.h"
 
 using namespace std;         //  名前空間指定
 //Actorクラスの既定
@@ -78,7 +78,8 @@ protected:
 	unique_ptr<PostEffect> postEffect = nullptr;
 	unique_ptr<CameraWork> camerawork;
 	bool PlayPostEffect = false;
-	
+
+	unique_ptr<SceneChanger> sceneChanger_ = nullptr;
 	//シーンでの遷移
 	SceneState m_SceneState = SceneState::IntroState;
 };

@@ -35,7 +35,7 @@ public:
 	/// シーン切り替え
 	/// </summary>
 	/// <param name="sceneName"></param>
-	bool ChangeScene();
+	bool ChangeScene(const std::string& sceneName, const ReverseType _reverse);
 
 	/// <summary>
 	/// シーン切り替え
