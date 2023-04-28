@@ -53,8 +53,9 @@ public:
 private:
 	unique_ptr<Player> player;
 	bool m_Alive = true;//生存フラグ
+	bool m_Catch = true;//捕獲フラグ
 	int m_Timer = 0;
-	int m_Type = 0;
+	XMFLOAT3 m_BasePos = {};
 private:
 	//キャラの状態
 	enum CharaState
@@ -63,4 +64,7 @@ private:
 		STATE_FOLLOW,
 		STATE_SEARCH,
 	}_charaState;
+
+	float m_CircleSpeed = 0.0f;
+	float m_CircleScale = 5.0f;
 };

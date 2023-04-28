@@ -543,9 +543,6 @@
     <ClInclude Include="SourceCode\gamesystem\character\InterEnemy.h">
       <Filter>SourceCords\gamesystem\character\Various\Enemy\Common</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\NormalEnemy.h">
-      <Filter>SourceCords\gamesystem\character\Various\Enemy\Various</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\FirstBoss.h">
       <Filter>SourceCords\gamesystem\character\Various\Boss\Various</Filter>
     </ClInclude>
@@ -635,6 +632,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\HungerGauge.h">
       <Filter>SourceCords\gamesystem\character\Various\HungerGauge</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\NormalEnemy.h">
+      <Filter>SourceCords\gamesystem\character\Various\Enemy\Various</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -4,6 +4,8 @@
 #include "CsvLoader.h"
 #include "ParticleEmitter.h"
 #include "Collision.h"
+#include "HungerGauge.h"
+#include "Helper.h"
 #include <random>
 Ghost::Ghost() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Cube);
@@ -37,13 +39,12 @@ void Ghost::Update() {
 	//ƒ^ƒCƒv‚É‚æ‚Á‚ÄF‚ðˆê’U•Ï‚¦‚Ä‚é
 	Obj_SetParam();
 	//H—¿¶¬
-	BirthGhost();
+	//BirthGhost();
 	//ƒp[ƒeƒBƒNƒ‹
 	Particle();
 	//“–‚½‚è”»’è
 	Collision();
 }
-
 //•`‰æ
 void Ghost::Draw(DirectXCommon* dxCommon) {
 	if (m_Alive) {
@@ -62,18 +63,20 @@ void Ghost::Particle() {
 	XMFLOAT4 e_color = { 1.0f,1.0f,1.0f,1.0f };
 	float s_scale = 3.0f;
 	float e_scale = 0.0f;
-	if (m_Alive) {
-		ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color, e_color);
-	}
+	ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color, e_color);
 }
 //“–‚½‚è”»’è
 bool Ghost::Collision() {
+	float l_AddHungerMax = 5.0f;//‰ÁŽZ‚³‚ê‚éÅ‘å‹Q‰ìƒQ[ƒW
 	if (player->BulletCollide(m_Position) && m_Alive) {
+		HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() + l_AddHungerMax);
 		m_Alive = false;
+		m_Catch = true;
 		if (player->GetBulletType() == BULLET_FORROW) {
 			_charaState = CharaState::STATE_FOLLOW;
 		}
 		else {
+			m_BasePos = m_Position;
 			_charaState = CharaState::STATE_SEARCH;
 		}
 		return true;
@@ -109,9 +112,14 @@ void Ghost::None() {
 }
 //’Ç]
 void Ghost::Follow() {
-
+	XMFLOAT3 l_player = player->GetPosition();
+	float l_Vel = 0.15f;
+	//’Ç]
+	Helper::GetInstance()->FollowMove(m_Position, l_player, l_Vel);
 }
 //’Tõ
 void Ghost::Search() {
-
+	m_CircleSpeed += 1.0f;
+	//‰~‰^“®
+	m_Position = Helper::GetInstance()->CircleMove(m_BasePos, m_CircleScale, m_CircleSpeed);
 }
