@@ -7,13 +7,13 @@
 #include "imgui.h"
 #include "VariableCommon.h"
 #include "ParticleEmitter.h"
-//‰Šú‰»
+//åˆæœŸåŒ–
 void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
-	//‹¤’Ê‚Ì‰Šú‰»
+	//å…±é€šã®åˆæœŸåŒ–
 	BaseInitialize(dxCommon);
 	dxCommon->SetFullScreen(true);
 
-	//ƒI[ƒfƒBƒI
+	//ã‚ªãƒ¼ãƒ‡ã‚£ã‚ª
 	Audio::GetInstance()->LoadSound(0, "Resources/Sound/BGM/ruinsBGM.wav");
 	Audio::GetInstance()->LoopWave(0, VolumManager::GetInstance()->GetBGMVolum());
 
@@ -21,10 +21,10 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
-	//ƒ^ƒCƒgƒ‹
+	//ã‚¿ã‚¤ãƒˆãƒ«
 	TitleSprite = IKESprite::Create(ImageManager::TITLE, { 0.0f,0.0f });
 }
-//XV
+//æ›´æ–°
 void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
 	if (input->TriggerButton(input->B)||input->Pushkey(DIK_SPACE)) {
@@ -43,14 +43,16 @@ void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		}
 		sceneChanger_->ChangeSceneExtra(str, SceneChanger::NonReverse);
 	}
+
+
 	lightgroup->Update();
 	ParticleEmitter::GetInstance()->FireEffect(100, { 0.0f,23.0f,0.0f }, 5.0f, 0.0f, { 1.0f,0.5f,0.0f,0.5f }, { 1.0f,0.5f,0.0f,0.5f });
-	//ƒp[ƒeƒBƒNƒ‹XV
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æ›´æ–°
 	ParticleEmitter::GetInstance()->Update();
 }
-//•`‰æ
+//æç”»
 void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
-	//ƒ|ƒXƒgƒGƒtƒFƒNƒg‚ğ‚©‚¯‚é‚©
+	//ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’ã‹ã‘ã‚‹ã‹
 	if (PlayPostEffect) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
@@ -71,20 +73,20 @@ void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
 	}
 }
 
-//‘O–Ê•`‰æ
+//å‰é¢æç”»
 void TitleSceneActor::FrontDraw() {
 	IKESprite::PreDraw();
 	TitleSprite->Draw();
 	IKESprite::PostDraw();
 	sceneChanger_->Draw();
 }
-//”w–Ê•`‰æ
+//èƒŒé¢æç”»
 void TitleSceneActor::BackDraw(DirectXCommon* dxCommon)
 {
 }
-//ImGui•`‰æ
+//ImGuiæç”»
 void TitleSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 }
-//‰ğ•ú
+//è§£æ”¾
 void TitleSceneActor::Finalize() {
 }

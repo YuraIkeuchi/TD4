@@ -64,11 +64,12 @@ void Food::Particle() {
 }
 //“–‚½‚è”»’è
 bool Food::Collision() {
-	float l_Radius = 1.5f;
+	float l_Radius = 1.5f;//“–‚½‚è”»’è‚Ì”ÍˆÍ
+	float l_AddHunger = 1.0f;//‰ÁŽZ‚³‚ê‚é‹Q‰ìƒQ[ƒW
 	XMFLOAT3 m_PlayerPos = player->GetPosition();
 	if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, m_PlayerPos.x, m_PlayerPos.z, l_Radius) && m_Alive) {
 		m_Alive = false;
-		HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() + 1.0f);
+		HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() + l_AddHunger);
 		return true;
 	}
 	else {

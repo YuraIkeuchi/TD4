@@ -1,9 +1,6 @@
 #pragma once
 #include "Player.h"
-#include "IKETexture.h"
-#include "CollisionPrimitive.h"
 #include "ObjCommon.h"
-#include <array>       // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 
 //ボスの基底クラス

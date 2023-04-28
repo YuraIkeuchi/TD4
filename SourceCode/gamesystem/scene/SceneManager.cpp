@@ -1,7 +1,6 @@
 #include "SceneManager.h"
 #include "ImageManager.h"
 #include "ModelManager.h"
-#include "Block.h"
 #include<cassert>
 void SceneManager::Finalize() {
 	//最後のシーンの終了と開放
