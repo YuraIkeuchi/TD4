@@ -4,6 +4,7 @@
 #include "SceneManager.h"
 #include "imgui.h"
 #include "ParticleEmitter.h"
+#include "ImageManager.h"
 #include <algorithm>
 
 //初期化
