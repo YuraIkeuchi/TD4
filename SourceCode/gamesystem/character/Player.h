@@ -2,11 +2,11 @@
 #include <any>
 #include"IKEFBXObject3d.h"
 #include<memory>
-#include "CharactorManager.h"
+#include "ObjCommon.h"
 #include "Input.h"
 #include "Bullet.h"
 using namespace DirectX;
-class Player:public CharactorManager
+class Player:public ObjCommon
 {
 public:
 	Player(XMFLOAT3 StartPos = {0.f,0.f,0.f});
@@ -25,11 +25,9 @@ private:
 	bool m_StopFlag=false;
 
 	static void (Player::* stateTable[])();
-private:
-	std::unique_ptr<IKEFBXObject3d>Model;
 public:
 	//‰Šú‰»
-	void Initialize()override;
+	bool Initialize()override;
 	//XV
 	void Update()override;
 	//•`‰æ

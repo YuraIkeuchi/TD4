@@ -56,7 +56,7 @@ void Ghost::Draw(DirectXCommon* dxCommon) {
 //ImGui描画
 void Ghost::ImGuiDraw() {
 	ImGui::Begin("Ghost");
-	ImGui::Text("State:%d", _charaState);
+	ImGui::Text("State:%d", m_ma);
 	ImGui::End();
 }
 //パーティクル
@@ -88,6 +88,7 @@ bool Ghost::BulletCollision() {
 	}
 	return true;
 }
+//当たり判定(プレイヤー)
 bool Ghost::PlayerCollision() {
 	if (player->PlayerCollide(m_Position) && (_charaState == CharaState::STATE_FOLLOW)) {
 		m_Position = m_OldPos;
@@ -97,6 +98,10 @@ bool Ghost::PlayerCollision() {
 		return false;
 	}
 
+	return true;
+}
+//当たり判定(ゴースト同士)
+bool Ghost::GhostCollision(const XMFLOAT3& pos) {
 	return true;
 }
 //食料生成
@@ -129,7 +134,9 @@ void Ghost::Follow() {
 	XMFLOAT3 l_player = player->GetPosition();
 	float l_Vel = 0.15f;
 	//追従
-	Helper::GetInstance()->FollowMove(m_Position, l_player, l_Vel);
+	if (!m_ma) {
+		Helper::GetInstance()->FollowMove(m_Position, l_player, l_Vel);
+	}
 }
 //探索
 void Ghost::Search() {

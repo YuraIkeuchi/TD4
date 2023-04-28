@@ -6,34 +6,31 @@
 #include "VariableCommon.h"
 #include "HungerGauge.h"
 #include "Collision.h"
-/*-----------------*/
-/*松本エンジン慣れる用*/
-/*-----------------*/
 
 //コンストラクタ
 Player::Player(XMFLOAT3 StartPos)
-	:CharactorManager(StartPos)//シーンまたいだ時初期座標とか設定用(流石にインスタンス一つで回さないと思うので)
 {
+	m_Position = StartPos;
 	//初期化ぶち込み
 	Initialize();
 	//移動処理用
 	velocity /= 5.0f;
 	//大きさ
-	m_Scale = { 2.f,2.f,2.f };
+	m_Scale = { 2.5f,2.5f,2.5f };
 }
 //デストラクタ
 Player::~Player()
 {
-	Model.reset(nullptr);
+	m_fbxObject.reset(nullptr);
 }
 //初期化
-void Player::Initialize()
+bool Player::Initialize()
 {
 	//モデル初期化と読み込み
-	Model.reset(new IKEFBXObject3d());
-	Model->Initialize();
-	Model->SetModel(ModelManager::GetInstance()->GetFBXModel(ModelManager::PLAYER));
-	Model->LoadAnimation();
+	m_fbxObject.reset(new IKEFBXObject3d());
+	m_fbxObject->Initialize();
+	m_fbxObject->SetModel(ModelManager::GetInstance()->GetFBXModel(ModelManager::PLAYER));
+	m_fbxObject->LoadAnimation();
 
 	/*CSV読み込み(CSVファイル名,読み込むパラメータの名前,受け取る値)　今は単一の方のみ対応(int float double charとか)*/
 
@@ -48,6 +45,8 @@ void Player::Initialize()
 
 	//飢餓ゲージはプレイヤーで管理する
 	HungerGauge::GetInstance()->Initialize();
+
+	return true;
 }
 //状態遷移
 /*CharaStateのState並び順に合わせる*/
@@ -104,12 +103,10 @@ void Player::Update()
 	(this->*stateTable[_charaState])();
 
 	//基礎パラメータ設定
-	Model->SetPosition(m_Position);
-	Model->SetRotation(m_Rotation);
-	Model->SetScale(m_Scale);
-
+	Fbx_SetParam();
+	
 	//どっち使えばいいか分からなかったから保留
-	Model->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 
 	//弾の更新
 	for (Bullet* bullet : bullets) {
@@ -139,8 +136,7 @@ void Player::Update()
 //描画
 void Player::Draw(DirectXCommon* dxCommon)
 {
-	Model->Draw(dxCommon->GetCmdList());
-
+	Fbx_Draw(dxCommon);
 	//弾の描画
 	for (Bullet* bullet : bullets) {
 		if (bullet != nullptr) {
@@ -176,7 +172,7 @@ void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
 	//アニメーションを引数に合わせる
 	if (_animeName != name)
 	{
-		Model->PlayAnimation(static_cast<int>(name));
+		m_fbxObject->PlayAnimation(static_cast<int>(name));
 	}
 
 	//各種パラメータ反映
@@ -284,7 +280,7 @@ void Player::Idle()
 		//攻撃ー＞スティック離し
 		if (_animeName == AnimeName::ATTACK) {
 			//FBXのタイムが最終フレーム到達したらアイドル状態に
-			if (Model->GetFbxTime_Current() >= Model->GetFbxTime_End())
+			if (m_fbxObject->GetFbxTime_Current() >= m_fbxObject->GetFbxTime_End())
 			{
 				AnimationControl(AnimeName::IDLE, true, 1);
 			}

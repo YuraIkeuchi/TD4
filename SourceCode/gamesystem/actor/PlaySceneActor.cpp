@@ -1,13 +1,9 @@
 ﻿#include "PlaySceneActor.h"
 #include "Audio.h"
 #include "SceneManager.h"
-#include "ImageManager.h"
 #include "imgui.h"
-#include "VariableCommon.h"
 #include "ParticleEmitter.h"
-#include "ModelManager.h"
 #include <algorithm>
-#include "Block.h"
 
 //初期化
 void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
@@ -17,12 +13,13 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	BaseInitialize(dxCommon);
 	//オーディオ
 	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/Boss.wav");
-
+	//ポストエフェクト
 	PlayPostEffect = true;
+	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
 
+	//各クラス
 	player = new Player({ 0.0f, 0.0f, 0.0f });
-	//player.reset(new Player({0.f,0.f,0.f}));
 	camerawork->SetPlayer(player);
 	ui.reset(new UI());
 	ui->Initialize();

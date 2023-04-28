@@ -234,9 +234,6 @@
     <ClCompile Include="SourceCode\gamesystem\backobj\BackObj.cpp">
       <Filter>SourceCords\gamesystem\backobj</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\CharactorManager.cpp">
-      <Filter>SourceCords\gamesystem\character\Base</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\Bullet.cpp">
       <Filter>SourceCords\gamesystem\character\Various\Bullet</Filter>
     </ClCompile>
@@ -269,12 +266,6 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\gamecamera\CameraWork.cpp">
       <Filter>SourceCords\gamesystem\GameCamera</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\mapchip\MapChip.cpp">
-      <Filter>SourceCords\gamesystem\MapChip</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\mapchip\Block.cpp">
-      <Filter>SourceCords\gamesystem\MapChip</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\ui\UI.cpp">
       <Filter>SourceCords\gamesystem\UI</Filter>
@@ -528,9 +519,6 @@
     <ClInclude Include="SourceCode\gamesystem\backobj\BackObj.h">
       <Filter>SourceCords\gamesystem\backobj</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\CharactorManager.h">
-      <Filter>SourceCords\gamesystem\character\Base</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\Bullet.h">
       <Filter>SourceCords\gamesystem\character\Various\Bullet</Filter>
     </ClInclude>
@@ -560,12 +548,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\gamecamera\CameraWork.h">
       <Filter>SourceCords\gamesystem\GameCamera</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\mapchip\MapChip.h">
-      <Filter>SourceCords\gamesystem\MapChip</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\mapchip\Block.h">
-      <Filter>SourceCords\gamesystem\MapChip</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\ui\UI.h">
       <Filter>SourceCords\gamesystem\UI</Filter>
@@ -739,9 +721,6 @@
     <Filter Include="SourceCords\gamesystem\character">
       <UniqueIdentifier>{edf53ab5-ded3-4420-b1a9-034728710351}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Base">
-      <UniqueIdentifier>{5198a0b3-be9b-46c1-a405-c0b8840f867d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SourceCords\gamesystem\character\Various">
       <UniqueIdentifier>{4911dc9d-229f-4c45-9839-96e7fd892c71}</UniqueIdentifier>
     </Filter>
@@ -786,9 +765,6 @@
     </Filter>
     <Filter Include="SourceCords\gamesystem\GameCamera">
       <UniqueIdentifier>{36b65622-126d-437c-8ec9-4fd9fff00600}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\MapChip">
-      <UniqueIdentifier>{a171f4dd-75e0-4c33-9f74-e4e672bea6b5}</UniqueIdentifier>
     </Filter>
     <Filter Include="SourceCords\gamesystem\Particle">
       <UniqueIdentifier>{f0fbe216-e1ff-4c96-bc85-a9ffc0bc0d80}</UniqueIdentifier>

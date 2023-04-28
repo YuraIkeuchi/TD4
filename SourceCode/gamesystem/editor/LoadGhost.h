@@ -28,7 +28,11 @@ public:
 	void Draw(DirectXCommon* dxCommon)override;
 
 	void ImGuiDraw();
+
+private:
+	void Collide();
 private:
 	std::vector<Ghost*> ghosts;
+	bool a = false;
 };
 
