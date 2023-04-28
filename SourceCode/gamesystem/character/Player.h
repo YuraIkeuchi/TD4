@@ -83,7 +83,9 @@ private:
 
 	void AnimationControl(AnimeName name, const bool& loop, int speed);
 public:
-	bool BulletCollide(XMFLOAT3 pos);
+	//当たり判定系
+	bool BulletCollide(const XMFLOAT3& pos);//弾との当たり判定
+	bool PlayerCollide(const XMFLOAT3& pos);//プレイヤーとの当たり判定
 public:
 	const int& GetBulletType() { return m_BulletType; }
 private://各クラス

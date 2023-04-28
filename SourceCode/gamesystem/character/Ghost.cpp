@@ -42,8 +42,10 @@ void Ghost::Update() {
 	//BirthGhost();
 	//ÉpÅ[ÉeÉBÉNÉã
 	Particle();
-	//ìñÇΩÇËîªíË
-	Collision();
+	//ìñÇΩÇËîªíË(íe)
+	BulletCollision();
+	//ìñÇΩÇËîªíË(ÉvÉåÉCÉÑÅ[)
+	PlayerCollision();
 }
 //ï`âÊ
 void Ghost::Draw(DirectXCommon* dxCommon) {
@@ -65,8 +67,8 @@ void Ghost::Particle() {
 	float e_scale = 0.0f;
 	ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color, e_color);
 }
-//ìñÇΩÇËîªíË
-bool Ghost::Collision() {
+//ìñÇΩÇËîªíË(íe)
+bool Ghost::BulletCollision() {
 	float l_AddHungerMax = 5.0f;//â¡éZÇ≥ÇÍÇÈç≈ëÂãQâÏÉQÅ[ÉW
 	if (player->BulletCollide(m_Position) && m_Alive) {
 		HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() + l_AddHungerMax);
@@ -84,6 +86,17 @@ bool Ghost::Collision() {
 	else {
 		return false;
 	}
+	return true;
+}
+bool Ghost::PlayerCollision() {
+	if (player->PlayerCollide(m_Position) && (_charaState == CharaState::STATE_FOLLOW)) {
+		m_Position = m_OldPos;
+		return true;
+	}
+	else {
+		return false;
+	}
+
 	return true;
 }
 //êHóøê∂ê¨
@@ -112,6 +125,7 @@ void Ghost::None() {
 }
 //í«è]
 void Ghost::Follow() {
+	m_OldPos = m_Position;
 	XMFLOAT3 l_player = player->GetPosition();
 	float l_Vel = 0.15f;
 	//í«è]

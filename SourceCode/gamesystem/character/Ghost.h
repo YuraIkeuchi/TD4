@@ -34,8 +34,10 @@ private://ステート
 private:
 	//パーティクル
 	void Particle();
-	//当たり判定
-	bool Collision();
+	//当たり判定(弾)
+	bool BulletCollision();
+	//当たり判定(プレイヤー)
+	bool PlayerCollision();
 	//食料生産
 	void BirthGhost();
 	//何もない状態
@@ -65,6 +67,11 @@ private:
 		STATE_SEARCH,
 	}_charaState;
 
+	//円運動(仮)
 	float m_CircleSpeed = 0.0f;
 	float m_CircleScale = 5.0f;
+
+private:
+	XMFLOAT3 m_OldPos = {};
+	bool m_Follow = false;
 };
