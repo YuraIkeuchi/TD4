@@ -32,5 +32,12 @@ private:
 	unique_ptr<BackObj> backobj;
 	unique_ptr<LoadFood> loadfood;
 	unique_ptr<LoadGhost> loadghost;
+	unique_ptr<IKESprite> conversationwindow;
+	XMFLOAT2 window_pos{ WinApp::window_width/2.f,WinApp::window_height+100 };
+	XMFLOAT2 window_size{ 0.f,0.f };
+	float maxframe = 20.f;
+	float nowframe = 0.f;
+	float frame = 0.f;
+	bool test = false;
 	std::vector<std::vector<int>> map; //マップチップ(1マップ)
 };

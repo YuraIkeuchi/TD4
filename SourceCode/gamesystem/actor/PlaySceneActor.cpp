@@ -1,5 +1,6 @@
 ﻿#include "PlaySceneActor.h"
 #include "Audio.h"
+#include"Easing.h"
 #include "SceneManager.h"
 #include "ImageManager.h"
 #include "imgui.h"
@@ -26,6 +27,10 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	camerawork->SetPlayer(player);
 	ui.reset(new UI());
 	ui->Initialize();
+
+	conversationwindow = IKESprite::Create(ImageManager::WINDOW, window_pos);
+	conversationwindow->SetAnchorPoint({ 0.5f,0.5f });
+	conversationwindow->SetSize(window_size);
 
 	boss.reset(new FirstBoss());
 	boss->Initialize();
@@ -54,6 +59,22 @@ void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	camerawork->Update(camera);
 
 	lightgroup->Update();
+
+	if (input->Pushkey(DIK_A)) {
+		test = true;
+	}
+	if (test) {
+		frame++;
+		nowframe = frame / maxframe;
+		if (frame >= maxframe) {
+			frame = maxframe;
+		}
+	}
+	window_pos.y = Ease(Out, Sine, nowframe, WinApp::window_height+100, WinApp::window_height-100);
+	window_size.x= Ease(Out, Sine, nowframe,0, 700);
+	window_size.y = Ease(Out, Sine, nowframe, 0, 150);
+	conversationwindow->SetPosition(window_pos);
+	conversationwindow->SetSize(window_size);
 
 	//各クラス更新
 	player->Update();
@@ -112,10 +133,11 @@ void PlaySceneActor::BackDraw(DirectXCommon* dxCommon)
 }
 //ポストエフェクトがかからない
 void PlaySceneActor::FrontDraw(DirectXCommon* dxCommon) {
-	//完全に前に書くスプライト
-	IKESprite::PreDraw();
 	//パーティクル描画
 	ParticleEmitter::GetInstance()->FlontDrawAll();
+	//完全に前に書くスプライト
+	IKESprite::PreDraw();
+	conversationwindow->Draw();
 	//ui->Draw();
 	IKESprite::PostDraw();
 }

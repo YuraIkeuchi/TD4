@@ -25,7 +25,7 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 //更新
 void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
-	if (input->TriggerButton(input->B)) {
+	if (input->TriggerButton(input->B)||input->Pushkey(DIK_SPACE)) {
 		if (!s_GameLoop) {
 			SceneManager::GetInstance()->ChangeScene("LOAD");
 		}
@@ -34,6 +34,8 @@ void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		}
 		Audio::GetInstance()->StopWave(0);
 	}
+
+
 	lightgroup->Update();
 	ParticleEmitter::GetInstance()->FireEffect(100, { 0.0f,23.0f,0.0f }, 5.0f, 0.0f, { 1.0f,0.5f,0.0f,0.5f }, { 1.0f,0.5f,0.0f,0.5f });
 	//パーティクル更新
