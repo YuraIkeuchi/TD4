@@ -1,9 +1,7 @@
-#include "LoadGhost.h"
+#include "LoadStageObj.h"
 #include "CsvLoader.h"
-
-//ロード
-void LoadGhost::Load(Player* player)
-{
+//ゴーストのロード
+void LoadStageObj::GhostLoad() {
 	auto Size = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/ghost.csv", "Quantity")));
 
 	ghosts.resize(Size);
@@ -12,69 +10,96 @@ void LoadGhost::Load(Player* player)
 	Pos.resize(Size);
 	Rot.resize(Size);
 	Scl.resize(Size);
+
+}
+//食べ物ロード
+void LoadStageObj::FoodLoad() {
+	auto Size = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/food/food.csv", "Quantity")));
+
+	foods.resize(Size);
+
 	/**/
-
-	Name.resize(Size);
-
-
+	Pos.resize(Size);
+	Rot.resize(Size);
+	Scl.resize(Size);
+}
+//すべてロード
+void LoadStageObj::AllLoad(Player* player)
+{
+	//ゴースト関係
+	GhostLoad();
 	//初期化
 	for (auto i = 0; i < ghosts.size(); i++) {
 		ghosts[i] = new Ghost();
 		ghosts[i]->Initialize();
 		ghosts[i]->SetPlayer(player);
 	}
+	//食べ物関係
+	FoodLoad();
 
-
-	LoadCSV::LoadCsvParam_XMFLOAT3("Resources/csv/chara/ghost.csv", Pos, "POSITION");
-	LoadCSV::LoadCsvParam_XMFLOAT3("Resources/csv/chara/ghost.csv", Rot, "ROTATION");
-	LoadCSV::LoadCsvParam_XMFLOAT3("Resources/csv/chara/ghost.csv", Scl, "SCALE");
-
-	////モデル変更に対応
-	//for (auto i = 0; i < ghosts.size(); i++) {
-	//
-	//	//ghosts[i]->SetPosition(Pos[i]);
-	//	ghosts[i]->SetRotation(Rot[i]);
-	//	ghosts[i]->SetScale(Scl[i]);
-	//}
+	//初期化
+	for (auto i = 0; i < foods.size(); i++) {
+		foods[i] = new Food();
+		foods[i]->Initialize();
+		foods[i]->SetPlayer(player);
+	}
 }
 
 //初期化
-void LoadGhost::Initialize()
+void LoadStageObj::Initialize()
 {
 	//Load();
 }
 
 //更新
-void LoadGhost::Update()
+void LoadStageObj::Update()
 {
+	//ゴースト
 	for (auto i = 0; i < ghosts.size(); i++)
 	{
 		ghosts[i]->Update();
 	}
-
 	Collide();
+	//
+	//食べ物
+	for (auto i = 0; i < foods.size(); i++)
+	{
+		foods[i]->Update();
+	}
+	//
 }
 
 //描画
-void LoadGhost::Draw(DirectXCommon* dxCommon)
-{//tes
+void LoadStageObj::Draw(DirectXCommon* dxCommon)
+{	
+	//ゴースト
 	for (auto i = 0; i < ghosts.size(); i++)
 	{
 		ghosts[i]->Draw(dxCommon);
 	}
-
+	//
+	//食べ物
+	for (auto i = 0; i < foods.size(); i++)
+	{
+		foods[i]->Draw(dxCommon);
+	}
+	//
 }
 //ImGui
-void LoadGhost::ImGuiDraw() {
+void LoadStageObj::ImGuiDraw() {
+	//ゴースト
 	for (auto i = 0; i < ghosts.size(); i++) {
 		ghosts[i]->ImGuiDraw();
 	}
-	/*ImGui::Begin("b");
-	ImGui::Text("a:%d", a);
-	ImGui::End();*/
+	//
+	//食べ物
+	for (auto i = 0; i < foods.size(); i++) {
+		foods[i]->ImGuiDraw();
+	}
+	//
 }
 //当たり判定(ゴースト)
-void LoadGhost::Collide() {
+void LoadStageObj::Collide() {
 	for (auto i = 0; i < ghosts.size(); i++) {
 		for (auto j = 0; j < ghosts.size(); j++) {
 			if ((i != j)) {

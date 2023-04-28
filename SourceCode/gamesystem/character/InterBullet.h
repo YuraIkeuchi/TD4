@@ -30,6 +30,7 @@ public:
 	//gettersetter
 	const bool& GetAlive() { return m_Alive; }
 	const int& GetBulletType() { return m_BulletType; }
+	void SetAlive(const bool Alive) { m_Alive = Alive; }
 	void SetAngle(const XMFLOAT2& Angle) { m_Angle = Angle; }
 	void SetBulletType(const int BulletType) { m_BulletType = BulletType; }
 

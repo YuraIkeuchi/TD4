@@ -7,8 +7,7 @@
 #include "EnemyManager.h"
 #include "FirstBoss.h"
 #include "BackObj.h"
-#include "LoadFood.h"
-#include "LoadGhost.h"
+#include "LoadStageObj.h"
 /// タイトルシーン
 class PlaySceneActor : public BaseActor {
 public:
@@ -30,7 +29,6 @@ private:
 	unique_ptr<InterBoss> boss;
 	unique_ptr<UI>ui;
 	unique_ptr<BackObj> backobj;
-	unique_ptr<LoadFood> loadfood;
-	unique_ptr<LoadGhost> loadghost;
+	unique_ptr<LoadStageObj> loadobj;
 	std::vector<std::vector<int>> map; //マップチップ(1マップ)
 };

@@ -225,6 +225,7 @@ XMFLOAT3 Player::MoveVECTOR(XMVECTOR v, float angle)
 }
 //’e‚ÌXV
 void Player::BulletUpdate() {
+	const float l_TargetHunger = 2.0f;
 	/*-----------------------------*/
 	//A‚ª‰Ÿ‚³‚ê‚½‚ç’e‚ğŒ‚‚Â(Œ¾—ì)
 	if (Input::GetInstance()->TriggerButton(Input::A) && m_InterVal == 0)
@@ -234,8 +235,9 @@ void Player::BulletUpdate() {
 		_charaState = CharaState::STATE_GHOST;
 	}
 	//B‚ª‰Ÿ‚³‚ê‚½‚ç’e‚ğŒ‚‚Â(UŒ‚)
-	if (Input::GetInstance()->TriggerButton(Input::B) && m_InterVal == 0)
+	if (Input::GetInstance()->TriggerButton(Input::B) && m_InterVal == 0 && HungerGauge::GetInstance()->GetNowHunger() >= l_TargetHunger)
 	{
+		HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() - l_TargetHunger);
 		m_InterVal = m_TargetInterVal;
 		m_RigidityTime = m_TargetRigidityTime;
 		_charaState = CharaState::STATE_SHOT;
@@ -343,7 +345,8 @@ bool Player::BulletCollide(const XMFLOAT3& pos) {
 	//’e‚ÌXV
 	for (InterBullet* bullet : ghostbullets) {
 		if (bullet != nullptr) {
-			if (Collision::CircleCollision(bullet->GetPosition().x, bullet->GetPosition().z, l_Radius, pos.x, pos.z, l_Radius)) {
+			if (Collision::CircleCollision(bullet->GetPosition().x, bullet->GetPosition().z, l_Radius, pos.x, pos.z, l_Radius) && (bullet->GetAlive())) {
+				bullet->SetAlive(false);
 				return true;
 			}
 			else {
