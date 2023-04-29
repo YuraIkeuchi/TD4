@@ -30,6 +30,8 @@ public:
 private:
 	//食料の検索
 	void SearchFood();
+	//食料とゴーストの当たり判定
+	void CollideFood();
 private:
 	//当たり判定
 	void Collide();

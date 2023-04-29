@@ -23,6 +23,7 @@ bool Ghost::Initialize() {
 	m_Scale = { 1.0f,1.0f,1.0f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	_charaState = CharaState::STATE_NONE;
+	_searchState = SearchState::SEARCH_NO;
 	return true;
 }
 //ó‘Ô‘JˆÚ
@@ -39,13 +40,15 @@ void Ghost::Update() {
 	//ƒ^ƒCƒv‚É‚æ‚Á‚ÄF‚ðˆê’U•Ï‚¦‚Ä‚é
 	Obj_SetParam();
 	//H—¿¶¬
-	//BirthGhost();
+	BirthGhost();
 	//ƒp[ƒeƒBƒNƒ‹
 	Particle();
 	//“–‚½‚è”»’è(’e)
 	BulletCollision();
 	//“–‚½‚è”»’è(ƒvƒŒƒCƒ„[)
 	PlayerCollision();
+	//H‚×•¨‚ð‚Í‚±‚Ô
+	CarryFood();
 }
 //•`‰æ
 void Ghost::Draw(DirectXCommon* dxCommon) {
@@ -56,7 +59,8 @@ void Ghost::Draw(DirectXCommon* dxCommon) {
 //ImGui•`‰æ
 void Ghost::ImGuiDraw() {
 	ImGui::Begin("Ghost");
-	ImGui::Text("State:%d", m_ma);
+	ImGui::Text("m_Search:%d", m_Search);
+	ImGui::Text("Catch:%d", m_Catch);
 	ImGui::End();
 }
 //ƒp[ƒeƒBƒNƒ‹
@@ -65,13 +69,14 @@ void Ghost::Particle() {
 	XMFLOAT4 e_color = { 1.0f,1.0f,1.0f,1.0f };
 	float s_scale = 3.0f;
 	float e_scale = 0.0f;
-	ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color, e_color);
+	if (m_Alive) {
+		ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color, e_color);
+	}
 }
 //“–‚½‚è”»’è(’e)
 bool Ghost::BulletCollision() {
 	float l_AddHungerMax = 5.0f;//‰ÁŽZ‚³‚ê‚éÅ‘å‹Q‰ìƒQ[ƒW
 	if (player->BulletCollide(m_Position) && m_Alive) {
-		m_Alive = false;
 		m_Catch = true;
 		if (player->GetBulletType() == BULLET_FORROW) {
 			HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() + l_AddHungerMax);
@@ -119,7 +124,10 @@ void Ghost::BirthGhost() {
 		//ˆê’èŽžŠÔ‚Å¶¬‚³‚ê‚é
 		if (m_Timer == 100) {
 			_charaState = CharaState::STATE_NONE;
+			_searchState = SearchState::SEARCH_NO;
 			m_Alive = true;
+			m_Catch = false;
+			m_Search = false;
 			m_Timer = 0;
 		}
 	}
@@ -140,14 +148,37 @@ void Ghost::Follow() {
 }
 //’Tõ
 void Ghost::Search() {
-	float l_Vel = 0.15f;
+	float l_Vel = 0.7f;
+	XMFLOAT3 l_playerPos = player->GetPosition();
 	//’Ç]
-	if (m_Search) {
+	if (_searchState == SearchState::SEARCH_START) {
 		Helper::GetInstance()->FollowMove(m_Position, m_SearchPos, l_Vel);
+	}
+	else if (_searchState == SearchState::SEARCH_END) {
+		Helper::GetInstance()->FollowMove(m_Position, l_playerPos, l_Vel);
 	}
 }
 //’TõƒXƒ^[ƒg
 void Ghost::StartSearch(const XMFLOAT3& pos) {
+	_searchState = SearchState::SEARCH_START;
 	m_Search = true;
 	m_SearchPos = pos;
+}
+//’TõI—¹
+void Ghost::EndSearch() {
+	_searchState = SearchState::SEARCH_END;
+}
+//H‚×•¨‚ð‰^‚Ô
+void Ghost::CarryFood() {
+	float l_Radius = 1.0f;
+	float l_Hunger = 2.0f;
+	XMFLOAT3 l_playerPos = player->GetPosition();
+	if ((_searchState == SearchState::SEARCH_END) && (m_Alive)) {
+		if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, l_playerPos.x, l_playerPos.z, l_Radius)) {
+			m_Alive = false;
+			m_Search = false;
+			m_Catch = false;
+			HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() + l_Hunger);
+		}
+	}
 }

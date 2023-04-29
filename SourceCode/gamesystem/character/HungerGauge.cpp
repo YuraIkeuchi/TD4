@@ -18,6 +18,9 @@ bool HungerGauge::Initialize() {
 
 //更新
 void HungerGauge::Update() {
+	float l_SubHunger = 0.001f;
+	//一定ずつで減少していく
+	m_NowHunger -= l_SubHunger;
 	//飢餓ゲージの最大数が決まっている
 	m_NowHunger = min(m_NowHunger, m_HungerMax);
 }

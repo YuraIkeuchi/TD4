@@ -33,7 +33,7 @@ void Food::Update() {
 	//パーティクル
 	Particle();
 	//当たり判定
-	Collision();
+	//Collision();
 }
 
 //描画
@@ -44,13 +44,10 @@ void Food::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui描画
 void Food::ImGuiDraw() {
-	//ImGui::Begin("Food");
-	//ImGui::Text("Pos.X:%f", m_Position.x);
-	//ImGui::Text("Timer:%d", m_Timer);
-	//if (m_Alive) {
-
-	//}
-	//ImGui::End();
+	ImGui::Begin("Food");
+	ImGui::Text("LockOn:%d", m_LockOn);
+	ImGui::Text("Alive:%d", m_Alive);
+	ImGui::End();
 }
 //パーティクル
 void Food::Particle() {
@@ -69,6 +66,7 @@ bool Food::Collision() {
 	XMFLOAT3 m_PlayerPos = player->GetPosition();
 	if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, m_PlayerPos.x, m_PlayerPos.z, l_Radius) && m_Alive) {
 		m_Alive = false;
+		m_LockOn = false;
 		HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() + l_AddHunger);
 		return true;
 	}

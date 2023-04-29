@@ -31,6 +31,8 @@ public:
 	void ImGuiDraw();
 	//’Tõ‚Ì‚Í‚¶‚ß
 	void StartSearch(const XMFLOAT3& pos);
+	//’Tõ‚ÌI‚í‚è
+	void EndSearch();
 
 private://ƒXƒe[ƒg
 	static void (Ghost::* stateTable[])();
@@ -51,18 +53,21 @@ private:
 	void Follow();
 	//’Tõ
 	void Search();
-	
+	//H‚×•¨‚ğ‰^‚Ô
+	void CarryFood();
 public://getter setter
 	void SetPlayer(Player* player) { this->player.reset(player); }
 public:
 	//gettersetter
 	const bool& GetAlive() { return m_Alive; }
 	const bool& GetCatch() { return m_Catch; }
+	const bool& GetSearch() { return m_Search; }
+	void SetCatch(const bool Catch) { m_Catch = Catch; }
 	void Setma(const bool ma) { m_ma = ma; }
 private:
 	unique_ptr<Player> player;
 	bool m_Alive = true;//¶‘¶ƒtƒ‰ƒO
-	bool m_Catch = true;//•ßŠlƒtƒ‰ƒO
+	bool m_Catch =false;//•ßŠlƒtƒ‰ƒO
 	int m_Timer = 0;
 	XMFLOAT3 m_BasePos = {};
 	bool m_ma = false;
@@ -85,4 +90,11 @@ private:
 private://’Tõ
 	bool m_Search = false;
 	XMFLOAT3 m_SearchPos = {};
+
+	//’Tõó‘Ô
+	enum SearchState {
+		SEARCH_NO,
+		SEARCH_START,
+		SEARCH_END,
+	}_searchState;
 };

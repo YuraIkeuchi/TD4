@@ -41,8 +41,12 @@ public://getter setter
 public:
 	//gettersetter
 	const bool& GetAlive() { return m_Alive; }
+	const bool& GetLockOn() { return m_LockOn; }
+	void SetAlive(const bool Alive) { m_Alive = Alive; }
+	void SetLockOn(const bool LockOn) { m_LockOn = LockOn; }
 private:
 	unique_ptr<Player> player;
 	bool m_Alive = true;//ê∂ë∂ÉtÉâÉO
+	bool m_LockOn = false;
 	int m_Timer = 0;
 };

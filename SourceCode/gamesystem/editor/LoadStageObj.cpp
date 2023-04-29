@@ -68,6 +68,8 @@ void LoadStageObj::Update()
 	//
 	//当たり判定
 	Collide();
+	//食べ物の当たり判定
+	CollideFood();
 	//食べ物の検索
 	SearchFood();
 }
@@ -122,17 +124,32 @@ void LoadStageObj::Collide() {
 }
 //食料の検索
 void LoadStageObj::SearchFood() {
-	float l_Limit = 20.0f;//距離
+	float l_Limit = 40.0f;//距離
 	for (auto i = 0; i < ghosts.size(); i++) {
 		XMFLOAT3 l_ghostpos = ghosts[i]->GetPosition();
 		for (auto j = 0; j < foods.size(); j++) {
 			if (!ghosts[i]->GetAlive()) { continue; }
 			if (!ghosts[i]->GetCatch()) { continue; }
-			if (!foods[i]->GetAlive()) { continue; }
 			XMFLOAT3 l_foodpos = foods[j]->GetPosition();
 			float l_dir = Helper::GetInstance()->ChechLength(l_ghostpos, l_foodpos);
-			if (l_dir < l_Limit) {
+			if (l_dir < l_Limit && (!ghosts[i]->GetSearch()) && (foods[j]->GetAlive()) && (!foods[j]->GetLockOn())) {
 				ghosts[i]->StartSearch(l_foodpos);
+				foods[j]->SetLockOn(true);
+			}
+		}
+	}
+}
+//食料とゴーストの当たり判定
+void LoadStageObj::CollideFood() {
+	float l_Radius = 1.0f;
+	for (auto i = 0; i < ghosts.size(); i++) {
+		XMFLOAT3 l_ghostpos = ghosts[i]->GetPosition();
+		for (auto j = 0; j < foods.size(); j++) {
+			XMFLOAT3 l_foodpos = foods[j]->GetPosition();
+			float l_dir = Helper::GetInstance()->ChechLength(l_ghostpos, l_foodpos);
+			if ((ghosts[i]->GetSearch()) && (l_dir < l_Radius)) {
+				ghosts[i]->EndSearch();
+				foods[j]->SetAlive(false);
 			}
 		}
 	}
