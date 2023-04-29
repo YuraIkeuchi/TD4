@@ -27,8 +27,11 @@ public:
 	void Draw(DirectXCommon* dxCommon)override;
 	//ImGui
 	void ImGuiDraw();
-
 private:
+	//H—¿‚ÌŒŸõ
+	void SearchFood();
+private:
+	//“–‚½‚è”»’è
 	void Collide();
 private:
 	std::vector<Ghost*> ghosts;

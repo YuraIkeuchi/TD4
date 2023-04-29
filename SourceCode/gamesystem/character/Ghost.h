@@ -29,6 +29,9 @@ public:
 	/// ImGuiï`âÊ
 	/// </summary>
 	void ImGuiDraw();
+	//íTçıÇÃÇÕÇ∂Çﬂ
+	void StartSearch(const XMFLOAT3& pos);
+
 private://ÉXÉeÅ[Ég
 	static void (Ghost::* stateTable[])();
 private:
@@ -48,12 +51,13 @@ private:
 	void Follow();
 	//íTçı
 	void Search();
-
+	
 public://getter setter
 	void SetPlayer(Player* player) { this->player.reset(player); }
 public:
 	//gettersetter
 	const bool& GetAlive() { return m_Alive; }
+	const bool& GetCatch() { return m_Catch; }
 	void Setma(const bool ma) { m_ma = ma; }
 private:
 	unique_ptr<Player> player;
@@ -78,4 +82,7 @@ private:
 private:
 	XMFLOAT3 m_OldPos = {};
 	bool m_Follow = false;
+private://íTçı
+	bool m_Search = false;
+	XMFLOAT3 m_SearchPos = {};
 };

@@ -140,7 +140,14 @@ void Ghost::Follow() {
 }
 //íTçı
 void Ghost::Search() {
-	m_CircleSpeed += 1.0f;
-	//â~â^ìÆ
-	m_Position = Helper::GetInstance()->CircleMove(m_BasePos, m_CircleScale, m_CircleSpeed);
+	float l_Vel = 0.15f;
+	//í«è]
+	if (m_Search) {
+		Helper::GetInstance()->FollowMove(m_Position, m_SearchPos, l_Vel);
+	}
+}
+//íTçıÉXÉ^Å[Ég
+void Ghost::StartSearch(const XMFLOAT3& pos) {
+	m_Search = true;
+	m_SearchPos = pos;
 }

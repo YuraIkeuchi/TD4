@@ -1,5 +1,6 @@
 #include "LoadStageObj.h"
 #include "CsvLoader.h"
+#include "Helper.h"
 //ゴーストのロード
 void LoadStageObj::GhostLoad() {
 	auto Size = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/ghost.csv", "Quantity")));
@@ -44,13 +45,11 @@ void LoadStageObj::AllLoad(Player* player)
 		foods[i]->SetPlayer(player);
 	}
 }
-
 //初期化
 void LoadStageObj::Initialize()
 {
 	//Load();
 }
-
 //更新
 void LoadStageObj::Update()
 {
@@ -59,7 +58,7 @@ void LoadStageObj::Update()
 	{
 		ghosts[i]->Update();
 	}
-	Collide();
+	
 	//
 	//食べ物
 	for (auto i = 0; i < foods.size(); i++)
@@ -67,6 +66,10 @@ void LoadStageObj::Update()
 		foods[i]->Update();
 	}
 	//
+	//当たり判定
+	Collide();
+	//食べ物の検索
+	SearchFood();
 }
 
 //描画
@@ -113,6 +116,23 @@ void LoadStageObj::Collide() {
 					ghosts[i]->Setma(true);
 					ghosts[j]->Setma(true);
 				}
+			}
+		}
+	}
+}
+//食料の検索
+void LoadStageObj::SearchFood() {
+	float l_Limit = 20.0f;//距離
+	for (auto i = 0; i < ghosts.size(); i++) {
+		XMFLOAT3 l_ghostpos = ghosts[i]->GetPosition();
+		for (auto j = 0; j < foods.size(); j++) {
+			if (!ghosts[i]->GetAlive()) { continue; }
+			if (!ghosts[i]->GetCatch()) { continue; }
+			if (!foods[i]->GetAlive()) { continue; }
+			XMFLOAT3 l_foodpos = foods[j]->GetPosition();
+			float l_dir = Helper::GetInstance()->ChechLength(l_ghostpos, l_foodpos);
+			if (l_dir < l_Limit) {
+				ghosts[i]->StartSearch(l_foodpos);
 			}
 		}
 	}

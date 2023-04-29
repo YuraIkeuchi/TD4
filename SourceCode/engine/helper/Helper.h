@@ -42,7 +42,8 @@ public:
 
 	//’Ç]ŠÖ”
 	void FollowMove(XMFLOAT3& pos, const XMFLOAT3& pos2, const float vel);
-
+	//‹——£‚ğ‘ª‚é
+	float ChechLength(const XMFLOAT3& pos, const XMFLOAT3& pos2);
 	//‰~‰^“®
 	XMFLOAT3 CircleMove(const XMFLOAT3& basepos, const float scale, const float speed);
 	//if•¶‚Ì”»’è‚ÌŠÖ”(’l‚ª”ÍˆÍŠO‚É‚ ‚é‚©)
