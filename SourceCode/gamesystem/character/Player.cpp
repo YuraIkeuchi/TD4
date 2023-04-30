@@ -6,6 +6,7 @@
 #include "VariableCommon.h"
 #include "HungerGauge.h"
 #include "Collision.h"
+#include "Input.h"
 
 //コンストラクタ
 Player::Player(XMFLOAT3 StartPos)
@@ -64,7 +65,7 @@ void Player::Update()
 	//つまるところstd::any_cast<double>(〇〇)は固定(static_castで変換)
 	/*①*/m_AddSpeed= static_cast<float>(std::any_cast<double>(sp));
 
-	input = Input::GetInstance();
+	Input* input = Input::GetInstance();
 	/*FBXのカウンタdoubleにしたほうが調整ききやすそう*/
 
 
@@ -165,7 +166,7 @@ void Player::Walk()
 	XMFLOAT3 rot = m_Rotation;
 
 	float AddSpeed=2.f;
-
+	Input* input = Input::GetInstance();
 
 	float StickX = input->GetLeftControllerX();
 	float StickY = input->GetLeftControllerY();

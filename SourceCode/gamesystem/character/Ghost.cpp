@@ -58,10 +58,9 @@ void Ghost::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui•`‰æ
 void Ghost::ImGuiDraw() {
-	ImGui::Begin("Ghost");
-	ImGui::Text("m_Search:%d", m_Search);
-	ImGui::Text("Catch:%d", m_Catch);
-	ImGui::End();
+	/*ImGui::Begin("Ghost");
+	ImGui::Text("m_Limit:%f", m_Limit);
+	ImGui::End();*/
 }
 //ƒp[ƒeƒBƒNƒ‹
 void Ghost::Particle() {
@@ -76,7 +75,7 @@ void Ghost::Particle() {
 //“–‚½‚è”»’è(’e)
 bool Ghost::BulletCollision() {
 	float l_AddHungerMax = 5.0f;//‰ÁŽZ‚³‚ê‚éÅ‘å‹Q‰ìƒQ[ƒW
-	if (player->BulletCollide(m_Position) && m_Alive) {
+	if (player->BulletCollide(m_Position) && (m_Alive)) {
 		m_Catch = true;
 		if (player->GetBulletType() == BULLET_FORROW) {
 			HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() + l_AddHungerMax);
@@ -148,7 +147,7 @@ void Ghost::Follow() {
 }
 //’Tõ
 void Ghost::Search() {
-	float l_Vel = 0.7f;
+	float l_Vel = 0.3f;
 	XMFLOAT3 l_playerPos = player->GetPosition();
 	//’Ç]
 	if (_searchState == SearchState::SEARCH_START) {
@@ -178,6 +177,7 @@ void Ghost::CarryFood() {
 			m_Alive = false;
 			m_Search = false;
 			m_Catch = false;
+			m_Limit = {};
 			HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() + l_Hunger);
 		}
 	}

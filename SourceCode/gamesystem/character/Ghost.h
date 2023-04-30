@@ -62,8 +62,10 @@ public:
 	const bool& GetAlive() { return m_Alive; }
 	const bool& GetCatch() { return m_Catch; }
 	const bool& GetSearch() { return m_Search; }
+	const float& GetLimit() { return m_Limit; }
 	void SetCatch(const bool Catch) { m_Catch = Catch; }
 	void Setma(const bool ma) { m_ma = ma; }
+	void SetLimit(const float Limit) { m_Limit = Limit; }
 private:
 	unique_ptr<Player> player;
 	bool m_Alive = true;//ê∂ë∂ÉtÉâÉO
@@ -80,10 +82,6 @@ private:
 		STATE_SEARCH,
 	}_charaState;
 
-	//â~â^ìÆ(âº)
-	float m_CircleSpeed = 0.0f;
-	float m_CircleScale = 5.0f;
-
 private:
 	XMFLOAT3 m_OldPos = {};
 	bool m_Follow = false;
@@ -97,4 +95,7 @@ private://íTçı
 		SEARCH_START,
 		SEARCH_END,
 	}_searchState;
+
+private:
+	float m_Limit = {};
 };

@@ -73,7 +73,6 @@ void LoadStageObj::Update()
 	//H‚×•¨‚ÌŒŸõ
 	SearchFood();
 }
-
 //•`‰æ
 void LoadStageObj::Draw(DirectXCommon* dxCommon)
 {	
@@ -124,7 +123,6 @@ void LoadStageObj::Collide() {
 }
 //H—¿‚ÌŒŸõ
 void LoadStageObj::SearchFood() {
-	float l_Limit = 40.0f;//‹——£
 	for (auto i = 0; i < ghosts.size(); i++) {
 		XMFLOAT3 l_ghostpos = ghosts[i]->GetPosition();
 		for (auto j = 0; j < foods.size(); j++) {
@@ -132,9 +130,14 @@ void LoadStageObj::SearchFood() {
 			if (!ghosts[i]->GetCatch()) { continue; }
 			XMFLOAT3 l_foodpos = foods[j]->GetPosition();
 			float l_dir = Helper::GetInstance()->ChechLength(l_ghostpos, l_foodpos);
-			if (l_dir < l_Limit && (!ghosts[i]->GetSearch()) && (foods[j]->GetAlive()) && (!foods[j]->GetLockOn())) {
-				ghosts[i]->StartSearch(l_foodpos);
-				foods[j]->SetLockOn(true);
+			if ((!ghosts[i]->GetSearch()) && (foods[j]->GetAlive()) && (!foods[j]->GetLockOn())) {
+				if (l_dir < ghosts[i]->GetLimit()) {
+					ghosts[i]->StartSearch(l_foodpos);
+					foods[j]->SetLockOn(true);
+				}
+				else {
+					ghosts[i]->SetLimit(ghosts[i]->GetLimit() + 1.0f);
+				}
 			}
 		}
 	}
@@ -150,6 +153,7 @@ void LoadStageObj::CollideFood() {
 			if ((ghosts[i]->GetSearch()) && (l_dir < l_Radius)) {
 				ghosts[i]->EndSearch();
 				foods[j]->SetAlive(false);
+				foods[j]->SetLockOn(false);
 			}
 		}
 	}

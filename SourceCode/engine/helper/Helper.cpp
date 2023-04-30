@@ -196,8 +196,8 @@ void Helper::FollowMove(XMFLOAT3& pos, const XMFLOAT3& pos2, const float vel) {
 	l_Distance.x = pos.x - pos2.x;
 	l_Distance.z = pos.z - pos2.z;
 
-	l_AddVel.x = float(sin(-atan2f(l_Distance.x, l_Distance.z)) * 0.15f);
-	l_AddVel.z = float(-cos(atan2f(l_Distance.x, l_Distance.z)) * 0.15f);
+	l_AddVel.x = float(sin(-atan2f(l_Distance.x, l_Distance.z)) * vel);
+	l_AddVel.z = float(-cos(atan2f(l_Distance.x, l_Distance.z)) * vel);
 	l_AddVel.y = 0.0f;
 	pos.y += 0.0f;
 	pos.x += l_AddVel.x;

@@ -3,7 +3,7 @@
 #include"IKEFBXObject3d.h"
 #include<memory>
 #include "ObjCommon.h"
-#include "Input.h"
+
 #include "GhostBullet.h"
 #include "AttackBullet.h"
 using namespace DirectX;
@@ -13,9 +13,6 @@ public:
 	Player(XMFLOAT3 StartPos = {0.f,0.f,0.f});
 	~Player()override;
 
-private:
-	//キーのインスタンス取得用
-	Input* input;
 private:
 	//体力
 	static int HP;
