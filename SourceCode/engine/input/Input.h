@@ -56,6 +56,8 @@ public:
 		XBOX_STICK_NUM
 	};
 
+	bool PushButton(XBOX Button);
+
 	bool TriggerButton(XBOX Button);
 
 
@@ -164,8 +166,6 @@ public:
 	bool LeftTriggerStick(int stick);
 	bool RightTiltStick(int stick);
 	bool RightTriggerStick(int stick);
-	bool PushButton(int Button);
-	//bool TriggerButton(int Button);
 	bool PushCrossKey(int CrossKey);
 	bool TriggerCrossKey(int CrossKey);
 public:

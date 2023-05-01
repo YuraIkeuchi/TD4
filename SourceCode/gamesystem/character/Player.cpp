@@ -56,6 +56,7 @@ void (Player::* Player::stateTable[])() = {
 	&Player::Walk,//ˆÚ“®
 	&Player::GhostShot,//ƒS[ƒXƒg‚ð•ß‚Ü‚¦‚é
 	&Player::AttackShot,//UŒ‚
+	&Player::SuperShot,//‚½‚ßUŒ‚
 };
 //XVˆ—
 void Player::Update()
@@ -134,7 +135,7 @@ void Player::ImGuiDraw() {
 		}
 		ImGui::TreePop();
 	}
-	ImGui::Text("RotY:%f", m_Rotation.y);
+	ImGui::Text("ShotTimer:%d", m_ShotTimer);
 	ImGui::End();
 
 	HungerGauge::GetInstance()->ImGuiDraw();
@@ -228,6 +229,7 @@ XMFLOAT3 Player::MoveVECTOR(XMVECTOR v, float angle)
 //’e‚ÌXV
 void Player::BulletUpdate() {
 	const float l_TargetHunger = 2.0f;
+	const int l_Limit = 20;//ƒVƒ‡ƒbƒg‚Ìƒ`ƒƒ[ƒWŽžŠÔ
 	/*-----------------------------*/
 	//A‚ª‰Ÿ‚³‚ê‚½‚ç’e‚ðŒ‚‚Â(Œ¾—ì)
 	if (Input::GetInstance()->TriggerButton(Input::A) && m_InterVal == 0)
@@ -236,13 +238,29 @@ void Player::BulletUpdate() {
 		m_RigidityTime = m_TargetRigidityTime;
 		_charaState = CharaState::STATE_GHOST;
 	}
-	//B‚ª‰Ÿ‚³‚ê‚½‚ç’e‚ðŒ‚‚Â(UŒ‚)
-	if (Input::GetInstance()->TriggerButton(Input::B) && m_InterVal == 0 && HungerGauge::GetInstance()->GetNowHunger() >= l_TargetHunger)
+
+	//UŒ‚
+	//B‚ª‰Ÿ‚³‚ê‚½‚ç’e‚Ìƒ`ƒƒ[ƒW
+	if (Input::GetInstance()->PushButton(Input::B) && m_InterVal == 0 && HungerGauge::GetInstance()->GetNowHunger() >= l_TargetHunger)
 	{
-		HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() - l_TargetHunger);
-		m_InterVal = m_TargetInterVal;
-		m_RigidityTime = m_TargetRigidityTime;
-		_charaState = CharaState::STATE_SHOT;
+		m_ShotTimer++;
+	}
+
+	if (!Input::GetInstance()->PushButton(Input::B) && m_ShotTimer != 0) {
+		if (m_ShotTimer < l_Limit) {
+			HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() - l_TargetHunger);
+			m_InterVal = m_TargetInterVal;
+			m_RigidityTime = m_TargetRigidityTime;
+			_charaState = CharaState::STATE_ATTACKSHOT;
+		}
+		else {
+			HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() - l_TargetHunger);
+			m_InterVal = m_TargetInterVal;
+			m_RigidityTime = m_TargetRigidityTime;
+			_charaState = CharaState::STATE_SUPERSHOT;
+		}
+
+		m_ShotTimer = {};
 	}
 
 	//Œ¾’e‚ÌXV
@@ -301,7 +319,7 @@ void Player::GhostShot() {
 	newbullet->SetAngle(l_Angle);
 	ghostbullets.push_back(newbullet);
 }
-//’e‚ð‘Å‚Âˆ—(ƒS[ƒXƒg‚ð•ß‚Ü‚¦‚é)
+//’e‚ð‘Å‚Âˆ—(UŒ‚)
 void Player::AttackShot() {
 	//’e‚ðŒ‚‚Â•ûŒü‚ðŽZo‚·‚é‚½‚ß‚É‰ñ“]‚ð‹‚ß‚é
 	XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
@@ -316,7 +334,26 @@ void Player::AttackShot() {
 	newbullet = new AttackBullet();
 	newbullet->Initialize();
 	newbullet->SetPosition(m_Position);
-	newbullet->SetBulletType(m_BulletType);
+	newbullet->SetScale({ 1.0f,1.0f,1.0f });
+	newbullet->SetAngle(l_Angle);
+	attackbullets.push_back(newbullet);
+}
+//’e‚ð‘Å‚Âˆ—(ƒS[ƒXƒg‚ð•ß‚Ü‚¦‚é)
+void Player::SuperShot() {
+	//’e‚ðŒ‚‚Â•ûŒü‚ðŽZo‚·‚é‚½‚ß‚É‰ñ“]‚ð‹‚ß‚é
+	XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
+	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
+	move = XMVector3TransformNormal(move, matRot);
+	XMFLOAT2 l_Angle;
+	l_Angle.x = move.m128_f32[0];
+	l_Angle.y = move.m128_f32[2];
+
+	//’e‚Ì¶¬
+	InterBullet* newbullet;
+	newbullet = new AttackBullet();
+	newbullet->Initialize();
+	newbullet->SetPosition(m_Position);
+	newbullet->SetScale({ 2.5f,2.5f,2.5f });
 	newbullet->SetAngle(l_Angle);
 	attackbullets.push_back(newbullet);
 }

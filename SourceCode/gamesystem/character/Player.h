@@ -40,7 +40,8 @@ public:
 		STATE_IDLE,
 		STATE_RUN,
 		STATE_GHOST,
-		STATE_SHOT
+		STATE_ATTACKSHOT,
+		STATE_SUPERSHOT,
 	}_charaState;
 
 private:
@@ -62,6 +63,8 @@ private:
 	void GhostShot();
 	//弾を打つ処理(攻撃)
 	void AttackShot();
+	//弾を打つ処理(ため攻撃)
+	void SuperShot();
 private:
 	void Idle();
 	//インターバル管理
@@ -96,5 +99,7 @@ private://各クラス
 	int m_TargetRigidityTime = {};//硬直時間の目標時間
 
 	XMFLOAT3 m_FollowPos = {};
+
+	int m_ShotTimer = {};//ショットのチャージ時間
 };
 

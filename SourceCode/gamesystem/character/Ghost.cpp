@@ -67,10 +67,22 @@ void Ghost::ImGuiDraw() {
 void Ghost::Particle() {
 	XMFLOAT4 s_color = { 1.0f,1.0f,1.0f,1.0f };
 	XMFLOAT4 e_color = { 1.0f,1.0f,1.0f,1.0f };
+	XMFLOAT4 s_color2 = { 1.0f,0.0f,0.0f,1.0f };
+	XMFLOAT4 e_color2 = { 1.0f,0.0f,0.0f,1.0f };
+	XMFLOAT4 s_color3 = { 0.0f,1.0f,0.0f,1.0f };
+	XMFLOAT4 e_color3 = { 0.0f,1.0f,0.0f,1.0f };
 	float s_scale = 3.0f;
 	float e_scale = 0.0f;
 	if (m_Alive) {
-		ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color, e_color);
+		if (_charaState == CharaState::STATE_NONE) {
+			ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color, e_color);
+		}
+		else if (_charaState == CharaState::STATE_FOLLOW) {
+			ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color2, e_color2);
+		}
+		else {
+			ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color3, e_color3);
+		}
 	}
 }
 //ìñÇΩÇËîªíË(íe)
@@ -111,21 +123,6 @@ void Ghost::GhostCollision(const XMFLOAT3& pos) {
 	m_Position.x += sin(atan2f((m_Position.x - pos.x), (m_Position.z - pos.z))) * 0.1f;
 	m_Position.z += cos(atan2f((m_Position.x - pos.x), (m_Position.z - pos.z))) * 0.1f;
 }
-//ìñÇΩÇËîªíË(ÉSÅ[ÉXÉgìØém)
-void Ghost::NotGhostCollision(const XMFLOAT3& pos) {
-	m_Hit = false;
-	/*float dir = ((pos.x, m_Position.z) - (pos.z, m_Position.x));
-
-	if (dir <= 0) {
-		m_Position.x += sin(atan2f((m_Position.x - pos.x), (m_Position.z - pos.z))) * 0.1f;
-		m_Position.z += cos(atan2f((m_Position.x - pos.x), (m_Position.z - pos.z))) * 0.1f;
-	}
-	else {
-		m_Position.x -= sin(atan2f((m_Position.x - pos.x), (m_Position.z - pos.z))) * 0.1f;
-		m_Position.z -= cos(atan2f((m_Position.x - pos.x), (m_Position.z - pos.z))) * 0.1f;
-	}*/
-	//m_Position = m_OldPos;
-}
 //êHóøê∂ê¨
 void Ghost::BirthGhost() {
 	if (!m_Alive) {
@@ -158,24 +155,7 @@ void Ghost::None() {
 void Ghost::Follow() {
 	float l_Vel = 0.35f;//ë¨ìx
 	XMFLOAT3 l_playerPos = player->GetPosition();
-	m_CircleRadius = (m_CircleSpeed) * PI / PI_180;
-	m_CirclePosX = cosf(m_CircleRadius) * m_CircleScale;
-	m_CirclePosZ = sinf(m_CircleRadius) * m_CircleScale;
 	Helper::GetInstance()->FollowMove(m_Position, l_playerPos, l_Vel);
-	////í«è]
-	//if (_followState == FollowState::Follow_START) {
-	//	m_FollowPos.x = m_CirclePosX + l_playerPos.x;
-	//	m_FollowPos.z = m_CirclePosZ + l_playerPos.z;
-	//	
-	//	float l_dir = Helper::GetInstance()->ChechLength(m_Position, m_FollowPos);
-	//	if (l_dir < 1.0f) {
-	//		_followState = FollowState::Follow_END;
-	//	}
-	//}
-	//else if(_followState == FollowState::Follow_END) {
-	//	m_Position.x = m_CirclePosX + l_playerPos.x;
-	//	m_Position.z = m_CirclePosZ + l_playerPos.z;
-	//}
 }
 //íTçı
 void Ghost::Search() {

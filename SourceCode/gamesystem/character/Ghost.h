@@ -68,7 +68,6 @@ public:
 	const bool& GetSearch() { return m_Search; }
 	const float& GetLimit() { return m_Limit; }
 	void SetCatch(const bool Catch) { m_Catch = Catch; }
-	void SetHit(const bool Hit) { m_Hit = Hit; }
 	void SetLimit(const float Limit) { m_Limit = Limit; }
 private:
 	unique_ptr<Player> player;
@@ -108,13 +107,6 @@ private://’Tõ
 private:
 	//’Tõ‚·‚é‚à‚Ì‚Ì”ÍˆÍ
 	float m_Limit = {};
-
-	//‰~‰^“®‚Ég‚¤•Ï”(’Ç]æ‚Ì‚½‚ß)
-	float m_CircleRadius = 0.0f;
-	float m_CircleSpeed = 0.0f;
-	float m_CircleScale = 5.0f;
-	float m_CirclePosX = 0.0f;
-	float m_CirclePosZ = 0.0f;
 
 	bool m_Hit = false;
 };
