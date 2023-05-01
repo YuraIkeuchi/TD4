@@ -228,7 +228,7 @@ XMFLOAT3 Player::MoveVECTOR(XMVECTOR v, float angle)
 }
 //弾の更新
 void Player::BulletUpdate() {
-	const float l_TargetHunger = 2.0f;
+	const float l_TargetCount = 1.0f;
 	const int l_Limit = 20;//ショットのチャージ時間
 	/*-----------------------------*/
 	//Aが押されたら弾を撃つ(言霊)
@@ -241,20 +241,20 @@ void Player::BulletUpdate() {
 
 	//攻撃
 	//Bが押されたら弾のチャージ
-	if (Input::GetInstance()->PushButton(Input::B) && m_InterVal == 0 && HungerGauge::GetInstance()->GetNowHunger() >= l_TargetHunger)
+	if (Input::GetInstance()->PushButton(Input::B) && m_InterVal == 0 && HungerGauge::GetInstance()->GetCatchCount() >= l_TargetCount)
 	{
 		m_ShotTimer++;
 	}
 
 	if (!Input::GetInstance()->PushButton(Input::B) && m_ShotTimer != 0) {
 		if (m_ShotTimer < l_Limit) {
-			HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() - l_TargetHunger);
+			//HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() - l_TargetHunger);
 			m_InterVal = m_TargetInterVal;
 			m_RigidityTime = m_TargetRigidityTime;
 			_charaState = CharaState::STATE_ATTACKSHOT;
 		}
 		else {
-			HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() - l_TargetHunger);
+			//HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() - l_TargetHunger);
 			m_InterVal = m_TargetInterVal;
 			m_RigidityTime = m_TargetRigidityTime;
 			_charaState = CharaState::STATE_SUPERSHOT;
