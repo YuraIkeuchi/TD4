@@ -24,6 +24,7 @@ bool Ghost::Initialize() {
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	_charaState = CharaState::STATE_NONE;
 	_searchState = SearchState::SEARCH_NO;
+	_followState = FollowState::Follow_NO;
 	return true;
 }
 //状態遷移
@@ -58,9 +59,12 @@ void Ghost::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui描画
 void Ghost::ImGuiDraw() {
-	/*ImGui::Begin("Ghost");
-	ImGui::Text("m_Limit:%f", m_Limit);
-	ImGui::End();*/
+	ImGui::Begin("Ghost");
+	/*ImGui::Text("m_Speed:%f", m_CircleSpeed);
+	ImGui::Text("m_FollowPosX:%f", m_FollowPos.x);
+	ImGui::Text("m_FollowPosZ:%f", m_FollowPos.z);*/
+	ImGui::Text("Hit:%d", m_Hit);
+	ImGui::End();
 }
 //パーティクル
 void Ghost::Particle() {
@@ -75,14 +79,15 @@ void Ghost::Particle() {
 //当たり判定(弾)
 bool Ghost::BulletCollision() {
 	float l_AddHungerMax = 5.0f;//加算される最大飢餓ゲージ
-	if (player->BulletCollide(m_Position) && (m_Alive)) {
+	if (player->BulletCollide(m_Position,m_Catch) && (m_Alive)) {
 		m_Catch = true;
 		if (player->GetBulletType() == BULLET_FORROW) {
 			HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() + l_AddHungerMax);
 			_charaState = CharaState::STATE_FOLLOW;
+			_followState = FollowState::Follow_START;
+			m_Follow = true;
 		}
 		else {
-			m_BasePos = m_Position;
 			_charaState = CharaState::STATE_SEARCH;
 		}
 		return true;
@@ -111,9 +116,9 @@ bool Ghost::GhostCollision(const XMFLOAT3& pos) {
 //食料生成
 void Ghost::BirthGhost() {
 	if (!m_Alive) {
-		m_Timer++;
+		m_ResPornTimer++;
 		//描画バグ起きるから先に座標セット
-		if (m_Timer == 20) {
+		if (m_ResPornTimer == 20) {
 			//乱数指定
 			mt19937 mt{ std::random_device{}() };
 			uniform_int_distribution<int> l_distX(-41, 50);
@@ -121,13 +126,14 @@ void Ghost::BirthGhost() {
 			m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
 		}
 		//一定時間で生成される
-		if (m_Timer == 100) {
+		if (m_ResPornTimer == 100) {
 			_charaState = CharaState::STATE_NONE;
 			_searchState = SearchState::SEARCH_NO;
 			m_Alive = true;
 			m_Catch = false;
 			m_Search = false;
-			m_Timer = 0;
+			m_Follow = false;
+			m_ResPornTimer = 0;
 		}
 	}
 }
@@ -138,12 +144,26 @@ void Ghost::None() {
 //追従
 void Ghost::Follow() {
 	m_OldPos = m_Position;
-	XMFLOAT3 l_player = player->GetPosition();
-	float l_Vel = 0.15f;//速度
-	//追従
-	if (!m_ma) {
-		Helper::GetInstance()->FollowMove(m_Position, l_player, l_Vel);
-	}
+	float l_Vel = 0.35f;//速度
+	XMFLOAT3 l_playerPos = player->GetPosition();
+	m_CircleRadius = (m_CircleSpeed) * PI / PI_180;
+	m_CirclePosX = cosf(m_CircleRadius) * m_CircleScale;
+	m_CirclePosZ = sinf(m_CircleRadius) * m_CircleScale;
+	Helper::GetInstance()->FollowMove(m_Position, l_playerPos, l_Vel);
+	////追従
+	//if (_followState == FollowState::Follow_START) {
+	//	m_FollowPos.x = m_CirclePosX + l_playerPos.x;
+	//	m_FollowPos.z = m_CirclePosZ + l_playerPos.z;
+	//	
+	//	float l_dir = Helper::GetInstance()->ChechLength(m_Position, m_FollowPos);
+	//	if (l_dir < 1.0f) {
+	//		_followState = FollowState::Follow_END;
+	//	}
+	//}
+	//else if(_followState == FollowState::Follow_END) {
+	//	m_Position.x = m_CirclePosX + l_playerPos.x;
+	//	m_Position.z = m_CirclePosZ + l_playerPos.z;
+	//}
 }
 //探索
 void Ghost::Search() {
@@ -169,8 +189,9 @@ void Ghost::EndSearch() {
 }
 //食べ物を運ぶ
 void Ghost::CarryFood() {
-	float l_Radius = 1.0f;
-	float l_Hunger = 2.0f;
+	float l_Radius = 1.0f;//当たり判定
+	float l_Hunger = 2.0f;//加算される気がゲージ
+	float l_AddCount = 1.0f;//加算されるゴーストの数
 	XMFLOAT3 l_playerPos = player->GetPosition();
 	if ((_searchState == SearchState::SEARCH_END) && (m_Alive)) {
 		if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, l_playerPos.x, l_playerPos.z, l_Radius)) {
@@ -179,6 +200,7 @@ void Ghost::CarryFood() {
 			m_Catch = false;
 			m_Limit = {};
 			HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() + l_Hunger);
+			HungerGauge::GetInstance()->SetCatchCount(HungerGauge::GetInstance()->GetCatchCount() + l_AddCount);
 		}
 	}
 }

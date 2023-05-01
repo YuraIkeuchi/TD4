@@ -61,18 +61,19 @@ public:
 	//gettersetter
 	const bool& GetAlive() { return m_Alive; }
 	const bool& GetCatch() { return m_Catch; }
+	const bool& GetFollow() { return m_Follow; }
 	const bool& GetSearch() { return m_Search; }
 	const float& GetLimit() { return m_Limit; }
 	void SetCatch(const bool Catch) { m_Catch = Catch; }
-	void Setma(const bool ma) { m_ma = ma; }
+	void SetHit(const bool Hit) { m_Hit = Hit; }
 	void SetLimit(const float Limit) { m_Limit = Limit; }
+	void SetCircleSpeed(const float CircleSpeed) { m_CircleSpeed = CircleSpeed; }
 private:
 	unique_ptr<Player> player;
 	bool m_Alive = true;//¶‘¶ƒtƒ‰ƒO
 	bool m_Catch =false;//•ßŠlƒtƒ‰ƒO
-	int m_Timer = 0;
-	XMFLOAT3 m_BasePos = {};
-	bool m_ma = false;
+	int m_ResPornTimer = 0;//•œŠˆ‚ÌŠÔ
+	XMFLOAT3 m_FollowPos = {};//’Ç]æ
 private:
 	//ƒLƒƒƒ‰‚Ìó‘Ô
 	enum CharaState
@@ -85,6 +86,12 @@ private:
 private:
 	XMFLOAT3 m_OldPos = {};
 	bool m_Follow = false;
+	//’Ç]ó‘Ô
+	enum FollowState {
+		Follow_NO,
+		Follow_START,
+		Follow_END,
+	}_followState;
 private://’Tõ
 	bool m_Search = false;
 	XMFLOAT3 m_SearchPos = {};
@@ -97,5 +104,15 @@ private://’Tõ
 	}_searchState;
 
 private:
+	//’Tõ‚·‚é‚à‚Ì‚Ì”ÍˆÍ
 	float m_Limit = {};
+
+	//‰~‰^“®‚Ég‚¤•Ï”(’Ç]æ‚Ì‚½‚ß)
+	float m_CircleRadius = 0.0f;
+	float m_CircleSpeed = 0.0f;
+	float m_CircleScale = 5.0f;
+	float m_CirclePosX = 0.0f;
+	float m_CirclePosZ = 0.0f;
+
+	bool m_Hit = false;
 };

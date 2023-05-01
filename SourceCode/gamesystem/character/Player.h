@@ -81,7 +81,7 @@ private:
 	void AnimationControl(AnimeName name, const bool& loop, int speed);
 public:
 	//“–‚½‚è”»’èŒn
-	bool BulletCollide(const XMFLOAT3& pos);//’e‚Æ‚Ì“–‚½‚è”»’è
+	bool BulletCollide(const XMFLOAT3& pos,const bool Catch);//’e‚Æ‚Ì“–‚½‚è”»’è
 	bool PlayerCollide(const XMFLOAT3& pos);//ƒvƒŒƒCƒ„[‚Æ‚Ì“–‚½‚è”»’è
 public:
 	const int& GetBulletType() { return m_BulletType; }

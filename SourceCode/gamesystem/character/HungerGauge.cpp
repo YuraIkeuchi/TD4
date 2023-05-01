@@ -30,5 +30,6 @@ void HungerGauge::ImGuiDraw() {
 	ImGui::Begin("Hunger");
 	ImGui::Text("Now:%f", m_NowHunger);
 	ImGui::Text("Max:%f", m_HungerMax);
+	ImGui::Text(" m_CatchCount:%f", m_CatchCount);
 	ImGui::End();
 }

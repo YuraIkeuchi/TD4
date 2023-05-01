@@ -341,12 +341,12 @@ void Player::SelectBullet() {
 	}
 }
 //’e‚Æ‚Ì“–‚½‚è”»’è
-bool Player::BulletCollide(const XMFLOAT3& pos) {
+bool Player::BulletCollide(const XMFLOAT3& pos,const bool Catch) {
 	float l_Radius = 1.0f;//“–‚½‚è”ÍˆÍ
 	//’e‚ÌXV
 	for (InterBullet* bullet : ghostbullets) {
 		if (bullet != nullptr) {
-			if (Collision::CircleCollision(bullet->GetPosition().x, bullet->GetPosition().z, l_Radius, pos.x, pos.z, l_Radius) && (bullet->GetAlive())) {
+			if (Collision::CircleCollision(bullet->GetPosition().x, bullet->GetPosition().z, l_Radius, pos.x, pos.z, l_Radius) && (bullet->GetAlive()) && (!Catch)) {
 				bullet->SetAlive(false);
 				return true;
 			}

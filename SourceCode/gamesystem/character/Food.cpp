@@ -21,6 +21,8 @@ bool Food::Initialize() {
 	m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
 	m_Scale = { 1.0f,1.0f,1.0f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
+	m_LockOn = false;
+	m_Alive = true;
 	return true;
 }
 

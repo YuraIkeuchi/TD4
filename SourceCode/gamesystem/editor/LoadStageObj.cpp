@@ -1,5 +1,7 @@
 #include "LoadStageObj.h"
 #include "CsvLoader.h"
+#include "HungerGauge.h"
+#include "Collision.h"
 #include "Helper.h"
 //ゴーストのロード
 void LoadStageObj::GhostLoad() {
@@ -56,6 +58,7 @@ void LoadStageObj::Update()
 	//ゴースト
 	for (auto i = 0; i < ghosts.size(); i++)
 	{
+		ghosts[i]->SetCircleSpeed((100.0f) + (20.0f * i));
 		ghosts[i]->Update();
 	}
 	
@@ -106,17 +109,13 @@ void LoadStageObj::ImGuiDraw() {
 void LoadStageObj::Collide() {
 	for (auto i = 0; i < ghosts.size(); i++) {
 		for (auto j = 0; j < ghosts.size(); j++) {
-			if ((i != j)) {
-				XMFLOAT3 m_OldPos = ghosts[i]->GetPosition();
-				XMFLOAT3 m_OldPos2 = ghosts[j]->GetPosition();
-				float l_DisX = ghosts[i]->GetPosition().x - ghosts[j]->GetPosition().x;
-				float l_DisZ = ghosts[i]->GetPosition().z - ghosts[j]->GetPosition().z;
-				//2つの距離を計算
-				float m_Distance = sqrtf(l_DisX * l_DisX + l_DisZ * l_DisZ);
-				if (m_Distance < 1.0f) {
-					ghosts[i]->Setma(true);
-					ghosts[j]->Setma(true);
-				}
+			XMFLOAT3 ghostpos = ghosts[i]->GetPosition();
+			XMFLOAT3 ghostpos2 = ghosts[j]->GetPosition();
+			if ((i == j)) { continue; }
+			if((!ghosts[i]->GetAlive()) || (!ghosts[j]->GetAlive())) { continue; }
+			if (Collision::CircleCollision(ghostpos.x, ghostpos.z, 1.5f, ghostpos2.x, ghostpos2.z, 1.5f)) {
+				ghosts[i]->SetHit(true);
+				ghosts[j]->SetHit(true);
 			}
 		}
 	}
@@ -128,6 +127,7 @@ void LoadStageObj::SearchFood() {
 		for (auto j = 0; j < foods.size(); j++) {
 			if (!ghosts[i]->GetAlive()) { continue; }
 			if (!ghosts[i]->GetCatch()) { continue; }
+			if (ghosts[i]->GetFollow()) { continue; }
 			XMFLOAT3 l_foodpos = foods[j]->GetPosition();
 			float l_dir = Helper::GetInstance()->ChechLength(l_ghostpos, l_foodpos);
 			if ((!ghosts[i]->GetSearch()) && (foods[j]->GetAlive()) && (!foods[j]->GetLockOn())) {
@@ -149,6 +149,7 @@ void LoadStageObj::CollideFood() {
 		XMFLOAT3 l_ghostpos = ghosts[i]->GetPosition();
 		for (auto j = 0; j < foods.size(); j++) {
 			XMFLOAT3 l_foodpos = foods[j]->GetPosition();
+			if (ghosts[i]->GetFollow()) { continue; }
 			float l_dir = Helper::GetInstance()->ChechLength(l_ghostpos, l_foodpos);
 			if ((ghosts[i]->GetSearch()) && (l_dir < l_Radius)) {
 				ghosts[i]->EndSearch();
