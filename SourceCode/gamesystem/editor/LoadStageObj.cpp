@@ -58,7 +58,7 @@ void LoadStageObj::Update()
 	//ゴースト
 	for (auto i = 0; i < ghosts.size(); i++)
 	{
-		ghosts[i]->SetCircleSpeed((100.0f) + (20.0f * i));
+		//ghosts[i]->SetCircleSpeed((200.0f) + (40.0f * i));
 		ghosts[i]->Update();
 	}
 	
@@ -107,15 +107,16 @@ void LoadStageObj::ImGuiDraw() {
 }
 //当たり判定(ゴースト)
 void LoadStageObj::Collide() {
-	for (auto i = 0; i < ghosts.size(); i++) {
-		for (auto j = 0; j < ghosts.size(); j++) {
+	for (auto i = 0; i < ghosts.size(); ++i) {
+		for (auto j = 0; j < ghosts.size(); ++j) {
 			XMFLOAT3 ghostpos = ghosts[i]->GetPosition();
 			XMFLOAT3 ghostpos2 = ghosts[j]->GetPosition();
 			if ((i == j)) { continue; }
 			if((!ghosts[i]->GetAlive()) || (!ghosts[j]->GetAlive())) { continue; }
-			if (Collision::CircleCollision(ghostpos.x, ghostpos.z, 1.5f, ghostpos2.x, ghostpos2.z, 1.5f)) {
-				ghosts[i]->SetHit(true);
-				ghosts[j]->SetHit(true);
+			if ((!ghosts[i]->GetFollow()) || (!ghosts[j]->GetFollow())) { continue; }
+			if (Collision::SphereCollision(ghostpos,1.5f,ghostpos2,1.5f)) {
+				ghosts[i]->GhostCollision(ghostpos2);
+				ghosts[j]->GhostCollision(ghostpos);
 			}
 		}
 	}

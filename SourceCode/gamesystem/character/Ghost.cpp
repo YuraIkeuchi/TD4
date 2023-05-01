@@ -36,6 +36,7 @@ void (Ghost::* Ghost::stateTable[])() = {
 };
 //更新
 void Ghost::Update() {
+	m_OldPos = m_Position;
 	//状態移行(charastateに合わせる)
 	(this->*stateTable[_charaState])();
 	//タイプによって色を一旦変えてる
@@ -59,12 +60,8 @@ void Ghost::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui描画
 void Ghost::ImGuiDraw() {
-	ImGui::Begin("Ghost");
-	/*ImGui::Text("m_Speed:%f", m_CircleSpeed);
-	ImGui::Text("m_FollowPosX:%f", m_FollowPos.x);
-	ImGui::Text("m_FollowPosZ:%f", m_FollowPos.z);*/
-	ImGui::Text("Hit:%d", m_Hit);
-	ImGui::End();
+	//ImGui::Begin("Ghost");
+	//ImGui::End();
 }
 //パーティクル
 void Ghost::Particle() {
@@ -110,8 +107,24 @@ bool Ghost::PlayerCollision() {
 	return true;
 }
 //当たり判定(ゴースト同士)
-bool Ghost::GhostCollision(const XMFLOAT3& pos) {
-	return true;
+void Ghost::GhostCollision(const XMFLOAT3& pos) {
+	m_Position.x += sin(atan2f((m_Position.x - pos.x), (m_Position.z - pos.z))) * 0.1f;
+	m_Position.z += cos(atan2f((m_Position.x - pos.x), (m_Position.z - pos.z))) * 0.1f;
+}
+//当たり判定(ゴースト同士)
+void Ghost::NotGhostCollision(const XMFLOAT3& pos) {
+	m_Hit = false;
+	/*float dir = ((pos.x, m_Position.z) - (pos.z, m_Position.x));
+
+	if (dir <= 0) {
+		m_Position.x += sin(atan2f((m_Position.x - pos.x), (m_Position.z - pos.z))) * 0.1f;
+		m_Position.z += cos(atan2f((m_Position.x - pos.x), (m_Position.z - pos.z))) * 0.1f;
+	}
+	else {
+		m_Position.x -= sin(atan2f((m_Position.x - pos.x), (m_Position.z - pos.z))) * 0.1f;
+		m_Position.z -= cos(atan2f((m_Position.x - pos.x), (m_Position.z - pos.z))) * 0.1f;
+	}*/
+	//m_Position = m_OldPos;
 }
 //食料生成
 void Ghost::BirthGhost() {
@@ -143,7 +156,6 @@ void Ghost::None() {
 }
 //追従
 void Ghost::Follow() {
-	m_OldPos = m_Position;
 	float l_Vel = 0.35f;//速度
 	XMFLOAT3 l_playerPos = player->GetPosition();
 	m_CircleRadius = (m_CircleSpeed) * PI / PI_180;

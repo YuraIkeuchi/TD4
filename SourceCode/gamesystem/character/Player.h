@@ -94,5 +94,7 @@ private://各クラス
 	int m_RigidityTime = {};//硬直時間
 	int m_TargetInterVal = {};//インターバルの目標時間
 	int m_TargetRigidityTime = {};//硬直時間の目標時間
+
+	XMFLOAT3 m_FollowPos = {};
 };
 

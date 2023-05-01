@@ -8,20 +8,22 @@
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
-bool Collision::SphereCollision(float X1, float Y1, float Z1, float R1, float X2, float Y2, float Z2, float R2) {
-	float a = X1 - X2;
-	float b = Y1 - Y2;
-	float c = Z1 - Z2;
+bool Collision::SphereCollision(const XMFLOAT3& pos, const float& R1, const XMFLOAT3& pos2, const float& R2) {
+	float a = pos.x - pos2.x;
+	float b = pos.y - pos2.y;
+	float c = pos.z - pos2.z;
 	//2‚Â‚Ì‹——£‚ğŒvZ
-	float m_Distance = sqrtf(a * a + b * b + c * c);
+	float distance = sqrtf(a * a + b * b + c * c);
 	//”¼Œa‚Ì‡Œv‚ğŒvZ
 	float radius = R1 + R2;
-	if (m_Distance <= radius) {
+	if (distance <= radius) {
 		return true;
 	}
 	else {
 		return false;
 	}
+
+	return true;
 }
 
 bool Collision::CircleCollision(float X1, float Y1, float R1, float X2, float Y2, float R2) {

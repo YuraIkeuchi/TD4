@@ -134,6 +134,7 @@ void Player::ImGuiDraw() {
 		}
 		ImGui::TreePop();
 	}
+	ImGui::Text("RotY:%f", m_Rotation.y);
 	ImGui::End();
 
 	HungerGauge::GetInstance()->ImGuiDraw();
@@ -360,7 +361,7 @@ bool Player::BulletCollide(const XMFLOAT3& pos,const bool Catch) {
 }
 //ƒvƒŒƒCƒ„[‚Æ‚Ì“–‚½‚è”»’è
 bool Player::PlayerCollide(const XMFLOAT3& pos) {
-	float l_Radius = 2.0f;//“–‚½‚è”ÍˆÍ
+	float l_Radius = 3.0f;//“–‚½‚è”ÍˆÍ
 	if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, pos.x, pos.z, l_Radius)) {
 		return true;
 	}
