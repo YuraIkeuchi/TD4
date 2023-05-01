@@ -92,6 +92,8 @@ bool Ghost::BulletCollision() {
 		m_Catch = true;
 		if (player->GetBulletType() == BULLET_FORROW) {
 			HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() + l_AddHungerMax);
+			HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetHungerMax());
+			HungerGauge::GetInstance()->SetCatchCount(HungerGauge::GetInstance()->GetCatchCount() + 1.0f);
 			_charaState = CharaState::STATE_FOLLOW;
 			_followState = FollowState::Follow_START;
 			m_Follow = true;

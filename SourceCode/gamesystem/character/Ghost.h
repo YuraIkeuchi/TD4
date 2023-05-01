@@ -68,6 +68,7 @@ public:
 	const bool& GetSearch() { return m_Search; }
 	const float& GetLimit() { return m_Limit; }
 	void SetCatch(const bool Catch) { m_Catch = Catch; }
+	void SetAlive(const bool Alive) { m_Alive = Alive; }
 	void SetLimit(const float Limit) { m_Limit = Limit; }
 private:
 	unique_ptr<Player> player;

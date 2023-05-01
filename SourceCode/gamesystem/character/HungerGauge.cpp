@@ -18,18 +18,20 @@ bool HungerGauge::Initialize() {
 
 //更新
 void HungerGauge::Update() {
-	float l_SubHunger = 0.001f;
+	float l_SubHunger = (m_CatchCount * 5) / 1000;
+	float l_Limit = 30.0f;
 	//一定ずつで減少していく
 	m_NowHunger -= l_SubHunger;
 	//飢餓ゲージの最大数が決まっている
 	m_NowHunger = min(m_NowHunger, m_HungerMax);
+	m_HungerMax = min(m_HungerMax, l_Limit);
 }
 
 //ImGui
 void HungerGauge::ImGuiDraw() {
 	ImGui::Begin("Hunger");
-	ImGui::Text("Now:%f", m_NowHunger);
-	ImGui::Text("Max:%f", m_HungerMax);
+	ImGui::SliderFloat("Now", &m_NowHunger, 0.0f, 50.0f);
+	ImGui::SliderFloat("Max", &m_HungerMax, 0.0f, 50.0f);
 	ImGui::Text(" m_CatchCount:%f", m_CatchCount);
 	ImGui::End();
 }

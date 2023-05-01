@@ -75,6 +75,8 @@ void LoadStageObj::Update()
 	CollideFood();
 	//食べ物の検索
 	SearchFood();
+	//ゴーストが消える
+	VanishGhost();
 }
 //描画
 void LoadStageObj::Draw(DirectXCommon* dxCommon)
@@ -159,4 +161,42 @@ void LoadStageObj::CollideFood() {
 			}
 		}
 	}
+}
+//ゴーストが消える
+void LoadStageObj::VanishGhost() {
+	float l_Hunger = HungerGauge::GetInstance()->GetNowHunger();
+	float l_Max = HungerGauge::GetInstance()->GetHungerMax();
+	
+	//除算を求める
+	float l_Division = (float)((fmod(l_Hunger, 5.0f)));
+	//桁数を指定する
+	m_VanishCount = round(l_Division * 10) / 10;
+	for (auto i = 0; i < ghosts.size(); ++i) {
+		if (!ghosts[i]->GetAlive()) { continue; }
+		if (!ghosts[i]->GetCatch()) { continue; }
+		if (!ghosts[i]->GetFollow()) { continue; }
+		//割り切れたら消す
+		if (m_VanishCount == 0.0f && l_Hunger != l_Max) {
+			m_Vanish = true;
+		}
+		
+		//for分抜ける
+		if (m_Vanish) {
+			ghosts[i]->SetAlive(false);
+			HungerGauge::GetInstance()->SetCatchCount(HungerGauge::GetInstance()->GetCatchCount() - 1.0f);
+			HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() - 5.0f);
+			m_Vanish = false;
+			break;
+		}
+	}
+
+
+
+}
+
+string LoadStageObj::format(float f, int digits) {
+	std::ostringstream ss;
+	ss.precision(digits);
+	ss << f;
+	return ss.str();
 }
