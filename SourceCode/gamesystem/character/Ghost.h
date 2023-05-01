@@ -29,6 +29,11 @@ public:
 	/// ImGui•`‰æ
 	/// </summary>
 	void ImGuiDraw();
+	//’Tõ‚Ì‚Í‚¶‚ß
+	void StartSearch(const XMFLOAT3& pos);
+	//’Tõ‚ÌI‚í‚è
+	void EndSearch();
+
 private://ƒXƒe[ƒg
 	static void (Ghost::* stateTable[])();
 private:
@@ -38,8 +43,6 @@ private:
 	bool BulletCollision();
 	//“–‚½‚è”»’è(ƒvƒŒƒCƒ„[)
 	bool PlayerCollision();
-	//ƒS[ƒXƒg“¯m‚Ì“–‚½‚è”»’è
-	bool GhostCollision(const XMFLOAT3& pos);
 	//H—¿¶Y
 	void BirthGhost();
 	//‰½‚à‚È‚¢ó‘Ô
@@ -48,20 +51,31 @@ private:
 	void Follow();
 	//’Tõ
 	void Search();
-
+	//H‚×•¨‚ğ‰^‚Ô
+	void CarryFood();
+public:
+	//ƒS[ƒXƒg“¯m‚Ì“–‚½‚è”»’è
+	void GhostCollision(const XMFLOAT3& pos);
+	//ƒS[ƒXƒg“¯m‚Ì“–‚½‚è”»’è
+	void NotGhostCollision(const XMFLOAT3& pos);
 public://getter setter
 	void SetPlayer(Player* player) { this->player.reset(player); }
 public:
 	//gettersetter
 	const bool& GetAlive() { return m_Alive; }
-	void Setma(const bool ma) { m_ma = ma; }
+	const bool& GetCatch() { return m_Catch; }
+	const bool& GetFollow() { return m_Follow; }
+	const bool& GetSearch() { return m_Search; }
+	const float& GetLimit() { return m_Limit; }
+	void SetCatch(const bool Catch) { m_Catch = Catch; }
+	void SetAlive(const bool Alive) { m_Alive = Alive; }
+	void SetLimit(const float Limit) { m_Limit = Limit; }
 private:
 	unique_ptr<Player> player;
 	bool m_Alive = true;//¶‘¶ƒtƒ‰ƒO
-	bool m_Catch = true;//•ßŠlƒtƒ‰ƒO
-	int m_Timer = 0;
-	XMFLOAT3 m_BasePos = {};
-	bool m_ma = false;
+	bool m_Catch =false;//•ßŠlƒtƒ‰ƒO
+	int m_ResPornTimer = 0;//•œŠˆ‚ÌŠÔ
+	XMFLOAT3 m_FollowPos = {};//’Ç]æ
 private:
 	//ƒLƒƒƒ‰‚Ìó‘Ô
 	enum CharaState
@@ -71,11 +85,29 @@ private:
 		STATE_SEARCH,
 	}_charaState;
 
-	//‰~‰^“®(‰¼)
-	float m_CircleSpeed = 0.0f;
-	float m_CircleScale = 5.0f;
-
 private:
 	XMFLOAT3 m_OldPos = {};
 	bool m_Follow = false;
+	//’Ç]ó‘Ô
+	enum FollowState {
+		Follow_NO,
+		Follow_START,
+		Follow_END,
+	}_followState;
+private://’Tõ
+	bool m_Search = false;
+	XMFLOAT3 m_SearchPos = {};
+
+	//’Tõó‘Ô
+	enum SearchState {
+		SEARCH_NO,
+		SEARCH_START,
+		SEARCH_END,
+	}_searchState;
+
+private:
+	//’Tõ‚·‚é‚à‚Ì‚Ì”ÍˆÍ
+	float m_Limit = {};
+
+	bool m_Hit = false;
 };

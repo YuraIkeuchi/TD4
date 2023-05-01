@@ -6,6 +6,7 @@
 #include "VariableCommon.h"
 #include "HungerGauge.h"
 #include "Collision.h"
+#include "Input.h"
 
 //コンストラクタ
 Player::Player(XMFLOAT3 StartPos)
@@ -55,6 +56,7 @@ void (Player::* Player::stateTable[])() = {
 	&Player::Walk,//移動
 	&Player::GhostShot,//ゴーストを捕まえる
 	&Player::AttackShot,//攻撃
+	&Player::SuperShot,//ため攻撃
 };
 //更新処理
 void Player::Update()
@@ -64,7 +66,7 @@ void Player::Update()
 	//つまるところstd::any_cast<double>(〇〇)は固定(static_castで変換)
 	/*①*/m_AddSpeed= static_cast<float>(std::any_cast<double>(sp));
 
-	input = Input::GetInstance();
+	Input* input = Input::GetInstance();
 	/*FBXのカウンタdoubleにしたほうが調整ききやすそう*/
 
 
@@ -133,6 +135,7 @@ void Player::ImGuiDraw() {
 		}
 		ImGui::TreePop();
 	}
+	ImGui::Text("ShotTimer:%d", m_ShotTimer);
 	ImGui::End();
 
 	HungerGauge::GetInstance()->ImGuiDraw();
@@ -165,7 +168,7 @@ void Player::Walk()
 	XMFLOAT3 rot = m_Rotation;
 
 	float AddSpeed=2.f;
-
+	Input* input = Input::GetInstance();
 
 	float StickX = input->GetLeftControllerX();
 	float StickY = input->GetLeftControllerY();
@@ -226,6 +229,7 @@ XMFLOAT3 Player::MoveVECTOR(XMVECTOR v, float angle)
 //弾の更新
 void Player::BulletUpdate() {
 	const float l_TargetHunger = 2.0f;
+	const int l_Limit = 20;//ショットのチャージ時間
 	/*-----------------------------*/
 	//Aが押されたら弾を撃つ(言霊)
 	if (Input::GetInstance()->TriggerButton(Input::A) && m_InterVal == 0)
@@ -234,13 +238,29 @@ void Player::BulletUpdate() {
 		m_RigidityTime = m_TargetRigidityTime;
 		_charaState = CharaState::STATE_GHOST;
 	}
-	//Bが押されたら弾を撃つ(攻撃)
-	if (Input::GetInstance()->TriggerButton(Input::B) && m_InterVal == 0 && HungerGauge::GetInstance()->GetNowHunger() >= l_TargetHunger)
+
+	//攻撃
+	//Bが押されたら弾のチャージ
+	if (Input::GetInstance()->PushButton(Input::B) && m_InterVal == 0 && HungerGauge::GetInstance()->GetNowHunger() >= l_TargetHunger)
 	{
-		HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() - l_TargetHunger);
-		m_InterVal = m_TargetInterVal;
-		m_RigidityTime = m_TargetRigidityTime;
-		_charaState = CharaState::STATE_SHOT;
+		m_ShotTimer++;
+	}
+
+	if (!Input::GetInstance()->PushButton(Input::B) && m_ShotTimer != 0) {
+		if (m_ShotTimer < l_Limit) {
+			HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() - l_TargetHunger);
+			m_InterVal = m_TargetInterVal;
+			m_RigidityTime = m_TargetRigidityTime;
+			_charaState = CharaState::STATE_ATTACKSHOT;
+		}
+		else {
+			HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() - l_TargetHunger);
+			m_InterVal = m_TargetInterVal;
+			m_RigidityTime = m_TargetRigidityTime;
+			_charaState = CharaState::STATE_SUPERSHOT;
+		}
+
+		m_ShotTimer = {};
 	}
 
 	//言弾の更新
@@ -299,7 +319,7 @@ void Player::GhostShot() {
 	newbullet->SetAngle(l_Angle);
 	ghostbullets.push_back(newbullet);
 }
-//弾を打つ処理(ゴーストを捕まえる)
+//弾を打つ処理(攻撃)
 void Player::AttackShot() {
 	//弾を撃つ方向を算出するために回転を求める
 	XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
@@ -314,7 +334,26 @@ void Player::AttackShot() {
 	newbullet = new AttackBullet();
 	newbullet->Initialize();
 	newbullet->SetPosition(m_Position);
-	newbullet->SetBulletType(m_BulletType);
+	newbullet->SetScale({ 1.0f,1.0f,1.0f });
+	newbullet->SetAngle(l_Angle);
+	attackbullets.push_back(newbullet);
+}
+//弾を打つ処理(ゴーストを捕まえる)
+void Player::SuperShot() {
+	//弾を撃つ方向を算出するために回転を求める
+	XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
+	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
+	move = XMVector3TransformNormal(move, matRot);
+	XMFLOAT2 l_Angle;
+	l_Angle.x = move.m128_f32[0];
+	l_Angle.y = move.m128_f32[2];
+
+	//弾の生成
+	InterBullet* newbullet;
+	newbullet = new AttackBullet();
+	newbullet->Initialize();
+	newbullet->SetPosition(m_Position);
+	newbullet->SetScale({ 2.5f,2.5f,2.5f });
 	newbullet->SetAngle(l_Angle);
 	attackbullets.push_back(newbullet);
 }
@@ -340,12 +379,12 @@ void Player::SelectBullet() {
 	}
 }
 //弾との当たり判定
-bool Player::BulletCollide(const XMFLOAT3& pos) {
+bool Player::BulletCollide(const XMFLOAT3& pos,const bool Catch) {
 	float l_Radius = 1.0f;//当たり範囲
 	//弾の更新
 	for (InterBullet* bullet : ghostbullets) {
 		if (bullet != nullptr) {
-			if (Collision::CircleCollision(bullet->GetPosition().x, bullet->GetPosition().z, l_Radius, pos.x, pos.z, l_Radius) && (bullet->GetAlive())) {
+			if (Collision::CircleCollision(bullet->GetPosition().x, bullet->GetPosition().z, l_Radius, pos.x, pos.z, l_Radius) && (bullet->GetAlive()) && (!Catch)) {
 				bullet->SetAlive(false);
 				return true;
 			}
@@ -359,7 +398,7 @@ bool Player::BulletCollide(const XMFLOAT3& pos) {
 }
 //プレイヤーとの当たり判定
 bool Player::PlayerCollide(const XMFLOAT3& pos) {
-	float l_Radius = 2.0f;//当たり範囲
+	float l_Radius = 3.0f;//当たり範囲
 	if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, pos.x, pos.z, l_Radius)) {
 		return true;
 	}

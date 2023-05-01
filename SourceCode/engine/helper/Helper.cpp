@@ -187,7 +187,7 @@ Helper::XMVECTOR Helper::WorldDivision(const XMVECTOR& pos, const bool sub) {
 
 	return l_Result;
 }
-
+//追従
 void Helper::FollowMove(XMFLOAT3& pos, const XMFLOAT3& pos2, const float vel) {
 	XMFLOAT3 l_Distance;//二点の距離
 	XMFLOAT3 l_AddVel;//加算される移動量
@@ -196,8 +196,8 @@ void Helper::FollowMove(XMFLOAT3& pos, const XMFLOAT3& pos2, const float vel) {
 	l_Distance.x = pos.x - pos2.x;
 	l_Distance.z = pos.z - pos2.z;
 
-	l_AddVel.x = float(sin(-atan2f(l_Distance.x, l_Distance.z)) * 0.15f);
-	l_AddVel.z = float(-cos(atan2f(l_Distance.x, l_Distance.z)) * 0.15f);
+	l_AddVel.x = float(sin(-atan2f(l_Distance.x, l_Distance.z)) * vel);
+	l_AddVel.z = float(-cos(atan2f(l_Distance.x, l_Distance.z)) * vel);
 	l_AddVel.y = 0.0f;
 	pos.y += 0.0f;
 	pos.x += l_AddVel.x;
@@ -205,6 +205,12 @@ void Helper::FollowMove(XMFLOAT3& pos, const XMFLOAT3& pos2, const float vel) {
 
 	//まだ回転とかは考慮してないよ
 	//return l_Result;
+}
+float Helper::ChechLength(const XMFLOAT3& pos, const XMFLOAT3& pos2) {
+	float result;
+	result = sqrtf(powf((pos2.x - pos.x), 2) + powf((pos2.y - pos.y), 2) + powf((pos2.z - pos.z), 2));
+
+	return result;
 }
 //円運動
 Helper::XMFLOAT3 Helper::CircleMove(const XMFLOAT3& basepos, const float scale, const float speed) {

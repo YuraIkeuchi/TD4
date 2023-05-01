@@ -10,6 +10,25 @@ Input* Input::GetInstance()
 	return &instance;
 }
 
+bool Input::PushButton(XBOX Button)
+{
+	//トリガー
+	if (Button == LT)
+	{
+		return xinputState.Gamepad.bLeftTrigger <= XINPUT_GAMEPAD_TRIGGER_THRESHOLD
+			&& CheckTrigger(Button);
+	}
+	if (Button == RT)
+	{
+		return xinputState.Gamepad.bRightTrigger <= XINPUT_GAMEPAD_TRIGGER_THRESHOLD
+			&& CheckTrigger(Button);
+	}
+	return (xinputState.Gamepad.wButtons & Button)
+		&& CheckTrigger(Button);
+	////assert(0);
+	return false;
+}
+
 bool Input::TriggerButton(XBOX Button)
 {
 	//トリガー
@@ -342,67 +361,67 @@ bool Input::RightTriggerStick(int stick)
 	return false;
 }
 
-
-bool Input::PushButton(int Button)
-{
-	for (int i = 0; i < 32; i++)
-	{
-		if (!(gamePadState.rgbButtons[i] & 0x80))
-		{
-			continue;
-		}
-
-		switch (i)
-		{
-		case 0:
-			is_push[Button_A] = true;
-			break;
-		case 1:
-			is_push[Button_B] = true;
-			break;
-		case 2:
-			is_push[Button_X] = true;
-			break;
-		case 3:
-			is_push[Button_Y] = true;
-			break;
-		case 4:
-			is_push[Button_LB] = true;
-			break;
-		case 5:
-			is_push[Button_RB] = true;
-			break;
-		case 6:
-			is_push[Select] = true;
-			break;
-		case 7:
-			is_push[Start] = true;
-			break;
-		case 8:
-			is_push[Button_LeftStick] = true;
-			break;
-		case 9:
-			is_push[Button_RightStick] = true;
-			break;
-
-		default:
-			break;
-		}
-	}
-
-	for (int i = 0; i < Cross_Up; i++)
-	{
-		if (is_push[i] == true)
-		{
-			if (is_push[i] == is_push[Button])
-			{
-				return true;
-			}
-		}
-	}
-
-	return false;
-}
+//
+//bool Input::PushButton(int Button)
+//{
+//	for (int i = 0; i < 32; i++)
+//	{
+//		if (!(gamePadState.rgbButtons[i] & 0x80))
+//		{
+//			continue;
+//		}
+//
+//		switch (i)
+//		{
+//		case 0:
+//			is_push[A] = true;
+//			break;
+//		case 1:
+//			is_push[B] = true;
+//			break;
+//		case 2:
+//			is_push[X] = true;
+//			break;
+//		case 3:
+//			is_push[Y] = true;
+//			break;
+//		case 4:
+//			is_push[LB] = true;
+//			break;
+//		case 5:
+//			is_push[RB] = true;
+//			break;
+//		case 6:
+//			is_push[BACK] = true;
+//			break;
+//		case 7:
+//			is_push[START] = true;
+//			break;
+//		case 8:
+//			is_push[Button_LeftStick] = true;
+//			break;
+//		case 9:
+//			is_push[Button_RightStick] = true;
+//			break;
+//
+//		default:
+//			break;
+//		}
+//	}
+//
+//	for (int i = 0; i < Cross_Up; i++)
+//	{
+//		if (is_push[i] == true)
+//		{
+//			if (is_push[i] == is_push[Button])
+//			{
+//				return true;
+//			}
+//		}
+//	}
+//
+//	return false;
+//}
 
 bool Input::PushCrossKey(int CrossKey)
 {

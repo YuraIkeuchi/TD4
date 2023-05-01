@@ -21,7 +21,7 @@ public:
 
 	//“–‚½‚è”»’èŠÖ”
 	//‹…‚Æ‹…
-	static bool SphereCollision(float X1, float Y1, float Z1, float R1, float X2, float Y2, float Z2, float R2);
+	static bool SphereCollision(const XMFLOAT3& pos, const float& R1, const XMFLOAT3& pos2, const float& R2);
 	//‹…‚Æ‹…2
 	static bool CheckSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB, DirectX::XMVECTOR* inter = nullptr, DirectX::XMVECTOR* reject = nullptr);
 	//•½–Ê‚Æ‹…

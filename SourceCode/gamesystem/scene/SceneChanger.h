@@ -8,6 +8,7 @@
 #include<string>
 #include <list>
 
+//シーンチェンジクラス
 class SceneChanger {
 public:
 	SceneChanger();

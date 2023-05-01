@@ -3,7 +3,7 @@
 #include"IKEFBXObject3d.h"
 #include<memory>
 #include "ObjCommon.h"
-#include "Input.h"
+
 #include "GhostBullet.h"
 #include "AttackBullet.h"
 using namespace DirectX;
@@ -13,9 +13,6 @@ public:
 	Player(XMFLOAT3 StartPos = {0.f,0.f,0.f});
 	~Player()override;
 
-private:
-	//キーのインスタンス取得用
-	Input* input;
 private:
 	//体力
 	static int HP;
@@ -43,7 +40,8 @@ public:
 		STATE_IDLE,
 		STATE_RUN,
 		STATE_GHOST,
-		STATE_SHOT
+		STATE_ATTACKSHOT,
+		STATE_SUPERSHOT,
 	}_charaState;
 
 private:
@@ -65,6 +63,8 @@ private:
 	void GhostShot();
 	//弾を打つ処理(攻撃)
 	void AttackShot();
+	//弾を打つ処理(ため攻撃)
+	void SuperShot();
 private:
 	void Idle();
 	//インターバル管理
@@ -84,7 +84,7 @@ private:
 	void AnimationControl(AnimeName name, const bool& loop, int speed);
 public:
 	//当たり判定系
-	bool BulletCollide(const XMFLOAT3& pos);//弾との当たり判定
+	bool BulletCollide(const XMFLOAT3& pos,const bool Catch);//弾との当たり判定
 	bool PlayerCollide(const XMFLOAT3& pos);//プレイヤーとの当たり判定
 public:
 	const int& GetBulletType() { return m_BulletType; }
@@ -97,5 +97,9 @@ private://各クラス
 	int m_RigidityTime = {};//硬直時間
 	int m_TargetInterVal = {};//インターバルの目標時間
 	int m_TargetRigidityTime = {};//硬直時間の目標時間
+
+	XMFLOAT3 m_FollowPos = {};
+
+	int m_ShotTimer = {};//ショットのチャージ時間
 };
 
