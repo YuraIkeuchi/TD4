@@ -30,7 +30,7 @@ public:
 	void ImGuiDraw(DirectXCommon* dxCommon);
 private:
 	//クラス
-	Player* player = nullptr;
+	unique_ptr<Player> player;
 	unique_ptr<EnemyManager> enemymanager;
 	unique_ptr<InterBoss> boss;
 	unique_ptr<UI>ui;

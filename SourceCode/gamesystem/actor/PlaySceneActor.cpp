@@ -8,8 +8,7 @@
 #include <algorithm>
 
 //初期化
-void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
-{
+void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	dxCommon->SetFullScreen(true);
 	//共通の初期化
 	BaseInitialize(dxCommon);
@@ -21,48 +20,48 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	ParticleEmitter::GetInstance()->AllDelete();
 
 	//各クラス
-	player = new Player({ 0.0f, 0.0f, 0.0f });
-	camerawork->SetPlayer(player);
-	ui.reset(new UI());
+	player = std::make_unique<Player>({ 0.0f, 0.0f, 0.0f });
+	camerawork->SetPlayer(player.get());
+	camerawork->Update(camera);
+	ui = std::make_unique<UI>();
 	ui->Initialize();
 
 	conversationwindow = IKESprite::Create(ImageManager::WINDOW, window_pos);
 	conversationwindow->SetAnchorPoint({ 0.5f,0.5f });
 	conversationwindow->SetSize(window_size);
 
-	blackwindow = IKESprite::Create(ImageManager::BLACKWINDOW,{});
+	blackwindow = IKESprite::Create(ImageManager::BLACKWINDOW, {});
 
 
-	boss.reset(new FirstBoss());
+	boss = std::make_unique<FirstBoss>();
 	boss->Initialize();
-	enemymanager.reset(new EnemyManager(player));
+	enemymanager = std::make_unique<EnemyManager>(player.get());
 
-	backobj.reset(new BackObj());
+	backobj = std::make_unique<BackObj>();
 	backobj->Initialize();
 
-	loadobj.reset(new LoadStageObj());
-	loadobj->AllLoad(player);
+	loadobj = std::make_unique<LoadStageObj>();
+	loadobj->AllLoad(player.get());
 }
 //更新
-void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
-{
+void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
-	
+
 	//音楽の音量が変わる
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 	VolumManager::GetInstance()->Update();
 
-	if (input->Pushkey(DIK_A)&&
-		nowstate!=CONVERSATION) {
+	if (input->Pushkey(DIK_A) &&
+		nowstate != CONVERSATION) {
 		nowstate = CONVERSATION;
 		frame = {};
 	}
-	if (input->Pushkey(DIK_S)&&
-		nowstate!=FIGHT) {
+	if (input->Pushkey(DIK_S) &&
+		nowstate != FIGHT) {
 		nowstate = FIGHT;
 		frame = {};
 	}
-	if (nowstate==CONVERSATION) {
+	if (nowstate == CONVERSATION) {
 		frame++;
 		nowframe = frame / maxframe;
 		if (frame >= maxframe) {
@@ -71,9 +70,8 @@ void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 		window_pos.y = Ease(Out, Sine, nowframe, WinApp::window_height + 100, WinApp::window_height - 100);
 		window_size.x = Ease(Out, Sine, nowframe, 0, 1300);
 		window_size.y = Ease(Out, Sine, nowframe, 0, 223);
-		black_color.w = Ease(Out, Sine, nowframe,0, 1);
-	}
-	else if(nowstate ==FIGHT) {
+		black_color.w = Ease(Out, Sine, nowframe, 0, 1);
+	} else if (nowstate == FIGHT) {
 		frame++;
 		nowframe = frame / maxframe;
 		if (frame >= maxframe) {
@@ -85,7 +83,7 @@ void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 		black_color.w = Ease(Out, Sine, nowframe, 1, 0);
 	}
 
-	
+
 	conversationwindow->SetPosition(window_pos);
 	conversationwindow->SetSize(window_size);
 	blackwindow->SetColor(black_color);
@@ -104,8 +102,7 @@ void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 }
 
 //描画
-void PlaySceneActor::Draw(DirectXCommon* dxCommon)
-{
+void PlaySceneActor::Draw(DirectXCommon* dxCommon) {
 	//描画方法
 	//ポストエフェクトをかけるか
 	if (PlayPostEffect) {
@@ -119,8 +116,7 @@ void PlaySceneActor::Draw(DirectXCommon* dxCommon)
 		ImGuiDraw(dxCommon);
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
-	}
-	else {
+	} else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
@@ -131,13 +127,11 @@ void PlaySceneActor::Draw(DirectXCommon* dxCommon)
 	}
 }
 //解放
-void PlaySceneActor::Finalize()
-{
+void PlaySceneActor::Finalize() {
 }
 
 //後ろの描画
-void PlaySceneActor::BackDraw(DirectXCommon* dxCommon)
-{
+void PlaySceneActor::BackDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
 	////各クラスの描画
 	player->Draw(dxCommon);
