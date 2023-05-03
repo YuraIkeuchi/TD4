@@ -35,7 +35,6 @@ private:
 	void CollideFood();
 	//ƒS[ƒXƒg‚ªÁ‚¦‚é
 	void VanishGhost();
-	string format(float f, int digits);
 private:
 	//“–‚½‚è”»’è
 	void Collide();

@@ -234,8 +234,7 @@ void Player::BulletUpdate() {
 	//Aが押されたら弾を撃つ(言霊)
 	if (Input::GetInstance()->TriggerButton(Input::A) && m_InterVal == 0)
 	{
-		m_InterVal = m_TargetInterVal;
-		m_RigidityTime = m_TargetRigidityTime;
+		SetInterVal();
 		_charaState = CharaState::STATE_GHOST;
 	}
 
@@ -246,18 +245,27 @@ void Player::BulletUpdate() {
 		m_ShotTimer++;
 	}
 
+	//チャージ時間が一定を超えたら飢餓ゲージの減る速度が上がる
+	if (m_ShotTimer > l_Limit) {
+		HungerGauge::GetInstance()->SetSubVelocity(2.0f);
+		//チャージ中に飢餓ゲージが切れた場合弾が自動で放たれる
+		if (HungerGauge::GetInstance()->GetNowHunger() == 0.0f) {
+			SetInterVal();
+			_charaState = CharaState::STATE_SUPERSHOT;
+			HungerGauge::GetInstance()->SetSubVelocity(1.0f);
+			m_ShotTimer = {};
+		}
+	}
+
 	if (!Input::GetInstance()->PushButton(Input::B) && m_ShotTimer != 0) {
 		if (m_ShotTimer < l_Limit) {
-			//HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() - l_TargetHunger);
-			m_InterVal = m_TargetInterVal;
-			m_RigidityTime = m_TargetRigidityTime;
+			SetInterVal();
 			_charaState = CharaState::STATE_ATTACKSHOT;
 		}
 		else {
-			//HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() - l_TargetHunger);
-			m_InterVal = m_TargetInterVal;
-			m_RigidityTime = m_TargetRigidityTime;
+			SetInterVal();
 			_charaState = CharaState::STATE_SUPERSHOT;
+			HungerGauge::GetInstance()->SetSubVelocity(1.0f);
 		}
 
 		m_ShotTimer = {};
@@ -407,4 +415,9 @@ bool Player::PlayerCollide(const XMFLOAT3& pos) {
 	}
 
 	return false;
+}
+//インターバルのセット
+void Player::SetInterVal() {
+	m_InterVal = m_TargetInterVal;
+	m_RigidityTime = m_TargetRigidityTime;
 }

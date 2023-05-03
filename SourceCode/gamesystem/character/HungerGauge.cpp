@@ -2,6 +2,7 @@
 #include "imgui.h"
 #include"WinApp.h"
 #include "CsvLoader.h"
+#include "Helper.h"
 HungerGauge* HungerGauge::GetInstance()
 {
 	static HungerGauge instance;
@@ -18,11 +19,14 @@ bool HungerGauge::Initialize() {
 
 //更新
 void HungerGauge::Update() {
-	float l_SubHunger = (m_CatchCount * 5) / 1000;
+	float l_BaseSub = 5.0f;
+	//減る速度を求めている
+	float l_SubHunger = (m_CatchCount * (l_BaseSub * m_SubVelocity)) / 1000;
 	float l_Limit = 30.0f;
 	//一定ずつで減少していく
 	m_NowHunger -= l_SubHunger;
 	//飢餓ゲージの最大数が決まっている
+	Helper::GetInstance()->FloatClamp(m_NowHunger, 0.0f, m_HungerMax);
 	m_NowHunger = min(m_NowHunger, m_HungerMax);
 	m_HungerMax = min(m_HungerMax, l_Limit);
 }
@@ -32,6 +36,7 @@ void HungerGauge::ImGuiDraw() {
 	ImGui::Begin("Hunger");
 	ImGui::SliderFloat("Now", &m_NowHunger, 0.0f, 50.0f);
 	ImGui::SliderFloat("Max", &m_HungerMax, 0.0f, 50.0f);
-	ImGui::Text(" m_CatchCount:%f", m_CatchCount);
+	ImGui::Text("m_SubVelocity:%f", m_SubVelocity);
+	ImGui::Text("CatchCount:%f", m_CatchCount);
 	ImGui::End();
 }

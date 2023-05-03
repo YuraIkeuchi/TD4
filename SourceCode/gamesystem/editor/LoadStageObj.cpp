@@ -106,6 +106,9 @@ void LoadStageObj::ImGuiDraw() {
 		foods[i]->ImGuiDraw();
 	}
 	//
+	ImGui::Begin("Load");
+	ImGui::Text("m_VanishCount:%f",m_VanishCount);
+	ImGui::End();
 }
 //ìñÇΩÇËîªíË(ÉSÅ[ÉXÉg)
 void LoadStageObj::Collide() {
@@ -192,11 +195,4 @@ void LoadStageObj::VanishGhost() {
 
 
 
-}
-
-string LoadStageObj::format(float f, int digits) {
-	std::ostringstream ss;
-	ss.precision(digits);
-	ss << f;
-	return ss.str();
 }
