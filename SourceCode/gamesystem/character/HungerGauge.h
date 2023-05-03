@@ -19,8 +19,10 @@ public:
 	void SetNowHunger(float m_NowHunger) { this->m_NowHunger = m_NowHunger; }
 	void SetHungerMax(float m_HungerMax) { this->m_HungerMax = m_HungerMax; }
 	void SetCatchCount(float m_CatchCount) { this->m_CatchCount = m_CatchCount; }
+	void SetSubVelocity(float m_SubVelocity) { this->m_SubVelocity = m_SubVelocity; }
 private:
 	float m_NowHunger = {};//現在の飢餓ゲージ
 	float m_HungerMax = {};//飢餓ゲージの最大数(変化する)
 	float m_CatchCount = {};//ゴーストの数
+	float m_SubVelocity = 1.0f;//減る飢餓ゲージ(チャージ中のみ減る）
 };

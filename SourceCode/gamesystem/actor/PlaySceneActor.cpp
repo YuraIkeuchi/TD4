@@ -20,7 +20,7 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	ParticleEmitter::GetInstance()->AllDelete();
 
 	//各クラス
-	player = std::make_unique<Player>({ 0.0f, 0.0f, 0.0f });
+	player = std::make_unique<Player>();
 	camerawork->SetPlayer(player.get());
 	camerawork->Update(camera);
 	ui = std::make_unique<UI>();

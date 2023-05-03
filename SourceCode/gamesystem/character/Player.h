@@ -69,6 +69,8 @@ private:
 	void Idle();
 	//インターバル管理
 	void InterVal();
+	//インターバルのセット
+	void SetInterVal();
 	//弾を選ぶ
 	void SelectBullet();
 	//弾の更新

@@ -184,8 +184,7 @@ void Ghost::EndSearch() {
 //H‚×•¨‚ð‰^‚Ô
 void Ghost::CarryFood() {
 	float l_Radius = 1.0f;//“–‚½‚è”»’è
-	float l_Hunger = 2.0f;//‰ÁŽZ‚³‚ê‚é‹C‚ªƒQ[ƒW
-	float l_AddCount = 1.0f;//‰ÁŽZ‚³‚ê‚éƒS[ƒXƒg‚Ì”
+	float l_AddHunger = 5.0f;//‰ÁŽZ‚³‚ê‚é‹C‚ªƒQ[ƒW
 	XMFLOAT3 l_playerPos = player->GetPosition();
 	if ((_searchState == SearchState::SEARCH_END) && (m_Alive)) {
 		if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, l_playerPos.x, l_playerPos.z, l_Radius)) {
@@ -193,8 +192,7 @@ void Ghost::CarryFood() {
 			m_Search = false;
 			m_Catch = false;
 			m_Limit = {};
-			HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() + l_Hunger);
-			HungerGauge::GetInstance()->SetCatchCount(HungerGauge::GetInstance()->GetCatchCount() + l_AddCount);
+			HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() + l_AddHunger);
 		}
 	}
 }
