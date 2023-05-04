@@ -71,8 +71,6 @@ private:
 	void InterVal();
 	//インターバルのセット
 	void SetInterVal();
-	//弾を選ぶ
-	void SelectBullet();
 	//弾の更新
 	void BulletUpdate();
 private:

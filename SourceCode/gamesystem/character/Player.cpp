@@ -100,8 +100,6 @@ void Player::Update()
 	//Stateに入れなくていいやつ
 	//攻撃のインターバル
 	InterVal();
-	//弾の種類選択
-	SelectBullet();
 	//飢餓ゲージ更新
 	HungerGauge::GetInstance()->Update();
 }
@@ -164,7 +162,6 @@ void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
 //歩き(コントローラー)
 void Player::Walk()
 {
-	XMFLOAT3 pos = m_Position;
 	XMFLOAT3 rot = m_Rotation;
 
 	float AddSpeed=2.f;
@@ -232,8 +229,14 @@ void Player::BulletUpdate() {
 	const int l_Limit = 20;//ショットのチャージ時間
 	/*-----------------------------*/
 	//Aが押されたら弾を撃つ(言霊)
-	if (Input::GetInstance()->TriggerButton(Input::A) && m_InterVal == 0)
+	if (((Input::GetInstance()->TriggerButton(Input::RB)) || (Input::GetInstance()->TriggerButton(Input::LB))) && (m_InterVal == 0))
 	{
+		if (Input::GetInstance()->TriggerButton(Input::RB)) {
+			m_BulletType = BULLET_FORROW;
+		}
+		else if (Input::GetInstance()->TriggerButton(Input::LB)) {
+			m_BulletType = BULLET_SEARCH;
+		}
 		SetInterVal();
 		_charaState = CharaState::STATE_GHOST;
 	}
@@ -376,15 +379,6 @@ void Player::Idle()
 void Player::InterVal() {
 	Helper::GetInstance()->CheckMaxINT(m_InterVal, 0, -1);
 	Helper::GetInstance()->CheckMaxINT(m_RigidityTime, 0, -1);
-}
-//弾を選ぶ
-void Player::SelectBullet() {
-	if (Input::GetInstance()->TriggerButton(Input::RB)) {
-		m_BulletType = BULLET_FORROW;
-	}
-	else if (Input::GetInstance()->TriggerButton(Input::LB)) {
-		m_BulletType = BULLET_SEARCH;
-	}
 }
 //弾との当たり判定
 bool Player::BulletCollide(const XMFLOAT3& pos,const bool Catch) {

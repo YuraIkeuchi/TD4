@@ -20,6 +20,8 @@ public:
 	void SetHungerMax(float m_HungerMax) { this->m_HungerMax = m_HungerMax; }
 	void SetCatchCount(float m_CatchCount) { this->m_CatchCount = m_CatchCount; }
 	void SetSubVelocity(float m_SubVelocity) { this->m_SubVelocity = m_SubVelocity; }
+public:
+	static float m_Hungervalue;//‰ÁZ‚â—]Z‚Ì’l
 private:
 	float m_NowHunger = {};//Œ»İ‚Ì‹Q‰ìƒQ[ƒW
 	float m_HungerMax = {};//‹Q‰ìƒQ[ƒW‚ÌÅ‘å”(•Ï‰»‚·‚é)

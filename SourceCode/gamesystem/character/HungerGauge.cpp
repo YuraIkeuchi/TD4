@@ -3,6 +3,7 @@
 #include"WinApp.h"
 #include "CsvLoader.h"
 #include "Helper.h"
+float HungerGauge::m_Hungervalue = 5.0f;
 HungerGauge* HungerGauge::GetInstance()
 {
 	static HungerGauge instance;
@@ -19,9 +20,8 @@ bool HungerGauge::Initialize() {
 
 //XV
 void HungerGauge::Update() {
-	float l_BaseSub = 5.0f;
 	//Œ¸‚é‘¬“x‚ğ‹‚ß‚Ä‚¢‚é
-	float l_SubHunger = (m_CatchCount * (l_BaseSub * m_SubVelocity)) / 1000;
+	float l_SubHunger = (m_CatchCount * (m_Hungervalue * m_SubVelocity)) / 1000;
 	float l_Limit = 30.0f;
 	//ˆê’è‚¸‚Â‚ÅŒ¸­‚µ‚Ä‚¢‚­
 	m_NowHunger -= l_SubHunger;
