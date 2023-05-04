@@ -336,6 +336,9 @@
     <ClCompile Include="SourceCode\gamesystem\editor\LoadStageObj.cpp">
       <Filter>SourceCords\gamesystem\Editor\Load\StageObj</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\ViewBullet.cpp">
+      <Filter>SourceCords\gamesystem\character\Various\Bullet\Various</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -612,7 +615,6 @@
     <ClInclude Include="SourceCode\gamesystem\character\HungerGauge.h">
       <Filter>SourceCords\gamesystem\character\Various\HungerGauge</Filter>
     </ClInclude>
-
     <ClInclude Include="SourceCode\gamesystem\scene\SceneChanger.h">
       <Filter>SourceCords\gamesystem\Scene\Base</Filter>
     </ClInclude>
@@ -630,6 +632,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\editor\LoadStageObj.h">
       <Filter>SourceCords\gamesystem\Editor\Load\StageObj</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\ViewBullet.h">
+      <Filter>SourceCords\gamesystem\character\Various\Bullet\Various</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

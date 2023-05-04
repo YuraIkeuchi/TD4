@@ -33,6 +33,7 @@ public:
 	void SetAlive(const bool Alive) { m_Alive = Alive; }
 	void SetAngle(const XMFLOAT2& Angle) { m_Angle = Angle; }
 	void SetBulletType(const int BulletType) { m_BulletType = BulletType; }
+	void SetCharge(const bool Charge) { m_Charge = Charge; }
 
 public:
 	XMFLOAT2 m_Angle = {};//弾の角度
@@ -41,4 +42,5 @@ public:
 	int m_Timer = {};//出現時間
 	int m_TargetTimer = {};//出現時間の目標
 	bool m_Alive = true;//生存フラグ
+	bool m_Charge = false;//チャージしたかどうか
 };

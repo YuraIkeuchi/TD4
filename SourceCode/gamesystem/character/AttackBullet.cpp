@@ -23,10 +23,7 @@ bool AttackBullet::Initialize() {
 
 //ImGui•`‰æ
 void AttackBullet::ImGui_Origin() {
-	ImGui::Begin("Bullet");
-	ImGui::Text("Pos.X:%f", m_Position.x);
-	ImGui::Text("Timer:%d", m_Timer);
-	ImGui::End();
+
 }
 //’e‚Ì“Á—Lˆ—
 void AttackBullet::Action() {

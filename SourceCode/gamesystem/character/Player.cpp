@@ -47,6 +47,8 @@ bool Player::Initialize()
 	//飢餓ゲージはプレイヤーで管理する
 	HungerGauge::GetInstance()->Initialize();
 
+	viewbullet.reset(new ViewBullet());
+	viewbullet->Initialize();
 	return true;
 }
 //状態遷移
@@ -120,6 +122,8 @@ void Player::Draw(DirectXCommon* dxCommon)
 			attackbullet->Draw(dxCommon);
 		}
 	}
+
+	viewbullet->Draw(dxCommon);
 }
 //ImGui
 void Player::ImGuiDraw() {
@@ -143,6 +147,8 @@ void Player::ImGuiDraw() {
 			bullet->ImGuiDraw();
 		}
 	}
+
+	viewbullet->ImGui_Origin();
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
@@ -237,7 +243,7 @@ void Player::BulletUpdate() {
 		else if (Input::GetInstance()->TriggerButton(Input::LB)) {
 			m_BulletType = BULLET_SEARCH;
 		}
-		SetInterVal();
+		ResetBullet();
 		_charaState = CharaState::STATE_GHOST;
 	}
 
@@ -246,32 +252,30 @@ void Player::BulletUpdate() {
 	if (Input::GetInstance()->PushButton(Input::B) && m_InterVal == 0 && HungerGauge::GetInstance()->GetCatchCount() >= l_TargetCount)
 	{
 		m_ShotTimer++;
+		viewbullet->SetAlive(true);
 	}
 
 	//チャージ時間が一定を超えたら飢餓ゲージの減る速度が上がる
 	if (m_ShotTimer > l_Limit) {
+		viewbullet->SetCharge(true);
 		HungerGauge::GetInstance()->SetSubVelocity(2.0f);
 		//チャージ中に飢餓ゲージが切れた場合弾が自動で放たれる
 		if (HungerGauge::GetInstance()->GetNowHunger() == 0.0f) {
-			SetInterVal();
 			_charaState = CharaState::STATE_SUPERSHOT;
 			HungerGauge::GetInstance()->SetSubVelocity(1.0f);
-			m_ShotTimer = {};
+			ResetBullet();
 		}
 	}
 
 	if (!Input::GetInstance()->PushButton(Input::B) && m_ShotTimer != 0) {
 		if (m_ShotTimer < l_Limit) {
-			SetInterVal();
 			_charaState = CharaState::STATE_ATTACKSHOT;
 		}
 		else {
-			SetInterVal();
 			_charaState = CharaState::STATE_SUPERSHOT;
 			HungerGauge::GetInstance()->SetSubVelocity(1.0f);
 		}
-
-		m_ShotTimer = {};
+		ResetBullet();
 	}
 
 	//言弾の更新
@@ -310,6 +314,20 @@ void Player::BulletUpdate() {
 			attackbullets.erase(cbegin(attackbullets) + i);
 		}
 	}
+	//弾を撃つ方向を算出するために回転を求める
+	XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
+	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
+	move = XMVector3TransformNormal(move, matRot);
+	XMFLOAT2 l_Angle;
+	l_Angle.x = move.m128_f32[0];
+	l_Angle.y = move.m128_f32[2];
+
+
+	//可視化の弾関係
+	viewbullet->Update();
+	viewbullet->SetAngle(l_Angle);
+	viewbullet->SetPosition(m_Position);
+	
 }
 //弾を打つ処理(ゴーストを捕まえる)
 void Player::GhostShot() {
@@ -339,7 +357,6 @@ void Player::AttackShot() {
 	XMFLOAT2 l_Angle;
 	l_Angle.x = move.m128_f32[0];
 	l_Angle.y = move.m128_f32[2];
-
 	//弾の生成
 	InterBullet* newbullet;
 	newbullet = new AttackBullet();
@@ -347,7 +364,7 @@ void Player::AttackShot() {
 	newbullet->SetPosition(m_Position);
 	newbullet->SetScale({ 1.0f,1.0f,1.0f });
 	newbullet->SetAngle(l_Angle);
-	attackbullets.push_back(newbullet);
+	attackbullets.push_back(newbullet);	
 }
 //弾を打つ処理(ゴーストを捕まえる)
 void Player::SuperShot() {
@@ -363,10 +380,11 @@ void Player::SuperShot() {
 	InterBullet* newbullet;
 	newbullet = new AttackBullet();
 	newbullet->Initialize();
-	newbullet->SetPosition(m_Position);
-	newbullet->SetScale({ 2.5f,2.5f,2.5f });
+	newbullet->SetPosition(viewbullet->GetPosition());
+	newbullet->SetScale(viewbullet->GetScale());
 	newbullet->SetAngle(l_Angle);
 	attackbullets.push_back(newbullet);
+	viewbullet->SetScale({ 1.0f,1.0f,1.0f });
 }
 //待機モーション
 void Player::Idle()
@@ -410,8 +428,11 @@ bool Player::PlayerCollide(const XMFLOAT3& pos) {
 
 	return false;
 }
-//インターバルのセット
-void Player::SetInterVal() {
+//弾のリセット
+void Player::ResetBullet() {
 	m_InterVal = m_TargetInterVal;
 	m_RigidityTime = m_TargetRigidityTime;
+	viewbullet->SetAlive(false);
+	viewbullet->SetCharge(false);
+	m_ShotTimer = {};
 }
