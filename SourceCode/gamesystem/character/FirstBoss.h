@@ -11,7 +11,87 @@ public:
 private:
 	void Action() override;//行動
 	void EffecttexDraw(DirectXCommon* dxCommon) override;
-private:
+
+		//ため攻撃
+		struct ChargeAttack
+		{
+			int ChargeTime;
+			int Damage;
+
+			unique_ptr<IKETexture>impact1;
+			unique_ptr<IKETexture>impact2;
+
+			void Attack(Player*player);
+		};
+
+
+		//通常突進3回
+		struct NormalAttak
+		{
+		private:
+			float RushOldRotY;
+			bool RushRotationF;
+
+			XMVECTOR m_move = { 0.f,0.f, 0.1f, 0.0f };
+
+			XMMATRIX m_matRot;
+
+			XMFLOAT3 RotStartPos;
+			float RushMoveEaseT;
+			XMFLOAT3 RushOldPos;
+			
+			int StayCount;
+			bool StayF;
+
+			XMFLOAT3 OldPos_Remove;
+			float SPosMoveEaseT;
+			float shaketime;
+			float shake, shakex, shakey;
+			XMFLOAT3 BeforeShakePos;
+			bool shakeend;
+			float RemovePosEaseT;
+			float RotEaseTime;
+			bool NormalAttackF;
+			float BackEaseT;
+			bool RushF;
+			float BackSpeed;
+			int RushCount;
+			int AfterTime;
+			float DamageAreaAlpha;
+			float RePosAngle;
+			//このやり方ひどくない？？
+			enum class Phase_Normal
+			{
+				ROTPLAYER_0,
+				PHASE_ONE,
+				ROTPLAYER_1,
+				PHASE_TWO,
+				ROTPLAYER_2,
+				PHASE_THREE,
+				ROTPLAYER_3,
+				NON,
+				STIFF
+			}_phaseN=Phase_Normal::NON;
+		private:
+			
+			void Idle(Player* player, XMFLOAT3& Pos, XMFLOAT3 Rot,bool &Enf);
+			void Shake(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot);
+			void Rot(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot);
+			void Attack();
+			void Attack(Player* player,XMFLOAT3 &Pos,XMFLOAT3& Rot);
+			
+			public:
+			void Update(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot,bool &Enf);
+			void SetNormalAttackF(bool f) { NormalAttackF = f; }
+				bool GetAttackF() { return NormalAttackF; }
+				void SetAngle(float val) { RePosAngle = val; }void Remove(XMFLOAT3& Pos, XMFLOAT3& Scl,bool Enf);
+			inline void SetreposAngle(Player* player){
+				RotStartPos.x = player->GetPosition().x + sinf(RePosAngle * (3.14f / 180.0f)) * 10.0f;
+				RotStartPos.z = player->GetPosition().z + cosf(RePosAngle * (3.14f / 180.0f)) * 10.0f;
+			}
+		};
+		ChargeAttack _charge;
+		NormalAttak _normal;
 	float PosYMovingT;
 	float RotEaseT;
 

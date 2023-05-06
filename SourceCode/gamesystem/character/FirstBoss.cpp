@@ -59,7 +59,7 @@ void FirstBoss::Action() {
 
 
 	float OldsMov = 0;
-	if (!NormalAttackF) {
+	if (!_normal.GetAttackF()) {
 		PosYMovingT++;
 		YmovEaseT = 0.f;
 		OldsMov = PosYMovingT;
@@ -135,89 +135,32 @@ void FirstBoss::Action() {
 		CollideBul(_playerBulG);
 	
 
-	if (Input::GetInstance()->TriggerButton(Input::B))
-	{
-		NormalAttackF = true;
-	}
 	//Rot();
 	if (!BattleStartF) {
 		NoBattleMove();
 	} else {
-		if (!NormalAttackF && !ImpactF && !Recv) {
+		if (!_normal.GetAttackF() && !ImpactF && !Recv) {
 			actiontimer++;
 		}
-		if (!NormalAttackF && actiontimer % 180 == 0)
+		if (!_normal.GetAttackF() && actiontimer % 180 == 0)
 		{
-			NormalAttackF = true;
+			_normal.SetNormalAttackF(true);
 		}
 		if (!ImpactF && actiontimer % 300 == 0)
 		{
 			ImpactF = true;
 		}
 		Move();
-		switch (_phaseN)
+		if(_normal.GetAttackF())
 		{
-		case Phase_Normal::ROTPLAYER_0:
-			DebShake();
-			break;
-		case Phase_Normal::PHASE_ONE:
-			DebAttack();
-			break;
-		case Phase_Normal::ROTPLAYER_1:
-			DebShake();
-			break;
-		case Phase_Normal::PHASE_TWO:
-			DebAttack();
-			break;
-		case Phase_Normal::ROTPLAYER_2:
-			DebShake();
-			break;
-		case Phase_Normal::PHASE_THREE:
-			DebAttack();
-			break;
-		case Phase_Normal::ROTPLAYER_3:
-			DebShake();
-			break;
-		case Phase_Normal::NON:
-		{
-			EncF = true;
-			RotEaseTime = 0.f;
-			RushRotationF = false;
-			StayF = false;
-			shaketime = 80;
-			RushMoveEaseT = 0.f;
-			RemovePosEaseT = 0.f;
-
-			RushRotationF = false;
-			BeforeShakePos = m_Position;
-			//shaketime = 60.0f;
-			RemovePosEaseT = 0.f;
-			BackSpeed = 4.f;
-			shaketime = 60.0f;
-			//shakeend = false;
-			StayCount = 0;
-			RotEaseTime = 0.f;
-			//shakeend = true;
-		}
-		if (NormalAttackF) {
 			actiontimer++;
-			BackSpeed = 4.f;
-			RotEaseTime = 0.f;
-			RushRotationF = true;
-			RushOldPos = m_Position;
-			_phaseN = Phase_Normal::ROTPLAYER_0;
 		}
-		break;
-
-		case Phase_Normal::STIFF:
-			StayMove();
-			break;
-		}
-		Move_Away(); RemovePos(); DamAction();
+		_normal.Update(player.get(), m_Position, m_Rotation, EncF);
+		Move_Away(); _normal.Remove(m_Position,m_Scale,EncF); DamAction();
 		m_Color = Col;
 	}
 
-
+	_normal.SetreposAngle(player.get());
 	//NormalAttack();
 
 	//OBJのステータスのセット
@@ -228,9 +171,70 @@ void FirstBoss::Pause() {
 
 
 }
+void FirstBoss::NormalAttak::Update(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot,bool &Enf)
+{
+	switch (_phaseN)
+	{
+	case Phase_Normal::ROTPLAYER_0:
+		NormalAttak::Shake(player, Pos, Rot);
+		break;
+	case Phase_Normal::PHASE_ONE:
+		NormalAttak::Attack(player, Pos, Rot);
+		break;
+	case Phase_Normal::ROTPLAYER_1:
+		NormalAttak::Shake(player, Pos, Rot);
+		break;
+	case Phase_Normal::PHASE_TWO:
+		NormalAttak::Attack(player, Pos, Rot);
+		break;
+	case Phase_Normal::ROTPLAYER_2:
+		NormalAttak::Shake(player, Pos, Rot);
+		break;
+	case Phase_Normal::PHASE_THREE:
+		NormalAttak::Attack(player, Pos, Rot);
+		break;
+	case Phase_Normal::ROTPLAYER_3:
+		NormalAttak::Shake(player,Pos,Rot);
+		break;
+	case Phase_Normal::NON:
+	{
+		Enf = true;
+		RotEaseTime = 0.f;
+		RushRotationF = false;
+		StayF = false;
+		shaketime = 80;
+		RushMoveEaseT = 0.f;
+		RemovePosEaseT = 0.f;
+
+		RushRotationF = false;
+		BeforeShakePos = Pos;
+		//shaketime = 60.0f;
+		RemovePosEaseT = 0.f;
+		BackSpeed = 4.f;
+		shaketime = 60.0f;
+		//shakeend = false;
+		StayCount = 0;
+		RotEaseTime = 0.f;
+		//shakeend = true;
+	}
+	if (NormalAttackF) {
+		BackSpeed = 4.f;
+		RotEaseTime = 0.f;
+		RushRotationF = true;
+		RushOldPos = Pos;
+		_phaseN = Phase_Normal::ROTPLAYER_0;
+	}
+	break;
+
+	case Phase_Normal::STIFF:
+		NormalAttak::Idle(player, Pos, Rot, Enf);
+		break;
+	}
+}
 
 void FirstBoss::EffecttexDraw(DirectXCommon* dxCommon)
 {
+	
 	IKETexture::PreDraw2(dxCommon, ImageManager::IMPACT);
 	impact1->Draw2(dxCommon);
 	impact2->Draw2(dxCommon);
@@ -296,7 +300,7 @@ void FirstBoss::Move()
 
 	XMFLOAT3 l_player = player->GetPosition();
 
-	if (!Recv && !NormalAttackF) {
+	if (!Recv && !_normal.GetAttackF()) {
 
 		//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
 		XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
@@ -330,11 +334,6 @@ void FirstBoss::Move()
 		m_Position.z = l_player.z + cosf(BossAngle * (PI / 180.0f)) * 10.0f;
 	}
 
-
-
-
-	RotStartPos.x = l_player.x + sinf(BossAngle * (PI / 180.0f)) * 10.0f;
-	RotStartPos.z = l_player.z + cosf(BossAngle * (PI / 180.0f)) * 10.0f;
 }
 
 
@@ -396,18 +395,17 @@ void FirstBoss::RushAttack()
 {
 }
 
-void FirstBoss::StayMove()
+void FirstBoss::NormalAttak::Idle(Player* player, XMFLOAT3& Pos, XMFLOAT3 Rot,bool& Enf)
 {
 	StayCount++;
 	if (StayCount >= 180)
 	{
 		RushRotationF = true;
-		DebRot();
+		NormalAttak::Rot(player, Pos, Rot);
 		if (RotEaseTime >= 1.f)
 		{
-			EncF = false;
-			if (EncF) {
-				actiontimer += 2;
+			Enf = false;
+			if (Enf) {
 				NormalAttackF = false;
 				_phaseN = Phase_Normal::NON;
 			}
@@ -418,14 +416,12 @@ void FirstBoss::StayMove()
 	}
 }
 
-
-
-void FirstBoss::DebAttack()
+void FirstBoss::NormalAttak::Attack(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot)
 {
 	XMFLOAT3 l_player = player->GetPosition();
 
 	RushRotationF = false;
-	BeforeShakePos = m_Position;
+	BeforeShakePos = Pos;
 	//shaketime = 60.0f;
 	RemovePosEaseT = 0.f;
 	BackSpeed = 4.f;
@@ -436,11 +432,11 @@ void FirstBoss::DebAttack()
 
 
 	m_move = { 0.f,0.f, 0.1f, 0.0f };
-	m_matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 90.f));
+	m_matRot = XMMatrixRotationY(XMConvertToRadians(Rot.y + 90.f));
 	m_move = XMVector3TransformNormal(m_move, m_matRot);
 	RushMoveEaseT += 0.05f;
-	m_Position.x = Easing::EaseOut(RushMoveEaseT, RushOldPos.x, RushOldPos.x + m_move.m128_f32[0] * 300.f);
-	m_Position.z = Easing::EaseOut(RushMoveEaseT, RushOldPos.z, RushOldPos.z + m_move.m128_f32[2] * 300.f);
+	Pos.x = Easing::EaseOut(RushMoveEaseT, RushOldPos.x, RushOldPos.x + m_move.m128_f32[0] * 300.f);
+	Pos.z = Easing::EaseOut(RushMoveEaseT, RushOldPos.z, RushOldPos.z + m_move.m128_f32[2] * 300.f);
 
 
 	if (RushMoveEaseT >= 1.f)
@@ -450,7 +446,8 @@ void FirstBoss::DebAttack()
 		if (_phaseN == Phase_Normal::PHASE_ONE)_phaseN = Phase_Normal::ROTPLAYER_1;
 		if (_phaseN == Phase_Normal::PHASE_TWO)_phaseN = Phase_Normal::ROTPLAYER_2;
 		if (_phaseN == Phase_Normal::PHASE_THREE)_phaseN = Phase_Normal::STIFF;
-	}RushOldRotY = m_Rotation.y;
+	}
+	RushOldRotY = Rot.y;
 
 	Helper::GetInstance()->FloatClamp(RushMoveEaseT, 0.f, 1.f);
 	Helper::GetInstance()->FloatClamp(BackSpeed, 0.f, 8.f);
@@ -458,7 +455,7 @@ void FirstBoss::DebAttack()
 	Helper::GetInstance()->FloatClamp(RotEaseTime, 0.f, 1.f);
 }
 
-void FirstBoss::DebShake()
+void FirstBoss::NormalAttak::Shake(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot)
 {
 	//初期化部
 	{
@@ -466,7 +463,7 @@ void FirstBoss::DebShake()
 	}
 	XMVECTOR move = { 0.f,0.f, 0.1f, 0.0f };
 
-	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 270.f));
+	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(Rot.y + 270.f));
 
 	move = XMVector3TransformNormal(move, matRot);
 
@@ -480,15 +477,15 @@ void FirstBoss::DebShake()
 			shakey -= shake / 12.00f;
 			shaketime--;
 			//}
-			m_Position.x += shakex / 12.00f;
-			m_Position.z += shakey / 12.00f;
+			Pos.x += shakex / 12.00f;
+			Pos.z += shakey / 12.00f;
 			//シェイク値を０に
 		}
 
 		if (shaketime <= 0.0f && !shakeend) {
 			RemovePosEaseT += 0.05f;
-			m_Position.x = Easing::EaseOut(RemovePosEaseT, m_Position.x, BeforeShakePos.x);
-			m_Position.z = Easing::EaseOut(RemovePosEaseT, m_Position.z, BeforeShakePos.z);
+			Pos.x = Easing::EaseOut(RemovePosEaseT, Pos.x, BeforeShakePos.x);
+			Pos.z = Easing::EaseOut(RemovePosEaseT, Pos.z, BeforeShakePos.z);
 			if (RemovePosEaseT >= 1.f) {
 				shakeend = true;
 			}
@@ -500,14 +497,14 @@ void FirstBoss::DebShake()
 			shakex = 0.0f;
 			shakey = 0.0f;
 			BackSpeed -= 0.25f;
-			m_Position.x = m_Position.x + move.m128_f32[0] * BackSpeed;
-			m_Position.z = m_Position.z + move.m128_f32[2] * BackSpeed;
+			Pos.x = Pos.x + move.m128_f32[0] * BackSpeed;
+			Pos.z = Pos.z + move.m128_f32[2] * BackSpeed;
 		}
 
 		if (BackSpeed <= 0.f)
 		{
 
-			RushOldPos = m_Position;
+			RushOldPos = Pos;
 			if (_phaseN == Phase_Normal::ROTPLAYER_0)_phaseN = Phase_Normal::PHASE_ONE;
 			if (_phaseN == Phase_Normal::ROTPLAYER_1)_phaseN = Phase_Normal::PHASE_TWO;
 			if (_phaseN == Phase_Normal::ROTPLAYER_2)_phaseN = Phase_Normal::PHASE_THREE;
@@ -515,7 +512,41 @@ void FirstBoss::DebShake()
 		}
 	} else
 	{
-		DebRot();
+		NormalAttak::Rot(player,Pos,Rot);
+	}
+}
+
+void FirstBoss::NormalAttak::Rot(Player* player, XMFLOAT3& Pos, XMFLOAT3 &Rot)
+{
+	XMFLOAT3 l_player = player->GetPosition();
+	//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
+	XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
+	XMVECTOR PositionB = { Pos.x,Pos.y,Pos.z };
+	//プレイヤーと敵のベクトルの長さ(差)を求める
+	XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
+
+	if (!RushRotationF)
+	{
+		RotEaseTime = 0.f;
+		RushOldRotY = Rot.y;
+	} else {
+		//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
+		XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
+		XMVECTOR PositionB = { Pos.x,Pos.y,Pos.z };
+		//プレイヤーと敵のベクトルの長さ(差)を求める
+		XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
+		//回転軸をプレイヤーの方に
+			//向きかえる
+
+		float RotY = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
+
+		//イージングカウンタ＋＋
+		RotEaseTime += 0.02f;
+
+		//Rotation反映
+		Rot.y = Easing::EaseOut(RotEaseTime, RushOldRotY, RotY * 60.f + 90.f);
+
+
 	}
 }
 
@@ -582,6 +613,34 @@ void FirstBoss::DamAction()
 }
 
 
+void FirstBoss::NormalAttak::Remove(XMFLOAT3& Pos, XMFLOAT3& Scl,bool Enf)
+{
+	if (!Enf) {
+		SPosMoveEaseT += 0.05f;
+
+		if (SPosMoveEaseT >= 1.f)
+		{
+			Pos = RotStartPos;
+			NormalAttackF = false;
+			_phaseN = Phase_Normal::NON;
+			//EncF = true;
+		}
+	}
+	if (Enf)
+	{
+		SPosMoveEaseT -= 0.05f;
+		OldPos_Remove = Pos;
+	}
+
+	Scl.x = Easing::EaseOut(SPosMoveEaseT, 1.f, 0.f);
+	Scl.y = Easing::EaseOut(SPosMoveEaseT, 1.f, 0.f);
+	Scl.z = Easing::EaseOut(SPosMoveEaseT, 1.f, 0.f);
+
+	Helper::GetInstance()->FloatClamp(SPosMoveEaseT, 0.f, 1.f);
+	Helper::GetInstance()->FloatClamp(Scl.x, 0.f, 1.f);
+	Helper::GetInstance()->FloatClamp(Scl.y, 0.f, 1.f);
+	Helper::GetInstance()->FloatClamp(Scl.z, 0.f, 1.f);
+}
 
 void FirstBoss::RemovePos()
 {
