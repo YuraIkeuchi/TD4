@@ -23,7 +23,7 @@ private:
 
 			void Attack(Player*player);
 		};
-
+		//g‚í‚È‚¢•Ï”‘å—Ê‚É‚ ‚é‚Ì‚Å‚ ‚Æ‚Å‚¯‚·
 
 		//’Êí“Ëi3‰ñ
 		struct NormalAttak
