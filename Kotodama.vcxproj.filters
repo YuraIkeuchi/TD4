@@ -612,7 +612,6 @@
     <ClInclude Include="SourceCode\gamesystem\character\HungerGauge.h">
       <Filter>SourceCords\gamesystem\character\Various\HungerGauge</Filter>
     </ClInclude>
-
     <ClInclude Include="SourceCode\gamesystem\scene\SceneChanger.h">
       <Filter>SourceCords\gamesystem\Scene\Base</Filter>
     </ClInclude>
@@ -755,9 +754,6 @@
     <Filter Include="SourceCords\gamesystem\character\Various\Boss\Various">
       <UniqueIdentifier>{2f9fa4de-8733-44df-8d4d-9101d1c335ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Various\Enemy\Common">
-      <UniqueIdentifier>{b1142476-2fb3-41a5-bf7a-aa3aede5248e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SourceCords\gamesystem\character\Various\Enemy\Various">
       <UniqueIdentifier>{f961df61-b324-48d6-a213-a57237334955}</UniqueIdentifier>
     </Filter>
@@ -883,6 +879,9 @@
     </Filter>
     <Filter Include="SourceCords\gamesystem\Editor\Load\StageObj">
       <UniqueIdentifier>{952d0f7f-df11-42dd-a187-f6112a1d8b5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\character\Various\Enemy\Common">
+      <UniqueIdentifier>{b1142476-2fb3-41a5-bf7a-aa3aede5248e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

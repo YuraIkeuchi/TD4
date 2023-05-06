@@ -33,8 +33,6 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	blackwindow = IKESprite::Create(ImageManager::BLACKWINDOW, {});
 
 
-	boss = std::make_unique<FirstBoss>();
-	boss->Initialize();
 	enemymanager = std::make_unique<EnemyManager>(player.get());
 
 	backobj = std::make_unique<BackObj>();
@@ -92,8 +90,7 @@ void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	backobj->Update();
 	if (nowstate != CONVERSATION) {
 		player->Update();
-		//enemymanager->Update();
-		boss->Update();
+		enemymanager->Update();
 		loadobj->Update();
 		ParticleEmitter::GetInstance()->Update();
 	}
@@ -135,9 +132,8 @@ void PlaySceneActor::BackDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
 	////各クラスの描画
 	player->Draw(dxCommon);
-	boss->Draw(dxCommon);
-	loadobj->Draw(dxCommon);
-	//enemymanager->Draw(dxCommon);
+loadobj->Draw(dxCommon);
+	enemymanager->Draw(dxCommon);
 	backobj->Draw(dxCommon);
 	IKEObject3d::PostDraw();
 }

@@ -136,6 +136,8 @@ void Player::ImGuiDraw() {
 		ImGui::TreePop();
 	}
 	ImGui::Text("ShotTimer:%d", m_ShotTimer);
+	ImGui::Text("Posx:%f",m_Position.x);
+	ImGui::Text("Posy:%f", m_Position.z);
 	ImGui::End();
 
 	HungerGauge::GetInstance()->ImGuiDraw();

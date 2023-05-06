@@ -128,11 +128,12 @@ void FirstBoss::Action() {
 		GoAway = false;
 
 	}
-	if (Input::GetInstance()->TriggerButton(Input::X))
-	{
-		Recv = true;
-	}
 
+	vector<InterBullet*> _playerBulA = player->GetBulllet_attack();
+	vector<InterBullet*> _playerBulG = player->GetBulllet_ghost();
+		CollideBul(_playerBulA);
+		CollideBul(_playerBulG);
+	
 
 	if (Input::GetInstance()->TriggerButton(Input::B))
 	{
@@ -692,4 +693,21 @@ void FirstBoss::NoBattleMove()
 	}
 	Helper::GetInstance()->FloatClamp(RotEaseTime_noBat, 0.f, 1.f);
 	Helper::GetInstance()->FloatClamp(EaseT_BatStart, 0.f, 1.f);
+}
+
+void FirstBoss::CollideBul(vector<InterBullet*> bullet)
+{
+	constexpr float BulRad = 1.f;
+
+	constexpr float BossRad = 5.f;
+
+	for (InterBullet* _bullet : bullet) {
+		if (_bullet != nullptr) {
+			if(Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z,BulRad,m_Position.x, m_Position.z,BossRad))
+			{
+				Recv = true;
+				_bullet->SetAlive(false);
+			}
+		}
+	}
 }

@@ -134,4 +134,7 @@ private:
 	XMFLOAT3 OldPos;
 	float EaseT_BatStart;
 	bool BattleStartF;
+
+private:
+	void CollideBul(vector<InterBullet*>bullet);
 };

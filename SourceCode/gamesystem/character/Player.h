@@ -103,5 +103,10 @@ private://各クラス
 	XMFLOAT3 m_FollowPos = {};
 
 	int m_ShotTimer = {};//ショットのチャージ時間
+
+public:
+	vector<InterBullet*>GetBulllet_ghost() { return ghostbullets; }
+	vector<InterBullet*>GetBulllet_attack() { return attackbullets; }
+
 };
 
