@@ -1,6 +1,7 @@
 #include "EnemyManager.h"
 
 #include "Helper.h"
+#include "Input.h"
 Player* EnemyManager::player = nullptr;
 EnemyManager::EnemyManager(Player* _player) {
 	player = _player;

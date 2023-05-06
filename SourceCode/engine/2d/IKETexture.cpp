@@ -27,9 +27,9 @@ CD3DX12_CPU_DESCRIPTOR_HANDLE IKETexture::cpuDescHandleSRV;
 CD3DX12_GPU_DESCRIPTOR_HANDLE IKETexture::gpuDescHandleSRV;
 XMMATRIX IKETexture::matView{};
 XMMATRIX IKETexture::matProjection{};
-XMFLOAT3 IKETexture::eye = {0, 0, -50.0f};
-XMFLOAT3 IKETexture::target = {0, 0, 0};
-XMFLOAT3 IKETexture::up = {0, 1, 0};
+XMFLOAT3 IKETexture::eye = { 0, 0, -50.0f };
+XMFLOAT3 IKETexture::target = { 0, 0, 0 };
+XMFLOAT3 IKETexture::up = { 0, 1, 0 };
 D3D12_VERTEX_BUFFER_VIEW IKETexture::vbView{};
 D3D12_INDEX_BUFFER_VIEW IKETexture::ibView{};
 IKETexture::VertexPosNormalUv IKETexture::vertices[vertexCount];
@@ -51,7 +51,7 @@ IKETexture::IKETexture(UINT texNumber, const XMFLOAT3& position, const XMFLOAT3&
 }
 
 bool IKETexture::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, int window_width,
-                                  int window_height, Camera* camera)
+	int window_height, Camera* camera)
 {
 	// nullptrチェック
 	assert(device);
@@ -68,6 +68,17 @@ bool IKETexture::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandLis
 	AddInitializeGraphicsPipeline();
 	SubInitializeGraphicsPipeline();
 	return true;
+}
+
+void IKETexture::PreDraw2(DirectXCommon* dxcomn, int DrawNumber)
+{
+	IKETexture::cmdList = dxcomn->GetCmdList();
+	// パイプラインステートの設定
+	cmdList->SetPipelineState(pipelinestate[DrawNumber].Get());
+	// ルートシグネチャの設定
+	cmdList->SetGraphicsRootSignature(rootsignature[DrawNumber].Get());
+	// プリミティブ形状を設定
+	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
 void IKETexture::PreDraw(int DrawNumber)
@@ -216,8 +227,8 @@ bool IKETexture::LoadShader()
 		errstr.resize(errorBlob->GetBufferSize());
 
 		std::copy_n(static_cast<char*>(errorBlob->GetBufferPointer()),
-		            errorBlob->GetBufferSize(),
-		            errstr.begin());
+			errorBlob->GetBufferSize(),
+			errstr.begin());
 		errstr += "\n";
 		// エラー内容を出力ウィンドウに表示
 		OutputDebugStringA(errstr.c_str());
@@ -240,8 +251,8 @@ bool IKETexture::LoadShader()
 		errstr.resize(errorBlob->GetBufferSize());
 
 		std::copy_n(static_cast<char*>(errorBlob->GetBufferPointer()),
-		            errorBlob->GetBufferSize(),
-		            errstr.begin());
+			errorBlob->GetBufferSize(),
+			errstr.begin());
 		errstr += "\n";
 		// エラー内容を出力ウィンドウに表示
 		OutputDebugStringA(errstr.c_str());
@@ -350,15 +361,15 @@ bool IKETexture::AlphaInitializeGraphicsPipeline()
 	// ルートシグネチャの設定
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
 	rootSignatureDesc.Init_1_0(_countof(rootparams), rootparams, 1, &samplerDesc,
-	                           D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
 	ComPtr<ID3DBlob> rootSigBlob;
 	// バージョン自動判定のシリアライズ
 	result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSigBlob,
-	                                               &errorBlob);
+		&errorBlob);
 	// ルートシグネチャの生成
 	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
-	                                     IID_PPV_ARGS(&rootsignature[ALPHA]));
+		IID_PPV_ARGS(&rootsignature[ALPHA]));
 	if (FAILED(result))
 	{
 		return result;
@@ -473,15 +484,15 @@ bool IKETexture::AddInitializeGraphicsPipeline()
 	// ルートシグネチャの設定
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
 	rootSignatureDesc.Init_1_0(_countof(rootparams), rootparams, 1, &samplerDesc,
-	                           D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
 	ComPtr<ID3DBlob> rootSigBlob;
 	// バージョン自動判定のシリアライズ
 	result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSigBlob,
-	                                               &errorBlob);
+		&errorBlob);
 	// ルートシグネチャの生成
 	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
-	                                     IID_PPV_ARGS(&rootsignature[ADD]));
+		IID_PPV_ARGS(&rootsignature[ADD]));
 	if (FAILED(result))
 	{
 		return result;
@@ -596,15 +607,15 @@ bool IKETexture::SubInitializeGraphicsPipeline()
 	// ルートシグネチャの設定
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
 	rootSignatureDesc.Init_1_0(_countof(rootparams), rootparams, 1, &samplerDesc,
-	                           D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
 	ComPtr<ID3DBlob> rootSigBlob;
 	// バージョン自動判定のシリアライズ
 	result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSigBlob,
-	                                               &errorBlob);
+		&errorBlob);
 	// ルートシグネチャの生成
 	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
-	                                     IID_PPV_ARGS(&rootsignature[SUB]));
+		IID_PPV_ARGS(&rootsignature[SUB]));
 	if (FAILED(result))
 	{
 		return result;
@@ -674,7 +685,7 @@ bool IKETexture::LoadTexture(UINT texnumber, const wchar_t* filename)
 		img->pixels, // 元データアドレス
 		static_cast<UINT>(img->rowPitch), // 1ラインサイズ
 		static_cast<UINT>(img->slicePitch // 1枚サイズ
-		) // 1枚サイズ
+			) // 1枚サイズ
 	);
 	if (FAILED(result))
 	{
@@ -692,9 +703,9 @@ bool IKETexture::LoadTexture(UINT texnumber, const wchar_t* filename)
 	srvDesc.Texture2D.MipLevels = 1;
 
 	device->CreateShaderResourceView(texbuff[texnumber].Get(), //ビューと関連付けるバッファ
-	                                 &srvDesc, //テクスチャ設定情報
-	                                 CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeap->GetCPUDescriptorHandleForHeapStart(),
-	                                                               texnumber, descriptorHandleIncrementSize)
+		&srvDesc, //テクスチャ設定情報
+		CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeap->GetCPUDescriptorHandleForHeapStart(),
+			texnumber, descriptorHandleIncrementSize)
 	);
 
 	return true;
@@ -920,6 +931,33 @@ void IKETexture::AffineUpdate()
 	constBuff->Unmap(0, nullptr);
 }
 
+void IKETexture::Draw2(DirectXCommon* dxcomn)
+{
+
+	// nullptrチェック
+	assert(device);
+	assert(IKETexture::cmdList);
+	IKETexture::cmdList = dxcomn->GetCmdList();
+	// 頂点バッファの設定
+	cmdList->IASetVertexBuffers(0, 1, &vbView);
+	// インデックスバッファの設定
+	cmdList->IASetIndexBuffer(&ibView);
+
+	// デスクリプタヒープの配列
+	ID3D12DescriptorHeap* ppHeaps[] = { descHeap.Get() };
+	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+
+	// 定数バッファビューをセット
+	cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
+	// シェーダリソースビューをセット
+	cmdList->SetGraphicsRootDescriptorTable(1, CD3DX12_GPU_DESCRIPTOR_HANDLE(
+		descHeap->GetGPUDescriptorHandleForHeapStart(), this->texNumber,
+		descriptorHandleIncrementSize));
+
+	// 描画コマンド
+	cmdList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+}
+
 void IKETexture::Draw()
 {
 	// nullptrチェック
@@ -932,15 +970,15 @@ void IKETexture::Draw()
 	cmdList->IASetIndexBuffer(&ibView);
 
 	// デスクリプタヒープの配列
-	ID3D12DescriptorHeap* ppHeaps[] = {descHeap.Get()};
+	ID3D12DescriptorHeap* ppHeaps[] = { descHeap.Get() };
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 	// 定数バッファビューをセット
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
 	// シェーダリソースビューをセット
 	cmdList->SetGraphicsRootDescriptorTable(1, CD3DX12_GPU_DESCRIPTOR_HANDLE(
-		                                        descHeap->GetGPUDescriptorHandleForHeapStart(), this->texNumber,
-		                                        descriptorHandleIncrementSize));
+		descHeap->GetGPUDescriptorHandleForHeapStart(), this->texNumber,
+		descriptorHandleIncrementSize));
 
 	// 描画コマンド
 	cmdList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);

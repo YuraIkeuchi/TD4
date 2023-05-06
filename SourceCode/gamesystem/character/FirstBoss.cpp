@@ -6,6 +6,7 @@
 #include "Collision.h"
 #include "CsvLoader.h"
 #include "ImageManager.h"
+#include "Input.h"
 //¶¬
 FirstBoss::FirstBoss() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Tyuta);

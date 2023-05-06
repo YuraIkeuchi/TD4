@@ -6,7 +6,7 @@
 #include "ParticleEmitter.h"
 //ƒ‚ƒfƒ‹“Ç‚İ‚İ
 NormalEnemy::NormalEnemy() {
-	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::BULENEMY);
+	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::BulEnemy);
 }
 //‰Šú‰»
 bool NormalEnemy::Initialize() {
