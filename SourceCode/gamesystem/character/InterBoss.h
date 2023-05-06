@@ -1,6 +1,9 @@
 #pragma once
 #include "Player.h"
+#include "IKETexture.h"
+#include "CollisionPrimitive.h"
 #include "ObjCommon.h"
+#include <array>       // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
 
 //ボスの基底クラス
@@ -19,7 +22,7 @@ public:
 	//gettersetter
 
 public:
-	
+
 	//初期化
 	virtual bool Initialize() = 0;
 	//更新
@@ -30,12 +33,37 @@ public:
 	virtual void Pause() = 0;
 	//描画
 	void Draw(DirectXCommon* dxCommon);
-	
+
 	virtual void Action() = 0;//ボス特有の処理
 
+	virtual void EffecttexDraw(DirectXCommon* dxCommon) = 0;
 private:
 protected:
 	//各クラス
 	unique_ptr<Player> player = nullptr;
+
+	int ActionDamage;
+	int ActionCool;
+
+
+private:
+
+	enum class ActionList
+	{
+		NON,
+		NORMAL,
+		MOB_A,
+		MOB_B,
+		FRONT
+	}_action;
+
+	struct DefaultParam
+	{
+		float Cool;
+		int Damage;
+		std::vector<float>ParSize;
+		bool Shake;
+	};
+
 };
 

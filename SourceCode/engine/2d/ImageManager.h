@@ -30,12 +30,12 @@ public:
 		WINDOW,
 		BLACKWINDOW,
 	};
-
 	//テクスチャの名前
 	enum tex2dName
 	{
+		IMPACT,
+		IMPACT2
 	};
-
 	enum particleName
 	{
 		Normal,

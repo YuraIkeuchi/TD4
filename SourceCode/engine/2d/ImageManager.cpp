@@ -33,9 +33,12 @@ void ImageManager::StartLoadTex2D()
 {
 }
 
+
 //非同期処理でのテクスチャの読み込み
 void ImageManager::SecondLoadTex2D()
 {
+	IKETexture::LoadTexture(IMPACT, L"Resources/2d/effect/impact.png");
+	IKETexture::LoadTexture(IMPACT2, L"Resources/2d/effect/inpact2.png");
 }
 
 void ImageManager::LoadParticle()
