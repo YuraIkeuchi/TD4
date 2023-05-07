@@ -10,4 +10,5 @@ void InterBoss::Update() {
 //•`‰æ
 void InterBoss::Draw(DirectXCommon* dxCommon) {
 	Obj_Draw();
+	EffecttexDraw(dxCommon);
 }

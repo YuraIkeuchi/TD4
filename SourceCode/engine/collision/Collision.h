@@ -19,6 +19,8 @@ public:
 	//‰~‚Æ‰~
 	static bool CircleCollision(float X1, float Y1, float R1, float X2, float Y2, float R2);
 
+	static float GetLength(XMFLOAT3 position, XMFLOAT3 position2);
+
 	//“–‚½‚è”»’èŠÖ”
 	//‹…‚Æ‹…
 	static bool SphereCollision(const XMFLOAT3& pos, const float& R1, const XMFLOAT3& pos2, const float& R2);

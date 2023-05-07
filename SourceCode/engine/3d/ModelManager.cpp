@@ -23,6 +23,9 @@ void ModelManager::SecondInitialize()
 	LoadModel(Box, "UVSphere");
 	LoadModel(Boss, "chr_knight");
 	LoadModel(Bullet, "UVSphere");
+
+	LoadModel(BulEnemy, "tri");
+	LoadModel(Tyuta, "zako");
 	LoadFBXModel(PLAYER, "PlayerFBXNew");
 }
 

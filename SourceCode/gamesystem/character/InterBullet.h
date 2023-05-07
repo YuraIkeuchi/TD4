@@ -33,7 +33,7 @@ public:
 	void SetAlive(const bool Alive) { m_Alive = Alive; }
 	void SetAngle(const XMFLOAT2& Angle) { m_Angle = Angle; }
 	void SetBulletType(const int BulletType) { m_BulletType = BulletType; }
-
+	
 public:
 	XMFLOAT2 m_Angle = {};//’e‚ÌŠp“x
 	float m_AddSpeed = {};//‰Á‘¬“x
