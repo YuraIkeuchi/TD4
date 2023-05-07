@@ -18,7 +18,7 @@ public://getter setter
 public://getter setter
 	void SetPlayer(Player* player) { this->player.reset(player); }
 protected:
-	
+
 public:
 	virtual ~InterEnemy() = default;
 
@@ -45,6 +45,15 @@ public:
 	virtual void ImGuiDraw() = 0;
 
 	//void PlayerGet(Player* player);
+	virtual void Appearance() = 0;
 protected: //Ã“Iƒƒ“ƒo•Ï”
 	unique_ptr<Player> player;
+
+	bool ShotF;
+	int ShotCount;
+public:
+	void SetShotF(bool f) { ShotF = f; }
+
+	bool GetShotF() { return ShotF; }
+	int GetShotCount() { return ShotCount; }
 };

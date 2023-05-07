@@ -6,7 +6,7 @@
 #include <DirectXMath.h>
 #include <d3dx12.h>
 #include "Camera.h"
-
+#include"DirectXCommon.h"
 class IKETexture
 {
 private: // エイリアス
@@ -45,16 +45,18 @@ private: // 定数
 public: // 静的メンバ関数
 	/// 静的初期化
 	static bool StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, int window_width,
-	                             int window_height, Camera* camera = nullptr);
+		int window_height, Camera* camera = nullptr);
 
 	/// テクスチャ読み込み
 	static bool LoadTexture(UINT texnumber, const wchar_t* filename);
 
 	/// 描画前処理
 	static void PreDraw(int DrawNumber);
+	static void PreDraw2(DirectXCommon* dxcomn, int DrawNumber);
 
 	/// 描画後処理
 	static void PostDraw();
+	static void PostDraw2(DirectXCommon* dxcomn);
 	//テクスチャ生成
 	static IKETexture* Create(UINT texNumber, const XMFLOAT3& position, const XMFLOAT3& size, const XMFLOAT4& color);
 	/// 視点座標の取得
@@ -81,8 +83,8 @@ public: // 静的メンバ関数
 	static void CameraMoveVector(const XMFLOAT3& move);
 
 	/// スプライト生成
-	static IKETexture* Create(UINT texNumber, const XMFLOAT2& position, const XMFLOAT4& color = {1, 1, 1, 1},
-	                          const XMFLOAT2& anchorpoint = {0.0f, 0.0f}, bool isFlipX = false, bool isFlipY = false);
+	static IKETexture* Create(UINT texNumber, const XMFLOAT2& position, const XMFLOAT4& color = { 1, 1, 1, 1 },
+		const XMFLOAT2& anchorpoint = { 0.0f, 0.0f }, bool isFlipX = false, bool isFlipY = false);
 
 
 private: // 静的メンバ変数
@@ -172,7 +174,7 @@ public: // メンバ関数
 
 	/// 描画
 	void Draw();
-
+	void Draw2(DirectXCommon* dxcomn);
 	//開放
 	static void Finalize();
 
@@ -229,13 +231,13 @@ private: // メンバ変数
 
 	ComPtr<ID3D12Resource> constBuff; // 定数バッファ
 	// 色
-	XMFLOAT4 color = {1, 1, 1, 1};
+	XMFLOAT4 color = { 1, 1, 1, 1 };
 	// ローカルスケール
-	XMFLOAT3 scale = {1, 1, 1};
+	XMFLOAT3 scale = { 1, 1, 1 };
 	// X,Y,Z軸回りのローカル回転角
-	XMFLOAT3 rotation = {0, 0, 0};
+	XMFLOAT3 rotation = { 0, 0, 0 };
 	// ローカル座標
-	XMFLOAT3 position = {0, 0, 0};
+	XMFLOAT3 position = { 0, 0, 0 };
 	// ローカルワールド変換行列
 	XMMATRIX matWorld;
 	// ビルボード

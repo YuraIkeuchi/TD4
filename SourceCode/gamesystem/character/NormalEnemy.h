@@ -13,7 +13,11 @@ public:
 	//void Follow();//追従
 	void Draw(DirectXCommon* dxCommon) override;//描画
 private:
+	void Appearance()override;
 	void Particle();//パーティクル
+	void RushAction();
+
+	bool OnCollision();
 protected:
 
 private:
@@ -24,5 +28,13 @@ private:
 	float m_CircleScale = 20.0f;
 	//追従用変数
 	XMFLOAT3 m_FollowVel{};
+	float old;
+	bool ret;
+	bool appF;
+	XMVECTOR PositionA, PositionB;
+	XMVECTOR SubVector;
+	float t; float RotY;
+	int randMove;
+	bool Rush;	float s_scale = 0.0f;
 };
 
