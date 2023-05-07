@@ -169,9 +169,9 @@ void LoadStageObj::CollideFood() {
 void LoadStageObj::VanishGhost() {
 	float l_Hunger = HungerGauge::GetInstance()->GetNowHunger();
 	float l_Max = HungerGauge::GetInstance()->GetHungerMax();
-	
+	float l_Value = HungerGauge::m_Hungervalue;
 	//œZ‚ğ‹‚ß‚é
-	float l_Division = (float)((fmod(l_Hunger, 5.0f)));
+	float l_Division = (float)((fmod(l_Hunger, l_Value)));
 	//Œ…”‚ğw’è‚·‚é
 	m_VanishCount = round(l_Division * 10) / 10;
 	for (auto i = 0; i < ghosts.size(); ++i) {
@@ -187,7 +187,7 @@ void LoadStageObj::VanishGhost() {
 		if (m_Vanish) {
 			ghosts[i]->SetAlive(false);
 			HungerGauge::GetInstance()->SetCatchCount(HungerGauge::GetInstance()->GetCatchCount() - 1.0f);
-			HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() - 5.0f);
+			HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() - l_Value);
 			m_Vanish = false;
 			break;
 		}

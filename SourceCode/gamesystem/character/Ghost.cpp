@@ -87,7 +87,7 @@ void Ghost::Particle() {
 }
 //“–‚½‚è”»’è(’e)
 bool Ghost::BulletCollision() {
-	float l_AddHungerMax = 5.0f;//‰ÁŽZ‚³‚ê‚éÅ‘å‹Q‰ìƒQ[ƒW
+	float l_AddHungerMax = HungerGauge::m_Hungervalue;//‰ÁŽZ‚³‚ê‚éÅ‘å‹Q‰ìƒQ[ƒW
 	if (player->BulletCollide(m_Position,m_Catch) && (m_Alive)) {
 		m_Catch = true;
 		if (player->GetBulletType() == BULLET_FORROW) {
@@ -184,7 +184,7 @@ void Ghost::EndSearch() {
 //H‚×•¨‚ð‰^‚Ô
 void Ghost::CarryFood() {
 	float l_Radius = 1.0f;//“–‚½‚è”»’è
-	float l_AddHunger = 5.0f;//‰ÁŽZ‚³‚ê‚é‹C‚ªƒQ[ƒW
+	float l_AddHunger = HungerGauge::m_Hungervalue;//‰ÁŽZ‚³‚ê‚é‹C‚ªƒQ[ƒW
 	XMFLOAT3 l_playerPos = player->GetPosition();
 	if ((_searchState == SearchState::SEARCH_END) && (m_Alive)) {
 		if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, l_playerPos.x, l_playerPos.z, l_Radius)) {

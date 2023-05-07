@@ -7,7 +7,9 @@ void InterBullet::Update() {
 
 //•`‰æ
 void InterBullet::Draw(DirectXCommon* dxCommon) {
-	Obj_Draw();
+	if (m_Alive) {
+		Obj_Draw();
+	}
 }
 //ImGui
 void InterBullet::ImGuiDraw() {

@@ -23,10 +23,7 @@ bool GhostBullet::Initialize() {
 
 //ImGui•`‰æ
 void GhostBullet::ImGui_Origin() {
-	ImGui::Begin("Bullet");
-	ImGui::Text("Pos.X:%f", m_Position.x);
-	ImGui::Text("Timer:%d", m_Timer);
-	ImGui::End();
+
 }
 //’e‚Ì“Á—Lˆ—
 void GhostBullet::Action() {
