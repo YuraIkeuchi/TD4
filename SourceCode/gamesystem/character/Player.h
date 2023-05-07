@@ -3,7 +3,7 @@
 #include"IKEFBXObject3d.h"
 #include<memory>
 #include "ObjCommon.h"
-
+#include "ViewBullet.h"
 #include "GhostBullet.h"
 #include "AttackBullet.h"
 using namespace DirectX;
@@ -69,10 +69,8 @@ private:
 	void Idle();
 	//インターバル管理
 	void InterVal();
-	//インターバルのセット
-	void SetInterVal();
-	//弾を選ぶ
-	void SelectBullet();
+	//弾のリセット
+	void ResetBullet();
 	//弾の更新
 	void BulletUpdate();
 private:
@@ -93,6 +91,7 @@ public:
 private://各クラス
 	vector<InterBullet*> ghostbullets;//言霊
 	vector<InterBullet*> attackbullets;//攻撃
+	unique_ptr<InterBullet> viewbullet;//可視化の弾
 	//弾関係の変数
 	int m_BulletType = {};//弾の種類
 	int m_InterVal = {};//弾の発射のインターバル
