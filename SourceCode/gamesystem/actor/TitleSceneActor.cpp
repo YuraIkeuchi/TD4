@@ -29,7 +29,7 @@ void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	Input* input = Input::GetInstance();
 	if ((input->TriggerButton(input->B)||input->Pushkey(DIK_SPACE))&&
 		!sceneChanger_->GetEasingStart()) {
-		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Decide.wav", 0.3f);
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Decide.wav", VolumManager::GetInstance()->GetSEVolum());
 		sceneChanger_->ChangeStart();
 		Audio::GetInstance()->StopWave(0);
 	}

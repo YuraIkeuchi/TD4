@@ -239,7 +239,7 @@ void Player::BulletUpdate() {
 	//RB||LB‚ª‰Ÿ‚³‚ê‚½‚ç’e‚ðŒ‚‚Â(Œ¾—ì)
 	if (((Input::GetInstance()->TriggerButton(Input::RB)) || (Input::GetInstance()->TriggerButton(Input::LB))) && (m_InterVal == 0))
 	{
-		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Normal.wav",0.3f);
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Normal.wav",VolumManager::GetInstance()->GetSEVolum());
 		if (Input::GetInstance()->TriggerButton(Input::RB)) {
 			m_BulletType = BULLET_FORROW;
 		}
@@ -271,7 +271,7 @@ void Player::BulletUpdate() {
 	}
 
 	if (!Input::GetInstance()->PushButton(Input::B) && m_ShotTimer != 0) {
-		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Charge.wav", 0.3f);
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Charge.wav", VolumManager::GetInstance()->GetSEVolum());
 		if (m_ShotTimer < l_Limit) {
 			_charaState = CharaState::STATE_ATTACKSHOT;
 		}

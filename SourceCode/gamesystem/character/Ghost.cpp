@@ -91,7 +91,7 @@ bool Ghost::BulletCollision() {
 	if (player->BulletCollide(m_Position,m_Catch) && (m_Alive)) {
 		m_Catch = true;
 		if (player->GetBulletType() == BULLET_FORROW) {
-			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Follower.wav", 0.3f);
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Follower.wav", VolumManager::GetInstance()->GetSEVolum());
 			HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() + l_AddHungerMax);
 			HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetHungerMax());
 			HungerGauge::GetInstance()->SetCatchCount(HungerGauge::GetInstance()->GetCatchCount() + 1.0f);
@@ -101,7 +101,7 @@ bool Ghost::BulletCollision() {
 		}
 		else {
 			_charaState = CharaState::STATE_SEARCH;
-			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Searcher.wav", 0.3f);
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Searcher.wav", VolumManager::GetInstance()->GetSEVolum());
 		}
 		return true;
 	}
@@ -195,7 +195,7 @@ void Ghost::CarryFood() {
 			m_Catch = false;
 			m_Limit = {};
 			HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() + l_AddHunger);
-			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Food.wav", 0.3f);
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Food.wav", VolumManager::GetInstance()->GetSEVolum());
 		}
 	}
 }

@@ -764,7 +764,7 @@ void FirstBoss::CollideBul(vector<InterBullet*> bullet)
 		if (_bullet != nullptr) {
 			if(Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z,BulRad,m_Position.x, m_Position.z,BossRad))
 			{
-				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Attack_Normal.wav", 0.3f);
+				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Attack_Normal.wav", VolumManager::GetInstance()->GetSEVolum());
 				Recv = true;
 				_bullet->SetAlive(false);
 			}

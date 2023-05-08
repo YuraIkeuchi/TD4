@@ -1,7 +1,7 @@
 #include "VolumManager.h"
 #include "imgui.h"
 //Ã“Iƒƒ“ƒo•Ï”‚ÌÀ‘Ô
-float VolumManager::s_SEVolum = 0.05f;
+float VolumManager::s_SEVolum = 0.1f;
 float VolumManager::s_BGMVolum = 0.03f;
 
 VolumManager* VolumManager::GetInstance()

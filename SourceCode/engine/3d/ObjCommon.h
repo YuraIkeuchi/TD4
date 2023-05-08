@@ -6,6 +6,7 @@
 #include "DirectXCommon.h"
 #include"ModelManager.h"
 #include"Audio.h"
+#include "VolumManager.h"
 #include<memory>
 using namespace std;         //  –¼‘O‹óŠÔŽw’è
 
