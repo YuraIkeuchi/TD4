@@ -1,4 +1,4 @@
-﻿#include "PlaySceneActor.h"
+﻿#include "FirstStageActor.h"
 #include "Audio.h"
 #include"Easing.h"
 #include "SceneManager.h"
@@ -8,7 +8,7 @@
 #include <algorithm>
 
 //初期化
-void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
+void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	dxCommon->SetFullScreen(true);
 	//共通の初期化
 	BaseInitialize(dxCommon);
@@ -33,7 +33,7 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	blackwindow = IKESprite::Create(ImageManager::BLACKWINDOW, {});
 
 
-	enemymanager = std::make_unique<EnemyManager>(player.get());
+	enemymanager = std::make_unique<EnemyManager>(player.get(),"FIRSTSTAGE");
 
 	backobj = std::make_unique<BackObj>();
 	backobj->Initialize();
@@ -42,9 +42,12 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	loadobj->AllLoad(player.get());
 }
 //更新
-void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
+void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
 
+	if (Input::GetInstance()->TriggerButton(Input::A)) {
+		SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
+	}
 	//音楽の音量が変わる
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 	VolumManager::GetInstance()->Update();
@@ -97,9 +100,8 @@ void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	camerawork->Update(camera);
 	lightgroup->Update();
 }
-
 //描画
-void PlaySceneActor::Draw(DirectXCommon* dxCommon) {
+void FirstStageActor::Draw(DirectXCommon* dxCommon) {
 	//描画方法
 	//ポストエフェクトをかけるか
 	if (PlayPostEffect) {
@@ -124,11 +126,10 @@ void PlaySceneActor::Draw(DirectXCommon* dxCommon) {
 	}
 }
 //解放
-void PlaySceneActor::Finalize() {
+void FirstStageActor::Finalize() {
 }
-
 //後ろの描画
-void PlaySceneActor::BackDraw(DirectXCommon* dxCommon) {
+void FirstStageActor::BackDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
 	////各クラスの描画
 	player->Draw(dxCommon);
@@ -138,7 +139,7 @@ loadobj->Draw(dxCommon);
 	IKEObject3d::PostDraw();
 }
 //ポストエフェクトがかからない
-void PlaySceneActor::FrontDraw(DirectXCommon* dxCommon) {
+void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	//パーティクル描画
 	ParticleEmitter::GetInstance()->FlontDrawAll();
 	//完全に前に書くスプライト
@@ -149,7 +150,7 @@ void PlaySceneActor::FrontDraw(DirectXCommon* dxCommon) {
 	IKESprite::PostDraw();
 }
 //IMGuiの描画
-void PlaySceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
+void FirstStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	player->ImGuiDraw();
 	loadobj->ImGuiDraw();
 	camerawork->ImGuiDraw();

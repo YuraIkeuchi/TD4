@@ -16,11 +16,11 @@ protected:
 public://getter setter
 
 public://getter setter
-	void SetPlayer(Player* player) { this->player.reset(player); }
+	void SetPlayer(Player* player) { _player = player; }
 protected:
 
 public:
-	virtual ~InterEnemy() = default;
+	//virtual ~InterEnemy() = default;
 
 	/// <summary>
 	/// ‰Šú‰»
@@ -47,7 +47,7 @@ public:
 	//void PlayerGet(Player* player);
 	virtual void Appearance() = 0;
 protected: //Ã“Iƒƒ“ƒo•Ï”
-	unique_ptr<Player> player;
+	Player* _player;
 
 	bool ShotF;
 	int ShotCount;

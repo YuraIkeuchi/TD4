@@ -6,7 +6,7 @@ void FirstStage::Initialize(DirectXCommon* dxCommon)
 	BaseInitialize(dxCommon);
 	//プレイシーンのアクター
 	BaseActor* actor_;
-	actor_ = new PlaySceneActor();
+	actor_ = new FirstStageActor();
 	actor_->Initialize(dxCommon,camera,lightGroup);
 	actor.reset(actor_);
 }

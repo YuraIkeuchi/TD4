@@ -1,4 +1,4 @@
-#include "FirstBoss.h"
+#include "SecondBoss.h"
 #include "ModelManager.h"
 #include "Helper.h"
 #include <any>
@@ -8,7 +8,7 @@
 #include "ImageManager.h"
 #include "Input.h"
 //生成
-FirstBoss::FirstBoss() {
+SecondBoss::SecondBoss() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Tyuta);
 
 	m_Object.reset(new IKEObject3d());
@@ -16,7 +16,7 @@ FirstBoss::FirstBoss() {
 	m_Object->SetModel(m_Model);
 }
 
-bool FirstBoss::Initialize() {
+bool SecondBoss::Initialize() {
 	IKETexture::LoadTexture(8, L"Resources/2d/effect/impact.png");
 	//	impact1.reset(new IKETexture();
 	impact1.reset(IKETexture::Create(ImageManager::IMPACT2, { 0,0,0 }, { 10,10,10 }, { 1,1,1,1 }));
@@ -43,7 +43,7 @@ bool FirstBoss::Initialize() {
 
 	m_Position = { 0.0f,0.0f,30.0f };
 	m_Scale = { 1.f,1.f,1.f };
-	m_Color = { 1.0f,1.0f,1.0f,1.0f };
+	m_Color = { 1.0f,0.0f,0.0f,1.0f };
 	m_Rotation.y = 90.f;
 	RTime = 1;
 	m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "pos")));
@@ -55,7 +55,7 @@ bool FirstBoss::Initialize() {
 	return true;
 }
 //行動
-void FirstBoss::Action() {
+void SecondBoss::Action() {
 
 
 	float OldsMov = 0;
@@ -63,7 +63,8 @@ void FirstBoss::Action() {
 		PosYMovingT++;
 		YmovEaseT = 0.f;
 		OldsMov = PosYMovingT;
-	} else
+	}
+	else
 	{
 		YmovEaseT += 0.03f;
 		PosYMovingT = Easing::EaseOut(YmovEaseT, OldsMov, 0.f);
@@ -131,14 +132,15 @@ void FirstBoss::Action() {
 
 	vector<InterBullet*> _playerBulA = _player->GetBulllet_attack();
 	vector<InterBullet*> _playerBulG = _player->GetBulllet_ghost();
-		CollideBul(_playerBulA);
-		CollideBul(_playerBulG);
-	
+	CollideBul(_playerBulA);
+	CollideBul(_playerBulG);
+
 
 	//Rot();
 	if (!BattleStartF) {
 		NoBattleMove();
-	} else {
+	}
+	else {
 		if (!_normal.GetAttackF() && !ImpactF && !Recv) {
 			actiontimer++;
 		}
@@ -151,12 +153,12 @@ void FirstBoss::Action() {
 			ImpactF = true;
 		}
 		Move();
-		if(_normal.GetAttackF())
+		if (_normal.GetAttackF())
 		{
 			actiontimer++;
 		}
 		_normal.Update(_player, m_Position, m_Rotation, EncF);
-		Move_Away(); _normal.Remove(m_Position,m_Scale,EncF); DamAction();
+		Move_Away(); _normal.Remove(m_Position, m_Scale, EncF); DamAction();
 		m_Color = Col;
 	}
 
@@ -167,11 +169,11 @@ void FirstBoss::Action() {
 	Obj_SetParam();
 }
 //ポーズ
-void FirstBoss::Pause() {
+void SecondBoss::Pause() {
 
 
 }
-void FirstBoss::NormalAttak::Update(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot,bool &Enf)
+void SecondBoss::NormalAttak::Update(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot, bool& Enf)
 {
 	switch (_phaseN)
 	{
@@ -194,7 +196,7 @@ void FirstBoss::NormalAttak::Update(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot
 		NormalAttak::Attack(player, Pos, Rot);
 		break;
 	case Phase_Normal::ROTPLAYER_3:
-		NormalAttak::Shake(player,Pos,Rot);
+		NormalAttak::Shake(player, Pos, Rot);
 		break;
 	case Phase_Normal::NON:
 	{
@@ -232,9 +234,9 @@ void FirstBoss::NormalAttak::Update(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot
 	}
 }
 
-void FirstBoss::EffecttexDraw(DirectXCommon* dxCommon)
+void SecondBoss::EffecttexDraw(DirectXCommon* dxCommon)
 {
-	
+
 	IKETexture::PreDraw2(dxCommon, ImageManager::IMPACT);
 	impact1->Draw2(dxCommon);
 	impact2->Draw2(dxCommon);
@@ -248,7 +250,7 @@ void FirstBoss::EffecttexDraw(DirectXCommon* dxCommon)
 	IKETexture::PostDraw();
 }
 
-void FirstBoss::Rot()
+void SecondBoss::Rot()
 {
 	if (Recv)return;
 	if (NormalAttackF)return;
@@ -262,7 +264,8 @@ void FirstBoss::Rot()
 		{
 			isRot = false;
 		}
-	} else {
+	}
+	else {
 		//	m_Rotation.y = 180.f;
 		RotEaseT = 0.f;
 	}
@@ -270,7 +273,7 @@ void FirstBoss::Rot()
 }
 
 
-void FirstBoss::ImpactAttack()
+void SecondBoss::ImpactAttack()
 {
 	if (!ImpactF)return;
 
@@ -295,7 +298,7 @@ void FirstBoss::ImpactAttack()
 	}
 }
 
-void FirstBoss::Move()
+void SecondBoss::Move()
 {
 
 	XMFLOAT3 l_player = _player->GetPosition();
@@ -337,7 +340,7 @@ void FirstBoss::Move()
 }
 
 
-void FirstBoss::Move_Away()
+void SecondBoss::Move_Away()
 {
 	if (!Recv)return;
 	///if(NormalAttackF)
@@ -369,7 +372,8 @@ void FirstBoss::Move_Away()
 		{
 			GoAway = true;
 		}
-	} else {
+	}
+	else {
 		//向いた方向に逃げる
 		m_Position.x = m_Position.x + move.m128_f32[0] * 6.f;
 		m_Position.z = m_Position.z + move.m128_f32[2] * 6.f;
@@ -385,17 +389,17 @@ void FirstBoss::Move_Away()
 
 }
 
-void FirstBoss::FrontAttack()
+void SecondBoss::FrontAttack()
 {
 
 }
 
 
-void FirstBoss::RushAttack()
+void SecondBoss::RushAttack()
 {
 }
 
-void FirstBoss::NormalAttak::Idle(Player* player, XMFLOAT3& Pos, XMFLOAT3 Rot,bool& Enf)
+void SecondBoss::NormalAttak::Idle(Player* player, XMFLOAT3& Pos, XMFLOAT3 Rot, bool& Enf)
 {
 	StayCount++;
 	if (StayCount >= 180)
@@ -410,13 +414,14 @@ void FirstBoss::NormalAttak::Idle(Player* player, XMFLOAT3& Pos, XMFLOAT3 Rot,bo
 				_phaseN = Phase_Normal::NON;
 			}
 		}
-	} else
+	}
+	else
 	{
 		StayF = true;
 	}
 }
 
-void FirstBoss::NormalAttak::Attack(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot)
+void SecondBoss::NormalAttak::Attack(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot)
 {
 	XMFLOAT3 l_player = player->GetPosition();
 
@@ -455,7 +460,7 @@ void FirstBoss::NormalAttak::Attack(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot
 	Helper::GetInstance()->FloatClamp(RotEaseTime, 0.f, 1.f);
 }
 
-void FirstBoss::NormalAttak::Shake(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot)
+void SecondBoss::NormalAttak::Shake(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot)
 {
 	//初期化部
 	{
@@ -510,13 +515,14 @@ void FirstBoss::NormalAttak::Shake(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot)
 			if (_phaseN == Phase_Normal::ROTPLAYER_2)_phaseN = Phase_Normal::PHASE_THREE;
 			///if (_phaseN == Phase_Normal::ROTPLAYER_2)_phaseN = Phase_Normal::PHASE_THREE;
 		}
-	} else
+	}
+	else
 	{
-		NormalAttak::Rot(player,Pos,Rot);
+		NormalAttak::Rot(player, Pos, Rot);
 	}
 }
 
-void FirstBoss::NormalAttak::Rot(Player* player, XMFLOAT3& Pos, XMFLOAT3 &Rot)
+void SecondBoss::NormalAttak::Rot(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot)
 {
 	XMFLOAT3 l_player = player->GetPosition();
 	//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
@@ -529,7 +535,8 @@ void FirstBoss::NormalAttak::Rot(Player* player, XMFLOAT3& Pos, XMFLOAT3 &Rot)
 	{
 		RotEaseTime = 0.f;
 		RushOldRotY = Rot.y;
-	} else {
+	}
+	else {
 		//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
 		XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
 		XMVECTOR PositionB = { Pos.x,Pos.y,Pos.z };
@@ -550,7 +557,7 @@ void FirstBoss::NormalAttak::Rot(Player* player, XMFLOAT3& Pos, XMFLOAT3 &Rot)
 	}
 }
 
-void FirstBoss::DebRot()
+void SecondBoss::DebRot()
 {
 	XMFLOAT3 l_player = _player->GetPosition();
 	//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
@@ -563,7 +570,8 @@ void FirstBoss::DebRot()
 	{
 		RotEaseTime = 0.f;
 		RushOldRotY = m_Rotation.y;
-	} else {
+	}
+	else {
 		//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
 		XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
 		XMVECTOR PositionB = { m_Position.x,m_Position.y,m_Position.z };
@@ -584,7 +592,7 @@ void FirstBoss::DebRot()
 	}
 }
 
-void FirstBoss::DamAction()
+void SecondBoss::DamAction()
 {
 	if (Recv && ColChangeEaseT <= 0.f)
 	{
@@ -597,7 +605,8 @@ void FirstBoss::DamAction()
 		{
 			DamColSetF = false;
 		}
-	} else
+	}
+	else
 	{
 		ColChangeEaseT -= 0.03f;
 
@@ -613,7 +622,7 @@ void FirstBoss::DamAction()
 }
 
 
-void FirstBoss::NormalAttak::Remove(XMFLOAT3& Pos, XMFLOAT3& Scl,bool Enf)
+void SecondBoss::NormalAttak::Remove(XMFLOAT3& Pos, XMFLOAT3& Scl, bool Enf)
 {
 	if (!Enf) {
 		SPosMoveEaseT += 0.05f;
@@ -642,7 +651,7 @@ void FirstBoss::NormalAttak::Remove(XMFLOAT3& Pos, XMFLOAT3& Scl,bool Enf)
 	Helper::GetInstance()->FloatClamp(Scl.z, 0.f, 1.f);
 }
 
-void FirstBoss::RemovePos()
+void SecondBoss::RemovePos()
 {
 	if (!EncF) {
 		SPosMoveEaseT += 0.05f;
@@ -671,7 +680,7 @@ void FirstBoss::RemovePos()
 	Helper::GetInstance()->FloatClamp(m_Scale.z, 0.f, 1.f);
 }
 
-void FirstBoss::NoBattleMove()
+void SecondBoss::NoBattleMove()
 {
 	XMVECTOR move = { 0.f,0.f, 0.1f, 0.0f };
 
@@ -697,7 +706,8 @@ void FirstBoss::NoBattleMove()
 		if (MoveCount % 90 == 0) {
 			YRotRandVal = m_Rotation.y + static_cast<float>(rand() % 90 + 45);
 			RotChange = true;
-		} else {
+		}
+		else {
 			if (!RotChange)
 				YRotOld = m_Rotation.y;
 		}
@@ -754,7 +764,7 @@ void FirstBoss::NoBattleMove()
 	Helper::GetInstance()->FloatClamp(EaseT_BatStart, 0.f, 1.f);
 }
 
-void FirstBoss::CollideBul(vector<InterBullet*> bullet)
+void SecondBoss::CollideBul(vector<InterBullet*> bullet)
 {
 	constexpr float BulRad = 1.f;
 
@@ -762,7 +772,7 @@ void FirstBoss::CollideBul(vector<InterBullet*> bullet)
 
 	for (InterBullet* _bullet : bullet) {
 		if (_bullet != nullptr) {
-			if(Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z,BulRad,m_Position.x, m_Position.z,BossRad))
+			if (Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, BulRad, m_Position.x, m_Position.z, BossRad))
 			{
 				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Attack_Normal.wav", VolumManager::GetInstance()->GetSEVolum());
 				Recv = true;
