@@ -27,7 +27,9 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 //更新
 void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
-	if (input->TriggerButton(input->B)||input->Pushkey(DIK_SPACE)) {
+	if ((input->TriggerButton(input->B)||input->Pushkey(DIK_SPACE))&&
+		!sceneChanger_->GetEasingStart()) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Decide.wav", 0.3f);
 		sceneChanger_->ChangeStart();
 		Audio::GetInstance()->StopWave(0);
 	}
