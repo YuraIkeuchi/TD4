@@ -16,4 +16,9 @@ private:
 	//’e‚Ì“®‚­ˆ—
 	void Action() override;
 
+private:
+	void VanishBullet();
+
+private:
+	float m_Frame = 0.0f;
 };

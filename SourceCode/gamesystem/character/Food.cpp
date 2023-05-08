@@ -19,7 +19,7 @@ bool Food::Initialize() {
 	uniform_int_distribution<int> l_distX(-50, 60);
 	uniform_int_distribution<int> l_distZ(-55, 55);
 	m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
-	m_Scale = { 0.5f,0.5f,0.5f };
+	m_Scale = { 0.7f,0.7f,0.7f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_LockOn = false;
 	m_Alive = true;
@@ -63,7 +63,7 @@ void Food::Particle() {
 }
 //“–‚½‚è”»’è
 bool Food::Collision() {
-	float l_Radius = 1.0f;//“–‚½‚è”»’è‚Ì”ÍˆÍ
+	float l_Radius = 1.2f;//“–‚½‚è”»’è‚Ì”ÍˆÍ
 	float l_AddHunger = 1.0f;//‰ÁŽZ‚³‚ê‚é‹Q‰ìƒQ[ƒW
 	XMFLOAT3 m_PlayerPos = player->GetPosition();
 	if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, m_PlayerPos.x, m_PlayerPos.z, l_Radius) && m_Alive) {

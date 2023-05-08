@@ -402,12 +402,12 @@ void Player::InterVal() {
 }
 //弾との当たり判定
 bool Player::BulletCollide(const XMFLOAT3& pos,const bool Catch) {
-	float l_Radius = 1.2f;//当たり範囲
+	float l_Radius = 1.3f;//当たり範囲
 	//弾の更新
 	for (InterBullet* bullet : ghostbullets) {
 		if (bullet != nullptr) {
 			if (Collision::CircleCollision(bullet->GetPosition().x, bullet->GetPosition().z, l_Radius, pos.x, pos.z, l_Radius) && (bullet->GetAlive()) && (!Catch)) {
-				bullet->SetAlive(false);
+				//bullet->SetAlive(false);
 				return true;
 			}
 			else {
@@ -420,7 +420,7 @@ bool Player::BulletCollide(const XMFLOAT3& pos,const bool Catch) {
 }
 //プレイヤーとの当たり判定
 bool Player::PlayerCollide(const XMFLOAT3& pos) {
-	float l_Radius = 3.0f;//当たり範囲
+	float l_Radius = 3.1f;//当たり範囲
 	if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, pos.x, pos.z, l_Radius)) {
 		return true;
 	}

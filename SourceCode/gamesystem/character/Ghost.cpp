@@ -20,7 +20,7 @@ bool Ghost::Initialize() {
 	uniform_int_distribution<int> l_distX(-50, 60);
 	uniform_int_distribution<int> l_distZ(-55, 55);
 	m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
-	m_Scale = { 1.0f,1.0f,1.0f };
+	m_Scale = { 1.2f,1.2f,1.2f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	_charaState = CharaState::STATE_NONE;
 	_searchState = SearchState::SEARCH_NO;
