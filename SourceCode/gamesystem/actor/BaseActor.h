@@ -48,7 +48,7 @@ public:
 	//•`‰æ
 	virtual void Draw(DirectXCommon* dxCommon) = 0;
 	//‹¤’Ê‰Šú‰»
-	void BaseInitialize(DirectXCommon* dxCommon, XMFLOAT3 eye = { 2.0f, 30.0f, 2.0f }, XMFLOAT3 target = { 2.0f, 0.0f, 3.0f });
+	void BaseInitialize(DirectXCommon* dxCommon, XMFLOAT3 eye = { 2.0f, 40.0f, 2.0f }, XMFLOAT3 target = { 2.0f, 0.0f, 3.0f });
 public:
 	//ƒQ[ƒ€ƒ‹[ƒv‚µ‚½‚©‚Ç‚¤‚©
 	static bool s_GameLoop;

@@ -13,7 +13,7 @@ GhostBullet::GhostBullet() {
 //èâä˙âª
 bool GhostBullet::Initialize() {
 	m_Position = { 0.0f,0.0f,0.0f };
-	m_Scale = { 0.5f,0.5f,0.5f };
+	m_Scale = { 0.8f,0.8f,0.8f };
 
 	//CSVÇ©ÇÁì«Ç›çûÇ›
 	m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet.csv", "speed2")));

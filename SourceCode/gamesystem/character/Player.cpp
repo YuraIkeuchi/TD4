@@ -123,7 +123,7 @@ void Player::Draw(DirectXCommon* dxCommon)
 		}
 	}
 
-	viewbullet->Draw(dxCommon);
+	//viewbullet->Draw(dxCommon);
 }
 //ImGui
 void Player::ImGuiDraw() {
@@ -213,8 +213,8 @@ void Player::Walk()
 		move = XMVector3TransformNormal(move, matRot);
 
 		//リミット制限
-		Helper::GetInstance()->FloatClamp(m_Position.x, -41.0f, 50.0f);
-		Helper::GetInstance()->FloatClamp(m_Position.z, -45.0f, 45.0f);
+		Helper::GetInstance()->FloatClamp(m_Position.x, -55.0f, 65.0f);
+		Helper::GetInstance()->FloatClamp(m_Position.z, -60.0f, 60.0f);
 		//向いた方向に進む
 		if (m_RigidityTime == m_ResetNumber) {
 			m_Position.x += move.m128_f32[0] * m_AddSpeed;
@@ -402,7 +402,7 @@ void Player::InterVal() {
 }
 //弾との当たり判定
 bool Player::BulletCollide(const XMFLOAT3& pos,const bool Catch) {
-	float l_Radius = 1.0f;//当たり範囲
+	float l_Radius = 1.2f;//当たり範囲
 	//弾の更新
 	for (InterBullet* bullet : ghostbullets) {
 		if (bullet != nullptr) {
