@@ -5,6 +5,7 @@
 #include"IKEFBXModel.h"
 #include "DirectXCommon.h"
 #include"ModelManager.h"
+#include"Audio.h"
 #include<memory>
 using namespace std;         //  –¼‘O‹óŠÔŽw’è
 

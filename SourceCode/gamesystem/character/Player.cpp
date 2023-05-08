@@ -236,9 +236,10 @@ void Player::BulletUpdate() {
 	const float l_TargetCount = 1.0f;
 	const int l_Limit = 20;//ショットのチャージ時間
 	/*-----------------------------*/
-	//Aが押されたら弾を撃つ(言霊)
+	//RB||LBが押されたら弾を撃つ(言霊)
 	if (((Input::GetInstance()->TriggerButton(Input::RB)) || (Input::GetInstance()->TriggerButton(Input::LB))) && (m_InterVal == 0))
 	{
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Normal.wav",0.3f);
 		if (Input::GetInstance()->TriggerButton(Input::RB)) {
 			m_BulletType = BULLET_FORROW;
 		}
@@ -270,6 +271,7 @@ void Player::BulletUpdate() {
 	}
 
 	if (!Input::GetInstance()->PushButton(Input::B) && m_ShotTimer != 0) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Charge.wav", 0.3f);
 		if (m_ShotTimer < l_Limit) {
 			_charaState = CharaState::STATE_ATTACKSHOT;
 		}
