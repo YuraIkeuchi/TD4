@@ -23,7 +23,7 @@ void CameraWork::Update(DebugCamera* camera) {
 
 void CameraWork::EditorCamera()
 {
-	m_eyePos.y = 30.f;
+	m_eyePos.y = 35.f;
 	m_targetPos.z= m_eyePos.z+30.0f;
 	m_targetPos.x = m_eyePos.x;
 }

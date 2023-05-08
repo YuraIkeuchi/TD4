@@ -21,12 +21,6 @@ bool ViewBullet::Initialize() {
 
 //ImGuiï`âÊ
 void ViewBullet::ImGui_Origin() {
-	ImGui::Begin("Bullet");
-	ImGui::Text("Pos.X:%f", m_Position.x);
-	ImGui::Text("ScaleX:%f", m_Scale.x);
-	ImGui::Text("Alive:%d", m_Alive);
-	ImGui::Text("Charge:%d", m_Charge);
-	ImGui::End();
 }
 //íeÇÃì¡óLèàóù
 void ViewBullet::Action() {

@@ -22,7 +22,7 @@ bool HungerGauge::Initialize() {
 void HungerGauge::Update() {
 	//Œ¸‚é‘¬“x‚ğ‹‚ß‚Ä‚¢‚é
 	float l_SubHunger = (m_CatchCount * (m_Hungervalue * m_SubVelocity)) / 1000;
-	float l_Limit = 30.0f;
+	float l_Limit = 50.0f;
 	//ˆê’è‚¸‚Â‚ÅŒ¸­‚µ‚Ä‚¢‚­
 	m_NowHunger -= l_SubHunger;
 	//‹Q‰ìƒQ[ƒW‚ÌÅ‘å”‚ªŒˆ‚Ü‚Á‚Ä‚¢‚é

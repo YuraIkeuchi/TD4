@@ -152,4 +152,5 @@ void PlaySceneActor::FrontDraw(DirectXCommon* dxCommon) {
 void PlaySceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	player->ImGuiDraw();
 	loadobj->ImGuiDraw();
+	camerawork->ImGuiDraw();
 }
