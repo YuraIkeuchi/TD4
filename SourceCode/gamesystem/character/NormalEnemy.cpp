@@ -22,7 +22,7 @@ bool NormalEnemy::Initialize() {
 }
 //行動
 void NormalEnemy::Action() {
-	XMFLOAT3 l_player = player->GetPosition();
+	XMFLOAT3 l_player = _player->GetPosition();
 	float l_Vel = 0.15f;
 	//m_CircleSpeed += 1.0f;
 	m_Rotation.x = 90.f;
@@ -54,8 +54,8 @@ void NormalEnemy::ImGuiDraw() {
 	ImGui::Text("RotOld %f", old);
 	//ImGui::Text("Roty %f", RotY);
 
-	ImGui::Text("PosX:%f", player->GetPosition().x);
-	ImGui::Text("PosZ:%f", player->GetPosition().z);
+	ImGui::Text("PosX:%f", _player->GetPosition().x);
+	ImGui::Text("PosZ:%f", _player->GetPosition().z);
 	ImGui::Text("EnePosX:%f", m_Position.x);
 	ImGui::Text("EnePosZ:%f", m_Position.z);
 	ImGui::End();
@@ -77,7 +77,7 @@ void NormalEnemy::Particle() {
 void NormalEnemy::Appearance()
 {
 	if (Rush)return;
-	XMFLOAT3 l_player = player->GetPosition();
+	XMFLOAT3 l_player = _player->GetPosition();
 
 	//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
 	PositionA = { l_player.x,l_player.y,l_player.z };
@@ -116,7 +116,7 @@ void NormalEnemy::RushAction()
 
 	Helper::GetInstance()->FloatClamp(s_scale, 0.f, 3.f);
 
-	XMFLOAT3 l_player = player->GetPosition();
+	XMFLOAT3 l_player = _player->GetPosition();
 
 	//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
 	PositionA = { l_player.x,-l_player.y,l_player.z };
@@ -171,7 +171,7 @@ void NormalEnemy::RushAction()
 
 bool NormalEnemy::OnCollision()
 {
-	XMFLOAT3 l_player = player->GetPosition();
+	XMFLOAT3 l_player = _player->GetPosition();
 
 
 	//playerOBB.SetParam_Pos(l_player);

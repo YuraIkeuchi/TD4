@@ -38,7 +38,7 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	}
 	//一定時間でシーンが変わる
 	if (m_LoadTimer >= 200 && !SceneManager::GetInstance()->GetLoad()) {
-		SceneManager::GetInstance()->ChangeScene("GAMESCENE");
+		SceneManager::GetInstance()->ChangeScene("FIRSTSTAGE");
 	}
 }
 //描画
@@ -74,6 +74,7 @@ void LoadSceneActor::SpriteDraw() {
 	sceneChanger_->Draw();
 
 }
+//Json読み込み
 void LoadSceneActor::CreateStage() {
 	m_JsonData = JsonLoader::LoadFile("Introduction");
 
@@ -128,7 +129,7 @@ void LoadSceneActor::CreateStage() {
 	}
 
 }
-
+//ロード中の動き
 void LoadSceneActor::IntroUpdate() {
 	//�ŏ��̕�����������Ɠ�����
 	m_SpritesAngle[0] += AddMovingVal;
@@ -167,7 +168,7 @@ void LoadSceneActor::FinishUpdate() {
 	//一定時間でシーンが変わる
 	if (m_LoadTimer >= LoadTimerMax) {
 		sceneChanger_->ChangeStart();
-		sceneChanger_->ChangeScene("GAMESCENE", SceneChanger::NonReverse);
+		sceneChanger_->ChangeScene("FIRSTSTAGE", SceneChanger::NonReverse);
 		return;
 	}
 	m_LoadTimer++;

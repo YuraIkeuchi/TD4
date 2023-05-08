@@ -283,7 +283,8 @@
     <ClCompile Include="SourceCode\gamesystem\actor\EditorSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\IntroductionSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\LoadSceneActor.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\actor\PlaySceneActor.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\actor\FirstStageActor.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\actor\SecondStageActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\TitleSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\backobj\BackObj.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\AttackBullet.cpp" />
@@ -298,6 +299,7 @@
     <ClCompile Include="SourceCode\gamesystem\character\InterEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\NormalEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\Player.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\character\SecondBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\ViewBullet.cpp" />
     <ClCompile Include="SourceCode\gamesystem\editor\Editor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\editor\LoadBox.cpp" />
@@ -319,6 +321,7 @@
     <ClCompile Include="SourceCode\gamesystem\scene\PlaceManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\SceneChanger.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\SceneManager.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\scene\SecondStage.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\TitleScene.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ui\UI.cpp" />
   </ItemGroup>
@@ -384,7 +387,8 @@
     <ClInclude Include="SourceCode\gamesystem\actor\EditorSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\IntroductionSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\LoadSceneActor.h" />
-    <ClInclude Include="SourceCode\gamesystem\actor\PlaySceneActor.h" />
+    <ClInclude Include="SourceCode\gamesystem\actor\FirstStageActor.h" />
+    <ClInclude Include="SourceCode\gamesystem\actor\SecondStageActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\TitleSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\backobj\BackObj.h" />
     <ClInclude Include="SourceCode\gamesystem\character\AttackBullet.h" />
@@ -399,6 +403,7 @@
     <ClInclude Include="SourceCode\gamesystem\character\InterEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\character\NormalEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\character\Player.h" />
+    <ClInclude Include="SourceCode\gamesystem\character\SecondBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\ViewBullet.h" />
     <ClInclude Include="SourceCode\gamesystem\editor\Editor.h" />
     <ClInclude Include="SourceCode\gamesystem\editor\LoadBox.h" />
@@ -420,6 +425,7 @@
     <ClInclude Include="SourceCode\gamesystem\scene\PlaceManager.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\SceneChanger.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\SceneManager.h" />
+    <ClInclude Include="SourceCode\gamesystem\scene\SecondStage.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\TitleScene.h" />
     <ClInclude Include="SourceCode\gamesystem\ui\UI.h" />
   </ItemGroup>

@@ -1,6 +1,7 @@
 #pragma once
 #include "NormalEnemy.h"
 #include"FirstBoss.h"
+#include "SecondBoss.h"
 #include "Player.h"
 #include<array>
 //“G‚ÌŠÇ—ŒnƒNƒ‰ƒX
@@ -14,7 +15,7 @@ private:
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public:
-	EnemyManager(Player* _player);
+	EnemyManager(Player* _player, const std::string& sceneName);
 	//XV
 	void Update();
 	//•`‰æ

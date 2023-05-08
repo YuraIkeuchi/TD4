@@ -9,7 +9,7 @@
 #include "BackObj.h"
 #include "LoadStageObj.h"
 /// タイトルシーン
-class PlaySceneActor : public BaseActor {
+class FirstStageActor : public BaseActor {
 private:
 	enum state {
 		CONVERSATION=0,
@@ -30,7 +30,7 @@ public:
 	void ImGuiDraw(DirectXCommon* dxCommon);
 private:
 	//クラス
-	unique_ptr<Player> player;
+	
 	unique_ptr<EnemyManager> enemymanager;
 	unique_ptr<InterBoss> boss;
 	unique_ptr<UI>ui;

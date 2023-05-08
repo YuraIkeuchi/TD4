@@ -3,13 +3,24 @@
 #include "Helper.h"
 #include "Input.h"
 Player* EnemyManager::player = nullptr;
-EnemyManager::EnemyManager(Player* _player) {
+EnemyManager::EnemyManager(Player* _player, const std::string& sceneName) {
 	player = _player;
 
+	//シーンによって読み込むボスが違う
+	if (sceneName == "FIRSTSTAGE") {
+		enemy.reset(new FirstBoss());
+		enemy->Initialize();
+		enemy->SetPlayer(player);
+	}
+	else if (sceneName == "SECONDSTAGE") {
 
-	enemy.reset(new FirstBoss());
-	enemy->Initialize();
-	enemy->SetPlayer(player);
+		enemy.reset(new SecondBoss());
+		enemy->Initialize();
+		enemy->SetPlayer(player);
+	}
+	else {
+		assert(0);
+	}
 
 	for (auto i = 0; i < bulletenemy.size(); i++)
 	{
@@ -22,10 +33,7 @@ EnemyManager::EnemyManager(Player* _player) {
 		bulletenemy_2[i].reset(new NormalEnemy());
 		bulletenemy_2[i]->Initialize();
 		bulletenemy_2[i]->SetPlayer(player);
-
-
 	}
-
 }
 //更新
 void EnemyManager::Update() {

@@ -78,7 +78,7 @@ protected:
 	unique_ptr<PostEffect> postEffect = nullptr;
 	unique_ptr<CameraWork> camerawork;
 	bool PlayPostEffect = false;
-
+	unique_ptr<Player> player;
 	unique_ptr<SceneChanger> sceneChanger_ = nullptr;
 	//ƒV[ƒ“‚Å‚Ì‘JˆÚ
 	SceneState m_SceneState = SceneState::IntroState;

@@ -17,7 +17,7 @@ protected:
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
-	void SetPlayer(Player* player) { this->player.reset(player); }
+	void SetPlayer(Player* player) { _player = player; }
 
 	//gettersetter
 
@@ -40,7 +40,7 @@ public:
 private:
 protected:
 	//ŠeƒNƒ‰ƒX
-	unique_ptr<Player> player = nullptr;
+	Player* _player;
 
 	int ActionDamage;
 	int ActionCool;
