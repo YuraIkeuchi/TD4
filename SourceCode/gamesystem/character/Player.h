@@ -107,5 +107,9 @@ public:
 	vector<InterBullet*>GetBulllet_ghost() { return ghostbullets; }
 	vector<InterBullet*>GetBulllet_attack() { return attackbullets; }
 
+private:
+	XMFLOAT3 OldPos;
+public:
+	void isOldPos();
 };
 

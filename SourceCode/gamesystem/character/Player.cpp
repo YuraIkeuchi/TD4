@@ -71,7 +71,7 @@ void Player::Update()
 	Input* input = Input::GetInstance();
 	/*FBXのカウンタdoubleにしたほうが調整ききやすそう*/
 
-
+	OldPos = m_Position;
 	/*--------キャラの基本動作-------*/
 	/*-----------------------------*/
 	//スティックが押されてる間は移動する
@@ -87,6 +87,7 @@ void Player::Update()
 	{
 		_charaState = CharaState::STATE_IDLE;
 	}
+
 	//弾の更新
 	BulletUpdate();
 
@@ -439,4 +440,9 @@ void Player::ResetBullet() {
 	viewbullet->SetAlive(false);
 	viewbullet->SetCharge(false);
 	m_ShotTimer = {};
+}
+
+void Player::isOldPos()
+{
+	m_Position = OldPos;
 }

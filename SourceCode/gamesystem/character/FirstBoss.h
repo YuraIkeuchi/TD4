@@ -59,6 +59,9 @@ private:
 			int AfterTime;
 			float DamageAreaAlpha;
 			float RePosAngle;
+
+			bool HitF;
+			XMFLOAT3 ColPos;
 			//‚±‚Ì‚â‚è•û‚Ð‚Ç‚­‚È‚¢HH
 			enum class Phase_Normal
 			{
@@ -89,6 +92,8 @@ private:
 				RotStartPos.x = player->GetPosition().x + sinf(RePosAngle * (3.14f / 180.0f)) * 10.0f;
 				RotStartPos.z = player->GetPosition().z + cosf(RePosAngle * (3.14f / 180.0f)) * 10.0f;
 			}
+			float EaseT;
+			void ColPlayer(Player* player, XMFLOAT3& Pos);
 		};
 		ChargeAttack _charge;
 		NormalAttak _normal;

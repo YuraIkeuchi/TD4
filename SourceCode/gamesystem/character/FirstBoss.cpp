@@ -75,6 +75,7 @@ void FirstBoss::Action() {
 	XMFLOAT3 l_player = _player->GetPosition();
 
 	//
+	
 
 	impact1->SetPosition({ m_Position.x,8.f,m_Position.z });
 	impact2->SetPosition({ m_Position.x, 8.f,m_Position.z });
@@ -159,7 +160,7 @@ void FirstBoss::Action() {
 		Move_Away(); _normal.Remove(m_Position,m_Scale,EncF); DamAction();
 		m_Color = Col;
 	}
-
+	_normal.ColPlayer(_player, m_Position);
 	_normal.SetreposAngle(_player);
 	//NormalAttack();
 
@@ -339,6 +340,7 @@ void FirstBoss::Move()
 
 void FirstBoss::Move_Away()
 {
+	if (_normal.GetAttackF())return;
 	if (!Recv)return;
 	///if(NormalAttackF)
 	XMFLOAT3 l_player = _player->GetPosition();
@@ -419,6 +421,8 @@ void FirstBoss::NormalAttak::Idle(Player* player, XMFLOAT3& Pos, XMFLOAT3 Rot,bo
 void FirstBoss::NormalAttak::Attack(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot)
 {
 	XMFLOAT3 l_player = player->GetPosition();
+
+	//ColPlayer(player, Pos);
 
 	RushRotationF = false;
 	BeforeShakePos = Pos;
@@ -513,6 +517,11 @@ void FirstBoss::NormalAttak::Shake(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot)
 	} else
 	{
 		NormalAttak::Rot(player,Pos,Rot);
+	}
+
+	if (Collision::CircleCollision(Pos.x, Pos.z, 1.f, player->GetPosition().x, player->GetPosition().z, 3.f))
+	{
+		player->isOldPos();
 	}
 }
 
@@ -770,4 +779,31 @@ void FirstBoss::CollideBul(vector<InterBullet*> bullet)
 			}
 		}
 	}
+}
+
+void FirstBoss::NormalAttak::ColPlayer(Player* player, XMFLOAT3& Pos)
+{
+	
+	if (HitF)
+	{
+		EaseT += 0.05f;
+
+		player->SetPosition({Easing::EaseOut(EaseT,ColPos.x,ColPos.x+15.f),Pos.y, Easing::EaseOut(EaseT,ColPos.z,ColPos.z+15.f) });
+		if (EaseT>=1.f)
+		{
+			HitF = false;
+		}
+	}
+	else
+	{
+		EaseT = 0.f;
+		//ƒ‰ƒbƒVƒ…’†”»’è‚ ‚è
+		if (RushMoveEaseT<1.f&&Collision::CircleCollision(Pos.x, Pos.z, 5.f, player->GetPosition().x, player->GetPosition().z, 1.f))
+		{
+			ColPos = Pos;
+			HitF = true;
+		}
+	}
+	Helper::GetInstance()->FloatClamp(EaseT, 0.f, 1.f);
+
 }

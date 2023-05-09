@@ -228,6 +228,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="boss2.cpp" />
     <ClCompile Include="SourceCode\engine\2d\DebugText.cpp" />
     <ClCompile Include="SourceCode\engine\2d\ImageManager.cpp" />
     <ClCompile Include="SourceCode\engine\2d\PostEffect.cpp" />
@@ -326,6 +327,7 @@
     <ClCompile Include="SourceCode\gamesystem\ui\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="boss2.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SourceCode\engine\2d\DebugText.h" />
     <ClInclude Include="SourceCode\engine\2d\ImageManager.h" />
