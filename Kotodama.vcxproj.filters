@@ -348,9 +348,6 @@
     <ClCompile Include="SourceCode\gamesystem\actor\SecondStageActor.cpp">
       <Filter>SourceCords\gamesystem\actor\Play\SecondStage</Filter>
     </ClCompile>
-    <ClCompile Include="boss2.cpp">
-      <Filter>SourceCords\gamesystem\character\Various\Boss\Various</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -656,9 +653,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\actor\SecondStageActor.h">
       <Filter>SourceCords\gamesystem\actor\Play\SecondStage</Filter>
-    </ClInclude>
-    <ClInclude Include="boss2.h">
-      <Filter>SourceCords\gamesystem\character\Various\Boss\Various</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
