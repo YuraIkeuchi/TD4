@@ -20,13 +20,15 @@ public:
 #pragma region çUåÇ
 	struct Attack
 	{
-	private:
 		bool AttackFlag;
 	public:
 		void Action();
+	public:
+		void SetAttackF(bool flag) { AttackFlag = flag; }
+		bool GetAttackF() { return AttackFlag; }
 	};
 
-	Attack _charge;
+	Attack _attack;
 #pragma endregion
 
 private:

@@ -67,6 +67,10 @@ void SecondBoss::Action() {
 		//被ダメージ
 		DamAction();
 	}
+
+	//攻撃処理
+	_attack.Action();
+
 	//OBJのステータスのセット
 	Obj_SetParam();
 }
@@ -161,7 +165,9 @@ void SecondBoss::NoBattleMove()
 
 	//プレイヤー見つけたら
 	if (SearchF) {
-
+		//追跡とか攻撃
+		//攻撃フラグ立てる
+		_attack.SetAttackF(true);
 	}
 }
 
@@ -181,4 +187,15 @@ void SecondBoss::CollideBul(vector<InterBullet*> bullet)
 			}
 		}
 	}
+}
+
+
+void SecondBoss::Attack::Action()
+{
+	if (!AttackFlag)return;
+	//攻撃処理とか
+
+
+	/*終了処理*/
+	//AttackFlag=false;
 }
