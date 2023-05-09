@@ -15,11 +15,21 @@ private:
 
 	//基本移動
 	void Move();
+private:
+	//ダメージ食らった処理
+	void DamAction();
+
+	//元の位置に
+	void RemovePos();
+
+	//非戦闘時
+	void NoBattleMove();
 
 public:
 #pragma region 攻撃
 	struct Attack
 	{
+	private:
 		bool AttackFlag;
 	public:
 		void Action();
@@ -35,10 +45,6 @@ private:
 	//プレイヤー検知
 	bool SearchPlayer;
 	unique_ptr<IKETexture>impact1;
-
-
-	unique_ptr<IKESprite>SearchPlayerTex;
-	float SearchtexAlpha;
 private:
 	//画像使うのであれば
 	std::array<float, 2>texalpha;
@@ -59,16 +65,6 @@ private:
 
 	XMMATRIX m_matRot;
 private:
-	//ダメージ食らった処理
-	void DamAction();
-
-	//元の位置に
-	void RemovePos();
-
-	//非戦闘時
-	void NoBattleMove();
-
-private:
 	//攻撃
 	bool NormalAttackF;
 	//前座標
@@ -81,4 +77,9 @@ private:
 	bool EncF;
 private:
 	void CollideBul(vector<InterBullet*>bullet);
+
+	inline void IsOldPos()
+	{
+		m_Position = OldPos;
+	}
 };

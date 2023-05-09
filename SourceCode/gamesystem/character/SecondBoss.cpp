@@ -33,8 +33,7 @@ bool SecondBoss::Initialize() {
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Rotation.y = 90.f;
 	m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "pos")));
-
-	SearchtexAlpha = 0.f;
+	
 	return true;
 }
 //行動
@@ -92,7 +91,7 @@ void SecondBoss::Move()
 
 	XMFLOAT3 l_player = _player->GetPosition();
 
-	if (!Recv && !NormalAttackF) {
+	if (!Recv &&!_attack.GetAttackF()) {
 
 		//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
 		XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
@@ -105,13 +104,10 @@ void SecondBoss::Move()
 
 		m_Rotation.y = RotY * 60.f + 90.f;
 
-
 		if (SearchPlayer) {
-			XMVECTOR move = { 0.f,0.f, 0.1f, 0.0f };
-
-			XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 60.f));
-
-			move = XMVector3TransformNormal(move, matRot);
+			m_move = XMVector3TransformNormal(m_move, m_matRot);
+			//m_Position.x = m_move.m128_f32[0] * movespeedX;
+			//m_Position.z = m_move.m128_f32[2] * movespeedZ;
 
 		}
 	}
