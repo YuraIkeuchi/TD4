@@ -73,8 +73,6 @@ void FirstBoss::Action() {
 
 	m_Position.y = 10.f + sinf(3.14f * 2.f / 120.f * PosYMovingT) * -5.f;
 
-	XMFLOAT3 l_player = _player->GetPosition();
-
 	//
 
 	impact1->SetPosition({ m_Position.x,8.f,m_Position.z });
@@ -130,7 +128,7 @@ void FirstBoss::Action() {
 
 	}
 
-	vector<InterBullet*> _playerBulA = _player->GetBulllet_attack();
+	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
 		CollideBul(_playerBulA);
 	
 
@@ -154,12 +152,12 @@ void FirstBoss::Action() {
 		{
 			actiontimer++;
 		}
-		_normal.Update(_player, m_Position, m_Rotation, EncF);
+		_normal.Update(m_Position, m_Rotation, EncF);
 		Move_Away(); _normal.Remove(m_Position,m_Scale,EncF); DamAction();
 		m_Color = Col;
 	}
 
-	_normal.SetreposAngle(_player);
+	_normal.SetreposAngle();
 	//NormalAttack();
 
 	//OBJのステータスのセット
@@ -170,30 +168,30 @@ void FirstBoss::Pause() {
 
 
 }
-void FirstBoss::NormalAttak::Update(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot,bool &Enf)
+void FirstBoss::NormalAttak::Update(XMFLOAT3& Pos, XMFLOAT3& Rot,bool &Enf)
 {
 	switch (_phaseN)
 	{
 	case Phase_Normal::ROTPLAYER_0:
-		NormalAttak::Shake(player, Pos, Rot);
+		NormalAttak::Shake(Pos, Rot);
 		break;
 	case Phase_Normal::PHASE_ONE:
-		NormalAttak::Attack(player, Pos, Rot);
+		NormalAttak::Attack(Pos, Rot);
 		break;
 	case Phase_Normal::ROTPLAYER_1:
-		NormalAttak::Shake(player, Pos, Rot);
+		NormalAttak::Shake(Pos, Rot);
 		break;
 	case Phase_Normal::PHASE_TWO:
-		NormalAttak::Attack(player, Pos, Rot);
+		NormalAttak::Attack(Pos, Rot);
 		break;
 	case Phase_Normal::ROTPLAYER_2:
-		NormalAttak::Shake(player, Pos, Rot);
+		NormalAttak::Shake(Pos, Rot);
 		break;
 	case Phase_Normal::PHASE_THREE:
-		NormalAttak::Attack(player, Pos, Rot);
+		NormalAttak::Attack(Pos, Rot);
 		break;
 	case Phase_Normal::ROTPLAYER_3:
-		NormalAttak::Shake(player,Pos,Rot);
+		NormalAttak::Shake(Pos,Rot);
 		break;
 	case Phase_Normal::NON:
 	{
@@ -226,7 +224,7 @@ void FirstBoss::NormalAttak::Update(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot
 	break;
 
 	case Phase_Normal::STIFF:
-		NormalAttak::Idle(player, Pos, Rot, Enf);
+		NormalAttak::Idle(Pos, Rot, Enf);
 		break;
 	}
 }
@@ -297,7 +295,7 @@ void FirstBoss::ImpactAttack()
 void FirstBoss::Move()
 {
 
-	XMFLOAT3 l_player = _player->GetPosition();
+	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
 
 	if (!Recv && !_normal.GetAttackF()) {
 
@@ -340,7 +338,7 @@ void FirstBoss::Move_Away()
 {
 	if (!Recv)return;
 	///if(NormalAttackF)
-	XMFLOAT3 l_player = _player->GetPosition();
+	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
 
 	//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
 	XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
@@ -394,13 +392,13 @@ void FirstBoss::RushAttack()
 {
 }
 
-void FirstBoss::NormalAttak::Idle(Player* player, XMFLOAT3& Pos, XMFLOAT3 Rot,bool& Enf)
+void FirstBoss::NormalAttak::Idle(XMFLOAT3& Pos, XMFLOAT3 Rot,bool& Enf)
 {
 	StayCount++;
 	if (StayCount >= 180)
 	{
 		RushRotationF = true;
-		NormalAttak::Rot(player, Pos, Rot);
+		NormalAttak::Rot(Pos, Rot);
 		if (RotEaseTime >= 1.f)
 		{
 			Enf = false;
@@ -415,9 +413,9 @@ void FirstBoss::NormalAttak::Idle(Player* player, XMFLOAT3& Pos, XMFLOAT3 Rot,bo
 	}
 }
 
-void FirstBoss::NormalAttak::Attack(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot)
+void FirstBoss::NormalAttak::Attack(XMFLOAT3& Pos, XMFLOAT3& Rot)
 {
-	XMFLOAT3 l_player = player->GetPosition();
+	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
 
 	RushRotationF = false;
 	BeforeShakePos = Pos;
@@ -454,7 +452,7 @@ void FirstBoss::NormalAttak::Attack(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot
 	Helper::GetInstance()->FloatClamp(RotEaseTime, 0.f, 1.f);
 }
 
-void FirstBoss::NormalAttak::Shake(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot)
+void FirstBoss::NormalAttak::Shake(XMFLOAT3& Pos, XMFLOAT3& Rot)
 {
 	//初期化部
 	{
@@ -511,13 +509,13 @@ void FirstBoss::NormalAttak::Shake(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot)
 		}
 	} else
 	{
-		NormalAttak::Rot(player,Pos,Rot);
+		NormalAttak::Rot(Pos,Rot);
 	}
 }
 
-void FirstBoss::NormalAttak::Rot(Player* player, XMFLOAT3& Pos, XMFLOAT3 &Rot)
+void FirstBoss::NormalAttak::Rot(XMFLOAT3& Pos, XMFLOAT3 &Rot)
 {
-	XMFLOAT3 l_player = player->GetPosition();
+	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
 	//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
 	XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
 	XMVECTOR PositionB = { Pos.x,Pos.y,Pos.z };
@@ -551,7 +549,7 @@ void FirstBoss::NormalAttak::Rot(Player* player, XMFLOAT3& Pos, XMFLOAT3 &Rot)
 
 void FirstBoss::DebRot()
 {
-	XMFLOAT3 l_player = _player->GetPosition();
+	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
 	//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
 	XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
 	XMVECTOR PositionB = { m_Position.x,m_Position.y,m_Position.z };
@@ -678,7 +676,7 @@ void FirstBoss::NoBattleMove()
 
 	move = XMVector3TransformNormal(move, matRot);
 
-	XMFLOAT3 l_player = _player->GetPosition();
+	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
 
 	constexpr float MoveSpeed = 4.f;
 

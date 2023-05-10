@@ -1,6 +1,7 @@
 #pragma once
 #include"IKESprite.h"
 #include "InterBoss.h"
+#include "Player.h"
 class FirstBoss :
 	public InterBoss {
 public:
@@ -21,7 +22,7 @@ private:
 			unique_ptr<IKETexture>impact1;
 			unique_ptr<IKETexture>impact2;
 
-			void Attack(Player*player);
+			void Attack();
 		};
 		//Žg‚í‚È‚¢•Ï”‘å—Ê‚É‚ ‚é‚Ì‚Å‚ ‚Æ‚Å‚¯‚·
 
@@ -74,20 +75,20 @@ private:
 			}_phaseN=Phase_Normal::NON;
 		private:
 			
-			void Idle(Player* player, XMFLOAT3& Pos, XMFLOAT3 Rot,bool &Enf);
-			void Shake(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot);
-			void Rot(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot);
+			void Idle(XMFLOAT3& Pos, XMFLOAT3 Rot,bool &Enf);
+			void Shake(XMFLOAT3& Pos, XMFLOAT3& Rot);
+			void Rot(XMFLOAT3& Pos, XMFLOAT3& Rot);
 			void Attack();
-			void Attack(Player* player,XMFLOAT3 &Pos,XMFLOAT3& Rot);
+			void Attack(XMFLOAT3 &Pos,XMFLOAT3& Rot);
 			
 			public:
-			void Update(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot,bool &Enf);
+			void Update(XMFLOAT3& Pos, XMFLOAT3& Rot,bool &Enf);
 			void SetNormalAttackF(bool f) { NormalAttackF = f; }
 				bool GetAttackF() { return NormalAttackF; }
 				void SetAngle(float val) { RePosAngle = val; }void Remove(XMFLOAT3& Pos, XMFLOAT3& Scl,bool Enf);
-			inline void SetreposAngle(Player* player){
-				RotStartPos.x = player->GetPosition().x + sinf(RePosAngle * (3.14f / 180.0f)) * 10.0f;
-				RotStartPos.z = player->GetPosition().z + cosf(RePosAngle * (3.14f / 180.0f)) * 10.0f;
+			inline void SetreposAngle(){
+				RotStartPos.x = Player::GetInstance()->GetPosition().x + sinf(RePosAngle * (3.14f / 180.0f)) * 10.0f;
+				RotStartPos.z = Player::GetInstance()->GetPosition().z + cosf(RePosAngle * (3.14f / 180.0f)) * 10.0f;
 			}
 		};
 		ChargeAttack _charge;

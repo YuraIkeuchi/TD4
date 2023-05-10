@@ -27,7 +27,7 @@ void LoadStageObj::FoodLoad() {
 	Scl.resize(Size);
 }
 //すべてロード
-void LoadStageObj::AllLoad(Player* player)
+void LoadStageObj::AllLoad()
 {
 	//ゴースト関係
 	GhostLoad();
@@ -35,7 +35,6 @@ void LoadStageObj::AllLoad(Player* player)
 	for (auto i = 0; i < ghosts.size(); i++) {
 		ghosts[i] = new Ghost();
 		ghosts[i]->Initialize();
-		ghosts[i]->SetPlayer(player);
 	}
 	//食べ物関係
 	FoodLoad();
@@ -44,7 +43,6 @@ void LoadStageObj::AllLoad(Player* player)
 	for (auto i = 0; i < foods.size(); i++) {
 		foods[i] = new Food();
 		foods[i]->Initialize();
-		foods[i]->SetPlayer(player);
 	}
 }
 //初期化

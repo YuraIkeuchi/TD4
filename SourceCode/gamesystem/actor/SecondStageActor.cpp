@@ -20,8 +20,7 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	ParticleEmitter::GetInstance()->AllDelete();
 
 	//各クラス
-	player = std::make_unique<Player>();
-	camerawork->SetPlayer(player.get());
+	Player::GetInstance()->InitState({ 0.0f,0.0f,0.0f });
 	camerawork->Update(camera);
 	ui = std::make_unique<UI>();
 	ui->Initialize();
@@ -33,18 +32,21 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	blackwindow = IKESprite::Create(ImageManager::BLACKWINDOW, {});
 
 
-	enemymanager = std::make_unique<EnemyManager>(player.get(), "SECONDSTAGE");
+	enemymanager = std::make_unique<EnemyManager>("SECONDSTAGE");
 
 	backobj = std::make_unique<BackObj>();
 	backobj->Initialize();
 
 	loadobj = std::make_unique<LoadStageObj>();
-	loadobj->AllLoad(player.get());
+	loadobj->AllLoad();
 }
 //更新
 void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
 
+	if (Input::GetInstance()->TriggerButton(Input::A)) {
+		SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
+	}
 	//音楽の音量が変わる
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 	VolumManager::GetInstance()->Update();
@@ -90,7 +92,7 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	//各クラス更新
 	backobj->Update();
 	if (nowstate != CONVERSATION) {
-		player->Update();
+		Player::GetInstance()->Update();
 		enemymanager->Update();
 		loadobj->Update();
 		ParticleEmitter::GetInstance()->Update();
@@ -98,7 +100,6 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	camerawork->Update(camera);
 	lightgroup->Update();
 }
-
 //描画
 void SecondStageActor::Draw(DirectXCommon* dxCommon) {
 	//描画方法
@@ -128,12 +129,11 @@ void SecondStageActor::Draw(DirectXCommon* dxCommon) {
 //解放
 void SecondStageActor::Finalize() {
 }
-
 //後ろの描画
 void SecondStageActor::BackDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
 	////各クラスの描画
-	player->Draw(dxCommon);
+	Player::GetInstance()->Draw(dxCommon);
 	loadobj->Draw(dxCommon);
 	enemymanager->Draw(dxCommon);
 	backobj->Draw(dxCommon);
@@ -152,8 +152,7 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	/*player->ImGuiDraw();
+	Player::GetInstance()->ImGuiDraw();
 	loadobj->ImGuiDraw();
-	camerawork->ImGuiDraw();
-	enemymanager->ImGuiDraw();*/
+	//camerawork->ImGuiDraw();
 }

@@ -1,6 +1,5 @@
 #pragma once
 #include "ObjCommon.h"
-#include "Player.h"
 //食べ物のクラス
 class Food :
 	public ObjCommon {
@@ -37,7 +36,6 @@ private:
 	//食料生産
 	void BirthFood();
 public://getter setter
-	void SetPlayer(Player* player) { this->player.reset(player); }
 public:
 	//gettersetter
 	const bool& GetAlive() { return m_Alive; }
@@ -45,7 +43,6 @@ public:
 	void SetAlive(const bool Alive) { m_Alive = Alive; }
 	void SetLockOn(const bool LockOn) { m_LockOn = LockOn; }
 private:
-	unique_ptr<Player> player;
 	bool m_Alive = true;//生存フラグ
 	bool m_LockOn = false;
 	int m_Timer = 0;

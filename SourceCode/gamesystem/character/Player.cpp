@@ -8,22 +8,13 @@
 #include "Collision.h"
 #include "Input.h"
 
-//コンストラクタ
-Player::Player(XMFLOAT3 StartPos)
+Player* Player::GetInstance()
 {
-	m_Position = StartPos;
-	//初期化ぶち込み
-	Initialize();
-	//移動処理用
-	velocity /= 5.0f;
-	//大きさ
-	m_Scale = { 2.5f,2.5f,2.5f };
+	static Player instance;
+
+	return &instance;
 }
-//デストラクタ
-Player::~Player()
-{
-	m_fbxObject.reset(nullptr);
-}
+
 //初期化
 bool Player::Initialize()
 {
@@ -51,6 +42,18 @@ bool Player::Initialize()
 	viewbullet->Initialize();
 	return true;
 }
+
+//ステータスの初期化
+void Player::InitState(const XMFLOAT3& pos) {
+	m_Position = pos;
+	//初期化ぶち込み
+	Initialize();
+	//移動処理用
+	velocity /= 5.0f;
+	//大きさ
+	m_Scale = { 2.5f,2.5f,2.5f };
+}
+
 //状態遷移
 /*CharaStateのState並び順に合わせる*/
 void (Player::* Player::stateTable[])() = {
