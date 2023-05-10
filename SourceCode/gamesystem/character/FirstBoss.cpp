@@ -47,6 +47,7 @@ bool FirstBoss::Initialize() {
 	m_Rotation.y = 90.f;
 	RTime = 1;
 	m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "pos")));
+	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp1")));
 	MoveCount = 1;
 	_phaseN = Phase_Normal::NON;
 
@@ -130,9 +131,7 @@ void FirstBoss::Action() {
 	}
 
 	vector<InterBullet*> _playerBulA = _player->GetBulllet_attack();
-	vector<InterBullet*> _playerBulG = _player->GetBulllet_ghost();
 		CollideBul(_playerBulA);
-		CollideBul(_playerBulG);
 	
 
 	//Rot();
@@ -754,20 +753,10 @@ void FirstBoss::NoBattleMove()
 	Helper::GetInstance()->FloatClamp(EaseT_BatStart, 0.f, 1.f);
 }
 
-void FirstBoss::CollideBul(vector<InterBullet*> bullet)
-{
-	constexpr float BulRad = 1.f;
 
-	constexpr float BossRad = 5.f;
-
-	for (InterBullet* _bullet : bullet) {
-		if (_bullet != nullptr) {
-			if(Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z,BulRad,m_Position.x, m_Position.z,BossRad))
-			{
-				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Attack_Normal.wav", VolumManager::GetInstance()->GetSEVolum());
-				Recv = true;
-				_bullet->SetAlive(false);
-			}
-		}
-	}
+//ImGui
+void FirstBoss::ImGui_Origin() {
+	ImGui::Begin("First");
+	ImGui::Text("HP:%f", m_HP);
+	ImGui::End();
 }

@@ -36,6 +36,10 @@ public:
 
 	virtual void Action() = 0;//ボス特有の処理
 
+	virtual void ImGui_Origin() = 0;//ボスそれぞれのImGui
+
+	void ImGuiDraw();//ImGuiの描画
+
 	virtual void EffecttexDraw(DirectXCommon* dxCommon) = 0;
 private:
 protected:
@@ -45,7 +49,7 @@ protected:
 	int ActionDamage;
 	int ActionCool;
 
-
+	float m_HP = {};
 private:
 
 	enum class ActionList
@@ -64,6 +68,11 @@ private:
 		std::vector<float>ParSize;
 		bool Shake;
 	};
+protected:
+	//弾との当たり判定
+	void CollideBul(vector<InterBullet*>bullet);
 
+public:
+	bool Recv;
 };
 

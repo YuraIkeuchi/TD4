@@ -152,7 +152,8 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGui‚Ì•`‰æ
 void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	player->ImGuiDraw();
+	/*player->ImGuiDraw();
 	loadobj->ImGuiDraw();
 	camerawork->ImGuiDraw();
+	enemymanager->ImGuiDraw();*/
 }

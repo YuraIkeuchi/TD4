@@ -46,10 +46,10 @@ void Food::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui描画
 void Food::ImGuiDraw() {
-	//ImGui::Begin("Food");
-	//ImGui::Text("LockOn:%d", m_LockOn);
-	//ImGui::Text("Alive:%d", m_Alive);
-	//ImGui::End();
+	ImGui::Begin("Food");
+	ImGui::Text("LockOn:%d", m_LockOn);
+	ImGui::Text("Alive:%d", m_Alive);
+	ImGui::End();
 }
 //パーティクル
 void Food::Particle() {
