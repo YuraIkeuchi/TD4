@@ -68,6 +68,11 @@ private:
 		std::vector<float>ParSize;
 		bool Shake;
 	};
+protected:
+	//’e‚Æ‚Ì“–‚½‚è”»’è
+	void CollideBul(vector<InterBullet*>bullet);
 
+public:
+	bool Recv;
 };
 

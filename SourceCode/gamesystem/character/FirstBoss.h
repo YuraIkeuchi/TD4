@@ -133,7 +133,7 @@ private:
 	std::array<float, 2>texalpha;
 	std::array<XMFLOAT3, 2>texscl;
 private:
-	bool Recv;
+
 	bool GoAway;
 	float AwayRotEaseT;
 	float RushOldRotY;
@@ -216,5 +216,5 @@ private:
 	bool BattleStartF;
 
 private:
-	void CollideBul(vector<InterBullet*>bullet);
+
 };

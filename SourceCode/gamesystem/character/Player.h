@@ -64,8 +64,12 @@ private:
 	void InterVal();
 	//弾のリセット
 	void ResetBullet();
+	//弾の管理
+	void Bullet_Management();
 	//弾の更新
-	void BulletUpdate();
+	void BulletUpdate(std::vector<InterBullet*> bullets);
+	//弾の描画
+	void BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxCommon);
 private:
 	//各アニメーション
 	enum class AnimeName

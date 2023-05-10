@@ -84,8 +84,8 @@ void Player::Update()
 	{
 		_charaState = CharaState::STATE_IDLE;
 	}
-	//弾の更新
-	BulletUpdate();
+	//弾の管理
+	Bullet_Management();
 
 	//状態移行(charastateに合わせる)
 	(this->*stateTable[_charaState])();
@@ -105,18 +105,17 @@ void Player::Update()
 //描画
 void Player::Draw(DirectXCommon* dxCommon)
 {
+	//キャラクター
 	Fbx_Draw(dxCommon);
-	//弾の描画(言霊)
-	for (InterBullet* ghostbullet : ghostbullets) {
-		if (ghostbullet != nullptr) {
-			ghostbullet->Draw(dxCommon);
-		}
-	}
-
-	//弾の描画(言霊)
-	for (InterBullet* attackbullet : attackbullets) {
-		if (attackbullet != nullptr) {
-			attackbullet->Draw(dxCommon);
+	//弾の描画
+	BulletDraw(ghostbullets, dxCommon);
+	BulletDraw(attackbullets, dxCommon);
+}
+//弾の描画
+void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxCommon) {
+	for (InterBullet* bullet : bullets) {
+		if (bullet != nullptr) {
+			bullet->Draw(dxCommon);
 		}
 	}
 
@@ -124,7 +123,17 @@ void Player::Draw(DirectXCommon* dxCommon)
 }
 //ImGui
 void Player::ImGuiDraw() {
+	for (InterBullet* bullet : ghostbullets) {
+		if (bullet != nullptr) {
+			bullet->ImGuiDraw();
+		}
+	}
 
+	for (InterBullet* bullet : attackbullets) {
+		if (bullet != nullptr) {
+			bullet->ImGuiDraw();
+		}
+	}
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
@@ -206,7 +215,7 @@ XMFLOAT3 Player::MoveVECTOR(XMVECTOR v, float angle)
 	return pos;
 }
 //弾の更新
-void Player::BulletUpdate() {
+void Player::Bullet_Management() {
 	const float l_TargetCount = 1.0f;
 	const int l_Limit = 20;//ショットのチャージ時間
 	/*-----------------------------*/
@@ -256,21 +265,6 @@ void Player::BulletUpdate() {
 		ResetBullet();
 	}
 
-	//言弾の更新
-	for (InterBullet* ghostbullet : ghostbullets) {
-		if (ghostbullet != nullptr) {
-			ghostbullet->Update();
-		}
-	}
-
-
-	//攻撃弾の更新
-	for (InterBullet* attackbullet : attackbullets) {
-		if (attackbullet != nullptr) {
-			attackbullet->Update();
-		}
-	}
-
 	//弾の削除(言霊)
 	for (int i = 0; i < ghostbullets.size(); i++) {
 		if (ghostbullets[i] == nullptr) {
@@ -292,6 +286,9 @@ void Player::BulletUpdate() {
 			attackbullets.erase(cbegin(attackbullets) + i);
 		}
 	}
+	//弾の更新
+	BulletUpdate(ghostbullets);
+	BulletUpdate(attackbullets);
 	//弾を撃つ方向を算出するために回転を求める
 	XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
 	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
@@ -305,6 +302,15 @@ void Player::BulletUpdate() {
 	viewbullet->Update();
 	viewbullet->SetAngle(l_Angle);
 	viewbullet->SetPosition(m_Position);
+}
+void Player::BulletUpdate(std::vector<InterBullet*> bullets) {
+	//弾の更新
+	for (InterBullet* bullet : bullets) {
+		if (bullet != nullptr) {
+			bullet->Update();
+		}
+	}
+	
 }
 //弾の生成
 void Player::BirthShot(const std::string& bulletName, bool Super) {

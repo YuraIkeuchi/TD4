@@ -153,7 +153,5 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 void FirstStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	player->ImGuiDraw();
 	loadobj->ImGuiDraw();
-	camerawork->ImGuiDraw();
-	loadobj->ImGuiDraw();
-	//enemymanager->ImGuiDraw();
+	//camerawork->ImGuiDraw();
 }

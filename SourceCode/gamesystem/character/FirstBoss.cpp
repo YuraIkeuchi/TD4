@@ -753,29 +753,6 @@ void FirstBoss::NoBattleMove()
 	Helper::GetInstance()->FloatClamp(EaseT_BatStart, 0.f, 1.f);
 }
 
-void FirstBoss::CollideBul(vector<InterBullet*> bullet)
-{
-	constexpr float BulRad = 1.f;
-
-	constexpr float BossRad = 5.f;
-
-	for (InterBullet* _bullet : bullet) {
-		if (_bullet != nullptr) {
-			if(Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z,BulRad,m_Position.x, m_Position.z,BossRad))
-			{
-				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Attack_Normal.wav", VolumManager::GetInstance()->GetSEVolum());
-				Recv = true;
-				_bullet->SetAlive(false);
-				if (_bullet->GetScale().x == 1.0f) {
-					m_HP--;
-				}
-				else {
-					m_HP -= 2.0f;
-				}
-			}
-		}
-	}
-}
 
 //ImGui
 void FirstBoss::ImGui_Origin() {
