@@ -348,6 +348,9 @@
     <ClCompile Include="SourceCode\gamesystem\actor\SecondStageActor.cpp">
       <Filter>SourceCords\gamesystem\actor\Play\SecondStage</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\GameOverSceneActor .cpp">
+      <Filter>SourceCords\gamesystem\actor\GameOver</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -654,6 +657,9 @@
     <ClInclude Include="SourceCode\gamesystem\actor\SecondStageActor.h">
       <Filter>SourceCords\gamesystem\actor\Play\SecondStage</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor .h">
+      <Filter>SourceCords\gamesystem\actor\GameOver</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Kotodama.rc" />
@@ -918,6 +924,9 @@
     </Filter>
     <Filter Include="SourceCords\gamesystem\actor\Play\SecondStage">
       <UniqueIdentifier>{bb2d1bd5-e34b-4f0c-9dd2-94853131ce74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\actor\GameOver">
+      <UniqueIdentifier>{7ea99bc2-e100-4a63-8d57-2485acc5a429}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

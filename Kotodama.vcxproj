@@ -281,6 +281,7 @@
     <ClCompile Include="SourceCode\gamesystem\actor\BaseActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\ClearSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\EditorSceneActor.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\actor\GameOverSceneActor .cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\IntroductionSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\LoadSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\FirstStageActor.cpp" />
@@ -385,6 +386,7 @@
     <ClInclude Include="SourceCode\gamesystem\actor\BaseActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\ClearSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\EditorSceneActor.h" />
+    <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor .h" />
     <ClInclude Include="SourceCode\gamesystem\actor\IntroductionSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\LoadSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\FirstStageActor.h" />
