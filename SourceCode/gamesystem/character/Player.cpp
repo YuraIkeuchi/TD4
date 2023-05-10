@@ -123,17 +123,6 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 }
 //ImGui
 void Player::ImGuiDraw() {
-	for (InterBullet* bullet : ghostbullets) {
-		if (bullet != nullptr) {
-			bullet->ImGuiDraw();
-		}
-	}
-
-	for (InterBullet* bullet : attackbullets) {
-		if (bullet != nullptr) {
-			bullet->ImGuiDraw();
-		}
-	}
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
