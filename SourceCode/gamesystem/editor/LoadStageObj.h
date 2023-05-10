@@ -8,7 +8,6 @@
 #include "Ghost.h"
 #include "Food.h"
 #include "LoadManager.h"
-#include "Player.h"
 using namespace DirectX;
 class LoadStageObj :public LoadManager
 {
@@ -19,7 +18,7 @@ public:
 	//食べ物ロード
 	void FoodLoad();
 	//すべてのロード
-	void AllLoad(Player* player);
+	void AllLoad();
 	//初期化
 	void Initialize()override;
 	//更新

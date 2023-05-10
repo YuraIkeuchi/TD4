@@ -10,211 +10,77 @@ public:
 	void Pause() override;//ポーズ
 private:
 	void Action() override;//行動
+
 	void EffecttexDraw(DirectXCommon* dxCommon) override;
 
-	//ため攻撃
-	struct ChargeAttack
-	{
-		int ChargeTime;
-		int Damage;
+	void ImGui_Origin() override;
 
-		unique_ptr<IKETexture>impact1;
-		unique_ptr<IKETexture>impact2;
-
-		void Attack(Player* player);
-	};
-	//使わない変数大量にあるのであとでけす
-
-	//通常突進3回
-	struct NormalAttak
-	{
-	private:
-		float RushOldRotY;
-		bool RushRotationF;
-
-		XMVECTOR m_move = { 0.f,0.f, 0.1f, 0.0f };
-
-		XMMATRIX m_matRot;
-
-		XMFLOAT3 RotStartPos;
-		float RushMoveEaseT;
-		XMFLOAT3 RushOldPos;
-
-		int StayCount;
-		bool StayF;
-
-		XMFLOAT3 OldPos_Remove;
-		float SPosMoveEaseT;
-		float shaketime;
-		float shake, shakex, shakey;
-		XMFLOAT3 BeforeShakePos;
-		bool shakeend;
-		float RemovePosEaseT;
-		float RotEaseTime;
-		bool NormalAttackF;
-		float BackEaseT;
-		bool RushF;
-		float BackSpeed;
-		int RushCount;
-		int AfterTime;
-		float DamageAreaAlpha;
-		float RePosAngle;
-		//このやり方ひどくない？？
-		enum class Phase_Normal
-		{
-			ROTPLAYER_0,
-			PHASE_ONE,
-			ROTPLAYER_1,
-			PHASE_TWO,
-			ROTPLAYER_2,
-			PHASE_THREE,
-			ROTPLAYER_3,
-			NON,
-			STIFF
-		}_phaseN = Phase_Normal::NON;
-	private:
-
-		void Idle(Player* player, XMFLOAT3& Pos, XMFLOAT3 Rot, bool& Enf);
-		void Shake(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot);
-		void Rot(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot);
-		void Attack();
-		void Attack(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot);
-
-	public:
-		void Update(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot, bool& Enf);
-		void SetNormalAttackF(bool f) { NormalAttackF = f; }
-		bool GetAttackF() { return NormalAttackF; }
-		void SetAngle(float val) { RePosAngle = val; }void Remove(XMFLOAT3& Pos, XMFLOAT3& Scl, bool Enf);
-		inline void SetreposAngle(Player* player) {
-			RotStartPos.x = player->GetPosition().x + sinf(RePosAngle * (3.14f / 180.0f)) * 10.0f;
-			RotStartPos.z = player->GetPosition().z + cosf(RePosAngle * (3.14f / 180.0f)) * 10.0f;
-		}
-	};
-	ChargeAttack _charge;
-	NormalAttak _normal;
-	float PosYMovingT;
-	float RotEaseT;
-
-	bool isRot;
-	int RTime;
-	void Rot();
-
-	float BossAngle = 1.f;
-	void FrontAttack();
-	void ImpactAttack();
-	void NormalAttack();
-	void RushAttack();
-
-	void RottoPlayer();
-	float RotEaseTime;
-	float OldRotY;
+	//基本移動
 	void Move();
-
-	bool SearchPlayer;
-	bool ImpactF;
 private:
-	unique_ptr<IKETexture>impact1;
-	unique_ptr<IKETexture>impact2;
+	//ダメージ食らった処理
+	void DamAction();
 
-	unique_ptr<IKESprite>SearchPlayerTex;
-	float SearchtexAlpha;
+	//元の位置に
+	void RemovePos();
 
-	struct FrontAttackTex
+	//非戦闘時
+	void NoBattleMove();
+
+public:
+#pragma region 攻撃
+	struct Attack
 	{
-		unique_ptr<IKETexture>Tex;
-		XMFLOAT3 Pos;
-		float alpha;
+	private:
+		bool AttackFlag;
+	public:
+		void Action();
+	public:
+		void SetAttackF(bool flag) { AttackFlag = flag; }
+		bool GetAttackF() { return AttackFlag; }
 	};
-	std::array<FrontAttackTex, 3>AttackTex;
 
-	bool FrontAttackF;
+	Attack _attack;
+#pragma endregion
+
 private:
-
+	//プレイヤー検知
+	bool SearchPlayer;
+	unique_ptr<IKETexture>impact1;
+private:
+	//画像使うのであれば
 	std::array<float, 2>texalpha;
 	std::array<XMFLOAT3, 2>texscl;
 private:
-	bool Recv;
-	bool GoAway;
-	float AwayRotEaseT;
-	float RushOldRotY;
-	bool RushRotationF;
+	//色変えるよう
+	bool DamColSetF;
 
-
-	float RushMoveEaseT;
-	XMFLOAT3 RushOldPos;
-	void Move_Away();
-	void ShakeAction();
-	void StayMove();
+	//待機時間
 	int StayCount;
+	//待機フラグ
 	bool StayF;
 
+	//攻撃用のタイマー(使うなら)
+	int ActionTimer = 1;
 
+	//向いた方向に移動するよう
 	XMVECTOR m_move = { 0.f,0.f, 0.1f, 0.0f };
-
 	XMMATRIX m_matRot;
 
 private:
+	//攻撃
 	bool NormalAttackF;
-	float BackEaseT;
-	bool RushF;
-	float BackSpeed;
-	int RushCount;
-	int AfterTime;
-	float DamageAreaAlpha;
-	unique_ptr<IKETexture>DamageArea;
-
-private:
-	float shaketime;
-	float shake, shakex, shakey;
-	XMFLOAT3 BeforeShakePos;
-	bool shakeend;
-	float RemovePosEaseT;
-
-
-	void DebShake();
-	void DebRot();
-	void DebAttack();
-
-	//このやり方ひどくない？？
-	enum class Phase_Normal
-	{
-		ROTPLAYER_0,
-		PHASE_ONE,
-		ROTPLAYER_1,
-		PHASE_TWO,
-		ROTPLAYER_2,
-		PHASE_THREE,
-		ROTPLAYER_3,
-		NON,
-		STIFF
-	}_phaseN;
-
-	void DamAction();
-
-	XMFLOAT4 Col;
-	float ColChangeEaseT;
-	bool DamColSetF;
-
-
-	int actiontimer;
-
-	XMFLOAT3 RotStartPos;
-	XMFLOAT3 OldPos_Remove;
-	float SPosMoveEaseT;
-	float YmovEaseT;
-	bool EncF;
-
-	int MoveCount;
-	bool RotChange;
-	float YRotRandVal;
-	float YRotOld;
-	float RotEaseTime_noBat;
-	void NoBattleMove();
-	void RemovePos();
+	//前座標
 	XMFLOAT3 OldPos;
-	float EaseT_BatStart;
-	bool BattleStartF;
 
+	float EaseT_BatStart;
+	//戦闘開始
+	bool BattleStartF;
+	//エンカウント
+	bool EncF;
 private:
-	void CollideBul(vector<InterBullet*>bullet);
+	inline void IsOldPos()
+	{
+		m_Position = OldPos;
+	}
 };

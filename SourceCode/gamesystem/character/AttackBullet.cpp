@@ -22,7 +22,9 @@ bool AttackBullet::Initialize() {
 }
 //ImGui•`‰æ
 void AttackBullet::ImGui_Origin() {
-
+	ImGui::Begin("Attack");
+	ImGui::Text("Alive:%d", m_Alive);
+	ImGui::End();
 }
 //’e‚Ì“Á—Lˆ—
 void AttackBullet::Action() {

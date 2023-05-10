@@ -27,7 +27,7 @@ void LoadStageObj::FoodLoad() {
 	Scl.resize(Size);
 }
 //すべてロード
-void LoadStageObj::AllLoad(Player* player)
+void LoadStageObj::AllLoad()
 {
 	//ゴースト関係
 	GhostLoad();
@@ -35,7 +35,6 @@ void LoadStageObj::AllLoad(Player* player)
 	for (auto i = 0; i < ghosts.size(); i++) {
 		ghosts[i] = new Ghost();
 		ghosts[i]->Initialize();
-		ghosts[i]->SetPlayer(player);
 	}
 	//食べ物関係
 	FoodLoad();
@@ -44,7 +43,6 @@ void LoadStageObj::AllLoad(Player* player)
 	for (auto i = 0; i < foods.size(); i++) {
 		foods[i] = new Food();
 		foods[i]->Initialize();
-		foods[i]->SetPlayer(player);
 	}
 }
 //初期化
@@ -96,19 +94,19 @@ void LoadStageObj::Draw(DirectXCommon* dxCommon)
 }
 //ImGui
 void LoadStageObj::ImGuiDraw() {
-	//ゴースト
-	for (auto i = 0; i < ghosts.size(); i++) {
-		ghosts[i]->ImGuiDraw();
-	}
-	//
-	//食べ物
-	for (auto i = 0; i < foods.size(); i++) {
-		foods[i]->ImGuiDraw();
-	}
-	//
-	ImGui::Begin("Load");
-	ImGui::Text("m_VanishCount:%f",m_VanishCount);
-	ImGui::End();
+	////ゴースト
+	//for (auto i = 0; i < ghosts.size(); i++) {
+	//	ghosts[i]->ImGuiDraw();
+	//}
+	////
+	////食べ物
+	//for (auto i = 0; i < foods.size(); i++) {
+	//	foods[i]->ImGuiDraw();
+	//}
+	////
+	//ImGui::Begin("Load");
+	//ImGui::Text("m_VanishCount:%f",m_VanishCount);
+	//ImGui::End();
 }
 //当たり判定(ゴースト)
 void LoadStageObj::Collide() {
@@ -192,7 +190,4 @@ void LoadStageObj::VanishGhost() {
 			break;
 		}
 	}
-
-
-
 }

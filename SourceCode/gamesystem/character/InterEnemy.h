@@ -1,7 +1,6 @@
 #pragma once
 #include "DirectXCommon.h"
 #include "ObjCommon.h"
-#include "Player.h"
 //“GŠî’ê
 class InterEnemy :
 	public ObjCommon {
@@ -15,8 +14,6 @@ protected:
 
 public://getter setter
 
-public://getter setter
-	void SetPlayer(Player* player) { _player = player; }
 protected:
 
 public:
@@ -44,11 +41,9 @@ public:
 
 	virtual void ImGuiDraw() = 0;
 
-	//void PlayerGet(Player* player);
 	virtual void Appearance() = 0;
 protected: //Ã“Iƒƒ“ƒo•Ï”
-	Player* _player;
-
+	
 	bool ShotF;
 	int ShotCount;
 public:
@@ -56,4 +51,7 @@ public:
 
 	bool GetShotF() { return ShotF; }
 	int GetShotCount() { return ShotCount; }
+
+private:
+	
 };

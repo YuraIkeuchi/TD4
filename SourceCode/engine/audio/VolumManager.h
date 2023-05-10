@@ -22,13 +22,13 @@ public:
 	void Draw();
 	void Finalize();
 public:
-	float GetSEVolum() { return   s_SEVolum; }
-	float GetBGMVolum() { return   s_BGMVolum; }
+	float GetSEVolum() { return   m_SEVolum; }
+	float GetBGMVolum() { return   m_BGMVolum; }
 
-	void SetSEVolum(float s_SEVolum) { this->s_SEVolum = s_SEVolum; }
-	void SetBGMVolum(float s_BGMVolum) { this->s_BGMVolum = s_BGMVolum; }
+	void SetSEVolum(float SEVolum) { this->m_SEVolum = SEVolum; }
+	void SetBGMVolum(float BGMVolum) { this->m_BGMVolum = BGMVolum; }
 private:
 	//SE‚ÆBGM‚Ì‰¹—Ê
-	static float s_SEVolum;
-	static float s_BGMVolum;
+	float m_SEVolum = 0.1f;
+	float m_BGMVolum = 0.03f;
 };
