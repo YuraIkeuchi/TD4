@@ -39,9 +39,6 @@ public:
 	{
 		STATE_IDLE,
 		STATE_RUN,
-		STATE_GHOST,
-		STATE_ATTACKSHOT,
-		STATE_SUPERSHOT,
 	}_charaState;
 
 private:
@@ -59,12 +56,8 @@ private:
 	XMFLOAT3 MoveVECTOR(XMVECTOR v, float angle);
 
 private:
-	//弾を打つ処理(ゴーストを捕まえる)
-	void GhostShot();
-	//弾を打つ処理(攻撃)
-	void AttackShot();
-	//弾を打つ処理(ため攻撃)
-	void SuperShot();
+	//弾の生成
+	void BirthShot(const std::string& bulletName, bool Super);
 private:
 	void Idle();
 	//インターバル管理

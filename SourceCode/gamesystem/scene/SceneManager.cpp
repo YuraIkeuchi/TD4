@@ -64,9 +64,9 @@ void SceneManager::AsyncLoad()
 	std::thread t = std::thread([&] {
 		ImageManager::GetInstance()->SecondLoad2D(), ImageManager::GetInstance()->SecondLoadTex2D(), ModelManager::GetInstance()->SecondInitialize(); });
 
-	//ダミーで1秒待つ
-	auto sleepTime = std::chrono::seconds(1);
-	std::this_thread::sleep_for(sleepTime);
+	////ダミーで1秒待つ
+	//auto sleepTime = std::chrono::seconds(1);
+	//std::this_thread::sleep_for(sleepTime);
 
 	t.join();
 	// ロード状態=ロード終了

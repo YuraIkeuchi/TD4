@@ -56,9 +56,6 @@ bool Player::Initialize()
 void (Player::* Player::stateTable[])() = {
 	&Player::Idle,//待機
 	&Player::Walk,//移動
-	&Player::GhostShot,//ゴーストを捕まえる
-	&Player::AttackShot,//攻撃
-	&Player::SuperShot,//ため攻撃
 };
 //更新処理
 void Player::Update()
@@ -127,30 +124,7 @@ void Player::Draw(DirectXCommon* dxCommon)
 }
 //ImGui
 void Player::ImGuiDraw() {
-	ImGui::Begin("Player");
-	if (ImGui::TreeNode("BULLET")) {
-		if (m_BulletType == BULLET_FORROW) {
-			ImGui::Text("BULLET_FORROW");
-		}
-		else {
-			ImGui::Text("BULLET_SEARCH");
-		}
-		ImGui::TreePop();
-	}
-	ImGui::Text("ShotTimer:%d", m_ShotTimer);
-	ImGui::Text("Posx:%f",m_Position.x);
-	ImGui::Text("Posy:%f", m_Position.z);
-	ImGui::End();
 
-	HungerGauge::GetInstance()->ImGuiDraw();
-	//弾ImGui
-	for (InterBullet* bullet : ghostbullets) {
-		if (bullet != nullptr) {
-			bullet->ImGuiDraw();
-		}
-	}
-
-	viewbullet->ImGui_Origin();
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
@@ -247,7 +221,7 @@ void Player::BulletUpdate() {
 			m_BulletType = BULLET_SEARCH;
 		}
 		ResetBullet();
-		_charaState = CharaState::STATE_GHOST;
+		BirthShot("Ghost", false);
 	}
 
 	//攻撃
@@ -264,7 +238,7 @@ void Player::BulletUpdate() {
 		HungerGauge::GetInstance()->SetSubVelocity(2.0f);
 		//チャージ中に飢餓ゲージが切れた場合弾が自動で放たれる
 		if (HungerGauge::GetInstance()->GetNowHunger() == 0.0f) {
-			_charaState = CharaState::STATE_SUPERSHOT;
+			BirthShot("Attack", true);
 			HungerGauge::GetInstance()->SetSubVelocity(1.0f);
 			ResetBullet();
 		}
@@ -273,10 +247,10 @@ void Player::BulletUpdate() {
 	if (!Input::GetInstance()->PushButton(Input::B) && m_ShotTimer != 0) {
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Charge.wav", VolumManager::GetInstance()->GetSEVolum());
 		if (m_ShotTimer < l_Limit) {
-			_charaState = CharaState::STATE_ATTACKSHOT;
+			BirthShot("Attack", false);
 		}
 		else {
-			_charaState = CharaState::STATE_SUPERSHOT;
+			BirthShot("Attack", true);
 			HungerGauge::GetInstance()->SetSubVelocity(1.0f);
 		}
 		ResetBullet();
@@ -331,64 +305,45 @@ void Player::BulletUpdate() {
 	viewbullet->Update();
 	viewbullet->SetAngle(l_Angle);
 	viewbullet->SetPosition(m_Position);
-	
 }
-//弾を打つ処理(ゴーストを捕まえる)
-void Player::GhostShot() {
-	//弾を撃つ方向を算出するために回転を求める
+//弾の生成
+void Player::BirthShot(const std::string& bulletName, bool Super) {
 	XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
 	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
 	move = XMVector3TransformNormal(move, matRot);
 	XMFLOAT2 l_Angle;
 	l_Angle.x = move.m128_f32[0];
 	l_Angle.y = move.m128_f32[2];
-
-	//弾の生成
-	GhostBullet* newbullet;
-	newbullet = new GhostBullet();
-	newbullet->Initialize();
-	newbullet->SetPosition(m_Position);
-	newbullet->SetBulletType(m_BulletType);
-	newbullet->SetAngle(l_Angle);
-	ghostbullets.push_back(newbullet);
-}
-//弾を打つ処理(攻撃)
-void Player::AttackShot() {
-	//弾を撃つ方向を算出するために回転を求める
-	XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
-	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
-	move = XMVector3TransformNormal(move, matRot);
-	XMFLOAT2 l_Angle;
-	l_Angle.x = move.m128_f32[0];
-	l_Angle.y = move.m128_f32[2];
-	//弾の生成
-	InterBullet* newbullet;
-	newbullet = new AttackBullet();
-	newbullet->Initialize();
-	newbullet->SetPosition(m_Position);
-	newbullet->SetScale({ 1.0f,1.0f,1.0f });
-	newbullet->SetAngle(l_Angle);
-	attackbullets.push_back(newbullet);	
-}
-//弾を打つ処理(ゴーストを捕まえる)
-void Player::SuperShot() {
-	//弾を撃つ方向を算出するために回転を求める
-	XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
-	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
-	move = XMVector3TransformNormal(move, matRot);
-	XMFLOAT2 l_Angle;
-	l_Angle.x = move.m128_f32[0];
-	l_Angle.y = move.m128_f32[2];
-
-	//弾の生成
-	InterBullet* newbullet;
-	newbullet = new AttackBullet();
-	newbullet->Initialize();
-	newbullet->SetPosition(viewbullet->GetPosition());
-	newbullet->SetScale(viewbullet->GetScale());
-	newbullet->SetAngle(l_Angle);
-	attackbullets.push_back(newbullet);
-	viewbullet->SetScale({ 1.0f,1.0f,1.0f });
+	//攻撃の弾
+	if (bulletName == "Attack") {
+		InterBullet* newbullet;
+		newbullet = new AttackBullet();
+		newbullet->Initialize();
+		newbullet->SetPosition(viewbullet->GetPosition());
+		//チャージショットかどうか
+		if (Super) {
+			newbullet->SetScale(viewbullet->GetScale());
+		}
+		else {
+			newbullet->SetScale({ 1.0f,1.0f,1.0f });
+		}
+		newbullet->SetAngle(l_Angle);
+		attackbullets.push_back(newbullet);
+	}
+	//言霊
+	else if(bulletName == "Ghost") {
+		//弾の生成
+		GhostBullet* newbullet;
+		newbullet = new GhostBullet();
+		newbullet->Initialize();
+		newbullet->SetPosition(m_Position);
+		newbullet->SetBulletType(m_BulletType);
+		newbullet->SetAngle(l_Angle);
+		ghostbullets.push_back(newbullet);
+	}
+	else {
+		assert(0);
+	}
 }
 //待機モーション
 void Player::Idle()

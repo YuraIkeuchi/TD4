@@ -96,19 +96,19 @@ void LoadStageObj::Draw(DirectXCommon* dxCommon)
 }
 //ImGui
 void LoadStageObj::ImGuiDraw() {
-	////ゴースト
-	//for (auto i = 0; i < ghosts.size(); i++) {
-	//	ghosts[i]->ImGuiDraw();
-	//}
-	////
-	////食べ物
-	//for (auto i = 0; i < foods.size(); i++) {
-	//	foods[i]->ImGuiDraw();
-	//}
-	////
-	//ImGui::Begin("Load");
-	//ImGui::Text("m_VanishCount:%f",m_VanishCount);
-	//ImGui::End();
+	//ゴースト
+	for (auto i = 0; i < ghosts.size(); i++) {
+		ghosts[i]->ImGuiDraw();
+	}
+	//
+	//食べ物
+	for (auto i = 0; i < foods.size(); i++) {
+		foods[i]->ImGuiDraw();
+	}
+	//
+	ImGui::Begin("Load");
+	ImGui::Text("m_VanishCount:%f",m_VanishCount);
+	ImGui::End();
 }
 //当たり判定(ゴースト)
 void LoadStageObj::Collide() {
