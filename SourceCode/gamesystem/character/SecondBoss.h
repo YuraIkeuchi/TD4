@@ -11,7 +11,7 @@ public:
 private:
 	void Action() override;//s“®
 	void EffecttexDraw(DirectXCommon* dxCommon) override;
-
+	void ImGui_Origin() override;
 	//‚½‚ßUŒ‚
 	struct ChargeAttack
 	{

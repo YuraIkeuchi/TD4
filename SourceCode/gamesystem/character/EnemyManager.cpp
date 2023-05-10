@@ -85,6 +85,7 @@ void EnemyManager::Draw(DirectXCommon* dxCommon) {
 //ImGui
 void EnemyManager::ImGuiDraw() {
 	//enemy->ImGuiDraw();
+	enemy->ImGuiDraw();
 }
 
 void EnemyManager::ShotAttack_A()

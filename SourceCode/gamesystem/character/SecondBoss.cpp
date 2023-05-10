@@ -47,6 +47,7 @@ bool SecondBoss::Initialize() {
 	m_Rotation.y = 90.f;
 	RTime = 1;
 	m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "pos")));
+	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp2")));
 	MoveCount = 1;
 	_phaseN = Phase_Normal::NON;
 
@@ -131,11 +132,7 @@ void SecondBoss::Action() {
 	}
 
 	vector<InterBullet*> _playerBulA = _player->GetBulllet_attack();
-	vector<InterBullet*> _playerBulG = _player->GetBulllet_ghost();
 	CollideBul(_playerBulA);
-	CollideBul(_playerBulG);
-
-
 	//Rot();
 	if (!BattleStartF) {
 		NoBattleMove();
@@ -777,7 +774,21 @@ void SecondBoss::CollideBul(vector<InterBullet*> bullet)
 				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Attack_Normal.wav", VolumManager::GetInstance()->GetSEVolum());
 				Recv = true;
 				_bullet->SetAlive(false);
+
+				if (_bullet->GetScale().x == 1.0f) {
+					m_HP--;
+				}
+				else {
+					m_HP -= 2.0f;
+				}
 			}
 		}
 	}
+}
+
+//ImGui
+void SecondBoss::ImGui_Origin() {
+	ImGui::Begin("Second");
+	ImGui::Text("HP:%f", m_HP);
+	ImGui::End();
 }

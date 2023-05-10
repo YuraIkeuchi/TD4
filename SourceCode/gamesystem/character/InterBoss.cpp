@@ -12,3 +12,7 @@ void InterBoss::Draw(DirectXCommon* dxCommon) {
 	Obj_Draw();
 	EffecttexDraw(dxCommon);
 }
+//ImGui•`‰æ
+void InterBoss::ImGuiDraw() {
+	ImGui_Origin();//‚»‚ê‚¼‚ê‚ÌImGui
+}
