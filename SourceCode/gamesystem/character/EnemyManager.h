@@ -15,7 +15,7 @@ private:
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public:
-	EnemyManager(Player* _player, const std::string& sceneName);
+	EnemyManager(const std::string& sceneName);
 	//更新
 	void Update();
 	//描画
@@ -27,8 +27,8 @@ public:
 public://getter setter
 	//static void SetPlayer(Player* player) { EnemyManager::player = player; }
 protected: //静的メンバ変数
-	static Player* player;
 private:
+	Player* player = Player::GetInstance();
 	unique_ptr<InterBoss> enemy;
 	std::array<unique_ptr<InterEnemy>, 3>bulletenemy;
 

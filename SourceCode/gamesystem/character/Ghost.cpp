@@ -7,6 +7,7 @@
 #include "HungerGauge.h"
 #include "Helper.h"
 #include <random>
+#include "Player.h"
 Ghost::Ghost() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Cube);
 	m_Object.reset(new IKEObject3d());
@@ -88,9 +89,9 @@ void Ghost::Particle() {
 //“–‚½‚è”»’è(’e)
 bool Ghost::BulletCollision() {
 	float l_AddHungerMax = HungerGauge::m_Hungervalue;//‰ÁŽZ‚³‚ê‚éÅ‘å‹Q‰ìƒQ[ƒW
-	if (player->BulletCollide(m_Position,m_Catch) && (m_Alive)) {
+	if (Player::GetInstance()->BulletCollide(m_Position,m_Catch) && (m_Alive)) {
 		m_Catch = true;
-		if (player->GetBulletType() == BULLET_FORROW) {
+		if (Player::GetInstance()->GetBulletType() == BULLET_FORROW) {
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Follower.wav", VolumManager::GetInstance()->GetSEVolum());
 			HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() + l_AddHungerMax);
 			HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetHungerMax());
@@ -112,7 +113,7 @@ bool Ghost::BulletCollision() {
 }
 //“–‚½‚è”»’è(ƒvƒŒƒCƒ„[)
 bool Ghost::PlayerCollision() {
-	if (player->PlayerCollide(m_Position) && (_charaState == CharaState::STATE_FOLLOW)) {
+	if (Player::GetInstance()->PlayerCollide(m_Position) && (_charaState == CharaState::STATE_FOLLOW)) {
 		m_Position = m_OldPos;
 		return true;
 	}
@@ -158,13 +159,13 @@ void Ghost::None() {
 //’Ç]
 void Ghost::Follow() {
 	float l_Vel = 0.35f;//‘¬“x
-	XMFLOAT3 l_playerPos = player->GetPosition();
+	XMFLOAT3 l_playerPos = Player::GetInstance()->GetPosition();
 	Helper::GetInstance()->FollowMove(m_Position, l_playerPos, l_Vel);
 }
 //’Tõ
 void Ghost::Search() {
 	float l_Vel = 0.3f;
-	XMFLOAT3 l_playerPos = player->GetPosition();
+	XMFLOAT3 l_playerPos = Player::GetInstance()->GetPosition();
 	//’Ç]
 	if (_searchState == SearchState::SEARCH_START) {
 		Helper::GetInstance()->FollowMove(m_Position, m_SearchPos, l_Vel);
@@ -187,7 +188,7 @@ void Ghost::EndSearch() {
 void Ghost::CarryFood() {
 	float l_Radius = 1.0f;//“–‚½‚è”»’è
 	float l_AddHunger = HungerGauge::m_Hungervalue;//‰ÁŽZ‚³‚ê‚é‹C‚ªƒQ[ƒW
-	XMFLOAT3 l_playerPos = player->GetPosition();
+	XMFLOAT3 l_playerPos = Player::GetInstance()->GetPosition();
 	if ((_searchState == SearchState::SEARCH_END) && (m_Alive)) {
 		if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, l_playerPos.x, l_playerPos.z, l_Radius)) {
 			m_Alive = false;

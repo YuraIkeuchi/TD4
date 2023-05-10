@@ -1,6 +1,5 @@
 #pragma once
 #include "ObjCommon.h"
-#include "Player.h"
 //ゴーストクラス
 class Ghost :
 	public ObjCommon {
@@ -59,7 +58,6 @@ public:
 	//ゴースト同士の当たり判定
 	void NotGhostCollision(const XMFLOAT3& pos);
 public://getter setter
-	void SetPlayer(Player* player) { this->player.reset(player); }
 public:
 	//gettersetter
 	const bool& GetAlive() { return m_Alive; }
@@ -71,7 +69,6 @@ public:
 	void SetAlive(const bool Alive) { m_Alive = Alive; }
 	void SetLimit(const float Limit) { m_Limit = Limit; }
 private:
-	unique_ptr<Player> player;
 	bool m_Alive = true;//生存フラグ
 	bool m_Catch =false;//捕獲フラグ
 	int m_ResPornTimer = 0;//復活の時間

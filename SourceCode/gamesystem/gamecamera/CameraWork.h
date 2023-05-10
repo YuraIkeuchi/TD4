@@ -3,7 +3,6 @@
 #include "Camera.h"
 #include "Shake.h"
 #include <memory>
-#include "Player.h"
 using namespace std;         //  名前空間指定
 
 //ゲームのカメラの動き
@@ -27,9 +26,7 @@ public:
 public:
 	//getter setter
 
-	static void SetPlayer(Player* player) { CameraWork::player = player; }
 protected: //静的メンバ変数
-	static Player* player;
 private:
 	//クラス
 	unique_ptr<Shake> shake = nullptr;

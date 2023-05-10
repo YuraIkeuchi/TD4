@@ -10,8 +10,7 @@ using namespace DirectX;
 class Player:public ObjCommon
 {
 public:
-	Player(XMFLOAT3 StartPos = {0.f,0.f,0.f});
-	~Player()override;
+	static Player* GetInstance();
 
 private:
 	//‘Ì—Í
@@ -24,6 +23,7 @@ private:
 
 	static void (Player::* stateTable[])();
 public:
+	void InitState(const XMFLOAT3& pos);
 	//‰Šú‰»
 	bool Initialize()override;
 	//XV

@@ -2,7 +2,7 @@
 #include "ModelManager.h"
 #include "Helper.h"
 #include <any>
-
+#include "Player.h"
 #include "Collision.h"
 #include "CsvLoader.h"
 #include "ImageManager.h"
@@ -15,7 +15,7 @@ SecondBoss::SecondBoss() {
 	m_Object->Initialize();
 	m_Object->SetModel(m_Model);
 }
-
+//初期化
 bool SecondBoss::Initialize() {
 	IKETexture::LoadTexture(8, L"Resources/2d/effect/impact.png");
 
@@ -38,7 +38,6 @@ bool SecondBoss::Initialize() {
 }
 //行動
 void SecondBoss::Action() {
-	XMFLOAT3 l_player = _player->GetPosition();
 
 	impact1->SetPosition({ m_Position.x,8.f,m_Position.z });
 	impact1->SetIsBillboard(false);
@@ -50,11 +49,8 @@ void SecondBoss::Action() {
 
 
 	//当たり判定（弾）
-	vector<InterBullet*> _playerBulA = _player->GetBulllet_attack();
-	vector<InterBullet*> _playerBulG = _player->GetBulllet_ghost();
+	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
 	CollideBul(_playerBulA);
-	CollideBul(_playerBulG);
-
 	//非戦闘開始時
 	if (!BattleStartF) {
 		NoBattleMove();
@@ -89,7 +85,7 @@ void SecondBoss::EffecttexDraw(DirectXCommon* dxCommon)
 void SecondBoss::Move()
 {
 
-	XMFLOAT3 l_player = _player->GetPosition();
+	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
 
 	if (!Recv && !_attack.GetAttackF()) {
 
@@ -138,7 +134,7 @@ void SecondBoss::NoBattleMove()
 
 	move = XMVector3TransformNormal(move, matRot);
 
-	XMFLOAT3 l_player = _player->GetPosition();
+	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
 
 	constexpr float MoveSpeed = 4.f;
 

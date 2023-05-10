@@ -1,7 +1,7 @@
 #pragma once
-#include "Player.h"
 #include "IKETexture.h"
 #include "CollisionPrimitive.h"
+#include "InterBullet.h"
 #include "ObjCommon.h"
 #include <array>       // ヘッダファイルインクルード
 using namespace std;         //  名前空間指定
@@ -17,9 +17,7 @@ protected:
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
-	void SetPlayer(Player* player) { _player = player; }
-
-	//gettersetter
+	
 
 public:
 
@@ -43,8 +41,6 @@ public:
 	virtual void EffecttexDraw(DirectXCommon* dxCommon) = 0;
 private:
 protected:
-	//各クラス
-	Player* _player;
 
 	int ActionDamage;
 	int ActionCool;
