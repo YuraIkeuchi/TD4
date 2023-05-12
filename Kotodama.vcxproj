@@ -230,8 +230,8 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Font.cpp" />
     <ClCompile Include="SourceCode\engine\2d\DebugText.cpp" />
+    <ClCompile Include="SourceCode\engine\2d\Font.cpp" />
     <ClCompile Include="SourceCode\engine\2d\ImageManager.cpp" />
     <ClCompile Include="SourceCode\engine\2d\PostEffect.cpp" />
     <ClCompile Include="SourceCode\engine\2d\IKESprite.cpp" />
@@ -329,9 +329,9 @@
     <ClCompile Include="SourceCode\gamesystem\ui\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Font.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SourceCode\engine\2d\DebugText.h" />
+    <ClInclude Include="SourceCode\engine\2d\Font.h" />
     <ClInclude Include="SourceCode\engine\2d\ImageManager.h" />
     <ClInclude Include="SourceCode\engine\2d\PostEffect.h" />
     <ClInclude Include="SourceCode\engine\2d\IKESprite.h" />
