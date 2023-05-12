@@ -332,10 +332,9 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\ViewBullet.cpp">
       <Filter>SourceCords\gamesystem\character\Various\Bullet\Various</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\SecondBoss.cpp">
-      <Filter>SourceCords\gamesystem\character\Various\Boss\Various</Filter>
-    </ClCompile>
+    </ClCompile>                    
+    <ClCompile Include="Font.cpp" />  
+    <Filter>SourceCords    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\scene\FirstStage.cpp">
       <Filter>SourceCords\gamesystem\Scene\PlayScene\FirstStage</Filter>
     </ClCompile>
@@ -639,6 +638,7 @@
     <ClInclude Include="SourceCode\gamesystem\character\ViewBullet.h">
       <Filter>SourceCords\gamesystem\character\Various\Bullet\Various</Filter>
     </ClInclude>
+    <ClInclude Include="Font.h" 
     <ClInclude Include="SourceCode\gamesystem\character\SecondBoss.h">
       <Filter>SourceCords\gamesystem\character\Various\Boss\Various</Filter>
     </ClInclude>

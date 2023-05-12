@@ -63,7 +63,7 @@ public:
 
 	ID3D12Device* GetDev() { return dev.Get(); }
 
-	
+	ID3D12CommandQueue* GetQue() { return cmdQueue.Get(); }
 public:
 	const bool& GetFullScreen() { return  FullScreen; }
 
@@ -92,4 +92,9 @@ private:
 	float m_This_Like_save_x = 1000.0f;
 	float m_This_Like_save_y = 500.0f;
 	bool FullScreen = false;
+public:
+	D3D12_VIEWPORT GetViewPort()const;
+
+	ComPtr<ID3D12DescriptorHeap> CreateDescriptorHeapForSproteFont();
+
 };
