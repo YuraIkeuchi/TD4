@@ -150,7 +150,7 @@ void FirstBoss::Action() {
 		{
 			_normal.SetNormalAttackF(true);
 		}
-		if (!ImpactF && actiontimer % 30 == 0)
+		if (!ImpactF && actiontimer % 300 == 0)
 		{
 			ImpactF = true;
 		}
@@ -790,7 +790,7 @@ void FirstBoss::NormalAttak::ColPlayer(Player* player, XMFLOAT3& Pos)
 	{
 		EaseT += 0.09f;
 	//	player->MoveStop(true);
-		player->SetPosition({Easing::EaseOut(EaseT,ColPos.x,ColPos.x+15.f),player->GetPosition().y, Easing::EaseOut(EaseT,ColPos.z,ColPos.z+15.f) });
+		player->SetPosition({Easing::EaseOut(EaseT,ColPos.x,ColPos.x+KnockVal),player->GetPosition().y, Easing::EaseOut(EaseT,ColPos.z,ColPos.z+KnockVal) });
 		if (EaseT>=1.f)
 		{
 			player->MoveStop(false);
@@ -799,6 +799,11 @@ void FirstBoss::NormalAttak::ColPlayer(Player* player, XMFLOAT3& Pos)
 	}
 	else
 	{
+		RandKnock = rand() % 100;
+		if (RandKnock % 2 == 0)
+			KnockVal = 15.f;
+		else
+			KnockVal = -15.f;
 		EaseT = 0.f;
 		//ƒ‰ƒbƒVƒ…’†”»’è‚ ‚è
 		if (RushMoveEaseT<1.f&&Collision::CircleCollision(Pos.x, Pos.z, 5.f, player->GetPosition().x, player->GetPosition().z, 1.f))

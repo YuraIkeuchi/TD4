@@ -92,8 +92,12 @@ private:
 				RotStartPos.x = player->GetPosition().x + sinf(RePosAngle * (3.14f / 180.0f)) * 10.0f;
 				RotStartPos.z = player->GetPosition().z + cosf(RePosAngle * (3.14f / 180.0f)) * 10.0f;
 			}
-			float EaseT;
+		
 			void ColPlayer(Player* player, XMFLOAT3& Pos);
+		private:
+			float EaseT;
+			int RandKnock;
+			float KnockVal;
 		};
 		ChargeAttack _charge;
 		NormalAttak _normal;
