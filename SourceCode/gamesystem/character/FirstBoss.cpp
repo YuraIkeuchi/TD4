@@ -789,6 +789,7 @@ void FirstBoss::NormalAttak::ColPlayer(XMFLOAT3& Pos)
 		if (RushMoveEaseT<1.f&&Collision::CircleCollision(Pos.x, Pos.z, 5.f, Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z, 1.f))
 		{
 			ColPos = Pos;
+			Player::GetInstance()->SetHP(Player::GetInstance()->GetHP() - 1.0f);
 			HitF = true;
 		}
 	}
