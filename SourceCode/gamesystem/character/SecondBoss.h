@@ -1,34 +1,37 @@
-#pragma once
+ï»¿#pragma once
 #include"IKESprite.h"
 #include "InterBoss.h"
 class SecondBoss :
 	public InterBoss {
 public:
 	SecondBoss();
-	bool Initialize() override;//‰Šú‰»
+	bool Initialize() override;//åˆæœŸåŒ–
 
-	void Pause() override;//ƒ|[ƒY
+	void Pause() override;//ãƒãƒ¼ã‚º
 private:
-	void Action() override;//s“®
+	void Action() override;//è¡Œå‹•
 
-	void EffecttexDraw(DirectXCommon* dxCommon) override;
 
 	void ImGui_Origin() override;
 
-	//Šî–{ˆÚ“®
+	//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
+	void EffecttexDraw(DirectXCommon* dxCommon) override;
+
+	//åŸºæœ¬ç§»å‹•
 	void Move();
 private:
-	//ƒ_ƒ[ƒWH‚ç‚Á‚½ˆ—
+	//ãƒ€ãƒ¡ãƒ¼ã‚¸é£Ÿã‚‰ã£ãŸå‡¦ç†
 	void DamAction();
 
-	//Œ³‚ÌˆÊ’u‚É
+	//å…ƒã®ä½ç½®ã«
 	void RemovePos();
 
-	//”ñí“¬
+
+	//éæˆ¦é—˜æ™‚
 	void NoBattleMove();
 
 public:
-#pragma region UŒ‚
+#pragma region æ”»æ’ƒ
 	struct Attack
 	{
 	private:
@@ -42,41 +45,42 @@ public:
 
 	Attack _attack;
 #pragma endregion
-
 private:
-	//ƒvƒŒƒCƒ„[ŒŸ’m
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æ¤œçŸ¥
 	bool SearchPlayer;
 	unique_ptr<IKETexture>impact1;
 private:
-	//‰æ‘œg‚¤‚Ì‚Å‚ ‚ê‚Î
+	//ç”»åƒä½¿ã†ã®ã§ã‚ã‚Œã°
 	std::array<float, 2>texalpha;
 	std::array<XMFLOAT3, 2>texscl;
 private:
-	//F•Ï‚¦‚é‚æ‚¤
+	//è¢«ãƒ€ãƒ¡ãƒ¼ã‚¸åˆ¤å®š
+	bool Recv;
+	//è‰²å¤‰ãˆã‚‹ã‚ˆã†
 	bool DamColSetF;
 
-	//‘Ò‹@ŠÔ
+	//å¾…æ©Ÿæ™‚é–“
 	int StayCount;
-	//‘Ò‹@ƒtƒ‰ƒO
+	//å¾…æ©Ÿãƒ•ãƒ©ã‚°
 	bool StayF;
 
-	//UŒ‚—p‚Ìƒ^ƒCƒ}[(g‚¤‚È‚ç)
+	//æ”»æ’ƒç”¨ã®ã‚¿ã‚¤ãƒãƒ¼(ä½¿ã†ãªã‚‰)
 	int ActionTimer = 1;
 
-	//Œü‚¢‚½•ûŒü‚ÉˆÚ“®‚·‚é‚æ‚¤
+	//å‘ã„ãŸæ–¹å‘ã«ç§»å‹•ã™ã‚‹ã‚ˆã†
 	XMVECTOR m_move = { 0.f,0.f, 0.1f, 0.0f };
 	XMMATRIX m_matRot;
 
 private:
-	//UŒ‚
+	//æ”»æ’ƒ
 	bool NormalAttackF;
-	//‘OÀ•W
+	//å‰åº§æ¨™
 	XMFLOAT3 OldPos;
 
 	float EaseT_BatStart;
-	//í“¬ŠJn
+	//æˆ¦é—˜é–‹å§‹
 	bool BattleStartF;
-	//ƒGƒ“ƒJƒEƒ“ƒg
+	//ã‚¨ãƒ³ã‚«ã‚¦ãƒ³ãƒˆ
 	bool EncF;
 private:
 	inline void IsOldPos()
