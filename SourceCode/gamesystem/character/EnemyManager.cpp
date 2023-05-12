@@ -113,4 +113,13 @@ void EnemyManager::ShotAttack_B()
 		bulletenemy_2[i]->SetShotF(true);
 	}
 }
-
+//ƒ{ƒX‚ð“|‚µ‚½‚©‚Ç‚¤‚©‚Ì”»’f
+bool EnemyManager::BossDestroy() {
+	if (enemy->GetHP() <= 0.0f) {
+		return true;
+	}
+	else {
+		return false;
+	}
+	return false;
+}

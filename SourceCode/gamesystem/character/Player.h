@@ -30,6 +30,8 @@ public:
 	void Draw(DirectXCommon* dxCommon)override;
 	//ImGui
 	void ImGuiDraw();
+	//’e‚Ìíœ
+	void DeleteBullet();
 
 
 	//ƒLƒƒƒ‰‚Ìó‘Ô

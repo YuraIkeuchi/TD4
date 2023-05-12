@@ -44,7 +44,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
 
-	if (Input::GetInstance()->TriggerButton(Input::A)) {
+	if (enemymanager->BossDestroy()) {
 		SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
 	}
 	//音楽の音量が変わる
@@ -88,6 +88,10 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	conversationwindow->SetSize(window_size);
 	blackwindow->SetColor(black_color);
 
+	//ゲームオーバ関係
+	if (PlayerDestroy()) {
+		SceneManager::GetInstance()->ChangeScene("TITLE");
+	}
 	//各クラス更新
 	backobj->Update();
 	if (nowstate != CONVERSATION) {
@@ -153,5 +157,6 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 void FirstStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	Player::GetInstance()->ImGuiDraw();
 	loadobj->ImGuiDraw();
+	enemymanager->ImGuiDraw();
 	//camerawork->ImGuiDraw();
 }

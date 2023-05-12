@@ -407,3 +407,8 @@ void Player::isOldPos()
 {
 	m_Position = OldPos;
 }
+//弾の削除
+void Player::DeleteBullet() {
+	attackbullets.clear();
+	ghostbullets.clear();
+}

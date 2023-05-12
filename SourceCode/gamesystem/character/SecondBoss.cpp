@@ -175,4 +175,7 @@ void SecondBoss::Attack::Action()
 
 //ImGui
 void SecondBoss::ImGui_Origin() {
+	ImGui::Begin("Second");
+	ImGui::Text("HP:%f", m_HP);
+	ImGui::End();
 }

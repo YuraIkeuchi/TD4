@@ -38,11 +38,11 @@ void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 
 	if (sceneChanger_->GetEasingStart()) {
 		string str = "LOAD";
-		if (!s_GameLoop) {
+	/*	if (!s_GameLoop) {
 			str = "LOAD";
 		} else {
 			str = "EDITORSCENE";
-		}
+		}*/
 		sceneChanger_->ChangeSceneExtra(str, SceneChanger::NonReverse);
 	}
 
