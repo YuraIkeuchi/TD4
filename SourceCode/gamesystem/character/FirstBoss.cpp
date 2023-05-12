@@ -135,7 +135,10 @@ void FirstBoss::Action() {
 		CollideBul(_playerBulA);
 		CollideBul(_playerBulG);
 	
-
+		if(!_normal.GetAttackF())
+		{
+			ColPlayer_Def();
+		}
 	//Rot();
 	if (!BattleStartF) {
 		NoBattleMove();
@@ -147,7 +150,7 @@ void FirstBoss::Action() {
 		{
 			_normal.SetNormalAttackF(true);
 		}
-		if (!ImpactF && actiontimer % 300 == 0)
+		if (!ImpactF && actiontimer % 30 == 0)
 		{
 			ImpactF = true;
 		}
@@ -301,7 +304,7 @@ void FirstBoss::Move()
 
 	XMFLOAT3 l_player = _player->GetPosition();
 
-	if (!Recv && !_normal.GetAttackF()) {
+	if (BattleStartF&&!Recv && !_normal.GetAttackF()) {
 
 		//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
 		XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
@@ -369,6 +372,7 @@ void FirstBoss::Move_Away()
 
 		if (AwayRotEaseT >= 1.f)
 		{
+			
 			GoAway = true;
 		}
 	} else {
@@ -377,8 +381,9 @@ void FirstBoss::Move_Away()
 		m_Position.z = m_Position.z + move.m128_f32[2] * 6.f;
 
 		AwayRotEaseT = 0.f;
-		if (Collision::GetLength(l_player, m_Position) > 100.f)
+		if (Collision::GetLength(l_player, m_Position) > 50.f)
 		{
+			BattleStartF = false;
 			Recv = false;
 		}
 	}
@@ -732,8 +737,6 @@ void FirstBoss::NoBattleMove()
 		}
 
 		OldPos = m_Position;
-		Helper::GetInstance()->FloatClamp(m_Position.z, 20.f, 45.f);
-		Helper::GetInstance()->FloatClamp(m_Position.x, -10.f, 10.f);
 
 	}
 	if (SearchF) {
@@ -783,14 +786,14 @@ void FirstBoss::CollideBul(vector<InterBullet*> bullet)
 
 void FirstBoss::NormalAttak::ColPlayer(Player* player, XMFLOAT3& Pos)
 {
-	
 	if (HitF)
 	{
-		EaseT += 0.05f;
-
-		player->SetPosition({Easing::EaseOut(EaseT,ColPos.x,ColPos.x+15.f),Pos.y, Easing::EaseOut(EaseT,ColPos.z,ColPos.z+15.f) });
+		EaseT += 0.09f;
+	//	player->MoveStop(true);
+		player->SetPosition({Easing::EaseOut(EaseT,ColPos.x,ColPos.x+15.f),player->GetPosition().y, Easing::EaseOut(EaseT,ColPos.z,ColPos.z+15.f) });
 		if (EaseT>=1.f)
 		{
+			player->MoveStop(false);
 			HitF = false;
 		}
 	}
@@ -804,6 +807,16 @@ void FirstBoss::NormalAttak::ColPlayer(Player* player, XMFLOAT3& Pos)
 			HitF = true;
 		}
 	}
+
+	
 	Helper::GetInstance()->FloatClamp(EaseT, 0.f, 1.f);
 
+}
+
+void FirstBoss::ColPlayer_Def()
+{
+	if (RushMoveEaseT <= 0.f && Collision::CircleCollision(m_Position.x, m_Position.z, 5.f, _player->GetPosition().x, _player->GetPosition().z, 1.f))
+	{
+		_player->isOldPos();
+	}
 }

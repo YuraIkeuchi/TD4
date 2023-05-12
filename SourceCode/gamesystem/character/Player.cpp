@@ -74,20 +74,24 @@ void Player::Update()
 	OldPos = m_Position;
 	/*--------キャラの基本動作-------*/
 	/*-----------------------------*/
-	//スティックが押されてる間は移動する
-	if (input->TiltPushStick(Input::L_UP, 0.0f) ||
-		input->TiltPushStick(Input::L_DOWN, 0.0f) ||
-		input->TiltPushStick(Input::L_RIGHT, 0.0f) ||
-		input->TiltPushStick(Input::L_LEFT, 0.0f))
-	{
-		_charaState = CharaState::STATE_RUN;
+	if (!isStop) {
+		//スティックが押されてる間は移動する
+		if (input->TiltPushStick(Input::L_UP, 0.0f) ||
+			input->TiltPushStick(Input::L_DOWN, 0.0f) ||
+			input->TiltPushStick(Input::L_RIGHT, 0.0f) ||
+			input->TiltPushStick(Input::L_LEFT, 0.0f))
+		{
+			_charaState = CharaState::STATE_RUN;
+		}
+		//何もアクションがなかったらアイドル状態
+		else
+		{
+			_charaState = CharaState::STATE_IDLE;
+		}
 	}
-	//何もアクションがなかったらアイドル状態
-	else
-	{
-		_charaState = CharaState::STATE_IDLE;
-	}
-
+		if (isStop) {
+			_charaState = CharaState::STATE_IDLE;
+		}
 	//弾の更新
 	BulletUpdate();
 

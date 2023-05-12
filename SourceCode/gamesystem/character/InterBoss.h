@@ -18,7 +18,7 @@ protected:
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
 	void SetPlayer(Player* player) { _player = player; }
-
+	bool GetIsAlive() { return isAlive; }
 	//gettersetter
 
 public:
@@ -37,6 +37,10 @@ public:
 	virtual void Action() = 0;//ボス特有の処理
 
 	virtual void EffecttexDraw(DirectXCommon* dxCommon) = 0;
+
+	void SetHP(int hp) { HP = hp; };
+	int GetHP() { return HP; }
+
 private:
 protected:
 	//各クラス
@@ -45,6 +49,8 @@ protected:
 	int ActionDamage;
 	int ActionCool;
 
+	bool isAlive;
+	int HP;
 
 private:
 

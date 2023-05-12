@@ -1,5 +1,5 @@
 #include "EnemyManager.h"
-#include "FirstBoss.h"
+
 #include "Helper.h"
 #include "Input.h"
 Player* EnemyManager::player = nullptr;
@@ -8,7 +8,7 @@ EnemyManager::EnemyManager(Player* _player, const std::string& sceneName) {
 
 	//シーンによって読み込むボスが違う
 	if (sceneName == "FIRSTSTAGE") {
-		enemy.reset(new SecondBoss());
+		enemy.reset(new FirstBoss());
 		enemy->Initialize();
 		enemy->SetPlayer(player);
 	}

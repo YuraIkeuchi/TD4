@@ -108,8 +108,10 @@ public:
 	vector<InterBullet*>GetBulllet_attack() { return attackbullets; }
 
 private:
+	bool isStop;
 	XMFLOAT3 OldPos;
 public:
+	void MoveStop(bool f) { isStop = f;; }
 	void isOldPos();
 };
 

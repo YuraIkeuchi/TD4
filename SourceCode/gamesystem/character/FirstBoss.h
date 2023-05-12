@@ -221,5 +221,6 @@ private:
 	bool BattleStartF;
 
 private:
+	void ColPlayer_Def();
 	void CollideBul(vector<InterBullet*>bullet);
 };

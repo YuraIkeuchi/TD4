@@ -40,7 +40,6 @@ public:
 
 	Attack _attack;
 #pragma endregion
-
 private:
 	//プレイヤー検知
 	bool SearchPlayer;
@@ -60,10 +59,13 @@ private:
 	//待機フラグ
 	bool StayF;
 
+	//攻撃用のタイマー(使うなら)
+	int ActionTimer = 1;
+
 	//向いた方向に移動するよう
 	XMVECTOR m_move = { 0.f,0.f, 0.1f, 0.0f };
-
 	XMMATRIX m_matRot;
+
 private:
 	//攻撃
 	bool NormalAttackF;
