@@ -348,7 +348,7 @@
     <ClCompile Include="SourceCode\gamesystem\actor\SecondStageActor.cpp">
       <Filter>SourceCords\gamesystem\actor\Play\SecondStage</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\actor\GameOverSceneActor .cpp">
+    <ClCompile Include="SourceCode\gamesystem\actor\GameOverSceneActor.cpp">
       <Filter>SourceCords\gamesystem\actor\GameOver</Filter>
     </ClCompile>
   </ItemGroup>
@@ -657,7 +657,7 @@
     <ClInclude Include="SourceCode\gamesystem\actor\SecondStageActor.h">
       <Filter>SourceCords\gamesystem\actor\Play\SecondStage</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor .h">
+    <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor.h">
       <Filter>SourceCords\gamesystem\actor\GameOver</Filter>
     </ClInclude>
   </ItemGroup>
