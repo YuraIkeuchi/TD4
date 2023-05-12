@@ -18,6 +18,8 @@ bool NormalEnemy::Initialize() {
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Position.y = 5.0f;
 	ret = true;
+	HP = 2;
+	isAlive = true;
 	return true;
 }
 //行動
@@ -31,18 +33,17 @@ void NormalEnemy::Action() {
 		RushAction();
 	}
 
-	//m_Position = Helper::GetInstance()->CircleMove({ 0.0f,5.0f,0.0f }, m_CircleScale, m_CircleSpeed);
-	if (OnCollision())
-	{
-		//player->RecvDamage(10);
-	}
 
 
-	Obj_SetParam();
+	Obj_SetParam();	//m_Position = Helper::GetInstance()->CircleMove({ 0.0f,5.0f,0.0f }, m_CircleScale, m_CircleSpeed);
+	OnCollision();
+	ColPlayer();
 	Particle();
 }
 //描画
 void NormalEnemy::Draw(DirectXCommon* dxCommon) {
+
+	if (!isAlive)return;
 	IKEObject3d::PreDraw();
 	Obj_Draw();
 }
@@ -63,6 +64,7 @@ void NormalEnemy::Finalize() {
 
 //パーティクル
 void NormalEnemy::Particle() {
+	if (!isAlive)return;
 	XMFLOAT4 s_color = { 1.0f,0.5f,1.0f,1.5f };
 	XMFLOAT4 e_color = { 1.0f,0.5f,1.0f,0.1f };
 	//float s_scale = 3.0f;
@@ -165,14 +167,3 @@ void NormalEnemy::RushAction()
 }
 
 
-bool NormalEnemy::OnCollision()
-{
-	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
-
-
-	//playerOBB.SetParam_Pos(l_player);
-	//playerOBB.SetParam_Rot()
-	//if(Collision::OBBCollision())
-	return false;
-
-}

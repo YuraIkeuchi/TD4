@@ -43,7 +43,9 @@ public:
 
 	virtual void Appearance() = 0;
 protected: //Ã“Iƒƒ“ƒo•Ï”
-	
+	bool isAlive;
+	int HP;
+
 	bool ShotF;
 	int ShotCount;
 public:
@@ -52,6 +54,12 @@ public:
 	bool GetShotF() { return ShotF; }
 	int GetShotCount() { return ShotCount; }
 
+	bool GetisAlive() { return isAlive; }
+
+
+protected:
+	void ColPlayer();
+	void OnCollision();
 private:
 	
 };
