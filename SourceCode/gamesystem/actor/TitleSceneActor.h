@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseActor.h"
 #include "IKESprite.h"
+#include"Font.h"
 #include "Helper.h"
 /// タイトルシーン
 class TitleSceneActor : public BaseActor {

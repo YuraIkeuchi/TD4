@@ -70,6 +70,8 @@ public:
 	ID3D12GraphicsCommandList* GetCmdList() { return cmdList.Get(); }
 
 	void SetFullScreen(const bool& FullScreen) { this->FullScreen = FullScreen; }
+
+	D3D12_VIEWPORT GetViewPort()const { return viewport; }
 private:
 	//ƒƒ“ƒo•Ï”
 		// Direct3DŠÖ˜A
@@ -92,8 +94,10 @@ private:
 	float m_This_Like_save_x = 1000.0f;
 	float m_This_Like_save_y = 500.0f;
 	bool FullScreen = false;
+
+	D3D12_VIEWPORT viewport = { 0.0f, 0.0f, smallwindow_width, smallwindow_height };
 public:
-	D3D12_VIEWPORT GetViewPort()const;
+	
 
 	ComPtr<ID3D12DescriptorHeap> CreateDescriptorHeapForSproteFont();
 

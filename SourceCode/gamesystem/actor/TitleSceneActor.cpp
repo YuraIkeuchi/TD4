@@ -17,6 +17,8 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	Audio::GetInstance()->LoadSound(0, "Resources/Sound/BGM/ruinsBGM.wav");
 	Audio::GetInstance()->LoopWave(0, VolumManager::GetInstance()->GetBGMVolum());
 
+
+
 	helper = make_unique< Helper>();
 
 	sceneChanger_ = make_unique<SceneChanger>();
@@ -90,4 +92,5 @@ void TitleSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 }
 //解放
 void TitleSceneActor::Finalize() {
+
 }
