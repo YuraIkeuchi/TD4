@@ -8,6 +8,7 @@
 #include "Collision.h"
 #include "Input.h"
 
+int Player::HP = 100;
 Player* Player::GetInstance()
 {
 	static Player instance;
@@ -407,3 +408,5 @@ void Player::isOldPos()
 {
 	m_Position = OldPos;
 }
+
+void Player::RecvDamage(int Damage) { HP -= Damage; }
