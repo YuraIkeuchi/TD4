@@ -6,14 +6,14 @@ class FirstBoss :
 	public InterBoss {
 public:
 	FirstBoss();
-	bool Initialize() override;//èâä˙âª
+	bool Initialize() override;//ÂàùÊúüÂåñ
 
-	void Pause() override;//É|Å[ÉY
+	void Pause() override;//„Éù„Éº„Ç∫
 private:
-	void Action() override;//çsìÆ
+	void Action() override;//Ë°åÂãï
 	void EffecttexDraw(DirectXCommon* dxCommon) override;
 	void ImGui_Origin() override;
-		//ÇΩÇﬂçUåÇ
+		//„Åü„ÇÅÊîªÊíÉ
 		struct ChargeAttack
 		{
 			int ChargeTime;
@@ -24,9 +24,9 @@ private:
 
 			void Attack();
 		};
-		//égÇÌÇ»Ç¢ïœêîëÂó Ç…Ç†ÇÈÇÃÇ≈Ç†Ç∆Ç≈ÇØÇ∑
+		//‰Ωø„Çè„Å™„ÅÑÂ§âÊï∞Â§ßÈáè„Å´„ÅÇ„Çã„ÅÆ„Åß„ÅÇ„Å®„Åß„Åë„Åô
 
-		//í èÌìÀêi3âÒ
+		//ÈÄöÂ∏∏Á™ÅÈÄ≤3Âõû
 		struct NormalAttak
 		{
 		private:
@@ -60,7 +60,10 @@ private:
 			int AfterTime;
 			float DamageAreaAlpha;
 			float RePosAngle;
-			//Ç±ÇÃÇ‚ÇËï˚Ç–Ç«Ç≠Ç»Ç¢ÅHÅH
+
+			bool HitF;
+			XMFLOAT3 ColPos;
+			//„Åì„ÅÆ„ÇÑ„ÇäÊñπ„Å≤„Å©„Åè„Å™„ÅÑÔºüÔºü
 			enum class Phase_Normal
 			{
 				ROTPLAYER_0,
@@ -90,6 +93,12 @@ private:
 				RotStartPos.x = Player::GetInstance()->GetPosition().x + sinf(RePosAngle * (3.14f / 180.0f)) * 10.0f;
 				RotStartPos.z = Player::GetInstance()->GetPosition().z + cosf(RePosAngle * (3.14f / 180.0f)) * 10.0f;
 			}
+		
+			void ColPlayer(Player* player, XMFLOAT3& Pos);
+		private:
+			float EaseT;
+			int RandKnock;
+			float KnockVal;
 		};
 		ChargeAttack _charge;
 		NormalAttak _normal;
@@ -176,7 +185,7 @@ private:
 	void DebRot();
 	void DebAttack();
 
-	//Ç±ÇÃÇ‚ÇËï˚Ç–Ç«Ç≠Ç»Ç¢ÅHÅH
+	//„Åì„ÅÆ„ÇÑ„ÇäÊñπ„Å≤„Å©„Åè„Å™„ÅÑÔºüÔºü
 	enum class Phase_Normal
 	{
 		ROTPLAYER_0,
@@ -217,5 +226,6 @@ private:
 	bool BattleStartF;
 
 private:
-
+	void ColPlayer_Def();
+	void CollideBul(vector<InterBullet*>bullet);
 };

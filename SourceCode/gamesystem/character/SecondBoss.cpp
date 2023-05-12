@@ -7,7 +7,7 @@
 #include "CsvLoader.h"
 #include "ImageManager.h"
 #include "Input.h"
-//¶¬
+//ç”Ÿæˆ
 SecondBoss::SecondBoss() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Tyuta);
 
@@ -15,7 +15,7 @@ SecondBoss::SecondBoss() {
 	m_Object->Initialize();
 	m_Object->SetModel(m_Model);
 }
-//‰Šú‰»
+//åˆæœŸåŒ–
 bool SecondBoss::Initialize() {
 	IKETexture::LoadTexture(8, L"Resources/2d/effect/impact.png");
 
@@ -36,9 +36,8 @@ bool SecondBoss::Initialize() {
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp2")));
 	return true;
 }
-//s“®
+//è¡Œå‹•
 void SecondBoss::Action() {
-
 	impact1->SetPosition({ m_Position.x,8.f,m_Position.z });
 	impact1->SetIsBillboard(false);
 	impact1->SetScale({ texscl[0].x,texscl[0].y,5.f });
@@ -48,28 +47,29 @@ void SecondBoss::Action() {
 	impact1->Update();
 
 
-	//“–‚½‚è”»’èi’ej
-	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
+	//å½“ãŸã‚Šåˆ¤å®šï¼ˆå¼¾ï¼‰
+	vector<InterBullet*> _playerBulA = _player->GetBulllet_attack();
 	CollideBul(_playerBulA);
-	//”ñí“¬ŠJn
+
+	//éæˆ¦é—˜é–‹å§‹æ™‚
 	if (!BattleStartF) {
 		NoBattleMove();
 	}
-	//í“¬ŠJn
+	//æˆ¦é—˜é–‹å§‹æ™‚
 	else {
-		//ˆÚ“®
+		//ç§»å‹•
 		Move();
-		//”íƒ_ƒ[ƒW
+		//è¢«ãƒ€ãƒ¡ãƒ¼ã‚¸
 		DamAction();
 	}
 
-	//UŒ‚ˆ—
+	//æ”»æ’ƒå‡¦ç†
 	_attack.Action();
 
-	//OBJ‚ÌƒXƒe[ƒ^ƒX‚ÌƒZƒbƒg
+	//OBJã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã®ã‚»ãƒƒãƒˆ
 	Obj_SetParam();
 }
-//ƒ|[ƒY
+//ãƒãƒ¼ã‚º
 void SecondBoss::Pause() {
 
 
@@ -89,12 +89,12 @@ void SecondBoss::Move()
 
 	if (!Recv && !_attack.GetAttackF()) {
 
-		//Šp“x‚Ìæ“¾ ƒvƒŒƒCƒ„[‚ª“G‚Ìõ“GˆÊ’u‚É“ü‚Á‚½‚çŒü‚«‚ğƒvƒŒƒCƒ„[‚Ì•û‚É
+		//è§’åº¦ã®å–å¾— ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæ•µã®ç´¢æ•µä½ç½®ã«å…¥ã£ãŸã‚‰å‘ãã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ–¹ã«
 		XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
 		XMVECTOR PositionB = { m_Position.x,m_Position.y,m_Position.z };
-		//ƒvƒŒƒCƒ„[‚Æ“G‚ÌƒxƒNƒgƒ‹‚Ì’·‚³(·)‚ğ‹‚ß‚é
+		//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨æ•µã®ãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•(å·®)ã‚’æ±‚ã‚ã‚‹
 		XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
-		//‰ñ“]²‚ğƒvƒŒƒCƒ„[‚Ì•û‚É
+		//å›è»¢è»¸ã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ–¹ã«
 
 		float RotY = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
 
@@ -142,23 +142,23 @@ void SecondBoss::NoBattleMove()
 
 	bool SearchF = Collision::GetLength(m_Position, l_player) < 20.f;
 
-	//Šp“x‚Ìæ“¾ ƒvƒŒƒCƒ„[‚ª“G‚Ìõ“GˆÊ’u‚É“ü‚Á‚½‚çŒü‚«‚ğƒvƒŒƒCƒ„[‚Ì•û‚É
+	//è§’åº¦ã®å–å¾— ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæ•µã®ç´¢æ•µä½ç½®ã«å…¥ã£ãŸã‚‰å‘ãã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ–¹ã«
 	XMVECTOR PositionA = { l_player.x + sinf(0 * (PI / 180.0f)) * 10.0f,l_player.y, l_player.z + cosf(0 * (PI / 180.0f)) * 10.0f };
 	XMVECTOR PositionB = { m_Position.x,m_Position.y,m_Position.z };
-	//ƒvƒŒƒCƒ„[‚Æ“G‚ÌƒxƒNƒgƒ‹‚Ì’·‚³(·)‚ğ‹‚ß‚é
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨æ•µã®ãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•(å·®)ã‚’æ±‚ã‚ã‚‹
 	XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
 
 	if (!SearchF) {
 		OldPos = m_Position;
-		//ˆÚ“®§ŒÀ
+		//ç§»å‹•åˆ¶é™
 		Helper::GetInstance()->FloatClamp(m_Position.z, 20.f, 45.f);
 		Helper::GetInstance()->FloatClamp(m_Position.x, -10.f, 10.f);
 	}
 
-	//ƒvƒŒƒCƒ„[Œ©‚Â‚¯‚½‚ç
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼è¦‹ã¤ã‘ãŸã‚‰
 	if (SearchF) {
-		//’ÇÕ‚Æ‚©UŒ‚
-		//UŒ‚ƒtƒ‰ƒO—§‚Ä‚é
+		//è¿½è·¡ã¨ã‹æ”»æ’ƒ
+		//æ”»æ’ƒãƒ•ãƒ©ã‚°ç«‹ã¦ã‚‹
 		_attack.SetAttackF(true);
 	}
 }
@@ -166,13 +166,24 @@ void SecondBoss::NoBattleMove()
 void SecondBoss::Attack::Action()
 {
 	if (!AttackFlag)return;
-	//UŒ‚ˆ—‚Æ‚©
+	//æ”»æ’ƒå‡¦ç†ã¨ã‹
 
 
-	/*I—¹ˆ—*/
+	/*çµ‚äº†å‡¦ç†*/
 	//AttackFlag=false;
 }
 
 //ImGui
 void SecondBoss::ImGui_Origin() {
+}
+
+
+void SecondBoss::Attack::Action()
+{
+	if (!AttackFlag)return;
+	//æ”»æ’ƒå‡¦ç†ã¨ã‹
+
+
+	/*çµ‚äº†å‡¦ç†*/
+	//AttackFlag=false;
 }
