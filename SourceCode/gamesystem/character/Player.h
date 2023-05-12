@@ -13,9 +13,7 @@ public:
 	static Player* GetInstance();
 
 private:
-	//体力
-	static int HP;
-
+	
 	//アニメーション管理用
 	bool m_LoopFlag = true;
 	int m_AnimationSpeed = 1;
@@ -84,7 +82,11 @@ public:
 	bool BulletCollide(const XMFLOAT3& pos,const bool Catch);//弾との当たり判定
 	bool PlayerCollide(const XMFLOAT3& pos);//プレイヤーとの当たり判定
 public:
+	//gettersetter
 	const int& GetBulletType() { return m_BulletType; }
+
+	void SetHP(float hp) { m_HP = hp; };
+	float GetHP() { return m_HP; }
 private://各クラス
 	vector<InterBullet*> ghostbullets;//言霊
 	vector<InterBullet*> attackbullets;//攻撃
@@ -95,6 +97,8 @@ private://各クラス
 	int m_RigidityTime = {};//硬直時間
 	int m_TargetInterVal = {};//インターバルの目標時間
 	int m_TargetRigidityTime = {};//硬直時間の目標時間
+	//体力
+	float m_HP = 0.0f;
 
 	XMFLOAT3 m_FollowPos = {};
 
@@ -110,5 +114,10 @@ private:
 public:
 	void MoveStop(bool f) { isStop = f;; }
 	void isOldPos();
+
+	void RecvDamage(float Damage);
+
+	//弾の全削除
+	void BulletDelete();
 };
 

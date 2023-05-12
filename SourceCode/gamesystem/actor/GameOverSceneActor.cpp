@@ -1,4 +1,4 @@
-#include "ClearSceneActor.h"
+#include "GameOverSceneActor.h"
 #include "SceneManager.h"
 #include <Easing.h>
 #include "ImageManager.h"
@@ -6,7 +6,7 @@
 #include "Audio.h"
 
 //初期化
-void ClearSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
+void GameOverSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	//共通の初期化
 	BaseInitialize(dxCommon);
 
@@ -18,7 +18,7 @@ void ClearSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	ClearSprite = IKESprite::Create(ImageManager::GAMECLEAR, { 0.0f,0.0f });
 }
 //更新
-void ClearSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
+void GameOverSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
 	if (input->TriggerButton(input->X)) {
 		SceneManager::GetInstance()->ChangeScene("TITLE");
@@ -33,7 +33,7 @@ void ClearSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 
 }
 //描画
-void ClearSceneActor::Draw(DirectXCommon* dxCommon) {
+void GameOverSceneActor::Draw(DirectXCommon* dxCommon) {
 	//ポストエフェクトをかけるか
 	if (PlayPostEffect) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
@@ -57,18 +57,18 @@ void ClearSceneActor::Draw(DirectXCommon* dxCommon) {
 	}
 }
 //前面描画
-void ClearSceneActor::FrontDraw() {
+void GameOverSceneActor::FrontDraw() {
 	IKESprite::PreDraw();
 	ClearSprite->Draw();
 	IKESprite::PostDraw();
 }
 //背面
-void ClearSceneActor::BackDraw(DirectXCommon* dxCommon)
+void GameOverSceneActor::BackDraw(DirectXCommon* dxCommon)
 {
 }
 //ImGui描画
-void ClearSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
+void GameOverSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 }
 //解放
-void ClearSceneActor::Finalize() {
+void GameOverSceneActor::Finalize() {
 }

@@ -13,7 +13,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	//共通の初期化
 	BaseInitialize(dxCommon);
 	//オーディオ
-	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/Boss.wav");
+	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/BGM_boss.wav");
 	//ポストエフェクト
 	PlayPostEffect = true;
 	//パーティクル全削除
@@ -47,8 +47,12 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
 
-	if (Input::GetInstance()->TriggerButton(Input::A)) {
+	if (enemymanager->BossDestroy()) {
 		SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
+	}
+
+	if (PlayerDestroy()) {
+		SceneManager::GetInstance()->ChangeScene("TITLE");
 	}
 	//音楽の音量が変わる
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
@@ -157,6 +161,7 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 //IMGuiの描画
 void FirstStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	Player::GetInstance()->ImGuiDraw();
-	loadobj->ImGuiDraw();
+	//loadobj->ImGuiDraw();
+	enemymanager->ImGuiDraw();
 	//camerawork->ImGuiDraw();
 }

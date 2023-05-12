@@ -14,7 +14,6 @@ Player* Player::GetInstance()
 
 	return &instance;
 }
-
 //初期化
 bool Player::Initialize()
 {
@@ -31,6 +30,7 @@ bool Player::Initialize()
 
 	//関数の戻り値から直接値を取る方法(こっちのほうが楽ではある　ただ行数が少し長くなる)
 	/*②*/m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player.csv", "speed2")));
+	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player.csv", "HP")));
 
 	m_TargetInterVal = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player.csv", "InterVal")));
 	m_TargetRigidityTime = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player.csv", "Rigidity")));
@@ -42,7 +42,6 @@ bool Player::Initialize()
 	viewbullet->Initialize();
 	return true;
 }
-
 //ステータスの初期化
 void Player::InitState(const XMFLOAT3& pos) {
 	m_Position = pos;
@@ -53,7 +52,6 @@ void Player::InitState(const XMFLOAT3& pos) {
 	//大きさ
 	m_Scale = { 2.5f,2.5f,2.5f };
 }
-
 //状態遷移
 /*CharaStateのState並び順に合わせる*/
 void (Player::* Player::stateTable[])() = {
@@ -131,6 +129,9 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 }
 //ImGui
 void Player::ImGuiDraw() {
+	ImGui::Begin("Player");
+	ImGui::Text("HP:%f",m_HP);
+	ImGui::End();
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
@@ -219,7 +220,6 @@ void Player::Bullet_Management() {
 	//RB||LBが押されたら弾を撃つ(言霊)
 	if (((Input::GetInstance()->TriggerButton(Input::RB)) || (Input::GetInstance()->TriggerButton(Input::LB))) && (m_InterVal == 0))
 	{
-		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Normal.wav",VolumManager::GetInstance()->GetSEVolum());
 		if (Input::GetInstance()->TriggerButton(Input::RB)) {
 			m_BulletType = BULLET_FORROW;
 		}
@@ -234,6 +234,7 @@ void Player::Bullet_Management() {
 	//Bが押されたら弾のチャージ
 	if (Input::GetInstance()->PushButton(Input::B) && m_InterVal == 0 && HungerGauge::GetInstance()->GetCatchCount() >= l_TargetCount)
 	{
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Normal.wav", VolumManager::GetInstance()->GetSEVolum());
 		m_ShotTimer++;
 		viewbullet->SetAlive(true);
 	}
@@ -402,4 +403,11 @@ void Player::ResetBullet() {
 void Player::isOldPos()
 {
 	m_Position = OldPos;
+}
+//プレイヤーのダメージ判定
+void Player::RecvDamage(float Damage) { m_HP -= Damage; }
+//弾の削除
+void Player::BulletDelete() {
+	ghostbullets.clear();
+	attackbullets.clear();
 }

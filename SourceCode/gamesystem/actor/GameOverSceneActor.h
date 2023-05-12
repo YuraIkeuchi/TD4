@@ -1,8 +1,8 @@
 #pragma once
 #include "BaseActor.h"
 #include "IKESprite.h"
-/// クリアシーン
-class ClearSceneActor : public BaseActor {
+/// タイトルシーン
+class GameOverSceneActor : public BaseActor {
 public:
 	/// 初期化
 	void Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) override;

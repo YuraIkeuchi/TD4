@@ -16,8 +16,7 @@ private:
 	void Appearance()override;
 	void Particle();//パーティクル
 	void RushAction();
-
-	bool OnCollision();
+	
 protected:
 
 private:
