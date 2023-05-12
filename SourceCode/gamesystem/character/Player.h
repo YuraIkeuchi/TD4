@@ -116,5 +116,7 @@ private:
 public:
 	void MoveStop(bool f) { isStop = f;; }
 	void isOldPos();
+
+	void RecvDamage(int Damage);
 };
 
