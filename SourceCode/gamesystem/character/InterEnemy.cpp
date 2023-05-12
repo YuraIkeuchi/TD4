@@ -42,7 +42,7 @@ void InterEnemy::OnCollision()
 void InterEnemy::ColPlayer()
 {
 	constexpr int damage = 5;
-
+	if (!isAlive) { return; }
 	if (Collision::CircleCollision(Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z,2.f,m_Position.x, m_Position.z,1.f ))
 		{
 		Player::GetInstance()->RecvDamage(damage);

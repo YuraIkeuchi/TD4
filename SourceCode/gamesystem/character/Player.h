@@ -115,6 +115,9 @@ public:
 	void MoveStop(bool f) { isStop = f;; }
 	void isOldPos();
 
-	void RecvDamage(int Damage);
+	void RecvDamage(float Damage);
+
+	//’e‚Ì‘Síœ
+	void BulletDelete();
 };
 

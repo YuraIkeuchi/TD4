@@ -44,8 +44,12 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
 
-	if (Input::GetInstance()->TriggerButton(Input::A)) {
-		SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
+	if (enemymanager->BossDestroy()) {
+		SceneManager::GetInstance()->ChangeScene("TITLE");
+	}
+
+	if (PlayerDestroy()) {
+		SceneManager::GetInstance()->ChangeScene("TITLE");
 	}
 	//‰¹Šy‚Ì‰¹—Ê‚ª•Ï‚í‚é
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
@@ -153,6 +157,5 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 //IMGui‚Ì•`‰æ
 void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	Player::GetInstance()->ImGuiDraw();
-	loadobj->ImGuiDraw();
-	//camerawork->ImGuiDraw();
+	enemymanager->ImGuiDraw();
 }

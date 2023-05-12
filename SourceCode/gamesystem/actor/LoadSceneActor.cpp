@@ -10,6 +10,7 @@ void LoadSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	BaseInitialize(dxCommon, { 0,10,200 }, { 0,0,-200 });
 	if (!s_GameLoop) {
 		SceneManager::GetInstance()->SetLoad(true);
+		s_GameLoop = true;
 	}
 	CreateStage();
 

@@ -8,14 +8,12 @@
 #include "Collision.h"
 #include "Input.h"
 
-int Player::HP = 100;
 Player* Player::GetInstance()
 {
 	static Player instance;
 
 	return &instance;
 }
-
 //初期化
 bool Player::Initialize()
 {
@@ -44,7 +42,6 @@ bool Player::Initialize()
 	viewbullet->Initialize();
 	return true;
 }
-
 //ステータスの初期化
 void Player::InitState(const XMFLOAT3& pos) {
 	m_Position = pos;
@@ -55,7 +52,6 @@ void Player::InitState(const XMFLOAT3& pos) {
 	//大きさ
 	m_Scale = { 2.5f,2.5f,2.5f };
 }
-
 //状態遷移
 /*CharaStateのState並び順に合わせる*/
 void (Player::* Player::stateTable[])() = {
@@ -408,5 +404,10 @@ void Player::isOldPos()
 {
 	m_Position = OldPos;
 }
-
-void Player::RecvDamage(int Damage) { HP -= Damage; }
+//プレイヤーのダメージ判定
+void Player::RecvDamage(float Damage) { m_HP -= Damage; }
+//弾の削除
+void Player::BulletDelete() {
+	ghostbullets.clear();
+	attackbullets.clear();
+}

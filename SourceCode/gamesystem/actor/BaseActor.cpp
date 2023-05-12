@@ -1,5 +1,6 @@
 #include "BaseActor.h"
 #include "VariableCommon.h"
+#include "Player.h"
 bool BaseActor::s_GameLoop = false;
 
 void (BaseActor::* BaseActor::stateTable[])() = {
@@ -19,4 +20,17 @@ void BaseActor::BaseInitialize(DirectXCommon* dxCommon, XMFLOAT3 eye, XMFLOAT3 t
 	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/NewToneMapPS.hlsl");
 
 	camerawork = make_unique<CameraWork>(eye, target);
+	Player::GetInstance()->BulletDelete();
+}
+
+//ƒvƒŒƒCƒ„[‚ªŽ€‚ñ‚¾‚©
+bool BaseActor::PlayerDestroy() {
+	if (Player::GetInstance()->GetHP() <= 0.0f) {
+		return true;
+	}
+	else {
+		return false;
+	}
+
+	return false;
 }
