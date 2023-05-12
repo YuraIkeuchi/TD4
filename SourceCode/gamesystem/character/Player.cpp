@@ -223,7 +223,6 @@ void Player::Bullet_Management() {
 	//RB||LBが押されたら弾を撃つ(言霊)
 	if (((Input::GetInstance()->TriggerButton(Input::RB)) || (Input::GetInstance()->TriggerButton(Input::LB))) && (m_InterVal == 0))
 	{
-		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Normal.wav",VolumManager::GetInstance()->GetSEVolum());
 		if (Input::GetInstance()->TriggerButton(Input::RB)) {
 			m_BulletType = BULLET_FORROW;
 		}
@@ -238,6 +237,7 @@ void Player::Bullet_Management() {
 	//Bが押されたら弾のチャージ
 	if (Input::GetInstance()->PushButton(Input::B) && m_InterVal == 0 && HungerGauge::GetInstance()->GetCatchCount() >= l_TargetCount)
 	{
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Normal.wav", VolumManager::GetInstance()->GetSEVolum());
 		m_ShotTimer++;
 		viewbullet->SetAlive(true);
 	}
