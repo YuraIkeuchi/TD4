@@ -24,7 +24,7 @@ void InterEnemy::Draw(DirectXCommon* dxCommon) {
 void InterEnemy::OnCollision()
 {
 	if (!isAlive)return;
-
+	//UŒ‚‚Ì’e‚Æ‚Ì”»’è
 	for (InterBullet* _bullet : Player::GetInstance()->GetBulllet_attack()) {
 		if (Collision::GetLength(_bullet->GetPosition(), m_Position) < 2.f)
 		{
