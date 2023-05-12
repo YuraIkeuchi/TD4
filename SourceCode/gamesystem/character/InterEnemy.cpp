@@ -25,12 +25,13 @@ void InterEnemy::OnCollision()
 {
 	if (!isAlive)return;
 
-	for (InterBullet* _bullet : Player::GetInstance()->GetBulllet_ghost()) {
+	for (InterBullet* _bullet : Player::GetInstance()->GetBulllet_attack()) {
 		if (Collision::GetLength(_bullet->GetPosition(), m_Position) < 2.f)
 		{
+			//体力
 			HP--;
+			//弾消し
 			_bullet->SetAlive(false);
-			//break;
 		}
 	}
 	if(HP<=0)
@@ -43,6 +44,7 @@ void InterEnemy::ColPlayer()
 {
 	constexpr int damage = 5;
 
+	//プレイヤーダメージ処理
 	if (Collision::CircleCollision(Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z,2.f,m_Position.x, m_Position.z,1.f ))
 		{
 		Player::GetInstance()->RecvDamage(damage);
