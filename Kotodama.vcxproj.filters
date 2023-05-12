@@ -339,6 +339,7 @@
     <ClCompile Include="SourceCode\gamesystem\character\ViewBullet.cpp">
       <Filter>SourceCords\gamesystem\character\Various\Bullet\Various</Filter>
     </ClCompile>
+    <ClCompile Include="Font.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -636,6 +637,7 @@
     <ClInclude Include="SourceCode\gamesystem\character\ViewBullet.h">
       <Filter>SourceCords\gamesystem\character\Various\Bullet\Various</Filter>
     </ClInclude>
+    <ClInclude Include="Font.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Kotodama.rc" />

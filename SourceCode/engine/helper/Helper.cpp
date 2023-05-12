@@ -1,5 +1,5 @@
 ﻿#include "Helper.h"
-#include"WinApp.h"
+#include"WinApp.h"	
 
 Helper* Helper::GetInstance()
 {

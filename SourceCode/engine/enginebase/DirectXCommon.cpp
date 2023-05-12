@@ -3,6 +3,7 @@
 #include <cassert>
 #include <imgui_impl_win32.h>
 #include <imgui_impl_dx12.h>
+
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "dxguid.lib")
@@ -439,3 +440,20 @@ void DirectXCommon::WindowImGuiDraw() {
 	ImGui::Unindent();
 	ImGui::End();*/
 }
+
+ComPtr<ID3D12DescriptorHeap> DirectXCommon::CreateDescriptorHeapForSproteFont()
+{
+	ComPtr<ID3D12DescriptorHeap> ret;
+
+	D3D12_DESCRIPTOR_HEAP_DESC desc = {};
+	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+	desc.NodeMask = 0;
+	desc.NumDescriptors = 1;
+	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+
+	dev->CreateDescriptorHeap(&desc, IID_PPV_ARGS(ret.ReleaseAndGetAddressOf()));
+
+	return ret;
+}
+
+

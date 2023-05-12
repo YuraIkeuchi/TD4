@@ -287,6 +287,7 @@ bool IKESprite::LoadTexture(UINT texnumber, const wchar_t* filename)
 		return false;
 	}
 
+
 	// シェーダリソースビュー作成
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; // 設定構造体
 	D3D12_RESOURCE_DESC resDesc = texBuff[texnumber]->GetDesc();
