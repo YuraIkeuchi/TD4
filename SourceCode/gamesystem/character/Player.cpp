@@ -8,74 +8,74 @@
 #include "Collision.h"
 #include "Input.h"
 
-//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-Player::Player(XMFLOAT3 StartPos)
+Player* Player::GetInstance()
 {
-	m_Position = StartPos;
-	//‰Šú‰»‚Ô‚¿‚İ
-	Initialize();
-	//ˆÚ“®ˆ——p
-	velocity /= 5.0f;
-	//‘å‚«‚³
-	m_Scale = { 2.5f,2.5f,2.5f };
+	static Player instance;
+
+	return &instance;
 }
-//ƒfƒXƒgƒ‰ƒNƒ^
-Player::~Player()
-{
-	m_fbxObject.reset(nullptr);
-}
-//‰Šú‰»
+
+//åˆæœŸåŒ–
 bool Player::Initialize()
 {
-	//ƒ‚ƒfƒ‹‰Šú‰»‚Æ“Ç‚İ‚İ
+	//ãƒ¢ãƒ‡ãƒ«åˆæœŸåŒ–ã¨èª­ã¿è¾¼ã¿
 	m_fbxObject.reset(new IKEFBXObject3d());
 	m_fbxObject->Initialize();
 	m_fbxObject->SetModel(ModelManager::GetInstance()->GetFBXModel(ModelManager::PLAYER));
 	m_fbxObject->LoadAnimation();
 
-	/*CSV“Ç‚İ‚İ(CSVƒtƒ@ƒCƒ‹–¼,“Ç‚İ‚Şƒpƒ‰ƒ[ƒ^‚Ì–¼‘O,ó‚¯æ‚é’l)@¡‚Í’Pˆê‚Ì•û‚Ì‚İ‘Î‰(int float double char‚Æ‚©)*/
+	/*CSVèª­ã¿è¾¼ã¿(CSVãƒ•ã‚¡ã‚¤ãƒ«å,èª­ã¿è¾¼ã‚€ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®åå‰,å—ã‘å–ã‚‹å€¤)ã€€ä»Šã¯å˜ä¸€ã®æ–¹ã®ã¿å¯¾å¿œ(int float double charã¨ã‹)*/
 
-	//sp‚©‚çŠÔÚ“I‚ÉƒAƒNƒZƒX‚·‚é•û–@ (Update()“à‚Åê—p‚Ì•Ï”‚É‘ã“ü‚·‚é•K—v‚ ‚è)
-	/*‡@*/LoadCSV::LoadCsvParam("Resources/csv/chara/player.csv", "speed1", sp);/*m_AddSpeed‚Ésp‚ğ‘ã“ü*/
+	//spã‹ã‚‰é–“æ¥çš„ã«ã‚¢ã‚¯ã‚»ã‚¹ã™ã‚‹æ–¹æ³• (Update()å†…ã§å°‚ç”¨ã®å¤‰æ•°ã«ä»£å…¥ã™ã‚‹å¿…è¦ã‚ã‚Š)
+	/*â‘ */LoadCSV::LoadCsvParam("Resources/csv/chara/player.csv", "speed1", sp);/*m_AddSpeedã«spã‚’ä»£å…¥*/
 
-	//ŠÖ”‚Ì–ß‚è’l‚©‚ç’¼Ú’l‚ğæ‚é•û–@(‚±‚Á‚¿‚Ì‚Ù‚¤‚ªŠy‚Å‚Í‚ ‚é@‚½‚¾s”‚ª­‚µ’·‚­‚È‚é)
-	/*‡A*/m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player.csv", "speed2")));
+	//é–¢æ•°ã®æˆ»ã‚Šå€¤ã‹ã‚‰ç›´æ¥å€¤ã‚’å–ã‚‹æ–¹æ³•(ã“ã£ã¡ã®ã»ã†ãŒæ¥½ã§ã¯ã‚ã‚‹ã€€ãŸã è¡Œæ•°ãŒå°‘ã—é•·ããªã‚‹)
+	/*â‘¡*/m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player.csv", "speed2")));
 
 	m_TargetInterVal = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player.csv", "InterVal")));
 	m_TargetRigidityTime = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player.csv", "Rigidity")));
 
-	//‹Q‰ìƒQ[ƒW‚ÍƒvƒŒƒCƒ„[‚ÅŠÇ—‚·‚é
+	//é£¢é¤“ã‚²ãƒ¼ã‚¸ã¯ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã§ç®¡ç†ã™ã‚‹
 	HungerGauge::GetInstance()->Initialize();
 
 	viewbullet.reset(new ViewBullet());
 	viewbullet->Initialize();
 	return true;
 }
-//ó‘Ô‘JˆÚ
-/*CharaState‚ÌState•À‚Ñ‡‚É‡‚í‚¹‚é*/
+
+//ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã®åˆæœŸåŒ–
+void Player::InitState(const XMFLOAT3& pos) {
+	m_Position = pos;
+	//åˆæœŸåŒ–ã¶ã¡è¾¼ã¿
+	Initialize();
+	//ç§»å‹•å‡¦ç†ç”¨
+	velocity /= 5.0f;
+	//å¤§ãã•
+	m_Scale = { 2.5f,2.5f,2.5f };
+}
+
+//çŠ¶æ…‹é·ç§»
+/*CharaStateã®Stateä¸¦ã³é †ã«åˆã‚ã›ã‚‹*/
 void (Player::* Player::stateTable[])() = {
-	&Player::Idle,//‘Ò‹@
-	&Player::Walk,//ˆÚ“®
-	&Player::GhostShot,//ƒS[ƒXƒg‚ğ•ß‚Ü‚¦‚é
-	&Player::AttackShot,//UŒ‚
-	&Player::SuperShot,//‚½‚ßUŒ‚
+	&Player::Idle,//å¾…æ©Ÿ
+	&Player::Walk,//ç§»å‹•
 };
-//XVˆ—
+//æ›´æ–°å‡¦ç†
 void Player::Update()
 {
-	//any_cast‚ÍdoubleŒ^‚È‚Ì‚Å‚»‚ê‚ğstatic_cast‚Åfloat‚É
-	//double‚ªatof()ŠÖ”‚Ì–ß‚è’l‚È‚Ì‚Å•ÏX‚Å‚«‚È‚¢<any_cast<float>‚Åˆ—’Ê‚ç‚È‚©‚Á‚½>
-	//‚Â‚Ü‚é‚Æ‚±‚ëstd::any_cast<double>(ZZ)‚ÍŒÅ’è(static_cast‚Å•ÏŠ·)
-	/*‡@*/m_AddSpeed= static_cast<float>(std::any_cast<double>(sp));
+	//any_castã¯doubleå‹ãªã®ã§ãã‚Œã‚’static_castã§floatã«
+	//doubleãŒatof()é–¢æ•°ã®æˆ»ã‚Šå€¤ãªã®ã§å¤‰æ›´ã§ããªã„<any_cast<float>ã§å‡¦ç†é€šã‚‰ãªã‹ã£ãŸ>
+	//ã¤ã¾ã‚‹ã¨ã“ã‚std::any_cast<double>(ã€‡ã€‡)ã¯å›ºå®š(static_castã§å¤‰æ›)
+	/*â‘ */m_AddSpeed= static_cast<float>(std::any_cast<double>(sp));
 
 	Input* input = Input::GetInstance();
-	/*FBX‚ÌƒJƒEƒ“ƒ^double‚É‚µ‚½‚Ù‚¤‚ª’²®‚«‚«‚â‚·‚»‚¤*/
+	/*FBXã®ã‚«ã‚¦ãƒ³ã‚¿doubleã«ã—ãŸã»ã†ãŒèª¿æ•´ããã‚„ã™ãã†*/
 
 	OldPos = m_Position;
-	/*--------ƒLƒƒƒ‰‚ÌŠî–{“®ì-------*/
+	/*--------ã‚­ãƒ£ãƒ©ã®åŸºæœ¬å‹•ä½œ-------*/
 	/*-----------------------------*/
 	if (!isStop) {
-		//ƒXƒeƒBƒbƒN‚ª‰Ÿ‚³‚ê‚Ä‚éŠÔ‚ÍˆÚ“®‚·‚é
+		//ã‚¹ãƒ†ã‚£ãƒƒã‚¯ãŒæŠ¼ã•ã‚Œã¦ã‚‹é–“ã¯ç§»å‹•ã™ã‚‹
 		if (input->TiltPushStick(Input::L_UP, 0.0f) ||
 			input->TiltPushStick(Input::L_DOWN, 0.0f) ||
 			input->TiltPushStick(Input::L_RIGHT, 0.0f) ||
@@ -83,7 +83,7 @@ void Player::Update()
 		{
 			_charaState = CharaState::STATE_RUN;
 		}
-		//‰½‚àƒAƒNƒVƒ‡ƒ“‚ª‚È‚©‚Á‚½‚çƒAƒCƒhƒ‹ó‘Ô
+		//ä½•ã‚‚ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ãŒãªã‹ã£ãŸã‚‰ã‚¢ã‚¤ãƒ‰ãƒ«çŠ¶æ…‹
 		else
 		{
 			_charaState = CharaState::STATE_IDLE;
@@ -92,39 +92,38 @@ void Player::Update()
 		if (isStop) {
 			_charaState = CharaState::STATE_IDLE;
 		}
-	//’e‚ÌXV
-	BulletUpdate();
+	//å¼¾ã®ç®¡ç†
+	Bullet_Management();
 
-	//ó‘ÔˆÚs(charastate‚É‡‚í‚¹‚é)
+	//çŠ¶æ…‹ç§»è¡Œ(charastateã«åˆã‚ã›ã‚‹)
 	(this->*stateTable[_charaState])();
 
-	//Šî‘bƒpƒ‰ƒ[ƒ^İ’è
+	//åŸºç¤ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¨­å®š
 	Fbx_SetParam();
 	
-	//‚Ç‚Á‚¿g‚¦‚Î‚¢‚¢‚©•ª‚©‚ç‚È‚©‚Á‚½‚©‚ç•Û—¯
+	//ã©ã£ã¡ä½¿ãˆã°ã„ã„ã‹åˆ†ã‹ã‚‰ãªã‹ã£ãŸã‹ã‚‰ä¿ç•™
 	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 
-	//State‚É“ü‚ê‚È‚­‚Ä‚¢‚¢‚â‚Â
-	//UŒ‚‚ÌƒCƒ“ƒ^[ƒoƒ‹
+	//Stateã«å…¥ã‚Œãªãã¦ã„ã„ã‚„ã¤
+	//æ”»æ’ƒã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«
 	InterVal();
-	//‹Q‰ìƒQ[ƒWXV
+	//é£¢é¤“ã‚²ãƒ¼ã‚¸æ›´æ–°
 	HungerGauge::GetInstance()->Update();
 }
-//•`‰æ
+//æç”»
 void Player::Draw(DirectXCommon* dxCommon)
 {
+	//ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼
 	Fbx_Draw(dxCommon);
-	//’e‚Ì•`‰æ(Œ¾—ì)
-	for (InterBullet* ghostbullet : ghostbullets) {
-		if (ghostbullet != nullptr) {
-			ghostbullet->Draw(dxCommon);
-		}
-	}
-
-	//’e‚Ì•`‰æ(Œ¾—ì)
-	for (InterBullet* attackbullet : attackbullets) {
-		if (attackbullet != nullptr) {
-			attackbullet->Draw(dxCommon);
+	//å¼¾ã®æç”»
+	BulletDraw(ghostbullets, dxCommon);
+	BulletDraw(attackbullets, dxCommon);
+}
+//å¼¾ã®æç”»
+void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxCommon) {
+	for (InterBullet* bullet : bullets) {
+		if (bullet != nullptr) {
+			bullet->Draw(dxCommon);
 		}
 	}
 
@@ -132,47 +131,23 @@ void Player::Draw(DirectXCommon* dxCommon)
 }
 //ImGui
 void Player::ImGuiDraw() {
-	ImGui::Begin("Player");
-	if (ImGui::TreeNode("BULLET")) {
-		if (m_BulletType == BULLET_FORROW) {
-			ImGui::Text("BULLET_FORROW");
-		}
-		else {
-			ImGui::Text("BULLET_SEARCH");
-		}
-		ImGui::TreePop();
-	}
-	ImGui::Text("ShotTimer:%d", m_ShotTimer);
-	ImGui::Text("Posx:%f",m_Position.x);
-	ImGui::Text("Posy:%f", m_Position.z);
-	ImGui::End();
-
-	HungerGauge::GetInstance()->ImGuiDraw();
-	//’eImGui
-	for (InterBullet* bullet : ghostbullets) {
-		if (bullet != nullptr) {
-			bullet->ImGuiDraw();
-		}
-	}
-
-	viewbullet->ImGui_Origin();
 }
-//FBX‚ÌƒAƒjƒ[ƒVƒ‡ƒ“ŠÇ—(ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì–¼‘O,ƒ‹[ƒv‚·‚é‚©,ƒJƒEƒ“ƒ^‘¬“x)
+//FBXã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ç®¡ç†(ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®åå‰,ãƒ«ãƒ¼ãƒ—ã™ã‚‹ã‹,ã‚«ã‚¦ãƒ³ã‚¿é€Ÿåº¦)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
 {
-	//ƒAƒjƒ[ƒVƒ‡ƒ“‚ğˆø”‚É‡‚í‚¹‚é
+	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å¼•æ•°ã«åˆã‚ã›ã‚‹
 	if (_animeName != name)
 	{
 		m_fbxObject->PlayAnimation(static_cast<int>(name));
 	}
 
-	//Šeíƒpƒ‰ƒ[ƒ^”½‰f
+	//å„ç¨®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿åæ˜ 
 	_animeName = name;
 	m_LoopFlag =loop;
 	m_AnimationSpeed = speed;
 	
 }
-//•à‚«(ƒRƒ“ƒgƒ[ƒ‰[)
+//æ­©ã(ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼)
 void Player::Walk()
 {
 	XMFLOAT3 rot = m_Rotation;
@@ -184,19 +159,19 @@ void Player::Walk()
 	float StickY = input->GetLeftControllerY();
 	const float STICK_MAX = 32768.0f;
 	
-		//ã“ü—Í
+		//ä¸Šå…¥åŠ›
 		if (input->TiltPushStick(Input::L_UP, 0.0f))
 			XMFLOAT3 vecvel = MoveVECTOR(XMVECTOR{ 0, 0, velocity, 0 }, angle);
 
-		//‰º“ü—Í
+		//ä¸‹å…¥åŠ›
 		if (input->TiltPushStick(Input::L_DOWN, 0.0f))
 			XMFLOAT3 vecvel = MoveVECTOR(XMVECTOR{ 0, 0, -velocity, 0 }, angle);
 
-		//‰E“ü—Í
+		//å³å…¥åŠ›
 		if (input->TiltPushStick(Input::L_RIGHT, 0.0f))
 			XMFLOAT3 vecvel = MoveVECTOR(XMVECTOR{ velocity, 0, 0, 0 }, angle);
 
-		//¶“ü—Í
+		//å·¦å…¥åŠ›
 		if (input->TiltPushStick(Input::L_LEFT, 0.0f))
 			XMFLOAT3 vecvel = MoveVECTOR(XMVECTOR{ -velocity, 0, 0, 0 }, angle);
 		
@@ -210,17 +185,17 @@ void Player::Walk()
 		vel.z = static_cast<float>(rand()) / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 		rot.y = angle + atan2f(StickX, StickY) * (PI_180 / PI);
 
-		//ƒvƒŒƒCƒ„[‚Ì‰ñ“]Šp‚ğæ‚é
+		//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å›è»¢è§’ã‚’å–ã‚‹
 		m_Rotation = { rot.x, rot.y, rot.z };
 
 		XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
 		XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
 		move = XMVector3TransformNormal(move, matRot);
 
-		//ƒŠƒ~ƒbƒg§ŒÀ
+		//ãƒªãƒŸãƒƒãƒˆåˆ¶é™
 		Helper::GetInstance()->FloatClamp(m_Position.x, -55.0f, 65.0f);
 		Helper::GetInstance()->FloatClamp(m_Position.z, -60.0f, 60.0f);
-		//Œü‚¢‚½•ûŒü‚Éi‚Ş
+		//å‘ã„ãŸæ–¹å‘ã«é€²ã‚€
 		if (m_RigidityTime == m_ResetNumber) {
 			m_Position.x += move.m128_f32[0] * m_AddSpeed;
 			m_Position.z += move.m128_f32[2] * m_AddSpeed;
@@ -236,12 +211,12 @@ XMFLOAT3 Player::MoveVECTOR(XMVECTOR v, float angle)
 	XMFLOAT3 pos = { v.m128_f32[0], v.m128_f32[1], v.m128_f32[2] };
 	return pos;
 }
-//’e‚ÌXV
-void Player::BulletUpdate() {
+//å¼¾ã®æ›´æ–°
+void Player::Bullet_Management() {
 	const float l_TargetCount = 1.0f;
-	const int l_Limit = 20;//ƒVƒ‡ƒbƒg‚Ìƒ`ƒƒ[ƒWŠÔ
+	const int l_Limit = 20;//ã‚·ãƒ§ãƒƒãƒˆã®ãƒãƒ£ãƒ¼ã‚¸æ™‚é–“
 	/*-----------------------------*/
-	//RB||LB‚ª‰Ÿ‚³‚ê‚½‚ç’e‚ğŒ‚‚Â(Œ¾—ì)
+	//RB||LBãŒæŠ¼ã•ã‚ŒãŸã‚‰å¼¾ã‚’æ’ƒã¤(è¨€éœŠ)
 	if (((Input::GetInstance()->TriggerButton(Input::RB)) || (Input::GetInstance()->TriggerButton(Input::LB))) && (m_InterVal == 0))
 	{
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Normal.wav",VolumManager::GetInstance()->GetSEVolum());
@@ -252,24 +227,24 @@ void Player::BulletUpdate() {
 			m_BulletType = BULLET_SEARCH;
 		}
 		ResetBullet();
-		_charaState = CharaState::STATE_GHOST;
+		BirthShot("Ghost", false);
 	}
 
-	//UŒ‚
-	//B‚ª‰Ÿ‚³‚ê‚½‚ç’e‚Ìƒ`ƒƒ[ƒW
+	//æ”»æ’ƒ
+	//BãŒæŠ¼ã•ã‚ŒãŸã‚‰å¼¾ã®ãƒãƒ£ãƒ¼ã‚¸
 	if (Input::GetInstance()->PushButton(Input::B) && m_InterVal == 0 && HungerGauge::GetInstance()->GetCatchCount() >= l_TargetCount)
 	{
 		m_ShotTimer++;
 		viewbullet->SetAlive(true);
 	}
 
-	//ƒ`ƒƒ[ƒWŠÔ‚ªˆê’è‚ğ’´‚¦‚½‚ç‹Q‰ìƒQ[ƒW‚ÌŒ¸‚é‘¬“x‚ªã‚ª‚é
+	//ãƒãƒ£ãƒ¼ã‚¸æ™‚é–“ãŒä¸€å®šã‚’è¶…ãˆãŸã‚‰é£¢é¤“ã‚²ãƒ¼ã‚¸ã®æ¸›ã‚‹é€Ÿåº¦ãŒä¸ŠãŒã‚‹
 	if (m_ShotTimer > l_Limit) {
 		viewbullet->SetCharge(true);
 		HungerGauge::GetInstance()->SetSubVelocity(2.0f);
-		//ƒ`ƒƒ[ƒW’†‚É‹Q‰ìƒQ[ƒW‚ªØ‚ê‚½ê‡’e‚ª©“®‚Å•ú‚½‚ê‚é
+		//ãƒãƒ£ãƒ¼ã‚¸ä¸­ã«é£¢é¤“ã‚²ãƒ¼ã‚¸ãŒåˆ‡ã‚ŒãŸå ´åˆå¼¾ãŒè‡ªå‹•ã§æ”¾ãŸã‚Œã‚‹
 		if (HungerGauge::GetInstance()->GetNowHunger() == 0.0f) {
-			_charaState = CharaState::STATE_SUPERSHOT;
+			BirthShot("Attack", true);
 			HungerGauge::GetInstance()->SetSubVelocity(1.0f);
 			ResetBullet();
 		}
@@ -278,31 +253,16 @@ void Player::BulletUpdate() {
 	if (!Input::GetInstance()->PushButton(Input::B) && m_ShotTimer != 0) {
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Charge.wav", VolumManager::GetInstance()->GetSEVolum());
 		if (m_ShotTimer < l_Limit) {
-			_charaState = CharaState::STATE_ATTACKSHOT;
+			BirthShot("Attack", false);
 		}
 		else {
-			_charaState = CharaState::STATE_SUPERSHOT;
+			BirthShot("Attack", true);
 			HungerGauge::GetInstance()->SetSubVelocity(1.0f);
 		}
 		ResetBullet();
 	}
 
-	//Œ¾’e‚ÌXV
-	for (InterBullet* ghostbullet : ghostbullets) {
-		if (ghostbullet != nullptr) {
-			ghostbullet->Update();
-		}
-	}
-
-
-	//UŒ‚’e‚ÌXV
-	for (InterBullet* attackbullet : attackbullets) {
-		if (attackbullet != nullptr) {
-			attackbullet->Update();
-		}
-	}
-
-	//’e‚Ìíœ(Œ¾—ì)
+	//å¼¾ã®å‰Šé™¤(è¨€éœŠ)
 	for (int i = 0; i < ghostbullets.size(); i++) {
 		if (ghostbullets[i] == nullptr) {
 			continue;
@@ -313,7 +273,7 @@ void Player::BulletUpdate() {
 		}
 	}
 
-	//’e‚Ìíœ(Œ¾—ì)
+	//å¼¾ã®å‰Šé™¤(è¨€éœŠ)
 	for (int i = 0; i < attackbullets.size(); i++) {
 		if (attackbullets[i] == nullptr) {
 			continue;
@@ -323,7 +283,10 @@ void Player::BulletUpdate() {
 			attackbullets.erase(cbegin(attackbullets) + i);
 		}
 	}
-	//’e‚ğŒ‚‚Â•ûŒü‚ğZo‚·‚é‚½‚ß‚É‰ñ“]‚ğ‹‚ß‚é
+	//å¼¾ã®æ›´æ–°
+	BulletUpdate(ghostbullets);
+	BulletUpdate(attackbullets);
+	//å¼¾ã‚’æ’ƒã¤æ–¹å‘ã‚’ç®—å‡ºã™ã‚‹ãŸã‚ã«å›è»¢ã‚’æ±‚ã‚ã‚‹
 	XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
 	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
 	move = XMVector3TransformNormal(move, matRot);
@@ -332,85 +295,75 @@ void Player::BulletUpdate() {
 	l_Angle.y = move.m128_f32[2];
 
 
-	//‰Â‹‰»‚Ì’eŠÖŒW
+	//å¯è¦–åŒ–ã®å¼¾é–¢ä¿‚
 	viewbullet->Update();
 	viewbullet->SetAngle(l_Angle);
 	viewbullet->SetPosition(m_Position);
+}
+void Player::BulletUpdate(std::vector<InterBullet*> bullets) {
+	//å¼¾ã®æ›´æ–°
+	for (InterBullet* bullet : bullets) {
+		if (bullet != nullptr) {
+			bullet->Update();
+		}
+	}
 	
 }
-//’e‚ğ‘Å‚Âˆ—(ƒS[ƒXƒg‚ğ•ß‚Ü‚¦‚é)
-void Player::GhostShot() {
-	//’e‚ğŒ‚‚Â•ûŒü‚ğZo‚·‚é‚½‚ß‚É‰ñ“]‚ğ‹‚ß‚é
+//å¼¾ã®ç”Ÿæˆ
+void Player::BirthShot(const std::string& bulletName, bool Super) {
 	XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
 	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
 	move = XMVector3TransformNormal(move, matRot);
 	XMFLOAT2 l_Angle;
 	l_Angle.x = move.m128_f32[0];
 	l_Angle.y = move.m128_f32[2];
-
-	//’e‚Ì¶¬
-	GhostBullet* newbullet;
-	newbullet = new GhostBullet();
-	newbullet->Initialize();
-	newbullet->SetPosition(m_Position);
-	newbullet->SetBulletType(m_BulletType);
-	newbullet->SetAngle(l_Angle);
-	ghostbullets.push_back(newbullet);
+	//æ”»æ’ƒã®å¼¾
+	if (bulletName == "Attack") {
+		InterBullet* newbullet;
+		newbullet = new AttackBullet();
+		newbullet->Initialize();
+		newbullet->SetPosition(viewbullet->GetPosition());
+		//ãƒãƒ£ãƒ¼ã‚¸ã‚·ãƒ§ãƒƒãƒˆã‹ã©ã†ã‹
+		if (Super) {
+			newbullet->SetScale(viewbullet->GetScale());
+		}
+		else {
+			newbullet->SetScale({ 1.0f,1.0f,1.0f });
+		}
+		newbullet->SetAngle(l_Angle);
+		attackbullets.push_back(newbullet);
+	}
+	//è¨€éœŠ
+	else if(bulletName == "Ghost") {
+		//å¼¾ã®ç”Ÿæˆ
+		GhostBullet* newbullet;
+		newbullet = new GhostBullet();
+		newbullet->Initialize();
+		newbullet->SetPosition(m_Position);
+		newbullet->SetBulletType(m_BulletType);
+		newbullet->SetAngle(l_Angle);
+		ghostbullets.push_back(newbullet);
+	}
+	else {
+		assert(0);
+	}
 }
-//’e‚ğ‘Å‚Âˆ—(UŒ‚)
-void Player::AttackShot() {
-	//’e‚ğŒ‚‚Â•ûŒü‚ğZo‚·‚é‚½‚ß‚É‰ñ“]‚ğ‹‚ß‚é
-	XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
-	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
-	move = XMVector3TransformNormal(move, matRot);
-	XMFLOAT2 l_Angle;
-	l_Angle.x = move.m128_f32[0];
-	l_Angle.y = move.m128_f32[2];
-	//’e‚Ì¶¬
-	InterBullet* newbullet;
-	newbullet = new AttackBullet();
-	newbullet->Initialize();
-	newbullet->SetPosition(m_Position);
-	newbullet->SetScale({ 1.0f,1.0f,1.0f });
-	newbullet->SetAngle(l_Angle);
-	attackbullets.push_back(newbullet);	
-}
-//’e‚ğ‘Å‚Âˆ—(ƒS[ƒXƒg‚ğ•ß‚Ü‚¦‚é)
-void Player::SuperShot() {
-	//’e‚ğŒ‚‚Â•ûŒü‚ğZo‚·‚é‚½‚ß‚É‰ñ“]‚ğ‹‚ß‚é
-	XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
-	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
-	move = XMVector3TransformNormal(move, matRot);
-	XMFLOAT2 l_Angle;
-	l_Angle.x = move.m128_f32[0];
-	l_Angle.y = move.m128_f32[2];
-
-	//’e‚Ì¶¬
-	InterBullet* newbullet;
-	newbullet = new AttackBullet();
-	newbullet->Initialize();
-	newbullet->SetPosition(viewbullet->GetPosition());
-	newbullet->SetScale(viewbullet->GetScale());
-	newbullet->SetAngle(l_Angle);
-	attackbullets.push_back(newbullet);
-	viewbullet->SetScale({ 1.0f,1.0f,1.0f });
-}
-//‘Ò‹@ƒ‚[ƒVƒ‡ƒ“
+//å¾…æ©Ÿãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³
 void Player::Idle()
 {
-	//ğŒ­‚µ‚¨‚©‚µ‚¢‚Ì‚ÅŒã‚ÅC³
+	//æ¡ä»¶å°‘ã—ãŠã‹ã—ã„ã®ã§å¾Œã§ä¿®æ­£
 	if (_animeName == AnimeName::IDLE)return;
 	AnimationControl(AnimeName::IDLE, true, 1);
 }
-//ƒCƒ“ƒ^[ƒoƒ‹
+//ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«
 void Player::InterVal() {
 	Helper::GetInstance()->CheckMaxINT(m_InterVal, 0, -1);
 	Helper::GetInstance()->CheckMaxINT(m_RigidityTime, 0, -1);
 }
-//’e‚Æ‚Ì“–‚½‚è”»’è
+//å¼¾ã¨ã®å½“ãŸã‚Šåˆ¤å®š
 bool Player::BulletCollide(const XMFLOAT3& pos,const bool Catch) {
-	float l_Radius = 1.3f;//“–‚½‚è”ÍˆÍ
-	//’e‚ÌXV
+	float l_Radius = 1.3f;//å½“ãŸã‚Šç¯„å›²
+	//å¼¾ã®æ›´æ–°
 	for (InterBullet* bullet : ghostbullets) {
 		if (bullet != nullptr) {
 			if (Collision::CircleCollision(bullet->GetPosition().x, bullet->GetPosition().z, l_Radius, pos.x, pos.z, l_Radius) && (bullet->GetAlive()) && (!Catch)) {
@@ -425,9 +378,9 @@ bool Player::BulletCollide(const XMFLOAT3& pos,const bool Catch) {
 
 	return false;
 }
-//ƒvƒŒƒCƒ„[‚Æ‚Ì“–‚½‚è”»’è
+//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ã®å½“ãŸã‚Šåˆ¤å®š
 bool Player::PlayerCollide(const XMFLOAT3& pos) {
-	float l_Radius = 3.1f;//“–‚½‚è”ÍˆÍ
+	float l_Radius = 3.1f;//å½“ãŸã‚Šç¯„å›²
 	if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, pos.x, pos.z, l_Radius)) {
 		return true;
 	}
@@ -437,7 +390,7 @@ bool Player::PlayerCollide(const XMFLOAT3& pos) {
 
 	return false;
 }
-//’e‚ÌƒŠƒZƒbƒg
+//å¼¾ã®ãƒªã‚»ãƒƒãƒˆ
 void Player::ResetBullet() {
 	m_InterVal = m_TargetInterVal;
 	m_RigidityTime = m_TargetRigidityTime;

@@ -20,8 +20,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	ParticleEmitter::GetInstance()->AllDelete();
 
 	//各クラス
-	player = std::make_unique<Player>();
-	camerawork->SetPlayer(player.get());
+	Player::GetInstance()->InitState({ 0.0f,0.0f,0.0f });
 	camerawork->Update(camera);
 	ui = std::make_unique<UI>();
 	ui->Initialize();
@@ -33,13 +32,13 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	blackwindow = IKESprite::Create(ImageManager::BLACKWINDOW, {});
 
 
-	enemymanager = std::make_unique<EnemyManager>(player.get(),"FIRSTSTAGE");
+	enemymanager = std::make_unique<EnemyManager>("FIRSTSTAGE");
 
 	backobj = std::make_unique<BackObj>();
 	backobj->Initialize();
 
 	loadobj = std::make_unique<LoadStageObj>();
-	loadobj->AllLoad(player.get());
+	loadobj->AllLoad();
 }
 //更新
 void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -92,7 +91,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	//各クラス更新
 	backobj->Update();
 	if (nowstate != CONVERSATION) {
-		player->Update();
+		Player::GetInstance()->Update();
 		enemymanager->Update();
 		loadobj->Update();
 		ParticleEmitter::GetInstance()->Update();
@@ -132,8 +131,8 @@ void FirstStageActor::Finalize() {
 void FirstStageActor::BackDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
 	////各クラスの描画
-	player->Draw(dxCommon);
-loadobj->Draw(dxCommon);
+	Player::GetInstance()->Draw(dxCommon);
+	loadobj->Draw(dxCommon);
 	backobj->Draw(dxCommon);
 	enemymanager->Draw(dxCommon);
 	
@@ -152,7 +151,7 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void FirstStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	player->ImGuiDraw();
+	Player::GetInstance()->ImGuiDraw();
 	loadobj->ImGuiDraw();
-	camerawork->ImGuiDraw();
+	//camerawork->ImGuiDraw();
 }

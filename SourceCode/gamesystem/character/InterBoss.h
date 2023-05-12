@@ -1,40 +1,42 @@
 #pragma once
-#include "Player.h"
 #include "IKETexture.h"
 #include "CollisionPrimitive.h"
+#include "InterBullet.h"
 #include "ObjCommon.h"
-#include <array>       // ƒwƒbƒ_ƒtƒ@ƒCƒ‹ƒCƒ“ƒNƒ‹[ƒh
-using namespace std;         //  –¼‘O‹óŠÔw’è
+#include <array>       // ãƒ˜ãƒƒãƒ€ãƒ•ã‚¡ã‚¤ãƒ«ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
+using namespace std;         //  åå‰ç©ºé–“æŒ‡å®š
 
-//ƒ{ƒX‚ÌŠî’êƒNƒ‰ƒX
+//ãƒœã‚¹ã®åŸºåº•ã‚¯ãƒ©ã‚¹
 class InterBoss :
 	public ObjCommon {
 protected:
-	// DirectX::‚ğÈ—ª
+	// DirectX::ã‚’çœç•¥
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
-	void SetPlayer(Player* player) { _player = player; }
 	bool GetIsAlive() { return isAlive; }
 	//gettersetter
-
 public:
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	virtual bool Initialize() = 0;
-	//XV
+	//æ›´æ–°
 	void Update();
 	/// <summary>
-	/// ƒ|[ƒY‚Ì‚Æ‚«
+	/// ãƒãƒ¼ã‚ºã®ã¨ã
 	/// </summary>
 	virtual void Pause() = 0;
-	//•`‰æ
+	//æç”»
 	void Draw(DirectXCommon* dxCommon);
 
-	virtual void Action() = 0;//ƒ{ƒX“Á—L‚Ìˆ—
+	virtual void Action() = 0;//ãƒœã‚¹ç‰¹æœ‰ã®å‡¦ç†
+
+	virtual void ImGui_Origin() = 0;//ãƒœã‚¹ãã‚Œãã‚Œã®ImGui
+
+	void ImGuiDraw();//ImGuiã®æç”»
 
 	virtual void EffecttexDraw(DirectXCommon* dxCommon) = 0;
 
@@ -43,15 +45,12 @@ public:
 
 private:
 protected:
-	//ŠeƒNƒ‰ƒX
-	Player* _player;
 
 	int ActionDamage;
 	int ActionCool;
 
 	bool isAlive;
-	int HP;
-
+	float m_HP = {};
 private:
 
 	enum class ActionList
@@ -70,6 +69,11 @@ private:
 		std::vector<float>ParSize;
 		bool Shake;
 	};
+protected:
+	//å¼¾ã¨ã®å½“ãŸã‚Šåˆ¤å®š
+	void CollideBul(vector<InterBullet*>bullet);
 
+public:
+	bool Recv;
 };
 

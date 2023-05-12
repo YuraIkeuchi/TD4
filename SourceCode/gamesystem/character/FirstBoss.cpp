@@ -7,7 +7,7 @@
 #include "CsvLoader.h"
 #include "ImageManager.h"
 #include "Input.h"
-//¶¬
+//ç”Ÿæˆ
 FirstBoss::FirstBoss() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Tyuta);
 
@@ -47,6 +47,7 @@ bool FirstBoss::Initialize() {
 	m_Rotation.y = 90.f;
 	RTime = 1;
 	m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "pos")));
+	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp1")));
 	MoveCount = 1;
 	_phaseN = Phase_Normal::NON;
 
@@ -54,7 +55,7 @@ bool FirstBoss::Initialize() {
 	actiontimer = 1;
 	return true;
 }
-//s“®
+//è¡Œå‹•
 void FirstBoss::Action() {
 
 
@@ -71,8 +72,6 @@ void FirstBoss::Action() {
 	Helper::GetInstance()->FloatClamp(YmovEaseT, 0.f, 1.f);
 
 	m_Position.y = 10.f + sinf(3.14f * 2.f / 120.f * PosYMovingT) * -5.f;
-
-	XMFLOAT3 l_player = _player->GetPosition();
 
 	//
 	
@@ -117,7 +116,7 @@ void FirstBoss::Action() {
 		AttackTex[i].Tex->SetIsBillboard(false);
 		AttackTex[i].Tex->Update();
 	}
-	//Œü‚«‚©‚¦‚é
+	//å‘ãã‹ãˆã‚‹
 	ImpactAttack();
 	if (RTime % 100 == 0) { isRot = true; }
 	RTime++;
@@ -130,10 +129,8 @@ void FirstBoss::Action() {
 
 	}
 
-	vector<InterBullet*> _playerBulA = _player->GetBulllet_attack();
-	vector<InterBullet*> _playerBulG = _player->GetBulllet_ghost();
+	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
 		CollideBul(_playerBulA);
-		CollideBul(_playerBulG);
 	
 		if(!_normal.GetAttackF())
 		{
@@ -159,46 +156,47 @@ void FirstBoss::Action() {
 		{
 			actiontimer++;
 		}
-		_normal.Update(_player, m_Position, m_Rotation, EncF);
+		_normal.Update(m_Position, m_Rotation, EncF);
 		Move_Away(); _normal.Remove(m_Position,m_Scale,EncF); DamAction();
 		m_Color = Col;
 	}
 	_normal.ColPlayer(_player, m_Position);
-	_normal.SetreposAngle(_player);
+
+	_normal.SetreposAngle();
 	//NormalAttack();
 
-	//OBJ‚ÌƒXƒe[ƒ^ƒX‚ÌƒZƒbƒg
+	//OBJã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã®ã‚»ãƒƒãƒˆ
 	Obj_SetParam();
 }
-//ƒ|[ƒY
+//ãƒãƒ¼ã‚º
 void FirstBoss::Pause() {
 
 
 }
-void FirstBoss::NormalAttak::Update(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot,bool &Enf)
+void FirstBoss::NormalAttak::Update(XMFLOAT3& Pos, XMFLOAT3& Rot,bool &Enf)
 {
 	switch (_phaseN)
 	{
 	case Phase_Normal::ROTPLAYER_0:
-		NormalAttak::Shake(player, Pos, Rot);
+		NormalAttak::Shake(Pos, Rot);
 		break;
 	case Phase_Normal::PHASE_ONE:
-		NormalAttak::Attack(player, Pos, Rot);
+		NormalAttak::Attack(Pos, Rot);
 		break;
 	case Phase_Normal::ROTPLAYER_1:
-		NormalAttak::Shake(player, Pos, Rot);
+		NormalAttak::Shake(Pos, Rot);
 		break;
 	case Phase_Normal::PHASE_TWO:
-		NormalAttak::Attack(player, Pos, Rot);
+		NormalAttak::Attack(Pos, Rot);
 		break;
 	case Phase_Normal::ROTPLAYER_2:
-		NormalAttak::Shake(player, Pos, Rot);
+		NormalAttak::Shake(Pos, Rot);
 		break;
 	case Phase_Normal::PHASE_THREE:
-		NormalAttak::Attack(player, Pos, Rot);
+		NormalAttak::Attack(Pos, Rot);
 		break;
 	case Phase_Normal::ROTPLAYER_3:
-		NormalAttak::Shake(player,Pos,Rot);
+		NormalAttak::Shake(Pos,Rot);
 		break;
 	case Phase_Normal::NON:
 	{
@@ -231,7 +229,7 @@ void FirstBoss::NormalAttak::Update(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot
 	break;
 
 	case Phase_Normal::STIFF:
-		NormalAttak::Idle(player, Pos, Rot, Enf);
+		NormalAttak::Idle(Pos, Rot, Enf);
 		break;
 	}
 }
@@ -302,17 +300,17 @@ void FirstBoss::ImpactAttack()
 void FirstBoss::Move()
 {
 
-	XMFLOAT3 l_player = _player->GetPosition();
+	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
 
 	if (BattleStartF&&!Recv && !_normal.GetAttackF()) {
 
-		//Šp“x‚Ìæ“¾ ƒvƒŒƒCƒ„[‚ª“G‚Ìõ“GˆÊ’u‚É“ü‚Á‚½‚çŒü‚«‚ğƒvƒŒƒCƒ„[‚Ì•û‚É
+		//è§’åº¦ã®å–å¾— ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæ•µã®ç´¢æ•µä½ç½®ã«å…¥ã£ãŸã‚‰å‘ãã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ–¹ã«
 		XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
 		XMVECTOR PositionB = { m_Position.x,m_Position.y,m_Position.z };
-		//ƒvƒŒƒCƒ„[‚Æ“G‚ÌƒxƒNƒgƒ‹‚Ì’·‚³(·)‚ğ‹‚ß‚é
+		//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨æ•µã®ãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•(å·®)ã‚’æ±‚ã‚ã‚‹
 		XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
-		//‰ñ“]²‚ğƒvƒŒƒCƒ„[‚Ì•û‚É
-			//Œü‚«‚©‚¦‚é
+		//å›è»¢è»¸ã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ–¹ã«
+			//å‘ãã‹ãˆã‚‹
 
 		float RotY = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
 
@@ -346,15 +344,15 @@ void FirstBoss::Move_Away()
 	if (_normal.GetAttackF())return;
 	if (!Recv)return;
 	///if(NormalAttackF)
-	XMFLOAT3 l_player = _player->GetPosition();
+	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
 
-	//Šp“x‚Ìæ“¾ ƒvƒŒƒCƒ„[‚ª“G‚Ìõ“GˆÊ’u‚É“ü‚Á‚½‚çŒü‚«‚ğƒvƒŒƒCƒ„[‚Ì•û‚É
+	//è§’åº¦ã®å–å¾— ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæ•µã®ç´¢æ•µä½ç½®ã«å…¥ã£ãŸã‚‰å‘ãã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ–¹ã«
 	XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
 	XMVECTOR PositionB = { m_Position.x,m_Position.y,m_Position.z };
-	//ƒvƒŒƒCƒ„[‚Æ“G‚ÌƒxƒNƒgƒ‹‚Ì’·‚³(·)‚ğ‹‚ß‚é
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨æ•µã®ãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•(å·®)ã‚’æ±‚ã‚ã‚‹
 	XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
-	//‰ñ“]²‚ğƒvƒŒƒCƒ„[‚Ì•û‚É
-		//Œü‚«‚©‚¦‚é
+	//å›è»¢è»¸ã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ–¹ã«
+		//å‘ãã‹ãˆã‚‹
 
 	float RotY = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
 
@@ -376,7 +374,7 @@ void FirstBoss::Move_Away()
 			GoAway = true;
 		}
 	} else {
-		//Œü‚¢‚½•ûŒü‚É“¦‚°‚é
+		//å‘ã„ãŸæ–¹å‘ã«é€ƒã’ã‚‹
 		m_Position.x = m_Position.x + move.m128_f32[0] * 6.f;
 		m_Position.z = m_Position.z + move.m128_f32[2] * 6.f;
 
@@ -402,13 +400,13 @@ void FirstBoss::RushAttack()
 {
 }
 
-void FirstBoss::NormalAttak::Idle(Player* player, XMFLOAT3& Pos, XMFLOAT3 Rot,bool& Enf)
+void FirstBoss::NormalAttak::Idle(XMFLOAT3& Pos, XMFLOAT3 Rot,bool& Enf)
 {
 	StayCount++;
 	if (StayCount >= 180)
 	{
 		RushRotationF = true;
-		NormalAttak::Rot(player, Pos, Rot);
+		NormalAttak::Rot(Pos, Rot);
 		if (RotEaseTime >= 1.f)
 		{
 			Enf = false;
@@ -423,9 +421,9 @@ void FirstBoss::NormalAttak::Idle(Player* player, XMFLOAT3& Pos, XMFLOAT3 Rot,bo
 	}
 }
 
-void FirstBoss::NormalAttak::Attack(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot)
+void FirstBoss::NormalAttak::Attack(XMFLOAT3& Pos, XMFLOAT3& Rot)
 {
-	XMFLOAT3 l_player = player->GetPosition();
+	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
 
 	//ColPlayer(player, Pos);
 
@@ -464,9 +462,9 @@ void FirstBoss::NormalAttak::Attack(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot
 	Helper::GetInstance()->FloatClamp(RotEaseTime, 0.f, 1.f);
 }
 
-void FirstBoss::NormalAttak::Shake(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot)
+void FirstBoss::NormalAttak::Shake(XMFLOAT3& Pos, XMFLOAT3& Rot)
 {
-	//‰Šú‰»•”
+	//åˆæœŸåŒ–éƒ¨
 	{
 		RushMoveEaseT = 0.f;
 	}
@@ -488,7 +486,7 @@ void FirstBoss::NormalAttak::Shake(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot)
 			//}
 			Pos.x += shakex / 12.00f;
 			Pos.z += shakey / 12.00f;
-			//ƒVƒFƒCƒN’l‚ğ‚O‚É
+			//ã‚·ã‚§ã‚¤ã‚¯å€¤ã‚’ï¼ã«
 		}
 
 		if (shaketime <= 0.0f && !shakeend) {
@@ -521,7 +519,7 @@ void FirstBoss::NormalAttak::Shake(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot)
 		}
 	} else
 	{
-		NormalAttak::Rot(player,Pos,Rot);
+		NormalAttak::Rot(Pos,Rot);
 	}
 
 	if (Collision::CircleCollision(Pos.x, Pos.z, 1.f, player->GetPosition().x, player->GetPosition().z, 3.f))
@@ -530,13 +528,13 @@ void FirstBoss::NormalAttak::Shake(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot)
 	}
 }
 
-void FirstBoss::NormalAttak::Rot(Player* player, XMFLOAT3& Pos, XMFLOAT3 &Rot)
+void FirstBoss::NormalAttak::Rot(XMFLOAT3& Pos, XMFLOAT3 &Rot)
 {
-	XMFLOAT3 l_player = player->GetPosition();
-	//Šp“x‚Ìæ“¾ ƒvƒŒƒCƒ„[‚ª“G‚Ìõ“GˆÊ’u‚É“ü‚Á‚½‚çŒü‚«‚ğƒvƒŒƒCƒ„[‚Ì•û‚É
+	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
+	//è§’åº¦ã®å–å¾— ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæ•µã®ç´¢æ•µä½ç½®ã«å…¥ã£ãŸã‚‰å‘ãã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ–¹ã«
 	XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
 	XMVECTOR PositionB = { Pos.x,Pos.y,Pos.z };
-	//ƒvƒŒƒCƒ„[‚Æ“G‚ÌƒxƒNƒgƒ‹‚Ì’·‚³(·)‚ğ‹‚ß‚é
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨æ•µã®ãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•(å·®)ã‚’æ±‚ã‚ã‚‹
 	XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
 
 	if (!RushRotationF)
@@ -544,20 +542,20 @@ void FirstBoss::NormalAttak::Rot(Player* player, XMFLOAT3& Pos, XMFLOAT3 &Rot)
 		RotEaseTime = 0.f;
 		RushOldRotY = Rot.y;
 	} else {
-		//Šp“x‚Ìæ“¾ ƒvƒŒƒCƒ„[‚ª“G‚Ìõ“GˆÊ’u‚É“ü‚Á‚½‚çŒü‚«‚ğƒvƒŒƒCƒ„[‚Ì•û‚É
+		//è§’åº¦ã®å–å¾— ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæ•µã®ç´¢æ•µä½ç½®ã«å…¥ã£ãŸã‚‰å‘ãã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ–¹ã«
 		XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
 		XMVECTOR PositionB = { Pos.x,Pos.y,Pos.z };
-		//ƒvƒŒƒCƒ„[‚Æ“G‚ÌƒxƒNƒgƒ‹‚Ì’·‚³(·)‚ğ‹‚ß‚é
+		//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨æ•µã®ãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•(å·®)ã‚’æ±‚ã‚ã‚‹
 		XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
-		//‰ñ“]²‚ğƒvƒŒƒCƒ„[‚Ì•û‚É
-			//Œü‚«‚©‚¦‚é
+		//å›è»¢è»¸ã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ–¹ã«
+			//å‘ãã‹ãˆã‚‹
 
 		float RotY = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
 
-		//ƒC[ƒWƒ“ƒOƒJƒEƒ“ƒ^{{
+		//ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã‚«ã‚¦ãƒ³ã‚¿ï¼‹ï¼‹
 		RotEaseTime += 0.02f;
 
-		//Rotation”½‰f
+		//Rotationåæ˜ 
 		Rot.y = Easing::EaseOut(RotEaseTime, RushOldRotY, RotY * 60.f + 90.f);
 
 
@@ -566,11 +564,11 @@ void FirstBoss::NormalAttak::Rot(Player* player, XMFLOAT3& Pos, XMFLOAT3 &Rot)
 
 void FirstBoss::DebRot()
 {
-	XMFLOAT3 l_player = _player->GetPosition();
-	//Šp“x‚Ìæ“¾ ƒvƒŒƒCƒ„[‚ª“G‚Ìõ“GˆÊ’u‚É“ü‚Á‚½‚çŒü‚«‚ğƒvƒŒƒCƒ„[‚Ì•û‚É
+	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
+	//è§’åº¦ã®å–å¾— ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæ•µã®ç´¢æ•µä½ç½®ã«å…¥ã£ãŸã‚‰å‘ãã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ–¹ã«
 	XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
 	XMVECTOR PositionB = { m_Position.x,m_Position.y,m_Position.z };
-	//ƒvƒŒƒCƒ„[‚Æ“G‚ÌƒxƒNƒgƒ‹‚Ì’·‚³(·)‚ğ‹‚ß‚é
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨æ•µã®ãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•(å·®)ã‚’æ±‚ã‚ã‚‹
 	XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
 
 	if (!RushRotationF)
@@ -578,20 +576,20 @@ void FirstBoss::DebRot()
 		RotEaseTime = 0.f;
 		RushOldRotY = m_Rotation.y;
 	} else {
-		//Šp“x‚Ìæ“¾ ƒvƒŒƒCƒ„[‚ª“G‚Ìõ“GˆÊ’u‚É“ü‚Á‚½‚çŒü‚«‚ğƒvƒŒƒCƒ„[‚Ì•û‚É
+		//è§’åº¦ã®å–å¾— ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæ•µã®ç´¢æ•µä½ç½®ã«å…¥ã£ãŸã‚‰å‘ãã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ–¹ã«
 		XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
 		XMVECTOR PositionB = { m_Position.x,m_Position.y,m_Position.z };
-		//ƒvƒŒƒCƒ„[‚Æ“G‚ÌƒxƒNƒgƒ‹‚Ì’·‚³(·)‚ğ‹‚ß‚é
+		//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨æ•µã®ãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•(å·®)ã‚’æ±‚ã‚ã‚‹
 		XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
-		//‰ñ“]²‚ğƒvƒŒƒCƒ„[‚Ì•û‚É
-			//Œü‚«‚©‚¦‚é
+		//å›è»¢è»¸ã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ–¹ã«
+			//å‘ãã‹ãˆã‚‹
 
 		float RotY = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
 
-		//ƒC[ƒWƒ“ƒOƒJƒEƒ“ƒ^{{
+		//ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã‚«ã‚¦ãƒ³ã‚¿ï¼‹ï¼‹
 		RotEaseTime += 0.02f;
 
-		//Rotation”½‰f
+		//Rotationåæ˜ 
 		m_Rotation.y = Easing::EaseOut(RotEaseTime, RushOldRotY, RotY * 60.f + 90.f);
 
 
@@ -693,7 +691,7 @@ void FirstBoss::NoBattleMove()
 
 	move = XMVector3TransformNormal(move, matRot);
 
-	XMFLOAT3 l_player = _player->GetPosition();
+	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
 
 	constexpr float MoveSpeed = 4.f;
 
@@ -701,10 +699,10 @@ void FirstBoss::NoBattleMove()
 
 	bool SearchF = Collision::GetLength(m_Position, l_player) < 20.f;
 
-	//Šp“x‚Ìæ“¾ ƒvƒŒƒCƒ„[‚ª“G‚Ìõ“GˆÊ’u‚É“ü‚Á‚½‚çŒü‚«‚ğƒvƒŒƒCƒ„[‚Ì•û‚É
+	//è§’åº¦ã®å–å¾— ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæ•µã®ç´¢æ•µä½ç½®ã«å…¥ã£ãŸã‚‰å‘ãã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ–¹ã«
 	XMVECTOR PositionA = { l_player.x + sinf(0 * (PI / 180.0f)) * 10.0f,l_player.y, l_player.z + cosf(0 * (PI / 180.0f)) * 10.0f };
 	XMVECTOR PositionB = { m_Position.x,m_Position.y,m_Position.z };
-	//ƒvƒŒƒCƒ„[‚Æ“G‚ÌƒxƒNƒgƒ‹‚Ì’·‚³(·)‚ğ‹‚ß‚é
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨æ•µã®ãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•(å·®)ã‚’æ±‚ã‚ã‚‹
 	XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
 
 	if (!SearchF) {
@@ -766,11 +764,6 @@ void FirstBoss::NoBattleMove()
 	Helper::GetInstance()->FloatClamp(EaseT_BatStart, 0.f, 1.f);
 }
 
-void FirstBoss::CollideBul(vector<InterBullet*> bullet)
-{
-	constexpr float BulRad = 1.f;
-
-	constexpr float BossRad = 5.f;
 
 	for (InterBullet* _bullet : bullet) {
 		if (_bullet != nullptr) {
@@ -805,7 +798,7 @@ void FirstBoss::NormalAttak::ColPlayer(Player* player, XMFLOAT3& Pos)
 		else
 			KnockVal = -15.f;
 		EaseT = 0.f;
-		//ƒ‰ƒbƒVƒ…’†”»’è‚ ‚è
+		//ãƒ©ãƒƒã‚·ãƒ¥ä¸­åˆ¤å®šã‚ã‚Š
 		if (RushMoveEaseT<1.f&&Collision::CircleCollision(Pos.x, Pos.z, 5.f, player->GetPosition().x, player->GetPosition().z, 1.f))
 		{
 			ColPos = Pos;
@@ -824,4 +817,10 @@ void FirstBoss::ColPlayer_Def()
 	{
 		_player->isOldPos();
 	}
+}
+//ImGui
+void FirstBoss::ImGui_Origin() {
+	ImGui::Begin("First");
+	ImGui::Text("HP:%f", m_HP);
+	ImGui::End();
 }

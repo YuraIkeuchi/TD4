@@ -5,6 +5,7 @@
 #include "ParticleEmitter.h"
 #include "Collision.h"
 #include "HungerGauge.h"
+#include "Player.h"
 #include <random>
 Food::Food() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Cube);
@@ -46,10 +47,10 @@ void Food::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui•`‰æ
 void Food::ImGuiDraw() {
-	//ImGui::Begin("Food");
-	//ImGui::Text("LockOn:%d", m_LockOn);
-	//ImGui::Text("Alive:%d", m_Alive);
-	//ImGui::End();
+	ImGui::Begin("Food");
+	ImGui::Text("LockOn:%d", m_LockOn);
+	ImGui::Text("Alive:%d", m_Alive);
+	ImGui::End();
 }
 //ƒp[ƒeƒBƒNƒ‹
 void Food::Particle() {
@@ -65,7 +66,7 @@ void Food::Particle() {
 bool Food::Collision() {
 	float l_Radius = 1.2f;//“–‚½‚è”»’è‚Ì”ÍˆÍ
 	float l_AddHunger = 1.0f;//‰ÁŽZ‚³‚ê‚é‹Q‰ìƒQ[ƒW
-	XMFLOAT3 m_PlayerPos = player->GetPosition();
+	XMFLOAT3 m_PlayerPos = Player::GetInstance()->GetPosition();
 	if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, m_PlayerPos.x, m_PlayerPos.z, l_Radius) && m_Alive) {
 		m_Alive = false;
 		m_LockOn = false;

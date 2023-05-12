@@ -2,6 +2,7 @@
 #include "BaseActor.h"
 #include "IKESprite.h"
 #include "JsonLoader.h"
+#include <map>
 #include <array>
 /// タイトルシーン
 class LoadSceneActor : public BaseActor {

@@ -1,18 +1,19 @@
 #pragma once
 #include"IKESprite.h"
 #include "InterBoss.h"
+#include "Player.h"
 class FirstBoss :
 	public InterBoss {
 public:
 	FirstBoss();
-	bool Initialize() override;//‰Šú‰»
+	bool Initialize() override;//åˆæœŸåŒ–
 
-	void Pause() override;//ƒ|[ƒY
+	void Pause() override;//ãƒãƒ¼ã‚º
 private:
-	void Action() override;//s“®
+	void Action() override;//è¡Œå‹•
 	void EffecttexDraw(DirectXCommon* dxCommon) override;
-
-		//‚½‚ßUŒ‚
+	void ImGui_Origin() override;
+		//ãŸã‚æ”»æ’ƒ
 		struct ChargeAttack
 		{
 			int ChargeTime;
@@ -21,11 +22,11 @@ private:
 			unique_ptr<IKETexture>impact1;
 			unique_ptr<IKETexture>impact2;
 
-			void Attack(Player*player);
+			void Attack();
 		};
-		//g‚í‚È‚¢•Ï”‘å—Ê‚É‚ ‚é‚Ì‚Å‚ ‚Æ‚Å‚¯‚·
+		//ä½¿ã‚ãªã„å¤‰æ•°å¤§é‡ã«ã‚ã‚‹ã®ã§ã‚ã¨ã§ã‘ã™
 
-		//’Êí“Ëi3‰ñ
+		//é€šå¸¸çªé€²3å›
 		struct NormalAttak
 		{
 		private:
@@ -62,7 +63,7 @@ private:
 
 			bool HitF;
 			XMFLOAT3 ColPos;
-			//‚±‚Ì‚â‚è•û‚Ğ‚Ç‚­‚È‚¢HH
+			//ã“ã®ã‚„ã‚Šæ–¹ã²ã©ããªã„ï¼Ÿï¼Ÿ
 			enum class Phase_Normal
 			{
 				ROTPLAYER_0,
@@ -77,20 +78,20 @@ private:
 			}_phaseN=Phase_Normal::NON;
 		private:
 			
-			void Idle(Player* player, XMFLOAT3& Pos, XMFLOAT3 Rot,bool &Enf);
-			void Shake(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot);
-			void Rot(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot);
+			void Idle(XMFLOAT3& Pos, XMFLOAT3 Rot,bool &Enf);
+			void Shake(XMFLOAT3& Pos, XMFLOAT3& Rot);
+			void Rot(XMFLOAT3& Pos, XMFLOAT3& Rot);
 			void Attack();
-			void Attack(Player* player,XMFLOAT3 &Pos,XMFLOAT3& Rot);
+			void Attack(XMFLOAT3 &Pos,XMFLOAT3& Rot);
 			
 			public:
-			void Update(Player* player, XMFLOAT3& Pos, XMFLOAT3& Rot,bool &Enf);
+			void Update(XMFLOAT3& Pos, XMFLOAT3& Rot,bool &Enf);
 			void SetNormalAttackF(bool f) { NormalAttackF = f; }
 				bool GetAttackF() { return NormalAttackF; }
 				void SetAngle(float val) { RePosAngle = val; }void Remove(XMFLOAT3& Pos, XMFLOAT3& Scl,bool Enf);
-			inline void SetreposAngle(Player* player){
-				RotStartPos.x = player->GetPosition().x + sinf(RePosAngle * (3.14f / 180.0f)) * 10.0f;
-				RotStartPos.z = player->GetPosition().z + cosf(RePosAngle * (3.14f / 180.0f)) * 10.0f;
+			inline void SetreposAngle(){
+				RotStartPos.x = Player::GetInstance()->GetPosition().x + sinf(RePosAngle * (3.14f / 180.0f)) * 10.0f;
+				RotStartPos.z = Player::GetInstance()->GetPosition().z + cosf(RePosAngle * (3.14f / 180.0f)) * 10.0f;
 			}
 		
 			void ColPlayer(Player* player, XMFLOAT3& Pos);
@@ -142,7 +143,7 @@ private:
 	std::array<float, 2>texalpha;
 	std::array<XMFLOAT3, 2>texscl;
 private:
-	bool Recv;
+
 	bool GoAway;
 	float AwayRotEaseT;
 	float RushOldRotY;
@@ -184,7 +185,7 @@ private:
 	void DebRot();
 	void DebAttack();
 
-	//‚±‚Ì‚â‚è•û‚Ğ‚Ç‚­‚È‚¢HH
+	//ã“ã®ã‚„ã‚Šæ–¹ã²ã©ããªã„ï¼Ÿï¼Ÿ
 	enum class Phase_Normal
 	{
 		ROTPLAYER_0,

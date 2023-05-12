@@ -10,8 +10,7 @@ using namespace DirectX;
 class Player:public ObjCommon
 {
 public:
-	Player(XMFLOAT3 StartPos = {0.f,0.f,0.f});
-	~Player()override;
+	static Player* GetInstance();
 
 private:
 	//体力
@@ -24,6 +23,7 @@ private:
 
 	static void (Player::* stateTable[])();
 public:
+	void InitState(const XMFLOAT3& pos);
 	//初期化
 	bool Initialize()override;
 	//更新
@@ -39,9 +39,6 @@ public:
 	{
 		STATE_IDLE,
 		STATE_RUN,
-		STATE_GHOST,
-		STATE_ATTACKSHOT,
-		STATE_SUPERSHOT,
 	}_charaState;
 
 private:
@@ -59,20 +56,20 @@ private:
 	XMFLOAT3 MoveVECTOR(XMVECTOR v, float angle);
 
 private:
-	//弾を打つ処理(ゴーストを捕まえる)
-	void GhostShot();
-	//弾を打つ処理(攻撃)
-	void AttackShot();
-	//弾を打つ処理(ため攻撃)
-	void SuperShot();
+	//弾の生成
+	void BirthShot(const std::string& bulletName, bool Super);
 private:
 	void Idle();
 	//インターバル管理
 	void InterVal();
 	//弾のリセット
 	void ResetBullet();
+	//弾の管理
+	void Bullet_Management();
 	//弾の更新
-	void BulletUpdate();
+	void BulletUpdate(std::vector<InterBullet*> bullets);
+	//弾の描画
+	void BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxCommon);
 private:
 	//各アニメーション
 	enum class AnimeName
