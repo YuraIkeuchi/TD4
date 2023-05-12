@@ -140,6 +140,7 @@ public: // メンバ関数
 	static bool Finalize();
 	bool CreateVertices();
 
+
 protected: // メンバ変数
 	// 頂点バッファ
 	ComPtr<ID3D12Resource> vertBuff;

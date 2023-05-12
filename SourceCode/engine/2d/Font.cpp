@@ -1,6 +1,6 @@
 #include "Font.h"
 
-#pragma comment(lib,"dxguid.lib")
+
 
 void Font::Initialize(DirectXCommon* dxcommon)
 {
@@ -19,22 +19,25 @@ void Font::Initialize(DirectXCommon* dxcommon)
 	_heapForSpriteFont = dxcommon->CreateDescriptorHeapForSproteFont();
 	_spritefont = new DirectX::SpriteFont(dxcommon->GetDev(),
 		resUploadBatch,
-		L"font/fonttest.spritefont",
+		L"font/myfile.spritefont",
 		_heapForSpriteFont->GetCPUDescriptorHandleForHeapStart(),
 		_heapForSpriteFont->GetGPUDescriptorHandleForHeapStart());
 
 	auto future = resUploadBatch.End(dxcommon->GetQue());
 	dxcommon->GetCmdList()->SetDescriptorHeaps(1, _heapForSpriteFont.GetAddressOf());
 	future.wait();
+	_spritebatch->SetViewport(dxcommon->GetViewPort());
+}
 
+void Font::Draw(DirectXCommon* dxcommon)
+{
 	dxcommon->GetCmdList()->SetDescriptorHeaps(1, _heapForSpriteFont.GetAddressOf());
-
-	_spritefont->DrawString(_spritebatch, "Hello World",
+	_spritebatch->Begin(dxcommon->GetCmdList());
+	_spritefont->DrawString(_spritebatch, L"こんにちはピカチュウ",
 		DirectX::XMFLOAT2(102, 102), DirectX::Colors::Black);
 
-	_spritefont->DrawString(_spritebatch, "Hello World",
+	_spritefont->DrawString(_spritebatch, L"こんにちはピカチュウ",
 		DirectX::XMFLOAT2(100, 100), DirectX::Colors::Yellow);
-
+	_spritebatch->End();
 	_gmemory->Commit(dxcommon->GetQue());
-
 }

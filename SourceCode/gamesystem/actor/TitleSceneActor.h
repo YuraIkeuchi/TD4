@@ -1,26 +1,28 @@
 #pragma once
 #include "BaseActor.h"
 #include "IKESprite.h"
-/// ƒ^ƒCƒgƒ‹ƒV[ƒ“
+#include"Font.h"
+#include "Helper.h"
+/// ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³
 class TitleSceneActor : public BaseActor {
 public:
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	void Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) override;
-	/// I—¹
+	/// çµ‚äº†
 	void Finalize() override;
-	/// –ˆƒtƒŒ[ƒ€XV
+	/// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°
 	void Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) override;
-	/// •`‰æ
+	/// æç”»
 	void Draw(DirectXCommon* dxCommon) override;
 	void BackDraw(DirectXCommon* dxCommon);
 	void ImGuiDraw(DirectXCommon* dxCommon);
 	void FrontDraw();
 private:
-	static const int TITLE_MAX = 3;//ƒ^ƒCƒgƒ‹ƒp[ƒc‚ÌÅ‘å”
-	static const int MODE_MAX = 3;//ƒ‚[ƒhƒp[ƒc‚ÌÅ‘å”
-	static const int EXPLAIN_MAX = 3;//à–¾•¶‚ÌÅ‘å”
-private://ƒƒ“ƒo•Ï”
-	//ƒXƒvƒ‰ƒCƒg
+	static const int TITLE_MAX = 3;//ã‚¿ã‚¤ãƒˆãƒ«ãƒ‘ãƒ¼ãƒ„ã®æœ€å¤§æ•°
+	static const int MODE_MAX = 3;//ãƒ¢ãƒ¼ãƒ‰ãƒ‘ãƒ¼ãƒ„ã®æœ€å¤§æ•°
+	static const int EXPLAIN_MAX = 3;//èª¬æ˜æ–‡ã®æœ€å¤§æ•°
+private://ãƒ¡ãƒ³ãƒå¤‰æ•°
+	//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	unique_ptr<IKESprite> TitleSprite;
 
 };

@@ -18,6 +18,9 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	PlayPostEffect = true;
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
+	
+	font_ = new Font;
+	font_->Initialize(dxCommon);
 
 	//各クラス
 	Player::GetInstance()->InitState({ 0.0f,0.0f,0.0f });
@@ -116,6 +119,7 @@ void FirstStageActor::Draw(DirectXCommon* dxCommon) {
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
 		ImGuiDraw(dxCommon);
+		font_->Draw(dxCommon);
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	} else {
@@ -125,6 +129,7 @@ void FirstStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
+		font_->Draw(dxCommon);
 		dxCommon->PostDraw();
 	}
 }

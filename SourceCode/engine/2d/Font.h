@@ -16,6 +16,8 @@ public:
 	
 
 	void Initialize(DirectXCommon* dxcommon);
+
+	void Draw(DirectXCommon* dxcommon);
 private:
 	DirectX::GraphicsMemory* _gmemory = nullptr;
 	DirectX::SpriteFont* _spritefont = nullptr;
