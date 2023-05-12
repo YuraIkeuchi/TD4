@@ -17,8 +17,6 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	Audio::GetInstance()->LoadSound(0, "Resources/Sound/BGM/BGM_title.wav");
 	Audio::GetInstance()->LoopWave(0, VolumManager::GetInstance()->GetBGMVolum());
 
-	helper = make_unique< Helper>();
-
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
 	//タイトル
@@ -38,11 +36,6 @@ void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 
 	if (sceneChanger_->GetEasingStart()) {
 		string str = "LOAD";
-		if (!s_GameLoop) {
-			str = "LOAD";
-		} else {
-			str = "EDITORSCENE";
-		}
 		sceneChanger_->ChangeSceneExtra(str, SceneChanger::NonReverse);
 	}
 

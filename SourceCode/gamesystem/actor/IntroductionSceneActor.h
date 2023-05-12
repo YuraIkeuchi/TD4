@@ -1,7 +1,6 @@
 #pragma once
 #include "BaseActor.h"
 #include "IKESprite.h"
-#include "Helper.h"
 /// タイトルシーン
 class IntroductionSceneActor : public BaseActor {
 public:
@@ -17,5 +16,4 @@ public:
 	void ImGuiDraw(DirectXCommon* dxCommon);
 	void FrontDraw();
 private://メンバ変数
-	unique_ptr<Helper> helper;
 };

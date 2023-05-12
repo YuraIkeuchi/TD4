@@ -1098,12 +1098,6 @@
     <Filter Include="SourceCords\gamesystem\Scene\PlayScene\SecondStage">
       <UniqueIdentifier>{f0e78ad8-109c-4d86-88e5-6330f82941c8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\actor\Play\FirstStage">
-      <UniqueIdentifier>{ddda4ba1-b155-4c37-8bba-a19929ea6734}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\actor\Play\SecondStage">
-      <UniqueIdentifier>{bb2d1bd5-e34b-4f0c-9dd2-94853131ce74}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SourceCords\gamesystem\actor\GameOver">
       <UniqueIdentifier>{7ea99bc2-e100-4a63-8d57-2485acc5a429}</UniqueIdentifier>
     </Filter>

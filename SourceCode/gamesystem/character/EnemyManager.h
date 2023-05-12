@@ -50,5 +50,6 @@ public:
 	//3つのオブジェクト位置設定
 	inline void SetEpos_A(XMFLOAT3* pos) { for (auto i = 0; i < 3; i++)EPos[i] = pos[i]; }
 
-
+	//敵の死亡処理
+	bool BossDestroy();
 };
