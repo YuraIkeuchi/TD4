@@ -9,21 +9,39 @@ public:
 	bool Initialize() override;//初期化
 
 	void Pause() override;//ポーズ
-private:
+
 	void Action() override;//行動
+
 	void EffecttexDraw(DirectXCommon* dxCommon) override;
+
 	void ImGui_Origin() override;
+
+private:
 		//ため攻撃
 		struct ChargeAttack
 		{
+		private:
+			//ため時間
 			int ChargeTime;
 			int Damage;
 
-			unique_ptr<IKETexture>impact1;
-			unique_ptr<IKETexture>impact2;
+			//範囲テクスチャ
+			array<unique_ptr<IKETexture>,2>impacttex;
+			array<float, 2>texAlpha;
+			array<XMFLOAT2, 2>texScl;
 
+			bool AttackF;
+		public:
+			void Initialize();
+			void Update(XMFLOAT3 Pos);
 			void Attack();
+			void Draw();
+		public:
+			void SetAttackF(bool f) { AttackF = f; }
+			bool GetAttackF() { return AttackF; }
 		};
+
+		ChargeAttack _cattack;
 		//使わない変数大量にあるのであとでけす
 
 		//通常突進3回
@@ -119,29 +137,7 @@ private:
 	float RotEaseTime;
 	float OldRotY;
 	void Move();
-
-	bool SearchPlayer;
-	bool ImpactF;
-private:
-	unique_ptr<IKETexture>impact1;
-	unique_ptr<IKETexture>impact2;
-
-	unique_ptr<IKESprite>SearchPlayerTex;
-	float SearchtexAlpha;
-
-	struct FrontAttackTex
-	{
-		unique_ptr<IKETexture>Tex;
-		XMFLOAT3 Pos;
-		float alpha;
-	};
-	std::array<FrontAttackTex, 3>AttackTex;
-
-	bool FrontAttackF;
-private:
-
-	std::array<float, 2>texalpha;
-	std::array<XMFLOAT3, 2>texscl;
+	
 private:
 
 	bool GoAway;

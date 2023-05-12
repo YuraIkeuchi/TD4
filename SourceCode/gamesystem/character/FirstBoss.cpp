@@ -17,30 +17,6 @@ FirstBoss::FirstBoss() {
 }
 
 bool FirstBoss::Initialize() {
-	IKETexture::LoadTexture(8, L"Resources/2d/effect/impact.png");
-	//	impact1.reset(new IKETexture();
-	impact1.reset(IKETexture::Create(ImageManager::IMPACT2, { 0,0,0 }, { 10,10,10 }, { 1,1,1,1 }));
-	impact2.reset(IKETexture::Create(ImageManager::IMPACT, { 0,0,0 }, { 0,0,0 }, { 1,1,1,1 }));
-	DamageArea.reset(IKETexture::Create(ImageManager::IMPACT, { 0,0,0 }, { 0,0,0 }, { 1,1,1,1 }));
-
-
-	for (auto i = 0; i < 3; i++)
-	{
-		AttackTex[i].Tex.reset(IKETexture::Create(ImageManager::IMPACT, { 0,0,0 }, { 0,0,0 }, { 1,1,1,1 }));
-		AttackTex[i].Tex->TextureCreate();
-	}
-
-	impact1->TextureCreate();
-	impact2->TextureCreate();
-	DamageArea->TextureCreate();
-
-
-	for (auto i = 0; i < 2; i++)
-	{
-		texalpha[i] = 1.f;
-		texscl[i] = { 0.f,0.f,0.f };
-	}
-
 	m_Position = { 0.0f,0.0f,30.0f };
 	m_Scale = { 1.f,1.f,1.f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
@@ -50,8 +26,7 @@ bool FirstBoss::Initialize() {
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp1")));
 	MoveCount = 1;
 	_phaseN = Phase_Normal::NON;
-
-	SearchtexAlpha = 0.f;
+	_cattack.Initialize();
 	actiontimer = 1;
 	return true;
 }
@@ -73,51 +48,9 @@ void FirstBoss::Action() {
 
 	m_Position.y = 10.f + sinf(3.14f * 2.f / 120.f * PosYMovingT) * -5.f;
 
-	//
 	
-
-	impact1->SetPosition({ m_Position.x,8.f,m_Position.z });
-	impact2->SetPosition({ m_Position.x, 8.f,m_Position.z });
-
-	impact1->SetIsBillboard(false);
-	impact2->SetIsBillboard(false);
-	//	impact1->SetAnchorPoint({ 0.5f,0.5f });
-		//impact2->SetAnchorPoint({ 0.5f,0.5f });
-
-	if (!ImpactF)
-	{
-		for (auto i = 0; i < 2; i++)
-		{
-			texscl[i] = { 0.f,0.f,0.f };
-			texalpha[i] = 1.f;
-		}
-	}
-	impact1->SetScale({ texscl[0].x,texscl[0].y,5.f });
-	impact2->SetScale({ texscl[1].x,texscl[1].y ,5.f });
-
-	impact1->SetRotation({ 90,0,0 });
-	impact2->SetRotation({ 90,0,0 });
-	impact1->SetColor({ 1,1,1,texalpha[0] });
-	impact2->SetColor({ 1,1,1,texalpha[1] });
-
-	impact1->Update();
-	impact2->Update();
-
-
-	DamageArea->SetColor({ 1,1,1,DamageAreaAlpha });
-	DamageArea->SetRotation({ 90,0,0 });
-	DamageArea->SetIsBillboard(false);
-	DamageArea->Update();
-
-	for (auto i = 0; i < 3; i++)
-	{
-		AttackTex[i].Tex->SetColor({ 1,1,1,AttackTex[i].alpha });
-		AttackTex[i].Tex->SetPosition(AttackTex[i].Pos);
-		AttackTex[i].Tex->SetIsBillboard(false);
-		AttackTex[i].Tex->Update();
-	}
 	//向きかえる
-	ImpactAttack();
+	_cattack.Update(m_Position);
 	if (RTime % 100 == 0) { isRot = true; }
 	RTime++;
 
@@ -136,21 +69,23 @@ void FirstBoss::Action() {
 		{
 			ColPlayer_Def();
 		}
-	//Rot();
+
+
+	//攻撃判定
+	/*非戦闘時の動き*/
 	if (!BattleStartF) {
 		NoBattleMove();
 	} else {
-		if (!_normal.GetAttackF() && !ImpactF && !Recv) {
-			actiontimer++;
-		}
+		//タイマーカウンタ
+		if (!_normal.GetAttackF() && !_cattack.GetAttackF() && !Recv)actiontimer++;
+		//通常攻撃
 		if (!_normal.GetAttackF() && actiontimer % 180 == 0)
-		{
 			_normal.SetNormalAttackF(true);
-		}
-		if (!ImpactF && actiontimer % 300 == 0)
-		{
-			ImpactF = true;
-		}
+		//ため攻撃
+		if (!_cattack.GetAttackF() && actiontimer % 300 == 0)
+			_cattack.SetAttackF(true);
+
+		//通常移動（円運動）
 		Move();
 		if(_normal.GetAttackF())
 		{
@@ -238,15 +173,7 @@ void FirstBoss::EffecttexDraw(DirectXCommon* dxCommon)
 {
 	
 	IKETexture::PreDraw2(dxCommon, ImageManager::IMPACT);
-	impact1->Draw2(dxCommon);
-	impact2->Draw2(dxCommon);
-
-	for (auto i = 0; i < 3; i++)
-	{
-		AttackTex[i].Tex->Draw();
-	}
-	DamageArea->Draw2(dxCommon);
-
+	_cattack.Draw();
 	IKETexture::PostDraw();
 }
 
@@ -272,31 +199,6 @@ void FirstBoss::Rot()
 }
 
 
-void FirstBoss::ImpactAttack()
-{
-	if (!ImpactF)return;
-
-
-	texscl[0].x += 0.1f;
-	texscl[0].y += 0.1f;
-
-	if (texscl[0].x > 2.f)
-	{
-		texscl[1].x += 0.1f;
-		texscl[1].y += 0.1f;
-	}
-
-	for (auto i = 0; i < 2; i++)
-	{
-		if (texscl[i].x > 0.1f)texalpha[i] -= 0.035f;
-	}
-
-	if (texalpha[0] < 0.f && texalpha[1] < 0.f)
-	{
-		ImpactF = false;
-	}
-}
-
 void FirstBoss::Move()
 {
 
@@ -316,20 +218,6 @@ void FirstBoss::Move()
 
 		m_Rotation.y = RotY * 60.f + 90.f;
 
-
-		if (SearchPlayer) {
-			XMVECTOR move = { 0.f,0.f, 0.1f, 0.0f };
-
-			XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 60.f));
-
-			move = XMVector3TransformNormal(move, matRot);
-
-			//m_Position = {
-			//		m_Position.x + move.m128_f32[0] * 2.f,
-			//	m_Position.y,
-			//	m_Position.z + move.m128_f32[2] * 2.f
-			//};
-		}
 
 		BossAngle++;
 		m_Position.x = l_player.x + sinf(BossAngle * (PI / 180.0f)) * 10.0f;
@@ -812,3 +700,86 @@ void FirstBoss::ImGui_Origin() {
 	ImGui::Text("HP:%f", m_HP);
 	ImGui::End();
 }
+
+
+
+void FirstBoss::ChargeAttack::Initialize()
+{
+	IKETexture::LoadTexture(8, L"Resources/2d/effect/impact.png");
+	impacttex[0].reset(IKETexture::Create(ImageManager::IMPACT2, {0,0,0}, {10,10,10}, {1,1,1,1}));
+	impacttex[1].reset(IKETexture::Create(ImageManager::IMPACT, {0,0,0}, {0,0,0}, {1,1,1,1}));
+
+	//テクスチャ初期化
+	for (auto i = 0; i < impacttex.size(); i++) {
+		impacttex[i]->TextureCreate();
+		texAlpha[i] = 1.f;
+		texScl[i] = { 0.f,0.f};
+	}
+}
+
+void FirstBoss::ChargeAttack::Attack()
+{
+	if (!AttackF)return;
+
+	constexpr float AddScling = 0.1f;
+	bool flagOff = texAlpha[0] < 0.f && texAlpha[1] < 0.f;
+
+	texScl[0].x += AddScling;
+	texScl[0].y += AddScling;
+
+	if (texScl[0].x > 2.f)
+	{
+		texScl[1].x += AddScling;
+		texScl[1].y += AddScling;
+	}
+
+	for (auto i = 0; i < impacttex.size(); i++)
+	{
+		if (texScl[i].x > AddScling)texAlpha[i] -= 0.035f;
+	}
+
+
+	if (flagOff)AttackF = false;
+	
+}
+
+void FirstBoss::ChargeAttack::Update(XMFLOAT3 Pos)
+{
+	constexpr float PosYVal = 8.f;
+
+	for(auto i=0;i<impacttex.size();i++)
+	{
+		impacttex[i]->SetPosition({ Pos.x,PosYVal,Pos.z });
+		impacttex[i]->SetIsBillboard(false);
+	}
+
+	if (!AttackF)
+	{
+		for (auto i = 0; i < 2; i++)
+		{
+			texScl[i] = { 0.f,0.f};
+			texAlpha[i] = 1.f;
+		}
+	}
+
+	Attack();
+
+	//パラメータ更新
+	for (auto i = 0; i < 2; i++)
+	{
+		impacttex[i]->SetScale({ texScl[i].x,texScl[i].y,5.f });
+		impacttex[i]->SetRotation({ 90,0,0 });
+		impacttex[i]->SetColor({ 1,1,1,texAlpha[i] });
+		impacttex[i]->Update();
+	}
+}
+
+
+void FirstBoss::ChargeAttack::Draw()
+{
+	for(auto i=0;i<impacttex.size();i++)
+	{
+		impacttex[i]->Draw();
+	}
+}
+

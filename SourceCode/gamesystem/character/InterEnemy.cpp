@@ -24,13 +24,14 @@ void InterEnemy::Draw(DirectXCommon* dxCommon) {
 void InterEnemy::OnCollision()
 {
 	if (!isAlive)return;
-
-	for (InterBullet* _bullet : Player::GetInstance()->GetBulllet_ghost()) {
+	//UŒ‚‚Ì’e‚Æ‚Ì”»’è
+	for (InterBullet* _bullet : Player::GetInstance()->GetBulllet_attack()) {
 		if (Collision::GetLength(_bullet->GetPosition(), m_Position) < 2.f)
 		{
+			//‘Ì—Í
 			HP--;
+			//’eÁ‚µ
 			_bullet->SetAlive(false);
-			//break;
 		}
 	}
 	if(HP<=0)
