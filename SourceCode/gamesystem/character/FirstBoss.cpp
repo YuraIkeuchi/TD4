@@ -1,4 +1,4 @@
-#include "FirstBoss.h"
+﻿#include "FirstBoss.h"
 #include "ModelManager.h"
 #include "Helper.h"
 #include <any>
@@ -160,7 +160,7 @@ void FirstBoss::Action() {
 		Move_Away(); _normal.Remove(m_Position,m_Scale,EncF); DamAction();
 		m_Color = Col;
 	}
-	_normal.ColPlayer(_player, m_Position);
+	_normal.ColPlayer(m_Position);
 
 	_normal.SetreposAngle();
 	//NormalAttack();
@@ -522,9 +522,9 @@ void FirstBoss::NormalAttak::Shake(XMFLOAT3& Pos, XMFLOAT3& Rot)
 		NormalAttak::Rot(Pos,Rot);
 	}
 
-	if (Collision::CircleCollision(Pos.x, Pos.z, 1.f, player->GetPosition().x, player->GetPosition().z, 3.f))
+	if (Collision::CircleCollision(Pos.x, Pos.z, 1.f, Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z, 3.f))
 	{
-		player->isOldPos();
+		Player::GetInstance()->isOldPos();
 	}
 }
 
@@ -764,29 +764,16 @@ void FirstBoss::NoBattleMove()
 	Helper::GetInstance()->FloatClamp(EaseT_BatStart, 0.f, 1.f);
 }
 
-
-	for (InterBullet* _bullet : bullet) {
-		if (_bullet != nullptr) {
-			if(Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z,BulRad,m_Position.x, m_Position.z,BossRad))
-			{
-				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Attack_Normal.wav", VolumManager::GetInstance()->GetSEVolum());
-				Recv = true;
-				_bullet->SetAlive(false);
-			}
-		}
-	}
-}
-
-void FirstBoss::NormalAttak::ColPlayer(Player* player, XMFLOAT3& Pos)
+void FirstBoss::NormalAttak::ColPlayer(XMFLOAT3& Pos)
 {
 	if (HitF)
 	{
 		EaseT += 0.09f;
 	//	player->MoveStop(true);
-		player->SetPosition({Easing::EaseOut(EaseT,ColPos.x,ColPos.x+KnockVal),player->GetPosition().y, Easing::EaseOut(EaseT,ColPos.z,ColPos.z+KnockVal) });
+		Player::GetInstance()->SetPosition({Easing::EaseOut(EaseT,ColPos.x,ColPos.x + KnockVal),Player::GetInstance()->GetPosition().y, Easing::EaseOut(EaseT,ColPos.z,ColPos.z + KnockVal)});
 		if (EaseT>=1.f)
 		{
-			player->MoveStop(false);
+			Player::GetInstance()->MoveStop(false);
 			HitF = false;
 		}
 	}
@@ -799,7 +786,7 @@ void FirstBoss::NormalAttak::ColPlayer(Player* player, XMFLOAT3& Pos)
 			KnockVal = -15.f;
 		EaseT = 0.f;
 		//ラッシュ中判定あり
-		if (RushMoveEaseT<1.f&&Collision::CircleCollision(Pos.x, Pos.z, 5.f, player->GetPosition().x, player->GetPosition().z, 1.f))
+		if (RushMoveEaseT<1.f&&Collision::CircleCollision(Pos.x, Pos.z, 5.f, Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z, 1.f))
 		{
 			ColPos = Pos;
 			HitF = true;
@@ -813,9 +800,9 @@ void FirstBoss::NormalAttak::ColPlayer(Player* player, XMFLOAT3& Pos)
 
 void FirstBoss::ColPlayer_Def()
 {
-	if (RushMoveEaseT <= 0.f && Collision::CircleCollision(m_Position.x, m_Position.z, 5.f, _player->GetPosition().x, _player->GetPosition().z, 1.f))
+	if (RushMoveEaseT <= 0.f && Collision::CircleCollision(m_Position.x, m_Position.z, 5.f, Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z, 1.f))
 	{
-		_player->isOldPos();
+		Player::GetInstance()->isOldPos();
 	}
 }
 //ImGui

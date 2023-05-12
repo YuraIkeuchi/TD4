@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include"IKESprite.h"
 #include "InterBoss.h"
 class SecondBoss :
@@ -11,21 +11,12 @@ public:
 private:
 	void Action() override;//行動
 
-	void EffecttexDraw(DirectXCommon* dxCommon) override;
-
-	//基本移動
-	void Move();
-private:
-	//ダメージ食らった処理
-	void DamAction();
-
-	//元の位置に
-	void RemovePos();
-    
-	void EffecttexDraw(DirectXCommon* dxCommon) override;
 
 	void ImGui_Origin() override;
 
+	//エフェクト
+	void EffecttexDraw(DirectXCommon* dxCommon) override;
+
 	//基本移動
 	void Move();
 private:
@@ -34,6 +25,7 @@ private:
 
 	//元の位置に
 	void RemovePos();
+
 
 	//非戦闘時
 	void NoBattleMove();
@@ -91,7 +83,6 @@ private:
 	//エンカウント
 	bool EncF;
 private:
-	void CollideBul(vector<InterBullet*>bullet);
 	inline void IsOldPos()
 	{
 		m_Position = OldPos;

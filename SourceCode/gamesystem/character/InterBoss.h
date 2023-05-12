@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "IKETexture.h"
 #include "CollisionPrimitive.h"
 #include "InterBullet.h"
@@ -40,8 +40,8 @@ public:
 
 	virtual void EffecttexDraw(DirectXCommon* dxCommon) = 0;
 
-	void SetHP(int hp) { HP = hp; };
-	int GetHP() { return HP; }
+	void SetHP(float hp) { m_HP = hp; };
+	float GetHP() { return m_HP; }
 
 private:
 protected:

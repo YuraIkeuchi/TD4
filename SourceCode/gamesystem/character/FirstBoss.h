@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include"IKESprite.h"
 #include "InterBoss.h"
 #include "Player.h"
@@ -94,7 +94,7 @@ private:
 				RotStartPos.z = Player::GetInstance()->GetPosition().z + cosf(RePosAngle * (3.14f / 180.0f)) * 10.0f;
 			}
 		
-			void ColPlayer(Player* player, XMFLOAT3& Pos);
+			void ColPlayer(XMFLOAT3& Pos);
 		private:
 			float EaseT;
 			int RandKnock;
@@ -227,5 +227,4 @@ private:
 
 private:
 	void ColPlayer_Def();
-	void CollideBul(vector<InterBullet*>bullet);
 };

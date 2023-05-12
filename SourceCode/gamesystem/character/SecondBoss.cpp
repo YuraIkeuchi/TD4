@@ -1,4 +1,4 @@
-#include "SecondBoss.h"
+﻿#include "SecondBoss.h"
 #include "ModelManager.h"
 #include "Helper.h"
 #include <any>
@@ -48,7 +48,7 @@ void SecondBoss::Action() {
 
 
 	//当たり判定（弾）
-	vector<InterBullet*> _playerBulA = _player->GetBulllet_attack();
+	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
 	CollideBul(_playerBulA);
 
 	//非戦闘開始時
@@ -175,15 +175,4 @@ void SecondBoss::Attack::Action()
 
 //ImGui
 void SecondBoss::ImGui_Origin() {
-}
-
-
-void SecondBoss::Attack::Action()
-{
-	if (!AttackFlag)return;
-	//攻撃処理とか
-
-
-	/*終了処理*/
-	//AttackFlag=false;
 }
