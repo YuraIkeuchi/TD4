@@ -1,4 +1,4 @@
-Ôªø#include "PlaySceneActor.h"
+#include "SecondStageActor.h"
 #include "Audio.h"
 #include"Easing.h"
 #include "SceneManager.h"
@@ -7,21 +7,20 @@
 #include "ImageManager.h"
 #include <algorithm>
 
-//ÂàùÊúüÂåñ
-void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
+//èâä˙âª
+void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	dxCommon->SetFullScreen(true);
-	//ÂÖ±ÈÄö„ÅÆÂàùÊúüÂåñ
+	//ã§í ÇÃèâä˙âª
 	BaseInitialize(dxCommon);
-	//„Ç™„Éº„Éá„Ç£„Ç™
+	//ÉIÅ[ÉfÉBÉI
 	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/Boss.wav");
-	//„Éù„Çπ„Éà„Ç®„Éï„Çß„ÇØ„Éà
+	//É|ÉXÉgÉGÉtÉFÉNÉg
 	PlayPostEffect = true;
-	//„Éë„Éº„ÉÜ„Ç£„ÇØ„É´ÂÖ®ÂâäÈô§
+	//ÉpÅ[ÉeÉBÉNÉãëSçÌèú
 	ParticleEmitter::GetInstance()->AllDelete();
 
-	//ÂêÑ„ÇØ„É©„Çπ
-	player = std::make_unique<Player>();
-	camerawork->SetPlayer(player.get());
+	//äeÉNÉâÉX
+	Player::GetInstance()->InitState({ 0.0f,0.0f,0.0f });
 	camerawork->Update(camera);
 	ui = std::make_unique<UI>();
 	ui->Initialize();
@@ -33,19 +32,22 @@ void PlaySceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	blackwindow = IKESprite::Create(ImageManager::BLACKWINDOW, {});
 
 
-	enemymanager = std::make_unique<EnemyManager>(player.get());
+	enemymanager = std::make_unique<EnemyManager>("SECONDSTAGE");
 
 	backobj = std::make_unique<BackObj>();
 	backobj->Initialize();
 
 	loadobj = std::make_unique<LoadStageObj>();
-	loadobj->AllLoad(player.get());
+	loadobj->AllLoad();
 }
-//Êõ¥Êñ∞
-void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
+//çXêV
+void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
 
-	//Èü≥Ê•Ω„ÅÆÈü≥Èáè„ÅåÂ§â„Çè„Çã
+	if (Input::GetInstance()->TriggerButton(Input::A)) {
+		SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
+	}
+	//âπäyÇÃâπó Ç™ïœÇÌÇÈ
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 	VolumManager::GetInstance()->Update();
 
@@ -69,7 +71,8 @@ void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 		window_size.x = Ease(Out, Sine, nowframe, 0, 1300);
 		window_size.y = Ease(Out, Sine, nowframe, 0, 223);
 		black_color.w = Ease(Out, Sine, nowframe, 0, 1);
-	} else if (nowstate == FIGHT) {
+	}
+	else if (nowstate == FIGHT) {
 		frame++;
 		nowframe = frame / maxframe;
 		if (frame >= maxframe) {
@@ -86,10 +89,10 @@ void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	conversationwindow->SetSize(window_size);
 	blackwindow->SetColor(black_color);
 
-	//ÂêÑ„ÇØ„É©„ÇπÊõ¥Êñ∞
+	//äeÉNÉâÉXçXêV
 	backobj->Update();
 	if (nowstate != CONVERSATION) {
-		player->Update();
+		Player::GetInstance()->Update();
 		enemymanager->Update();
 		loadobj->Update();
 		ParticleEmitter::GetInstance()->Update();
@@ -97,11 +100,10 @@ void PlaySceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	camerawork->Update(camera);
 	lightgroup->Update();
 }
-
-//ÊèèÁîª
-void PlaySceneActor::Draw(DirectXCommon* dxCommon) {
-	//ÊèèÁîªÊñπÊ≥ï
-	//„Éù„Çπ„Éà„Ç®„Éï„Çß„ÇØ„Éà„Çí„Åã„Åë„Çã„Åã
+//ï`âÊ
+void SecondStageActor::Draw(DirectXCommon* dxCommon) {
+	//ï`âÊï˚ñ@
+	//É|ÉXÉgÉGÉtÉFÉNÉgÇÇ©ÇØÇÈÇ©
 	if (PlayPostEffect) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
@@ -113,7 +115,8 @@ void PlaySceneActor::Draw(DirectXCommon* dxCommon) {
 		ImGuiDraw(dxCommon);
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
-	} else {
+	}
+	else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
@@ -123,33 +126,33 @@ void PlaySceneActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PostDraw();
 	}
 }
-//Ëß£Êîæ
-void PlaySceneActor::Finalize() {
+//âï˙
+void SecondStageActor::Finalize() {
 }
-
-//Âæå„Çç„ÅÆÊèèÁîª
-void PlaySceneActor::BackDraw(DirectXCommon* dxCommon) {
+//å„ÇÎÇÃï`âÊ
+void SecondStageActor::BackDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
-	////ÂêÑ„ÇØ„É©„Çπ„ÅÆÊèèÁîª
-	player->Draw(dxCommon);
-loadobj->Draw(dxCommon);
+	////äeÉNÉâÉXÇÃï`âÊ
+	Player::GetInstance()->Draw(dxCommon);
+	loadobj->Draw(dxCommon);
 	enemymanager->Draw(dxCommon);
 	backobj->Draw(dxCommon);
 	IKEObject3d::PostDraw();
 }
-//„Éù„Çπ„Éà„Ç®„Éï„Çß„ÇØ„Éà„Åå„Åã„Åã„Çâ„Å™„ÅÑ
-void PlaySceneActor::FrontDraw(DirectXCommon* dxCommon) {
-	//„Éë„Éº„ÉÜ„Ç£„ÇØ„É´ÊèèÁîª
+//É|ÉXÉgÉGÉtÉFÉNÉgÇ™Ç©Ç©ÇÁÇ»Ç¢
+void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
+	//ÉpÅ[ÉeÉBÉNÉãï`âÊ
 	ParticleEmitter::GetInstance()->FlontDrawAll();
-	//ÂÆåÂÖ®„Å´Ââç„Å´Êõ∏„Åè„Çπ„Éó„É©„Ç§„Éà
+	//äÆëSÇ…ëOÇ…èëÇ≠ÉXÉvÉâÉCÉg
 	IKESprite::PreDraw();
 	blackwindow->Draw();
 	conversationwindow->Draw();
 	//ui->Draw();
 	IKESprite::PostDraw();
 }
-//IMGui„ÅÆÊèèÁîª
-void PlaySceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	player->ImGuiDraw();
+//IMGuiÇÃï`âÊ
+void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
+	Player::GetInstance()->ImGuiDraw();
 	loadobj->ImGuiDraw();
+	//camerawork->ImGuiDraw();
 }

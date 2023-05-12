@@ -1,8 +1,8 @@
 #pragma once
 #include "BaseScene.h"
-#include "FirstStageActor.h"
+#include "SecondStageActor.h"
 //ゲームプレイシーン
-class FirstStage : public BaseScene
+class SecondStage : public BaseScene
 {
 public:
 	//初期化

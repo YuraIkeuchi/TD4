@@ -48,7 +48,7 @@ public:
 	//描画
 	virtual void Draw(DirectXCommon* dxCommon) = 0;
 	//共通初期化
-	void BaseInitialize(DirectXCommon* dxCommon, XMFLOAT3 eye = { 2.0f, 30.0f, 2.0f }, XMFLOAT3 target = { 2.0f, 0.0f, 3.0f });
+	void BaseInitialize(DirectXCommon* dxCommon, XMFLOAT3 eye = { 2.0f, 45.0f, 2.0f }, XMFLOAT3 target = { 2.0f, 0.0f, 3.0f });
 public:
 	//ゲームループしたかどうか
 	static bool s_GameLoop;
@@ -78,7 +78,6 @@ protected:
 	unique_ptr<PostEffect> postEffect = nullptr;
 	unique_ptr<CameraWork> camerawork;
 	bool PlayPostEffect = false;
-
 	unique_ptr<SceneChanger> sceneChanger_ = nullptr;
 	//シーンでの遷移
 	SceneState m_SceneState = SceneState::IntroState;

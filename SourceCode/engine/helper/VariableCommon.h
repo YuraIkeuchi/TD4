@@ -53,8 +53,3 @@ enum BlendType
 	AddBlendType,
 	SubBlendType,
 };
-
-enum Bullettype {
-	BULLET_FORROW,//í«è]
-	BULLET_SEARCH,//íTçı
-};

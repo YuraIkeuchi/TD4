@@ -228,9 +228,6 @@
     <ClCompile Include="SourceCode\gamesystem\actor\TitleSceneActor.cpp">
       <Filter>SourceCords\gamesystem\actor\Title</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\actor\PlaySceneActor.cpp">
-      <Filter>SourceCords\gamesystem\actor\Play</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\backobj\BackObj.cpp">
       <Filter>SourceCords\gamesystem\backobj</Filter>
     </ClCompile>
@@ -281,9 +278,6 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\scene\BaseScene.cpp">
       <Filter>SourceCords\gamesystem\Scene\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\scene\FirstStage.cpp">
-      <Filter>SourceCords\gamesystem\Scene\PlayScene</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\scene\GameoverScene.cpp">
       <Filter>SourceCords\gamesystem\Scene\GameOver</Filter>
@@ -338,8 +332,21 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\ViewBullet.cpp">
       <Filter>SourceCords\gamesystem\character\Various\Bullet\Various</Filter>
+    </ClCompile>                    
+    <ClCompile Include="Font.cpp" />  
+    <Filter>SourceCords    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\FirstStage.cpp">
+      <Filter>SourceCords\gamesystem\Scene\PlayScene\FirstStage</Filter>
     </ClCompile>
-    <ClCompile Include="Font.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\scene\SecondStage.cpp">
+      <Filter>SourceCords\gamesystem\Scene\PlayScene\SecondStage</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\FirstStageActor.cpp">
+      <Filter>SourceCords\gamesystem\actor\Play\FirstStage</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\SecondStageActor.cpp">
+      <Filter>SourceCords\gamesystem\actor\Play\SecondStage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -523,9 +530,6 @@
     <ClInclude Include="SourceCode\gamesystem\actor\TitleSceneActor.h">
       <Filter>SourceCords\gamesystem\actor\Title</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\actor\PlaySceneActor.h">
-      <Filter>SourceCords\gamesystem\actor\Play</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\backobj\BackObj.h">
       <Filter>SourceCords\gamesystem\backobj</Filter>
     </ClInclude>
@@ -573,9 +577,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\BaseScene.h">
       <Filter>SourceCords\gamesystem\Scene\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\scene\FirstStage.h">
-      <Filter>SourceCords\gamesystem\Scene\PlayScene</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\GameoverScene.h">
       <Filter>SourceCords\gamesystem\Scene\GameOver</Filter>
@@ -637,7 +638,22 @@
     <ClInclude Include="SourceCode\gamesystem\character\ViewBullet.h">
       <Filter>SourceCords\gamesystem\character\Various\Bullet\Various</Filter>
     </ClInclude>
-    <ClInclude Include="Font.h" />
+    <ClInclude Include="Font.h" 
+    <ClInclude Include="SourceCode\gamesystem\character\SecondBoss.h">
+      <Filter>SourceCords\gamesystem\character\Various\Boss\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\FirstStage.h">
+      <Filter>SourceCords\gamesystem\Scene\PlayScene\FirstStage</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\SecondStage.h">
+      <Filter>SourceCords\gamesystem\Scene\PlayScene\SecondStage</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\FirstStageActor.h">
+      <Filter>SourceCords\gamesystem\actor\Play\FirstStage</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\SecondStageActor.h">
+      <Filter>SourceCords\gamesystem\actor\Play\SecondStage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Kotodama.rc" />
@@ -890,6 +906,18 @@
     </Filter>
     <Filter Include="SourceCords\gamesystem\character\Various\Enemy\Common">
       <UniqueIdentifier>{b1142476-2fb3-41a5-bf7a-aa3aede5248e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\Scene\PlayScene\FirstStage">
+      <UniqueIdentifier>{1302fcbc-80b1-4180-a89c-0509f8189511}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\Scene\PlayScene\SecondStage">
+      <UniqueIdentifier>{f0e78ad8-109c-4d86-88e5-6330f82941c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\actor\Play\FirstStage">
+      <UniqueIdentifier>{ddda4ba1-b155-4c37-8bba-a19929ea6734}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\actor\Play\SecondStage">
+      <UniqueIdentifier>{bb2d1bd5-e34b-4f0c-9dd2-94853131ce74}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -7,6 +7,7 @@
 #include "HungerGauge.h"
 #include "Helper.h"
 #include <random>
+#include "Player.h"
 Ghost::Ghost() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Cube);
 	m_Object.reset(new IKEObject3d());
@@ -17,10 +18,10 @@ Ghost::Ghost() {
 bool Ghost::Initialize() {
 	//óêêîéwíË
 	mt19937 mt{ std::random_device{}() };
-	uniform_int_distribution<int> l_distX(-41, 50);
-	uniform_int_distribution<int> l_distZ(-45, 45);
+	uniform_int_distribution<int> l_distX(-50, 60);
+	uniform_int_distribution<int> l_distZ(-55, 55);
 	m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
-	m_Scale = { 1.0f,1.0f,1.0f };
+	m_Scale = { 1.2f,1.2f,1.2f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	_charaState = CharaState::STATE_NONE;
 	_searchState = SearchState::SEARCH_NO;
@@ -88,9 +89,10 @@ void Ghost::Particle() {
 //ìñÇΩÇËîªíË(íe)
 bool Ghost::BulletCollision() {
 	float l_AddHungerMax = HungerGauge::m_Hungervalue;//â¡éZÇ≥ÇÍÇÈç≈ëÂãQâÏÉQÅ[ÉW
-	if (player->BulletCollide(m_Position,m_Catch) && (m_Alive)) {
+	if (Player::GetInstance()->BulletCollide(m_Position,m_Catch) && (m_Alive)) {
 		m_Catch = true;
-		if (player->GetBulletType() == BULLET_FORROW) {
+		if (Player::GetInstance()->GetBulletType() == BULLET_FORROW) {
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Follower.wav", VolumManager::GetInstance()->GetSEVolum());
 			HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() + l_AddHungerMax);
 			HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetHungerMax());
 			HungerGauge::GetInstance()->SetCatchCount(HungerGauge::GetInstance()->GetCatchCount() + 1.0f);
@@ -100,6 +102,7 @@ bool Ghost::BulletCollision() {
 		}
 		else {
 			_charaState = CharaState::STATE_SEARCH;
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Searcher.wav", VolumManager::GetInstance()->GetSEVolum());
 		}
 		return true;
 	}
@@ -110,7 +113,7 @@ bool Ghost::BulletCollision() {
 }
 //ìñÇΩÇËîªíË(ÉvÉåÉCÉÑÅ[)
 bool Ghost::PlayerCollision() {
-	if (player->PlayerCollide(m_Position) && (_charaState == CharaState::STATE_FOLLOW)) {
+	if (Player::GetInstance()->PlayerCollide(m_Position) && (_charaState == CharaState::STATE_FOLLOW)) {
 		m_Position = m_OldPos;
 		return true;
 	}
@@ -133,8 +136,8 @@ void Ghost::BirthGhost() {
 		if (m_ResPornTimer == 20) {
 			//óêêîéwíË
 			mt19937 mt{ std::random_device{}() };
-			uniform_int_distribution<int> l_distX(-41, 50);
-			uniform_int_distribution<int> l_distZ(-45, 45);
+			uniform_int_distribution<int> l_distX(-50, 60);
+			uniform_int_distribution<int> l_distZ(-55, 55);
 			m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
 		}
 		//àÍíËéûä‘Ç≈ê∂ê¨Ç≥ÇÍÇÈ
@@ -156,13 +159,13 @@ void Ghost::None() {
 //í«è]
 void Ghost::Follow() {
 	float l_Vel = 0.35f;//ë¨ìx
-	XMFLOAT3 l_playerPos = player->GetPosition();
+	XMFLOAT3 l_playerPos = Player::GetInstance()->GetPosition();
 	Helper::GetInstance()->FollowMove(m_Position, l_playerPos, l_Vel);
 }
 //íTçı
 void Ghost::Search() {
 	float l_Vel = 0.3f;
-	XMFLOAT3 l_playerPos = player->GetPosition();
+	XMFLOAT3 l_playerPos = Player::GetInstance()->GetPosition();
 	//í«è]
 	if (_searchState == SearchState::SEARCH_START) {
 		Helper::GetInstance()->FollowMove(m_Position, m_SearchPos, l_Vel);
@@ -185,7 +188,7 @@ void Ghost::EndSearch() {
 void Ghost::CarryFood() {
 	float l_Radius = 1.0f;//ìñÇΩÇËîªíË
 	float l_AddHunger = HungerGauge::m_Hungervalue;//â¡éZÇ≥ÇÍÇÈãCÇ™ÉQÅ[ÉW
-	XMFLOAT3 l_playerPos = player->GetPosition();
+	XMFLOAT3 l_playerPos = Player::GetInstance()->GetPosition();
 	if ((_searchState == SearchState::SEARCH_END) && (m_Alive)) {
 		if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, l_playerPos.x, l_playerPos.z, l_Radius)) {
 			m_Alive = false;
@@ -193,6 +196,7 @@ void Ghost::CarryFood() {
 			m_Catch = false;
 			m_Limit = {};
 			HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() + l_AddHunger);
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Food.wav", VolumManager::GetInstance()->GetSEVolum());
 		}
 	}
 }

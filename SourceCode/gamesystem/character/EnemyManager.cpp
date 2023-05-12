@@ -1,31 +1,32 @@
 #include "EnemyManager.h"
-
 #include "Helper.h"
 #include "Input.h"
-Player* EnemyManager::player = nullptr;
-EnemyManager::EnemyManager(Player* _player) {
-	player = _player;
+EnemyManager::EnemyManager(const std::string& sceneName) {
+	
+	//シーンによって読み込むボスが違う
+	if (sceneName == "FIRSTSTAGE") {
+		enemy.reset(new FirstBoss());
+		enemy->Initialize();
+	}
+	else if (sceneName == "SECONDSTAGE") {
 
-
-	enemy.reset(new FirstBoss());
-	enemy->Initialize();
-	enemy->SetPlayer(player);
+		enemy.reset(new SecondBoss());
+		enemy->Initialize();
+	}
+	else {
+		assert(0);
+	}
 
 	for (auto i = 0; i < bulletenemy.size(); i++)
 	{
 		bulletenemy[i].reset(new NormalEnemy());
 		bulletenemy[i]->Initialize();
-		bulletenemy[i]->SetPlayer(player);
 	}
 	for (auto i = 0; i < bulletenemy_2.size(); i++)
 	{
 		bulletenemy_2[i].reset(new NormalEnemy());
 		bulletenemy_2[i]->Initialize();
-		bulletenemy_2[i]->SetPlayer(player);
-
-
 	}
-
 }
 //更新
 void EnemyManager::Update() {
@@ -77,6 +78,7 @@ void EnemyManager::Draw(DirectXCommon* dxCommon) {
 //ImGui
 void EnemyManager::ImGuiDraw() {
 	//enemy->ImGuiDraw();
+	enemy->ImGuiDraw();
 }
 
 void EnemyManager::ShotAttack_A()

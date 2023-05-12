@@ -14,26 +14,20 @@ AttackBullet::AttackBullet() {
 bool AttackBullet::Initialize() {
 	m_Position = { 0.0f,0.0f,0.0f };
 	m_Scale = { 1.0f,1.0f,1.0f };
-
+	m_Color = { 1.0f,0.0f,0.0f,1.0f };
 	//CSV‚©‚ç“Ç‚İ‚İ
 	m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet.csv", "speed2")));
 	m_TargetTimer = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet.csv", "Timer")));
 	return true;
 }
-
 //ImGui•`‰æ
 void AttackBullet::ImGui_Origin() {
-
+	ImGui::Begin("Attack");
+	ImGui::Text("Alive:%d", m_Alive);
+	ImGui::End();
 }
 //’e‚Ì“Á—Lˆ—
 void AttackBullet::Action() {
-	//ƒ^ƒCƒv‚É‚æ‚Á‚ÄF‚ğˆê’U•Ï‚¦‚Ä‚é
-	if (m_BulletType == BULLET_FORROW) {
-		m_Color = { 1.0f,0.0f,0.0f,1.0f };
-	}
-	else {
-		m_Color = { 0.0f,1.0f,0.0f,1.0f };
-	}
 	if (m_Alive) {
 		//ˆÚ“®‚ğ‰ÁZ
 		m_Position.x += m_Angle.x * m_AddSpeed;

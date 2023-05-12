@@ -2,17 +2,16 @@
 #include "BaseActor.h"
 #include <vector>
 #include<windows.h>
-#include"Player.h"
 #include "UI.h"
 #include "EnemyManager.h"
-#include "FirstBoss.h"
+#include "SecondBoss.h"
 #include "BackObj.h"
 #include "LoadStageObj.h"
 /// タイトルシーン
-class PlaySceneActor : public BaseActor {
+class SecondStageActor : public BaseActor {
 private:
 	enum state {
-		CONVERSATION=0,
+		CONVERSATION = 0,
 		FIGHT,
 		NONE,
 	};
@@ -30,7 +29,7 @@ public:
 	void ImGuiDraw(DirectXCommon* dxCommon);
 private:
 	//クラス
-	unique_ptr<Player> player;
+	//unique_ptr<Player> player;
 	unique_ptr<EnemyManager> enemymanager;
 	unique_ptr<InterBoss> boss;
 	unique_ptr<UI>ui;
@@ -39,7 +38,7 @@ private:
 	unique_ptr<IKESprite> conversationwindow;
 	unique_ptr<IKESprite> blackwindow;
 	//��W
-	XMFLOAT2 window_pos{ WinApp::window_width/2.f,WinApp::window_height+100 };
+	XMFLOAT2 window_pos{ WinApp::window_width / 2.f,WinApp::window_height + 100 };
 	XMFLOAT2 window_size{ 0.f,0.f };
 
 	XMFLOAT4 black_color{ 1.f,1.f,1.f,0.f };

@@ -5,6 +5,7 @@
 #include "ParticleEmitter.h"
 #include "Collision.h"
 #include "HungerGauge.h"
+#include "Player.h"
 #include <random>
 Food::Food() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Cube);
@@ -16,10 +17,10 @@ Food::Food() {
 bool Food::Initialize() {
 	//乱数指定
 	mt19937 mt{ std::random_device{}() };
-	uniform_int_distribution<int> l_distX(-41, 50);
-	uniform_int_distribution<int> l_distZ(-45, 45);
+	uniform_int_distribution<int> l_distX(-50, 60);
+	uniform_int_distribution<int> l_distZ(-55, 55);
 	m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
-	m_Scale = { 1.0f,1.0f,1.0f };
+	m_Scale = { 0.7f,0.7f,0.7f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_LockOn = false;
 	m_Alive = true;
@@ -46,16 +47,16 @@ void Food::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui描画
 void Food::ImGuiDraw() {
-	//ImGui::Begin("Food");
-	//ImGui::Text("LockOn:%d", m_LockOn);
-	//ImGui::Text("Alive:%d", m_Alive);
-	//ImGui::End();
+	ImGui::Begin("Food");
+	ImGui::Text("LockOn:%d", m_LockOn);
+	ImGui::Text("Alive:%d", m_Alive);
+	ImGui::End();
 }
 //パーティクル
 void Food::Particle() {
 	XMFLOAT4 s_color = { 1.0f,0.0f,0.0f,1.0f };
 	XMFLOAT4 e_color = { 0.0f,0.0f,1.0f,1.0f };
-	float s_scale = 3.0f;
+	float s_scale = 1.5f;
 	float e_scale = 0.0f;
 	if (m_Alive) {
 		ParticleEmitter::GetInstance()->FireEffect(10, m_Position, s_scale, e_scale, s_color, e_color);
@@ -63,9 +64,9 @@ void Food::Particle() {
 }
 //当たり判定
 bool Food::Collision() {
-	float l_Radius = 1.5f;//当たり判定の範囲
+	float l_Radius = 1.2f;//当たり判定の範囲
 	float l_AddHunger = 1.0f;//加算される飢餓ゲージ
-	XMFLOAT3 m_PlayerPos = player->GetPosition();
+	XMFLOAT3 m_PlayerPos = Player::GetInstance()->GetPosition();
 	if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, m_PlayerPos.x, m_PlayerPos.z, l_Radius) && m_Alive) {
 		m_Alive = false;
 		m_LockOn = false;
@@ -86,8 +87,8 @@ void Food::BirthFood() {
 		if (m_Timer == 20) {
 			//乱数指定
 			mt19937 mt{ std::random_device{}() };
-			uniform_int_distribution<int> l_distX(-41, 50);
-			uniform_int_distribution<int> l_distZ(-45, 45);
+			uniform_int_distribution<int> l_distX(-50, 60);
+			uniform_int_distribution<int> l_distZ(-55, 55);
 			m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
 		}
 		//一定時間で生成される
