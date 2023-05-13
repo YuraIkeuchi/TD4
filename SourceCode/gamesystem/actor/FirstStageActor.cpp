@@ -47,7 +47,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
 
-	if (enemymanager->BossDestroy()) {
+	if (enemymanager->BossDestroy() || input->TriggerKey(DIK_X)) {
 		SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
 	}
 

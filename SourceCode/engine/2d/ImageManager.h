@@ -34,7 +34,9 @@ public:
 	enum tex2dName
 	{
 		IMPACT,
-		IMPACT2
+		IMPACT2,
+		ANGER,
+		JOY
 	};
 	enum particleName
 	{

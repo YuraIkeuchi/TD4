@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "BaseActor.h"
 #include "IKESprite.h"
 #include"Font.h"

@@ -139,8 +139,8 @@ void SecondStageActor::BackDraw(DirectXCommon* dxCommon) {
 	////各クラスの描画
 	Player::GetInstance()->Draw(dxCommon);
 	loadobj->Draw(dxCommon);
-	enemymanager->Draw(dxCommon);
 	backobj->Draw(dxCommon);
+	enemymanager->Draw(dxCommon);
 	IKEObject3d::PostDraw();
 }
 //ポストエフェクトがかからない
