@@ -9,7 +9,7 @@
 #include "Input.h"
 //生成
 SecondBoss::SecondBoss() {
-	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Tyuta);
+	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Kido);
 
 	m_Object.reset(new IKEObject3d());
 	m_Object->Initialize();

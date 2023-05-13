@@ -18,7 +18,7 @@ FirstBoss::FirstBoss() {
 
 bool FirstBoss::Initialize() {
 	m_Position = { 0.0f,0.0f,30.0f };
-	m_Scale = { 1.f,1.f,1.f };
+	m_Scale = { 3.f,3.f,3.f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Rotation.y = 90.f;
 	RTime = 1;

@@ -842,6 +842,9 @@
     <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor.h">
       <Filter>SourceCords\gamesystem\actor\GameOver</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>SourceCords</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Gaussian.hlsli">

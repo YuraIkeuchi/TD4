@@ -37,7 +37,9 @@ void (Ghost::* Ghost::stateTable[])() = {
 };
 //更新
 void Ghost::Update() {
+	float l_AddScale = 0.2f;//OBB用に少し大きめのスケールを取る
 	m_OldPos = m_Position;
+	m_OBBScale = { m_Scale.x + l_AddScale,m_Scale.y + l_AddScale, m_Scale.z + l_AddScale };
 	//状態移行(charastateに合わせる)
 	(this->*stateTable[_charaState])();
 	//タイプによって色を一旦変えてる
@@ -89,7 +91,7 @@ void Ghost::Particle() {
 //当たり判定(弾)
 bool Ghost::BulletCollision() {
 	float l_AddHungerMax = HungerGauge::m_Hungervalue;//加算される最大飢餓ゲージ
-	if (Player::GetInstance()->BulletCollide(m_Position,m_Catch) && (m_Alive)) {
+	if (Player::GetInstance()->BulletCollide(m_Position,m_Object->GetMatrot(), m_OBBScale, m_Catch) && (m_Alive)) {
 		m_Catch = true;
 		if (Player::GetInstance()->GetBulletType() == BULLET_FORROW) {
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Follower.wav", VolumManager::GetInstance()->GetSEVolum());

@@ -37,6 +37,8 @@ void AttackBullet::Action() {
 			m_Timer = 0;
 			m_Alive = false;
 		}
+
+		m_MatRot = m_Object->GetMatrot();
 	}
 
 	if (m_Alive) {

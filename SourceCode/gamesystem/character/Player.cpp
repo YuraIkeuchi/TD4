@@ -341,6 +341,7 @@ void Player::BirthShot(const std::string& bulletName, bool Super) {
 		newbullet = new GhostBullet();
 		newbullet->Initialize();
 		newbullet->SetPosition(m_Position);
+		newbullet->SetRotation({m_Rotation.x,m_Rotation.y + 90.0f,m_Rotation.z});
 		newbullet->SetBulletType(m_BulletType);
 		newbullet->SetAngle(l_Angle);
 		ghostbullets.push_back(newbullet);
@@ -362,12 +363,19 @@ void Player::InterVal() {
 	Helper::GetInstance()->CheckMaxINT(m_RigidityTime, 0, -1);
 }
 //弾との当たり判定
-bool Player::BulletCollide(const XMFLOAT3& pos,const bool Catch) {
+bool Player::BulletCollide(const XMFLOAT3& pos, const XMMATRIX& matrot, const XMFLOAT3& scale, const bool Catch) {
 	float l_Radius = 1.3f;//当たり範囲
+	m_OBB1.SetParam_Pos(pos);
+	m_OBB1.SetParam_Rot(matrot);
+	m_OBB1.SetParam_Scl(scale);
 	//弾の更新
 	for (InterBullet* bullet : ghostbullets) {
 		if (bullet != nullptr) {
-			if (Collision::CircleCollision(bullet->GetPosition().x, bullet->GetPosition().z, l_Radius, pos.x, pos.z, l_Radius) && (bullet->GetAlive()) && (!Catch)) {
+			m_OBB2.SetParam_Pos(bullet->GetPosition());
+			m_OBB2.SetParam_Rot(bullet->GetMatRot());
+			m_OBB2.SetParam_Scl(bullet->GetScale());
+		
+			if ((Collision::OBBCollision(m_OBB1, m_OBB2)) && (bullet->GetAlive()) && (!Catch)) {
 				//bullet->SetAlive(false);
 				return true;
 			}
