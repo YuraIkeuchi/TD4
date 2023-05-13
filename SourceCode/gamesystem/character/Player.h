@@ -6,6 +6,7 @@
 #include "ViewBullet.h"
 #include "GhostBullet.h"
 #include "AttackBullet.h"
+#include "CollisionPrimitive.h"
 using namespace DirectX;
 class Player:public ObjCommon
 {
@@ -79,7 +80,7 @@ private:
 	void AnimationControl(AnimeName name, const bool& loop, int speed);
 public:
 	//当たり判定系
-	bool BulletCollide(const XMFLOAT3& pos,const bool Catch);//弾との当たり判定
+	bool BulletCollide(const XMFLOAT3& pos, const XMMATRIX& matrot, const XMFLOAT3& scale, const bool Catch);//弾との当たり判定
 	bool PlayerCollide(const XMFLOAT3& pos);//プレイヤーとの当たり判定
 public:
 	//gettersetter
@@ -103,6 +104,10 @@ private://各クラス
 	XMFLOAT3 m_FollowPos = {};
 
 	int m_ShotTimer = {};//ショットのチャージ時間
+
+	//OBBの当たり判定
+	OBB m_OBB1 = {};
+	OBB m_OBB2 = {};
 
 public:
 	vector<InterBullet*>GetBulllet_ghost() { return ghostbullets; }

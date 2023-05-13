@@ -23,9 +23,11 @@ void ModelManager::SecondInitialize()
 	LoadModel(Box, "UVSphere");
 	LoadModel(Boss, "chr_knight");
 	LoadModel(Bullet, "UVSphere");
-
+	LoadModel(GhostBullet, "followVoice");
 	LoadModel(BulEnemy, "tri");
 	LoadModel(Tyuta, "zako");
+	LoadModel(Kido, "kidokun_idol");
+
 	LoadFBXModel(PLAYER, "PlayerFBXNew");
 }
 

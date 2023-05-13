@@ -73,6 +73,7 @@ private:
 	bool m_Catch =false;//捕獲フラグ
 	int m_ResPornTimer = 0;//復活の時間
 	XMFLOAT3 m_FollowPos = {};//追従先
+	XMFLOAT3 m_OBBScale = {};//OBB用の大きさ
 private:
 	//キャラの状態
 	enum CharaState

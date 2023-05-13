@@ -19,8 +19,10 @@ public:
 		Box,
 		Boss,
 		Bullet,
+		GhostBullet,
 		BulEnemy,
-		Tyuta
+		Tyuta,
+		Kido,
 	};
 	//FBX‚Ì–¼‘O
 	enum FBXName {
