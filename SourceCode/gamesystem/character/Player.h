@@ -87,6 +87,8 @@ public:
 
 	void SetHP(float hp) { m_HP = hp; };
 	float GetHP() { return m_HP; }
+	float GetMaxHP() { return m_MaxHP; }
+
 private://各クラス
 	vector<InterBullet*> ghostbullets;//言霊
 	vector<InterBullet*> attackbullets;//攻撃
@@ -99,6 +101,7 @@ private://各クラス
 	int m_TargetRigidityTime = {};//硬直時間の目標時間
 	//体力
 	float m_HP = 0.0f;
+	float m_MaxHP = 0.0f;
 
 	XMFLOAT3 m_FollowPos = {};
 
