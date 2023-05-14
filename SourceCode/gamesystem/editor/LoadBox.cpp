@@ -53,9 +53,19 @@ void LoadBox::Initialize()
 	Load();
 }
 
-void LoadBox::Update()
+void LoadBox::FirstUpdate()
 {
 	for(auto i=0;i<boxes.size();i++)
+	{
+
+		boxes[i]->Update();
+	}
+}
+
+
+void LoadBox::SecondUpdate()
+{
+	for (auto i = 0; i < boxes.size(); i++)
 	{
 
 		boxes[i]->Update();

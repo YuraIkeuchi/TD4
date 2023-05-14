@@ -124,3 +124,8 @@ bool EnemyManager::BossDestroy() {
 
 	return false;
 }
+
+//敵のチェック終了
+void EnemyManager::FinishCheck() {
+	enemy->SetCheck(false);
+}

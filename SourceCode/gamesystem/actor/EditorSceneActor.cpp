@@ -43,7 +43,7 @@ void EditorSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 //更新
 void EditorSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
-load2->Update();
+	load2->Update();
 	lightgroup->Update();
 	//camerawork->SetTarget({ camera->GetEye().x,0.0f,camera->GetEye().z });
 	//camera->SetTarget({ camera->GetEye().x,camera->GetEye().y - 10.f,camera->GetEye().z + 20.f, });

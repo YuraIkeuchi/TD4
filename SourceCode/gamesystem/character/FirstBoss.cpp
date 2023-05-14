@@ -2,11 +2,9 @@
 #include "ModelManager.h"
 #include "Helper.h"
 #include <any>
-
-#include "Collision.h"
 #include "CsvLoader.h"
 #include "ImageManager.h"
-#include "Input.h"
+#include "Collision.h"
 //生成
 FirstBoss::FirstBoss() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Tyuta);

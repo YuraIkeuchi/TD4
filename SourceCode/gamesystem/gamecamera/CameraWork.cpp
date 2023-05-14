@@ -13,7 +13,7 @@ CameraWork::CameraWork(XMFLOAT3 eye, XMFLOAT3 target) {
 //XV
 void CameraWork::Update(DebugCamera* camera) {
 	m_eyePos.x = Player::GetInstance()->GetPosition().x;
-	m_eyePos.z = Player::GetInstance()->GetPosition().z - 2.0f;
+	m_eyePos.z = Player::GetInstance()->GetPosition().z - 20.0f;
 	m_targetPos.x = Player::GetInstance()->GetPosition().x;
 	m_targetPos.z = Player::GetInstance()->GetPosition().z;
 	camera->SetEye(m_eyePos);

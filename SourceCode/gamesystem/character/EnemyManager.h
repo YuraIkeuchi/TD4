@@ -23,9 +23,14 @@ public:
 	//ImGui
 	void ImGuiDraw();
 
-
+	void FinishCheck();
 public://getter setter
 	//static void SetPlayer(Player* player) { EnemyManager::player = player; }
+	//“GŠÖŒWget‚Åæ‚é
+	InterBoss* GetBoss() { return enemy.get(); }
+	const XMFLOAT3& GetEnemyPosition() { return enemy.get()->GetPosition(); }
+	const bool GetEnemyCheck() { return enemy.get()->GetCheck(); }
+
 protected: //Ã“Iƒƒ“ƒo•Ï”
 private:
 	Player* player = Player::GetInstance();

@@ -8,6 +8,7 @@
 #include "Ghost.h"
 #include "Food.h"
 #include "LoadManager.h"
+#include "EnemyManager.h"
 using namespace DirectX;
 class LoadStageObj :public LoadManager
 {
@@ -16,13 +17,15 @@ public:
 	//ゴーストロード
 	void GhostLoad();
 	//食べ物ロード
-	void FoodLoad();
+	void FoodLoad(const std::string& sceneName);
 	//すべてのロード
-	void AllLoad();
+	void AllLoad(const std::string& sceneName);
 	//初期化
 	void Initialize()override;
 	//更新
-	void Update()override;
+	void FirstUpdate()override;
+	//更新
+	void SecondUpdate()override;
 	//描画
 	void Draw(DirectXCommon* dxCommon)override;
 	//ImGui
@@ -34,6 +37,13 @@ private:
 	void CollideFood();
 	//ゴーストが消える
 	void VanishGhost();
+	//共通の更新
+	void CommonUpdate();
+public:
+	static void SetEnemyManager(EnemyManager* enemy) { LoadStageObj::enemy = enemy; }
+protected:
+	static EnemyManager* enemy;
+
 private:
 	//当たり判定
 	void Collide();

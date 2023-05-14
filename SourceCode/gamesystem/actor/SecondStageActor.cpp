@@ -38,7 +38,8 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	backobj->Initialize();
 
 	loadobj = std::make_unique<LoadStageObj>();
-	loadobj->AllLoad();
+	loadobj->AllLoad("SECONDSTAGE");
+	loadobj->SetEnemyManager(enemymanager.get());
 }
 //更新
 void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -98,7 +99,7 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	if (nowstate != CONVERSATION) {
 		Player::GetInstance()->Update();
 		enemymanager->Update();
-		loadobj->Update();
+		loadobj->SecondUpdate();
 		ParticleEmitter::GetInstance()->Update();
 	}
 	camerawork->Update(camera);
@@ -139,8 +140,8 @@ void SecondStageActor::BackDraw(DirectXCommon* dxCommon) {
 	////各クラスの描画
 	Player::GetInstance()->Draw(dxCommon);
 	loadobj->Draw(dxCommon);
-	enemymanager->Draw(dxCommon);
 	backobj->Draw(dxCommon);
+	enemymanager->Draw(dxCommon);
 	IKEObject3d::PostDraw();
 }
 //ポストエフェクトがかからない
@@ -157,5 +158,6 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 //IMGuiの描画
 void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	Player::GetInstance()->ImGuiDraw();
-	enemymanager->ImGuiDraw();
+	loadobj->ImGuiDraw();
+	//enemymanager->ImGuiDraw();
 }

@@ -1,6 +1,7 @@
 #include "ParticleEmitter.h"
 #include "VariableCommon.h"
 #include "ImageManager.h"
+#include <random>
 ParticleEmitter* ParticleEmitter::GetInstance()
 {
 	static ParticleEmitter instance;
@@ -26,7 +27,7 @@ void ParticleEmitter::FlontDrawAll() {
 	circleParticle->Draw(AddBlendType);
 }
 
-void ParticleEmitter::FireEffect(int life, XMFLOAT3 l_pos, float startscale, float endscale, XMFLOAT4 startcolor, XMFLOAT4 endcolor)
+void ParticleEmitter::FireEffect(const int life, const XMFLOAT3& l_pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor)
 {
 	XMFLOAT3 pos = l_pos;
 	const float rnd_vel = 0.05f;
@@ -36,6 +37,38 @@ void ParticleEmitter::FireEffect(int life, XMFLOAT3 l_pos, float startscale, flo
 	vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 
 	circleParticle->Add(life, { pos.x,pos.y,pos.z }, vel, {}, startscale, endscale, startcolor, endcolor);
+}
+
+//爆発
+void ParticleEmitter::Explosion(const int life, const XMFLOAT3& pos2, const float size, const float startscale, 
+	const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor){
+	for (int j = 0; j < 3; j++) {
+		//X,Y,Z全て[-2.0f, +2.0f]でランダムに分布
+		const float RandPos = 2.0f;
+		XMFLOAT3 pos = pos2;
+		pos.x += ((float)rand() / RAND_MAX * RandPos - RandPos / 2.0f) * size;
+		pos.y += ((float)rand() / RAND_MAX * RandPos - RandPos / 2.0f) * size;
+		pos.z += ((float)rand() / RAND_MAX * RandPos - RandPos / 2.0f) * size;
+
+		for (int i = 0; i < 10; i++) {
+			//X,Y,Z全て[-0.8f, +0.8f]でランダムに分布
+			const float RandPos2 = 0.8f;
+			pos.x += ((float)rand() / RAND_MAX * RandPos2 - RandPos2 / 2.0f) * size;
+			pos.y += ((float)rand() / RAND_MAX * RandPos2 - RandPos2 / 2.0f) * size;
+			pos.z += ((float)rand() / RAND_MAX * RandPos2 - RandPos2 / 2.0f) * size;
+
+			//X,Y,Z全て[-0.05f, +0.05f]でランダムに分布
+			const float RandVel = 0.05f;
+			XMFLOAT3 vel{};
+			vel.x = ((float)rand() / RAND_MAX * RandVel - RandVel / 2.0f) * size;
+			vel.y = ((float)rand() / RAND_MAX * RandVel - RandVel / 2.0f) * size;
+			vel.z = ((float)rand() / RAND_MAX * RandVel - RandVel / 2.0f) * size;
+			
+
+			//追加
+			circleParticle->Add(life, pos, vel, {}, startscale, endscale, startcolor, endcolor);
+		}
+	}
 }
 
 void ParticleEmitter::AllDelete()
