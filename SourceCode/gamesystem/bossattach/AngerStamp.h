@@ -9,4 +9,6 @@ private:
 	void Action() override;//çsìÆ
 	void ImGui_Origin() override;//ImGui
 	void Origin_Draw(DirectXCommon* dxCommon) override;//
+
+	void BirthParticle();
 };

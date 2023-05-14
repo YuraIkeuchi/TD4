@@ -33,7 +33,10 @@ public: //メンバ関数
 	//描画
 	void FlontDrawAll();
 	//エフェクト
-	void FireEffect(int life,XMFLOAT3 l_pos,float startscale,float endscale,XMFLOAT4 startcolor,XMFLOAT4 endcolor);
+	void FireEffect(const int life,const XMFLOAT3& l_pos,const float startscale, const float endscale,const XMFLOAT4& startcolor,const XMFLOAT4& endcolor);
+	//爆発エフェクト
+	void Explosion(const int life, const XMFLOAT3& pos2, const float size,const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor);
+	
 	//削除
 	void AllDelete();
 
