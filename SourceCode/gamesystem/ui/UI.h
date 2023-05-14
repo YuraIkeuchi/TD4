@@ -2,17 +2,16 @@
 #include"IKESprite.h"
 #include<memory>
 #include<DirectXMath.h>
+#include <array>
 using namespace DirectX;
-class UI
-{
+class UI {
 public:
-	UI(){};
+	UI() {};
 	~UI();
 
 private:
 	//仮フォント
-	struct Debug
-	{
+	struct SpriteData {
 		//画像
 		std::unique_ptr<IKESprite> Tex;
 		//基礎パラメータ
@@ -23,15 +22,17 @@ private:
 		//適当なフラグ
 		bool OtherF;
 	};
-	//仮
-	Debug TexA;
-
-	enum class SpriteName
-	{
-		TITLE,
-		ARROW
+	enum  SpriteName {
+		UnderStatusHp = 0,
+		StatusHp,
+		UnderStatusGauge,
+		StatusGauge,
+		UiMax
 	};
-	std::vector<Debug>TexList;
+
+	//仮
+	std::array<SpriteData, UiMax> sprites={};
+	std::vector<SpriteData>TexList;
 public:
 	//初期化
 	void Initialize();

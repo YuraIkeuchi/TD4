@@ -95,7 +95,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	conversationwindow->SetPosition(window_pos);
 	conversationwindow->SetSize(window_size);
 	blackwindow->SetColor(black_color);
-
+	ui->Update();
 	//各クラス更新
 	backobj->Update();
 	if (nowstate != CONVERSATION) {
@@ -156,8 +156,8 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	IKESprite::PreDraw();
 	blackwindow->Draw();
 	conversationwindow->Draw();
-	//ui->Draw();
 	IKESprite::PostDraw();
+	ui->Draw();
 }
 //IMGuiの描画
 void FirstStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
