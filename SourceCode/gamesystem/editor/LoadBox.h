@@ -26,7 +26,9 @@ public:
 
 	void Initialize()override;
 
-	void Update()override;
+	void FirstUpdate()override;
+
+	void SecondUpdate()override;
 
 	void Draw(DirectXCommon* dxCommon)override;
 

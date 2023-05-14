@@ -38,7 +38,8 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	backobj->Initialize();
 
 	loadobj = std::make_unique<LoadStageObj>();
-	loadobj->AllLoad();
+	loadobj->AllLoad("SECONDSTAGE");
+	loadobj->SetEnemyManager(enemymanager.get());
 }
 //XV
 void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -98,7 +99,7 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	if (nowstate != CONVERSATION) {
 		Player::GetInstance()->Update();
 		enemymanager->Update();
-		loadobj->Update();
+		loadobj->SecondUpdate();
 		ParticleEmitter::GetInstance()->Update();
 	}
 	camerawork->Update(camera);
@@ -157,5 +158,6 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 //IMGui‚Ì•`‰æ
 void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	Player::GetInstance()->ImGuiDraw();
-	enemymanager->ImGuiDraw();
+	loadobj->ImGuiDraw();
+	//enemymanager->ImGuiDraw();
 }

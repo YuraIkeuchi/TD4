@@ -92,8 +92,11 @@ void SecondBoss::DamAction()
 
 //ImGui
 void SecondBoss::ImGui_Origin() {
-	StampImGui(angerstamps);
-	StampImGui(joystamps);
+	ImGui::Begin("Second");
+	ImGui::Text("PosY:%f", m_Position.y);
+	ImGui::End();
+	//StampImGui(angerstamps);
+	//StampImGui(joystamps);
 }
 
 //インターバル
@@ -111,7 +114,6 @@ void SecondBoss::InterVal() {
 			m_AfterPower = 0.0f;
 		}
 		else {
-
 			if (m_Rotation.x == 360.0f) {
 				BirthStamp("Anger");
 				m_Rotation.x = 0.0f;
@@ -119,6 +121,7 @@ void SecondBoss::InterVal() {
 			}
 			else {
 				BirthStamp("Joy");
+				m_Check = true;
 			}
 			_InterValState = UpState;
 			m_AfterRotX += 180.0f;

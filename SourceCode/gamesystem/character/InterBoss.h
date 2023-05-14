@@ -40,8 +40,12 @@ public:
 
 	virtual void EffecttexDraw(DirectXCommon* dxCommon) = 0;
 
+public://gettersetter
 	void SetHP(float hp) { m_HP = hp; };
 	float GetHP() { return m_HP; }
+
+	void SetCheck(bool Check) { m_Check = Check; };
+	bool GetCheck() { return m_Check; }
 
 private:
 protected:
@@ -51,6 +55,8 @@ protected:
 
 	bool isAlive;
 	float m_HP = {};
+
+	bool m_Check = false;
 private:
 
 	enum class ActionList

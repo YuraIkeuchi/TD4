@@ -41,7 +41,8 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	backobj->Initialize();
 
 	loadobj = std::make_unique<LoadStageObj>();
-	loadobj->AllLoad();
+	loadobj->AllLoad("FIRSTSTAGE");
+	loadobj->SetEnemyManager(enemymanager.get());
 }
 //更新
 void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -100,7 +101,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	if (nowstate != CONVERSATION) {
 		Player::GetInstance()->Update();
 		enemymanager->Update();
-		loadobj->Update();
+		loadobj->FirstUpdate();
 		ParticleEmitter::GetInstance()->Update();
 	}
 	camerawork->Update(camera);
@@ -161,7 +162,7 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 //IMGuiの描画
 void FirstStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	Player::GetInstance()->ImGuiDraw();
-	//loadobj->ImGuiDraw();
-	enemymanager->ImGuiDraw();
+	loadobj->ImGuiDraw();
+	//enemymanager->ImGuiDraw();
 	//camerawork->ImGuiDraw();
 }

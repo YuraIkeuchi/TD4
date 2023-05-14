@@ -36,8 +36,6 @@ void AngerStamp::Action() {
 				m_Alive = false;
 				m_Birth = false;
 			}
-
-			
 		}
 		//Ô‚É‹ß‚Ã‚¯‚Â‚ÂÁ‚·
 		m_Color = {

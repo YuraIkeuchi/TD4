@@ -3,6 +3,10 @@
 #include "HungerGauge.h"
 #include "Collision.h"
 #include "Helper.h"
+#include "Input.h"
+#include "Player.h"
+
+EnemyManager* LoadStageObj::enemy = nullptr;
 //ゴーストのロード
 void LoadStageObj::GhostLoad() {
 	auto Size = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/ghost.csv", "Quantity")));
@@ -16,8 +20,17 @@ void LoadStageObj::GhostLoad() {
 
 }
 //食べ物ロード
-void LoadStageObj::FoodLoad() {
-	auto Size = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/food/food.csv", "Quantity")));
+void LoadStageObj::FoodLoad(const std::string& sceneName) {
+	size_t Size;
+	if (sceneName == "FIRSTSTAGE") {
+		Size = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/food/food.csv", "Stage1")));
+	}
+	else if (sceneName == "SECONDSTAGE") {
+		Size = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/food/food.csv", "Stage2")));
+	}
+	else {
+		assert(0);
+	}
 
 	foods.resize(Size);
 
@@ -27,7 +40,7 @@ void LoadStageObj::FoodLoad() {
 	Scl.resize(Size);
 }
 //すべてロード
-void LoadStageObj::AllLoad()
+void LoadStageObj::AllLoad(const std::string& sceneName)
 {
 	//ゴースト関係
 	GhostLoad();
@@ -37,7 +50,7 @@ void LoadStageObj::AllLoad()
 		ghosts[i]->Initialize();
 	}
 	//食べ物関係
-	FoodLoad();
+	FoodLoad(sceneName);
 
 	//初期化
 	for (auto i = 0; i < foods.size(); i++) {
@@ -50,31 +63,39 @@ void LoadStageObj::Initialize()
 {
 	//Load();
 }
-//更新
-void LoadStageObj::Update()
+//更新(ステージ1)
+void LoadStageObj::FirstUpdate()
 {
-	//ゴースト
-	for (auto i = 0; i < ghosts.size(); i++)
-	{
-		//ghosts[i]->SetCircleSpeed((200.0f) + (40.0f * i));
-		ghosts[i]->Update();
+	//更新
+	CommonUpdate();
+}
+
+//更新
+void LoadStageObj::SecondUpdate()
+{
+	//更新
+	CommonUpdate();
+	//こっから特有の処理
+	//食料の削除(このステージのみ)
+	for (int i = 0; i < foods.size(); i++) {
+		if (foods[i] == nullptr) {
+			continue;
+		}
+
+		if (!foods[i]->GetAlive()) {
+			foods.erase(cbegin(foods) + i);
+		}
 	}
-	
-	//
-	//食べ物
-	for (auto i = 0; i < foods.size(); i++)
-	{
-		foods[i]->Update();
+
+	//食料生成
+	if (enemy->GetEnemyCheck()) {
+		Food* newFood;
+		newFood = new Food();
+		newFood->Initialize();
+		newFood->SetPosition({ enemy->GetEnemyPosition().x,0.0f,enemy->GetEnemyPosition().z});
+		foods.push_back(newFood);
+		enemy->FinishCheck();
 	}
-	//
-	//当たり判定
-	Collide();
-	//食べ物の当たり判定
-	CollideFood();
-	//食べ物の検索
-	SearchFood();
-	//ゴーストが消える
-	VanishGhost();
 }
 //描画
 void LoadStageObj::Draw(DirectXCommon* dxCommon)
@@ -99,13 +120,15 @@ void LoadStageObj::ImGuiDraw() {
 	//	ghosts[i]->ImGuiDraw();
 	//}
 	////
-	////食べ物
-	//for (auto i = 0; i < foods.size(); i++) {
-	//	foods[i]->ImGuiDraw();
-	//}
-	////
+	//食べ物
+	for (auto i = 0; i < foods.size(); i++) {
+		foods[i]->ImGuiDraw();
+	}
+	//
+	enemy->ImGuiDraw();
 	//ImGui::Begin("Load");
-	//ImGui::Text("m_VanishCount:%f",m_VanishCount);
+	////ImGui::Text("m_VanishCount:%f",m_VanishCount);
+
 	//ImGui::End();
 }
 //当たり判定(ゴースト)
@@ -190,4 +213,28 @@ void LoadStageObj::VanishGhost() {
 			break;
 		}
 	}
+}
+//共通の更新
+void LoadStageObj::CommonUpdate() {
+	//ゴースト
+	for (auto i = 0; i < ghosts.size(); i++)
+	{
+		ghosts[i]->Update();
+	}
+
+	//
+	//食べ物
+	for (auto i = 0; i < foods.size(); i++)
+	{
+		foods[i]->Update();
+	}
+	//
+	//当たり判定
+	Collide();
+	//食べ物の当たり判定
+	CollideFood();
+	//食べ物の検索
+	SearchFood();
+	//ゴーストが消える
+	VanishGhost();
 }
