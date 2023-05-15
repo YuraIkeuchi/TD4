@@ -21,8 +21,12 @@ private:
 
 	//基本移動
 	void Move();
-	//インターバル
-	void InterVal();
+	//攻撃
+	void Attack();
+
+private:
+
+	static void (SecondBoss::* stateTable[])();
 private:
 	//ダメージ食らった処理
 	void DamAction();
@@ -53,6 +57,12 @@ private:
 	//棘の的に使う
 	float m_Angle = 0.0f;
 	float m_Angle2 = 0.0f;
+	float m_FollowSpeed = 0.0f;
+	float m_AfterFollowSpeed = 0.0f;
+
+	//停止時間
+	int m_StopTimer = 0;
+
 private:
 	enum InterValState {
 		DownState,
@@ -67,4 +77,13 @@ private:
 private:
 	vector<InterStamp*> angerstamps;//怒りのスタンプ
 	vector<InterStamp*> joystamps;//喜びのスタンプ
+
+private:
+	//キャラの状態
+	enum CharaState
+	{
+		STATE_MOVE,
+		STATE_ATTACK,
+	}_charaState;
+
 };
