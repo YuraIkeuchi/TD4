@@ -35,6 +35,8 @@ void HungerGauge::Update() {
 //ImGui
 void HungerGauge::ImGuiDraw() {
 	ImGui::Begin("Hunger");
-	ImGui::Text("m_SubHunger:%f", m_SubHunger);
+	ImGui::Text("Sub:%f", m_SubHunger);
+	ImGui::Text("Max:%f", m_HungerMax);
+	ImGui::Text("Now:%f", m_NowHunger);
 	ImGui::End();
 }
