@@ -38,12 +38,14 @@ private:
 	unique_ptr<LoadStageObj> loadobj;
 	unique_ptr<IKESprite> conversationwindow;
 	unique_ptr<IKESprite> blackwindow;
-	Font* font_;
+	unique_ptr<IKESprite> girl;
+	unique_ptr<Font> font_;
 	//��W
 	XMFLOAT2 window_pos{ WinApp::window_width/2.f,WinApp::window_height+100 };
 	XMFLOAT2 window_size{ 0.f,0.f };
 
 	XMFLOAT4 black_color{ 1.f,1.f,1.f,0.f };
+	XMFLOAT4 girl_color{ 2.f,2.f,2.f,0.f };
 
 	float maxframe = 20.f;
 	float nowframe = 0.f;
