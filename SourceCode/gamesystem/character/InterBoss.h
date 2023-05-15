@@ -4,6 +4,8 @@
 #include "InterBullet.h"
 #include "ObjCommon.h"
 #include <array>       // ヘッダファイルインクルード
+
+#include "InterEnemy.h"
 using namespace std;         //  名前空間指定
 
 //ボスの基底クラス
@@ -40,6 +42,17 @@ public:
 
 	virtual void EffecttexDraw(DirectXCommon* dxCommon) = 0;
 
+public:
+	void SummonEnemyInit(InterEnemy* enemy);
+
+	void SummonEnemyUpda(std::vector<InterEnemy*> enemy);
+
+	void SummonEnemyDraw(std::vector<InterEnemy*> enemy, DirectXCommon* dxcomn);
+
+	void EndSummon(std::vector<InterEnemy*> enemy);
+protected:
+	bool SummonF;
+	bool SummobnStop;
 public://gettersetter
 	void SetHP(float hp) { m_HP = hp; };
 	float GetHP() { return m_HP; }
@@ -49,7 +62,7 @@ public://gettersetter
 
 private:
 protected:
-
+	int ActionTimer;
 	int ActionDamage;
 	int ActionCool;
 

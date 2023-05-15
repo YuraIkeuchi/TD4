@@ -17,8 +17,7 @@ bool Helper::CheckMaxFLOAT(float& Num, const float Max, const float Add) {
 
 	if (Num <= Max) {
 		return true;
-	}
-	else {
+	} else {
 		return false;
 	}
 
@@ -31,8 +30,7 @@ bool Helper::CheckMinFLOAT(float& Num, const float Min, const float Add) {
 
 	if (Num >= Min) {
 		return true;
-	}
-	else {
+	} else {
 		return false;
 	}
 
@@ -48,8 +46,7 @@ bool Helper::CheckMaxINT(int& Num, const int Max, const int Add) {
 
 	if (Num <= Max) {
 		return true;
-	}
-	else {
+	} else {
 		return false;
 	}
 
@@ -62,8 +59,7 @@ bool Helper::CheckMinINT(int& Num, const int Min, const int Add) {
 
 	if (Num >= Min) {
 		return true;
-	}
-	else {
+	} else {
 		return false;
 	}
 
@@ -191,7 +187,7 @@ Helper::XMVECTOR Helper::WorldDivision(const XMVECTOR& pos, const bool sub) {
 void Helper::FollowMove(XMFLOAT3& pos, const XMFLOAT3& pos2, const float vel) {
 	XMFLOAT3 l_Distance;//二点の距離
 	XMFLOAT3 l_AddVel;//加算される移動量
-	
+
 	//とりあえずX軸とZ軸のみ追従
 	l_Distance.x = pos.x - pos2.x;
 	l_Distance.z = pos.z - pos2.z;
@@ -230,8 +226,7 @@ Helper::XMFLOAT3 Helper::CircleMove(const XMFLOAT3& basepos, const float scale, 
 bool Helper::CheckNotValueRange(float& Num, const float Min, const float Max) {
 	if ((Num > Max || Num < Min)) {
 		return true;
-	}
-	else {
+	} else {
 		return false;
 	}
 
@@ -241,8 +236,7 @@ bool Helper::CheckNotValueRange(float& Num, const float Min, const float Max) {
 bool Helper::CheckValueRange(float& Num, const float Min, const float Max) {
 	if ((Num < Max && Num > Min)) {
 		return true;
-	}
-	else {
+	} else {
 		return false;
 	}
 
@@ -314,4 +308,18 @@ Helper::XMFLOAT3 Helper::ChangeVECTOR(const XMVECTOR& pos) {
 	l_Result.z = pos.m128_f32[2];
 
 	return l_Result;
+}
+
+bool Helper::All_Of(bool* flag, int size)
+{
+	for (auto i = 0; i < size;)
+	{
+		//真ならカウント進める
+		if (flag[i])i++;
+		else return false;
+
+		//今の要素がtrueなら
+		if (i == size && flag[size - 1])return true;
+	}
+	return false;
 }

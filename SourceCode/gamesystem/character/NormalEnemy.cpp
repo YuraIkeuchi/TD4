@@ -18,7 +18,7 @@ bool NormalEnemy::Initialize() {
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Position.y = 5.0f;
 	ret = true;
-	HP = 2;
+	HP = 1;
 	isAlive = true;
 	return true;
 }
@@ -43,7 +43,7 @@ void NormalEnemy::Action() {
 //•`‰æ
 void NormalEnemy::Draw(DirectXCommon* dxCommon) {
 
-	if (!isAlive)return;
+	if (m_Color.w <= 0.f)return;
 	IKEObject3d::PreDraw();
 	Obj_Draw();
 }
@@ -83,21 +83,21 @@ void NormalEnemy::Appearance()
 	//ƒvƒŒƒCƒ„[‚Æ“G‚ÌƒxƒNƒgƒ‹‚Ì’·‚³(·)‚ð‹‚ß‚é
 	SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
 
-	constexpr float AddScaling = 0.01f;
+	constexpr float AddScaling = 0.1f;
 
 	m_Scale.x += AddScaling;
 	m_Scale.y += AddScaling;
 	m_Scale.z += AddScaling;
 
-	Helper::GetInstance()->FloatClamp(m_Scale.x, 0.f, 1.f);
-	Helper::GetInstance()->FloatClamp(m_Scale.y, 0.f, 1.f);
-	Helper::GetInstance()->FloatClamp(m_Scale.z, 0.f, 1.f);
+	Helper::GetInstance()->FloatClamp(m_Scale.x, 0.f, 1.5f);
+	Helper::GetInstance()->FloatClamp(m_Scale.y, 0.f, 1.5f);
+	Helper::GetInstance()->FloatClamp(m_Scale.z, 0.f, 1.5f);
 
 	float RottoPlayer;
 	RottoPlayer = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
 	m_Rotation.y = RottoPlayer * 60.f + 180.f;
 
-	if (m_Scale.x >= 1.f || m_Scale.y >= 1.f || m_Scale.z >= 1.f)
+	if (m_Scale.x >= 1.5f || m_Scale.y >= 1.5f || m_Scale.z >= 1.5f)
 	{
 		Rush = true;
 	}
@@ -134,17 +134,17 @@ void NormalEnemy::RushAction()
 		//Œü‚«•Ï‚í‚Á‚½‚çƒtƒ‰ƒO’…‚é
 		if (t >= 1.f)ret = false;
 		//Rotation”½‰f
-		if (randMove > 50) {
-			m_Rotation.y = Easing::EaseOut(t, old * 60.f + 180.f, RotY * 60.f + 180.f);
-		} else {
-			m_Rotation.y = Easing::EaseOut(t, old * 60.f + 180.f, RotY * 60.f + 180.f - 360.f);
-		}
+		//if (randMove > 50) {
+		m_Rotation.y = Easing::EaseOut(t, old * 60.f + 180.f, RotY * 60.f + 180.f);
+		//	} else {
+				//m_Rotation.y = Easing::EaseOut(t, old * 60.f + 180.f, RotY * 60.f + 180.f - 360.f);
+			//}
 	} else
 	{
 
 		t = 0.f;
 		old = RotY;
-		if (Collision::GetLength(l_player, m_Position) > 20.f) {
+		if (Collision::GetLength(l_player, m_Position) > 50.f) {
 			randMove = rand() % 100;
 			ret = true;
 		}
@@ -155,13 +155,17 @@ void NormalEnemy::RushAction()
 
 	move = XMVector3TransformNormal(move, matRot);
 
-	m_Position = {
-			m_Position.x + move.m128_f32[0] * 2.f,
-		m_Position.y,
-		m_Position.z + move.m128_f32[2] * 2.f
-	};
-
-
+	//Œü‚«•Ï‚¦‚Ä‚éÅ’†‚Í“®‚«Ž~‚ß‚é
+	bool stopMove = !(t > 0.01f);
+	if (stopMove) {
+		if (isAlive) {
+			m_Position = {
+					m_Position.x + move.m128_f32[0] * 4.f,
+				m_Position.y,
+				m_Position.z + move.m128_f32[2] * 4.f
+			};
+		}
+	}
 	Helper::GetInstance()->FloatClamp(t, 0.f, 1.f);
 
 }

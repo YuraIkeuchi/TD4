@@ -35,7 +35,7 @@ protected: //Ã“Iƒƒ“ƒo•Ï”
 private:
 	Player* player = Player::GetInstance();
 	unique_ptr<InterBoss> enemy;
-	std::array<unique_ptr<InterEnemy>, 3>bulletenemy;
+	std::vector<InterEnemy*>bulletenemy;
 
 	std::array<unique_ptr<InterEnemy>, 8>bulletenemy_2;
 	std::array<float, 8>enemyAngle;

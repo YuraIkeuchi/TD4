@@ -2,24 +2,23 @@
 #include "Helper.h"
 #include "Input.h"
 EnemyManager::EnemyManager(const std::string& sceneName) {
-	
+
 	//シーンによって読み込むボスが違う
 	if (sceneName == "FIRSTSTAGE") {
 		enemy.reset(new FirstBoss());
 		enemy->Initialize();
-	}
-	else if (sceneName == "SECONDSTAGE") {
+	} else if (sceneName == "SECONDSTAGE") {
 
 		enemy.reset(new SecondBoss());
 		enemy->Initialize();
-	}
-	else {
+	} else {
 		assert(0);
 	}
 
+	bulletenemy.resize(3);
 	for (auto i = 0; i < bulletenemy.size(); i++)
 	{
-		bulletenemy[i].reset(new NormalEnemy());
+		bulletenemy[i] = (new NormalEnemy());
 		bulletenemy[i]->Initialize();
 	}
 	for (auto i = 0; i < bulletenemy_2.size(); i++)
@@ -35,11 +34,7 @@ void EnemyManager::Update() {
 	if (Input::GetInstance()->TriggerButton(Input::A))Shot_3 = true;
 	if (Input::GetInstance()->TriggerButton(Input::X))Shot_8 = true;
 
-	if (!Shot_3) {
-		for (auto i = 0; i < bulletenemy.size(); i++) {
-			bulletenemy[i]->SetPosition(EPos[i]);
-		}
-	}
+	enemy->SummonEnemyUpda(bulletenemy);
 
 	constexpr float PosInter = 20.f;
 
@@ -56,7 +51,6 @@ void EnemyManager::Update() {
 				});
 		}
 	}
-	ShotAttack_A();
 	ShotAttack_B();
 
 	XMFLOAT3 l_pos = player->GetPosition();
@@ -65,11 +59,7 @@ void EnemyManager::Update() {
 //描画
 void EnemyManager::Draw(DirectXCommon* dxCommon) {
 	enemy->Draw(dxCommon);
-	for (auto i = 0; i < bulletenemy.size(); i++)
-	{
-		bulletenemy[i]->Draw(dxCommon);
-	}
-
+	enemy->SummonEnemyDraw(bulletenemy, dxCommon);
 	for (auto i = 0; i < bulletenemy_2.size(); i++)
 	{
 		bulletenemy_2[i]->Draw(dxCommon);
@@ -79,24 +69,6 @@ void EnemyManager::Draw(DirectXCommon* dxCommon) {
 void EnemyManager::ImGuiDraw() {
 	//enemy->ImGuiDraw();
 	enemy->ImGuiDraw();
-}
-
-void EnemyManager::ShotAttack_A()
-{
-	if (!Shot_3)return;
-	for (auto i = 0; i < bulletenemy.size(); i++)
-	{
-		bulletenemy[i]->Update();
-	}
-
-	bulletenemy[0]->SetShotF(true);
-
-	for (auto i = 1; i < bulletenemy.size(); i++) {
-		if (bulletenemy[i - 1]->GetShotCount() > 90)
-		{
-			bulletenemy[i]->SetShotF(true);
-		}
-	}
 }
 
 void EnemyManager::ShotAttack_B()
@@ -117,8 +89,7 @@ void EnemyManager::ShotAttack_B()
 bool EnemyManager::BossDestroy() {
 	if (enemy->GetHP() <= 0.0f) {
 		return true;
-	}
-	else {
+	} else {
 		return false;
 	}
 
