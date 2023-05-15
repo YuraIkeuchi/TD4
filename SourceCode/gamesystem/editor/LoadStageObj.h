@@ -53,5 +53,7 @@ private:
 	//ƒS[ƒXƒg‚ğÁ‚·ˆ—
 	float m_VanishCount = 0.0f;
 	bool m_Vanish = false;
+
+	float m_Division = 0.0f;
 };
 
