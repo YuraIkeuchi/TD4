@@ -19,8 +19,8 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
 	
-	font_ = new Font;
-	font_->Initialize(dxCommon);
+	font_ = make_unique<Font>();
+	font_->Initialize(dxCommon,{1.f,1.f,0.f,1.f},{300.f,360.f});
 
 	//各クラス
 	Player::GetInstance()->InitState({ 0.0f,0.0f,0.0f });
@@ -34,6 +34,8 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 
 	blackwindow = IKESprite::Create(ImageManager::BLACKWINDOW, {});
 
+	girl = IKESprite::Create(ImageManager::GIRL, { -100.f,300.f });
+	girl->SetColor(girl_color);
 
 	enemymanager = std::make_unique<EnemyManager>("FIRSTSTAGE");
 
@@ -79,6 +81,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		window_size.x = Ease(Out, Sine, nowframe, 0, 1300);
 		window_size.y = Ease(Out, Sine, nowframe, 0, 223);
 		black_color.w = Ease(Out, Sine, nowframe, 0, 1);
+		girl_color.w= Ease(Out, Sine, nowframe, 0, 1);
 	} else if (nowstate == FIGHT) {
 		frame++;
 		nowframe = frame / maxframe;
@@ -89,12 +92,14 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		window_size.x = Ease(Out, Sine, nowframe, 1300, 0);
 		window_size.y = Ease(Out, Sine, nowframe, 225, 0);
 		black_color.w = Ease(Out, Sine, nowframe, 1, 0);
+		girl_color.w = Ease(Out, Sine, nowframe, 1, 0);
 	}
 
 
 	conversationwindow->SetPosition(window_pos);
 	conversationwindow->SetSize(window_size);
 	blackwindow->SetColor(black_color);
+	girl->SetColor(girl_color);
 	ui->Update();
 	//各クラス更新
 	backobj->Update();
@@ -120,7 +125,9 @@ void FirstStageActor::Draw(DirectXCommon* dxCommon) {
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
 		ImGuiDraw(dxCommon);
-		font_->Draw(dxCommon);
+		if (nowstate == CONVERSATION) {
+			font_->Draw(dxCommon);
+		}
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	} else {
@@ -130,7 +137,9 @@ void FirstStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-		font_->Draw(dxCommon);
+		if (nowstate == CONVERSATION) {
+			font_->Draw(dxCommon);
+		}
 		dxCommon->PostDraw();
 	}
 }
@@ -154,8 +163,10 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	ParticleEmitter::GetInstance()->FlontDrawAll();
 	//完全に前に書くスプライト
 	IKESprite::PreDraw();
-	blackwindow->Draw();
+	//blackwindow->Draw();
 	conversationwindow->Draw();
+	girl->Draw();
+	
 	IKESprite::PostDraw();
 	ui->Draw();
 }

@@ -29,6 +29,7 @@ public:
 		WHITE,
 		WINDOW,
 		BLACKWINDOW,
+		GIRL,
 	};
 	//テクスチャの名前
 	enum tex2dName
