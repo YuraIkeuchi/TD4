@@ -96,7 +96,7 @@ bool Ghost::BulletCollision() {
 		if (Player::GetInstance()->GetBulletType() == BULLET_FORROW) {
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Follower.wav", VolumManager::GetInstance()->GetSEVolum());
 			HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() + l_AddHungerMax);
-			HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetHungerMax());
+			HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() + l_AddHungerMax);
 			HungerGauge::GetInstance()->SetCatchCount(HungerGauge::GetInstance()->GetCatchCount() + 1.0f);
 			_charaState = CharaState::STATE_FOLLOW;
 			_followState = FollowState::Follow_START;

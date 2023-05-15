@@ -121,15 +121,15 @@ void LoadStageObj::ImGuiDraw() {
 	//}
 	////
 	//食べ物
-	for (auto i = 0; i < foods.size(); i++) {
-		foods[i]->ImGuiDraw();
-	}
+	//for (auto i = 0; i < foods.size(); i++) {
+	//	foods[i]->ImGuiDraw();
+	//}
 	//
 	enemy->ImGuiDraw();
-	//ImGui::Begin("Load");
-	////ImGui::Text("m_VanishCount:%f",m_VanishCount);
+	ImGui::Begin("Load");
+	ImGui::Text("m_bb:%f", m_Division);
 
-	//ImGui::End();
+	ImGui::End();
 }
 //当たり判定(ゴースト)
 void LoadStageObj::Collide() {
@@ -188,19 +188,16 @@ void LoadStageObj::CollideFood() {
 }
 //ゴーストが消える
 void LoadStageObj::VanishGhost() {
-	float l_Hunger = HungerGauge::GetInstance()->GetNowHunger();
-	float l_Max = HungerGauge::GetInstance()->GetHungerMax();
+	float l_TargetCatchCount = HungerGauge::GetInstance()->GetCatchCount() - 1.0f;
 	float l_Value = HungerGauge::m_Hungervalue;
-	//除算を求める
-	float l_Division = (float)((fmod(l_Hunger, l_Value)));
-	//桁数を指定する
-	m_VanishCount = round(l_Division * 10) / 10;
+	//除算をする
+	m_Division = HungerGauge::GetInstance()->GetNowHunger() / 5.0f;
 	for (auto i = 0; i < ghosts.size(); ++i) {
 		if (!ghosts[i]->GetAlive()) { continue; }
 		if (!ghosts[i]->GetCatch()) { continue; }
 		if (!ghosts[i]->GetFollow()) { continue; }
-		//割り切れたら消す
-		if (m_VanishCount == 0.0f && l_Hunger != l_Max) {
+		//特定の値を下回ったら
+		if (m_Division <= l_TargetCatchCount) {
 			m_Vanish = true;
 		}
 		

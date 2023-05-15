@@ -129,11 +129,13 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 }
 //ImGui
 void Player::ImGuiDraw() {
-	ImGui::Begin("Player");
+	/*ImGui::Begin("Player");
 	ImGui::Text("HP:%f",m_HP);
 	ImGui::Text("MaxHP:%f", m_MaxHP);
 
-	ImGui::End();
+	ImGui::End();*/
+
+	HungerGauge::GetInstance()->ImGuiDraw();
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
