@@ -43,10 +43,15 @@ private:
 	void AlterMove();//交互
 	void AngerMove();//怒り
 	void JoyMove();//喜び
+	void ChoiceMove();//動きのチョイス
+
+	//動きの初期化
+	void MoveInit(const std::string& HighState);
 public:
 
 private:
-	int m_InterValCount = 0;
+	//移動回数の計算
+	int m_MoveCount = 0;
 	//バトルしているかどうか
 	bool m_Buttle = false;
 	//イージング
@@ -68,6 +73,9 @@ private:
 
 	//どの行動にするか
 	int m_MoveState = {};
+
+	//加算されるフレーム数
+	float m_AddFrame = 0.01f;
 private:
 	enum InterValState {
 		DownState,
@@ -96,5 +104,6 @@ private:
 		MOVE_ALTER,//交互
 		MOVE_ANGER,//怒りのみ
 		MOVE_JOY,//喜びのみ
+		MOVE_CHOICE,//どの動きかの選択するターン
 	};
 };

@@ -121,16 +121,12 @@ void LoadStageObj::ImGuiDraw() {
 	//	ghosts[i]->ImGuiDraw();
 	//}
 	////
-	//食べ物
-	for (auto i = 0; i < foods.size(); i++) {
-		foods[i]->ImGuiDraw();
-	}
-	
+	////食べ物
+	//for (auto i = 0; i < foods.size(); i++) {
+	//	foods[i]->ImGuiDraw();
+	//}
+	//
 	enemy->ImGuiDraw();
-	ImGui::Begin("Load");
-	ImGui::Text("m_bb:%f", m_Division);
-
-	ImGui::End();
 }
 //当たり判定(ゴースト)
 void LoadStageObj::Collide() {

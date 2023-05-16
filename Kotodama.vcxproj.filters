@@ -1077,9 +1077,6 @@
     <Filter Include="SourceCords\shader\2d\particle">
       <UniqueIdentifier>{58d92188-a256-43dd-adef-81594b631114}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\Common">
-      <UniqueIdentifier>{2344019a-f8d2-4966-9d60-c6f4749cf12b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SourceCords\gamesystem\Editor\Load\StageObj">
       <UniqueIdentifier>{952d0f7f-df11-42dd-a187-f6112a1d8b5d}</UniqueIdentifier>
     </Filter>

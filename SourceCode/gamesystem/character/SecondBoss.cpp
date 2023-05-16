@@ -1,11 +1,11 @@
 ﻿#include "SecondBoss.h"
 #include "ModelManager.h"
 #include "Helper.h"
-#include <any>
 #include "Player.h"
 #include "VariableCommon.h"
 #include "CsvLoader.h"
 #include "Easing.h"
+#include <random>
 //生成
 SecondBoss::SecondBoss() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Kido);
@@ -25,6 +25,7 @@ bool SecondBoss::Initialize() {
 	m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "pos")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp2")));
 	_charaState = CharaState::STATE_MOVE;
+	m_MoveState = MOVE_ANGER;
 	return true;
 }
 //状態遷移
@@ -79,32 +80,31 @@ void SecondBoss::EffecttexDraw(DirectXCommon* dxCommon)
 	StampDraw(angerstamps, dxCommon);
 	StampDraw(joystamps, dxCommon);
 }
-
 //ダメージ時のリアクション
 void SecondBoss::DamAction()
 {
 }
-
 //ImGui
 void SecondBoss::ImGui_Origin() {
 	ImGui::Begin("Second");
-	ImGui::Text("Frame:%f", m_Frame);
+	ImGui::Text("MoveCount:%d", m_MoveCount);
+	ImGui::Text("MoveState:%f", m_MoveState);
 	ImGui::End();
-	//StampImGui(angerstamps);
-	//StampImGui(joystamps);
 }
-
 //移動
 void SecondBoss::Move() {
 	//どの移動方法にするか決める
 	if (m_MoveState == MOVE_ALTER) {
-		AlterMove();
+		AlterMove();//交互のスタンプ
 	}
 	else if (m_MoveState == MOVE_ANGER) {
-		AngerMove();
+		AngerMove();//怒りのみ
+	}
+	else if(m_MoveState == MOVE_JOY) {
+		JoyMove();//喜び
 	}
 	else {
-		JoyMove();
+		ChoiceMove();//選択
 	}
 	
 
@@ -140,7 +140,6 @@ void SecondBoss::BirthStamp(const std::string& stampName) {
 		assert(0);
 	}
 }
-
 //スタンプの更新
 void SecondBoss::StampUpdate(std::vector<InterStamp*> stamps) {
 	for (InterStamp* stamp : stamps) {
@@ -149,7 +148,6 @@ void SecondBoss::StampUpdate(std::vector<InterStamp*> stamps) {
 		}
 	}
 }
-
 //スタンプの描画
 void SecondBoss::StampDraw(std::vector<InterStamp*> stamps, DirectXCommon* dxCommon) {
 	for (InterStamp* stamp : stamps) {
@@ -158,7 +156,6 @@ void SecondBoss::StampDraw(std::vector<InterStamp*> stamps, DirectXCommon* dxCom
 		}
 	}
 }
-
 //スタンプのImGui
 void SecondBoss::StampImGui(std::vector<InterStamp*> stamps) {
 	for (InterStamp* stamp : stamps) {
@@ -167,9 +164,9 @@ void SecondBoss::StampImGui(std::vector<InterStamp*> stamps) {
 		}
 	}
 }
-
 //交互のスタンプ
 void SecondBoss::AlterMove() {
+
 	float l_AddFrame = 0.025f;
 	const int l_TargetStopTimer = 50;
 
@@ -178,15 +175,13 @@ void SecondBoss::AlterMove() {
 	}
 	else {
 		if (_InterValState == UpState) {
-			_InterValState = DownState;
 			m_AfterRotX += 180.0f;
-			m_Frame = 0.0f;
-			m_AfterPower = 0.0f;
-			l_AddFrame = 0.05f;
+			MoveInit("UPSTATE");
 		}
 		else {
 			m_StopTimer++;
 			if (m_StopTimer == 1) {
+				m_MoveCount++;
 				if (m_Rotation.x == 360.0f) {
 					BirthStamp("Anger");
 					m_Rotation.x = 0.0f;
@@ -198,22 +193,96 @@ void SecondBoss::AlterMove() {
 				}
 			}
 			else if (m_StopTimer == l_TargetStopTimer) {
-				l_AddFrame = 0.025f;
-				_InterValState = UpState;
-				m_AfterPower = 20.0f;
-				m_FollowSpeed = 1.0f;
-				m_Frame = 0.0f;
-				m_StopTimer = 0;
+				MoveInit("DOWNSTATE");
 			}
 		}
+	}
+
+	if (m_MoveCount == 3) {
+		m_MoveState = MOVE_CHOICE;
 	}
 }
 //怒りの動き
 void SecondBoss::AngerMove() {
-	
-}
+	float l_AddFrame = 0.025f;
+	const int l_TargetStopTimer = 10;
+	if (m_Frame < m_FrameMax) {
+		m_Frame += l_AddFrame;
+	}
+	else {
+		if (_InterValState == UpState) {
+			m_AfterRotX = 0.0f;
+			MoveInit("UPSTATE");
+		}
+		else {
+			m_StopTimer++;
+			if (m_StopTimer == 1) {
+				m_MoveCount++;
+				BirthStamp("Anger");
+			}
+			else if (m_StopTimer == l_TargetStopTimer) {
+				MoveInit("DOWNSTATE");
+			}
+		}
+	}
 
+	if (m_MoveCount == 3) {
+		m_MoveState = MOVE_CHOICE;
+	}
+}
 //喜びの動き
 void SecondBoss::JoyMove() {
+	float l_AddFrame = 0.025f;
+	const int l_TargetStopTimer = 10;
+	if (m_Frame < m_FrameMax) {
+		m_Frame += l_AddFrame;
+	}
+	else {
+		if (_InterValState == UpState) {
+			m_AfterRotX = 180.0f;
+			MoveInit("UPSTATE");
+		}
+		else {
+			m_StopTimer++;
+			if (m_StopTimer == 1) {
+				m_MoveCount++;
+				BirthStamp("Joy");
+				m_Check = true;
+			}
+			else if (m_StopTimer == l_TargetStopTimer) {
+				MoveInit("DOWNSTATE");
+			}
+		}
+	}
 
+	if (m_MoveCount == 3) {
+		m_MoveState = MOVE_CHOICE;
+	}
+}
+//動きの選択
+void SecondBoss::ChoiceMove() {
+	//乱数指定
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_RandomMove(0, 2);
+
+	m_MoveState = int(l_RandomMove(mt));
+	m_MoveCount = 0;
+}
+//移動関係の初期化
+void SecondBoss::MoveInit(const std::string& HighState) {
+	if (HighState == "UPSTATE") {
+		_InterValState = DownState;
+		m_Frame = 0.0f;
+		m_AfterPower = 0.0f;
+	}
+	else if (HighState == "DOWNSTATE") {
+		_InterValState = UpState;
+		m_AfterPower = 20.0f;
+		m_FollowSpeed = 1.0f;
+		m_Frame = 0.0f;
+		m_StopTimer = 0;
+	}
+	else {
+		assert(0);
+	}
 }
