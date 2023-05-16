@@ -30,7 +30,6 @@ void InterBoss::CollideBul(vector<InterBullet*> bullet)
 			if (Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, BulRad, m_Position.x, m_Position.z, BossRad))
 			{
 				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Attack_Normal.wav", VolumManager::GetInstance()->GetSEVolum());
-				ActionTimer++;
 				Recv = true;
 				_bullet->SetAlive(false);
 				if (_bullet->GetScale().x == 1.0f) {
@@ -82,6 +81,7 @@ void InterBoss::SummonEnemyUpda(std::vector<InterEnemy*> enemy)
 				enemy[i]->SetShotF(true);
 			}
 		}
+		
 	}
 	EndSummon(enemy);
 }
@@ -94,9 +94,13 @@ void InterBoss::EndSummon(std::vector<InterEnemy*> enemy)
 	for (auto i = 0; i < _countof(tempList); i++)
 		tempList[i] = enemy[i]->GetShotF();
 
-	//¢Š«ó‘Ô‰ðœ@‰~‰^“®ÄŠJ
-	if (Helper::GetInstance()->All_Of(tempList, _countof(tempList)))
-		SummobnStop = false;
+	if (SummobnStop) {
+		//¢Š«ó‘Ô‰ðœ@‰~‰^“®ÄŠJ
+		if (Helper::GetInstance()->All_Of(tempList, _countof(tempList))) {
+			ActionTimer++;
+			SummobnStop = false;
+		}
+	}
 }
 
 void InterBoss::SummonEnemyDraw(std::vector<InterEnemy*> enemy, DirectXCommon* dxcomn)

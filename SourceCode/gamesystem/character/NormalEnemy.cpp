@@ -27,6 +27,7 @@ void NormalEnemy::Action() {
 	float l_Vel = 0.15f;
 	//m_CircleSpeed += 1.0f;
 	m_Rotation.x = 90.f;
+
 	if (ShotF) {
 		ShotCount++;
 		Appearance();
@@ -114,37 +115,36 @@ void NormalEnemy::RushAction()
 
 	Helper::GetInstance()->FloatClamp(s_scale, 0.f, 3.f);
 
-	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
-
-	//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
-	PositionA = { l_player.x,-l_player.y,l_player.z };
-	PositionB = { m_Position.x,m_Position.y,m_Position.z };
-	//プレイヤーと敵のベクトルの長さ(差)を求める
-	SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
+	 // positionA - positionB;
 	//回転軸をプレイヤーの方に
 		//向きかえる
+	
 	if (ret)
 	{
+		MoveTimer = 0;
 
+		
+		XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
+		PositionA = { l_player.x,l_player.y,l_player.z };
+		PositionB = { m_Position.x,m_Position.y,m_Position.z };
+		//プレイヤーと敵のベクトルの長さ(差)を求める
+		SubVector = XMVectorSubtract(PositionB, PositionA);
 		RotY = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
 
 		//イージングカウンタ＋＋
 		t += 0.02f;
-
-		//向き変わったらフラグ着る
-		if (t >= 1.f)ret = false;
 		//Rotation反映
 		//if (randMove > 50) {
-		m_Rotation.y = Easing::EaseOut(t, old * 60.f + 180.f, RotY * 60.f + 180.f);
-		//	} else {
+		m_Rotation.y = Easing::EaseOut(t, old * 50.f + 180.f, RotY * 50.f+180.f);
+		if (t >= 1.f)ret = false;//	} else {
 				//m_Rotation.y = Easing::EaseOut(t, old * 60.f + 180.f, RotY * 60.f + 180.f - 360.f);
 			//}
 	} else
 	{
-
 		t = 0.f;
 		old = RotY;
-		if (Collision::GetLength(l_player, m_Position) > 50.f) {
+		MoveTimer++;
+		if (MoveTimer>120) {
 			randMove = rand() % 100;
 			ret = true;
 		}

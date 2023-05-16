@@ -34,6 +34,8 @@ private:
 	XMVECTOR SubVector;
 	float t; float RotY;
 	int randMove;
-	bool Rush;	float s_scale = 0.0f;
+	bool Rush;
+	float s_scale = 0.0f;
+	int MoveTimer;
 };
 

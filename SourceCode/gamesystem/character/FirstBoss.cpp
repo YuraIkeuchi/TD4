@@ -84,6 +84,7 @@ void FirstBoss::Action() {
 
 	/*^^^^^攻撃判定^^^^^*/
 	//非戦闘時の動き
+	bool noAction = (!_normal.GetAttackF() && !_cattack.GetAttackF() );
 	if (!BattleStartF) {
 		Recv = false;
 		NoBattleMove();
@@ -92,7 +93,7 @@ void FirstBoss::Action() {
 		RotEaseTime_noBat = 0.f;
 		EaseT_BatStart = 0.f;
 		//タイマーカウンタ
-		if (!_normal.GetAttackF() && !_cattack.GetAttackF() && !SummonF && !Recv)ActionTimer++;
+		if (noAction&& !Recv)ActionTimer++;
 
 		if (!SummonF && ActionTimer % 60 == 0) {
 			SummobnStop = true;
@@ -602,7 +603,7 @@ void FirstBoss::NoBattleMove()
 	bool SearchF = Collision::GetLength(m_Position, l_player) < 20.f;
 
 	//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
-	XMVECTOR PositionA = { l_player.x + sinf(0 * (PI / 180.0f)) * 10.0f,l_player.y, l_player.z + cosf(0 * (PI / 180.0f)) * 10.0f };
+	XMVECTOR PositionA = { l_player.x + sinf(1 * (PI / 180.0f)) * 20.0f,l_player.y, l_player.z + cosf(1 * (PI / 180.0f)) * 20.0f };
 	XMVECTOR PositionB = { m_Position.x,m_Position.y,m_Position.z };
 	//プレイヤーと敵のベクトルの長さ(差)を求める
 	XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
@@ -647,8 +648,9 @@ void FirstBoss::NoBattleMove()
 			m_Rotation.y = RotY * 60.f + 90.f;
 		}
 
-		m_Position.x = Easing::EaseOut(EaseT_BatStart, OldPos.x, l_player.x + sinf(1 * (PI / 180.0f)) * 10.0f);
-		m_Position.z = Easing::EaseOut(EaseT_BatStart, OldPos.z, l_player.z + cosf(1 * (PI / 180.0f)) * 10.0f);
+		//円運動の初期位置に
+		m_Position.x = Easing::EaseOut(EaseT_BatStart, OldPos.x, l_player.x + sinf(1 * (PI / 180.0f)) * 20.0f);
+		m_Position.z = Easing::EaseOut(EaseT_BatStart, OldPos.z, l_player.z + cosf(1 * (PI / 180.0f)) * 20.0f);
 
 		if (EaseT_BatStart >= 1.f)
 		{
@@ -796,13 +798,13 @@ void FirstBoss::ChargeAttack::JumpAction(XMFLOAT3& Pos)
 }
 void FirstBoss::ChargeAttack::TexScling()
 {
-	constexpr float AddScling = 0.1f;
+	constexpr float AddScling = 0.15f;
 	bool flagOff = texAlpha[0] < 0.f && texAlpha[1] < 0.f;
 
 	texScl[0].x += AddScling;
 	texScl[0].y += AddScling;
 
-	if (texScl[0].x > 2.f)
+	if (texScl[0].x > 3.f)
 	{
 		texScl[1].x += AddScling;
 		texScl[1].y += AddScling;
@@ -810,7 +812,7 @@ void FirstBoss::ChargeAttack::TexScling()
 
 	for (auto i = 0; i < impacttex.size(); i++)
 	{
-		if (texScl[i].x > AddScling)texAlpha[i] -= 0.035f;
+		if (texScl[i].x > AddScling)texAlpha[i] -= 0.015f;
 	}
 
 	if (flagOff)_phase = Phase_Charge::END;
