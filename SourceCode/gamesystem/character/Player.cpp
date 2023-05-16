@@ -238,7 +238,6 @@ void Player::Bullet_Management() {
 	//Bが押されたら弾のチャージ
 	if (Input::GetInstance()->PushButton(Input::B) && m_InterVal == 0 && HungerGauge::GetInstance()->GetCatchCount() >= l_TargetCount)
 	{
-		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Normal.wav", VolumManager::GetInstance()->GetSEVolum());
 		m_ShotTimer++;
 		viewbullet->SetAlive(true);
 	}
@@ -256,11 +255,12 @@ void Player::Bullet_Management() {
 	}
 
 	if (!Input::GetInstance()->PushButton(Input::B) && m_ShotTimer != 0) {
-		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Charge.wav", VolumManager::GetInstance()->GetSEVolum());
 		if (m_ShotTimer < l_Limit) {
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Normal.wav", VolumManager::GetInstance()->GetSEVolum());
 			BirthShot("Attack", false);
 		}
 		else {
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Charge.wav", VolumManager::GetInstance()->GetSEVolum());
 			BirthShot("Attack", true);
 			HungerGauge::GetInstance()->SetSubVelocity(1.0f);
 		}

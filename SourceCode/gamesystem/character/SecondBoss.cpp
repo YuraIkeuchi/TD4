@@ -18,11 +18,10 @@ SecondBoss::SecondBoss() {
 bool SecondBoss::Initialize() {
 
 	m_Position = { 0.0f,0.0f,30.0f };
-	m_Rotation = { 180.0f,0.0f,0.0f };
+	m_Rotation = { 180.0f,270.0f,0.0f };
 	m_Scale = { 4.0f,4.0f,4.0f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_AddPowerY = 5.0f;
-	m_Rotation.y = 90.f;
 	m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "pos")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp2")));
 	_charaState = CharaState::STATE_MOVE;
@@ -73,8 +72,6 @@ void SecondBoss::Action() {
 }
 //ポーズ
 void SecondBoss::Pause() {
-
-
 }
 void SecondBoss::EffecttexDraw(DirectXCommon* dxCommon)
 {
@@ -86,13 +83,12 @@ void SecondBoss::EffecttexDraw(DirectXCommon* dxCommon)
 //ダメージ時のリアクション
 void SecondBoss::DamAction()
 {
-
 }
 
 //ImGui
 void SecondBoss::ImGui_Origin() {
 	ImGui::Begin("Second");
-	ImGui::Text("StopTimer:%d", m_StopTimer);
+	ImGui::Text("Frame:%f", m_Frame);
 	ImGui::End();
 	//StampImGui(angerstamps);
 	//StampImGui(joystamps);
@@ -100,39 +96,17 @@ void SecondBoss::ImGui_Origin() {
 
 //移動
 void SecondBoss::Move() {
-	float l_AddFrame = 0.025f;
-	int l_TargetStopTimer = 50;
-	if (m_Frame < m_FrameMax) {
-		m_Frame += l_AddFrame;
+	//どの移動方法にするか決める
+	if (m_MoveState == MOVE_ALTER) {
+		AlterMove();
+	}
+	else if (m_MoveState == MOVE_ANGER) {
+		AngerMove();
 	}
 	else {
-		if (_InterValState == UpState) {
-			_InterValState = DownState;
-			m_AfterPower = 0.0f;
-		}
-		else {
-			m_StopTimer++;
-			if (m_StopTimer == 1) {
-				if (m_Rotation.x == 360.0f) {
-					BirthStamp("Anger");
-					m_Rotation.x = 0.0f;
-					m_AfterRotX = 0.0f;
-				}
-				else {
-					BirthStamp("Joy");
-					m_Check = true;
-				}
-			}
-			else if (m_StopTimer == l_TargetStopTimer) {
-				_InterValState = UpState;
-				m_AfterRotX += 180.0f;
-				m_AfterPower = 5.0f;
-				m_FollowSpeed = 1.0f;
-				m_Frame = 0.0f;
-				m_StopTimer = 0;
-			}
-		}
+		JoyMove();
 	}
+	
 
 	//イージングで設定する
 	m_FollowSpeed = Ease(In, Cubic, m_Frame, m_FollowSpeed, m_AfterFollowSpeed);
@@ -192,4 +166,54 @@ void SecondBoss::StampImGui(std::vector<InterStamp*> stamps) {
 			stamp->ImGuiDraw();
 		}
 	}
+}
+
+//交互のスタンプ
+void SecondBoss::AlterMove() {
+	float l_AddFrame = 0.025f;
+	const int l_TargetStopTimer = 50;
+
+	if (m_Frame < m_FrameMax) {
+		m_Frame += l_AddFrame;
+	}
+	else {
+		if (_InterValState == UpState) {
+			_InterValState = DownState;
+			m_AfterRotX += 180.0f;
+			m_Frame = 0.0f;
+			m_AfterPower = 0.0f;
+			l_AddFrame = 0.05f;
+		}
+		else {
+			m_StopTimer++;
+			if (m_StopTimer == 1) {
+				if (m_Rotation.x == 360.0f) {
+					BirthStamp("Anger");
+					m_Rotation.x = 0.0f;
+					m_AfterRotX = 0.0f;
+				}
+				else {
+					BirthStamp("Joy");
+					m_Check = true;
+				}
+			}
+			else if (m_StopTimer == l_TargetStopTimer) {
+				l_AddFrame = 0.025f;
+				_InterValState = UpState;
+				m_AfterPower = 20.0f;
+				m_FollowSpeed = 1.0f;
+				m_Frame = 0.0f;
+				m_StopTimer = 0;
+			}
+		}
+	}
+}
+//怒りの動き
+void SecondBoss::AngerMove() {
+	
+}
+
+//喜びの動き
+void SecondBoss::JoyMove() {
+
 }

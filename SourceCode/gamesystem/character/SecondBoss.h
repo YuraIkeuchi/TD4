@@ -38,6 +38,11 @@ private:
 	void StampDraw(std::vector<InterStamp*> stamps, DirectXCommon* dxCommon);
 	//スタンプのImGui
 	void StampImGui(std::vector<InterStamp*> stamps);
+	
+	//　動き方それぞれ //
+	void AlterMove();//交互
+	void AngerMove();//怒り
+	void JoyMove();//喜び
 public:
 
 private:
@@ -54,15 +59,15 @@ private:
 	float m_AfterPower = 0.0f;
 	float m_AfterRotX = 180.0f;
 
-	//棘の的に使う
-	float m_Angle = 0.0f;
-	float m_Angle2 = 0.0f;
+	//追従関係に使う
 	float m_FollowSpeed = 0.0f;
 	float m_AfterFollowSpeed = 0.0f;
 
 	//停止時間
 	int m_StopTimer = 0;
 
+	//どの行動にするか
+	int m_MoveState = {};
 private:
 	enum InterValState {
 		DownState,
@@ -86,4 +91,10 @@ private:
 		STATE_ATTACK,
 	}_charaState;
 
+	//動き方の種類
+	enum MoveState {
+		MOVE_ALTER,//交互
+		MOVE_ANGER,//怒りのみ
+		MOVE_JOY,//喜びのみ
+	};
 };
