@@ -37,6 +37,9 @@ void Food::Update() {
 	Particle();
 	//当たり判定
 	//Collision();
+
+	//時間制限による削除(今のところ2個目のステージのみ)
+	DeleteFood();
 }
 
 //描画
@@ -94,6 +97,16 @@ void Food::BirthFood() {
 		if (m_Timer == 100) {
 			m_Alive = true;
 			m_Timer = 0;
+		}
+	}
+}
+//食料削除
+void Food::DeleteFood() {
+	const int l_LimitTimer = 300;
+	if (m_Limit) {
+		m_DeleteTimer++;
+		if (m_DeleteTimer >= l_LimitTimer) {
+			m_Alive = false;
 		}
 	}
 }

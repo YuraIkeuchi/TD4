@@ -170,7 +170,7 @@ void FirstBoss::NormalAttak::Update(XMFLOAT3& Pos, XMFLOAT3& Rot,bool &Enf)
 void FirstBoss::EffecttexDraw(DirectXCommon* dxCommon)
 {
 	
-	IKETexture::PreDraw2(dxCommon, ImageManager::IMPACT);
+	IKETexture::PreDraw2(dxCommon,AlphaBlendType);
 	_cattack.Draw();
 	IKETexture::PostDraw();
 }
@@ -675,7 +675,7 @@ void FirstBoss::NormalAttak::ColPlayer(XMFLOAT3& Pos)
 		if (RushMoveEaseT<1.f&&Collision::CircleCollision(Pos.x, Pos.z, 5.f, Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z, 1.f))
 		{
 			ColPos = Pos;
-			Player::GetInstance()->SetHP(Player::GetInstance()->GetHP() - 1.0f);
+			Player::GetInstance()->RecvDamage(1.0f);
 			HitF = true;
 		}
 	}

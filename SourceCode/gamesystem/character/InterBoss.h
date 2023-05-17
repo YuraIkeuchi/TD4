@@ -50,6 +50,8 @@ public://gettersetter
 private:
 protected:
 
+	int m_CheckTimer = {};
+
 	int ActionDamage;
 	int ActionCool;
 
@@ -57,6 +59,7 @@ protected:
 	float m_HP = {};
 
 	bool m_Check = false;
+	XMFLOAT3 m_OBBScale = {};
 private:
 
 	enum class ActionList
