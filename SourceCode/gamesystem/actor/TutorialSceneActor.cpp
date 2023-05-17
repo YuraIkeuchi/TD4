@@ -33,7 +33,13 @@ void TutorialSceneActor::IntroState() {
 	conversationwindow->SetSize(window_size);
 	blackwindow->SetColor(black_color);
 	girl->SetColor(girl_color);
+	girlward = L"ここはどこだろう言霊0123456789?!";
+	
+	font_->SetString(girlward);
+	girlward = L"あたりをみまわしてみよう";
+	secondrow_->SetString(girlward);
 	if (input->TriggerKey(DIK_SPACE)) {
+
 		nowstate_ = state::MOVE;
 	}
 }
@@ -46,8 +52,15 @@ void TutorialSceneActor::MoveState() {
 }
 
 void TutorialSceneActor::ConversationCatchState() {
-
-
+	if (conversation == 0) {
+		girlward = L"コントローラーのLBとRBで";
+		font_->SetString(girlward);
+		secondrow_->SetString(L"ことだまをきりかえて");
+		if (input->TriggerKey(DIK_RIGHT)) {
+			conversation = 1;
+		}
+	}
+	
 	if (input->TriggerKey(DIK_SPACE)) {
 		nowstate_ = state::CATCHGHORST;
 	}
@@ -78,10 +91,11 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	PlayPostEffect = true;
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
-
+	
 	font_ = make_unique<Font>();
-	font_->Initialize(dxCommon, { 1.f,1.f,0.f,1.f }, { 300.f,360.f });
-
+	secondrow_= make_unique<Font>();
+	font_->SetPosColor({ 1.f,1.f,1.f,1.f }, { 5.f,0.f });
+	secondrow_->SetPosColor({ 1.f,1.f,1.f,1.f }, { 5.f,-40.f });
 	//各クラス
 	Player::GetInstance()->InitState({ 0.0f,0.0f,0.0f });
 	camerawork->Update(camera);
@@ -143,8 +157,9 @@ void TutorialSceneActor::Draw(DirectXCommon* dxCommon) {
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
 		ImGuiDraw(dxCommon);
-		if (static_cast<int>(nowstate_) % 2 == 1) {
+		if (static_cast<int>(nowstate_) % 2 == 0) {
 			font_->Draw(dxCommon);
+			secondrow_->Draw(dxCommon);
 		}
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
@@ -155,8 +170,9 @@ void TutorialSceneActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-		if (static_cast<int>(nowstate_) % 2 == 1) {
+		if (static_cast<int>(nowstate_) % 2 == 0) {
 			font_->Draw(dxCommon);
+			secondrow_->Draw(dxCommon);
 		}
 		dxCommon->PostDraw();
 	}
