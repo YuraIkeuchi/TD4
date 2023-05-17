@@ -227,9 +227,11 @@ void Player::Bullet_Management() {
 	if (((Input::GetInstance()->TriggerButton(Input::RB)) || (Input::GetInstance()->TriggerButton(Input::LB))) && (m_InterVal == 0))
 	{
 		if (Input::GetInstance()->TriggerButton(Input::RB)) {
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Follow.wav", VolumManager::GetInstance()->GetSEVolum());
 			m_BulletType = BULLET_FORROW;
 		}
 		else if (Input::GetInstance()->TriggerButton(Input::LB)) {
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Seach.wav", VolumManager::GetInstance()->GetSEVolum());
 			m_BulletType = BULLET_SEARCH;
 		}
 		ResetBullet();
@@ -258,7 +260,7 @@ void Player::Bullet_Management() {
 
 	if (!Input::GetInstance()->PushButton(Input::B) && m_ShotTimer != 0) {
 		if (m_ShotTimer < l_Limit) {
-			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Normal.wav", VolumManager::GetInstance()->GetSEVolum());
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
 			BirthShot("Attack", false);
 		}
 		else {

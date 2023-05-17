@@ -10,20 +10,20 @@ UI::~UI() {
 //初期化
 void UI::Initialize() {
 	for (int i = HeartOne; i < UnderStatusGauge; i++) {
-		sprites[i] = CreateUi(ImageManager::HEART, pos[i], { 86.f,86.f }, { 1,1,1,1 });
+		sprites[i] = CreateUi(ImageManager::HEART, pos[i], { 86.f,86.f }, { 1.5f, 1.5f, 1.5f,1 });
 		TexList.emplace_back(std::move(sprites[i]));
 	}
 
 	{//ゲージ下敷き
-		sprites[UnderStatusGauge] = CreateUi(ImageManager::UnderGauge, { 0.f,500.f }, { 400.f,100.f }, { 1.f,1,1.f,1 });
+		sprites[UnderStatusGauge] = CreateUi(ImageManager::UnderGauge, { 0.f,500.f }, { 400.f,100.f }, { 1.5f, 1.5f, 1.5f,1 });
 		TexList.emplace_back(std::move(sprites[UnderStatusGauge]));
 	}
 	{//ゲージ
-		sprites[StatusGauge] = CreateUi(ImageManager::Gauge, { 0.f,500.f }, { 400.f,100.f }, { 1.f,0.5,1.f,1 });
+		sprites[StatusGauge] = CreateUi(ImageManager::Gauge, { 0.f,500.f }, { 400.f,100.f }, { 1.5f, 1.5f, 1.5f,1 });
 		TexList.emplace_back(std::move(sprites[StatusGauge]));
 	}
 	{//ゲージ上
-		sprites[TopStatusGauge] = CreateUi(ImageManager::TopGauge, { 0.f,500.f }, { 400.f,100.f }, { 1.f,0.5,1.f,1 });
+		sprites[TopStatusGauge] = CreateUi(ImageManager::TopGauge, { 0.f,500.f }, { 400.f,100.f }, { 1.5f, 1.5f, 1.5f,1 });
 		TexList.emplace_back(std::move(sprites[TopStatusGauge]));
 	}
 

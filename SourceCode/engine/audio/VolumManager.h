@@ -29,6 +29,6 @@ public:
 	void SetBGMVolum(float BGMVolum) { this->m_BGMVolum = BGMVolum; }
 private:
 	//SE‚ÆBGM‚Ì‰¹—Ê
-	float m_SEVolum = 0.1f;
+	float m_SEVolum = 0.3f;
 	float m_BGMVolum = 0.03f;
 };
