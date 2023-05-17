@@ -63,8 +63,9 @@ void Ghost::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui描画
 void Ghost::ImGuiDraw() {
-	//ImGui::Begin("Ghost");
-	//ImGui::End();
+	ImGui::Begin("Ghost");
+	ImGui::Text("%d", m_SearchTimer);
+	ImGui::End();
 }
 //パーティクル
 void Ghost::Particle() {
@@ -151,6 +152,7 @@ void Ghost::BirthGhost() {
 			m_Search = false;
 			m_Follow = false;
 			m_ResPornTimer = 0;
+			m_SearchTimer = 0;
 		}
 	}
 }
@@ -166,11 +168,18 @@ void Ghost::Follow() {
 }
 //探索
 void Ghost::Search() {
-	float l_Vel = 0.3f;
+	const int l_LimitTimer = 300;
+	const float l_Vel = 0.3f;
 	XMFLOAT3 l_playerPos = Player::GetInstance()->GetPosition();
 	//追従
 	if (_searchState == SearchState::SEARCH_START) {
 		Helper::GetInstance()->FollowMove(m_Position, m_SearchPos, l_Vel);
+
+		//サーチ状態から一定時間立つと存在消去
+		m_SearchTimer++;
+		if (m_SearchTimer >= l_LimitTimer) {
+			m_Alive = false;
+		}
 	}
 	else if (_searchState == SearchState::SEARCH_END) {
 		Helper::GetInstance()->FollowMove(m_Position, l_playerPos, l_Vel);

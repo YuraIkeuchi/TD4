@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include"IKESprite.h"
 #include "InterBoss.h"
 #include "JoyStamp.h"
 #include "AngerStamp.h"
+#include "Collision.h"
 class SecondBoss :
 	public InterBoss {
 public:
@@ -24,8 +24,10 @@ private:
 	//攻撃
 	void Attack();
 
+	//当たり判定
+	bool Collide();
 private:
-
+	//キャラの行動繊維
 	static void (SecondBoss::* stateTable[])();
 private:
 	//ダメージ食らった処理
@@ -38,10 +40,20 @@ private:
 	void StampDraw(std::vector<InterStamp*> stamps, DirectXCommon* dxCommon);
 	//スタンプのImGui
 	void StampImGui(std::vector<InterStamp*> stamps);
+	
+	//　動き方それぞれ //
+	void AlterMove();//交互
+	void AngerMove();//怒り
+	void JoyMove();//喜び
+	void ChoiceMove();//動きのチョイス
+
+	//動きの初期化
+	void MoveInit(const std::string& HighState);
 public:
 
 private:
-	int m_InterValCount = 0;
+	//移動回数の計算
+	int m_MoveCount = 0;
 	//バトルしているかどうか
 	bool m_Buttle = false;
 	//イージング
@@ -54,14 +66,18 @@ private:
 	float m_AfterPower = 0.0f;
 	float m_AfterRotX = 180.0f;
 
-	//棘の的に使う
-	float m_Angle = 0.0f;
-	float m_Angle2 = 0.0f;
+	//追従関係に使う
 	float m_FollowSpeed = 0.0f;
 	float m_AfterFollowSpeed = 0.0f;
 
 	//停止時間
 	int m_StopTimer = 0;
+
+	//どの行動にするか
+	int m_MoveState = {};
+
+	//加算されるフレーム数
+	float m_AddFrame = 0.01f;
 
 private:
 	enum InterValState {
@@ -86,4 +102,17 @@ private:
 		STATE_ATTACK,
 	}_charaState;
 
+	//動き方の種類
+	enum MoveState {
+		MOVE_ALTER,//交互
+		MOVE_ANGER,//怒りのみ
+		MOVE_JOY,//喜びのみ
+		MOVE_CHOICE,//どの動きかの選択するターン
+	};
+
+
+	OBB m_OBB1 = {};
+	OBB m_OBB2 = {};
+
+	bool m_a = false;
 };

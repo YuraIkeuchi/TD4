@@ -993,33 +993,6 @@
     <Filter Include="SourceCords\gamesystem\character">
       <UniqueIdentifier>{edf53ab5-ded3-4420-b1a9-034728710351}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Various">
-      <UniqueIdentifier>{4911dc9d-229f-4c45-9839-96e7fd892c71}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Various\Boss">
-      <UniqueIdentifier>{f92115ab-50b0-4e86-994e-ff4f81050c9a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Various\Bullet">
-      <UniqueIdentifier>{9e70ee93-ad4f-4972-8ab1-ce340fb950d9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Various\Enemy">
-      <UniqueIdentifier>{9a9b8d99-6a7f-4c11-a875-c789543c2393}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Various\Food">
-      <UniqueIdentifier>{a9ff3471-0a8b-4142-9c47-f3e0ae7502fd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Various\Boss\Common">
-      <UniqueIdentifier>{75defad8-cb6a-4af2-93e8-8aeb448fb259}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Various\Boss\Various">
-      <UniqueIdentifier>{2f9fa4de-8733-44df-8d4d-9101d1c335ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Various\Enemy\Various">
-      <UniqueIdentifier>{f961df61-b324-48d6-a213-a57237334955}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Various\Player">
-      <UniqueIdentifier>{0f9dc54f-c3b3-46be-acff-a9bf6d00d0a5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SourceCords\gamesystem\Editor">
       <UniqueIdentifier>{3ffc2ed7-d4dd-4a54-9f48-7a4bb5665dfb}</UniqueIdentifier>
     </Filter>
@@ -1122,26 +1095,8 @@
     <Filter Include="SourceCords\shader\2d\particle">
       <UniqueIdentifier>{58d92188-a256-43dd-adef-81594b631114}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\Common">
-      <UniqueIdentifier>{2344019a-f8d2-4966-9d60-c6f4749cf12b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Various\Ghost">
-      <UniqueIdentifier>{bb2631e7-4d39-4aef-af87-4bbdd5fdd43b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Various\HungerGauge">
-      <UniqueIdentifier>{fab9938a-fb4a-463c-95fa-d970e1f917e8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Various\Bullet\Base">
-      <UniqueIdentifier>{9809b329-7958-4857-99a3-4c62fde68b72}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Various\Bullet\Various">
-      <UniqueIdentifier>{2fa70ba3-447a-4d5e-9a24-c47a2e0f7c2c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SourceCords\gamesystem\Editor\Load\StageObj">
       <UniqueIdentifier>{952d0f7f-df11-42dd-a187-f6112a1d8b5d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Various\Enemy\Common">
-      <UniqueIdentifier>{b1142476-2fb3-41a5-bf7a-aa3aede5248e}</UniqueIdentifier>
     </Filter>
     <Filter Include="SourceCords\gamesystem\Scene\PlayScene\FirstStage">
       <UniqueIdentifier>{1302fcbc-80b1-4180-a89c-0509f8189511}</UniqueIdentifier>

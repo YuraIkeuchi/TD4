@@ -1,11 +1,11 @@
 ﻿#include "SecondBoss.h"
 #include "ModelManager.h"
 #include "Helper.h"
-#include <any>
 #include "Player.h"
 #include "VariableCommon.h"
 #include "CsvLoader.h"
 #include "Easing.h"
+#include <random>
 //生成
 SecondBoss::SecondBoss() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Kido);
@@ -18,14 +18,15 @@ SecondBoss::SecondBoss() {
 bool SecondBoss::Initialize() {
 
 	m_Position = { 0.0f,0.0f,30.0f };
-	m_Rotation = { 180.0f,0.0f,0.0f };
+	m_Rotation = { 180.0f,270.0f,0.0f };
 	m_Scale = { 4.0f,4.0f,4.0f };
+	m_OBBScale = { 6.0f,6.0f,6.0f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_AddPowerY = 5.0f;
-	m_Rotation.y = 90.f;
 	m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "pos")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp2")));
 	_charaState = CharaState::STATE_MOVE;
+	m_MoveState = MOVE_ALTER;
 	return true;
 }
 //状態遷移
@@ -39,7 +40,7 @@ void SecondBoss::Action() {
 	//当たり判定（弾）
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
 	CollideBul(_playerBulA);
-
+	m_MatRot = m_Object->GetMatrot();
 	//OBJのステータスのセット
 	Obj_SetParam();
 
@@ -70,11 +71,11 @@ void SecondBoss::Action() {
 			joystamps.erase(cbegin(joystamps) + i);
 		}
 	}
+
+	Collide();
 }
 //ポーズ
 void SecondBoss::Pause() {
-
-
 }
 void SecondBoss::EffecttexDraw(DirectXCommon* dxCommon)
 {
@@ -82,57 +83,33 @@ void SecondBoss::EffecttexDraw(DirectXCommon* dxCommon)
 	StampDraw(angerstamps, dxCommon);
 	StampDraw(joystamps, dxCommon);
 }
-
 //ダメージ時のリアクション
 void SecondBoss::DamAction()
 {
-
 }
-
 //ImGui
 void SecondBoss::ImGui_Origin() {
 	ImGui::Begin("Second");
-	ImGui::Text("StopTimer:%d", m_StopTimer);
+	ImGui::Text("a:%d", m_a);
+	ImGui::Text("PosY:%f", m_Position.y);
 	ImGui::End();
-	//StampImGui(angerstamps);
-	//StampImGui(joystamps);
 }
-
 //移動
 void SecondBoss::Move() {
-	float l_AddFrame = 0.025f;
-	int l_TargetStopTimer = 50;
-	if (m_Frame < m_FrameMax) {
-		m_Frame += l_AddFrame;
+	//どの移動方法にするか決める
+	if (m_MoveState == MOVE_ALTER) {
+		AlterMove();//交互のスタンプ
+	}
+	else if (m_MoveState == MOVE_ANGER) {
+		AngerMove();//怒りのみ
+	}
+	else if(m_MoveState == MOVE_JOY) {
+		JoyMove();//喜び
 	}
 	else {
-		if (_InterValState == UpState) {
-			_InterValState = DownState;
-			m_AfterPower = 0.0f;
-		}
-		else {
-			m_StopTimer++;
-			if (m_StopTimer == 1) {
-				if (m_Rotation.x == 360.0f) {
-					BirthStamp("Anger");
-					m_Rotation.x = 0.0f;
-					m_AfterRotX = 0.0f;
-				}
-				else {
-					BirthStamp("Joy");
-					m_Check = true;
-				}
-			}
-			else if (m_StopTimer == l_TargetStopTimer) {
-				_InterValState = UpState;
-				m_AfterRotX += 180.0f;
-				m_AfterPower = 5.0f;
-				m_FollowSpeed = 1.0f;
-				m_Frame = 0.0f;
-				m_StopTimer = 0;
-			}
-		}
+		ChoiceMove();//選択
 	}
+	
 
 	//イージングで設定する
 	m_FollowSpeed = Ease(In, Cubic, m_Frame, m_FollowSpeed, m_AfterFollowSpeed);
@@ -166,7 +143,6 @@ void SecondBoss::BirthStamp(const std::string& stampName) {
 		assert(0);
 	}
 }
-
 //スタンプの更新
 void SecondBoss::StampUpdate(std::vector<InterStamp*> stamps) {
 	for (InterStamp* stamp : stamps) {
@@ -175,7 +151,6 @@ void SecondBoss::StampUpdate(std::vector<InterStamp*> stamps) {
 		}
 	}
 }
-
 //スタンプの描画
 void SecondBoss::StampDraw(std::vector<InterStamp*> stamps, DirectXCommon* dxCommon) {
 	for (InterStamp* stamp : stamps) {
@@ -184,7 +159,6 @@ void SecondBoss::StampDraw(std::vector<InterStamp*> stamps, DirectXCommon* dxCom
 		}
 	}
 }
-
 //スタンプのImGui
 void SecondBoss::StampImGui(std::vector<InterStamp*> stamps) {
 	for (InterStamp* stamp : stamps) {
@@ -192,4 +166,157 @@ void SecondBoss::StampImGui(std::vector<InterStamp*> stamps) {
 			stamp->ImGuiDraw();
 		}
 	}
+}
+//交互のスタンプ
+void SecondBoss::AlterMove() {
+
+	float l_AddFrame = 0.025f;
+	const int l_TargetStopTimer = 50;
+
+	if (m_Frame < m_FrameMax) {
+		m_Frame += l_AddFrame;
+	}
+	else {
+		if (_InterValState == UpState) {
+			m_AfterRotX += 180.0f;
+			MoveInit("UPSTATE");
+		}
+		else {
+			m_StopTimer++;
+			if (m_StopTimer == 1) {
+				m_MoveCount++;
+				if (m_Rotation.x == 360.0f) {
+					BirthStamp("Anger");
+					m_Rotation.x = 0.0f;
+					m_AfterRotX = 0.0f;
+				}
+				else {
+					BirthStamp("Joy");
+					m_Check = true;
+				}
+			}
+			else if (m_StopTimer == l_TargetStopTimer) {
+				MoveInit("DOWNSTATE");
+			}
+		}
+	}
+
+	if (m_MoveCount == 3) {
+		m_MoveState = MOVE_CHOICE;
+	}
+}
+//怒りの動き
+void SecondBoss::AngerMove() {
+	float l_AddFrame = 0.05f;
+	const int l_TargetStopTimer = 10;
+	if (m_Frame < m_FrameMax) {
+		m_Frame += l_AddFrame;
+	}
+	else {
+		if (_InterValState == UpState) {
+			m_AfterRotX = 0.0f;
+			MoveInit("UPSTATE");
+		}
+		else {
+			m_StopTimer++;
+			if (m_StopTimer == 1) {
+				m_MoveCount++;
+				BirthStamp("Anger");
+			}
+			else if (m_StopTimer == l_TargetStopTimer) {
+				MoveInit("DOWNSTATE");
+			}
+		}
+	}
+
+	if (m_MoveCount == 3) {
+		m_MoveState = MOVE_CHOICE;
+	}
+}
+//喜びの動き
+void SecondBoss::JoyMove() {
+	float l_AddFrame = 0.05f;
+	const int l_TargetStopTimer = 10;
+	if (m_Frame < m_FrameMax) {
+		m_Frame += l_AddFrame;
+	}
+	else {
+		if (_InterValState == UpState) {
+			m_AfterRotX = 180.0f;
+			MoveInit("UPSTATE");
+		}
+		else {
+			m_StopTimer++;
+			if (m_StopTimer == 1) {
+				m_MoveCount++;
+				BirthStamp("Joy");
+				m_Check = true;
+			}
+			else if (m_StopTimer == l_TargetStopTimer) {
+				MoveInit("DOWNSTATE");
+			}
+		}
+	}
+
+	if (m_MoveCount == 3) {
+		m_MoveState = MOVE_CHOICE;
+	}
+}
+//動きの選択
+void SecondBoss::ChoiceMove() {
+	//乱数指定
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_RandomMove(0, 2);
+
+	m_MoveState = int(l_RandomMove(mt));
+	m_MoveCount = 0;
+}
+//移動関係の初期化
+void SecondBoss::MoveInit(const std::string& HighState) {
+	if (HighState == "UPSTATE") {
+		_InterValState = DownState;
+		m_Frame = 0.0f;
+		m_AfterPower = 0.0f;
+	}
+	else if (HighState == "DOWNSTATE") {
+		_InterValState = UpState;
+		m_AfterPower = 20.0f;
+		m_FollowSpeed = 1.0f;
+		m_Frame = 0.0f;
+		m_StopTimer = 0;
+	}
+	else {
+		assert(0);
+	}
+}
+//当たり判定
+bool SecondBoss::Collide() {
+
+	XMFLOAT3 l_OBBPosition;
+
+	l_OBBPosition = { m_Position.x,
+		m_Position.y - 5.0f,
+		m_Position.z
+	};
+
+	if (!Helper::GetInstance()->CheckMinINT(m_CheckTimer,10,1)) { return false; }
+	m_OBB1.SetParam_Pos(l_OBBPosition);
+	m_OBB1.SetParam_Rot(m_MatRot);
+	m_OBB1.SetParam_Scl(m_OBBScale);
+
+	m_OBB2.SetParam_Pos(Player::GetInstance()->GetPosition());
+	m_OBB2.SetParam_Rot(Player::GetInstance()->GetMatRot());
+	m_OBB2.SetParam_Scl(Player::GetInstance()->GetScale());
+
+	if ((Collision::OBBCollision(m_OBB1, m_OBB2) && 
+		Player::GetInstance()->GetDamageInterVal() == 0)) {
+		Player::GetInstance()->PlayerHit(m_Position);
+
+		return true;
+	}
+	else {
+		return false;
+	}
+
+	return false;
 }

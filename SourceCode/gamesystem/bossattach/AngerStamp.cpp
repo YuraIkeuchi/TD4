@@ -21,16 +21,19 @@ bool AngerStamp::Initialize(const XMFLOAT3& pos) {
 
 //s“®
 void AngerStamp::Action() {
+	const int l_AliveTimer = 5;
+	const int l_LimitTimer = 200;
+	const float l_AddFrame = 0.01f;
 	if (m_Birth) {
 		m_BirthTimer++;
 
-		if (m_BirthTimer == 5) {
+		if (m_BirthTimer == l_AliveTimer) {
 			m_Alive = true;
 		}
 
-		if (m_BirthTimer >= 200) {
+		if (m_BirthTimer >= l_LimitTimer) {
 			if (m_Frame < m_FrameMax) {
-				m_Frame += 0.01f;
+				m_Frame += l_AddFrame;
 			}
 			else {
 				m_Alive = false;
