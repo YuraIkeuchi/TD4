@@ -15,23 +15,36 @@ private:
 		//画像
 		std::unique_ptr<IKESprite> Tex;
 		//基礎パラメータ
-		XMFLOAT2 Position;
-		XMFLOAT2 Scale;
-		float Rotation;
-		XMFLOAT4 Color;
-		//適当なフラグ
-		bool OtherF;
+		XMFLOAT2 Position = { 0,0 };
+		XMFLOAT2 Size = { 100,100 };
+		float Rotation = 0.f;
+		XMFLOAT4 Color = { 1,1,1,1 };
+		//表示なフラグ
+		bool IsVisible = true;
 	};
 	enum  SpriteName {
-		UnderStatusHp = 0,
-		StatusHp,
+		HeartOne=0,
+		HeartTwo,
+		HeartThree,
+		HeartFour,
+		HeartFive,
 		UnderStatusGauge,
 		StatusGauge,
+		TopStatusGauge,
 		UiMax
 	};
 
-	//仮
-	std::array<SpriteData, UiMax> sprites={};
+	//スプライト
+	std::array<SpriteData, UiMax> sprites = {};
+
+	std::array<XMFLOAT2, UnderStatusGauge> pos = {
+	XMFLOAT2(0.f,620.f),
+	XMFLOAT2(90.f,620.f),
+	XMFLOAT2(180.f,620.f),
+	XMFLOAT2(270.f,620.f),
+	XMFLOAT2(360.f,620.f)
+	};
+
 	std::vector<SpriteData>TexList;
 public:
 	//初期化
@@ -40,6 +53,9 @@ public:
 	void Update();
 	//描画
 	void Draw();
-	void ArrowRota();
+private:
+	//
+	SpriteData CreateUi(UINT texNumber, XMFLOAT2 pos, XMFLOAT2 size, XMFLOAT4 color);
+
 };
 
