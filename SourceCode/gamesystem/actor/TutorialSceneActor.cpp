@@ -39,14 +39,14 @@ void TutorialSceneActor::IntroState() {
 }
 
 void TutorialSceneActor::MoveState() {
-
-	if (input->TriggerKey(DIK_SPACE)) {
+	XMFLOAT3 pos=Player::GetInstance()->GetPosition();
+	if (!Collision::CircleCollision(0,0,45.f,pos.x,pos.z,1.f)) {
 		nowstate_ = state::CONVERSATION_CATCH;
 	}
 }
 
 void TutorialSceneActor::ConversationCatchState() {
-
+	loadobj->FirstUpdate();
 
 	if (input->TriggerKey(DIK_SPACE)) {
 		nowstate_ = state::CATCHGHORST;
@@ -54,6 +54,7 @@ void TutorialSceneActor::ConversationCatchState() {
 }
 
 void TutorialSceneActor::CatchGhorstState() {
+	loadobj->FirstUpdate();
 
 
 	if (input->TriggerKey(DIK_SPACE)) {
@@ -123,7 +124,6 @@ void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 		ui->Update();
 		Player::GetInstance()->Update();
 		//enemymanager->Update();
-		loadobj->FirstUpdate();
 		ParticleEmitter::GetInstance()->Update();
 	}
 	backobj->Update();
@@ -169,7 +169,9 @@ void TutorialSceneActor::BackDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
 	////各クラスの描画
 	Player::GetInstance()->Draw(dxCommon);
-	loadobj->Draw(dxCommon);
+	if (nowstate_>=state::CATCHGHORST){
+		loadobj->Draw(dxCommon);
+	}
 	backobj->Draw(dxCommon);
 	//enemymanager->Draw(dxCommon);
 

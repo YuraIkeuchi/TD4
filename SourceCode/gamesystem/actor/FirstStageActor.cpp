@@ -61,46 +61,6 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	//音楽の音量が変わる
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 	VolumManager::GetInstance()->Update();
-
-	if (input->Pushkey(DIK_A) &&
-		nowstate != CONVERSATION) {
-		nowstate = CONVERSATION;
-		frame = {};
-	}
-	if (input->Pushkey(DIK_S) &&
-		nowstate != FIGHT) {
-		nowstate = FIGHT;
-		frame = {};
-	}
-	if (nowstate == CONVERSATION) {
-		frame++;
-		nowframe = frame / maxframe;
-		if (frame >= maxframe) {
-			frame = maxframe;
-		}
-		window_pos.y = Ease(Out, Sine, nowframe, WinApp::window_height + 100, WinApp::window_height - 100);
-		window_size.x = Ease(Out, Sine, nowframe, 0, 1300);
-		window_size.y = Ease(Out, Sine, nowframe, 0, 223);
-		black_color.w = Ease(Out, Sine, nowframe, 0, 1);
-		girl_color.w= Ease(Out, Sine, nowframe, 0, 1);
-	} else if (nowstate == FIGHT) {
-		frame++;
-		nowframe = frame / maxframe;
-		if (frame >= maxframe) {
-			frame = maxframe;
-		}
-		window_pos.y = Ease(Out, Sine, nowframe, WinApp::window_height - 100, WinApp::window_height + 100);
-		window_size.x = Ease(Out, Sine, nowframe, 1300, 0);
-		window_size.y = Ease(Out, Sine, nowframe, 225, 0);
-		black_color.w = Ease(Out, Sine, nowframe, 1, 0);
-		girl_color.w = Ease(Out, Sine, nowframe, 1, 0);
-	}
-
-
-	conversationwindow->SetPosition(window_pos);
-	conversationwindow->SetSize(window_size);
-	blackwindow->SetColor(black_color);
-	girl->SetColor(girl_color);
 	ui->Update();
 	//各クラス更新
 	backobj->Update();
