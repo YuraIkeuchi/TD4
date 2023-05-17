@@ -238,7 +238,7 @@ void Player::Bullet_Management() {
 	//Bが押されたら弾のチャージ
 	if (Input::GetInstance()->PushButton(Input::B) && m_InterVal == 0 && HungerGauge::GetInstance()->GetCatchCount() >= l_TargetCount)
 	{
-		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Normal.wav", VolumManager::GetInstance()->GetSEVolum());
+		//Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Normal.wav", VolumManager::GetInstance()->GetSEVolum());
 		m_ShotTimer++;
 		viewbullet->SetAlive(true);
 	}
