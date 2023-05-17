@@ -11,11 +11,22 @@
 /// タイトルシーン
 class TutorialSceneActor : public BaseActor {
 private:
-	enum state {
-		CONVERSATION = 0,
-		FIGHT,
-		NONE,
-	};
+	enum class state {
+		INTORO = 0,
+		MOVE,
+		CONVERSATION_CATCH,
+		CATCHGHORST,
+		COMPLETE,
+	}nowstate_;
+
+	static void (TutorialSceneActor::* stateTable[])();
+	void IntroState();
+	void MoveState();
+	void ConversationCatchState();
+	void CatchGhorstState();
+	void CompleteState();
+
+
 public:
 	/// 初期化
 	void Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) override;
@@ -30,6 +41,7 @@ public:
 	void ImGuiDraw(DirectXCommon* dxCommon);
 private:
 	//クラス
+	Input* input = Input::GetInstance();
 
 	unique_ptr<EnemyManager> enemymanager;
 	unique_ptr<InterBoss> boss;
@@ -50,6 +62,5 @@ private:
 	float maxframe = 20.f;
 	float nowframe = 0.f;
 	float frame = 0.f;
-	int nowstate = NONE;
 	bool test = false;
 };

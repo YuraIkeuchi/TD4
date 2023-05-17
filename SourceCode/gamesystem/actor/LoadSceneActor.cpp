@@ -174,7 +174,7 @@ void LoadSceneActor::FinishUpdate() {
 	//一定時間でシーンが変わる
 	if (m_LoadTimer >= LoadTimerMax) {
 		sceneChanger_->ChangeStart();
-		sceneChanger_->ChangeScene("FIRSTSTAGE", SceneChanger::NonReverse);
+		sceneChanger_->ChangeScene(str, SceneChanger::NonReverse);
 		return;
 	}
 	m_LoadTimer++;
