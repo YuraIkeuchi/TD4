@@ -52,6 +52,7 @@ private:
 	unique_ptr<IKESprite> blackwindow;
 	unique_ptr<IKESprite> girl;
 	unique_ptr<Font> font_;
+	unique_ptr<Font> secondrow_;
 	//��W
 	XMFLOAT2 window_pos{ WinApp::window_width / 2.f,WinApp::window_height + 100 };
 	XMFLOAT2 window_size{ 0.f,0.f };
@@ -63,4 +64,7 @@ private:
 	float nowframe = 0.f;
 	float frame = 0.f;
 	bool test = false;
+	wchar_t* girlward;
+	wchar_t* ward;
+	int conversation = 0;
 };

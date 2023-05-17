@@ -21,7 +21,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	ParticleEmitter::GetInstance()->AllDelete();
 	
 	font_ = make_unique<Font>();
-	font_->Initialize(dxCommon,{1.f,1.f,0.f,1.f},{300.f,360.f});
+	font_->Initialize(dxCommon);
 
 	//各クラス
 	Player::GetInstance()->InitState({ 0.0f,0.0f,0.0f });
