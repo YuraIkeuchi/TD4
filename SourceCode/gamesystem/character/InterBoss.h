@@ -50,6 +50,8 @@ public://gettersetter
 private:
 protected:
 
+	int m_CheckTimer = {};
+
 	int ActionDamage;
 	int ActionCool;
 

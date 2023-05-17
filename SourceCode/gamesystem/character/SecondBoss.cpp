@@ -25,7 +25,7 @@ bool SecondBoss::Initialize() {
 	m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "pos")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp2")));
 	_charaState = CharaState::STATE_MOVE;
-	m_MoveState = MOVE_ANGER;
+	m_MoveState = MOVE_ALTER;
 	return true;
 }
 //状態遷移
@@ -39,7 +39,7 @@ void SecondBoss::Action() {
 	//当たり判定（弾）
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
 	CollideBul(_playerBulA);
-
+	m_MatRot = m_Object->GetMatrot();
 	//OBJのステータスのセット
 	Obj_SetParam();
 
@@ -70,6 +70,8 @@ void SecondBoss::Action() {
 			joystamps.erase(cbegin(joystamps) + i);
 		}
 	}
+
+	Collide();
 }
 //ポーズ
 void SecondBoss::Pause() {
@@ -87,8 +89,8 @@ void SecondBoss::DamAction()
 //ImGui
 void SecondBoss::ImGui_Origin() {
 	ImGui::Begin("Second");
-	ImGui::Text("MoveCount:%d", m_MoveCount);
-	ImGui::Text("MoveState:%f", m_MoveState);
+	ImGui::Text("a:%d", m_a);
+	ImGui::Text("PosY:%f", m_Position.y);
 	ImGui::End();
 }
 //移動
@@ -204,7 +206,7 @@ void SecondBoss::AlterMove() {
 }
 //怒りの動き
 void SecondBoss::AngerMove() {
-	float l_AddFrame = 0.025f;
+	float l_AddFrame = 0.05f;
 	const int l_TargetStopTimer = 10;
 	if (m_Frame < m_FrameMax) {
 		m_Frame += l_AddFrame;
@@ -232,7 +234,7 @@ void SecondBoss::AngerMove() {
 }
 //喜びの動き
 void SecondBoss::JoyMove() {
-	float l_AddFrame = 0.025f;
+	float l_AddFrame = 0.05f;
 	const int l_TargetStopTimer = 10;
 	if (m_Frame < m_FrameMax) {
 		m_Frame += l_AddFrame;
@@ -285,4 +287,35 @@ void SecondBoss::MoveInit(const std::string& HighState) {
 	else {
 		assert(0);
 	}
+}
+//当たり判定
+bool SecondBoss::Collide() {
+
+	XMFLOAT3 l_OBBPosition;
+
+	l_OBBPosition = { m_Position.x,
+		m_Position.y - 5.0f,
+		m_Position.z
+	};
+
+	if (!Helper::GetInstance()->CheckMinINT(m_CheckTimer,10,1)) { return false; }
+	m_OBB1.SetParam_Pos(l_OBBPosition);
+	m_OBB1.SetParam_Rot(m_MatRot);
+	m_OBB1.SetParam_Scl(m_Scale);
+
+	m_OBB2.SetParam_Pos(Player::GetInstance()->GetPosition());
+	m_OBB2.SetParam_Rot(Player::GetInstance()->GetMatRot());
+	m_OBB2.SetParam_Scl(Player::GetInstance()->GetScale());
+
+	if ((Collision::OBBCollision(m_OBB1, m_OBB2) && 
+		Player::GetInstance()->GetDamageInterVal() == 0)) {
+		Player::GetInstance()->PlayerHit(m_Position);
+
+		return true;
+	}
+	else {
+		return false;
+	}
+
+	return false;
 }

@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include"IKESprite.h"
 #include "InterBoss.h"
 #include "JoyStamp.h"
 #include "AngerStamp.h"
+#include "Collision.h"
 class SecondBoss :
 	public InterBoss {
 public:
@@ -24,8 +24,10 @@ private:
 	//攻撃
 	void Attack();
 
+	//当たり判定
+	bool Collide();
 private:
-
+	//キャラの行動繊維
 	static void (SecondBoss::* stateTable[])();
 private:
 	//ダメージ食らった処理
@@ -76,6 +78,7 @@ private:
 
 	//加算されるフレーム数
 	float m_AddFrame = 0.01f;
+
 private:
 	enum InterValState {
 		DownState,
@@ -106,4 +109,10 @@ private:
 		MOVE_JOY,//喜びのみ
 		MOVE_CHOICE,//どの動きかの選択するターン
 	};
+
+
+	OBB m_OBB1 = {};
+	OBB m_OBB2 = {};
+
+	bool m_a = false;
 };

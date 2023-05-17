@@ -107,6 +107,8 @@ void Player::Update()
 	InterVal();
 	//飢餓ゲージ更新
 	HungerGauge::GetInstance()->Update();
+
+	Helper::GetInstance()->CheckMaxINT(m_DamageInterVal, 0, -1);
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon)
@@ -129,11 +131,9 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 }
 //ImGui
 void Player::ImGuiDraw() {
-	/*ImGui::Begin("Player");
-	ImGui::Text("HP:%f",m_HP);
-	ImGui::Text("MaxHP:%f", m_MaxHP);
-
-	ImGui::End();*/
+	ImGui::Begin("Player");
+	ImGui::Text("%d", m_DamageInterVal);
+	ImGui::End();
 
 	HungerGauge::GetInstance()->ImGuiDraw();
 }
@@ -422,4 +422,8 @@ void Player::RecvDamage(float Damage) { m_HP -= Damage; }
 void Player::BulletDelete() {
 	ghostbullets.clear();
 	attackbullets.clear();
+}
+//プレイヤーが敵にあたった瞬間の判定
+void Player::PlayerHit(const XMFLOAT3& pos) {
+	m_DamageInterVal = 100;
 }

@@ -32,7 +32,6 @@ public:
 	//ImGui
 	void ImGuiDraw();
 
-
 	//キャラの状態
 	enum CharaState
 	{
@@ -82,9 +81,13 @@ public:
 	//当たり判定系
 	bool BulletCollide(const XMFLOAT3& pos, const XMMATRIX& matrot, const XMFLOAT3& scale, const bool Catch);//弾との当たり判定
 	bool PlayerCollide(const XMFLOAT3& pos);//プレイヤーとの当たり判定
+	//プレイヤーの弾かれる処理
+	void PlayerHit(const XMFLOAT3& pos);
 public:
 	//gettersetter
 	const int& GetBulletType() { return m_BulletType; }
+	const int& GetDamageInterVal() { return m_DamageInterVal; }
+
 
 	void SetHP(float hp) { m_HP = hp; };
 	float GetHP() { return m_HP; }
@@ -107,6 +110,9 @@ private://各クラス
 	XMFLOAT3 m_FollowPos = {};
 
 	int m_ShotTimer = {};//ショットのチャージ時間
+
+	//ダメージ
+	int m_DamageInterVal = {};
 
 	//OBBの当たり判定
 	OBB m_OBB1 = {};

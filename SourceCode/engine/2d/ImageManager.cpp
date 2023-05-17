@@ -34,7 +34,6 @@ void ImageManager::StartLoadTex2D()
 {
 }
 
-
 //非同期処理でのテクスチャの読み込み
 void ImageManager::SecondLoadTex2D()
 {

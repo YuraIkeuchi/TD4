@@ -2,6 +2,7 @@
 #include <d3dcompiler.h>
 #include <DirectXTex.h>
 #include "VariableCommon.h"
+#include "IKETexture.h"
 #pragma comment(lib, "d3dcompiler.lib")
 
 using namespace DirectX;
