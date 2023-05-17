@@ -20,6 +20,7 @@ bool SecondBoss::Initialize() {
 	m_Position = { 0.0f,0.0f,30.0f };
 	m_Rotation = { 180.0f,270.0f,0.0f };
 	m_Scale = { 4.0f,4.0f,4.0f };
+	m_OBBScale = { 6.0f,6.0f,6.0f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_AddPowerY = 5.0f;
 	m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "pos")));
@@ -301,7 +302,7 @@ bool SecondBoss::Collide() {
 	if (!Helper::GetInstance()->CheckMinINT(m_CheckTimer,10,1)) { return false; }
 	m_OBB1.SetParam_Pos(l_OBBPosition);
 	m_OBB1.SetParam_Rot(m_MatRot);
-	m_OBB1.SetParam_Scl(m_Scale);
+	m_OBB1.SetParam_Scl(m_OBBScale);
 
 	m_OBB2.SetParam_Pos(Player::GetInstance()->GetPosition());
 	m_OBB2.SetParam_Rot(Player::GetInstance()->GetMatRot());

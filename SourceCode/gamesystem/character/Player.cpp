@@ -1,5 +1,4 @@
 ﻿#include "Player.h"
-#include <any>
 #include "CsvLoader.h"
 #include"Helper.h"
 #include"ModelManager.h"
@@ -7,7 +6,7 @@
 #include "HungerGauge.h"
 #include "Collision.h"
 #include "Input.h"
-
+#include "Easing.h"
 Player* Player::GetInstance()
 {
 	static Player instance;
@@ -109,6 +108,13 @@ void Player::Update()
 	HungerGauge::GetInstance()->Update();
 
 	Helper::GetInstance()->CheckMaxINT(m_DamageInterVal, 0, -1);
+
+	//反発
+	ReBound();
+
+	//リミット制限
+	Helper::GetInstance()->FloatClamp(m_Position.x, -55.0f, 65.0f);
+	Helper::GetInstance()->FloatClamp(m_Position.z, -60.0f, 60.0f);
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon)
@@ -196,10 +202,6 @@ void Player::Walk()
 		XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
 		XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
 		move = XMVector3TransformNormal(move, matRot);
-
-		//リミット制限
-		Helper::GetInstance()->FloatClamp(m_Position.x, -55.0f, 65.0f);
-		Helper::GetInstance()->FloatClamp(m_Position.z, -60.0f, 60.0f);
 		//向いた方向に進む
 		if (m_RigidityTime == m_ResetNumber) {
 			m_Position.x += move.m128_f32[0] * m_AddSpeed;
@@ -426,4 +428,26 @@ void Player::BulletDelete() {
 //プレイヤーが敵にあたった瞬間の判定
 void Player::PlayerHit(const XMFLOAT3& pos) {
 	m_DamageInterVal = 100;
+	m_Damage = true;
+	XMFLOAT2 l_Distance;
+	l_Distance.x = m_Position.x - pos.x;
+	l_Distance.y = m_Position.z - pos.z;
+	m_BoundPower.x = (sin(atan2f(l_Distance.x, l_Distance.y)) * 3.0f);
+	m_BoundPower.y = (cos(atan2f(l_Distance.x, l_Distance.y)) * 3.0f);
+}
+//弾かれる処理
+void Player::ReBound() {
+	if (m_Damage) {
+		m_BoundPower = {
+	Ease(In,Cubic,0.5f,m_BoundPower.x,0.0f),
+	Ease(In,Cubic,0.5f,m_BoundPower.y,0.0f),
+		};
+
+		m_Position.x += m_BoundPower.x;
+		m_Position.z += m_BoundPower.y;
+
+		if (m_BoundPower.x == 0.0f) {
+			m_Damage = false;
+		}
+	}
 }

@@ -81,8 +81,10 @@ public:
 	//当たり判定系
 	bool BulletCollide(const XMFLOAT3& pos, const XMMATRIX& matrot, const XMFLOAT3& scale, const bool Catch);//弾との当たり判定
 	bool PlayerCollide(const XMFLOAT3& pos);//プレイヤーとの当たり判定
-	//プレイヤーの弾かれる処理
+	//プレイヤーの当たった瞬間
 	void PlayerHit(const XMFLOAT3& pos);
+	//弾かれる処理
+	void ReBound();
 public:
 	//gettersetter
 	const int& GetBulletType() { return m_BulletType; }
@@ -112,8 +114,10 @@ private://各クラス
 	int m_ShotTimer = {};//ショットのチャージ時間
 
 	//ダメージ
+	bool m_Damage = false;
 	int m_DamageInterVal = {};
 
+	XMFLOAT2 m_BoundPower = {};
 	//OBBの当たり判定
 	OBB m_OBB1 = {};
 	OBB m_OBB2 = {};
