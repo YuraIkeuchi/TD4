@@ -1,21 +1,20 @@
 #include "Font.h"
 
 DirectX::GraphicsMemory* Font::_gmemory = nullptr;
-DirectX::SpriteFont* Font::_spritefont = nullptr;
-DirectX::SpriteBatch* Font::_spritebatch = nullptr;
-Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> Font::_heapForSpriteFont = nullptr;
 
 Font::~Font()
 {
-	delete _gmemory;
-	delete _spritefont;
-	delete _spritebatch;
+	/*delete _spritefont;
+	delete _spritebatch;*/
 }
 
 void Font::Initialize(DirectXCommon* dxcommon)
 {
 	_gmemory = new DirectX::GraphicsMemory(dxcommon->GetDev());
+}
 
+void Font::LoadFont(DirectXCommon* dxcommon)
+{
 	DirectX::ResourceUploadBatch resUploadBatch(dxcommon->GetDev());
 
 	resUploadBatch.Begin();
@@ -57,6 +56,10 @@ void Font::Draw(DirectXCommon* dxcommon)
 	_spritefont->DrawString(_spritebatch, ward_,
 		disply_place_, color_, {},position_);
 	_spritebatch->End();
+}
+
+void Font::PostDraw(DirectXCommon* dxcommon)
+{
 	_gmemory->Commit(dxcommon->GetQue());
 }
 

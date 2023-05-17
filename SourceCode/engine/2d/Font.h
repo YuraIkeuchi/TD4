@@ -21,15 +21,17 @@ protected:
 public:
 	~Font();
 	static void Initialize(DirectXCommon* dxcommon);
+	void LoadFont(DirectXCommon* dxcommon);
 	void SetPosColor(const XMVECTOR& color = { 1.f,1.f,1.f,1.f }, const XMFLOAT2& position = { 0.f,0.f });
 	void Draw(DirectXCommon* dxcommon);
+	static void PostDraw(DirectXCommon* dxcommon);
 	void SetString(wchar_t* ward);
 protected:
 	static DirectX::GraphicsMemory* _gmemory;
-	static DirectX::SpriteFont* _spritefont;
-	static DirectX::SpriteBatch* _spritebatch;
-	static ComPtr<ID3D12DescriptorHeap> _heapForSpriteFont;
 private:
+	DirectX::SpriteFont* _spritefont;
+	DirectX::SpriteBatch* _spritebatch;
+	ComPtr<ID3D12DescriptorHeap> _heapForSpriteFont;
 	XMVECTOR color_{};
 	XMFLOAT2 position_{};
 	XMFLOAT2 shadow_position_ = {};
