@@ -13,11 +13,12 @@ SecondBoss::SecondBoss() {
 	m_Object.reset(new IKEObject3d());
 	m_Object->Initialize();
 	m_Object->SetModel(m_Model);
+	shake = make_unique< Shake>();
 }
 //初期化
 bool SecondBoss::Initialize() {
 
-	m_Position = { 0.0f,0.0f,30.0f };
+	m_Position = { 0.0f,5.0f,30.0f };
 	m_Rotation = { 180.0f,270.0f,0.0f };
 	m_Scale = { 4.0f,4.0f,4.0f };
 	m_OBBScale = { 6.0f,6.0f,6.0f };
@@ -25,7 +26,7 @@ bool SecondBoss::Initialize() {
 	m_AddPowerY = 5.0f;
 	m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "pos")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp2")));
-	_charaState = CharaState::STATE_MOVE;
+	_charaState = CharaState::STATE_ATTACK;
 	m_MoveState = MOVE_ALTER;
 	return true;
 }
@@ -47,6 +48,13 @@ void SecondBoss::Action() {
 	//スタンプ更新
 	StampUpdate(angerstamps);
 	StampUpdate(joystamps);
+
+	//衝撃波
+	for (ShockWave* wave : shockwaves) {
+		if (wave != nullptr) {
+			wave->Update();
+		}
+	}
 
 	//状態移行(charastateに合わせる)
 	(this->*stateTable[_charaState])();
@@ -72,6 +80,17 @@ void SecondBoss::Action() {
 		}
 	}
 
+	//衝撃波
+	for (int i = 0; i < shockwaves.size();i++) {
+		if (shockwaves[i] == nullptr) {
+			continue;
+		}
+
+		if (!shockwaves[i]->GetAlive()) {
+			shockwaves.erase(cbegin(shockwaves) += i);
+		}
+	}
+
 	Collide();
 }
 //ポーズ
@@ -82,17 +101,30 @@ void SecondBoss::EffecttexDraw(DirectXCommon* dxCommon)
 	//スタンプ描画
 	StampDraw(angerstamps, dxCommon);
 	StampDraw(joystamps, dxCommon);
+
+	for (ShockWave* wave : shockwaves) {
+		if (wave != nullptr) {
+			wave->Draw(dxCommon);
+		}
+	}
 }
 //ダメージ時のリアクション
 void SecondBoss::DamAction()
 {
+
 }
 //ImGui
 void SecondBoss::ImGui_Origin() {
 	ImGui::Begin("Second");
-	ImGui::Text("a:%d", m_a);
-	ImGui::Text("PosY:%f", m_Position.y);
+	ImGui::Text("Timer:%d", m_StopTimer);
+	ImGui::Text("RotX:%f", m_Rotation.x);
 	ImGui::End();
+
+	for (ShockWave* wave : shockwaves) {
+		if (wave != nullptr) {
+			wave->ImGuiDraw();
+		}
+	}
 }
 //移動
 void SecondBoss::Move() {
@@ -123,6 +155,100 @@ void SecondBoss::Move() {
 }
 //攻撃
 void SecondBoss::Attack() {
+	float l_AddFrame;
+	int l_TargetTimer;
+	int l_RandAct;
+	if (m_PressType == PRESS_START) {			//上に行く
+		l_AddFrame = 0.01f;
+		l_TargetTimer = 80;
+		m_AfterPos = { m_Position.x,40.0f,m_Position.z };	//真上に飛ぶ
+		if (m_Frame < m_FrameMax) {
+			m_Frame += 0.01f;
+		}
+		else {
+			m_Frame = 1.0f;
+			if (Helper::GetInstance()->CheckMinINT(m_StopTimer,l_TargetTimer,1)) {			//プレイヤーの位置に移動
+				m_Position = { Player::GetInstance()->GetPosition().x,
+				m_Position.y,
+				Player::GetInstance()->GetPosition().z };
+				m_StopTimer = 0;
+				m_Frame = 0.0f;
+				m_PressType = PRESS_SET;
+			}
+		}
+
+		m_Position = {
+			Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
+			Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
+			Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z)
+		};
+	}
+	else if (m_PressType == PRESS_SET) {		//一定時間上で待機
+		l_TargetTimer = 100;
+		
+		if (Helper::GetInstance()->CheckMinINT(m_StopTimer, l_TargetTimer, 1)) {
+			m_StopTimer = 0;
+			m_PressType = PRESS_ATTACK;
+			m_AfterRotX = m_Rotation.x + 720.0f;
+		}
+	}
+	else if (m_PressType == PRESS_ATTACK) {			//落下してくる
+		l_AddFrame = 0.1f;
+		l_TargetTimer = 20;
+		m_AfterPos = { m_Position.x,5.0f,m_Position.z };
+		if (m_Frame < m_FrameMax) {
+			m_Frame += l_AddFrame;
+		}
+		else {
+			m_Frame = 1.0f;
+			if (m_StopTimer == 1) {
+				BirthWave();//ウェーブの生成
+			}
+			if (Helper::GetInstance()->CheckMinINT(m_StopTimer, l_TargetTimer, 1)){			//シェイクが始まる
+				m_StopTimer = 0;
+				m_Frame = 0.0f;
+				m_PressType = PRESS_SHAKE;
+				shake->SetShakeStart(true);
+			}
+		}
+		m_Position = {
+			Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
+			Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
+			Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z)
+		};
+		m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, m_AfterRotX);
+	}
+	else if (m_PressType == PRESS_SHAKE) {			//シェイク
+		l_TargetTimer = 50;
+		shake->ShakePos(m_ShakePos.x, 5, -5, l_TargetTimer, 10);
+		shake->ShakePos(m_ShakePos.z, 5, -5, l_TargetTimer, 10);
+		if (!shake->GetShakeStart()) {
+			m_Rotation.x = m_Rotation.x - 720.0f;
+			m_AfterRotX = m_Rotation.x;
+			m_ShakePos = { 0.0f,0.0f,0.0f };
+			m_PressType = PRESS_END;
+			BirthStamp("Anger");
+		}
+
+		m_Position.x += m_ShakePos.x;
+		m_Position.z += m_ShakePos.z;
+	}
+	else {
+		//乱数指定
+		mt19937 mt{ std::random_device{}() };
+		uniform_int_distribution<int> l_RandomMove(0, 2);
+
+		l_RandAct = int(l_RandomMove(mt));
+
+		if (l_RandAct == 0) {
+			_charaState = STATE_ATTACK;
+			m_PressType = PRESS_START;
+		}
+		else {
+			_charaState = STATE_MOVE;
+			m_MoveState = MOVE_CHOICE;
+		}
+	}
 
 }
 //スタンプの生成
@@ -266,10 +392,16 @@ void SecondBoss::JoyMove() {
 void SecondBoss::ChoiceMove() {
 	//乱数指定
 	mt19937 mt{ std::random_device{}() };
-	uniform_int_distribution<int> l_RandomMove(0, 2);
+	uniform_int_distribution<int> l_RandomMove(0, 5);
 
 	m_MoveState = int(l_RandomMove(mt));
 	m_MoveCount = 0;
+	if (m_MoveState <= 2) {
+		_charaState = STATE_MOVE;
+	}
+	else {
+		_charaState = STATE_ATTACK;
+	}
 }
 //移動関係の初期化
 void SecondBoss::MoveInit(const std::string& HighState) {
@@ -295,7 +427,7 @@ bool SecondBoss::Collide() {
 	XMFLOAT3 l_OBBPosition;
 
 	l_OBBPosition = { m_Position.x,
-		m_Position.y - 5.0f,
+		m_Position.y - 8.0f,
 		m_Position.z
 	};
 
@@ -311,6 +443,7 @@ bool SecondBoss::Collide() {
 	if ((Collision::OBBCollision(m_OBB1, m_OBB2) && 
 		Player::GetInstance()->GetDamageInterVal() == 0)) {
 		Player::GetInstance()->PlayerHit(m_Position);
+		Player::GetInstance()->RecvDamage(1.0f);
 
 		return true;
 	}
@@ -319,4 +452,11 @@ bool SecondBoss::Collide() {
 	}
 
 	return false;
+}
+//衝撃波の発生
+void SecondBoss::BirthWave() {
+	ShockWave* newwave;
+	newwave = new ShockWave();
+	newwave->Initialize({ m_Position.x,0.0f,m_Position.z });
+	shockwaves.push_back(newwave);
 }

@@ -250,6 +250,9 @@
     <Filter Include="SourceCords\gamesystem\Scene\Tutorial">
       <UniqueIdentifier>{80a0ef15-8cb6-4b09-b3c9-8506f077d388}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SourceCords\gamesystem\character\Boss\Attach\ShockWave">
+      <UniqueIdentifier>{77d10199-6335-4155-991e-4275039f7df2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\engine\2d\DebugText.cpp">
@@ -560,6 +563,9 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\actor\TutorialSceneActor.cpp">
       <Filter>SourceCords\gamesystem\actor\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\bossattach\ShockWave.cpp">
+      <Filter>SourceCords\gamesystem\character\Boss\Attach\ShockWave</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -892,6 +898,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\actor\TutorialSceneActor.h">
       <Filter>SourceCords\gamesystem\actor\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\ShockWave.h">
+      <Filter>SourceCords\gamesystem\character\Boss\Attach\ShockWave</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

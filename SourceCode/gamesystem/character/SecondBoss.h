@@ -2,7 +2,9 @@
 #include "InterBoss.h"
 #include "JoyStamp.h"
 #include "AngerStamp.h"
+#include "ShockWave.h"
 #include "Collision.h"
+#include "Shake.h"
 class SecondBoss :
 	public InterBoss {
 public:
@@ -23,6 +25,7 @@ private:
 	void Move();
 	//攻撃
 	void Attack();
+	//挙動選択
 
 	//当たり判定
 	bool Collide();
@@ -46,7 +49,7 @@ private:
 	void AngerMove();//怒り
 	void JoyMove();//喜び
 	void ChoiceMove();//動きのチョイス
-
+	void BirthWave();//衝撃波の生成
 	//動きの初期化
 	void MoveInit(const std::string& HighState);
 public:
@@ -79,6 +82,11 @@ private:
 	//加算されるフレーム数
 	float m_AddFrame = 0.01f;
 
+	//イージング後の位置
+	XMFLOAT3 m_AfterPos = {};
+
+	//シェイク用変数
+	XMFLOAT3 m_ShakePos = { 0.0f,0.0f,0.0f };
 private:
 	enum InterValState {
 		DownState,
@@ -93,7 +101,8 @@ private:
 private:
 	vector<InterStamp*> angerstamps;//怒りのスタンプ
 	vector<InterStamp*> joystamps;//喜びのスタンプ
-
+	vector<ShockWave*> shockwaves;//衝撃波
+	unique_ptr<Shake> shake;//シェイク
 private:
 	//キャラの状態
 	enum CharaState
@@ -114,5 +123,15 @@ private:
 	OBB m_OBB1 = {};
 	OBB m_OBB2 = {};
 
-	bool m_a = false;
+private:
+	//プレス
+	enum PressType {
+		PRESS_START,
+		PRESS_SET,
+		PRESS_ATTACK,
+		PRESS_SHAKE,
+		PRESS_END,
+	};
+
+	int m_PressType;
 };
