@@ -22,10 +22,10 @@ bool HungerGauge::Initialize() {
 //更新
 void HungerGauge::Update() {
 	//減る速度を求めている
-	float l_SubHunger = (m_CatchCount * (m_Hungervalue * m_SubVelocity)) / 1000;
+	m_SubHunger = (m_CatchCount * 200.0f) / 1000.0f;
 	float l_Limit = 50.0f;
 	//一定ずつで減少していく
-	m_NowHunger -= l_SubHunger;
+	m_NowHunger -= 0.01f;
 	//飢餓ゲージの最大数が決まっている
 	Helper::GetInstance()->FloatClamp(m_NowHunger, 0.0f, m_HungerMax);
 	m_NowHunger = min(m_NowHunger, m_HungerMax);
@@ -35,6 +35,7 @@ void HungerGauge::Update() {
 //ImGui
 void HungerGauge::ImGuiDraw() {
 	ImGui::Begin("Hunger");
+	ImGui::Text("Sub:%f", m_SubHunger);
 	ImGui::SliderFloat("Now", &m_NowHunger, 0.0f, 50.0f);
 	ImGui::SliderFloat("Max", &m_HungerMax, 0.0f, 50.0f);
 	//ImGui::SliderFloat("Percent", &(m_NowHunger / m_HungerMax), 0.0f, 50.0f);

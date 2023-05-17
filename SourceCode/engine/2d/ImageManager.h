@@ -33,6 +33,7 @@ public:
 		UnderGauge,
 		Gauge,
 		TopGauge,
+		GIRL,
 	};
 	//テクスチャの名前
 	enum tex2dName

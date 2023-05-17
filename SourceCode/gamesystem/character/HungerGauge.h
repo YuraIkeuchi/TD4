@@ -31,4 +31,5 @@ private:
 	float m_HungerMax = {};//飢餓ゲージの最大数(変化する)
 	float m_CatchCount = {};//ゴーストの数
 	float m_SubVelocity = 1.0f;//減る飢餓ゲージ(チャージ中のみ減る）
+	float m_SubHunger = 0.0f;//減る量
 };
