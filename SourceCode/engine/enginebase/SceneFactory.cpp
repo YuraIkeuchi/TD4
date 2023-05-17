@@ -7,6 +7,7 @@
 #include "GameoverScene.h"
 #include "LoadScene.h"
 #include "EditorScene.h"
+#include "TutorialScene.h"
 BaseScene* SceneFactory::CreateScene(const std::string& sceneName) {
 	//éüÇÃÉVÅ[ÉìÇÃçÏê¨
 	BaseScene* newScene = nullptr;
@@ -18,6 +19,9 @@ BaseScene* SceneFactory::CreateScene(const std::string& sceneName) {
 	}
 	else if (sceneName == "LOAD") {
 		newScene = new LoadScene();
+	}
+	else if (sceneName == "TUTORIAL") {
+		newScene = new TutorialScene();
 	}
 	else if(sceneName == "FIRSTSTAGE"){
 		newScene = new FirstStage();

@@ -244,6 +244,12 @@
     <Filter Include="SourceCords\gamesystem\character\Boss\Attach\Stamp\Various">
       <UniqueIdentifier>{056d0a58-0192-484e-a97b-c2d4ea01b954}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SourceCords\gamesystem\actor\Tutorial">
+      <UniqueIdentifier>{b6439317-7739-4999-8c2e-fe9ab70de3dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\Scene\Tutorial">
+      <UniqueIdentifier>{80a0ef15-8cb6-4b09-b3c9-8506f077d388}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\engine\2d\DebugText.cpp">
@@ -548,6 +554,12 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\bossattach\JoyStamp.cpp">
       <Filter>SourceCords\gamesystem\character\Boss\Attach\Stamp\Various</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\TutorialScene.cpp">
+      <Filter>SourceCords\gamesystem\Scene\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\TutorialSceneActor.cpp">
+      <Filter>SourceCords\gamesystem\actor\Tutorial</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -874,6 +886,12 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\bossattach\JoyStamp.h">
       <Filter>SourceCords\gamesystem\character\Boss\Attach\Stamp\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\TutorialScene.h">
+      <Filter>SourceCords\gamesystem\Scene\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\TutorialSceneActor.h">
+      <Filter>SourceCords\gamesystem\actor\Tutorial</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

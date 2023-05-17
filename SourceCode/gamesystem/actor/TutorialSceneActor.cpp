@@ -1,4 +1,4 @@
-﻿#include "FirstStageActor.h"
+﻿#include "TutorialSceneActor.h"
 #include "Audio.h"
 #include"Easing.h"
 #include "SceneManager.h"
@@ -6,10 +6,9 @@
 #include "ParticleEmitter.h"
 #include "ImageManager.h"
 #include <algorithm>
-#include <HungerGauge.h>
 
 //初期化
-void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
+void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	dxCommon->SetFullScreen(true);
 	//共通の初期化
 	BaseInitialize(dxCommon);
@@ -19,9 +18,9 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	PlayPostEffect = true;
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
-	
+
 	font_ = make_unique<Font>();
-	font_->Initialize(dxCommon,{1.f,1.f,0.f,1.f},{300.f,360.f});
+	font_->Initialize(dxCommon, { 1.f,1.f,0.f,1.f }, { 300.f,360.f });
 
 	//各クラス
 	Player::GetInstance()->InitState({ 0.0f,0.0f,0.0f });
@@ -48,7 +47,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	loadobj->SetEnemyManager(enemymanager.get());
 }
 //更新
-void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
+void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
 
 	if (enemymanager->BossDestroy() || input->TriggerKey(DIK_X)) {
@@ -82,7 +81,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		window_size.x = Ease(Out, Sine, nowframe, 0, 1300);
 		window_size.y = Ease(Out, Sine, nowframe, 0, 223);
 		black_color.w = Ease(Out, Sine, nowframe, 0, 1);
-		girl_color.w= Ease(Out, Sine, nowframe, 0, 1);
+		girl_color.w = Ease(Out, Sine, nowframe, 0, 1);
 	} else if (nowstate == FIGHT) {
 		frame++;
 		nowframe = frame / maxframe;
@@ -114,7 +113,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	lightgroup->Update();
 }
 //描画
-void FirstStageActor::Draw(DirectXCommon* dxCommon) {
+void TutorialSceneActor::Draw(DirectXCommon* dxCommon) {
 	//描画方法
 	//ポストエフェクトをかけるか
 	if (PlayPostEffect) {
@@ -145,21 +144,21 @@ void FirstStageActor::Draw(DirectXCommon* dxCommon) {
 	}
 }
 //解放
-void FirstStageActor::Finalize() {
+void TutorialSceneActor::Finalize() {
 }
 //後ろの描画
-void FirstStageActor::BackDraw(DirectXCommon* dxCommon) {
+void TutorialSceneActor::BackDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
 	////各クラスの描画
 	Player::GetInstance()->Draw(dxCommon);
 	loadobj->Draw(dxCommon);
 	backobj->Draw(dxCommon);
 	enemymanager->Draw(dxCommon);
-	
+
 	IKEObject3d::PostDraw();
 }
 //ポストエフェクトがかからない
-void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
+void TutorialSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 	//パーティクル描画
 	ParticleEmitter::GetInstance()->FlontDrawAll();
 	//完全に前に書くスプライト
@@ -167,14 +166,14 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	//blackwindow->Draw();
 	conversationwindow->Draw();
 	girl->Draw();
-	
+
 	IKESprite::PostDraw();
 	ui->Draw();
 }
 //IMGuiの描画
-void FirstStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	//Player::GetInstance()->ImGuiDraw();
+void TutorialSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
+	Player::GetInstance()->ImGuiDraw();
 	loadobj->ImGuiDraw();
-	HungerGauge::GetInstance()->ImGuiDraw();
+	//enemymanager->ImGuiDraw();
 	//camerawork->ImGuiDraw();
 }

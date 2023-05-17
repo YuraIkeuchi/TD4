@@ -72,7 +72,7 @@ bool Food::Collision() {
 	if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, m_PlayerPos.x, m_PlayerPos.z, l_Radius) && m_Alive) {
 		m_Alive = false;
 		m_LockOn = false;
-		HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() + l_AddHunger);
+		HungerGauge::GetInstance()->AddNowHunger(HungerGauge::GetInstance()->GetNowHunger() + l_AddHunger);
 		return true;
 	}
 	else {

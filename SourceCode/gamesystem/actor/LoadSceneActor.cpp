@@ -37,9 +37,14 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	for (std::unique_ptr<IKEObject3d>& obj : grounds) {
 		obj->Update();
 	}
+
+
+	if (Input::GetInstance()->Pushkey(DIK_T)) {
+		str = "TUTORIAL";
+	}
 	//一定時間でシーンが変わる
 	if (m_LoadTimer >= 200 && !SceneManager::GetInstance()->GetLoad()) {
-		SceneManager::GetInstance()->ChangeScene("FIRSTSTAGE");
+		SceneManager::GetInstance()->ChangeScene(str);
 	}
 }
 //描画
