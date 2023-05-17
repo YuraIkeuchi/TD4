@@ -29,6 +29,10 @@ public:
 		WHITE,
 		WINDOW,
 		BLACKWINDOW,
+		HEART,
+		UnderGauge,
+		Gauge,
+		TopGauge,
 	};
 	//テクスチャの名前
 	enum tex2dName
@@ -36,7 +40,8 @@ public:
 		IMPACT,
 		IMPACT2,
 		ANGER,
-		JOY
+		JOY,
+	
 	};
 	enum particleName
 	{

@@ -16,6 +16,10 @@ public:
 	float GetHungerMax() { return   m_HungerMax; }
 	float GetCatchCount() { return   m_CatchCount; }
 
+	float GetPercentage();
+
+	void AddNowHunger(float m_NowHunger);
+
 	void SetNowHunger(float m_NowHunger) { this->m_NowHunger = m_NowHunger; }
 	void SetHungerMax(float m_HungerMax) { this->m_HungerMax = m_HungerMax; }
 	void SetCatchCount(float m_CatchCount) { this->m_CatchCount = m_CatchCount; }

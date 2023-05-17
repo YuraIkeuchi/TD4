@@ -6,6 +6,7 @@
 #include "ParticleEmitter.h"
 #include "ImageManager.h"
 #include <algorithm>
+#include <HungerGauge.h>
 
 //初期化
 void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -161,8 +162,8 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void FirstStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	Player::GetInstance()->ImGuiDraw();
+	//Player::GetInstance()->ImGuiDraw();
 	loadobj->ImGuiDraw();
-	//enemymanager->ImGuiDraw();
+	HungerGauge::GetInstance()->ImGuiDraw();
 	//camerawork->ImGuiDraw();
 }
