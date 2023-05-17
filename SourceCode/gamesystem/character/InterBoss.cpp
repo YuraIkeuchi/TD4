@@ -72,14 +72,8 @@ void InterBoss::SummonEnemyUpda(std::vector<InterEnemy*> enemy)
 		{
 			enemy[i]->Update();
 		}
-
-		enemy[0]->SetShotF(true);
-
-		for (auto i = 1; i < enemy.size(); i++) {
-			if (enemy[i - 1]->GetShotCount() > 10)
-			{
+		for (auto i = 0; i < enemy.size(); i++) {
 				enemy[i]->SetShotF(true);
-			}
 		}
 		
 	}
@@ -97,9 +91,17 @@ void InterBoss::EndSummon(std::vector<InterEnemy*> enemy)
 	if (SummobnStop) {
 		//¢Š«ó‘Ô‰ðœ@‰~‰^“®ÄŠJ
 		if (Helper::GetInstance()->All_Of(tempList, _countof(tempList))) {
-			ActionTimer++;
-			SummobnStop = false;
+			
+			NextActionInteval++;
+			if (NextActionInteval > 120) {
+				ActionTimer++;
+				SummobnStop = false;
+			}
 		}
+	}
+	else
+	{
+		NextActionInteval = 0;
 	}
 }
 

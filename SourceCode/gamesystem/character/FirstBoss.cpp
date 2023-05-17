@@ -84,7 +84,7 @@ void FirstBoss::Action() {
 
 	/*^^^^^攻撃判定^^^^^*/
 	//非戦闘時の動き
-	bool noAction = (!_normal.GetAttackF() && !_cattack.GetAttackF() );
+	bool noAction = (!_normal.GetAttackF() && !_cattack.GetAttackF()&&!SummobnStop);
 	if (!BattleStartF) {
 		Recv = false;
 		NoBattleMove();
@@ -102,10 +102,10 @@ void FirstBoss::Action() {
 		}
 
 		//通常攻撃
-		if (!_normal.GetAttackF() && ActionTimer % 180 == 0)
+		if (!_normal.GetAttackF() && ActionTimer % 135 == 0)
 			_normal.SetNormalAttackF(true);
 		//ため攻撃
-		if (!_cattack.GetAttackF() && ActionTimer % 300 == 0)
+		if (!_cattack.GetAttackF() && ActionTimer % 340 == 0)
 			_cattack.SetAttackF(true);
 
 
@@ -172,20 +172,19 @@ void FirstBoss::NormalAttak::Update(XMFLOAT3& Pos, XMFLOAT3& Rot, bool& Enf)
 		break;
 	case Phase_Normal::NON:
 	{
-		Enf = true;
-		RotEaseTime = 0.f;
-		RushRotationF = false;
-		StayF = false;
-		shake->SetShakeTimer(0);
-		RushMoveEaseT = 0.f;
-		RemovePosEaseT = 0.f;
-
 		RushRotationF = false;
 		BeforeShakePos = Pos;
 		RemovePosEaseT = 0.f;
 		BackSpeed = 4.f;
-		StayCount = 0;
+		shake->SetShakeTimer(0); shake->SetShakeStart(false);
+		shakeend = false;
 		RotEaseTime = 0.f;
+		Enf = true;
+		RushRotationF = false;
+		StayF = false;
+		RushMoveEaseT = 0.f;
+		RemovePosEaseT = 0.f;
+		StayCount = 0;
 	}
 	if (NormalAttackF) {
 		BackSpeed = 4.f;
@@ -346,8 +345,8 @@ void FirstBoss::NormalAttak::Attack(XMFLOAT3& Pos, XMFLOAT3& Rot)
 	m_matRot = XMMatrixRotationY(XMConvertToRadians(Rot.y + 90.f));
 	m_move = XMVector3TransformNormal(m_move, m_matRot);
 	RushMoveEaseT += 0.05f;
-	Pos.x = Easing::EaseOut(RushMoveEaseT, RushOldPos.x, RushOldPos.x + m_move.m128_f32[0] * 300.f);
-	Pos.z = Easing::EaseOut(RushMoveEaseT, RushOldPos.z, RushOldPos.z + m_move.m128_f32[2] * 300.f);
+	Pos.x = Easing::EaseOut(RushMoveEaseT, RushOldPos.x, RushOldPos.x + m_move.m128_f32[0] * 600.f);
+	Pos.z = Easing::EaseOut(RushMoveEaseT, RushOldPos.z, RushOldPos.z + m_move.m128_f32[2] * 600.f);
 
 
 	if (RushMoveEaseT >= 1.f)
@@ -369,6 +368,7 @@ void FirstBoss::NormalAttak::ShakeAction(XMFLOAT3& Pos, XMFLOAT3& Rot)
 {
 	//初期化部
 	{
+		
 		RushMoveEaseT = 0.f;
 	}
 	XMVECTOR move = { 0.f,0.f, 0.1f, 0.0f };
@@ -377,7 +377,7 @@ void FirstBoss::NormalAttak::ShakeAction(XMFLOAT3& Pos, XMFLOAT3& Rot)
 
 	move = XMVector3TransformNormal(move, matRot);
 
-	const int MaxShakeTime = 90;
+	const int MaxShakeTime =60;
 
 	if (RotEaseTime >= 1.f) {
 		if (shake->GetShakeTimer() < MaxShakeTime) {
@@ -392,8 +392,8 @@ void FirstBoss::NormalAttak::ShakeAction(XMFLOAT3& Pos, XMFLOAT3& Rot)
 
 		else if (!shakeend) {
 			RemovePosEaseT += 0.05f;
-			Pos.x = Easing::EaseOut(RemovePosEaseT, Pos.x, BeforeShakePos.x);
-			Pos.z = Easing::EaseOut(RemovePosEaseT, Pos.z, BeforeShakePos.z);
+			//Pos.x = Easing::EaseOut(RemovePosEaseT, pos.x, BeforeShakePos.x);
+			//Pos.z = Easing::EaseOut(RemovePosEaseT, pos.z, BeforeShakePos.z);
 			if (RemovePosEaseT >= 1.f) {
 				shakeend = true;
 			}
@@ -600,7 +600,7 @@ void FirstBoss::NoBattleMove()
 
 	constexpr float EaseAddVal = 0.04f;
 
-	bool SearchF = Collision::GetLength(m_Position, l_player) < 20.f;
+	bool SearchF = Collision::GetLength(m_Position, l_player) < 30.f;
 
 	//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
 	XMVECTOR PositionA = { l_player.x + sinf(1 * (PI / 180.0f)) * 20.0f,l_player.y, l_player.z + cosf(1 * (PI / 180.0f)) * 20.0f };
@@ -770,6 +770,8 @@ void FirstBoss::ChargeAttack::Attack(XMFLOAT3& Pos, XMFLOAT3& Rot)
 	case Phase_Charge::END:
 		//終了時にフラグとフェーズ初期化
 		AttackF = false;
+		ChargeTime = 0;
+		RotSpeed = 0.f;
 		_phase = Phase_Charge::NON;
 		break;
 	}

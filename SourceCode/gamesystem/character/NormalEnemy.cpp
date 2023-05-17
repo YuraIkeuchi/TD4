@@ -84,7 +84,7 @@ void NormalEnemy::Appearance()
 	//プレイヤーと敵のベクトルの長さ(差)を求める
 	SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
 
-	constexpr float AddScaling = 0.1f;
+	constexpr float AddScaling = 0.03f;
 
 	m_Scale.x += AddScaling;
 	m_Scale.y += AddScaling;

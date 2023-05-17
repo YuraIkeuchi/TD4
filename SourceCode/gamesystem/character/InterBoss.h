@@ -94,5 +94,6 @@ protected:
 
 public:
 	bool Recv;
+	int NextActionInteval;
 };
 

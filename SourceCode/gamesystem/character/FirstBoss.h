@@ -95,7 +95,7 @@ private:
 		XMFLOAT3 RotStartPos;
 		float RushMoveEaseT;
 		XMFLOAT3 RushOldPos;
-
+		float SetCircleMoveSPos;
 		int StayCount;
 		bool StayF;
 
