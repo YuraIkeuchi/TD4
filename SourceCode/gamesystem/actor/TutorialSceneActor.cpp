@@ -7,6 +7,66 @@
 #include "ImageManager.h"
 #include <algorithm>
 
+//状態遷移
+/*stateの並び順に合わせる*/
+void (TutorialSceneActor::* TutorialSceneActor::stateTable[])() = {
+	&TutorialSceneActor::IntroState,//
+	&TutorialSceneActor::MoveState,//
+	&TutorialSceneActor::ConversationCatchState,//
+	&TutorialSceneActor::CatchGhorstState,//
+	&TutorialSceneActor::CompleteState,//
+};
+
+void TutorialSceneActor::IntroState() {
+	frame++;
+	nowframe = frame / maxframe;
+	if (frame >= maxframe) {
+		frame = maxframe;
+	}
+	window_pos.y = Ease(Out, Sine, nowframe, WinApp::window_height + 100, WinApp::window_height - 100);
+	window_size.x = Ease(Out, Sine, nowframe, 0, 1300);
+	window_size.y = Ease(Out, Sine, nowframe, 0, 223);
+	black_color.w = Ease(Out, Sine, nowframe, 0, 1);
+	girl_color.w = Ease(Out, Sine, nowframe, 0, 1);
+
+	conversationwindow->SetPosition(window_pos);
+	conversationwindow->SetSize(window_size);
+	blackwindow->SetColor(black_color);
+	girl->SetColor(girl_color);
+	if (input->TriggerKey(DIK_SPACE)) {
+		nowstate_ = state::MOVE;
+	}
+}
+
+void TutorialSceneActor::MoveState() {
+
+	if (input->TriggerKey(DIK_SPACE)) {
+		nowstate_ = state::CONVERSATION_CATCH;
+	}
+}
+
+void TutorialSceneActor::ConversationCatchState() {
+
+
+	if (input->TriggerKey(DIK_SPACE)) {
+		nowstate_ = state::CATCHGHORST;
+	}
+}
+
+void TutorialSceneActor::CatchGhorstState() {
+
+
+	if (input->TriggerKey(DIK_SPACE)) {
+		nowstate_ = state::COMPLETE;
+	}
+
+}
+
+void TutorialSceneActor::CompleteState() {
+
+
+}
+
 //初期化
 void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	dxCommon->SetFullScreen(true);
@@ -48,12 +108,6 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 }
 //更新
 void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
-	Input* input = Input::GetInstance();
-
-	if (enemymanager->BossDestroy() || input->TriggerKey(DIK_X)) {
-		SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
-	}
-
 	if (PlayerDestroy()) {
 		SceneManager::GetInstance()->ChangeScene("TITLE");
 	}
@@ -61,49 +115,13 @@ void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 	VolumManager::GetInstance()->Update();
 
-	if (input->Pushkey(DIK_A) &&
-		nowstate != CONVERSATION) {
-		nowstate = CONVERSATION;
-		frame = {};
-	}
-	if (input->Pushkey(DIK_S) &&
-		nowstate != FIGHT) {
-		nowstate = FIGHT;
-		frame = {};
-	}
-	if (nowstate == CONVERSATION) {
-		frame++;
-		nowframe = frame / maxframe;
-		if (frame >= maxframe) {
-			frame = maxframe;
-		}
-		window_pos.y = Ease(Out, Sine, nowframe, WinApp::window_height + 100, WinApp::window_height - 100);
-		window_size.x = Ease(Out, Sine, nowframe, 0, 1300);
-		window_size.y = Ease(Out, Sine, nowframe, 0, 223);
-		black_color.w = Ease(Out, Sine, nowframe, 0, 1);
-		girl_color.w = Ease(Out, Sine, nowframe, 0, 1);
-	} else if (nowstate == FIGHT) {
-		frame++;
-		nowframe = frame / maxframe;
-		if (frame >= maxframe) {
-			frame = maxframe;
-		}
-		window_pos.y = Ease(Out, Sine, nowframe, WinApp::window_height - 100, WinApp::window_height + 100);
-		window_size.x = Ease(Out, Sine, nowframe, 1300, 0);
-		window_size.y = Ease(Out, Sine, nowframe, 225, 0);
-		black_color.w = Ease(Out, Sine, nowframe, 1, 0);
-		girl_color.w = Ease(Out, Sine, nowframe, 1, 0);
-	}
+	//状態移行(stateに合わせる)
+	(this->*stateTable[static_cast<size_t>(nowstate_)])();
 
-
-	conversationwindow->SetPosition(window_pos);
-	conversationwindow->SetSize(window_size);
-	blackwindow->SetColor(black_color);
-	girl->SetColor(girl_color);
-	ui->Update();
 	//各クラス更新
 	backobj->Update();
-	if (nowstate != CONVERSATION) {
+	if (static_cast<int>(nowstate_) % 2 == 1) {
+		ui->Update();
 		Player::GetInstance()->Update();
 		enemymanager->Update();
 		loadobj->FirstUpdate();
@@ -125,7 +143,7 @@ void TutorialSceneActor::Draw(DirectXCommon* dxCommon) {
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
 		ImGuiDraw(dxCommon);
-		if (nowstate == CONVERSATION) {
+		if (static_cast<int>(nowstate_) % 2 == 1) {
 			font_->Draw(dxCommon);
 		}
 		postEffect->ImGuiDraw();
@@ -137,7 +155,7 @@ void TutorialSceneActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-		if (nowstate == CONVERSATION) {
+		if (static_cast<int>(nowstate_) % 2 == 1) {
 			font_->Draw(dxCommon);
 		}
 		dxCommon->PostDraw();
@@ -162,18 +180,21 @@ void TutorialSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 	//パーティクル描画
 	ParticleEmitter::GetInstance()->FlontDrawAll();
 	//完全に前に書くスプライト
-	IKESprite::PreDraw();
-	//blackwindow->Draw();
-	conversationwindow->Draw();
-	girl->Draw();
-
-	IKESprite::PostDraw();
-	ui->Draw();
+	if (static_cast<int>(nowstate_) % 2 == 0) {
+		IKESprite::PreDraw();
+		blackwindow->Draw();
+		conversationwindow->Draw();
+		girl->Draw();
+		IKESprite::PostDraw();
+	}
+	if (static_cast<int>(nowstate_) % 2 == 1) {
+		ui->Draw();
+	}
 }
 //IMGuiの描画
 void TutorialSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	Player::GetInstance()->ImGuiDraw();
-	loadobj->ImGuiDraw();
+	//Player::GetInstance()->ImGuiDraw();
+	//loadobj->ImGuiDraw();
 	//enemymanager->ImGuiDraw();
 	//camerawork->ImGuiDraw();
 }
