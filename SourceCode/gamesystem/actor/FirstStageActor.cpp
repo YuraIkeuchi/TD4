@@ -21,7 +21,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	ParticleEmitter::GetInstance()->AllDelete();
 	
 	font_ = make_unique<Font>();
-	font_->Initialize(dxCommon,{1.f,1.f,0.f,1.f},{300.f,360.f});
+	font_->LoadFont(dxCommon);
 
 	//各クラス
 	Player::GetInstance()->InitState({ 0.0f,0.0f,0.0f });
@@ -128,6 +128,7 @@ void FirstStageActor::Draw(DirectXCommon* dxCommon) {
 		ImGuiDraw(dxCommon);
 		if (nowstate == CONVERSATION) {
 			font_->Draw(dxCommon);
+			Font::PostDraw(dxCommon);
 		}
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
@@ -140,6 +141,7 @@ void FirstStageActor::Draw(DirectXCommon* dxCommon) {
 		FrontDraw(dxCommon);
 		if (nowstate == CONVERSATION) {
 			font_->Draw(dxCommon);
+			Font::PostDraw(dxCommon);
 		}
 		dxCommon->PostDraw();
 	}
