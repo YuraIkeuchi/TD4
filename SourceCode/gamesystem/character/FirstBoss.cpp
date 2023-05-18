@@ -652,38 +652,15 @@ void FirstBoss::NoBattleMove()
 
 void FirstBoss::NormalAttak::ColPlayer(XMFLOAT3& Pos)
 {
-	if (HitF)
+	//ラッシュ中判定あり
+	if (Collision::CircleCollision(Pos.x, Pos.z, 5.f, Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z, 1.f) &&
+		(Player::GetInstance()->GetDamageInterVal() == 0))
 	{
-		EaseT += 0.09f;
-	//	player->MoveStop(true);
-		Player::GetInstance()->SetPosition({Easing::EaseOut(EaseT,ColPos.x,ColPos.x + KnockVal),Player::GetInstance()->GetPosition().y, Easing::EaseOut(EaseT,ColPos.z,ColPos.z + KnockVal)});
-		if (EaseT>=1.f)
-		{
-			Player::GetInstance()->MoveStop(false);
-			HitF = false;
-		}
+		ColPos = Pos;
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Damage.wav", VolumManager::GetInstance()->GetSEVolum());
+		Player::GetInstance()->RecvDamage(1.0f);
+		Player::GetInstance()->PlayerHit(Pos);
 	}
-	else
-	{
-		RandKnock = rand() % 100;
-		if (RandKnock % 2 == 0)
-			KnockVal = 15.f;
-		else
-			KnockVal = -15.f;
-		EaseT = 0.f;
-		//ラッシュ中判定あり
-		if (RushMoveEaseT<1.f&&Collision::CircleCollision(Pos.x, Pos.z, 5.f, Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z, 1.f))
-		{
-			ColPos = Pos;
-			Player::GetInstance()->RecvDamage(1.0f);
-			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Damage.wav", VolumManager::GetInstance()->GetSEVolum());
-			HitF = true;
-		}
-	}
-
-	
-	Helper::GetInstance()->FloatClamp(EaseT, 0.f, 1.f);
-
 }
 
 void FirstBoss::ColPlayer_Def()

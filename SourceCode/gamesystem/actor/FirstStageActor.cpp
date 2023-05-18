@@ -116,14 +116,15 @@ void FirstStageActor::BackDraw(DirectXCommon* dxCommon) {
 	Player::GetInstance()->Draw(dxCommon);
 	loadobj->Draw(dxCommon);
 	backobj->Draw(dxCommon);
+	//パーティクル描画
+	ParticleEmitter::GetInstance()->FlontDrawAll();
 	enemymanager->Draw(dxCommon);
 	
 	IKEObject3d::PostDraw();
 }
 //ポストエフェクトがかからない
 void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
-	//パーティクル描画
-	ParticleEmitter::GetInstance()->FlontDrawAll();
+	
 	//完全に前に書くスプライト
 	IKESprite::PreDraw();
 	//blackwindow->Draw();

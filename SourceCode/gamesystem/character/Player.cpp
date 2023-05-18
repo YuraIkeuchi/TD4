@@ -138,7 +138,7 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 //ImGui
 void Player::ImGuiDraw() {
 	ImGui::Begin("Player");
-	ImGui::Text("%d", m_DamageInterVal);
+	ImGui::Text("HP:%f", m_HP);
 	ImGui::End();
 
 	HungerGauge::GetInstance()->ImGuiDraw();
