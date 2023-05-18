@@ -15,6 +15,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	BaseInitialize(dxCommon);
 	//オーディオ
 	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/BGM_boss.wav");
+	Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum());
 	//ポストエフェクト
 	PlayPostEffect = true;
 	//パーティクル全削除
