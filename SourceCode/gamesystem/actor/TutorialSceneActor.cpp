@@ -96,6 +96,8 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	
 	font_ = make_unique<Font>();
 	secondrow_= make_unique<Font>();
+	font_->LoadFont(dxCommon);
+	secondrow_->LoadFont(dxCommon);
 	font_->SetPosColor({ 1.f,1.f,1.f,1.f }, { 5.f,0.f });
 	secondrow_->SetPosColor({ 1.f,1.f,1.f,1.f }, { 5.f,-40.f });
 	//各クラス
@@ -161,6 +163,7 @@ void TutorialSceneActor::Draw(DirectXCommon* dxCommon) {
 		if (static_cast<int>(nowstate_) % 2 == 0) {
 			font_->Draw(dxCommon);
 			secondrow_->Draw(dxCommon);
+			Font::PostDraw(dxCommon);
 		}
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
@@ -174,6 +177,7 @@ void TutorialSceneActor::Draw(DirectXCommon* dxCommon) {
 		if (static_cast<int>(nowstate_) % 2 == 0) {
 			font_->Draw(dxCommon);
 			secondrow_->Draw(dxCommon);
+			Font::PostDraw(dxCommon);
 		}
 		dxCommon->PostDraw();
 	}
