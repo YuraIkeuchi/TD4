@@ -52,6 +52,9 @@ private:
 	void BirthWave();//衝撃波の生成
 	//動きの初期化
 	void MoveInit(const std::string& HighState);
+
+	//テクスチャの更新
+	void MarkUpdate();
 public:
 
 private:
@@ -61,12 +64,9 @@ private:
 	bool m_Buttle = false;
 	//イージング
 	float m_Frame = {};
-	//Y方向に加わる力
-	float m_AddPowerY = {};
 	//前座標
 	XMFLOAT3 m_OldPos = {};
-	//インターバル時の座標
-	float m_AfterPower = 0.0f;
+	//X方向の回転
 	float m_AfterRotX = 180.0f;
 
 	//追従関係に使う
@@ -130,8 +130,13 @@ private:
 		PRESS_SET,
 		PRESS_ATTACK,
 		PRESS_SHAKE,
+		PRESS_RETURN,
 		PRESS_END,
 	};
 
 	int m_PressType;
+
+private:
+	unique_ptr<IKETexture> mark;
+	XMFLOAT4 m_MarkColor = { 1.0f,1.0f,1.0f,0.0f };
 };

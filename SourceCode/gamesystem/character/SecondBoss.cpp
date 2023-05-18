@@ -1,5 +1,6 @@
 ﻿#include "SecondBoss.h"
 #include "ModelManager.h"
+#include "ImageManager.h"
 #include "Helper.h"
 #include "Player.h"
 #include "VariableCommon.h"
@@ -14,6 +15,12 @@ SecondBoss::SecondBoss() {
 	m_Object->Initialize();
 	m_Object->SetModel(m_Model);
 	shake = make_unique< Shake>();
+
+	mark.reset(IKETexture::Create(ImageManager::MARK, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 }));
+	mark->TextureCreate();
+	mark->SetRotation({ 90.0f,0.0f,0.0f });
+	mark->SetScale({ 3.5f,3.5f,3.5f });
+	mark->SetColor(m_MarkColor);
 }
 //初期化
 bool SecondBoss::Initialize() {
@@ -23,7 +30,6 @@ bool SecondBoss::Initialize() {
 	m_Scale = { 4.0f,4.0f,4.0f };
 	m_OBBScale = { 6.0f,6.0f,6.0f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
-	m_AddPowerY = 5.0f;
 	m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "pos")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp2")));
 	_charaState = CharaState::STATE_ATTACK;
@@ -91,7 +97,10 @@ void SecondBoss::Action() {
 		}
 	}
 
+	//当たり判定
 	Collide();
+	//テキスチャ
+	MarkUpdate();
 }
 //ポーズ
 void SecondBoss::Pause() {
@@ -107,6 +116,10 @@ void SecondBoss::EffecttexDraw(DirectXCommon* dxCommon)
 			wave->Draw(dxCommon);
 		}
 	}
+
+	IKETexture::PreDraw2(dxCommon, AlphaBlendType);
+	mark->Draw();
+	IKETexture::PostDraw();
 }
 //ダメージ時のリアクション
 void SecondBoss::DamAction()
@@ -116,8 +129,7 @@ void SecondBoss::DamAction()
 //ImGui
 void SecondBoss::ImGui_Origin() {
 	ImGui::Begin("Second");
-	ImGui::Text("Timer:%d", m_StopTimer);
-	ImGui::Text("RotX:%f", m_Rotation.x);
+	ImGui::Text("State:%d", m_MoveState);
 	ImGui::End();
 
 	for (ShockWave* wave : shockwaves) {
@@ -142,14 +154,6 @@ void SecondBoss::Move() {
 		ChoiceMove();//選択
 	}
 	
-
-	//イージングで設定する
-	m_FollowSpeed = Ease(In, Cubic, m_Frame, m_FollowSpeed, m_AfterFollowSpeed);
-	m_AddPowerY = Ease(In, Cubic, m_Frame, m_AddPowerY, m_AfterPower);
-	m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, m_AfterRotX);
-	//座標取得
-	m_Position.y = m_AddPowerY + 5.0f;
-
 	//追従
 	Helper::GetInstance()->FollowMove(m_Position, Player::GetInstance()->GetPosition(), m_FollowSpeed);
 }
@@ -157,11 +161,11 @@ void SecondBoss::Move() {
 void SecondBoss::Attack() {
 	float l_AddFrame;
 	int l_TargetTimer;
-	int l_RandAct;
+	//int l_RandAct;
 	if (m_PressType == PRESS_START) {			//上に行く
 		l_AddFrame = 0.01f;
 		l_TargetTimer = 80;
-		m_AfterPos = { m_Position.x,40.0f,m_Position.z };	//真上に飛ぶ
+		m_AfterPos = { m_Position.x,60.0f,m_Position.z };	//真上に飛ぶ
 		if (m_Frame < m_FrameMax) {
 			m_Frame += 0.01f;
 		}
@@ -186,14 +190,14 @@ void SecondBoss::Attack() {
 	else if (m_PressType == PRESS_SET) {		//一定時間上で待機
 		l_TargetTimer = 100;
 		
-		if (Helper::GetInstance()->CheckMinINT(m_StopTimer, l_TargetTimer, 1)) {
+		if (Helper::GetInstance()->CheckMinINT(m_StopTimer, l_TargetTimer, 1)) {		//次の行動
 			m_StopTimer = 0;
 			m_PressType = PRESS_ATTACK;
 			m_AfterRotX = m_Rotation.x + 720.0f;
 		}
 	}
 	else if (m_PressType == PRESS_ATTACK) {			//落下してくる
-		l_AddFrame = 0.1f;
+		l_AddFrame = 0.05f;
 		l_TargetTimer = 20;
 		m_AfterPos = { m_Position.x,5.0f,m_Position.z };
 		if (m_Frame < m_FrameMax) {
@@ -219,35 +223,52 @@ void SecondBoss::Attack() {
 		m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, m_AfterRotX);
 	}
 	else if (m_PressType == PRESS_SHAKE) {			//シェイク
-		l_TargetTimer = 50;
-		shake->ShakePos(m_ShakePos.x, 5, -5, l_TargetTimer, 10);
-		shake->ShakePos(m_ShakePos.z, 5, -5, l_TargetTimer, 10);
-		if (!shake->GetShakeStart()) {
-			m_Rotation.x = m_Rotation.x - 720.0f;
-			m_AfterRotX = m_Rotation.x;
-			m_ShakePos = { 0.0f,0.0f,0.0f };
-			m_PressType = PRESS_END;
-			BirthStamp("Anger");
-		}
-
+		l_TargetTimer = 250;
+		int ShakeTimer = 50;
+		//50フレーム分シェイクする
+		m_StopTimer++;
+		shake->ShakePos(m_ShakePos.x, 5, -5, ShakeTimer, 10);
+		shake->ShakePos(m_ShakePos.z, 5, -5, ShakeTimer, 10);
 		m_Position.x += m_ShakePos.x;
 		m_Position.z += m_ShakePos.z;
+		//シェイクを止める
+		if (!shake->GetShakeStart()) {
+			m_ShakePos = { 0.0f,0.0f,0.0f };
+			//スタンプを押す
+			if (m_StopTimer == 51) {
+				BirthStamp("Anger");
+			}
+		}
+		
+		//次の行動
+		if (m_StopTimer == l_TargetTimer) {
+			m_Rotation.x = m_Rotation.x - 720.0f;
+			m_AfterRotX = m_Rotation.x;
+			m_PressType = PRESS_RETURN;
+			m_Frame = 0.0f;
+		}
+	
 	}
-	else {
-		//乱数指定
-		mt19937 mt{ std::random_device{}() };
-		uniform_int_distribution<int> l_RandomMove(0, 2);
-
-		l_RandAct = int(l_RandomMove(mt));
-
-		if (l_RandAct == 0) {
-			_charaState = STATE_ATTACK;
-			m_PressType = PRESS_START;
+	else if (m_PressType == PRESS_RETURN) {//上に戻る
+		l_AddFrame = 0.01f;
+		l_TargetTimer = 20;
+		m_AfterPos = { m_Position.x,25.0f,m_Position.z };
+		if (m_Frame < m_FrameMax) {
+			m_Frame += l_AddFrame;
 		}
 		else {
-			_charaState = STATE_MOVE;
-			m_MoveState = MOVE_CHOICE;
+			if (Helper::GetInstance()->CheckMinINT(m_StopTimer, l_TargetTimer, 1)) {
+				m_StopTimer = 0;
+				m_PressType = PRESS_END;
+				m_Frame = 0.0f;
+			}
 		}
+
+		m_Position.y = Ease(In, Cubic, m_Frame, m_Position.y, m_AfterPos.y);
+	}
+	else {
+		_charaState = STATE_MOVE;
+		m_MoveState = MOVE_CHOICE;
 	}
 
 }
@@ -296,7 +317,7 @@ void SecondBoss::StampImGui(std::vector<InterStamp*> stamps) {
 //交互のスタンプ
 void SecondBoss::AlterMove() {
 
-	float l_AddFrame = 0.025f;
+	float l_AddFrame = 0.03f;
 	const int l_TargetStopTimer = 50;
 
 	if (m_Frame < m_FrameMax) {
@@ -330,10 +351,15 @@ void SecondBoss::AlterMove() {
 	if (m_MoveCount == 3) {
 		m_MoveState = MOVE_CHOICE;
 	}
+
+	//イージングで設定する
+	m_FollowSpeed = Ease(In, Cubic, m_Frame, m_FollowSpeed, m_AfterFollowSpeed);
+	m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, m_AfterRotX);
+	m_Position.y = Ease(In, Cubic, m_Frame, m_Position.y, m_AfterPos.y);
 }
 //怒りの動き
 void SecondBoss::AngerMove() {
-	float l_AddFrame = 0.05f;
+	float l_AddFrame = 0.03f;
 	const int l_TargetStopTimer = 10;
 	if (m_Frame < m_FrameMax) {
 		m_Frame += l_AddFrame;
@@ -358,10 +384,15 @@ void SecondBoss::AngerMove() {
 	if (m_MoveCount == 3) {
 		m_MoveState = MOVE_CHOICE;
 	}
+
+	//イージングで設定する
+	m_FollowSpeed = Ease(In, Cubic, m_Frame, m_FollowSpeed, m_AfterFollowSpeed);
+	m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, m_AfterRotX);
+	m_Position.y = Ease(In, Cubic, m_Frame, m_Position.y, m_AfterPos.y);
 }
 //喜びの動き
 void SecondBoss::JoyMove() {
-	float l_AddFrame = 0.05f;
+	float l_AddFrame = 0.03f;
 	const int l_TargetStopTimer = 10;
 	if (m_Frame < m_FrameMax) {
 		m_Frame += l_AddFrame;
@@ -387,20 +418,38 @@ void SecondBoss::JoyMove() {
 	if (m_MoveCount == 3) {
 		m_MoveState = MOVE_CHOICE;
 	}
+
+	//イージングで設定する
+	m_FollowSpeed = Ease(In, Cubic, m_Frame, m_FollowSpeed, m_AfterFollowSpeed);
+	m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, m_AfterRotX);
+	m_Position.y = Ease(In, Cubic, m_Frame, m_Position.y, m_AfterPos.y);
 }
 //動きの選択
 void SecondBoss::ChoiceMove() {
+	int l_TargetTime = 50;
 	//乱数指定
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> l_RandomMove(0, 5);
 
-	m_MoveState = int(l_RandomMove(mt));
-	m_MoveCount = 0;
-	if (m_MoveState <= 2) {
-		_charaState = STATE_MOVE;
-	}
-	else {
-		_charaState = STATE_ATTACK;
+	m_StopTimer++;
+	if (m_StopTimer > l_TargetTime) {
+		m_Frame = 0.0f;
+		m_StopTimer = 0;
+
+		m_MoveState = int(l_RandomMove(mt));
+		//ムーブステートによって行動が変わる
+		if (m_MoveState <= 2) {
+			m_MoveCount = 0;
+			_InterValState = UpState;
+			_charaState = STATE_MOVE;
+			m_MoveState = MOVE_ALTER;
+			m_FollowSpeed = 1.0f;
+			m_AfterPos.y = 25.0f;
+		}
+		else {
+			_charaState = STATE_ATTACK;
+			m_PressType = PRESS_START;
+		}
 	}
 }
 //移動関係の初期化
@@ -408,11 +457,11 @@ void SecondBoss::MoveInit(const std::string& HighState) {
 	if (HighState == "UPSTATE") {
 		_InterValState = DownState;
 		m_Frame = 0.0f;
-		m_AfterPower = 0.0f;
+		m_AfterPos.y = 5.0f;
 	}
 	else if (HighState == "DOWNSTATE") {
 		_InterValState = UpState;
-		m_AfterPower = 20.0f;
+		m_AfterPos.y = 25.0f;
 		m_FollowSpeed = 1.0f;
 		m_Frame = 0.0f;
 		m_StopTimer = 0;
@@ -459,4 +508,21 @@ void SecondBoss::BirthWave() {
 	newwave = new ShockWave();
 	newwave->Initialize({ m_Position.x,0.0f,m_Position.z });
 	shockwaves.push_back(newwave);
+}
+//テクスチャの更新
+void SecondBoss::MarkUpdate() {
+	mark->Update();
+	mark->SetPosition({ m_Position.x,0.0f,m_Position.z });
+	mark->SetColor(m_MarkColor);
+	if (_charaState == STATE_ATTACK) {
+		if (m_PressType == PRESS_SET) {
+			m_MarkColor.w = Ease(In, Cubic, 0.5f, m_MarkColor.w, 1.0f);
+		}
+		else {
+			m_MarkColor.w = Ease(In, Cubic, 0.5f, m_MarkColor.w, 0.0f);
+		}
+	}
+	else {
+		m_MarkColor.w = Ease(In, Cubic, 0.5f, m_MarkColor.w, 0.0f);
+	}
 }
