@@ -42,6 +42,7 @@ public:
 		IMPACT2,
 		ANGER,
 		JOY,
+		MARK,
 	
 	};
 	enum particleName

@@ -4,6 +4,7 @@
 #include "ImageManager.h"
 #include "ParticleEmitter.h"
 #include <random>
+
 AngerStamp::AngerStamp() {
 	
 }
