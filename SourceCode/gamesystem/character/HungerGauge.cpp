@@ -45,7 +45,7 @@ void HungerGauge::ImGuiDraw() {
 }
 
 float HungerGauge::GetPercentage() {
-	float temp= m_NowHunger / m_HungerMax;
+	float temp= m_NowHunger / 50.0f;
 	Helper::GetInstance()->FloatClamp(temp,0.0f,1.0f);
 	return temp;
 }
