@@ -64,6 +64,8 @@ private:
 	//クラス
 	Input* input = Input::GetInstance();
 
+	InterEnemy* firstEnemy = nullptr;
+
 	unique_ptr<EnemyManager> enemymanager;
 	unique_ptr<InterBoss> boss;
 	unique_ptr<UI>ui;
@@ -92,4 +94,8 @@ private:
 	wchar_t* ward;
 	int conversation = 0;
 	int old_conversation = 0;
+	int waitTimer = 0;
+private://便利関数
+	bool Clear(bool mission,int waitTimerMax);
+
 };

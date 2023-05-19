@@ -7,6 +7,7 @@
 #include "ParticleEmitter.h"
 #include "ImageManager.h"
 #include <algorithm>
+#include "HungerGauge.h"
 
 const XMVECTOR kWhite{ 1.f,1.f,1.f,1.f };
 const XMVECTOR kSkyBlue{ 0.f,1.f,1.f,1.f };
@@ -171,41 +172,116 @@ void TutorialSceneActor::TextTalkState() {
 
 void TutorialSceneActor::SpawnEnemyState() {
 	loadobj->TutorialUpdate();
-
-
-	if (input->TriggerKey(DIK_SPACE)) {
+	enemymanager->TutorialUpdate(0);
+	XMFLOAT3 plaPos = Player::GetInstance()->GetPosition();
+	XMFLOAT3 enePos = firstEnemy->GetPosition();
+	if (input->TriggerKey(DIK_SPACE)||
+		Clear(Collision::CircleCollision(plaPos.x, plaPos.z,20.0f, enePos.x, enePos.z,1.0f),0))
+	{
+		waitTimer = 0;
 		nowstate_ = state::TEXT_CATCHFOLLOW;
 	}
 
 }
 void TutorialSceneActor::TextCatchFollowState() {
 	if (conversation == 0) {
-		firstrow_->SetColor(kSkyBlue);
-		secondrow_->SetColor(kSkyBlue);
-		ward = L"もう追って来たのか..!";
+		ward = L"てきがせっきんしました。";
 		firstrow_->SetString(ward);
-
+		secondrow_->SetString(L"なかまにしましょう。");
 		if (input->TriggerKey(DIK_RIGHT)) {
 			conversation = 1;
 		}
+		loadobj->TutorialUpdate();
 	}
 
-	if (old_conversation < conversation) {
-		firstrow_->StringReset();
-		secondrow_->StringReset();
-		thardrow_->StringReset();
-		old_conversation = conversation;
+	if (input->TriggerKey(DIK_SPACE)) {
+		nowstate_ = state::CATCHFOLLOW;
+	}
+
+}
+void TutorialSceneActor::CatchFollowState() {
+	loadobj->TutorialUpdate();
+	enemymanager->TutorialUpdate(0);
+
+	if (Clear(HungerGauge::GetInstance()->GetCatchCount()>=1.0f,50)) {
+		waitTimer = 0;
+		nowstate_ = state::TEXT_SHOT;
+
+	}
+
+}
+void TutorialSceneActor::TextShotState() {
+	ward = L"なかまができました。";
+	firstrow_->SetString(ward);
+	secondrow_->SetString(L"たまをうってたおしてください");
+
+	if (input->TriggerKey(DIK_SPACE)) {
+		nowstate_ = state::SHOT;
+	}
+
+
+}
+void TutorialSceneActor::ShotState() {
+	loadobj->TutorialUpdate();
+	enemymanager->TutorialUpdate(0);
+
+	if (input->TriggerKey(DIK_SPACE)||
+		Clear(!firstEnemy->GetisAlive(),45)) {
+		waitTimer = 0;
+		nowstate_ = state::TEXT_CATCHSEACH;
 	}
 }
-void TutorialSceneActor::CatchFollowState() {}
-void TutorialSceneActor::TextShotState() {}
-void TutorialSceneActor::ShotState() {}
-void TutorialSceneActor::TextCatchSeachState() {}
-void TutorialSceneActor::CatchSeachState() {}
-void TutorialSceneActor::TextClearState() {}
-void TutorialSceneActor::SpawnAllEnemyState() {}
+void TutorialSceneActor::TextCatchSeachState() {
+	ward = L"たおすことにせいこうしました。";
+	firstrow_->SetString(ward);
+	secondrow_->SetString(L"たんさくがたのかくとくしてください。");
+
+	if (input->TriggerKey(DIK_SPACE)) {
+		HungerGauge::GetInstance()->ResetFirstCarry();
+		nowstate_ = state::CATCHSEACH;
+	}
+}
+void TutorialSceneActor::CatchSeachState() {
+	loadobj->TutorialUpdate();
+	enemymanager->TutorialUpdate(0);
+
+
+	if (input->TriggerKey(DIK_SPACE) || 
+		Clear(HungerGauge::GetInstance()->GetFirstCarry(),30)) {
+		waitTimer = 0;
+		nowstate_ = state::TEXT_CLEAR;
+	}
+
+
+}
+void TutorialSceneActor::TextClearState() {
+	ward = L"ながれをかんぜんにりかいしました";
+	firstrow_->SetString(ward);
+	secondrow_->SetString(L"たくさんてきがでてきました。");
+
+	if (input->TriggerKey(DIK_SPACE)) {
+		nowstate_ = state::SPAWNALLENEMY;
+	}
+}
+void TutorialSceneActor::SpawnAllEnemyState() {
+	loadobj->TutorialUpdate();
+	enemymanager->TutorialUpdate(1);
+
+}
 void TutorialSceneActor::TextLastState() {}
+
 void TutorialSceneActor::MainTutorialState() {}
+
+
+bool TutorialSceneActor::Clear(bool mission, int waitTimerMax) {
+	if (!mission) { return false; }
+	waitTimer++;
+	if (waitTimer >= waitTimerMax) {
+		return true;
+	} else {
+		return false;
+	}
+}
 void TutorialSceneActor::CompleteState() {}
 
 //初期化
@@ -219,7 +295,13 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	PlayPostEffect = true;
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
-
+	//各クラス
+	Player::GetInstance()->InitState({ 0.0f,0.0f,0.0f });
+	camerawork->Update(camera);
+	ui = std::make_unique<UI>();
+	ui->Initialize();
+	enemymanager = std::make_unique<EnemyManager>("TUTORIAL");
+	firstEnemy = enemymanager->GetEnemy(0);
 	firstrow_ = make_unique<Font>();
 	secondrow_= make_unique<Font>();
 	thardrow_ = make_unique<Font>();
@@ -232,13 +314,6 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	firstrow_->SetPos(kFirstRowPos);
 	secondrow_->SetPos(kSecondRowPos);
 	thardrow_->SetPos(kThardRowPos);
-
-	//各クラス
-	Player::GetInstance()->InitState({ 0.0f,0.0f,0.0f });
-	camerawork->Update(camera);
-	ui = std::make_unique<UI>();
-	ui->Initialize();
-
 	conversationwindow = IKESprite::Create(ImageManager::WINDOW, window_pos);
 	conversationwindow->SetAnchorPoint({ 0.5f,0.5f });
 	conversationwindow->SetSize(window_size);
@@ -252,9 +327,6 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	megahon->SetColor(sutopon_color);
 	megahon->SetAnchorPoint({ 0.5f,0.5f });
 	megahon->SetSize({ 250.f,250.f });
-
-	//enemymanager = std::make_unique<EnemyManager>("FIRSTSTAGE");
-
 	backobj = std::make_unique<BackObj>();
 	backobj->Initialize();
 
@@ -334,7 +406,7 @@ void TutorialSceneActor::BackDraw(DirectXCommon* dxCommon) {
 		loadobj->Draw(dxCommon);
 	}
 	backobj->Draw(dxCommon);
-	//enemymanager->Draw(dxCommon);
+	enemymanager->TutorialDraw(dxCommon);
 
 	IKEObject3d::PostDraw();
 }

@@ -46,7 +46,7 @@ void InterEnemy::DeathAction()
 {
 	if (isAlive)return;
 
-	m_Color.w -= 0.01f;
+	m_Color.w -= 0.033f;
 
 	Helper::GetInstance()->FloatClamp(m_Color.w, 0.f, 1.f);
 }
