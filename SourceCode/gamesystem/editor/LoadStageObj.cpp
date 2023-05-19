@@ -63,6 +63,10 @@ void LoadStageObj::Initialize()
 {
 	//Load();
 }
+void LoadStageObj::TutorialUpdate() {
+
+	CommonUpdate();
+}
 //更新(ステージ1)
 void LoadStageObj::FirstUpdate()
 {

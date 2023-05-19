@@ -29,7 +29,6 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	camerawork->Update(camera);
 	ui = std::make_unique<UI>();
 	ui->Initialize();
-
 	conversationwindow = IKESprite::Create(ImageManager::WINDOW, window_pos);
 	conversationwindow->SetAnchorPoint({ 0.5f,0.5f });
 	conversationwindow->SetSize(window_size);
@@ -40,6 +39,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	girl->SetColor(girl_color);
 
 	enemymanager = std::make_unique<EnemyManager>("FIRSTSTAGE");
+	ui->SetBoss(enemymanager->GetBoss());
 
 	backobj = std::make_unique<BackObj>();
 	backobj->Initialize();

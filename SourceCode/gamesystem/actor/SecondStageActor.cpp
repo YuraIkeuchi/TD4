@@ -44,7 +44,7 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 //XV
 void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
-
+	ui->Update();
 	if (enemymanager->BossDestroy()) {
 		SceneManager::GetInstance()->ChangeScene("TITLE");
 	}
@@ -153,7 +153,7 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	IKESprite::PreDraw();
 	blackwindow->Draw();
 	conversationwindow->Draw();
-	//ui->Draw();
+	ui->Draw();
 	IKESprite::PostDraw();
 }
 //IMGui‚Ì•`‰æ

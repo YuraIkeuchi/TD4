@@ -3,12 +3,14 @@
 #include<memory>
 #include<DirectXMath.h>
 #include <array>
+#include"InterBoss.h"
+
 using namespace DirectX;
 class UI {
 public:
 	UI() {};
 	~UI();
-
+	void SetBoss(InterBoss* boss) { this->boss = boss; }
 private:
 	//‰¼ƒtƒHƒ“ƒg
 	struct SpriteData {
@@ -28,9 +30,11 @@ private:
 		HeartThree,
 		HeartFour,
 		HeartFive,
+		UnderStatusGaugeMax,
 		UnderStatusGauge,
 		StatusGauge,
-		TopStatusGauge,
+		UnderBossGauge,
+		BossGauge,
 		UiMax
 	};
 
@@ -46,9 +50,9 @@ private:
 	};
 
 
-	XMFLOAT2 gaugePos = { 440,620.f};
-	XMFLOAT2 gaugePos_ = { 450,660.f };
-	XMFLOAT2 gaugeSize = { 400.f,80.f };
+	XMFLOAT2 gaugePos_ = { 340,665.f };
+	XMFLOAT2 gaugeSize_ = { 600.f,50.f };
+	XMFLOAT2 gaugeSize__ = { 600.f,40.f };
 
 
 	std::vector<SpriteData>TexList;
@@ -62,6 +66,6 @@ public:
 private:
 	//
 	SpriteData CreateUi(UINT texNumber, XMFLOAT2 pos, XMFLOAT2 size, XMFLOAT4 color);
-
+	InterBoss* boss = nullptr;
 };
 

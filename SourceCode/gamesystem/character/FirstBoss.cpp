@@ -22,6 +22,7 @@ bool FirstBoss::Initialize() {
 	RTime = 1;
 	m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "pos")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp1")));
+	m_MaxHp = m_HP;
 	MoveCount = 1;
 	_phaseN = Phase_Normal::NON;
 	_cattack.Initialize();
@@ -672,9 +673,9 @@ void FirstBoss::ColPlayer_Def()
 }
 //ImGui
 void FirstBoss::ImGui_Origin() {
-	ImGui::Begin("First");
-	ImGui::Text("HP:%f", m_HP);
-	ImGui::End();
+	//ImGui::Begin("First");
+	//ImGui::Text("HP:%f", m_HP);
+	//ImGui::End();
 }
 
 
