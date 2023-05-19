@@ -3,6 +3,7 @@
 #include "JoyStamp.h"
 #include "AngerStamp.h"
 #include "ShockWave.h"
+#include "Predict.h"
 #include "Collision.h"
 #include "Shake.h"
 class SecondBoss :
@@ -23,10 +24,10 @@ private:
 
 	//基本移動
 	void Move();
-	//攻撃
-	void Attack();
-	//挙動選択
-
+	//攻撃(スタンプ攻撃)
+	void Stamp();
+	//ランダム攻撃
+	void RandomStamp();
 	//当たり判定
 	bool Collide();
 private:
@@ -50,6 +51,9 @@ private:
 	void JoyMove();//喜び
 	void ChoiceMove();//動きのチョイス
 	void BirthWave();//衝撃波の生成
+	void BirthPredict();//予測テクスチャの生成
+	//スタンプ攻撃の初期化
+	void StampInit(const int AttackNumber,const bool Random);
 	//動きの初期化
 	void MoveInit(const std::string& HighState);
 
@@ -102,13 +106,15 @@ private:
 	vector<InterStamp*> angerstamps;//怒りのスタンプ
 	vector<InterStamp*> joystamps;//喜びのスタンプ
 	vector<ShockWave*> shockwaves;//衝撃波
+	vector<Predict*> predicts;
 	unique_ptr<Shake> shake;//シェイク
 private:
 	//キャラの状態
 	enum CharaState
 	{
 		STATE_MOVE,
-		STATE_ATTACK,
+		STATE_STAMP,
+		STATE_RANDOM,
 	}_charaState;
 
 	//動き方の種類
@@ -135,6 +141,15 @@ private:
 	};
 
 	int m_PressType;
+	//ランダム攻撃
+	enum RandomType {
+		RANDOM_START,
+		RANDOM_SET,
+		RANDOM_ATTACK,
+		RANDOM_END,
+	};
+
+	int m_RandomType;
 
 private:
 	unique_ptr<IKETexture> mark;

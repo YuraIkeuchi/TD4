@@ -14,11 +14,15 @@ private:
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
-	void ShakePos(float& pos, const int ShakeMax, const int ShakeMin, const int TargetTimer,const int Division);
+	void ShakePos(float& pos, const int ShakeMax, const int ShakeMin, const int TargetTimer, const int Division);
+	void ShakePos(float& pos, const int ShakeMax, const int ShakeMin, const int TargetTimer, const float Division);
 public:
 	//gettersetter
 	bool GetShakeStart() { return  m_ShakeStart; }
 	void SetShakeStart(bool ShakeStart) { this->m_ShakeStart = ShakeStart; }
+
+	int GetShakeTimer() { return m_ShakeTimer; }
+	void SetShakeTimer(int time) { m_ShakeTimer = time; }
 private:
 	int m_ShakeTimer = 0;
 	bool m_ShakeStart = false;

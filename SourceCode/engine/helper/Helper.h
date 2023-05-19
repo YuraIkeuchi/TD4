@@ -70,6 +70,11 @@ public:
 	//XMFLOATをXMVECTORに変換する
 	XMFLOAT3 ChangeVECTOR(const XMVECTOR& pos);
 	void ChangeViewPort(XMMATRIX& matviewport, const XMVECTOR& offset);
+
+	//配列の中身が全部trueか
+	bool All_Of(bool* flag, int size);
+
+	bool All_Of_float(float *list,int size,float standVal);
 private:
 
 	//カメラ

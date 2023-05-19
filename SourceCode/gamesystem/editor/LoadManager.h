@@ -19,6 +19,9 @@ public:
 	/*初期化*/
 	virtual void Initialize() = 0;
 
+	/*チュートリアルのステージ更新*/
+	virtual void TutorialUpdate() {};
+
 	/*最初のステージ更新*/
 	virtual void FirstUpdate() = 0;
 

@@ -10,5 +10,7 @@ private:
 	void ImGui_Origin() override;//ImGui
 	void Origin_Draw(DirectXCommon* dxCommon) override;//
 
-	void BirthParticle();
+	void BirthParticle();	//パーティクルの生成
+
+	bool Collide();	//当たり判定
 };

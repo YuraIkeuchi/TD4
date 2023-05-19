@@ -1,13 +1,14 @@
-#pragma once
+ï»¿#pragma once
 #include "NormalEnemy.h"
 #include"FirstBoss.h"
 #include "SecondBoss.h"
 #include "Player.h"
 #include<array>
-//“G‚ÌŠÇ—ŒnƒNƒ‰ƒX
+#include<vector>
+//æ•µã®ç®¡ç†ç³»ã‚¯ãƒ©ã‚¹
 class EnemyManager {
 private:
-	// DirectX::‚ğÈ—ª
+	// DirectX::ã‚’çœç•¥
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
@@ -16,45 +17,31 @@ private:
 
 public:
 	EnemyManager(const std::string& sceneName);
-	//XV
+	//æ›´æ–°
 	void Update();
-	//•`‰æ
+	//æç”»
 	void Draw(DirectXCommon* dxCommon);
 	//ImGui
 	void ImGuiDraw();
 
 	void FinishCheck();
 public://getter setter
-	//static void SetPlayer(Player* player) { EnemyManager::player = player; }
-	//“GŠÖŒWget‚Åæ‚é
+	//æ•µé–¢ä¿‚getã§å–ã‚‹
 	InterBoss* GetBoss() { return enemy.get(); }
 	const XMFLOAT3& GetEnemyPosition() { return enemy.get()->GetPosition(); }
 	const bool GetEnemyCheck() { return enemy.get()->GetCheck(); }
 
-protected: //Ã“Iƒƒ“ƒo•Ï”
+protected: //é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
 	Player* player = Player::GetInstance();
 	unique_ptr<InterBoss> enemy;
-	std::array<unique_ptr<InterEnemy>, 3>bulletenemy;
 
-	std::array<unique_ptr<InterEnemy>, 8>bulletenemy_2;
-	std::array<float, 8>enemyAngle;
-
-	bool Shot_3;
-	bool Shot_8;
-
-	void ShotAttack_A();
-	void ShotAttack_B();
-
-
-	std::array<XMFLOAT3, 3> EPos;
-
-
+	static const int firstEnemyMax = 3;
+	std::vector<InterEnemy*>bulletenemy;
+	static const int tutorialEnemyMax = 5;
+	std::array<unique_ptr<InterEnemy>, tutorialEnemyMax>tuatorialenemy;
 
 public:
-	//3‚Â‚ÌƒIƒuƒWƒFƒNƒgˆÊ’uİ’è
-	inline void SetEpos_A(XMFLOAT3* pos) { for (auto i = 0; i < 3; i++)EPos[i] = pos[i]; }
-
-	//“G‚Ì€–Sˆ—
+	//æ•µã®æ­»äº¡å‡¦ç†
 	bool BossDestroy();
 };

@@ -71,8 +71,9 @@ void TutorialSceneActor::IntroState() {
 
 void TutorialSceneActor::MoveState() {
 	XMFLOAT3 pos=Player::GetInstance()->GetPosition();
-	if (!Collision::CircleCollision(0,0,45.f,pos.x,pos.z,1.f)|| input->TriggerKey(DIK_SPACE)) {
 
+	//メガホンobjが到着次第変更
+	if (!Collision::CircleCollision(0,0,45.f,pos.x,pos.z,1.f)) {
 		nowstate_ = state::TEXT_TALK;
 	}
 }
@@ -95,6 +96,9 @@ void TutorialSceneActor::TextTalkState() {
 		if (input->TriggerKey(DIK_RIGHT)) {
 			conversation = 1;
 		}
+
+		loadobj->TutorialUpdate();
+
 	}
 	else if (conversation == 1) {
 		girl_color = kHalfClear;
@@ -166,7 +170,7 @@ void TutorialSceneActor::TextTalkState() {
 }
 
 void TutorialSceneActor::SpawnEnemyState() {
-	loadobj->FirstUpdate();
+	loadobj->TutorialUpdate();
 
 
 	if (input->TriggerKey(DIK_SPACE)) {

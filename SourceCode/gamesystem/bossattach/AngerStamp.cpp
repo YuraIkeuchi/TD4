@@ -3,8 +3,9 @@
 #include "Easing.h"
 #include "ImageManager.h"
 #include "ParticleEmitter.h"
+#include "Collision.h"
 #include <random>
-
+#include "Player.h"
 AngerStamp::AngerStamp() {
 	
 }
@@ -23,7 +24,7 @@ bool AngerStamp::Initialize(const XMFLOAT3& pos) {
 //s“®
 void AngerStamp::Action() {
 	const int l_AliveTimer = 5;
-	const int l_LimitTimer = 200;
+	const int l_LimitTimer = 100;
 	const float l_AddFrame = 0.01f;
 	if (m_Birth) {
 		m_BirthTimer++;
@@ -54,13 +55,12 @@ void AngerStamp::Action() {
 			BirthParticle();
 		}
 	}
+
+	Collide();
 }
 
 //ImGui
 void AngerStamp::ImGui_Origin() {
-	ImGui::Begin("Anger");
-	ImGui::Text("Timer:%d", m_BirthTimer);
-	ImGui::End();
 }
 
 void AngerStamp::Origin_Draw(DirectXCommon* dxCommon) {
@@ -90,4 +90,20 @@ void AngerStamp::BirthParticle() {
 	int l_Life = int(l_Randlife(mt));
 
 	ParticleEmitter::GetInstance()->Explosion(l_Life, m_Position, l_AddSize, s_scale, e_scale, s_color, e_color);
+}
+//“–‚½‚è”»’è
+bool AngerStamp::Collide() {
+	XMFLOAT3 l_PlayerPos = Player::GetInstance()->GetPosition();
+
+	const float l_Radius = 2.0f;
+	if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, l_PlayerPos.x, l_PlayerPos.z, l_Radius) && (m_Color.w < 0.1f) && (Player::GetInstance()->GetDamageInterVal() == 0)) {
+		Player::GetInstance()->RecvDamage(1.0f);
+		Player::GetInstance()->PlayerHit(m_Position);
+		return true;
+	}
+	else {
+		return false;
+	}
+
+	return false;
 }

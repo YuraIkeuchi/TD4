@@ -43,7 +43,7 @@ void ShockWave::ImGuiDraw() {
 void ShockWave::WideWave() {
 	//イージング語の各ステータス
 	const float l_AfterScale = 3.5f;
-	const float l_AfterDamage = 9.0f;
+	const float l_AfterDamage = 8.0f;
 	const float l_AfterColor = 0.0f;
 	const float l_AddFrame = 0.01f;
 	if (m_Alive) {
@@ -65,9 +65,9 @@ void ShockWave::WideWave() {
 }
 
 bool ShockWave::CollideWave() {
+	if (Player::GetInstance()->GetDamageInterVal() != 0) { return false; }
 	if (Collision::CircleCollision(m_Position.x, m_Position.z, m_DamagRadius,
-		Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z,m_DamagRadius) && 
-		(Player::GetInstance()->GetDamageInterVal() == 0)) {
+		Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z,m_DamagRadius)) {
 		Player::GetInstance()->RecvDamage(1.0f);
 		Player::GetInstance()->PlayerHit(m_Position);
 		return true;
