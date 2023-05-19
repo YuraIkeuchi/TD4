@@ -12,8 +12,18 @@
 void (TutorialSceneActor::* TutorialSceneActor::stateTable[])() = {
 	&TutorialSceneActor::IntroState,//
 	&TutorialSceneActor::MoveState,//
-	&TutorialSceneActor::ConversationCatchState,//
-	&TutorialSceneActor::CatchGhorstState,//
+	&TutorialSceneActor::TextTalkState,//
+	&TutorialSceneActor::SpawnEnemyState,//
+	&TutorialSceneActor::TextCatchFollowState,//
+	&TutorialSceneActor::CatchFollowState,//
+	&TutorialSceneActor::TextShotState,//
+	&TutorialSceneActor::ShotState,//
+	&TutorialSceneActor::TextCatchSeachState,//
+	&TutorialSceneActor::CatchSeachState,//
+	&TutorialSceneActor::TextClearState,//
+	&TutorialSceneActor::SpawnAllEnemyState,//
+	&TutorialSceneActor::TextLastState,//
+	&TutorialSceneActor::MainTutorialState,//
 	&TutorialSceneActor::CompleteState,//
 };
 
@@ -51,7 +61,7 @@ void TutorialSceneActor::MoveState() {
 	}
 }
 
-void TutorialSceneActor::ConversationCatchState() {
+void TutorialSceneActor::TextTalkState() {
 	if (conversation == 0) {
 		girlward = L"コントローラーのLBとRBで";
 		font_->SetString(girlward);
@@ -67,7 +77,7 @@ void TutorialSceneActor::ConversationCatchState() {
 	}
 }
 
-void TutorialSceneActor::CatchGhorstState() {
+void TutorialSceneActor::SpawnEnemyState() {
 	loadobj->FirstUpdate();
 
 
@@ -76,11 +86,17 @@ void TutorialSceneActor::CatchGhorstState() {
 	}
 
 }
-
-void TutorialSceneActor::CompleteState() {
-
-
-}
+void TutorialSceneActor::TextCatchFollowState() {}
+void TutorialSceneActor::CatchFollowState() {}
+void TutorialSceneActor::TextShotState() {}
+void TutorialSceneActor::ShotState() {}
+void TutorialSceneActor::TextCatchSeachState() {}
+void TutorialSceneActor::CatchSeachState() {}
+void TutorialSceneActor::TextClearState() {}
+void TutorialSceneActor::SpawnAllEnemyState() {}
+void TutorialSceneActor::TextLastState() {}
+void TutorialSceneActor::MainTutorialState() {}
+void TutorialSceneActor::CompleteState() {}
 
 //初期化
 void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
