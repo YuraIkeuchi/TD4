@@ -419,7 +419,11 @@ void Player::isOldPos()
 	m_Position = OldPos;
 }
 //プレイヤーのダメージ判定
-void Player::RecvDamage(float Damage) { m_HP -= Damage; }
+void Player::RecvDamage(float Damage) {
+	m_HP -= Damage;
+	m_DamageInterVal = 100;
+	m_Damage = true;
+}
 //弾の削除
 void Player::BulletDelete() {
 	ghostbullets.clear();
@@ -427,8 +431,6 @@ void Player::BulletDelete() {
 }
 //プレイヤーが敵にあたった瞬間の判定
 void Player::PlayerHit(const XMFLOAT3& pos) {
-	m_DamageInterVal = 100;
-	m_Damage = true;
 	XMFLOAT2 l_Distance;
 	l_Distance.x = m_Position.x - pos.x;
 	l_Distance.y = m_Position.z - pos.z;

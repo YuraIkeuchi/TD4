@@ -42,9 +42,6 @@ void JoyStamp::Action() {
 
 //ImGui
 void JoyStamp::ImGui_Origin() {
-	ImGui::Begin("Joy");
-	ImGui::Text("m_Color.w:%f", m_Color.w);
-	ImGui::End();
 }
 
 
