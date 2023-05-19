@@ -41,8 +41,8 @@ private:
 	XMFLOAT2(15.f,650.f),
 	XMFLOAT2(65.f,650.f),
 	XMFLOAT2(115.f,650.f),
-	XMFLOAT2(265.f,650.f),
-	XMFLOAT2(315.f,650.f)
+	XMFLOAT2(165.f,650.f),
+	XMFLOAT2(215.f,650.f)
 	};
 
 
