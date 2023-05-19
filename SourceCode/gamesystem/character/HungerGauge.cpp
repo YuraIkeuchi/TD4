@@ -55,3 +55,10 @@ void HungerGauge::AddNowHunger(float m_NowHunger) {
 	temp = min(m_NowHunger, m_HungerMax);
 	this->m_NowHunger = temp;
 }
+
+void HungerGauge::RecoveryNowHunger(float m_NowHunger) {
+	carriedFood = true;
+	float add = m_NowHunger;
+	Helper::GetInstance()->FloatClamp(add, 0.f, m_HungerMax);
+	SetNowHunger(add);
+}
