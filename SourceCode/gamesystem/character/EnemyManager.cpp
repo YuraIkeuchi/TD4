@@ -23,11 +23,12 @@ EnemyManager::EnemyManager(const std::string& sceneName) {
 		}
 	}
 	else if (sceneName == "TUTORIAL") {
-		for (auto i = 0; i < tuatorialenemy.size(); i++) {
-			tuatorialenemy[i].reset(new NormalEnemy());
-			tuatorialenemy[i]->Initialize();
-
+		for (auto i = 0; i < tutorialenemy.size(); i++) {
+			tutorialenemy[i].reset(new TutorialEnemy());
+			tutorialenemy[i]->Initialize();
 		}
+		//最初の敵のみ固定湧き
+		tutorialenemy[0]->SetPosition({ 0,5.0f ,50.0f });
 	}
 	else {
 		assert(0);
@@ -40,11 +41,25 @@ void EnemyManager::Update() {
 	enemy->isRespawn(bulletenemy);
 	enemy->SummonEnemyUpda(bulletenemy);
 }
+void EnemyManager::TutorialUpdate(int pattern) {
+	if (pattern==0) {
+		tutorialenemy[0]->Update();
+	} else {
+		for (auto i = 0; i < tutorialEnemyMax; i++) {
+			tutorialenemy[i]->Update();
+		}
+	}
+}
 //描画
 void EnemyManager::Draw(DirectXCommon* dxCommon) {
 	enemy->Draw(dxCommon);
 
 	enemy->SummonEnemyDraw(bulletenemy, dxCommon);
+}
+void EnemyManager::TutorialDraw(DirectXCommon* dxCommon) {
+	for (auto i = 0; i < tutorialEnemyMax; i++) {
+		tutorialenemy[i]->Draw(dxCommon);
+	}
 
 }
 //ImGui

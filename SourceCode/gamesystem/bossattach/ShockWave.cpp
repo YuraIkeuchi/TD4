@@ -65,9 +65,9 @@ void ShockWave::WideWave() {
 }
 
 bool ShockWave::CollideWave() {
+	if (Player::GetInstance()->GetDamageInterVal() != 0) { return false; }
 	if (Collision::CircleCollision(m_Position.x, m_Position.z, m_DamagRadius,
-		Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z,m_DamagRadius) && 
-		(Player::GetInstance()->GetDamageInterVal() == 0)) {
+		Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z,m_DamagRadius)) {
 		Player::GetInstance()->RecvDamage(1.0f);
 		Player::GetInstance()->PlayerHit(m_Position);
 		return true;

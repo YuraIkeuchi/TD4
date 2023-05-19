@@ -3,6 +3,7 @@
 #include "JoyStamp.h"
 #include "AngerStamp.h"
 #include "ShockWave.h"
+#include "Predict.h"
 #include "Collision.h"
 #include "Shake.h"
 class SecondBoss :
@@ -50,6 +51,9 @@ private:
 	void JoyMove();//喜び
 	void ChoiceMove();//動きのチョイス
 	void BirthWave();//衝撃波の生成
+	void BirthPredict();//予測テクスチャの生成
+	//スタンプ攻撃の初期化
+	void StampInit(const int AttackNumber,const bool Random);
 	//動きの初期化
 	void MoveInit(const std::string& HighState);
 
@@ -102,6 +106,7 @@ private:
 	vector<InterStamp*> angerstamps;//怒りのスタンプ
 	vector<InterStamp*> joystamps;//喜びのスタンプ
 	vector<ShockWave*> shockwaves;//衝撃波
+	vector<Predict*> predicts;
 	unique_ptr<Shake> shake;//シェイク
 private:
 	//キャラの状態

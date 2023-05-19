@@ -11,6 +11,7 @@
 /// タイトルシーン
 class TutorialSceneActor : public BaseActor {
 private:
+
 	enum class state {
 		INTORO = 0,
 		MOVE,
@@ -63,6 +64,8 @@ private:
 	//クラス
 	Input* input = Input::GetInstance();
 
+	InterEnemy* firstEnemy = nullptr;
+
 	unique_ptr<EnemyManager> enemymanager;
 	unique_ptr<InterBoss> boss;
 	unique_ptr<UI>ui;
@@ -71,20 +74,28 @@ private:
 	unique_ptr<IKESprite> conversationwindow;
 	unique_ptr<IKESprite> blackwindow;
 	unique_ptr<IKESprite> girl;
-	unique_ptr<Font> font_;
+	unique_ptr<IKESprite> megahon;
+	unique_ptr<Font> firstrow_;
 	unique_ptr<Font> secondrow_;
+	unique_ptr<Font> thardrow_;
+
 	//��W
 	XMFLOAT2 window_pos{ WinApp::window_width / 2.f,WinApp::window_height + 100 };
 	XMFLOAT2 window_size{ 0.f,0.f };
 
 	XMFLOAT4 black_color{ 1.f,1.f,1.f,0.f };
 	XMFLOAT4 girl_color{ 1.5f,1.5f,1.5f,0.f };
+	XMFLOAT4 sutopon_color{ 1.f,1.f,1.f,0.f };
 
 	float maxframe = 20.f;
 	float nowframe = 0.f;
 	float frame = 0.f;
 	bool test = false;
-	wchar_t* girlward;
 	wchar_t* ward;
 	int conversation = 0;
+	int old_conversation = 0;
+	int waitTimer = 0;
+private://便利関数
+	bool Clear(bool mission,int waitTimerMax);
+
 };

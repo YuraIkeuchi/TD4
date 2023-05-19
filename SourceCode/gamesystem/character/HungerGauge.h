@@ -15,10 +15,14 @@ public:
 	float GetNowHunger() { return   m_NowHunger; }
 	float GetHungerMax() { return   m_HungerMax; }
 	float GetCatchCount() { return   m_CatchCount; }
+	bool GetFirstCarry() { return   carriedFood; }
+	void ResetFirstCarry() { carriedFood = false; }
 
 	float GetPercentage();
 
 	void AddNowHunger(float m_NowHunger);
+
+	void RecoveryNowHunger(float m_NowHunger);
 
 	void SetNowHunger(float m_NowHunger) { this->m_NowHunger = m_NowHunger; }
 	void SetHungerMax(float m_HungerMax) { this->m_HungerMax = m_HungerMax; }
@@ -32,4 +36,5 @@ private:
 	float m_CatchCount = {};//ゴーストの数
 	float m_SubVelocity = 1.0f;//減る飢餓ゲージ(チャージ中のみ減る）
 	float m_SubHunger = 0.0f;//減る量
+	bool carriedFood = false;
 };

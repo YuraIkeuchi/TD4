@@ -253,6 +253,9 @@
     <Filter Include="SourceCords\gamesystem\character\Boss\Attach\ShockWave">
       <UniqueIdentifier>{77d10199-6335-4155-991e-4275039f7df2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SourceCords\gamesystem\character\Boss\Attach\Predict">
+      <UniqueIdentifier>{be52123a-913f-41f2-9e7a-bab117cec069}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\engine\2d\DebugText.cpp">
@@ -566,6 +569,12 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\bossattach\ShockWave.cpp">
       <Filter>SourceCords\gamesystem\character\Boss\Attach\ShockWave</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\bossattach\Predict.cpp">
+      <Filter>SourceCords\gamesystem\character\Boss\Attach\Predict</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\TutorialEnemy.cpp">
+      <Filter>SourceCords\gamesystem\character\Enemy\Various</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
