@@ -117,7 +117,7 @@ private:
 		Shake* shake;
 		//このやり方ひどくない？？
 		enum class Phase_Normal
-		{
+		{NON,
 			ROTPLAYER_0,
 			PHASE_ONE,
 			ROTPLAYER_1,
@@ -125,7 +125,7 @@ private:
 			ROTPLAYER_2,
 			PHASE_THREE,
 			ROTPLAYER_3,
-			NON,
+			
 			STIFF
 		}_phaseN = Phase_Normal::NON;
 	private:
@@ -142,6 +142,7 @@ private:
 		void SetNormalAttackF(bool f) { NormalAttackF = f; }
 		bool GetAttackF() { return NormalAttackF; }
 		void SetAngle(float val) { RePosAngle = val; }void Remove(XMFLOAT3& Pos, XMFLOAT3& Scl, bool Enf);
+		void SetRushpos(XMFLOAT3 pos) { RushOldPos = pos; }
 		inline void SetreposAngle() {
 			RotStartPos.x = Player::GetInstance()->GetPosition().x + sinf(RePosAngle * (3.14f / 180.0f)) * 10.0f;
 			RotStartPos.z = Player::GetInstance()->GetPosition().z + cosf(RePosAngle * (3.14f / 180.0f)) * 10.0f;

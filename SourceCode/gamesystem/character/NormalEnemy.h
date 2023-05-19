@@ -37,5 +37,7 @@ private:
 	bool Rush;
 	float s_scale = 0.0f;
 	int MoveTimer;
+
+	bool canRot;
 };
 

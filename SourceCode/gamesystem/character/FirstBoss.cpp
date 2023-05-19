@@ -95,14 +95,14 @@ void FirstBoss::Action() {
 		//タイマーカウンタ
 		if (noAction&& !Recv)ActionTimer++;
 
-		if (!SummonF && ActionTimer % 60 == 0) {
+		if (!_normal.GetAttackF()&&!SummonF && ActionTimer % 60 == 0) {
 			SummobnStop = true;
 			SummonF = true;
 
 		}
 
 		//通常攻撃
-		if (!_normal.GetAttackF() && ActionTimer % 135 == 0)
+		if (!SummobnStop&&!_normal.GetAttackF() && ActionTimer % 135 == 0)
 			_normal.SetNormalAttackF(true);
 		//ため攻撃
 		if (!_cattack.GetAttackF() && ActionTimer % 340 == 0)
@@ -255,6 +255,7 @@ void FirstBoss::Move()
 
 		m_Position.x = l_player.x + sinf(BossAngle * (PI / 180.0f)) * 20.0f;
 		m_Position.z = l_player.z + cosf(BossAngle * (PI / 180.0f)) * 20.0f;
+
 	}
 
 }

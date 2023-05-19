@@ -56,10 +56,11 @@ public:
 
 	bool GetisAlive() { return isAlive; }
 
-
+	float GEtAlpha() { return m_Color.w; }
 protected:
 	void ColPlayer();
 	void OnCollision();
+	void DeathAction();
 private:
 	
 };

@@ -91,7 +91,8 @@ private:
 protected:
 	//弾との当たり判定
 	void CollideBul(vector<InterBullet*>bullet);
-
+	void isRespawn(std::vector<InterEnemy*> enemy);
+	bool ResF;
 public:
 	bool Recv;
 	int NextActionInteval;

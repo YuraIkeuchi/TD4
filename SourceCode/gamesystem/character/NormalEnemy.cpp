@@ -118,7 +118,6 @@ void NormalEnemy::RushAction()
 	 // positionA - positionB;
 	//回転軸をプレイヤーの方に
 		//向きかえる
-	
 	if (ret)
 	{
 		MoveTimer = 0;
@@ -132,15 +131,19 @@ void NormalEnemy::RushAction()
 		RotY = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
 
 		//イージングカウンタ＋＋
-		t += 0.02f;
+		t += 0.03f;
 		//Rotation反映
 		//if (randMove > 50) {
+		if(canRot)
 		m_Rotation.y = Easing::EaseOut(t, old * 50.f + 180.f, RotY * 50.f+180.f);
-		if (t >= 1.f)ret = false;//	} else {
-				//m_Rotation.y = Easing::EaseOut(t, old * 60.f + 180.f, RotY * 60.f + 180.f - 360.f);
+		if (t >= 1.f) {
+			canRot = true; 
+			ret = false;//	} else {
+		}	//m_Rotation.y = Easing::EaseOut(t, old * 60.f + 180.f, RotY * 60.f + 180.f - 360.f);
 			//}
 	} else
 	{
+		
 		t = 0.f;
 		old = RotY;
 		MoveTimer++;

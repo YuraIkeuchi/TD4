@@ -48,6 +48,18 @@ void InterBoss::SummonEnemyInit(InterEnemy* enemy)
 
 }
 
+void InterBoss::isRespawn(std::vector<InterEnemy*> enemy)
+{
+	if(ResF)
+	{
+		for(auto i=0;i<3;i++)
+		{
+			//enemy[i]->SetColor({})
+		}
+	}
+}
+
+
 void InterBoss::SummonEnemyUpda(std::vector<InterEnemy*> enemy)
 {
 
@@ -102,6 +114,14 @@ void InterBoss::EndSummon(std::vector<InterEnemy*> enemy)
 	else
 	{
 		NextActionInteval = 0;
+	}
+	bool tempList2[3];
+	for (auto i = 0; i < _countof(tempList2); i++)
+		tempList2[i] = !enemy[i]->GetisAlive()&&enemy[i]->GEtAlpha()<=0.f;
+
+	if(Helper::GetInstance()->All_Of(tempList2,_countof(tempList2)))
+	{
+		//SummonF = false;
 	}
 }
 
