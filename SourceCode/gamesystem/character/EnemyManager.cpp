@@ -2,8 +2,8 @@
 #include "Helper.h"
 #include "Input.h"
 EnemyManager::EnemyManager(const std::string& sceneName) {
-	
-	//�V�[���ɂ���ēǂݍ��ރ{�X���Ⴄ
+
+	//シーンによって読み込むボスが違う
 	if (sceneName == "FIRSTSTAGE") {
 		enemy.reset(new FirstBoss());
 		enemy->Initialize();
@@ -32,17 +32,17 @@ EnemyManager::EnemyManager(const std::string& sceneName) {
 	}
 
 }
-//�X�V
+//更新
 void EnemyManager::Update() {
 	enemy->Update();
+
 }
-//�`��
+//描画
 void EnemyManager::Draw(DirectXCommon* dxCommon) {
 	enemy->Draw(dxCommon);
-	for (auto i = 0; i < bulletenemy.size(); i++)
-	{
-		bulletenemy[i]->Draw(dxCommon);
-	}
+
+	enemy->SummonEnemyDraw(bulletenemy, dxCommon);
+
 }
 //ImGui
 void EnemyManager::ImGuiDraw() {
@@ -50,20 +50,18 @@ void EnemyManager::ImGuiDraw() {
 	enemy->ImGuiDraw();
 }
 
-
-//�G�̎��S���u
+//敵の死亡処置
 bool EnemyManager::BossDestroy() {
 	if (enemy->GetHP() <= 0.0f) {
 		return true;
-	}
-	else {
+	} else {
 		return false;
 	}
 
 	return false;
 }
 
-//�G�̃`�F�b�N�I��
+//敵のチェック終了
 void EnemyManager::FinishCheck() {
 	enemy->SetCheck(false);
 }

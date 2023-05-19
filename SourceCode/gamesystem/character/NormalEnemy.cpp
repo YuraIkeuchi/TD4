@@ -18,7 +18,7 @@ bool NormalEnemy::Initialize() {
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Position.y = 5.0f;
 	ret = true;
-	HP = 2;
+	HP = 1;
 	isAlive = true;
 	return true;
 }
@@ -27,6 +27,7 @@ void NormalEnemy::Action() {
 	float l_Vel = 0.15f;
 	//m_CircleSpeed += 1.0f;
 	m_Rotation.x = 90.f;
+
 	if (ShotF) {
 		ShotCount++;
 		Appearance();
@@ -43,7 +44,7 @@ void NormalEnemy::Action() {
 //描画
 void NormalEnemy::Draw(DirectXCommon* dxCommon) {
 
-	if (!isAlive)return;
+	if (m_Color.w <= 0.f)return;
 	IKEObject3d::PreDraw();
 	Obj_Draw();
 }
@@ -74,7 +75,7 @@ void NormalEnemy::Particle() {
 
 void NormalEnemy::Appearance()
 {
-	if (Rush)return;
+//	if (Rush)return;
 	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
 
 	//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
@@ -83,21 +84,21 @@ void NormalEnemy::Appearance()
 	//プレイヤーと敵のベクトルの長さ(差)を求める
 	SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
 
-	constexpr float AddScaling = 0.01f;
+	constexpr float AddScaling = 0.03f;
 
 	m_Scale.x += AddScaling;
 	m_Scale.y += AddScaling;
 	m_Scale.z += AddScaling;
 
-	Helper::GetInstance()->FloatClamp(m_Scale.x, 0.f, 1.f);
-	Helper::GetInstance()->FloatClamp(m_Scale.y, 0.f, 1.f);
-	Helper::GetInstance()->FloatClamp(m_Scale.z, 0.f, 1.f);
+	Helper::GetInstance()->FloatClamp(m_Scale.x, 0.f, 1.5f);
+	Helper::GetInstance()->FloatClamp(m_Scale.y, 0.f, 1.5f);
+	Helper::GetInstance()->FloatClamp(m_Scale.z, 0.f, 1.5f);
 
 	float RottoPlayer;
 	RottoPlayer = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
 	m_Rotation.y = RottoPlayer * 60.f + 180.f;
 
-	if (m_Scale.x >= 1.f || m_Scale.y >= 1.f || m_Scale.z >= 1.f)
+	if (m_Scale.x >= 1.5f || m_Scale.y >= 1.5f || m_Scale.z >= 1.5f)
 	{
 		Rush = true;
 	}
@@ -114,37 +115,39 @@ void NormalEnemy::RushAction()
 
 	Helper::GetInstance()->FloatClamp(s_scale, 0.f, 3.f);
 
-	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
-
-	//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
-	PositionA = { l_player.x,-l_player.y,l_player.z };
-	PositionB = { m_Position.x,m_Position.y,m_Position.z };
-	//プレイヤーと敵のベクトルの長さ(差)を求める
-	SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
+	 // positionA - positionB;
 	//回転軸をプレイヤーの方に
 		//向きかえる
 	if (ret)
 	{
+		MoveTimer = 0;
 
+		
+		XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
+		PositionA = { l_player.x,l_player.y,l_player.z };
+		PositionB = { m_Position.x,m_Position.y,m_Position.z };
+		//プレイヤーと敵のベクトルの長さ(差)を求める
+		SubVector = XMVectorSubtract(PositionB, PositionA);
 		RotY = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
 
 		//イージングカウンタ＋＋
-		t += 0.02f;
-
-		//向き変わったらフラグ着る
-		if (t >= 1.f)ret = false;
+		t += 0.03f;
 		//Rotation反映
-		if (randMove > 50) {
-			m_Rotation.y = Easing::EaseOut(t, old * 60.f + 180.f, RotY * 60.f + 180.f);
-		} else {
-			m_Rotation.y = Easing::EaseOut(t, old * 60.f + 180.f, RotY * 60.f + 180.f - 360.f);
-		}
+		//if (randMove > 50) {
+		if(canRot)
+		m_Rotation.y = Easing::EaseOut(t, old * 50.f + 180.f, RotY * 50.f+180.f);
+		if (t >= 1.f) {
+			canRot = true; 
+			ret = false;//	} else {
+		}	//m_Rotation.y = Easing::EaseOut(t, old * 60.f + 180.f, RotY * 60.f + 180.f - 360.f);
+			//}
 	} else
 	{
-
+		
 		t = 0.f;
 		old = RotY;
-		if (Collision::GetLength(l_player, m_Position) > 20.f) {
+		MoveTimer++;
+		if (MoveTimer>120) {
 			randMove = rand() % 100;
 			ret = true;
 		}
@@ -155,13 +158,17 @@ void NormalEnemy::RushAction()
 
 	move = XMVector3TransformNormal(move, matRot);
 
-	m_Position = {
-			m_Position.x + move.m128_f32[0] * 2.f,
-		m_Position.y,
-		m_Position.z + move.m128_f32[2] * 2.f
-	};
-
-
+	//向き変えてる最中は動き止める
+	bool stopMove = !(t > 0.01f);
+	if (stopMove) {
+		if (isAlive) {
+			m_Position = {
+					m_Position.x + move.m128_f32[0] * 4.f,
+				m_Position.y,
+				m_Position.z + move.m128_f32[2] * 4.f
+			};
+		}
+	}
 	Helper::GetInstance()->FloatClamp(t, 0.f, 1.f);
 
 }

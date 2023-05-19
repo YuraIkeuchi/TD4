@@ -4,10 +4,10 @@
 #include "SecondBoss.h"
 #include "Player.h"
 #include<array>
-//“G‚ÌŠÇ—ŒnƒNƒ‰ƒX
+//æ•µã®ç®¡ç†ç³»ã‚¯ãƒ©ã‚¹
 class EnemyManager {
 private:
-	// DirectX::‚ğÈ—ª
+	// DirectX::ã‚’çœç•¥
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
@@ -16,30 +16,31 @@ private:
 
 public:
 	EnemyManager(const std::string& sceneName);
-	//XV
+	//æ›´æ–°
 	void Update();
-	//•`‰æ
+	//æç”»
 	void Draw(DirectXCommon* dxCommon);
 	//ImGui
 	void ImGuiDraw();
 
 	void FinishCheck();
 public://getter setter
-	//“GŠÖŒWget‚Åæ‚é
+	//æ•µé–¢ä¿‚getã§å–ã‚‹
 	InterBoss* GetBoss() { return enemy.get(); }
 	const XMFLOAT3& GetEnemyPosition() { return enemy.get()->GetPosition(); }
 	const bool GetEnemyCheck() { return enemy.get()->GetCheck(); }
 
-protected: //Ã“Iƒƒ“ƒo•Ï”
+protected: //é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°
 private:
 	Player* player = Player::GetInstance();
 	unique_ptr<InterBoss> enemy;
+
 	static const int firstEnemyMax = 3;
 	std::array<unique_ptr<InterEnemy>, firstEnemyMax>bulletenemy;
 	static const int tutorialEnemyMax = 5;
 	std::array<unique_ptr<InterEnemy>, tutorialEnemyMax>tuatorialenemy;
 
 public:
-	//“G‚Ì€–Sˆ—
+	//æ•µã®æ­»äº¡å‡¦ç†
 	bool BossDestroy();
 };
