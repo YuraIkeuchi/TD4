@@ -34,6 +34,7 @@ bool Player::Initialize()
 	m_TargetInterVal = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player.csv", "InterVal")));
 	m_TargetRigidityTime = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player.csv", "Rigidity")));
 
+	m_BoundPower = { 0.0f,0.0f };
 	//飢餓ゲージはプレイヤーで管理する
 	HungerGauge::GetInstance()->Initialize();
 
