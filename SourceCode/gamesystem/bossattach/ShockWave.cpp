@@ -43,7 +43,7 @@ void ShockWave::ImGuiDraw() {
 void ShockWave::WideWave() {
 	//イージング語の各ステータス
 	const float l_AfterScale = 3.5f;
-	const float l_AfterDamage = 9.0f;
+	const float l_AfterDamage = 8.0f;
 	const float l_AfterColor = 0.0f;
 	const float l_AddFrame = 0.01f;
 	if (m_Alive) {

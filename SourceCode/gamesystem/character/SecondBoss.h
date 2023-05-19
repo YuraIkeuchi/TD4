@@ -23,10 +23,10 @@ private:
 
 	//基本移動
 	void Move();
-	//攻撃
-	void Attack();
-	//挙動選択
-
+	//攻撃(スタンプ攻撃)
+	void Stamp();
+	//ランダム攻撃
+	void RandomStamp();
 	//当たり判定
 	bool Collide();
 private:
@@ -108,7 +108,8 @@ private:
 	enum CharaState
 	{
 		STATE_MOVE,
-		STATE_ATTACK,
+		STATE_STAMP,
+		STATE_RANDOM,
 	}_charaState;
 
 	//動き方の種類
@@ -135,6 +136,15 @@ private:
 	};
 
 	int m_PressType;
+	//ランダム攻撃
+	enum RandomType {
+		RANDOM_START,
+		RANDOM_SET,
+		RANDOM_ATTACK,
+		RANDOM_END,
+	};
+
+	int m_RandomType;
 
 private:
 	unique_ptr<IKETexture> mark;
