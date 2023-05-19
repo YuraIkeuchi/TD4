@@ -1,17 +1,18 @@
 ﻿#include "EnemyManager.h"
 #include "Helper.h"
 #include "Input.h"
+#define EnemySize 3
 EnemyManager::EnemyManager(const std::string& sceneName) {
 
 	//シーンによって読み込むボスが違う
 	if (sceneName == "FIRSTSTAGE") {
 		enemy.reset(new FirstBoss());
 		enemy->Initialize();
+		bulletenemy.resize(EnemySize);
 		for (auto i = 0; i < bulletenemy.size(); i++) {
 			bulletenemy[i]=new NormalEnemy();
 			bulletenemy[i]->Initialize();
 		}
-
 	}
 	else if (sceneName == "SECONDSTAGE") {
 		enemy.reset(new SecondBoss());
@@ -25,6 +26,7 @@ EnemyManager::EnemyManager(const std::string& sceneName) {
 		for (auto i = 0; i < tuatorialenemy.size(); i++) {
 			tuatorialenemy[i].reset(new NormalEnemy());
 			tuatorialenemy[i]->Initialize();
+
 		}
 	}
 	else {
@@ -35,7 +37,8 @@ EnemyManager::EnemyManager(const std::string& sceneName) {
 //更新
 void EnemyManager::Update() {
 	enemy->Update();
-
+	enemy->isRespawn(bulletenemy);
+	enemy->SummonEnemyUpda(bulletenemy);
 }
 //描画
 void EnemyManager::Draw(DirectXCommon* dxCommon) {

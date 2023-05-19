@@ -67,6 +67,10 @@ protected:
 	void ColPlayer();
 	void OnCollision();
 	void DeathAction();
-private:
-	
+protected:
+	bool canRot;
+
+	bool Rush;
+public:
+	void SetcanRotandRush(bool f) { canRot = f; Rush = f; }
 };
