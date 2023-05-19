@@ -657,6 +657,7 @@ void FirstBoss::NormalAttak::ColPlayer(XMFLOAT3& Pos)
 		(Player::GetInstance()->GetDamageInterVal() == 0))
 	{
 		ColPos = Pos;
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Damage.wav", VolumManager::GetInstance()->GetSEVolum());
 		Player::GetInstance()->RecvDamage(1.0f);
 		Player::GetInstance()->PlayerHit(Pos);
 	}

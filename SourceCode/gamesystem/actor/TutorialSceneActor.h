@@ -14,8 +14,18 @@ private:
 	enum class state {
 		INTORO = 0,
 		MOVE,
-		CONVERSATION_CATCH,
-		CATCHGHORST,
+		TEXT_TALK,
+		SPAWNENEMY,
+		TEXT_CATCHFOLLOW,
+		CATCHFOLLOW,
+		TEXT_SHOT,
+		SHOT,
+		TEXT_CATCHSEACH,
+		CATCHSEACH,
+		TEXT_CLEAR,
+		SPAWNALLENEMY,
+		TEXT_LAST,
+		MAINTUTORIAL,
 		COMPLETE,
 	}nowstate_;
 
@@ -58,7 +68,7 @@ private:
 	XMFLOAT2 window_size{ 0.f,0.f };
 
 	XMFLOAT4 black_color{ 1.f,1.f,1.f,0.f };
-	XMFLOAT4 girl_color{ 2.f,2.f,2.f,0.f };
+	XMFLOAT4 girl_color{ 1.5f,1.5f,1.5f,0.f };
 
 	float maxframe = 20.f;
 	float nowframe = 0.f;

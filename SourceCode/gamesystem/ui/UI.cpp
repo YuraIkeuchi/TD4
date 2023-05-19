@@ -10,20 +10,21 @@ UI::~UI() {
 //‰Šú‰»
 void UI::Initialize() {
 	for (int i = HeartOne; i < UnderStatusGauge; i++) {
-		sprites[i] = CreateUi(ImageManager::HEART, pos[i], { 86.f,86.f }, { 1,1,1,1 });
+		sprites[i] = CreateUi(ImageManager::HEART, pos[i], { 50.f,50.f }, { 1.5f, 1.5f, 1.5f,1 });
 		TexList.emplace_back(std::move(sprites[i]));
 	}
 
 	{//ƒQ[ƒW‰º•~‚«
-		sprites[UnderStatusGauge] = CreateUi(ImageManager::UnderGauge, { 0.f,500.f }, { 400.f,100.f }, { 1.f,1,1.f,1 });
+		sprites[UnderStatusGauge] = CreateUi(ImageManager::UnderGauge, gaugePos, gaugeSize, { 1.5f, 1.5f, 1.5f,1 });
 		TexList.emplace_back(std::move(sprites[UnderStatusGauge]));
 	}
 	{//ƒQ[ƒW
-		sprites[StatusGauge] = CreateUi(ImageManager::Gauge, { 0.f,500.f }, { 400.f,100.f }, { 1.f,0.5,1.f,1 });
+		sprites[StatusGauge] = CreateUi(ImageManager::Gauge, gaugePos_, gaugeSize, { 1.5f, 1.5f, 1.5f,1 });
+		sprites[StatusGauge].Tex->SetAnchorPoint({0.f,0.5f});
 		TexList.emplace_back(std::move(sprites[StatusGauge]));
 	}
 	{//ƒQ[ƒWã
-		sprites[TopStatusGauge] = CreateUi(ImageManager::TopGauge, { 0.f,500.f }, { 400.f,100.f }, { 1.f,0.5,1.f,1 });
+		sprites[TopStatusGauge] = CreateUi(ImageManager::TopGauge, gaugePos, gaugeSize, { 1.5f, 1.5f, 1.5f,1 });
 		TexList.emplace_back(std::move(sprites[TopStatusGauge]));
 	}
 
@@ -37,7 +38,7 @@ void UI::Update() {
 		TexList[StatusGauge].IsVisible = false;
 		TexList[TopStatusGauge].IsVisible = false;
 	} else {
-		TexList[StatusGauge].Size = { HungerGauge::GetInstance()->GetPercentage() * 400.f,100.f };
+		TexList[StatusGauge].Size = { HungerGauge::GetInstance()->GetPercentage() * gaugeSize.x,gaugeSize.y };
 		TexList[UnderStatusGauge].IsVisible = true;
 		TexList[StatusGauge].IsVisible = true;
 		TexList[TopStatusGauge].IsVisible = true;

@@ -39,15 +39,15 @@ void TutorialSceneActor::IntroState() {
 	girlward = L"あたりをみまわしてみよう";
 	secondrow_->SetString(girlward);
 	if (input->TriggerKey(DIK_SPACE)) {
-
 		nowstate_ = state::MOVE;
 	}
 }
 
 void TutorialSceneActor::MoveState() {
+	XMFLOAT3 pos=Player::GetInstance()->GetPosition();
+	if (!Collision::CircleCollision(0,0,45.f,pos.x,pos.z,1.f)) {
 
-	if (input->TriggerKey(DIK_SPACE)) {
-		nowstate_ = state::CONVERSATION_CATCH;
+		nowstate_ = state::TEXT_TALK;
 	}
 }
 
@@ -59,14 +59,16 @@ void TutorialSceneActor::ConversationCatchState() {
 		if (input->TriggerKey(DIK_RIGHT)) {
 			conversation = 1;
 		}
+		loadobj->FirstUpdate();
 	}
 	
 	if (input->TriggerKey(DIK_SPACE)) {
-		nowstate_ = state::CATCHGHORST;
+		nowstate_ = state::SPAWNENEMY;
 	}
 }
 
 void TutorialSceneActor::CatchGhorstState() {
+	loadobj->FirstUpdate();
 
 
 	if (input->TriggerKey(DIK_SPACE)) {
@@ -113,7 +115,7 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	girl = IKESprite::Create(ImageManager::GIRL, { -100.f,300.f });
 	girl->SetColor(girl_color);
 
-	enemymanager = std::make_unique<EnemyManager>("FIRSTSTAGE");
+	//enemymanager = std::make_unique<EnemyManager>("FIRSTSTAGE");
 
 	backobj = std::make_unique<BackObj>();
 	backobj->Initialize();
@@ -135,14 +137,13 @@ void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	(this->*stateTable[static_cast<size_t>(nowstate_)])();
 
 	//各クラス更新
-	backobj->Update();
 	if (static_cast<int>(nowstate_) % 2 == 1) {
 		ui->Update();
 		Player::GetInstance()->Update();
-		enemymanager->Update();
-		loadobj->FirstUpdate();
+		//enemymanager->Update();
 		ParticleEmitter::GetInstance()->Update();
 	}
+	backobj->Update();
 	camerawork->Update(camera);
 	lightgroup->Update();
 }
@@ -189,9 +190,11 @@ void TutorialSceneActor::BackDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
 	////各クラスの描画
 	Player::GetInstance()->Draw(dxCommon);
-	loadobj->Draw(dxCommon);
+	if (nowstate_>=state::SPAWNENEMY){
+		loadobj->Draw(dxCommon);
+	}
 	backobj->Draw(dxCommon);
-	enemymanager->Draw(dxCommon);
+	//enemymanager->Draw(dxCommon);
 
 	IKEObject3d::PostDraw();
 }
@@ -206,8 +209,7 @@ void TutorialSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 		conversationwindow->Draw();
 		girl->Draw();
 		IKESprite::PostDraw();
-	}
-	if (static_cast<int>(nowstate_) % 2 == 1) {
+	}else{
 		ui->Draw();
 	}
 }

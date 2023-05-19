@@ -38,12 +38,18 @@ private:
 	std::array<SpriteData, UiMax> sprites = {};
 
 	std::array<XMFLOAT2, UnderStatusGauge> pos = {
-	XMFLOAT2(0.f,620.f),
-	XMFLOAT2(90.f,620.f),
-	XMFLOAT2(180.f,620.f),
-	XMFLOAT2(270.f,620.f),
-	XMFLOAT2(360.f,620.f)
+	XMFLOAT2(15.f,650.f),
+	XMFLOAT2(65.f,650.f),
+	XMFLOAT2(115.f,650.f),
+	XMFLOAT2(265.f,650.f),
+	XMFLOAT2(315.f,650.f)
 	};
+
+
+	XMFLOAT2 gaugePos = { 440,620.f};
+	XMFLOAT2 gaugePos_ = { 450,660.f };
+	XMFLOAT2 gaugeSize = { 400.f,80.f };
+
 
 	std::vector<SpriteData>TexList;
 public:
