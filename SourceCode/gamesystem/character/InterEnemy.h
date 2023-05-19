@@ -57,6 +57,12 @@ public:
 	bool GetisAlive() { return isAlive; }
 
 	float GEtAlpha() { return m_Color.w; }
+
+	void SetAlive(bool f) { isAlive = f; }
+
+	void SetColor(XMFLOAT4 color) { m_Color = color; }
+
+	void SetHP(int HP) { this->HP = HP; }
 protected:
 	void ColPlayer();
 	void OnCollision();

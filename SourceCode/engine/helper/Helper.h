@@ -73,6 +73,8 @@ public:
 
 	//配列の中身が全部trueか
 	bool All_Of(bool* flag, int size);
+
+	bool All_Of_float(float *list,int size,float standVal);
 private:
 
 	//カメラ

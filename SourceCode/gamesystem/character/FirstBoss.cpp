@@ -96,6 +96,7 @@ void FirstBoss::Action() {
 		if (noAction&& !Recv)ActionTimer++;
 
 		if (!_normal.GetAttackF()&&!SummonF && ActionTimer % 60 == 0) {
+			ResF = true;
 			SummobnStop = true;
 			SummonF = true;
 
@@ -147,27 +148,42 @@ void FirstBoss::Pause() {
 }
 void FirstBoss::NormalAttak::Update(XMFLOAT3& Pos, XMFLOAT3& Rot, bool& Enf)
 {
+
 	switch (_phaseN)
 	{
 	case Phase_Normal::ROTPLAYER_0:
+
+		Rot.z -= RotSpeed;
 		NormalAttak::ShakeAction(Pos, Rot);
 		break;
 	case Phase_Normal::PHASE_ONE:
+
+		Rot.z -= RotSpeed;
 		NormalAttak::Attack(Pos, Rot);
 		break;
 	case Phase_Normal::ROTPLAYER_1:
+
+		Rot.z -= RotSpeed;
 		NormalAttak::ShakeAction(Pos, Rot);
 		break;
 	case Phase_Normal::PHASE_TWO:
+
+		Rot.z -= RotSpeed;
 		NormalAttak::Attack(Pos, Rot);
 		break;
 	case Phase_Normal::ROTPLAYER_2:
+
+		Rot.z -= RotSpeed;
 		NormalAttak::ShakeAction(Pos, Rot);
 		break;
 	case Phase_Normal::PHASE_THREE:
+
+		Rot.z -= RotSpeed;
 		NormalAttak::Attack(Pos, Rot);
 		break;
 	case Phase_Normal::ROTPLAYER_3:
+
+		Rot.z -= RotSpeed;
 		NormalAttak::ShakeAction(Pos, Rot);
 		break;
 	case Phase_Normal::NON:
@@ -352,6 +368,8 @@ void FirstBoss::NormalAttak::Attack(XMFLOAT3& Pos, XMFLOAT3& Rot)
 
 	if (RushMoveEaseT >= 1.f)
 	{
+		RotSpeed = 0.f;
+		Rot.z = 0;
 		RushRotationF = true;
 
 		if (_phaseN == Phase_Normal::PHASE_ONE)_phaseN = Phase_Normal::ROTPLAYER_1;
@@ -369,7 +387,7 @@ void FirstBoss::NormalAttak::ShakeAction(XMFLOAT3& Pos, XMFLOAT3& Rot)
 {
 	//初期化部
 	{
-		
+		//RotSpeed = 0.f;
 		RushMoveEaseT = 0.f;
 	}
 	XMVECTOR move = { 0.f,0.f, 0.1f, 0.0f };
@@ -381,17 +399,19 @@ void FirstBoss::NormalAttak::ShakeAction(XMFLOAT3& Pos, XMFLOAT3& Rot)
 	const int MaxShakeTime =60;
 
 	if (RotEaseTime >= 1.f) {
+
+		RotSpeed += 0.1f;
 		if (shake->GetShakeTimer() < MaxShakeTime) {
-			shake->SetShakeStart(true);
-			shake->ShakePos(shakeX, 1, -1, MaxShakeTime, 12.f);
-			shake->ShakePos(shakeZ, 1, -1, MaxShakeTime, 12.f);
 
-			//シェイク値足す
-			Pos.x += shakeX;
-			Pos.z += shakeZ;
+			//shake->SetShakeStart(true);
+			//shake->ShakePos(shakeX, 1, -1, MaxShakeTime, 12.f);
+			//shake->ShakePos(shakeZ, 1, -1, MaxShakeTime, 12.f);
+
+			////シェイク値足す
+			//Pos.x += shakeX;
+			//Pos.z += shakeZ;
 		}
-
-		else if (!shakeend) {
+		if (RotSpeed >= 8.f&& !shakeend) {
 			RemovePosEaseT += 0.05f;
 			//Pos.x = Easing::EaseOut(RemovePosEaseT, pos.x, BeforeShakePos.x);
 			//Pos.z = Easing::EaseOut(RemovePosEaseT, pos.z, BeforeShakePos.z);
@@ -403,6 +423,7 @@ void FirstBoss::NormalAttak::ShakeAction(XMFLOAT3& Pos, XMFLOAT3& Rot)
 
 		if (shakeend)
 		{
+			//Rot.z = 0.f;
 			BackSpeed -= 0.25f;
 			Pos.x = Pos.x + move.m128_f32[0] * BackSpeed;
 			Pos.z = Pos.z + move.m128_f32[2] * BackSpeed;
@@ -732,8 +753,10 @@ void FirstBoss::ChargeAttack::Initialize()
 		texAlpha[i] = 1.f;
 		texScl[i] = { 0.f,0.f };
 	}
+	shake = new Shake();
 }
 
+#define MaxShakeTime 90
 void FirstBoss::ChargeAttack::Attack(XMFLOAT3& Pos, XMFLOAT3& Rot)
 {
 	switch (_phase)
@@ -750,17 +773,25 @@ void FirstBoss::ChargeAttack::Attack(XMFLOAT3& Pos, XMFLOAT3& Rot)
 		break;
 
 	case Phase_Charge::CHARGE:
+		if (shake->GetShakeTimer() < MaxShakeTime) {
 
-		ChargeTime++;
-		RotSpeed += 0.1f;
-		Rot.z -= RotSpeed;
+			shake->SetShakeStart(true);
+			shake->ShakePos(shakeX, 1, -1, MaxShakeTime, 12.f);
+			shake->ShakePos(shakeZ, 1, -1, MaxShakeTime, 12.f);
+
+			////シェイク値足す
+			Pos.x += shakeX;
+			Pos.z += shakeZ;
+		}
+
 		JFrame = 0.f;
-		if (ChargeTime >= 180 && static_cast<int>(RotSpeed) % 360 <= 20) {
-			Rot.z = 0.f;
+		if (shake->GetShakeTimer()>=MaxShakeTime) {
+			shake->SetShakeStart(false);
 			_phase = Phase_Charge::JUMP;
 		}
 		break;
 	case Phase_Charge::JUMP:
+
 		JumpAction(Pos);
 		break;
 	case Phase_Charge::ATTACK:

@@ -323,3 +323,16 @@ bool Helper::All_Of(bool* flag, int size)
 	}
 	return false;
 }
+
+bool Helper::All_Of_float(float* list, int size, float standVal)
+{
+	for (auto i = 0; i < size;)
+	{
+		if (list[i] == standVal)i++;
+		else return false;
+
+		if (i == size && list[size - 1] == standVal)return true;
+	}
+
+	return false;
+}

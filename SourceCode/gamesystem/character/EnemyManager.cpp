@@ -7,6 +7,13 @@ EnemyManager::EnemyManager(const std::string& sceneName) {
 	if (sceneName == "FIRSTSTAGE") {
 		enemy.reset(new FirstBoss());
 		enemy->Initialize();
+
+		bulletenemy.resize(3);
+		for (auto i = 0; i < bulletenemy.size(); i++)
+		{
+			bulletenemy[i] = (new NormalEnemy());
+			bulletenemy[i]->Initialize();
+		}
 	} else if (sceneName == "SECONDSTAGE") {
 
 		enemy.reset(new SecondBoss());
@@ -15,17 +22,6 @@ EnemyManager::EnemyManager(const std::string& sceneName) {
 		assert(0);
 	}
 
-	bulletenemy.resize(3);
-	for (auto i = 0; i < bulletenemy.size(); i++)
-	{
-		bulletenemy[i] = (new NormalEnemy());
-		bulletenemy[i]->Initialize();
-	}
-	for (auto i = 0; i < bulletenemy_2.size(); i++)
-	{
-		bulletenemy_2[i].reset(new NormalEnemy());
-		bulletenemy_2[i]->Initialize();
-	}
 }
 //çXêV
 void EnemyManager::Update() {
@@ -35,35 +31,14 @@ void EnemyManager::Update() {
 	if (Input::GetInstance()->TriggerButton(Input::X))Shot_8 = true;
 
 	enemy->SummonEnemyUpda(bulletenemy);
-
-	constexpr float PosInter = 20.f;
-
-	if (!Shot_8) {
-		for (auto i = 0; i < bulletenemy_2.size(); i++)
-		{
-			enemyAngle[i] = static_cast<float>(i) * PI_360 / bulletenemy_2.size();
-
-			bulletenemy_2[i]->SetPosition({
-				sinf(static_cast<float>(i) * (PI_360 / static_cast<float>(bulletenemy_2.size())) * (PI / PI_180)) * PosInter,
-				0.f,
-
-				cosf(static_cast<float>(i) * (PI_360 / static_cast<float>(bulletenemy_2.size())) * (PI / PI_180)) * PosInter
-				});
-		}
-	}
-	ShotAttack_B();
-
-	XMFLOAT3 l_pos = player->GetPosition();
+	enemy->isRespawn(bulletenemy);
 
 }
 //ï`âÊ
 void EnemyManager::Draw(DirectXCommon* dxCommon) {
 	enemy->Draw(dxCommon);
 	enemy->SummonEnemyDraw(bulletenemy, dxCommon);
-	for (auto i = 0; i < bulletenemy_2.size(); i++)
-	{
-		bulletenemy_2[i]->Draw(dxCommon);
-	}
+
 }
 //ImGui
 void EnemyManager::ImGuiDraw() {
@@ -73,17 +48,7 @@ void EnemyManager::ImGuiDraw() {
 
 void EnemyManager::ShotAttack_B()
 {
-	if (!Shot_8)return;
-	for (auto i = 0; i < bulletenemy_2.size(); i++)
-	{
-		bulletenemy_2[i]->Update();
-	}
-
-
-	for (auto i = 0; i < bulletenemy_2.size(); i++)
-	{
-		bulletenemy_2[i]->SetShotF(true);
-	}
+	
 }
 //ìGÇÃéÄñSèàíu
 bool EnemyManager::BossDestroy() {

@@ -75,7 +75,7 @@ void NormalEnemy::Particle() {
 
 void NormalEnemy::Appearance()
 {
-	if (Rush)return;
+//	if (Rush)return;
 	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
 
 	//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に

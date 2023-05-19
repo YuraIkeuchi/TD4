@@ -50,6 +50,7 @@ public:
 	void SummonEnemyDraw(std::vector<InterEnemy*> enemy, DirectXCommon* dxcomn);
 
 	void EndSummon(std::vector<InterEnemy*> enemy);
+	void isRespawn(std::vector<InterEnemy*> enemy);
 protected:
 	bool SummonF;
 	bool SummobnStop;
@@ -91,7 +92,7 @@ private:
 protected:
 	//弾との当たり判定
 	void CollideBul(vector<InterBullet*>bullet);
-	void isRespawn(std::vector<InterEnemy*> enemy);
+	
 	bool ResF;
 public:
 	bool Recv;

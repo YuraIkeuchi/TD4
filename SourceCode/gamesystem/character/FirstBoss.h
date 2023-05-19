@@ -55,6 +55,9 @@ private:
 			END
 		}_phase;
 
+		//シェイク
+		Shake* shake;
+		float shakeX, shakeZ;
 		//範囲テクスチャ
 		array<unique_ptr<IKETexture>, 2>impacttex;
 		array<float, 2>texAlpha;
@@ -101,7 +104,6 @@ private:
 
 		XMFLOAT3 OldPos_Remove;
 		float SPosMoveEaseT;
-		float shakeX, shakeZ;
 
 		XMFLOAT3 BeforeShakePos;
 		bool shakeend;
@@ -150,6 +152,7 @@ private:
 
 		void ColPlayer(XMFLOAT3& Pos);
 	private:
+		float RotSpeed;
 		float EaseT;
 		int RandKnock;
 		float KnockVal;

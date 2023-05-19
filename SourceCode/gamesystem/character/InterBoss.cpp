@@ -7,6 +7,7 @@
 void InterBoss::Update() {
 	//çsìÆ
 	Action();
+	
 }
 //ï`âÊ
 void InterBoss::Draw(DirectXCommon* dxCommon) {
@@ -54,8 +55,15 @@ void InterBoss::isRespawn(std::vector<InterEnemy*> enemy)
 	{
 		for(auto i=0;i<3;i++)
 		{
-			//enemy[i]->SetColor({})
+			NextActionInteval = 0;
+			enemy[i]->SetHP(1);
+			enemy[i]->SetScale({ 0,0,0});
+			enemy[i]->SetColor({ 1,1,1,1 });
+			enemy[i]->SetShotF(true);
+			enemy[i]->SetAlive(true);
+			
 		}
+		ResF = false;
 	}
 }
 
@@ -121,7 +129,7 @@ void InterBoss::EndSummon(std::vector<InterEnemy*> enemy)
 
 	if(Helper::GetInstance()->All_Of(tempList2,_countof(tempList2)))
 	{
-		//SummonF = false;
+		SummonF = false;
 	}
 }
 
