@@ -25,7 +25,6 @@ public:
 
 	void FinishCheck();
 public://getter setter
-	//static void SetPlayer(Player* player) { EnemyManager::player = player; }
 	//敵関係getで取る
 	InterBoss* GetBoss() { return enemy.get(); }
 	const XMFLOAT3& GetEnemyPosition() { return enemy.get()->GetPosition(); }
@@ -35,26 +34,12 @@ protected: //静的メンバ変数
 private:
 	Player* player = Player::GetInstance();
 	unique_ptr<InterBoss> enemy;
-	std::array<unique_ptr<InterEnemy>, 3>bulletenemy;
-
-	std::array<unique_ptr<InterEnemy>, 8>bulletenemy_2;
-	std::array<float, 8>enemyAngle;
-
-	bool Shot_3;
-	bool Shot_8;
-
-	void ShotAttack_A();
-	void ShotAttack_B();
-
-
-	std::array<XMFLOAT3, 3> EPos;
-
-
+	static const int firstEnemyMax = 3;
+	std::array<unique_ptr<InterEnemy>, firstEnemyMax>bulletenemy;
+	static const int tutorialEnemyMax = 5;
+	std::array<unique_ptr<InterEnemy>, tutorialEnemyMax>tuatorialenemy;
 
 public:
-	//3つのオブジェクト位置設定
-	inline void SetEpos_A(XMFLOAT3* pos) { for (auto i = 0; i < 3; i++)EPos[i] = pos[i]; }
-
 	//敵の死亡処理
 	bool BossDestroy();
 };

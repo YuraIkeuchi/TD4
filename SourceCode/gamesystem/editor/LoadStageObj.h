@@ -23,6 +23,8 @@ public:
 	//初期化
 	void Initialize()override;
 	//更新
+	void TutorialUpdate()override;
+	//更新
 	void FirstUpdate()override;
 	//更新
 	void SecondUpdate()override;

@@ -43,6 +43,7 @@ public:
 public://gettersetter
 	void SetHP(float hp) { m_HP = hp; };
 	float GetHP() { return m_HP; }
+	float HpPercent();
 
 	void SetCheck(bool Check) { m_Check = Check; };
 	bool GetCheck() { return m_Check; }
@@ -57,6 +58,7 @@ protected:
 
 	bool isAlive;
 	float m_HP = {};
+	float m_MaxHp = {};
 
 	bool m_Check = false;
 	XMFLOAT3 m_OBBScale = {};
