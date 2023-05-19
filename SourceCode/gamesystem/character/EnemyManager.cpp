@@ -1,4 +1,4 @@
-#include "EnemyManager.h"
+﻿#include "EnemyManager.h"
 #include "Helper.h"
 #include "Input.h"
 EnemyManager::EnemyManager(const std::string& sceneName) {
@@ -8,7 +8,7 @@ EnemyManager::EnemyManager(const std::string& sceneName) {
 		enemy.reset(new FirstBoss());
 		enemy->Initialize();
 		for (auto i = 0; i < bulletenemy.size(); i++) {
-			bulletenemy[i].reset(new NormalEnemy());
+			bulletenemy[i]=new NormalEnemy();
 			bulletenemy[i]->Initialize();
 		}
 
@@ -17,7 +17,7 @@ EnemyManager::EnemyManager(const std::string& sceneName) {
 		enemy.reset(new SecondBoss());
 		enemy->Initialize();
 		for (auto i = 0; i < bulletenemy.size(); i++) {
-			bulletenemy[i].reset(new NormalEnemy());
+			bulletenemy[i]=new NormalEnemy();
 			bulletenemy[i]->Initialize();
 		}
 	}

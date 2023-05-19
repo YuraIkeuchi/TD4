@@ -63,7 +63,7 @@ public://gettersetter
 	bool GetCheck() { return m_Check; }
 
 private:
-protected
+protected:
 	int ActionTimer;
 
 	int m_CheckTimer = {};
