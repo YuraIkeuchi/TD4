@@ -7,6 +7,16 @@
 #include <d3dx12.h>
 #include "Camera.h"
 #include"DirectXCommon.h"
+
+
+//ブレンドタイプ
+enum BlendType
+{
+	AlphaBlendType,
+	AddBlendType,
+	SubBlendType,
+};
+
 class IKETexture
 {
 private: // エイリアス

@@ -44,7 +44,7 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 //更新
 void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
-
+	ui->Update();
 	if (enemymanager->BossDestroy()) {
 		SceneManager::GetInstance()->ChangeScene("TITLE");
 	}
@@ -141,18 +141,19 @@ void SecondStageActor::BackDraw(DirectXCommon* dxCommon) {
 	Player::GetInstance()->Draw(dxCommon);
 	loadobj->Draw(dxCommon);
 	backobj->Draw(dxCommon);
+	//パーティクル描画
+	ParticleEmitter::GetInstance()->FlontDrawAll();
 	enemymanager->Draw(dxCommon);
 	IKEObject3d::PostDraw();
 }
 //ポストエフェクトがかからない
 void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
-	//パーティクル描画
-	ParticleEmitter::GetInstance()->FlontDrawAll();
+	
 	//完全に前に書くスプライト
 	IKESprite::PreDraw();
 	blackwindow->Draw();
 	conversationwindow->Draw();
-	//ui->Draw();
+	ui->Draw();
 	IKESprite::PostDraw();
 }
 //IMGuiの描画

@@ -36,7 +36,22 @@ void HungerGauge::Update() {
 void HungerGauge::ImGuiDraw() {
 	ImGui::Begin("Hunger");
 	ImGui::Text("Sub:%f", m_SubHunger);
-	ImGui::Text("Max:%f", m_HungerMax);
-	ImGui::Text("Now:%f", m_NowHunger);
+	ImGui::SliderFloat("Now", &m_NowHunger, 0.0f, 50.0f);
+	ImGui::SliderFloat("Max", &m_HungerMax, 0.0f, 50.0f);
+	//ImGui::SliderFloat("Percent", &(m_NowHunger / m_HungerMax), 0.0f, 50.0f);
+	ImGui::Text("m_SubVelocity:%f", m_SubVelocity);
+	ImGui::Text("CatchCount:%f", m_CatchCount);
 	ImGui::End();
+}
+
+float HungerGauge::GetPercentage() {
+	float temp= m_NowHunger / 50.0f;
+	Helper::GetInstance()->FloatClamp(temp,0.0f,1.0f);
+	return temp;
+}
+
+void HungerGauge::AddNowHunger(float m_NowHunger) {
+	float temp = m_NowHunger;
+	temp = min(m_NowHunger, m_HungerMax);
+	this->m_NowHunger = temp;
 }

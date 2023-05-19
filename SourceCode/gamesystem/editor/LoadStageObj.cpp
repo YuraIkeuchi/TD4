@@ -63,6 +63,10 @@ void LoadStageObj::Initialize()
 {
 	//Load();
 }
+void LoadStageObj::TutorialUpdate() {
+
+	CommonUpdate();
+}
 //更新(ステージ1)
 void LoadStageObj::FirstUpdate()
 {
@@ -93,6 +97,7 @@ void LoadStageObj::SecondUpdate()
 		newFood = new Food();
 		newFood->Initialize();
 		newFood->SetPosition({ enemy->GetEnemyPosition().x,0.0f,enemy->GetEnemyPosition().z});
+		newFood->SetLimit(true);
 		foods.push_back(newFood);
 		enemy->FinishCheck();
 	}
@@ -120,16 +125,12 @@ void LoadStageObj::ImGuiDraw() {
 	//	ghosts[i]->ImGuiDraw();
 	//}
 	////
-	//食べ物
+	////食べ物
 	//for (auto i = 0; i < foods.size(); i++) {
 	//	foods[i]->ImGuiDraw();
 	//}
 	//
 	enemy->ImGuiDraw();
-	ImGui::Begin("Load");
-	ImGui::Text("m_bb:%f", m_Division);
-
-	ImGui::End();
 }
 //当たり判定(ゴースト)
 void LoadStageObj::Collide() {

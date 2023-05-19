@@ -3,6 +3,7 @@
 #include "Helper.h"
 #include "ParticleEmitter.h"
 #include "VariableCommon.h"
+#include <Helper.h>
 //XV
 void InterBoss::Update() {
 	//s“®
@@ -17,6 +18,13 @@ void InterBoss::Draw(DirectXCommon* dxCommon) {
 //ImGui•`‰æ
 void InterBoss::ImGuiDraw() {
 	ImGui_Origin();//‚»‚ê‚¼‚ê‚ÌImGui
+}
+
+float InterBoss::HpPercent() {
+
+	float temp = m_HP / m_MaxHp;
+	Helper::GetInstance()->FloatClamp(temp, 0.0f, 1.0f);
+	return temp;
 }
 
 //’e‚Æ‚Ì“–‚½‚è”»’è

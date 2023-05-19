@@ -4,10 +4,10 @@
 #include "SecondBoss.h"
 #include "Player.h"
 #include<array>
-//敵の管理系クラス
+//謨ｵ縺ｮ邂｡逅�邉ｻ繧ｯ繝ｩ繧ｹ
 class EnemyManager {
 private:
-	// DirectX::を省略
+	// DirectX::繧堤怐逡･
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
@@ -16,45 +16,31 @@ private:
 
 public:
 	EnemyManager(const std::string& sceneName);
-	//更新
+	//譖ｴ譁ｰ
 	void Update();
-	//描画
+	//謠冗判
 	void Draw(DirectXCommon* dxCommon);
 	//ImGui
 	void ImGuiDraw();
 
 	void FinishCheck();
 public://getter setter
-	//static void SetPlayer(Player* player) { EnemyManager::player = player; }
-	//敵関係getで取る
+	//謨ｵ髢｢菫Ｈet縺ｧ蜿悶ｋ
 	InterBoss* GetBoss() { return enemy.get(); }
 	const XMFLOAT3& GetEnemyPosition() { return enemy.get()->GetPosition(); }
 	const bool GetEnemyCheck() { return enemy.get()->GetCheck(); }
 
-protected: //静的メンバ変数
+protected: //髱咏噪繝｡繝ｳ繝仙､画焚
 private:
 	Player* player = Player::GetInstance();
 	unique_ptr<InterBoss> enemy;
-	std::vector<InterEnemy*>bulletenemy;
 
-	std::array<unique_ptr<InterEnemy>, 8>bulletenemy_2;
-	std::array<float, 8>enemyAngle;
-
-	bool Shot_3;
-	bool Shot_8;
-
-	void ShotAttack_A();
-	void ShotAttack_B();
-
-
-	std::array<XMFLOAT3, 3> EPos;
-
-
+	static const int firstEnemyMax = 3;
+	std::array<unique_ptr<InterEnemy>, firstEnemyMax>bulletenemy;
+	static const int tutorialEnemyMax = 5;
+	std::array<unique_ptr<InterEnemy>, tutorialEnemyMax>tuatorialenemy;
 
 public:
-	//3つのオブジェクト位置設定
-	inline void SetEpos_A(XMFLOAT3* pos) { for (auto i = 0; i < 3; i++)EPos[i] = pos[i]; }
-
-	//敵の死亡処理
+	//謨ｵ縺ｮ豁ｻ莠｡蜃ｦ逅�
 	bool BossDestroy();
 };

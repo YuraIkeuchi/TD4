@@ -103,6 +103,7 @@ private://’Tõ
 		SEARCH_END,
 	}_searchState;
 
+	int m_SearchTimer = 0;
 private:
 	//’Tõ‚·‚é‚à‚Ì‚Ì”ÍˆÍ
 	float m_Limit = {};

@@ -35,6 +35,8 @@ private:
 	bool Collision();
 	//食料生産
 	void BirthFood();
+	//食料削除
+	void DeleteFood();
 public://getter setter
 public:
 	//gettersetter
@@ -42,8 +44,14 @@ public:
 	const bool& GetLockOn() { return m_LockOn; }
 	void SetAlive(const bool Alive) { m_Alive = Alive; }
 	void SetLockOn(const bool LockOn) { m_LockOn = LockOn; }
+	void SetLimit(const bool Limit) { m_Limit = Limit; }
 private:
 	bool m_Alive = true;//生存フラグ
 	bool m_LockOn = false;
 	int m_Timer = 0;
+
+	//制限時間を超えたかどうか
+	bool m_Limit = false;
+	//削除までの時間
+	int m_DeleteTimer = 0;
 };

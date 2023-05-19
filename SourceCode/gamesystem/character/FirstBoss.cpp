@@ -25,6 +25,7 @@ bool FirstBoss::Initialize() {
 	RTime = 1;
 	m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "pos")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp1")));
+	m_MaxHp = m_HP;
 	MoveCount = 1;
 	_phaseN = Phase_Normal::NON;
 	_normal.Initialize();
@@ -219,8 +220,8 @@ void FirstBoss::NormalAttak::Update(XMFLOAT3& Pos, XMFLOAT3& Rot, bool& Enf)
 
 void FirstBoss::EffecttexDraw(DirectXCommon* dxCommon)
 {
-
-	IKETexture::PreDraw2(dxCommon, ImageManager::IMPACT);
+	
+	IKETexture::PreDraw2(dxCommon,AlphaBlendType);
 	_cattack.Draw();
 	IKETexture::PostDraw();
 }
@@ -694,35 +695,16 @@ void FirstBoss::NoBattleMove()
 
 void FirstBoss::NormalAttak::ColPlayer(XMFLOAT3& Pos)
 {
-	if (HitF)
+	//ラッシュ中判定あり
+	if (Collision::CircleCollision(Pos.x, Pos.z, 5.f, Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z, 1.f) &&
+		(Player::GetInstance()->GetDamageInterVal() == 0))
 	{
-		EaseT += 0.09f;
-		//	player->MoveStop(true);
-		Player::GetInstance()->SetPosition({ Easing::EaseOut(EaseT,ColPos.x,ColPos.x + KnockVal),Player::GetInstance()->GetPosition().y, Easing::EaseOut(EaseT,ColPos.z,ColPos.z + KnockVal) });
-		if (EaseT >= 1.f)
-		{
-			Player::GetInstance()->MoveStop(false);
-			HitF = false;
-		}
-	} else
-	{
-		RandKnock = rand() % 100;
-		if (RandKnock % 2 == 0)
-			KnockVal = 15.f;
-		else
-			KnockVal = -15.f;
-		EaseT = 0.f;
-		//ラッシュ中判定あり
-		if (RushMoveEaseT < 1.f && Collision::CircleCollision(Pos.x, Pos.z, 5.f, Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z, 1.f))
-		{
-			ColPos = Pos;
-			HitF = true;
-		}
+
+		ColPos = Pos;
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Damage.wav", VolumManager::GetInstance()->GetSEVolum());
+		Player::GetInstance()->RecvDamage(1.0f);
+		Player::GetInstance()->PlayerHit(Pos);
 	}
-
-
-	Helper::GetInstance()->FloatClamp(EaseT, 0.f, 1.f);
-
 }
 
 void FirstBoss::ColPlayer_Def()
@@ -734,9 +716,9 @@ void FirstBoss::ColPlayer_Def()
 }
 //ImGui
 void FirstBoss::ImGui_Origin() {
-	ImGui::Begin("First");
-	ImGui::Text("HP:%f", m_HP);
-	ImGui::End();
+	//ImGui::Begin("First");
+	//ImGui::Text("HP:%f", m_HP);
+	//ImGui::End();
 }
 
 

@@ -45,11 +45,3 @@ const int TutorialHeight_Cut = 128;
 //タイトルやオプションのパーツ画面
 const int PartsWidth_Cut = 640;
 const int PartsHeight_Cut = 128;
-
-//ブレンドタイプ
-enum BlendType
-{
-	AlphaBlendType,
-	AddBlendType,
-	SubBlendType,
-};

@@ -47,6 +47,8 @@ private://ƒƒ“ƒo•Ï”
 	std::unique_ptr<IKEModel> modelSphere = nullptr;
 	std::unique_ptr<IKEModel> modelPine = nullptr;
 
+	string str = "FIRSTSTAGE";
+
 	//Loading
 	enum {
 		text_L = 0,

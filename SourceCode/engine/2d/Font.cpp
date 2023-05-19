@@ -1,11 +1,20 @@
 #include "Font.h"
 
+DirectX::GraphicsMemory* Font::_gmemory = nullptr;
 
+Font::~Font()
+{
+	/*delete _spritefont;
+	delete _spritebatch;*/
+}
 
 void Font::Initialize(DirectXCommon* dxcommon)
 {
 	_gmemory = new DirectX::GraphicsMemory(dxcommon->GetDev());
+}
 
+void Font::LoadFont(DirectXCommon* dxcommon)
+{
 	DirectX::ResourceUploadBatch resUploadBatch(dxcommon->GetDev());
 
 	resUploadBatch.Begin();
@@ -19,7 +28,7 @@ void Font::Initialize(DirectXCommon* dxcommon)
 	_heapForSpriteFont = dxcommon->CreateDescriptorHeapForSproteFont();
 	_spritefont = new DirectX::SpriteFont(dxcommon->GetDev(),
 		resUploadBatch,
-		L"font/myfile.spritefont",
+		L"font/UD.spritefont",
 		_heapForSpriteFont->GetCPUDescriptorHandleForHeapStart(),
 		_heapForSpriteFont->GetGPUDescriptorHandleForHeapStart());
 
@@ -29,15 +38,32 @@ void Font::Initialize(DirectXCommon* dxcommon)
 	_spritebatch->SetViewport(dxcommon->GetViewPort());
 }
 
+void Font::SetPosColor(const XMVECTOR& color, const XMFLOAT2& position)
+{
+	color_ = color;
+	position_ = shadow_position_ = position;
+	shadow_position_.x = position.x - 2;
+	shadow_position_.y = position.y - 2;
+}
+
 void Font::Draw(DirectXCommon* dxcommon)
 {
 	dxcommon->GetCmdList()->SetDescriptorHeaps(1, _heapForSpriteFont.GetAddressOf());
 	_spritebatch->Begin(dxcommon->GetCmdList());
-	_spritefont->DrawString(_spritebatch, L"こんにちはピカチュウ",
-		DirectX::XMFLOAT2(102, 102), DirectX::Colors::Black);
+	_spritefont->DrawString(_spritebatch, ward_,
+		disply_place_, DirectX::Colors::Black, {}, shadow_position_);
 
-	_spritefont->DrawString(_spritebatch, L"こんにちはピカチュウ",
-		DirectX::XMFLOAT2(100, 100), DirectX::Colors::Yellow);
+	_spritefont->DrawString(_spritebatch, ward_,
+		disply_place_, color_, {},position_);
 	_spritebatch->End();
+}
+
+void Font::PostDraw(DirectXCommon* dxcommon)
+{
 	_gmemory->Commit(dxcommon->GetQue());
+}
+
+void Font::SetString(wchar_t* ward)
+{
+	ward_ = ward;
 }

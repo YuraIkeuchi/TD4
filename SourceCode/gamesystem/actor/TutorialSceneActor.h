@@ -9,13 +9,44 @@
 #include "LoadStageObj.h"
 #include"Font.h"
 /// タイトルシーン
-class FirstStageActor : public BaseActor {
+class TutorialSceneActor : public BaseActor {
 private:
-	enum state {
-		CONVERSATION=0,
-		FIGHT,
-		NONE,
-	};
+	enum class state {
+		INTORO = 0,
+		MOVE,
+		TEXT_TALK,
+		SPAWNENEMY,
+		TEXT_CATCHFOLLOW,
+		CATCHFOLLOW,
+		TEXT_SHOT,
+		SHOT,
+		TEXT_CATCHSEACH,
+		CATCHSEACH,
+		TEXT_CLEAR,
+		SPAWNALLENEMY,
+		TEXT_LAST,
+		MAINTUTORIAL,
+		COMPLETE,
+	}nowstate_;
+
+	static void (TutorialSceneActor::* stateTable[])();
+	void IntroState();
+	void MoveState();
+	void TextTalkState();
+	void SpawnEnemyState();
+	void TextCatchFollowState();
+	void CatchFollowState();
+	void TextShotState();
+	void ShotState();
+	void TextCatchSeachState();
+	void CatchSeachState();
+	void TextClearState();
+	void SpawnAllEnemyState();
+	void TextLastState();
+	void MainTutorialState();
+	void CompleteState();
+
+
 public:
 	/// 初期化
 	void Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) override;
@@ -30,7 +61,8 @@ public:
 	void ImGuiDraw(DirectXCommon* dxCommon);
 private:
 	//クラス
-	
+	Input* input = Input::GetInstance();
+
 	unique_ptr<EnemyManager> enemymanager;
 	unique_ptr<InterBoss> boss;
 	unique_ptr<UI>ui;
@@ -40,16 +72,19 @@ private:
 	unique_ptr<IKESprite> blackwindow;
 	unique_ptr<IKESprite> girl;
 	unique_ptr<Font> font_;
+	unique_ptr<Font> secondrow_;
 	//��W
-	XMFLOAT2 window_pos{ WinApp::window_width/2.f,WinApp::window_height+100 };
+	XMFLOAT2 window_pos{ WinApp::window_width / 2.f,WinApp::window_height + 100 };
 	XMFLOAT2 window_size{ 0.f,0.f };
 
 	XMFLOAT4 black_color{ 1.f,1.f,1.f,0.f };
-	XMFLOAT4 girl_color{ 2.f,2.f,2.f,0.f };
+	XMFLOAT4 girl_color{ 1.5f,1.5f,1.5f,0.f };
 
 	float maxframe = 20.f;
 	float nowframe = 0.f;
 	float frame = 0.f;
-	int nowstate = NONE;
 	bool test = false;
+	wchar_t* girlward;
+	wchar_t* ward;
+	int conversation = 0;
 };
