@@ -1,9 +1,10 @@
-#pragma once
+﻿#pragma once
 #include "NormalEnemy.h"
 #include"FirstBoss.h"
 #include "SecondBoss.h"
 #include "Player.h"
 #include<array>
+#include<vector>
 //敵の管理系クラス
 class EnemyManager {
 private:
@@ -36,7 +37,7 @@ private:
 	unique_ptr<InterBoss> enemy;
 
 	static const int firstEnemyMax = 3;
-	std::array<unique_ptr<InterEnemy>, firstEnemyMax>bulletenemy;
+	std::vector<InterEnemy*>bulletenemy;
 	static const int tutorialEnemyMax = 5;
 	std::array<unique_ptr<InterEnemy>, tutorialEnemyMax>tuatorialenemy;
 
