@@ -64,6 +64,8 @@ public://gettersetter
 
 private:
 protected:
+	//ダメージ食らったとの色変換
+	float ColChangeEaseT;
 	int ActionTimer;
 
 	int m_CheckTimer = {};

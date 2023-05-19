@@ -104,10 +104,10 @@ void FirstBoss::Action() {
 		}
 
 		//通常攻撃
-		if (!SummobnStop&&!_normal.GetAttackF() && ActionTimer % 135 == 0)
+		if (!SummobnStop&&!_cattack.GetAttackF()&&!_normal.GetAttackF() && ActionTimer % 135 == 0)
 			_normal.SetNormalAttackF(true);
 		//ため攻撃
-		if (!_cattack.GetAttackF() && ActionTimer % 340 == 0)
+		if (!SummonF&&!_cattack.GetAttackF() && ActionTimer % 340 == 0)
 			_cattack.SetAttackF(true);
 
 
@@ -328,7 +328,7 @@ void FirstBoss::Move_Away()
 void FirstBoss::NormalAttak::Idle(XMFLOAT3& Pos, XMFLOAT3 Rot, bool& Enf)
 {
 	StayCount++;
-	if (StayCount >= 180)
+	if (StayCount >= 50)
 	{
 		RushRotationF = true;
 		NormalAttak::Rot(Pos, Rot);
@@ -773,6 +773,7 @@ void FirstBoss::ChargeAttack::Attack(XMFLOAT3& Pos, XMFLOAT3& Rot)
 		}
 		break;
 	case Phase_Charge::JUMP:
+		shake->SetShakeTimer(0);
 
 		JumpAction(Pos);
 		break;
@@ -873,6 +874,3 @@ void FirstBoss::ChargeAttack::Draw()
 		impacttex[i]->Draw();
 	}
 }
-
-
-

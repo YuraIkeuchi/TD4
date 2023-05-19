@@ -213,8 +213,7 @@ private:
 	}_phaseN;
 
 	void DamAction();
-
-	float ColChangeEaseT;
+	
 	bool DamColSetF;
 
 	XMFLOAT3 RotStartPos;

@@ -29,12 +29,13 @@ void NormalEnemy::Action() {
 	m_Rotation.x = 90.f;
 
 	if (ShotF) {
-		ShotCount++;
 		Appearance();
 		RushAction();
 	}
-
-
+	else
+	{
+		t = 0.f;
+	}
 
 	Obj_SetParam();	//m_Position = Helper::GetInstance()->CircleMove({ 0.0f,5.0f,0.0f }, m_CircleScale, m_CircleSpeed);
 	OnCollision();
@@ -98,7 +99,10 @@ void NormalEnemy::Appearance()
 	RottoPlayer = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
 	m_Rotation.y = RottoPlayer * 60.f + 180.f;
 
-	if (m_Scale.x >= 1.5f || m_Scale.y >= 1.5f || m_Scale.z >= 1.5f)
+
+	ShotCount++;
+
+	if (ShotCount>200)
 	{
 		Rush = true;
 	}
@@ -111,9 +115,11 @@ void NormalEnemy::Appearance()
 void NormalEnemy::RushAction()
 {
 	if (!Rush)return;
+
+	ShotCount = 0;
 	s_scale += 0.02f;
 
-	Helper::GetInstance()->FloatClamp(s_scale, 0.f, 3.f);
+	Helper::GetInstance()->FloatClamp(s_scale, 0.f, 5.f);
 
 	 // positionA - positionB;
 	//‰ñ“]²‚ğƒvƒŒƒCƒ„[‚Ì•û‚É
@@ -143,7 +149,6 @@ void NormalEnemy::RushAction()
 			//}
 	} else
 	{
-		
 		t = 0.f;
 		old = RotY;
 		MoveTimer++;

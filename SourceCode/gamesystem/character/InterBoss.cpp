@@ -30,6 +30,7 @@ float InterBoss::HpPercent() {
 //’e‚Æ‚Ì“–‚½‚è”»’è
 void InterBoss::CollideBul(vector<InterBullet*> bullet)
 {
+	if (ColChangeEaseT>0.f)return;
 	constexpr float BulRad = 1.f;
 
 	constexpr float BossRad = 3.f;
@@ -39,6 +40,7 @@ void InterBoss::CollideBul(vector<InterBullet*> bullet)
 			if (Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, BulRad, m_Position.x, m_Position.z, BossRad))
 			{
 				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Attack_Normal.wav", VolumManager::GetInstance()->GetSEVolum());
+				ActionTimer++;
 				Recv = true;
 				_bullet->SetAlive(false);
 				if (_bullet->GetScale().x == 1.0f) {
@@ -67,7 +69,8 @@ void InterBoss::isRespawn(std::vector<InterEnemy*> enemy)
 			enemy[i]->SetHP(1);
 			enemy[i]->SetScale({ 0,0,0});
 			enemy[i]->SetColor({ 1,1,1,1 });
-			enemy[i]->SetShotF(true);
+			enemy[i]->SetShotF(false);
+			enemy[i]->SetcanRotandRush(false);
 			enemy[i]->SetAlive(true);
 			
 		}
@@ -121,7 +124,7 @@ void InterBoss::EndSummon(std::vector<InterEnemy*> enemy)
 		if (Helper::GetInstance()->All_Of(tempList, _countof(tempList))) {
 			
 			NextActionInteval++;
-			if (NextActionInteval > 120) {
+			if (NextActionInteval > 180) {
 				ActionTimer++;
 				SummobnStop = false;
 			}
