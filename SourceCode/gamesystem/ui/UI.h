@@ -39,10 +39,10 @@ private:
 
 	std::array<XMFLOAT2, UnderStatusGauge> pos = {
 	XMFLOAT2(15.f,650.f),
-	XMFLOAT2(80.f,650.f),
-	XMFLOAT2(145.f,650.f),
-	XMFLOAT2(210.f,650.f),
-	XMFLOAT2(275.f,650.f)
+	XMFLOAT2(65.f,650.f),
+	XMFLOAT2(115.f,650.f),
+	XMFLOAT2(265.f,650.f),
+	XMFLOAT2(315.f,650.f)
 	};
 
 

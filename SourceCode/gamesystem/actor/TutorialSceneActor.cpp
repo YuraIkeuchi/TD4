@@ -39,7 +39,6 @@ void TutorialSceneActor::IntroState() {
 	girlward = L"あたりをみまわしてみよう";
 	secondrow_->SetString(girlward);
 	if (input->TriggerKey(DIK_SPACE)) {
-
 		nowstate_ = state::MOVE;
 	}
 }
@@ -47,7 +46,8 @@ void TutorialSceneActor::IntroState() {
 void TutorialSceneActor::MoveState() {
 	XMFLOAT3 pos=Player::GetInstance()->GetPosition();
 	if (!Collision::CircleCollision(0,0,45.f,pos.x,pos.z,1.f)) {
-		nowstate_ = state::CONVERSATION_CATCH;
+
+		nowstate_ = state::TEXT_TALK;
 	}
 }
 
@@ -63,7 +63,7 @@ void TutorialSceneActor::ConversationCatchState() {
 	}
 	
 	if (input->TriggerKey(DIK_SPACE)) {
-		nowstate_ = state::CATCHGHORST;
+		nowstate_ = state::SPAWNENEMY;
 	}
 }
 
@@ -190,7 +190,7 @@ void TutorialSceneActor::BackDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
 	////各クラスの描画
 	Player::GetInstance()->Draw(dxCommon);
-	if (nowstate_>=state::CATCHGHORST){
+	if (nowstate_>=state::SPAWNENEMY){
 		loadobj->Draw(dxCommon);
 	}
 	backobj->Draw(dxCommon);

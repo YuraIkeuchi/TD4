@@ -10,7 +10,7 @@ UI::~UI() {
 //‰Šú‰»
 void UI::Initialize() {
 	for (int i = HeartOne; i < UnderStatusGauge; i++) {
-		sprites[i] = CreateUi(ImageManager::HEART, pos[i], { 64.f,64.f }, { 1.5f, 1.5f, 1.5f,1 });
+		sprites[i] = CreateUi(ImageManager::HEART, pos[i], { 50.f,50.f }, { 1.5f, 1.5f, 1.5f,1 });
 		TexList.emplace_back(std::move(sprites[i]));
 	}
 
