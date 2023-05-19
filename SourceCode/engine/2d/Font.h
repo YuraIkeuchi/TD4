@@ -22,7 +22,13 @@ public:
 	~Font();
 	static void Initialize(DirectXCommon* dxcommon);
 	void LoadFont(DirectXCommon* dxcommon);
-	void SetPosColor(const XMVECTOR& color = { 1.f,1.f,1.f,1.f }, const XMFLOAT2& position = { 0.f,0.f });
+	void SetColor(const XMVECTOR& color = { 1.f,1.f,1.f,1.f }) { this->color_ = color; }
+	void SetPos(const XMFLOAT2& position = { 0.f,0.f }) {
+		this->position_ = position;
+		shadow_position_.x = position.x - 2;
+		shadow_position_.y = position.y - 2;
+	}
+	void StringReset();
 	void Draw(DirectXCommon* dxcommon);
 	static void PostDraw(DirectXCommon* dxcommon);
 	void SetString(wchar_t* ward);
