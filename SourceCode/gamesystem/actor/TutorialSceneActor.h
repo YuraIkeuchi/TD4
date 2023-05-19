@@ -32,8 +32,18 @@ private:
 	static void (TutorialSceneActor::* stateTable[])();
 	void IntroState();
 	void MoveState();
-	void ConversationCatchState();
-	void CatchGhorstState();
+	void TextTalkState();
+	void SpawnEnemyState();
+	void TextCatchFollowState();
+	void CatchFollowState();
+	void TextShotState();
+	void ShotState();
+	void TextCatchSeachState();
+	void CatchSeachState();
+	void TextClearState();
+	void SpawnAllEnemyState();
+	void TextLastState();
+	void MainTutorialState();
 	void CompleteState();
 
 
