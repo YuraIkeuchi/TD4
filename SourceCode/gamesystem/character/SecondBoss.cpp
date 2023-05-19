@@ -64,6 +64,13 @@ void SecondBoss::Action() {
 		}
 	}
 
+	//マーク
+	for (Predict* predict : predicts) {
+		if (predict != nullptr) {
+			predict->Update();
+		}
+	}
+
 	//状態移行(charastateに合わせる)
 	(this->*stateTable[_charaState])();
 
@@ -99,6 +106,17 @@ void SecondBoss::Action() {
 		}
 	}
 
+	//マークの削除
+	for (int i = 0; i < predicts.size(); i++) {
+		if (predicts[i] == nullptr) {
+			continue;
+		}
+
+		if (!predicts[i]->GetAlive()) {
+			predicts.erase(cbegin(predicts) += i);
+		}
+	}
+
 	//当たり判定
 	Collide();
 	//テキスチャ
@@ -119,6 +137,13 @@ void SecondBoss::EffecttexDraw(DirectXCommon* dxCommon)
 		}
 	}
 
+	//マーク
+	for (Predict* predict : predicts) {
+		if (predict != nullptr) {
+			predict->Draw(dxCommon);
+		}
+	}
+
 	IKETexture::PreDraw2(dxCommon, AlphaBlendType);
 	mark->Draw();
 	IKETexture::PostDraw();
@@ -131,14 +156,18 @@ void SecondBoss::DamAction()
 //ImGui
 void SecondBoss::ImGui_Origin() {
 	ImGui::Begin("Second");
-	ImGui::Text("PosX:%f", m_Position.x);
-	ImGui::Text("PosZ:%f", m_Position.z);
-	ImGui::Text("Random:%d", m_RandomType);
+	ImGui::Text("Move:%d", m_MoveCount);
 	ImGui::End();
 
 	for (ShockWave* wave : shockwaves) {
 		if (wave != nullptr) {
 			wave->ImGuiDraw();
+		}
+	}
+
+	for (Predict* predict : predicts) {
+		if (predict != nullptr) {
+			predict->ImGuiDraw();
 		}
 	}
 }
@@ -292,7 +321,7 @@ void SecondBoss::RandomStamp() {
 	int l_MinPosZ = -57;
 	if (m_RandomType == RANDOM_START) {			//スタート
 		l_AddFrame = 0.01f;
-		l_TargetTimer = 50;
+		l_TargetTimer = 1;
 		m_AfterPos = { m_Position.x,60.0f,m_Position.z };	//真上に飛ぶ
 		if (m_Frame < m_FrameMax) {
 			m_Frame += 0.01f;
@@ -312,32 +341,44 @@ void SecondBoss::RandomStamp() {
 				m_StopTimer = 0;
 			}
 		}
+
+		m_Position = {
+			Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
+			Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
+			Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z)
+		};
 	}
 	else if (m_RandomType == RANDOM_SET) {		//一定時間上で待機
-		l_TargetTimer = 50;
-
+		l_TargetTimer = 10;
+		if (m_StopTimer == 1) {
+			BirthPredict();//予測位置にマークを出す
+		}
 		if (Helper::GetInstance()->CheckMinINT(m_StopTimer, l_TargetTimer, 1)) {		//次の行動
-			m_StopTimer = 0;
-			m_PressType = RANDOM_ATTACK;
+
+			m_RandomType = RANDOM_ATTACK;
 			m_Rotation.x = 0.0f;
+			m_StopTimer = 0;
 		}
 	}
 	else if (m_RandomType == RANDOM_ATTACK) {
 		l_AddFrame = 0.05f;
-		l_TargetTimer = 20;
+		l_TargetTimer = 2;
 		m_AfterPos.y = 5.0f;
+		const int l_MoveMax = 20;
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
 		}
 		else {
 			m_Frame = 1.0f;
 			if (m_StopTimer == 1) {
+				//スタンプと衝撃波の生成
 				BirthStamp("Anger");
+				BirthWave();
 			}
 			if (Helper::GetInstance()->CheckMinINT(m_StopTimer, l_TargetTimer, 1)) {
 				m_StopTimer = 0;
 				m_Frame = 0.0f;
-				if (m_MoveCount < 5) {		//何回スタンプを押したかで最初に戻るか別の行動をするか決まる
+				if (m_MoveCount < l_MoveMax) {		//何回スタンプを押したかで最初に戻るか別の行動をするか決まる
 					m_MoveCount++;
 					m_RandomType = RANDOM_START;
 				}
@@ -611,4 +652,14 @@ void SecondBoss::MarkUpdate() {
 	else {
 		m_MarkColor.w = Ease(In, Cubic, 0.5f, m_MarkColor.w, 0.0f);
 	}
+
+
+}
+//予測テクスチャの生成
+void SecondBoss::BirthPredict() {
+	//衝撃波の発生
+	Predict* newpredict;
+	newpredict= new Predict();
+	newpredict->Initialize({ m_Position.x,0.0f,m_Position.z });
+	predicts.push_back(newpredict);
 }
