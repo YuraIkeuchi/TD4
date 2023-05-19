@@ -52,6 +52,8 @@ private:
 	void ChoiceMove();//動きのチョイス
 	void BirthWave();//衝撃波の生成
 	void BirthPredict();//予測テクスチャの生成
+	//スタンプ攻撃の初期化
+	void StampInit(const int AttackNumber,const bool Random);
 	//動きの初期化
 	void MoveInit(const std::string& HighState);
 

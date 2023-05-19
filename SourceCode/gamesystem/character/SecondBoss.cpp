@@ -32,7 +32,7 @@ bool SecondBoss::Initialize() {
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "pos")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp2")));
-	_charaState = CharaState::STATE_RANDOM;
+	_charaState = CharaState::STATE_MOVE;
 	m_MoveState = MOVE_ALTER;
 	m_RandomType = RANDOM_START;
 	return true;
@@ -212,9 +212,7 @@ void SecondBoss::Stamp() {
 				m_Position = { Player::GetInstance()->GetPosition().x,
 				m_Position.y,
 				Player::GetInstance()->GetPosition().z };
-				m_StopTimer = 0;
-				m_Frame = 0.0f;
-				m_PressType = PRESS_SET;
+				StampInit(PRESS_SET, false);
 			}
 		}
 
@@ -228,8 +226,7 @@ void SecondBoss::Stamp() {
 		l_TargetTimer = 100;
 		
 		if (Helper::GetInstance()->CheckMinINT(m_StopTimer, l_TargetTimer, 1)) {		//次の行動
-			m_StopTimer = 0;
-			m_PressType = PRESS_ATTACK;
+			StampInit(PRESS_ATTACK, false);
 			m_AfterRotX = m_Rotation.x + 720.0f;
 		}
 	}
@@ -246,9 +243,7 @@ void SecondBoss::Stamp() {
 				BirthWave();//ウェーブの生成
 			}
 			if (Helper::GetInstance()->CheckMinINT(m_StopTimer, l_TargetTimer, 1)){			//シェイクが始まる
-				m_StopTimer = 0;
-				m_Frame = 0.0f;
-				m_PressType = PRESS_SHAKE;
+				StampInit(PRESS_SHAKE, false);
 				shake->SetShakeStart(true);
 			}
 		}
@@ -278,11 +273,10 @@ void SecondBoss::Stamp() {
 		}
 		
 		//次の行動
-		if (m_StopTimer == l_TargetTimer) {
+		if (Helper::GetInstance()->CheckMinINT(m_StopTimer, l_TargetTimer, 1)) {
 			m_Rotation.x = m_Rotation.x - 720.0f;
 			m_AfterRotX = m_Rotation.x;
-			m_PressType = PRESS_RETURN;
-			m_Frame = 0.0f;
+			StampInit(PRESS_RETURN, false);
 		}
 	
 	}
@@ -296,9 +290,7 @@ void SecondBoss::Stamp() {
 		}
 		else {
 			if (Helper::GetInstance()->CheckMinINT(m_StopTimer, l_TargetTimer, 1)) {
-				m_StopTimer = 0;
-				m_PressType = PRESS_END;
-				m_Frame = 0.0f;
+				StampInit(PRESS_END, false);
 			}
 		}
 
@@ -309,7 +301,6 @@ void SecondBoss::Stamp() {
 		_charaState = STATE_MOVE;
 		m_MoveState = MOVE_CHOICE;
 	}
-
 }
 //ランダム攻撃
 void SecondBoss::RandomStamp() {
@@ -336,9 +327,7 @@ void SecondBoss::RandomStamp() {
 			if (Helper::GetInstance()->CheckMinINT(m_StopTimer, l_TargetTimer, 1)) {			//プレイヤーの位置に移動
 				m_Position.x = float(l_RandX(mt));
 				m_Position.z = float(l_RandZ(mt2));
-				m_Frame = 0.0f;
-				m_RandomType = RANDOM_SET;
-				m_StopTimer = 0;
+				StampInit(RANDOM_SET, true);
 			}
 		}
 
@@ -354,17 +343,15 @@ void SecondBoss::RandomStamp() {
 			BirthPredict();//予測位置にマークを出す
 		}
 		if (Helper::GetInstance()->CheckMinINT(m_StopTimer, l_TargetTimer, 1)) {		//次の行動
-
-			m_RandomType = RANDOM_ATTACK;
+			StampInit(RANDOM_ATTACK, true);
 			m_Rotation.x = 0.0f;
-			m_StopTimer = 0;
 		}
 	}
 	else if (m_RandomType == RANDOM_ATTACK) {
 		l_AddFrame = 0.05f;
 		l_TargetTimer = 2;
 		m_AfterPos.y = 5.0f;
-		const int l_MoveMax = 20;
+		const int l_MoveMax = 10;
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
 		}
@@ -376,15 +363,13 @@ void SecondBoss::RandomStamp() {
 				BirthWave();
 			}
 			if (Helper::GetInstance()->CheckMinINT(m_StopTimer, l_TargetTimer, 1)) {
-				m_StopTimer = 0;
-				m_Frame = 0.0f;
 				if (m_MoveCount < l_MoveMax) {		//何回スタンプを押したかで最初に戻るか別の行動をするか決まる
 					m_MoveCount++;
-					m_RandomType = RANDOM_START;
+					StampInit(RANDOM_START, true);
 				}
 				else {
 					m_MoveCount = 0;
-					m_RandomType = RANDOM_END;
+					StampInit(RANDOM_END, true);
 				}
 			}
 		}
@@ -549,7 +534,7 @@ void SecondBoss::ChoiceMove() {
 	int l_TargetTime = 50;
 	//乱数指定
 	mt19937 mt{ std::random_device{}() };
-	uniform_int_distribution<int> l_RandomMove(0, 4);
+	uniform_int_distribution<int> l_RandomMove(0, 8);
 
 	m_StopTimer++;
 	//一定時間立ったらランダムで行動選択
@@ -569,9 +554,13 @@ void SecondBoss::ChoiceMove() {
 			m_AfterPos.y = 25.0f;
 		}
 		//3以上なら上からの攻撃に切り替える
-		else {
+		else if(3 <= m_MoveState && m_MoveState <= 5) {
 			_charaState = STATE_STAMP;
 			m_PressType = PRESS_START;
+		}
+		else {
+			_charaState = STATE_RANDOM;
+			m_RandomType = RANDOM_START;
 		}
 	}
 }
@@ -662,4 +651,15 @@ void SecondBoss::BirthPredict() {
 	newpredict= new Predict();
 	newpredict->Initialize({ m_Position.x,0.0f,m_Position.z });
 	predicts.push_back(newpredict);
+}
+//スタンプ攻撃の初期化(共通のみ)
+void SecondBoss::StampInit(const int AttackNumber, const bool Random) {
+	m_Frame = 0.0f;
+	m_StopTimer = 0;
+	if (Random) {
+		m_RandomType = AttackNumber;
+	}
+	else {
+		m_PressType = AttackNumber;
+	}
 }
