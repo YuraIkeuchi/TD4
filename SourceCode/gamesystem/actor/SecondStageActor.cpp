@@ -128,6 +128,7 @@ void SecondStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
+		ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 }

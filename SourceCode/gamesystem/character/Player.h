@@ -6,6 +6,7 @@
 #include "ViewBullet.h"
 #include "GhostBullet.h"
 #include "AttackBullet.h"
+#include "PlayerAttach.h"
 #include "CollisionPrimitive.h"
 using namespace DirectX;
 class Player:public ObjCommon
@@ -68,6 +69,8 @@ private:
 	void BulletUpdate(std::vector<InterBullet*> bullets);
 	//弾の描画
 	void BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxCommon);
+	//銃の処理
+	void SutoponUpdate();
 private:
 	//各アニメーション
 	enum class AnimeName
@@ -99,6 +102,7 @@ private://各クラス
 	vector<InterBullet*> ghostbullets;//言霊
 	vector<InterBullet*> attackbullets;//攻撃
 	unique_ptr<InterBullet> viewbullet;//可視化の弾
+	unique_ptr<PlayerAttach> playerattach;//プレイヤーの装備
 	//弾関係の変数
 	int m_BulletType = {};//弾の種類
 	int m_InterVal = {};//弾の発射のインターバル
