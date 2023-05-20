@@ -2,9 +2,9 @@
 #include"InterEnemy.h"
 using namespace std;         //  名前空間指定
 //普通の敵
-class NormalEnemy :public InterEnemy {
+class TutorialEnemy :public InterEnemy {
 public:
-	NormalEnemy();
+	TutorialEnemy();
 	bool Initialize() override;//初期化
 	void Finalize() override;//開放
 	void Action()override;//更新
@@ -34,7 +34,10 @@ private:
 	XMVECTOR SubVector;
 	float t; float RotY;
 	int randMove;
+	bool Rush;
 	float s_scale = 0.0f;
 	int MoveTimer;
+
+	bool canRot;
 };
 

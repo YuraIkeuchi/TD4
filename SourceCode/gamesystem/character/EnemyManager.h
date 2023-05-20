@@ -1,10 +1,15 @@
 ﻿#pragma once
-#include "NormalEnemy.h"
-#include"FirstBoss.h"
-#include "SecondBoss.h"
 #include "Player.h"
+
+#include "FirstBoss.h"
+#include "SecondBoss.h"
+
+#include "NormalEnemy.h"
+#include "TutorialEnemy.h"
+
 #include<array>
 #include<vector>
+
 //敵の管理系クラス
 class EnemyManager {
 private:
@@ -19,8 +24,12 @@ public:
 	EnemyManager(const std::string& sceneName);
 	//更新
 	void Update();
+	//チュートリアル用の更新
+	void TutorialUpdate(int pattern);
 	//描画
 	void Draw(DirectXCommon* dxCommon);
+	//チュートリアル用の描画
+	void TutorialDraw(DirectXCommon* dxCommon);
 	//ImGui
 	void ImGuiDraw();
 
@@ -30,18 +39,21 @@ public://getter setter
 	InterBoss* GetBoss() { return enemy.get(); }
 	const XMFLOAT3& GetEnemyPosition() { return enemy.get()->GetPosition(); }
 	const bool GetEnemyCheck() { return enemy.get()->GetCheck(); }
-
-protected: //静的メンバ変数
+	//チュートリアル関係のgetset
+	InterEnemy* GetEnemy(const int num) { return tutorialenemy[num].get(); }
 private:
 	Player* player = Player::GetInstance();
+	//ボス(初期化によってステージごとのボスに変更)
 	unique_ptr<InterBoss> enemy;
-
+	//ファーストステージ用
 	static const int firstEnemyMax = 3;
 	std::vector<InterEnemy*>bulletenemy;
-	static const int tutorialEnemyMax = 5;
-	std::array<unique_ptr<InterEnemy>, tutorialEnemyMax>tuatorialenemy;
+	//チュートリアル用
+	static const int tutorialEnemyMax = 6;
+	std::array<unique_ptr<InterEnemy>, tutorialEnemyMax>tutorialenemy;
 
 public:
 	//敵の死亡処理
 	bool BossDestroy();
+	
 };

@@ -38,12 +38,10 @@ void Font::LoadFont(DirectXCommon* dxcommon)
 	_spritebatch->SetViewport(dxcommon->GetViewPort());
 }
 
-void Font::SetPosColor(const XMVECTOR& color, const XMFLOAT2& position)
+
+void Font::StringReset()
 {
-	color_ = color;
-	position_ = shadow_position_ = position;
-	shadow_position_.x = position.x - 2;
-	shadow_position_.y = position.y - 2;
+	ward_ = L" ";
 }
 
 void Font::Draw(DirectXCommon* dxcommon)

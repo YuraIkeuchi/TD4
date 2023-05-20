@@ -575,6 +575,9 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\PlayerAttach.cpp">
       <Filter>SourceCords\gamesystem\character\Player</Filter>
+   </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\TutorialEnemy.cpp">
+      <Filter>SourceCords\gamesystem\character\Enemy\Various</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

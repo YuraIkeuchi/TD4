@@ -15,6 +15,7 @@ void ImageManager::StartLoad2D()
 	IKESprite::LoadTexture(WINDOW, L"Resources/2d/objicon/ConversationWindow.png");
 	IKESprite::LoadTexture(BLACKWINDOW, L"Resources/2d/objicon/BlackWindow.png");
 	IKESprite::LoadTexture(GIRL, L"Resources/2d/objicon/40E32961-2FAD-4C47-B412-6CAD5C0BFEE2.png");
+	IKESprite::LoadTexture(SUTOPON, L"Resources/2d/objicon/sutopon.png");
 }
 
 //非同期処理で読み込むスプライト

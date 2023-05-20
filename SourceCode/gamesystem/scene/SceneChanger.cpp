@@ -29,9 +29,9 @@ void SceneChanger::Initialize() {
 			frame.push_back(0.f);
 		}
 	}
-	color_.push_back({ 1,1,0.5f,1 });
-	color_.push_back({ 1,0.5f,1,1 });
-	color_.push_back({ 0.5f,1,1,1 });
+	color_.push_back({ 0.3f,0.3f,0.5f,1 });
+	color_.push_back({ 0.3f,0.3f,0.4f,1 });
+	color_.push_back({ 0.2f,0.2f,0.3f,1 });
 }
 void SceneChanger::InitializeOver() {
 	for (int i = 0; i < width_num; i++) {
