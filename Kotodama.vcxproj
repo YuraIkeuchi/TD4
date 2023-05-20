@@ -188,6 +188,7 @@
     <ClCompile Include="SourceCode\gamesystem\character\InterEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\NormalEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\Player.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\character\PlayerAttach.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\SecondBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\ViewBullet.cpp" />
     <ClCompile Include="SourceCode\gamesystem\editor\Editor.cpp" />
@@ -302,6 +303,7 @@
     <ClInclude Include="SourceCode\gamesystem\character\InterEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\character\NormalEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\character\Player.h" />
+    <ClInclude Include="SourceCode\gamesystem\character\PlayerAttach.h" />
     <ClInclude Include="SourceCode\gamesystem\character\SecondBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\ViewBullet.h" />
     <ClInclude Include="SourceCode\gamesystem\editor\Editor.h" />

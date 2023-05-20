@@ -573,6 +573,9 @@
     <ClCompile Include="SourceCode\gamesystem\bossattach\Predict.cpp">
       <Filter>SourceCords\gamesystem\character\Boss\Attach\Predict</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\PlayerAttach.cpp">
+      <Filter>SourceCords\gamesystem\character\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\2d\DebugText.h">
@@ -910,6 +913,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\bossattach\Predict.h">
       <Filter>SourceCords\gamesystem\character\Boss\Attach\Predict</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\PlayerAttach.h">
+      <Filter>SourceCords\gamesystem\character\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
