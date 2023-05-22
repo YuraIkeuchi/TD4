@@ -30,8 +30,8 @@ void PlayerAttach::Update() {
 	m_Position.y = (sin(m_SinAngle2) * 1.0f + 1.0f);
 
 	m_Angle = {
-		Ease(In,Cubic,0.5f,m_Angle.x,m_AfterAngle.x),
-		Ease(In,Cubic,0.5f,m_Angle.y,m_AfterAngle.y)
+		Ease(In,Cubic,0.75f,m_Angle.x,m_AfterAngle.x),
+		Ease(In,Cubic,0.75f,m_Angle.y,m_AfterAngle.y)
 	};
 
 	//m_Rotation.y = Ease(In, Cubic, 0.5f, m_Rotation.y, m_AfterRotY);

@@ -52,6 +52,10 @@ private:
 	void ChoiceMove();//動きのチョイス
 	void BirthWave();//衝撃波の生成
 	void BirthPredict();//予測テクスチャの生成
+	//転がるやつ
+	void Rolling();
+	//転がるやつの共通イージング
+	void RollEaseCommn(const XMFLOAT3& AfterPos,const float AddFrame);
 	//スタンプ攻撃の初期化
 	void StampInit(const int AttackNumber,const bool Random);
 	//動きの初期化
@@ -115,6 +119,7 @@ private:
 		STATE_MOVE,
 		STATE_STAMP,
 		STATE_RANDOM,
+		STATE_ROLL,
 	}_charaState;
 
 	//動き方の種類
@@ -151,6 +156,16 @@ private:
 
 	int m_RandomType;
 
+	//転がる攻撃
+	enum RollType {
+		ROLL_ONE,
+		ROLL_SECOND,
+		ROLL_THIRD,
+		ROLL_FOURTH,
+		ROLL_END,
+	};
+
+	int m_RollType;
 private:
 	unique_ptr<IKETexture> mark;
 	XMFLOAT4 m_MarkColor = { 1.0f,1.0f,1.0f,0.0f };
