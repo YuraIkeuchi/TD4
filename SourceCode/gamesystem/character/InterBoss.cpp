@@ -1,23 +1,23 @@
-#include "InterBoss.h"
+ï»¿#include "InterBoss.h"
 #include"Collision.h"
 #include "Helper.h"
 #include "ParticleEmitter.h"
 #include "VariableCommon.h"
 #include <Helper.h>
-//XV
+//æ›´æ–°
 void InterBoss::Update() {
-	//s“®
+	//è¡Œå‹•
 	Action();
 	
 }
-//•`‰æ
+//æç”»
 void InterBoss::Draw(DirectXCommon* dxCommon) {
 	Obj_Draw();
 	EffecttexDraw(dxCommon);
 }
-//ImGui•`‰æ
+//ImGuiæç”»
 void InterBoss::ImGuiDraw() {
-	ImGui_Origin();//‚»‚ê‚¼‚ê‚ÌImGui
+	ImGui_Origin();//ãã‚Œãã‚Œã®ImGui
 }
 
 float InterBoss::HpPercent() {
@@ -27,7 +27,7 @@ float InterBoss::HpPercent() {
 	return temp;
 }
 
-//’e‚Æ‚Ì“–‚½‚è”»’è
+//å¼¾ã¨ã®å½“ãŸã‚Šåˆ¤å®š
 void InterBoss::CollideBul(vector<InterBullet*> bullet)
 {
 	if (ColChangeEaseT>0.f)return;
@@ -116,15 +116,15 @@ void InterBoss::SummonEnemyUpda(std::vector<InterEnemy*> enemy)
 
 void InterBoss::EndSummon(std::vector<InterEnemy*> enemy)
 {
-	//‰¼‚ÌŠi”[”z—ñ
+	//ä»®ã®æ ¼ç´é…åˆ—
 	bool tempList[3];
-	//‘S•””­Ëó‘Ô‚È‚ç
+	//å…¨éƒ¨ç™ºå°„çŠ¶æ…‹ãªã‚‰
 	for (auto i = 0; i < _countof(tempList); i++) {
 		if (enemy[i] == nullptr)continue;
 		tempList[i] = enemy[i]->GetShotF();
 	}
 	if (SummobnStop) {
-		//¢Š«ó‘Ô‰ğœ@‰~‰^“®ÄŠJ
+		//å¬å–šçŠ¶æ…‹è§£é™¤ã€€å††é‹å‹•å†é–‹
 		if (Helper::GetInstance()->All_Of(tempList, _countof(tempList))) {
 			
 			NextActionInteval++;
