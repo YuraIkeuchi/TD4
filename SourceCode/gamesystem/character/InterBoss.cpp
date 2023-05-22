@@ -81,7 +81,6 @@ void InterBoss::isRespawn(std::vector<InterEnemy*> enemy)
 
 void InterBoss::SummonEnemyUpda(std::vector<InterEnemy*> enemy)
 {
-
 	std::vector<XMVECTOR> move(enemy.size());
 	std::vector<XMMATRIX>matRot(enemy.size());
 
@@ -90,6 +89,7 @@ void InterBoss::SummonEnemyUpda(std::vector<InterEnemy*> enemy)
 	}
 	if (!SummonF) {
 		for (auto i = 0; i < enemy.size(); i++) {
+			if (enemy[i] == nullptr)continue;
 			move[i] = { 0.f,0.f, 0.1f, 0.0f };
 			matRot[i] = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + (0.f + static_cast<float>(i) * 45.f)));
 			move[i] = XMVector3TransformNormal(move[i], matRot[i]);
@@ -101,10 +101,12 @@ void InterBoss::SummonEnemyUpda(std::vector<InterEnemy*> enemy)
 	if (SummonF) {
 		for (auto i = 0; i < enemy.size(); i++)
 		{
+			if (enemy[i] == nullptr)continue;
 			enemy[i]->Update();
 		}
 		for (auto i = 0; i < enemy.size(); i++) {
-				enemy[i]->SetShotF(true);
+			if (enemy[i] == nullptr)continue;
+			enemy[i]->SetShotF(true);
 		}
 		
 	}
@@ -116,9 +118,10 @@ void InterBoss::EndSummon(std::vector<InterEnemy*> enemy)
 	//âºÇÃäiî[îzóÒ
 	bool tempList[3];
 	//ëSïîî≠éÀèÛë‘Ç»ÇÁ
-	for (auto i = 0; i < _countof(tempList); i++)
+	for (auto i = 0; i < _countof(tempList); i++) {
+		if (enemy[i] == nullptr)continue;
 		tempList[i] = enemy[i]->GetShotF();
-
+	}
 	if (SummobnStop) {
 		//è¢ä´èÛë‘âèúÅ@â~â^ìÆçƒäJ
 		if (Helper::GetInstance()->All_Of(tempList, _countof(tempList))) {
@@ -135,9 +138,10 @@ void InterBoss::EndSummon(std::vector<InterEnemy*> enemy)
 		NextActionInteval = 0;
 	}
 	bool tempList2[3];
-	for (auto i = 0; i < _countof(tempList2); i++)
-		tempList2[i] = !enemy[i]->GetisAlive()&&enemy[i]->GEtAlpha()<=0.f;
-
+	for (auto i = 0; i < _countof(tempList2); i++) {
+		if (enemy[i] == nullptr)continue;
+		tempList2[i] = !enemy[i]->GetisAlive() && enemy[i]->GEtAlpha() <= 0.f;
+	}
 	if(Helper::GetInstance()->All_Of(tempList2,_countof(tempList2)))
 	{
 		SummonF = false;
@@ -148,6 +152,7 @@ void InterBoss::SummonEnemyDraw(std::vector<InterEnemy*> enemy, DirectXCommon* d
 {
 	for (auto i = 0; i < enemy.size(); i++)
 	{
+		if (enemy[i] == nullptr)continue;
 		enemy[i]->Draw(dxcomn);
 	}
 }

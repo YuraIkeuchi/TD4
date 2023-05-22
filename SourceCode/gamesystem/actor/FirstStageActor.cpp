@@ -39,6 +39,8 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	girl->SetColor(girl_color);
 
 	enemymanager = std::make_unique<EnemyManager>("FIRSTSTAGE");
+	//少しめんどくさいけど引数けすため
+	enemymanager->SetSceneName("FIRSTSTAGE");
 	ui->SetBoss(enemymanager->GetBoss());
 
 	backobj = std::make_unique<BackObj>();
