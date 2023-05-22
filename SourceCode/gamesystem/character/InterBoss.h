@@ -63,6 +63,8 @@ public://gettersetter
 	bool GetCheck() { return m_Check; }
 
 private:
+	std::string SceneName;
+
 protected:
 	//ダメージ食らったとの色変換
 	float ColChangeEaseT;
