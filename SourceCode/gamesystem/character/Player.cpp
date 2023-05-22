@@ -143,7 +143,8 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 //ImGui
 void Player::ImGuiDraw() {
 	ImGui::Begin("Player");
-	ImGui::Text("ROTY:%f", m_Rotation.y);
+	ImGui::Text("POSX:%f", m_Position.x);
+	ImGui::Text("POSZ:%f", m_Position.z);
 	ImGui::End();
 
 	playerattach->ImGuiDraw();
@@ -432,7 +433,7 @@ void Player::isOldPos()
 }
 //プレイヤーのダメージ判定
 void Player::RecvDamage(float Damage) {
-	m_HP -= Damage;
+	//m_HP -= Damage;
 	m_DamageInterVal = 100;
 	m_Damage = true;
 }
@@ -446,8 +447,8 @@ void Player::PlayerHit(const XMFLOAT3& pos) {
 	XMFLOAT2 l_Distance;
 	l_Distance.x = m_Position.x - pos.x;
 	l_Distance.y = m_Position.z - pos.z;
-	m_BoundPower.x = (sin(atan2f(l_Distance.x, l_Distance.y)) * 3.0f);
-	m_BoundPower.y = (cos(atan2f(l_Distance.x, l_Distance.y)) * 3.0f);
+	//m_BoundPower.x = (sin(atan2f(l_Distance.x, l_Distance.y)) * 3.0f);
+	//m_BoundPower.y = (cos(atan2f(l_Distance.x, l_Distance.y)) * 3.0f);
 }
 //弾かれる処理
 void Player::ReBound() {
