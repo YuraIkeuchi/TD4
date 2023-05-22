@@ -38,8 +38,11 @@ EnemyManager::EnemyManager(const std::string& sceneName) {
 //更新
 void EnemyManager::Update() {
 	enemy->Update();
-	enemy->isRespawn(bulletenemy);
-	enemy->SummonEnemyUpda(bulletenemy);
+	if (SceneName == "FIRSTSTAGE") {
+		
+		enemy->isRespawn(bulletenemy);
+		enemy->SummonEnemyUpda(bulletenemy);
+	}
 }
 void EnemyManager::TutorialUpdate(int pattern) {
 	if (pattern==0) {
@@ -53,8 +56,9 @@ void EnemyManager::TutorialUpdate(int pattern) {
 //描画
 void EnemyManager::Draw(DirectXCommon* dxCommon) {
 	enemy->Draw(dxCommon);
-
-	enemy->SummonEnemyDraw(bulletenemy, dxCommon);
+	if (SceneName == "FIRSTSTAGE") {
+		enemy->SummonEnemyDraw(bulletenemy, dxCommon);
+	}
 }
 void EnemyManager::TutorialDraw(DirectXCommon* dxCommon) {
 	for (auto i = 0; i < tutorialEnemyMax; i++) {
