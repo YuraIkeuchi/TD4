@@ -168,9 +168,9 @@ void NormalEnemy::RushAction()
 	if (stopMove) {
 		if (isAlive) {
 			m_Position = {
-					m_Position.x + move.m128_f32[0] * 4.f,
+					m_Position.x + move.m128_f32[0] * 3.f,
 				m_Position.y,
-				m_Position.z + move.m128_f32[2] * 4.f
+				m_Position.z + move.m128_f32[2] * 3.f
 			};
 		}
 	}
