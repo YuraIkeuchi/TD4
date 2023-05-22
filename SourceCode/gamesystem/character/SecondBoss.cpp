@@ -32,9 +32,10 @@ bool SecondBoss::Initialize() {
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "pos")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp2")));
-	_charaState = CharaState::STATE_MOVE;
+	_charaState = CharaState::STATE_ROLL;
 	m_MoveState = MOVE_ALTER;
 	m_RandomType = RANDOM_START;
+	m_RollType = ROLL_ONE;
 	return true;
 }
 //状態遷移
@@ -43,6 +44,7 @@ void (SecondBoss::* SecondBoss::stateTable[])() = {
 	&SecondBoss::Move,//待機
 	&SecondBoss::Stamp,//移動
 	&SecondBoss::RandomStamp,//ランダムでスタンプ
+	&SecondBoss::Rolling,//転がる攻撃
 };
 //行動
 void SecondBoss::Action() {
@@ -156,20 +158,9 @@ void SecondBoss::DamAction()
 //ImGui
 void SecondBoss::ImGui_Origin() {
 	ImGui::Begin("Second");
-	ImGui::Text("Move:%d", m_MoveCount);
+	ImGui::Text("RollType:%d", m_RollType);
+	ImGui::Text("Frame:%f", m_Frame);
 	ImGui::End();
-
-	for (ShockWave* wave : shockwaves) {
-		if (wave != nullptr) {
-			wave->ImGuiDraw();
-		}
-	}
-
-	for (Predict* predict : predicts) {
-		if (predict != nullptr) {
-			predict->ImGuiDraw();
-		}
-	}
 }
 //移動
 void SecondBoss::Move() {
@@ -379,6 +370,48 @@ void SecondBoss::RandomStamp() {
 		//次の行動を決める
 		_charaState = STATE_MOVE;
 		m_MoveState = MOVE_CHOICE;
+	}
+}
+//転がる攻撃
+void SecondBoss::Rolling() {
+	XMFLOAT3 l_AfterPos;
+	float l_AddFrame;
+
+	//転がる位置を指定する
+	if (m_RollType == ROLL_ONE) {
+		l_AfterPos = { 55.0f,5.0f,-50.0f };
+		l_AddFrame = 0.05f;
+		RollEaseCommn(l_AfterPos, l_AddFrame);
+	}
+	else if (m_RollType == ROLL_SECOND) {
+		l_AfterPos = { 55.0f,5.0f,50.0f };
+		l_AddFrame = 0.05f;
+		RollEaseCommn(l_AfterPos, l_AddFrame);
+	}
+	else if (m_RollType == ROLL_THIRD) {
+		l_AfterPos = { -45.0f,5.0f,50.0f };
+		l_AddFrame = 0.05f;
+		RollEaseCommn(l_AfterPos, l_AddFrame);
+	}
+	else if (m_RollType == ROLL_FOURTH) {
+		l_AfterPos = { -45.0f,5.0f,-50.0f };
+		l_AddFrame = 0.05f;
+		RollEaseCommn(l_AfterPos, l_AddFrame);
+	}
+	else {
+		//次の行動を決める
+		_charaState = STATE_MOVE;
+		m_MoveState = MOVE_CHOICE;
+	}
+}
+//転がるやつの共通イージング
+void SecondBoss::RollEaseCommn(const XMFLOAT3& AfterPos, const float AddFrame) {
+	if (m_Frame < m_FrameMax) {
+		m_Frame += AddFrame;
+	}
+	else {
+		m_Frame = {};
+		m_RollType++;
 	}
 }
 //スタンプの生成
