@@ -3,7 +3,14 @@
 #include "imgui.h"
 #include "VariableCommon.h"
 #include "JsonLoader.h"
-BackObj::BackObj() {
+BackObj* BackObj::GetInstance()
+{
+	static BackObj instance;
+
+	return &instance;
+}
+//ƒ}ƒbƒv“Ç‚İ‚İ
+void BackObj::LoadMap() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Ground);
 	m_Object.reset(new IKEObject3d());
 	m_Object->Initialize();
@@ -47,6 +54,7 @@ BackObj::BackObj() {
 		}
 	}
 }
+
 //‰Šú‰»
 bool BackObj::Initialize() {
 	m_Position = { 0.0f,3.0f,0.0f };

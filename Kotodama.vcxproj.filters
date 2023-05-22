@@ -163,9 +163,6 @@
     <Filter Include="SourceCords\gamesystem\character\Boss\Various\First">
       <UniqueIdentifier>{6c6a80b4-e8d8-4441-a826-a71906355d2b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Boss\Various\Second">
-      <UniqueIdentifier>{4ed8194f-082d-4483-a773-112e636385cd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SourceCords\gamesystem\Editor\Base">
       <UniqueIdentifier>{6c041188-41df-4de5-8df3-4e0587fc3678}</UniqueIdentifier>
     </Filter>
@@ -255,6 +252,9 @@
     </Filter>
     <Filter Include="SourceCords\gamesystem\character\Boss\Attach\Predict">
       <UniqueIdentifier>{be52123a-913f-41f2-9e7a-bab117cec069}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\character\Boss\Various\Second">
+      <UniqueIdentifier>{4ed8194f-082d-4483-a773-112e636385cd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

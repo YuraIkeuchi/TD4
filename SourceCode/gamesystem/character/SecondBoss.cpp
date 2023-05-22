@@ -25,17 +25,18 @@ SecondBoss::SecondBoss() {
 //初期化
 bool SecondBoss::Initialize() {
 
-	m_Position = { 0.0f,5.0f,30.0f };
+	m_Position = { 40.0f,5.0f,30.0f };
 	m_Rotation = { 180.0f,270.0f,0.0f };
 	m_Scale = { 3.5f,3.5f,3.5f };
 	m_OBBScale = { 6.0f,6.0f,6.0f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
-	m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "pos")));
+	//m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "pos")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp2")));
 	_charaState = CharaState::STATE_ROLL;
 	m_MoveState = MOVE_ALTER;
 	m_RandomType = RANDOM_START;
 	m_RollType = ROLL_ONE;
+	m_AddPower = 0.8f;
 	return true;
 }
 //状態遷移
@@ -157,10 +158,6 @@ void SecondBoss::DamAction()
 }
 //ImGui
 void SecondBoss::ImGui_Origin() {
-	ImGui::Begin("Second");
-	ImGui::Text("RollType:%d", m_RollType);
-	ImGui::Text("Frame:%f", m_Frame);
-	ImGui::End();
 }
 //移動
 void SecondBoss::Move() {
@@ -375,51 +372,119 @@ void SecondBoss::RandomStamp() {
 //転がる攻撃
 void SecondBoss::Rolling() {
 	XMFLOAT3 l_AfterPos;
+	float l_AfterRotY;
 	float l_AddFrame;
 
 	//転がる位置を指定する
 	if (m_RollType == ROLL_ONE) {
-		l_AfterPos = { 55.0f,5.0f,-50.0f };
+		l_AfterPos = { 0.0f,m_Position.y,30.0f };
 		l_AddFrame = 0.007f;
-		RollEaseCommn(l_AfterPos, l_AddFrame);
+		l_AfterRotY = 225.0f;
+		RollEaseCommn(l_AfterPos, l_AddFrame,l_AfterRotY);
+		//飛ぶような感じにするため重力を入れる
+		m_AddPower -= m_Gravity;
+		Helper::GetInstance()->CheckMaxFLOAT(m_Position.y, 5.0f, m_AddPower);
+		//回転を決める
+		m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, 90.0f);
+
 	}
 	else if (m_RollType == ROLL_SECOND) {
-		l_AfterPos = { 55.0f,5.0f,50.0f };
+		l_AfterPos = { 55.0f,m_Position.y,-50.0f };
 		l_AddFrame = 0.007f;
-		RollEaseCommn(l_AfterPos, l_AddFrame);
+		l_AfterRotY = 90.0f;
+		m_Rotation.z++;
+		RollEaseCommn(l_AfterPos, l_AddFrame, l_AfterRotY);
 	}
 	else if (m_RollType == ROLL_THIRD) {
-		l_AfterPos = { -45.0f,5.0f,50.0f };
+		l_AfterPos = { 55.0f,m_Position.y,50.0f };
 		l_AddFrame = 0.007f;
-		RollEaseCommn(l_AfterPos, l_AddFrame);
+		l_AfterRotY = 0.0f;
+		m_Rotation.z++;
+		RollEaseCommn(l_AfterPos, l_AddFrame, l_AfterRotY);
 	}
 	else if (m_RollType == ROLL_FOURTH) {
-		l_AfterPos = { -45.0f,5.0f,-50.0f };
+		l_AfterPos = { -45.0f,m_Position.y,50.0f };
 		l_AddFrame = 0.007f;
-		RollEaseCommn(l_AfterPos, l_AddFrame);
+		l_AfterRotY = -90.0f;
+		m_Rotation.z++;
+		RollEaseCommn(l_AfterPos, l_AddFrame, l_AfterRotY);
+	}
+	else if (m_RollType == ROLL_FIVE) {
+		l_AfterPos = { -45.0f,m_Position.y,-50.0f };
+		l_AddFrame = 0.007f;
+		l_AfterRotY = -225.0f;
+		m_Rotation.z++;
+		RollEaseCommn(l_AfterPos, l_AddFrame, l_AfterRotY);
+
+		m_AddPower = 0.8f;
+	}
+	else if (m_RollType == ROLL_SIX) {
+		l_AfterPos = { 0.0f,m_Position.y,30.0f };
+		l_AddFrame = 0.007f;
+		l_AfterRotY = -90.0f;
+		RollEaseCommn(l_AfterPos, l_AddFrame, l_AfterRotY);
+
+		//飛ぶような感じにするため重力を入れる
+		m_AddPower -= m_Gravity;
+
+		Helper::GetInstance()->CheckMaxFLOAT(m_Position.y, 5.0f, m_AddPower);
+
+		m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, 180.0f);
 	}
 	else {
+		m_Rotation = { 180.0f,270.0f,0.0f };
 		//次の行動を決める
+		m_AddPower = 0.8f;
 		_charaState = STATE_MOVE;
 		m_MoveState = MOVE_CHOICE;
 	}
 }
 //転がるやつの共通イージング
-void SecondBoss::RollEaseCommn(const XMFLOAT3& AfterPos, const float AddFrame) {
+void SecondBoss::RollEaseCommn(const XMFLOAT3& AfterPos, const float AddFrame,const float AfterRot) {
+	float l_CheckFrame = 0.4f;
+
+	//座標のイージング
 	if (m_Frame < m_FrameMax) {
 		m_Frame += AddFrame;
 	}
 	else {
-		m_Frame = {};
-		m_RollType++;
+		m_Frame = 1.0f;
+	}
+	
+	//回転のイージング
+	if (m_Frame > l_CheckFrame) {
+		m_ChangeRot = true;
 	}
 
+	ChangeRot(AfterRot);
+	//回転と座標のイージングどっちも終わったら終了
+	if (m_Frame == 1.0f && m_RotFrame == 1.0f) {
+		m_Frame = {};
+		m_RotFrame = {};
+		m_RollType++;
+	}
 
 	m_Position = {
 Ease(In,Cubic,m_Frame,m_Position.x,AfterPos.x),
 Ease(In,Cubic,m_Frame,m_Position.y,AfterPos.y),
 	Ease(In,Cubic,m_Frame,m_Position.z,AfterPos.z)
 	};
+}
+
+//回転の共通変数
+void SecondBoss::ChangeRot(const float AfterRot) {
+	const float l_AddFrame = 0.05f;
+	if (m_ChangeRot) {
+		if (m_RotFrame < m_FrameMax) {
+			m_RotFrame += l_AddFrame;
+		}
+		else {
+			m_RotFrame = 1.0f;
+			m_ChangeRot = false;
+		}
+	}
+
+	m_Rotation.y = Ease(In, Cubic, m_RotFrame, m_Rotation.y, AfterRot);
 }
 //スタンプの生成
 void SecondBoss::BirthStamp(const std::string& stampName) {
@@ -581,7 +646,6 @@ void SecondBoss::ChoiceMove() {
 	if (m_StopTimer > l_TargetTime) {
 		m_Frame = 0.0f;
 		m_StopTimer = 0;
-
 		m_MoveState = int(l_RandomMove(mt));
 		//MoveStateが2以下ならそれに応じた移動にする、
 		//ムーブステートによって行動が変わる
@@ -589,7 +653,6 @@ void SecondBoss::ChoiceMove() {
 			m_MoveCount = 0;
 			_InterValState = UpState;
 			_charaState = STATE_MOVE;
-			m_MoveState = MOVE_ALTER;
 			m_FollowSpeed = 1.0f;
 			m_AfterPos.y = 25.0f;
 		}
