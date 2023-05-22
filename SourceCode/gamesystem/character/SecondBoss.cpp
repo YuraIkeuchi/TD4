@@ -380,22 +380,22 @@ void SecondBoss::Rolling() {
 	//転がる位置を指定する
 	if (m_RollType == ROLL_ONE) {
 		l_AfterPos = { 55.0f,5.0f,-50.0f };
-		l_AddFrame = 0.05f;
+		l_AddFrame = 0.007f;
 		RollEaseCommn(l_AfterPos, l_AddFrame);
 	}
 	else if (m_RollType == ROLL_SECOND) {
 		l_AfterPos = { 55.0f,5.0f,50.0f };
-		l_AddFrame = 0.05f;
+		l_AddFrame = 0.007f;
 		RollEaseCommn(l_AfterPos, l_AddFrame);
 	}
 	else if (m_RollType == ROLL_THIRD) {
 		l_AfterPos = { -45.0f,5.0f,50.0f };
-		l_AddFrame = 0.05f;
+		l_AddFrame = 0.007f;
 		RollEaseCommn(l_AfterPos, l_AddFrame);
 	}
 	else if (m_RollType == ROLL_FOURTH) {
 		l_AfterPos = { -45.0f,5.0f,-50.0f };
-		l_AddFrame = 0.05f;
+		l_AddFrame = 0.007f;
 		RollEaseCommn(l_AfterPos, l_AddFrame);
 	}
 	else {
@@ -413,6 +413,13 @@ void SecondBoss::RollEaseCommn(const XMFLOAT3& AfterPos, const float AddFrame) {
 		m_Frame = {};
 		m_RollType++;
 	}
+
+
+	m_Position = {
+Ease(In,Cubic,m_Frame,m_Position.x,AfterPos.x),
+Ease(In,Cubic,m_Frame,m_Position.y,AfterPos.y),
+	Ease(In,Cubic,m_Frame,m_Position.z,AfterPos.z)
+	};
 }
 //スタンプの生成
 void SecondBoss::BirthStamp(const std::string& stampName) {

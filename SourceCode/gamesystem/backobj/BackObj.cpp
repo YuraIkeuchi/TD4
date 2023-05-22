@@ -49,8 +49,8 @@ BackObj::BackObj() {
 }
 //èâä˙âª
 bool BackObj::Initialize() {
-	m_Position = { 0.0f,-1.0f,0.0f };
-	m_Scale = { 0.7f,0.7f,0.7f };
+	m_Position = { 0.0f,3.0f,0.0f };
+	m_Scale = { 0.3f,0.3f,0.3f };
 	m_Color = { 0.5f,0.5f,0.5f,1.0f };
 	return true;
 }
