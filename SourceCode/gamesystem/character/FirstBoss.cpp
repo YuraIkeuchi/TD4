@@ -420,6 +420,16 @@ void FirstBoss::NormalAttak::ShakeAction(XMFLOAT3& Pos, XMFLOAT3& Rot)
 				shakeend = true;
 			}
 		}
+		else
+		{
+			XMVECTOR PositionA = { Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().y, Player::GetInstance()->GetPosition().z};
+			XMVECTOR PositionB = { Pos.x,Pos.y,Pos.z};
+			//プレイヤーと敵のベクトルの長さ(差)を求める
+			XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA);
+			float RotY = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
+
+			Rot.y = RotY * 50.f+180.f;
+		}
 
 
 		if (shakeend)
@@ -464,21 +474,14 @@ void FirstBoss::NormalAttak::Rot(XMFLOAT3& Pos, XMFLOAT3& Rot)
 		RotEaseTime = 0.f;
 		RushOldRotY = Rot.y;
 	} else {
-		//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
-		XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
-		XMVECTOR PositionB = { Pos.x,Pos.y,Pos.z };
-		//プレイヤーと敵のベクトルの長さ(差)を求める
-		XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
-		//回転軸をプレイヤーの方に
-			//向きかえる
-
+		
 		float RotY = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
 
 		//イージングカウンタ＋＋
 		RotEaseTime += 0.02f;
 
 		//Rotation反映
-		Rot.y = Easing::EaseOut(RotEaseTime, RushOldRotY, RotY * 60.f + 90.f);
+//		Rot.y = Easing::EaseOut(RotEaseTime, RushOldRotY, RotY * 60.f + 90.f);
 
 
 	}
