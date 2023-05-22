@@ -100,6 +100,7 @@ void FirstStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
+		ImGuiDraw(dxCommon);
 		if (nowstate == CONVERSATION) {
 			font_->Draw(dxCommon);
 			Font::PostDraw(dxCommon);
@@ -137,8 +138,6 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void FirstStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	//Player::GetInstance()->ImGuiDraw();
+	Player::GetInstance()->ImGuiDraw();
 	loadobj->ImGuiDraw();
-	HungerGauge::GetInstance()->ImGuiDraw();
-	//camerawork->ImGuiDraw();
 }

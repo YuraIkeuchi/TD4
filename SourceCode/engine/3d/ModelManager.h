@@ -23,6 +23,7 @@ public:
 		BulEnemy,
 		Tyuta,
 		Kido,
+		Sutopon
 	};
 	//FBX‚Ì–¼‘O
 	enum FBXName {

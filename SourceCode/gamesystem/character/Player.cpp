@@ -40,6 +40,9 @@ bool Player::Initialize()
 
 	viewbullet.reset(new ViewBullet());
 	viewbullet->Initialize();
+
+	playerattach.reset(new PlayerAttach());
+	playerattach->Initialize();
 	return true;
 }
 //ステータスの初期化
@@ -122,6 +125,7 @@ void Player::Draw(DirectXCommon* dxCommon)
 {
 	//キャラクター
 	Fbx_Draw(dxCommon);
+	playerattach->Draw(dxCommon);
 	//弾の描画
 	BulletDraw(ghostbullets, dxCommon);
 	BulletDraw(attackbullets, dxCommon);
@@ -139,10 +143,10 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 //ImGui
 void Player::ImGuiDraw() {
 	ImGui::Begin("Player");
-	ImGui::Text("HP:%f", m_HP);
+	ImGui::Text("ROTY:%f", m_Rotation.y);
 	ImGui::End();
 
-	HungerGauge::GetInstance()->ImGuiDraw();
+	playerattach->ImGuiDraw();
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
@@ -199,6 +203,10 @@ void Player::Walk()
 
 		//プレイヤーの回転角を取る
 		m_Rotation = { rot.x, rot.y, rot.z };
+
+		if (m_Rotation.y <= 0.0f) {
+			m_Rotation.y = m_Rotation.y + 360.0f;
+		}
 
 		XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
 		XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
@@ -309,6 +317,8 @@ void Player::Bullet_Management() {
 	viewbullet->Update();
 	viewbullet->SetAngle(l_Angle);
 	viewbullet->SetPosition(m_Position);
+
+	SutoponUpdate();
 }
 void Player::BulletUpdate(std::vector<InterBullet*> bullets) {
 	//弾の更新
@@ -416,7 +426,6 @@ void Player::ResetBullet() {
 	viewbullet->SetCharge(false);
 	m_ShotTimer = {};
 }
-
 void Player::isOldPos()
 {
 	m_Position = OldPos;
@@ -455,4 +464,23 @@ void Player::ReBound() {
 			m_Damage = false;
 		}
 	}
+}
+//銃の処理
+void Player::SutoponUpdate(){
+	XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
+	XMMATRIX matRot;
+	if (m_InterVal == 0) {
+		matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 90.0f));
+	}
+	else {
+		matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
+	}
+	move = XMVector3TransformNormal(move, matRot);
+	XMFLOAT2 l_Angle;
+	l_Angle.x = move.m128_f32[0];
+	l_Angle.y = move.m128_f32[2];
+	playerattach->Update();
+	playerattach->SetAfterAngle(l_Angle);
+	playerattach->SetPosition({ m_Position.x,playerattach->GetPosition().y,m_Position.z });
+	playerattach->SetRotation({ m_Rotation.x,m_Rotation.y + 90.0f,m_Rotation.z });
 }
