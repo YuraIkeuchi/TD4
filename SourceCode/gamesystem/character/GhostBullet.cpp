@@ -14,7 +14,7 @@ GhostBullet::GhostBullet() {
 //èâä˙âª
 bool GhostBullet::Initialize() {
 	m_Position = { 0.0f,0.0f,0.0f };
-	m_Scale = { 0.7f,0.7f,0.7f };
+	m_Scale = { 1.0f,1.0f,1.0f };
 	m_Color = { 0.0f,0.0f,0.0f,1.0f };
 	//CSVÇ©ÇÁì«Ç›çûÇ›
 	m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet.csv", "speed2")));
@@ -63,9 +63,9 @@ void GhostBullet::VanishBullet() {
 
 		m_Color.w = Ease(In, Cubic, m_Frame, 1.0f, 0.0f);
 		m_Scale = {
-			Ease(In, Cubic, m_Frame, 0.7f, 1.0f),
-			Ease(In, Cubic, m_Frame, 0.7f, 1.0f),
-			Ease(In, Cubic, m_Frame, 0.7f, 1.0f)
+			Ease(In, Cubic, m_Frame, 1.0f, 2.0f),
+			Ease(In, Cubic, m_Frame, 1.0f, 2.0f),
+			Ease(In, Cubic, m_Frame, 1.0f, 2.0f)
 		};
 	}
 }
