@@ -3,7 +3,14 @@
 #include "imgui.h"
 #include "VariableCommon.h"
 #include "JsonLoader.h"
-BackObj::BackObj() {
+BackObj* BackObj::GetInstance()
+{
+	static BackObj instance;
+
+	return &instance;
+}
+//É}ÉbÉvì«Ç›çûÇ›
+void BackObj::LoadMap() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Ground);
 	m_Object.reset(new IKEObject3d());
 	m_Object->Initialize();
@@ -47,10 +54,11 @@ BackObj::BackObj() {
 		}
 	}
 }
+
 //èâä˙âª
 bool BackObj::Initialize() {
-	m_Position = { 0.0f,-1.0f,0.0f };
-	m_Scale = { 0.7f,0.7f,0.7f };
+	m_Position = { 0.0f,3.0f,0.0f };
+	m_Scale = { 0.3f,0.3f,0.3f };
 	m_Color = { 0.5f,0.5f,0.5f,1.0f };
 	return true;
 }
