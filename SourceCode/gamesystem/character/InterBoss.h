@@ -102,7 +102,7 @@ private:
 protected:
 	//弾との当たり判定
 	void CollideBul(vector<InterBullet*>bullet);
-	
+	bool EndSummonRepos;
 	bool ResF;
 public:
 	bool Recv;

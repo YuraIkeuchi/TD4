@@ -99,6 +99,7 @@ void InterBoss::SummonEnemyUpda(std::vector<InterEnemy*> enemy)
 	}
 
 	if (SummonF) {
+		
 		for (auto i = 0; i < enemy.size(); i++)
 		{
 			if (enemy[i] == nullptr)continue;
@@ -129,6 +130,7 @@ void InterBoss::EndSummon(std::vector<InterEnemy*> enemy)
 			NextActionInteval++;
 			if (NextActionInteval > 180) {
 				ActionTimer++;
+				EndSummonRepos = true;
 				SummobnStop = false;
 			}
 		}
