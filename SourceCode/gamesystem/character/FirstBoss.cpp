@@ -102,7 +102,7 @@ void FirstBoss::Action() {
 		//タイマーカウンタ
 		if (noAction&& !Recv)ActionTimer++;
 
-		if (!_normal.GetAttackF()&&!SummonF && ActionTimer % 60 == 0) {
+		if (!_normal.GetAttackF()&&!SummonF && ActionTimer % 130 == 0) {
 			EndSummonRepos = false;
 			ResF = true;
 			SummobnStop = true;
@@ -111,10 +111,10 @@ void FirstBoss::Action() {
 		}
 
 		//通常攻撃
-		if (!SummobnStop&&!_cattack.GetAttackF()&&!_normal.GetAttackF() && ActionTimer % 135 == 0)
+		if (!SummobnStop&&!_cattack.GetAttackF()&&!_normal.GetAttackF() && ActionTimer % 60 == 0)
 			_normal.SetNormalAttackF(true);
 		//ため攻撃
-		if (!SummonF&&!_cattack.GetAttackF() && ActionTimer % 340 == 0)
+		if (!SummobnStop &&!_cattack.GetAttackF() && ActionTimer % 93 == 0)
 			_cattack.SetAttackF(true);
 
 
@@ -870,9 +870,17 @@ void FirstBoss::ChargeAttack::Draw()
 
 void FirstBoss::EndSumon_returnPos()
 {
+	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
+	XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
+	XMVECTOR PositionB = { m_Position.x,m_Position.y,m_Position.z };
+	//プレイヤーと敵のベクトルの長さ(差)を求める
+	XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
+
+	float RotY = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
+
 	if(EndSummonRepos)
 	{
-
+		m_Rotation.y = RotY * 60.f + 90.f;
 		RePosEaseT += 0.04f;
 		m_Position.x = Easing::EaseOut(RePosEaseT, OldPos_EndSummon.x,Player::GetInstance()->GetPosition().x + sinf(BossAngle * (PI / 180.0f)) * 20.0f);
 		m_Position.z = Easing::EaseOut(RePosEaseT, OldPos_EndSummon.z, Player::GetInstance()->GetPosition().z + cosf(BossAngle * (PI / 180.0f)) * 20.0f);
