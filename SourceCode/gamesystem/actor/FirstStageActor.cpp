@@ -82,7 +82,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	if (nowstate != CONVERSATION) {
 		Player::GetInstance()->Update();
 		enemymanager->Update();
-		//loadobj->FirstUpdate();
+		loadobj->FirstUpdate();
 		ParticleEmitter::GetInstance()->Update();
 	}
 	camerawork->Update(camera);
