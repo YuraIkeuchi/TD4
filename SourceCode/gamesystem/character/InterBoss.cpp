@@ -9,6 +9,23 @@ void InterBoss::Update() {
 	//行動
 	Action();
 	
+	//エフェクト
+	for (InterEffect* effect : effects) {
+		if (effect != nullptr) {
+			effect->Update();
+		}
+	}
+
+	//マークの削除
+	for (int i = 0; i < effects.size(); i++) {
+		if (effects[i] == nullptr) {
+			continue;
+		}
+
+		if (!effects[i]->GetAlive()) {
+			effects.erase(cbegin(effects) += i);
+		}
+	}
 }
 //描画
 void InterBoss::Draw(DirectXCommon* dxCommon) {
@@ -46,11 +63,20 @@ void InterBoss::CollideBul(vector<InterBullet*> bullet)
 				} else {
 					m_HP -= 2.0f;
 				}
+				BirthEffect();
 			}
 		}
 	}
 }
 
+//エフェクトの発生
+void InterBoss::BirthEffect() {
+	InterEffect* neweffect;
+	neweffect = new BreakEffect();
+	neweffect->Initialize();
+	neweffect->SetPosition(m_Position);
+	effects.push_back(neweffect);
+}
 
 void InterBoss::SummonEnemyInit(InterEnemy* enemy)
 {
