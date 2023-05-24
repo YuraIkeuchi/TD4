@@ -32,13 +32,11 @@ bool TutorialEnemy::Initialize() {
 }
 //s“®
 void TutorialEnemy::Action() {
-	float l_Vel = 0.15f;
-	//m_CircleSpeed += 1.0f;
-
-	Appearance();
-	RushAction();
-
-	Obj_SetParam();	//m_Position = Helper::GetInstance()->CircleMove({ 0.0f,5.0f,0.0f }, m_CircleScale, m_CircleSpeed);
+	if (!isStop) {
+		Appearance();
+		RushAction();
+	}
+	Obj_SetParam();
 	OnCollision();
 	ColPlayer();
 	Particle();

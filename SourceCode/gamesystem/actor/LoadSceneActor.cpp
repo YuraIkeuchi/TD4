@@ -1,7 +1,7 @@
 ﻿#include "LoadSceneActor.h"
 #include "SceneManager.h"
 #include "ImageManager.h"
-#include"Easing.h"
+#include "Easing.h"
 #include "Helper.h"
 
 //初期化
@@ -30,7 +30,7 @@ void LoadSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 //更新
 void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	lightgroup->Update();
-	camerawork->LoadActorUpdate(camera);
+	camerawork->SpecialUpdate(camera);
 
 	//関数ポインタで状態管理
 	(this->*stateTable[static_cast<size_t>(m_SceneState)])();
@@ -72,6 +72,7 @@ void LoadSceneActor::Draw(DirectXCommon* dxCommon) {
 }
 //前面描画
 void LoadSceneActor::SpriteDraw() {
+
 	IKESprite::PreDraw();
 	for (std::unique_ptr<IKESprite>& sprite : m_Sprites) {
 		sprite->Draw();
@@ -192,6 +193,7 @@ void LoadSceneActor::FinishUpdate() {
 }
 //背面描画
 void LoadSceneActor::BackDraw(DirectXCommon* dxCommon) {
+
 	for (std::unique_ptr<IKEObject3d>& obj : grounds) {
 		obj->Draw();
 	}

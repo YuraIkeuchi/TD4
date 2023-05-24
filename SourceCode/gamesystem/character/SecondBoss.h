@@ -13,6 +13,8 @@ public:
 	bool Initialize() override;//初期化
 
 	void Pause() override;//ポーズ
+
+	void Draw(DirectXCommon* dxCommon) override;//描画
 private:
 	void Action() override;//行動
 
@@ -55,7 +57,9 @@ private:
 	//転がるやつ
 	void Rolling();
 	//転がるやつの共通イージング
-	void RollEaseCommn(const XMFLOAT3& AfterPos,const float AddFrame);
+	void RollEaseCommn(const XMFLOAT3& AfterPos,const float AddFrame,const float AfterRot);
+	//転がる際の方向転換
+	void ChangeRot(const float AfterRot);
 	//スタンプ攻撃の初期化
 	void StampInit(const int AttackNumber,const bool Random);
 	//動きの初期化
@@ -63,7 +67,6 @@ private:
 
 	//テクスチャの更新
 	void MarkUpdate();
-public:
 
 private:
 	//移動回数の計算
@@ -162,10 +165,21 @@ private:
 		ROLL_SECOND,
 		ROLL_THIRD,
 		ROLL_FOURTH,
+		ROLL_FIVE,
+		ROLL_SIX,
 		ROLL_END,
 	};
 
 	int m_RollType;
+
+	//上昇度
+	float m_AddPower = 0.0f;
+	//重力加速度
+	float m_Gravity = 0.02f;
+
+	//方向転換するためのもの
+	bool m_ChangeRot = false;
+	float m_RotFrame = 0.0f;
 private:
 	unique_ptr<IKETexture> mark;
 	XMFLOAT4 m_MarkColor = { 1.0f,1.0f,1.0f,0.0f };

@@ -1,4 +1,4 @@
-#include "ParticleEmitter.h"
+ï»¿#include "ParticleEmitter.h"
 #include "VariableCommon.h"
 #include "ImageManager.h"
 #include <random>
@@ -11,15 +11,15 @@ ParticleEmitter* ParticleEmitter::GetInstance()
 
 void ParticleEmitter::Initialize()
 {
-	//ƒeƒNƒXƒ`ƒƒ‘S“Ç‚Ýž‚Ý
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£å…¨èª­ã¿è¾¼ã¿
 	LoadTexture();
-	//ƒp[ƒeƒBƒNƒ‹ƒ}ƒl[ƒWƒƒ[¶¬
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ãƒžãƒãƒ¼ã‚¸ãƒ£ãƒ¼ç”Ÿæˆ
 	circleParticle.reset(ParticleManager::Create(ImageManager::Normal));
 }
 
 void ParticleEmitter::Update()
 {
-	//ƒp[ƒeƒBƒNƒ‹ƒ}ƒl[ƒWƒƒ[XV
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ãƒžãƒãƒ¼ã‚¸ãƒ£ãƒ¼æ›´æ–°
 	circleParticle->Update();
 }
 
@@ -39,11 +39,11 @@ void ParticleEmitter::FireEffect(const int life, const XMFLOAT3& l_pos, const fl
 	circleParticle->Add(life, { pos.x,pos.y,pos.z }, vel, {}, startscale, endscale, startcolor, endcolor);
 }
 
-//”š”­
+//çˆ†ç™º
 void ParticleEmitter::Explosion(const int life, const XMFLOAT3& pos2, const float size, const float startscale, 
 	const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor){
 	for (int j = 0; j < 3; j++) {
-		//X,Y,Z‘S‚Ä[-2.0f, +2.0f]‚Åƒ‰ƒ“ƒ_ƒ€‚É•ª•z
+		//X,Y,Zå…¨ã¦[-2.0f, +2.0f]ã§ãƒ©ãƒ³ãƒ€ãƒ ã«åˆ†å¸ƒ
 		const float RandPos = 2.0f;
 		XMFLOAT3 pos = pos2;
 		pos.x += ((float)rand() / RAND_MAX * RandPos - RandPos / 2.0f) * size;
@@ -51,13 +51,13 @@ void ParticleEmitter::Explosion(const int life, const XMFLOAT3& pos2, const floa
 		pos.z += ((float)rand() / RAND_MAX * RandPos - RandPos / 2.0f) * size;
 
 		for (int i = 0; i < 10; i++) {
-			//X,Y,Z‘S‚Ä[-0.8f, +0.8f]‚Åƒ‰ƒ“ƒ_ƒ€‚É•ª•z
+			//X,Y,Zå…¨ã¦[-0.8f, +0.8f]ã§ãƒ©ãƒ³ãƒ€ãƒ ã«åˆ†å¸ƒ
 			const float RandPos2 = 0.8f;
 			pos.x += ((float)rand() / RAND_MAX * RandPos2 - RandPos2 / 2.0f) * size;
 			pos.y += ((float)rand() / RAND_MAX * RandPos2 - RandPos2 / 2.0f) * size;
 			pos.z += ((float)rand() / RAND_MAX * RandPos2 - RandPos2 / 2.0f) * size;
 
-			//X,Y,Z‘S‚Ä[-0.05f, +0.05f]‚Åƒ‰ƒ“ƒ_ƒ€‚É•ª•z
+			//X,Y,Zå…¨ã¦[-0.05f, +0.05f]ã§ãƒ©ãƒ³ãƒ€ãƒ ã«åˆ†å¸ƒ
 			const float RandVel = 0.05f;
 			XMFLOAT3 vel{};
 			vel.x = ((float)rand() / RAND_MAX * RandVel - RandVel / 2.0f) * size;
@@ -65,7 +65,7 @@ void ParticleEmitter::Explosion(const int life, const XMFLOAT3& pos2, const floa
 			vel.z = ((float)rand() / RAND_MAX * RandVel - RandVel / 2.0f) * size;
 			
 
-			//’Ç‰Á
+			//è¿½åŠ 
 			circleParticle->Add(life, pos, vel, {}, startscale, endscale, startcolor, endcolor);
 		}
 	}
@@ -73,7 +73,7 @@ void ParticleEmitter::Explosion(const int life, const XMFLOAT3& pos2, const floa
 
 void ParticleEmitter::AllDelete()
 {
-	//‘Sƒp[ƒeƒBƒNƒ‹‚Ìíœ
+	//å…¨ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã®å‰Šé™¤
 	circleParticle->AllDelete();
 }
 

@@ -1,4 +1,4 @@
-﻿#include "FirstStageActor.h"
+#include "FirstStageActor.h"
 #include "Audio.h"
 #include"Easing.h"
 #include "SceneManager.h"
@@ -7,7 +7,7 @@
 #include "ImageManager.h"
 #include <algorithm>
 #include <HungerGauge.h>
-
+#include "BackObj.h"
 //初期化
 void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	dxCommon->SetFullScreen(true);
@@ -21,6 +21,9 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
 	
+	sceneChanger_ = make_unique<SceneChanger>();
+	sceneChanger_->Initialize();
+
 	//各クラス
 	Player::GetInstance()->InitState({ 0.0f,0.0f,0.0f });
 	camerawork->Update(camera);
@@ -37,8 +40,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	enemymanager->SetSceneName("FIRSTSTAGE");
 	ui->SetBoss(enemymanager->GetBoss());
 
-	backobj = std::make_unique<BackObj>();
-	backobj->Initialize();
+	BackObj::GetInstance()->Initialize();
 
 	feed.reset(new Feed());
 	loadobj = std::make_unique<LoadStageObj>();
@@ -49,20 +51,30 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
 
-	if (enemymanager->BossDestroy() || input->TriggerKey(DIK_X)) {
-		//enemymanager
-		//SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
+	if (input->TriggerKey(DIK_X)) {
+		Audio::GetInstance()->StopWave(1);
+		SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
+
+	}
+
+	if (enemymanager->BossDestroy()) {
+		Audio::GetInstance()->StopWave(1);
+		sceneChanger_->ChangeStart();
+		sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
+
 	}
 
 	if (PlayerDestroy()) {
-		SceneManager::GetInstance()->ChangeScene("TITLE");
+		Audio::GetInstance()->StopWave(1);
+		sceneChanger_->ChangeStart();
+		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::NonReverse);
 	}
 	//音楽の音量が変わる
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 	VolumManager::GetInstance()->Update();
 	ui->Update();
 	//各クラス更新
-	backobj->Update();
+	BackObj::GetInstance()->Update();
 	if (nowstate != CONVERSATION) {
 		Player::GetInstance()->Update();
 		enemymanager->Update();
@@ -122,7 +134,7 @@ void FirstStageActor::BackDraw(DirectXCommon* dxCommon) {
 	////各クラスの描画
 	Player::GetInstance()->Draw(dxCommon);
 	loadobj->Draw(dxCommon);
-	backobj->Draw(dxCommon);
+	BackObj::GetInstance()->Draw(dxCommon);
 	//パーティクル描画
 	ParticleEmitter::GetInstance()->FlontDrawAll();
 	enemymanager->Draw(dxCommon);
@@ -138,9 +150,10 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	IKESprite::PostDraw();
 	ui->Draw();
 	feed->Draw();
+	sceneChanger_->Draw();
 }
 //IMGuiの描画
 void FirstStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	Player::GetInstance()->ImGuiDraw();
-	loadobj->ImGuiDraw();
+	//loadobj->ImGuiDraw();
 }

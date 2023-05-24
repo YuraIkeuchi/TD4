@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include"IKESprite.h"
 #include<memory>
 #include<DirectXMath.h>
@@ -12,16 +12,16 @@ public:
 	~UI();
 	void SetBoss(InterBoss* boss) { this->boss = boss; }
 private:
-	//‰¼ƒtƒHƒ“ƒg
+	//ä»®ãƒ•ã‚©ãƒ³ãƒˆ
 	struct SpriteData {
-		//‰æ‘œ
+		//ç”»åƒ
 		std::unique_ptr<IKESprite> Tex;
-		//Šî‘bƒpƒ‰ƒ[ƒ^
+		//åŸºç¤ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 		XMFLOAT2 Position = { 0,0 };
 		XMFLOAT2 Size = { 100,100 };
 		float Rotation = 0.f;
 		XMFLOAT4 Color = { 1,1,1,1 };
-		//•\¦‚Èƒtƒ‰ƒO
+		//è¡¨ç¤ºãªãƒ•ãƒ©ã‚°
 		bool IsVisible = true;
 	};
 	enum  SpriteName {
@@ -38,7 +38,7 @@ private:
 		UiMax
 	};
 
-	//ƒXƒvƒ‰ƒCƒg
+	//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	std::array<SpriteData, UiMax> sprites = {};
 
 	std::array<XMFLOAT2, UnderStatusGauge> pos = {
@@ -57,11 +57,11 @@ private:
 
 	std::vector<SpriteData>TexList;
 public:
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize();
-	//XV
+	//æ›´æ–°
 	void Update();
-	//•`‰æ
+	//æç”»
 	void Draw();
 private:
 	//
