@@ -29,9 +29,6 @@ void Text::Initialize(DirectXCommon* dxcommon, const XMVECTOR& color)
 
 void Text::Update(wchar_t* firstrow,wchar_t* secondrow,wchar_t* thirdrow)
 {
-	len[0] = wcslen(firstrow);
-	len[1] = wcslen(secondrow);
-	len[2] = wcslen(thirdrow);
 	for (int i = 0; i < len[0]; i++) {
 		firstrow_->SetString(firstrow);
 	}

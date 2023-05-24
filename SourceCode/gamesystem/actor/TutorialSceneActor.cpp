@@ -45,7 +45,8 @@ void TutorialSceneActor::IntroState() {
 	girl_color.w = Ease(Out, Sine, nowframe, 0, 1);
 
 
-	if (input->TriggerKey(DIK_SPACE)) {
+	if (DebugButton() ||
+		input->TriggerButton(Input::B)) {
 		conversation_->WardNone();
 
 		nowstate_ = state::MOVE;
@@ -63,15 +64,12 @@ void TutorialSceneActor::MoveState() {
 }
 
 void TutorialSceneActor::TextTalkState() {
-
-	
-
 	if (input->TriggerKey(DIK_RIGHT)) {
 		conversation_->WardNone();
 	}
 	
-	if (input->TriggerKey(DIK_SPACE)) {
-
+	if (DebugButton() ||
+		input->TriggerButton(Input::B)) {
 		firstrow_->StringReset();
 		secondrow_->StringReset();
 		thirdrow_->StringReset();
@@ -79,7 +77,6 @@ void TutorialSceneActor::TextTalkState() {
 		nowstate_ = state::SPAWNENEMY;
 	}
 }
-
 void TutorialSceneActor::SpawnEnemyState() {
 	loadobj->TutorialUpdate();
 	enemymanager->TutorialUpdate(0);
@@ -217,7 +214,7 @@ void TutorialSceneActor::MainTutorialState() {
 	enemymanager->TutorialUpdate(1);
 
 	if (DebugButton() || 
-		Clear(enemymanager->AllDeadEnemy(), 40)) {
+		Clear(enemymanager->AllDeadEnemy(), 60)) {
 		nowstate_ = state::COMPLETE;
 	}
 }
@@ -245,16 +242,14 @@ bool TutorialSceneActor::DebugButton() {
 		return false;
 	}
 }
-
 void TutorialSceneActor::CameraUpdate(DebugCamera* camera) {
 	if (nowstate_ != state::SPAWNALLENEMY) {
+		camerawork->DefaultCam();
 		camerawork->Update(camera);
 	} else {
 		camerawork->SpecialUpdate(camera);
 	}
 }
-
-
 bool TutorialSceneActor::Clear(bool mission, int waitTimerMax) {
 	if (!mission) { return false; }
 	waitTimer++;
@@ -312,12 +307,11 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	secondrow_->SetColor(kWhite);
 	thirdrow_->SetColor(kWhite);
 
-	backobj = std::make_unique<BackObj>();
-	backobj->Initialize();
+	BackObj::GetInstance()->Initialize();
 
 	loadobj = std::make_unique<LoadStageObj>();
 	loadobj->AllLoad("FIRSTSTAGE");
-	loadobj->SetEnemyManager(enemymanager.get());
+	LoadStageObj::SetEnemyManager(enemymanager.get());
 	//シーンチェンジャー
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
@@ -353,17 +347,10 @@ void TutorialSceneActor::Draw(DirectXCommon* dxCommon) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
-
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
 		ImGuiDraw(dxCommon);
-
-		if (static_cast<int>(nowstate_) % 2 == 0) {
-			conversation_->FontDraw(dxCommon);
-			Font::PostDraw(dxCommon);
-		}
-
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	} else {
@@ -373,12 +360,6 @@ void TutorialSceneActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-
-		if (static_cast<int>(nowstate_) % 2 == 0) {
-			conversation_->FontDraw(dxCommon);
-			Font::PostDraw(dxCommon);
-		}
-
 		dxCommon->PostDraw();
 	}
 }
@@ -409,8 +390,9 @@ void TutorialSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 		if (static_cast<int>(nowstate_) % 2 == 0) {
 			firstrow_->Draw(dxCommon);
 			secondrow_->Draw(dxCommon);
-			thardrow_->Draw(dxCommon);
+			conversation_->FontDraw(dxCommon);
 			Font::PostDraw(dxCommon);
+
 		}
 	} else {
 		ui->Draw();

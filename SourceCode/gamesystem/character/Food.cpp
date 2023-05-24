@@ -20,7 +20,7 @@ bool Food::Initialize() {
 	uniform_int_distribution<int> l_distX(-50, 60);
 	uniform_int_distribution<int> l_distZ(-55, 55);
 	m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
-	m_Scale = { 1.0f,1.0f,1.0f };
+	m_Scale = { 0.8f,0.8f,0.8f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_LockOn = false;
 	m_Alive = true;
@@ -61,7 +61,7 @@ void Food::Particle() {
 	float s_scale = 3.0f;
 	float e_scale = 0.0f;
 	if (m_Alive) {
-		ParticleEmitter::GetInstance()->FireEffect(10, m_Position, s_scale, e_scale, s_color, e_color);
+		//ParticleEmitter::GetInstance()->FireEffect(10, m_Position, s_scale, e_scale, s_color, e_color);
 	}
 }
 //“–‚½‚è”»’è

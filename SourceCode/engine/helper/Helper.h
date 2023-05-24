@@ -71,6 +71,7 @@ public:
 	XMFLOAT3 ChangeVECTOR(const XMVECTOR& pos);
 	void ChangeViewPort(XMMATRIX& matviewport, const XMVECTOR& offset);
 
+	float DirRotation(const XMFLOAT3& target, const XMFLOAT3& base,float margin);
 	//”z—ñ‚Ì’†g‚ª‘S•”true‚©
 	bool All_Of(bool* flag, int size);
 
