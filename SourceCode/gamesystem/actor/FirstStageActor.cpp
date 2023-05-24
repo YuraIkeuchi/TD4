@@ -54,10 +54,12 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	Input* input = Input::GetInstance();
 
 	if (enemymanager->BossDestroy() || input->TriggerKey(DIK_X)) {
+		Audio::GetInstance()->StopWave(1);
 		SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
 	}
 
 	if (PlayerDestroy()) {
+		Audio::GetInstance()->StopWave(1);
 		SceneManager::GetInstance()->ChangeScene("TITLE");
 	}
 	//音楽の音量が変わる

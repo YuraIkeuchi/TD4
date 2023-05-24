@@ -42,7 +42,7 @@ void CameraWork::ImGuiDraw() {
 	ImGui::End();
 }
 
-void CameraWork::LoadActorUpdate(DebugCamera* camera) {
+void CameraWork::SpecialUpdate(DebugCamera* camera) {
 	camera->SetEye(m_eyePos);
 	camera->SetTarget(m_targetPos);
 	camera->Update();
