@@ -23,6 +23,9 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	
 	font_ = make_unique<Font>();
 	font_->LoadFont(dxCommon);
+	//シーンチェンジャー
+	sceneChanger_ = make_unique<SceneChanger>();
+	sceneChanger_->Initialize();
 
 	//各クラス
 	Player::GetInstance()->InitState({ 0.0f,0.0f,0.0f });
@@ -53,14 +56,22 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
 
-	if (enemymanager->BossDestroy() || input->TriggerKey(DIK_X)) {
+	if (input->TriggerKey(DIK_X)) {
 		Audio::GetInstance()->StopWave(1);
 		SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
 	}
 
+	if (enemymanager->BossDestroy()) {
+		Audio::GetInstance()->StopWave(1);
+		sceneChanger_->ChangeStart();
+		sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
+
+	}
+
 	if (PlayerDestroy()) {
 		Audio::GetInstance()->StopWave(1);
-		SceneManager::GetInstance()->ChangeScene("TITLE");
+		sceneChanger_->ChangeStart();
+		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::NonReverse);
 	}
 	//音楽の音量が変わる
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
@@ -138,6 +149,7 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	
 	IKESprite::PostDraw();
 	ui->Draw();
+	sceneChanger_->Draw();
 }
 //IMGuiの描画
 void FirstStageActor::ImGuiDraw(DirectXCommon* dxCommon) {

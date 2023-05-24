@@ -11,18 +11,21 @@ void GameOverSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	BaseInitialize(dxCommon);
 
 	//オーディオ
-	Audio::GetInstance()->LoadSound(3, "Resources/Sound/BGM/jto3s-8fzcz.wav");
-	Audio::GetInstance()->LoopWave(3, VolumManager::GetInstance()->GetBGMVolum());
+	//Audio::GetInstance()->LoadSound(3, "Resources/Sound/BGM/jto3s-8fzcz.wav");
+	//Audio::GetInstance()->LoopWave(3, VolumManager::GetInstance()->GetBGMVolum());
+	//シーンチェンジャー
+	sceneChanger_ = make_unique<SceneChanger>();
+	sceneChanger_->Initialize();
 
 	//タイトル
-	ClearSprite = IKESprite::Create(ImageManager::GAMECLEAR, { 0.0f,0.0f });
+	ClearSprite = IKESprite::Create(ImageManager::GAMEOVER, { 0.0f,0.0f });
 }
 //更新
 void GameOverSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
-	if (input->TriggerButton(input->X)) {
-		SceneManager::GetInstance()->ChangeScene("TITLE");
-		Audio::GetInstance()->StopWave(3);
+	if (input->TriggerButton(input->B)) {
+		sceneChanger_->ChangeScene("TITLE", SceneChanger::Reverse);
+		sceneChanger_->ChangeStart();
 	}
 	lightgroup->Update();
 	//丸影
@@ -61,6 +64,7 @@ void GameOverSceneActor::FrontDraw() {
 	IKESprite::PreDraw();
 	ClearSprite->Draw();
 	IKESprite::PostDraw();
+	sceneChanger_->Draw();
 }
 //背面
 void GameOverSceneActor::BackDraw(DirectXCommon* dxCommon)

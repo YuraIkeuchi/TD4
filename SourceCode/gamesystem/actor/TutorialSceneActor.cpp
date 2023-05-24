@@ -1,12 +1,5 @@
 ﻿#include "TutorialSceneActor.h"
-#include "Audio.h"
-#include"Easing.h"
-#include"VariableCommon.h"
-#include "SceneManager.h"
-#include "imgui.h"
-#include "ParticleEmitter.h"
-#include "ImageManager.h"
-#include <algorithm>
+#include "VariableCommon.h"
 #include "HungerGauge.h"
 
 const XMVECTOR kWhite{ 1.f,1.f,1.f,1.f };
@@ -325,8 +318,10 @@ void TutorialSceneActor::CompleteState() {
 
 	if (DebugButton() ||
 		input->TriggerButton(Input::B)) {
-		SceneManager::GetInstance()->ChangeScene("FIRSTSTAGE");
+		sceneChanger_->ChangeStart();
 	}
+	sceneChanger_->ChangeScene("FIRSTSTAGE", SceneChanger::NonReverse);
+
 }
 
 
@@ -387,6 +382,10 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	loadobj = std::make_unique<LoadStageObj>();
 	loadobj->AllLoad("FIRSTSTAGE");
 	loadobj->SetEnemyManager(enemymanager.get());
+	//シーンチェンジャー
+	sceneChanger_ = make_unique<SceneChanger>();
+	sceneChanger_->Initialize();
+
 
 
 	//font
@@ -450,12 +449,6 @@ void TutorialSceneActor::Draw(DirectXCommon* dxCommon) {
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
 		ImGuiDraw(dxCommon);
-		if (static_cast<int>(nowstate_) % 2 == 0) {
-			firstrow_->Draw(dxCommon);
-			secondrow_->Draw(dxCommon);
-			thardrow_->Draw(dxCommon);
-			Font::PostDraw(dxCommon);
-		}
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	} else {
@@ -465,12 +458,6 @@ void TutorialSceneActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-		if (static_cast<int>(nowstate_) % 2 == 0) {
-			firstrow_->Draw(dxCommon);
-			secondrow_->Draw(dxCommon);
-			thardrow_->Draw(dxCommon);
-			Font::PostDraw(dxCommon);
-		}
 		dxCommon->PostDraw();
 	}
 }
@@ -501,9 +488,16 @@ void TutorialSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 		girl->Draw();
 		megahon->Draw();
 		IKESprite::PostDraw();
+		if (static_cast<int>(nowstate_) % 2 == 0) {
+			firstrow_->Draw(dxCommon);
+			secondrow_->Draw(dxCommon);
+			thardrow_->Draw(dxCommon);
+			Font::PostDraw(dxCommon);
+		}
 	} else {
 		ui->Draw();
 	}
+	sceneChanger_->Draw();
 }
 //IMGuiの描画
 void TutorialSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
