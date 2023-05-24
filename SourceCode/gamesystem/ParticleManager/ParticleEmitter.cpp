@@ -1,6 +1,7 @@
-#include "ParticleEmitter.h"
+ï»¿#include "ParticleEmitter.h"
 #include "VariableCommon.h"
 #include "ImageManager.h"
+#include "Helper.h"
 #include <random>
 ParticleEmitter* ParticleEmitter::GetInstance()
 {
@@ -11,15 +12,15 @@ ParticleEmitter* ParticleEmitter::GetInstance()
 
 void ParticleEmitter::Initialize()
 {
-	//ƒeƒNƒXƒ`ƒƒ‘S“Ç‚İ‚İ
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£å…¨èª­ã¿è¾¼ã¿
 	LoadTexture();
-	//ƒp[ƒeƒBƒNƒ‹ƒ}ƒl[ƒWƒƒ[¶¬
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ç”Ÿæˆ
 	circleParticle.reset(ParticleManager::Create(ImageManager::Normal));
 }
 
 void ParticleEmitter::Update()
 {
-	//ƒp[ƒeƒBƒNƒ‹ƒ}ƒl[ƒWƒƒ[XV
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼æ›´æ–°
 	circleParticle->Update();
 }
 
@@ -39,41 +40,66 @@ void ParticleEmitter::FireEffect(const int life, const XMFLOAT3& l_pos, const fl
 	circleParticle->Add(life, { pos.x,pos.y,pos.z }, vel, {}, startscale, endscale, startcolor, endcolor);
 }
 
-//”š”­
-void ParticleEmitter::Explosion(const int life, const XMFLOAT3& pos2, const float size, const float startscale, 
-	const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor){
+//çˆ†ç™º
+void ParticleEmitter::Explosion(const int life, const XMFLOAT3& pos, const float size, const float startscale,
+	const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor) {
 	for (int j = 0; j < 3; j++) {
-		//X,Y,Z‘S‚Ä[-2.0f, +2.0f]‚Åƒ‰ƒ“ƒ_ƒ€‚É•ª•z
+		//X,Y,Zå…¨ã¦[-2.0f, +2.0f]ã§ãƒ©ãƒ³ãƒ€ãƒ ã«åˆ†å¸ƒ
 		const float RandPos = 2.0f;
-		XMFLOAT3 pos = pos2;
-		pos.x += ((float)rand() / RAND_MAX * RandPos - RandPos / 2.0f) * size;
-		pos.y += ((float)rand() / RAND_MAX * RandPos - RandPos / 2.0f) * size;
-		pos.z += ((float)rand() / RAND_MAX * RandPos - RandPos / 2.0f) * size;
+		XMFLOAT3 l_pos = pos;
+		l_pos.x += ((float)rand() / RAND_MAX * RandPos - RandPos / 2.0f) * size;
+		l_pos.y += ((float)rand() / RAND_MAX * RandPos - RandPos / 2.0f) * size;
+		l_pos.z += ((float)rand() / RAND_MAX * RandPos - RandPos / 2.0f) * size;
 
 		for (int i = 0; i < 10; i++) {
-			//X,Y,Z‘S‚Ä[-0.8f, +0.8f]‚Åƒ‰ƒ“ƒ_ƒ€‚É•ª•z
+			//X,Y,Zå…¨ã¦[-0.8f, +0.8f]ã§ãƒ©ãƒ³ãƒ€ãƒ ã«åˆ†å¸ƒ
 			const float RandPos2 = 0.8f;
-			pos.x += ((float)rand() / RAND_MAX * RandPos2 - RandPos2 / 2.0f) * size;
-			pos.y += ((float)rand() / RAND_MAX * RandPos2 - RandPos2 / 2.0f) * size;
-			pos.z += ((float)rand() / RAND_MAX * RandPos2 - RandPos2 / 2.0f) * size;
+			l_pos.x += ((float)rand() / RAND_MAX * RandPos2 - RandPos2 / 2.0f) * size;
+			l_pos.y += ((float)rand() / RAND_MAX * RandPos2 - RandPos2 / 2.0f) * size;
+			l_pos.z += ((float)rand() / RAND_MAX * RandPos2 - RandPos2 / 2.0f) * size;
 
-			//X,Y,Z‘S‚Ä[-0.05f, +0.05f]‚Åƒ‰ƒ“ƒ_ƒ€‚É•ª•z
+			//X,Y,Zå…¨ã¦[-0.05f, +0.05f]ã§ãƒ©ãƒ³ãƒ€ãƒ ã«åˆ†å¸ƒ
 			const float RandVel = 0.05f;
 			XMFLOAT3 vel{};
 			vel.x = ((float)rand() / RAND_MAX * RandVel - RandVel / 2.0f) * size;
 			vel.y = ((float)rand() / RAND_MAX * RandVel - RandVel / 2.0f) * size;
 			vel.z = ((float)rand() / RAND_MAX * RandVel - RandVel / 2.0f) * size;
-			
 
-			//’Ç‰Á
-			circleParticle->Add(life, pos, vel, {}, startscale, endscale, startcolor, endcolor);
+
+			//è¿½åŠ 
+			circleParticle->Add(life, l_pos, vel, {}, startscale, endscale, startcolor, endcolor);
 		}
 	}
 }
 
+
+//ï¿½_ï¿½ï¿½ï¿½[ï¿½Wï¿½Gï¿½tï¿½Fï¿½Nï¿½g
+void ParticleEmitter::Break(const int life, const XMFLOAT3& pos,const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor) {
+	//ï¿½ï¿½ï¿½é”
+	const int l_Division = 80;
+	float l_AddPowerY = 0.025f;
+	//ï¿½ï¿½ï¿½ï¿½ï¿½wï¿½ï¿½(-50ï¿½ï¿½ï¿½ï¿½50)
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_bounddist(-50, 50);
+
+	XMFLOAT3 l_pos = pos;
+
+	XMFLOAT3 vel{};
+	
+	vel = {
+		(float)(l_bounddist(mt)) / l_Division,
+		(float)(l_bounddist(mt)) / l_Division,
+		(float)(l_bounddist(mt)) / l_Division,
+	};
+
+	vel.y += l_AddPowerY;
+
+	circleParticle->Add(life, l_pos, vel, {}, startscale, endscale, startcolor, endcolor);
+}
+
 void ParticleEmitter::AllDelete()
 {
-	//‘Sƒp[ƒeƒBƒNƒ‹‚Ìíœ
+	//å…¨ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã®å‰Šé™¤
 	circleParticle->AllDelete();
 }
 

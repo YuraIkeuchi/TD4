@@ -28,7 +28,7 @@ void ViewBullet::Action() {
 		//ˆÚ“®‚ð‰ÁŽZ
 		m_Position.x += m_Angle.x * m_AddSpeed;
 		m_Position.z += m_Angle.y * m_AddSpeed;
-		if ((m_Charge) && (Helper::GetInstance()->CheckValueRange(m_Scale.x,0.1f,2.0f))) {
+		if ((m_Charge) && (Helper::GetInstance()->CheckValueRange(m_Scale.x,0.1f,2.5f))) {
 			m_Scale = Helper::GetInstance()->Float3AddFloat(m_Scale, 0.1f);
 		}
 	}

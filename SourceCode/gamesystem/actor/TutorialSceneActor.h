@@ -63,6 +63,11 @@ public:
 	void BackDraw(DirectXCommon* dxCommon);
 	void ImGuiDraw(DirectXCommon* dxCommon);
 private:
+	void CameraUpdate(DebugCamera* camera);
+
+	bool DebugButton();
+
+private:
 	//クラス
 	Input* input = Input::GetInstance();
 
@@ -85,6 +90,9 @@ private:
 	XMFLOAT4 girl_color{ 1.5f,1.5f,1.5f,0.f };
 	XMFLOAT4 sutopon_color{ 1.f,1.f,1.f,0.f };
 
+
+	static bool isDebug;
+
 	float maxframe = 20.f;
 	float nowframe = 0.f;
 	float frame = 0.f;
@@ -92,7 +100,10 @@ private:
 	wchar_t* ward;
 	int conversation = 0;
 	int old_conversation = 0;
+	
 	int waitTimer = 0;
+	float cameraframe = 0.0f;
+	const float kCameraFrameMax = 90.0f;
 private://便利関数
 	bool Clear(bool mission,int waitTimerMax);
 

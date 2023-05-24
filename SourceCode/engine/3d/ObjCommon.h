@@ -71,10 +71,12 @@ protected:
 	XMFLOAT4 m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	XMFLOAT4 m_Addcolor = { 0.0f,0.0f,0.0f,1.0f };
 	//アニメーション関係
+	//アニメーション管理用
+	bool m_LoopFlag = true;
+	int m_AnimationSpeed = 1;
+	bool m_StopFlag = false;
+
 	int m_AnimationType = 0;
-	bool m_AnimeLoop = false;
-	int m_AnimeSpeed = 1;
-	bool m_AnimationStop = false;
 	bool m_ChangeColor = false;
 	float m_AddDisolve = 0.0f;
 };

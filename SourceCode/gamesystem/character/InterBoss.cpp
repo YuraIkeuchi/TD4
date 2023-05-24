@@ -1,23 +1,39 @@
-#include "InterBoss.h"
+ï»¿#include "InterBoss.h"
 #include"Collision.h"
 #include "Helper.h"
 #include "ParticleEmitter.h"
 #include "VariableCommon.h"
 #include <Helper.h>
-//XV
+//è­–ï½´è­ï½°
 void InterBoss::Update() {
-	//s“®
+	//é™¦æ‚Ÿè™š
 	Action();
+	DeathAction();
 	
+	//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
+	for (InterEffect* effect : effects) {
+		if (effect != nullptr) {
+			effect->Update();
+		}
+	}
+
+	//ãƒãƒ¼ã‚¯ã®å‰Šé™¤
+	for (int i = 0; i < effects.size(); i++) {
+		if (effects[i] == nullptr) {
+			continue;
+		}
+
+		if (!effects[i]->GetAlive()) {
+			effects.erase(cbegin(effects) += i);
+		}
+	}
 }
-//•`‰æ
+//è¬ å†—åˆ¤
 void InterBoss::Draw(DirectXCommon* dxCommon) {
-	Obj_Draw();
-	EffecttexDraw(dxCommon);
 }
-//ImGui•`‰æ
+//ImGuiè¬ å†—åˆ¤
 void InterBoss::ImGuiDraw() {
-	ImGui_Origin();//‚»‚ê‚¼‚ê‚ÌImGui
+	ImGui_Origin();
 }
 
 float InterBoss::HpPercent() {
@@ -27,17 +43,16 @@ float InterBoss::HpPercent() {
 	return temp;
 }
 
-//’e‚Æ‚Ì“–‚½‚è”»’è
 void InterBoss::CollideBul(vector<InterBullet*> bullet)
 {
 	if (ColChangeEaseT>0.f)return;
-	constexpr float BulRad = 1.f;
+	constexpr float BulRad = 3.f;
 
 	constexpr float BossRad = 3.f;
 
 	for (InterBullet* _bullet : bullet) {
 		if (_bullet != nullptr) {
-			if (Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, BulRad, m_Position.x, m_Position.z, BossRad))
+			if (Collision::SphereCollision(_bullet->GetPosition(), BulRad, m_Position, BossRad))
 			{
 				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Attack_Normal.wav", VolumManager::GetInstance()->GetSEVolum());
 				ActionTimer++;
@@ -48,11 +63,20 @@ void InterBoss::CollideBul(vector<InterBullet*> bullet)
 				} else {
 					m_HP -= 2.0f;
 				}
+				BirthEffect();
 			}
 		}
 	}
 }
 
+//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ç™ºç”Ÿ
+void InterBoss::BirthEffect() {
+	InterEffect* neweffect;
+	neweffect = new BreakEffect();
+	neweffect->Initialize();
+	neweffect->SetPosition(m_Position);
+	effects.push_back(neweffect);
+}
 
 void InterBoss::SummonEnemyInit(InterEnemy* enemy)
 {
@@ -99,6 +123,7 @@ void InterBoss::SummonEnemyUpda(std::vector<InterEnemy*> enemy)
 	}
 
 	if (SummonF) {
+		
 		for (auto i = 0; i < enemy.size(); i++)
 		{
 			if (enemy[i] == nullptr)continue;
@@ -115,20 +140,18 @@ void InterBoss::SummonEnemyUpda(std::vector<InterEnemy*> enemy)
 
 void InterBoss::EndSummon(std::vector<InterEnemy*> enemy)
 {
-	//‰¼‚ÌŠi”[”z—ñ
 	bool tempList[3];
-	//‘S•””­Ëó‘Ô‚È‚ç
 	for (auto i = 0; i < _countof(tempList); i++) {
 		if (enemy[i] == nullptr)continue;
 		tempList[i] = enemy[i]->GetShotF();
 	}
 	if (SummobnStop) {
-		//¢Š«ó‘Ô‰ğœ@‰~‰^“®ÄŠJ
 		if (Helper::GetInstance()->All_Of(tempList, _countof(tempList))) {
 			
 			NextActionInteval++;
 			if (NextActionInteval > 180) {
 				ActionTimer++;
+				EndSummonRepos = true;
 				SummobnStop = false;
 			}
 		}
@@ -155,4 +178,11 @@ void InterBoss::SummonEnemyDraw(std::vector<InterEnemy*> enemy, DirectXCommon* d
 		if (enemy[i] == nullptr)continue;
 		enemy[i]->Draw(dxcomn);
 	}
+}
+
+void InterBoss::DeathAction()
+{
+	if (isAlive)return;
+
+	DeathSceneF = true;
 }

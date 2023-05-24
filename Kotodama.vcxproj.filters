@@ -1,893 +1,717 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="SourceCords">
-      <UniqueIdentifier>{a22e3272-ed36-4504-99f3-cd0e29dad408}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\engine">
-      <UniqueIdentifier>{513954db-ca7e-4426-9e9c-0574cf248639}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem">
-      <UniqueIdentifier>{57df6c45-2997-4216-9fd3-a256e9292171}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\engine\2d">
-      <UniqueIdentifier>{3702f3f8-be45-4588-9423-236a4bb7e389}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\engine\3d">
-      <UniqueIdentifier>{c037806c-5c82-47a8-bb6e-87dee94832ee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\engine\audio">
-      <UniqueIdentifier>{d29a7bc5-f987-4e12-b9be-73f0308e0fbb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\engine\camera">
-      <UniqueIdentifier>{9273efb7-c1c0-4340-9756-a69c97ab2912}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\engine\collision">
-      <UniqueIdentifier>{98bab17a-e4a1-4f20-9c01-035cb2b2fdfb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\engine\ease">
-      <UniqueIdentifier>{f529272f-1842-41e8-a000-c9d490e4b958}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\engine\enginebase">
-      <UniqueIdentifier>{bd8d0723-b466-418d-a2e8-53a0a8579b23}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\engine\Fps">
-      <UniqueIdentifier>{609af8c5-c42e-4f94-a2cb-3ccbe7b353c5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\engine\helper">
-      <UniqueIdentifier>{b0cb2aab-4467-41ca-954a-9020ed8243ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\engine\input">
-      <UniqueIdentifier>{7ff4195e-c4d4-49f1-9ed7-2c0ccf443943}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\engine\light">
-      <UniqueIdentifier>{8f2231c9-9b5e-4f5f-b4c2-c21eeb9f5ba4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\engine\math">
-      <UniqueIdentifier>{ee03490b-5cb1-4f48-9091-c44b156b4d92}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\actor">
-      <UniqueIdentifier>{986a7410-1a39-4056-98e1-e6237a0c3869}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\backobj">
-      <UniqueIdentifier>{47b5e250-2c7c-4903-be24-f39f73f9b031}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character">
-      <UniqueIdentifier>{88c4bfa0-4d35-4e6a-b070-f0ae33aeabc4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\Editor">
-      <UniqueIdentifier>{54877bbc-7a41-4c7f-9795-4879dfa0ba5b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\GameCamera">
-      <UniqueIdentifier>{64f5c633-0ac5-4e6e-ae71-b726d461b337}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\particle">
-      <UniqueIdentifier>{09cac696-efe0-4726-a2e7-cdfb2ef5bc0d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\Scene">
-      <UniqueIdentifier>{ddd8f8ac-8f44-4aa2-8f87-c4510ee83987}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\UI">
-      <UniqueIdentifier>{b400998a-aacd-442a-bbb8-893425f3d0c5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\shader">
-      <UniqueIdentifier>{d8f925c5-f1c2-4155-8320-aa9add415a94}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\engine\2d\Common">
-      <UniqueIdentifier>{15631109-e6f1-4d3e-ae44-1fbcf1a67b98}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\engine\2d\PostEffect">
-      <UniqueIdentifier>{1cf2a80c-0a38-4daf-91ae-27d0f11af3f5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\engine\2d\Sprite">
-      <UniqueIdentifier>{fc8dad86-980e-47f5-bf2f-67b7d5e23311}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\engine\2d\Texture">
-      <UniqueIdentifier>{d893a109-c546-4c26-98c5-cad67f73ba8b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\engine\3d\Common">
-      <UniqueIdentifier>{ecba0db6-3f40-41cf-9126-45fce41c87b9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\engine\3d\Fbx">
-      <UniqueIdentifier>{c393bf98-c174-439d-a3a3-ae0af3c2999e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\engine\3d\Obj">
-      <UniqueIdentifier>{cbef8b53-c7b7-4dfa-9ddc-9677f6f4e62b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\actor\Base">
-      <UniqueIdentifier>{6b595102-e8c0-44d0-8289-0d9535d9ab27}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\actor\Clear">
-      <UniqueIdentifier>{d55567a6-b368-45d9-8f38-3155d2cf93c4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\actor\Editor">
-      <UniqueIdentifier>{4a875a6e-676e-497e-8bcd-1e9d9e6f7663}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\actor\Introduction">
-      <UniqueIdentifier>{d0b45933-9352-4cca-8456-6b9358302635}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\actor\Load">
-      <UniqueIdentifier>{a69dad06-a57d-4bf7-836a-cbba46838de2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\actor\Play">
-      <UniqueIdentifier>{33d3f061-9a4c-4ec6-8e4c-476f58a04ab9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\actor\Title">
-      <UniqueIdentifier>{58cfbfd8-8afc-45f8-a800-dcccd7191f64}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\actor\Play\First">
-      <UniqueIdentifier>{0757159e-1a4a-4a64-b8e4-219a568f8d94}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\actor\Play\Second">
-      <UniqueIdentifier>{912740f5-ecb2-4842-b664-d8797d03dd4e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Boss">
-      <UniqueIdentifier>{96578072-1cd2-4fdc-a3a3-e20c6feb7b8f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Bullet">
-      <UniqueIdentifier>{e6fba957-489b-4bd1-b6b8-80b8f2be5e5b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Enemy">
-      <UniqueIdentifier>{50f05e5d-85de-4c8a-8026-6ab444c8841d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Food">
-      <UniqueIdentifier>{80dd65ec-37a1-495d-beca-12665a6274fa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Ghost">
-      <UniqueIdentifier>{f6180d1a-8110-40f0-bc5e-b2acbaf5867e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\HungerGauge">
-      <UniqueIdentifier>{05a0d18f-0eb9-4d5c-b8eb-b4974016e23d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Player">
-      <UniqueIdentifier>{4f912d6c-39d7-4ce9-908e-b6f07911d7d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Boss\Common">
-      <UniqueIdentifier>{22b40a77-36b4-46e6-aa97-abd108d17af0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Boss\Various">
-      <UniqueIdentifier>{6691b65d-7803-446b-ac92-a5d1dc049676}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Bullet\Common">
-      <UniqueIdentifier>{579cbd89-a9ba-4c59-b506-195610499221}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Bullet\Various">
-      <UniqueIdentifier>{8282ef64-5afe-4d0d-b1ea-5fd809799d7e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Enemy\Common">
-      <UniqueIdentifier>{fcc7d3f8-10f5-4658-aff9-e80bcd2efcc0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Enemy\Various">
-      <UniqueIdentifier>{0b4ed056-365a-4883-a3bd-455bc89529ea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Boss\Various\First">
-      <UniqueIdentifier>{6c6a80b4-e8d8-4441-a826-a71906355d2b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Boss\Various\Second">
-      <UniqueIdentifier>{4ed8194f-082d-4483-a773-112e636385cd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\Editor\Base">
-      <UniqueIdentifier>{6c041188-41df-4de5-8df3-4e0587fc3678}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\Editor\Box">
-      <UniqueIdentifier>{206c59d9-7dc3-42f3-b6f6-9b2cb92a73c1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\Editor\Load">
-      <UniqueIdentifier>{ded5a934-5b29-44fc-9a25-7e2459492957}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\Scene\Base">
-      <UniqueIdentifier>{273569ab-bc77-46a1-8a6d-8a72547d1aef}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\Scene\Clear">
-      <UniqueIdentifier>{5a2c4934-b825-4775-afb6-3d976064e246}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\Scene\Editor">
-      <UniqueIdentifier>{5dd7d97b-9a6b-43c9-91a0-b8877b0be511}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\Scene\GameOver">
-      <UniqueIdentifier>{8fb88fa7-7f5d-4280-ab2f-4851b3db1a28}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\Scene\Introduction">
-      <UniqueIdentifier>{89106f55-c0fb-4813-86d8-50a427396ee6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\Scene\Load">
-      <UniqueIdentifier>{d841c39d-28b0-40b6-be3d-a1880b7b9b93}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\Scene\PlayScene">
-      <UniqueIdentifier>{fe73e2be-ef30-4bdc-9c02-1d5be881f3d8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\Scene\Title">
-      <UniqueIdentifier>{d073710b-5b3a-4cf4-9cde-9c8142a3606a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\Scene\PlayScene\First">
-      <UniqueIdentifier>{7a6240a8-2e9f-4bc8-86b4-027b4745a3c5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\Scene\PlayScene\Second">
-      <UniqueIdentifier>{15e0fe8b-f0eb-4158-8735-6e366f39faaa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\shader\2d">
-      <UniqueIdentifier>{b7366ece-9203-4ce3-bbd5-4baa9ca65335}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\shader\3d">
-      <UniqueIdentifier>{8324039b-1a13-496b-832b-aa912b4acccd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\shader\2d\particle">
-      <UniqueIdentifier>{fd27e61d-47ec-42b1-8be0-4fe89be9df81}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\shader\2d\posteffect">
-      <UniqueIdentifier>{c45ce35d-17a9-43b8-905e-42b552818d59}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\shader\2d\shadowmap">
-      <UniqueIdentifier>{b409c4ac-64b8-468a-be46-393c989f03b5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\shader\2d\sprite">
-      <UniqueIdentifier>{86112b14-df5f-4131-ad34-abe6e02ddfa4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\shader\2d\texture">
-      <UniqueIdentifier>{7592531a-7cb0-495f-a359-f5a1cd02f0fe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\shader\3d\obj">
-      <UniqueIdentifier>{08ef84bc-550f-4eb5-aaea-8616281dd6d5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\shader\3d\fbx">
-      <UniqueIdentifier>{1340815c-ee78-4140-ba53-dbae14afda5d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Boss\Attach">
-      <UniqueIdentifier>{4bbf7cee-5cb7-45f0-abcf-10a97f4f28d1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Boss\Attach\Stamp">
-      <UniqueIdentifier>{dc0d5067-c5c6-478c-a4f4-227349b70656}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Boss\Attach\Stamp\Common">
-      <UniqueIdentifier>{586d10a6-9f50-4765-a31b-167c925d78fa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Boss\Attach\Stamp\Various">
-      <UniqueIdentifier>{056d0a58-0192-484e-a97b-c2d4ea01b954}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\actor\Tutorial">
-      <UniqueIdentifier>{b6439317-7739-4999-8c2e-fe9ab70de3dd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\Scene\Tutorial">
-      <UniqueIdentifier>{80a0ef15-8cb6-4b09-b3c9-8506f077d388}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Boss\Attach\ShockWave">
-      <UniqueIdentifier>{77d10199-6335-4155-991e-4275039f7df2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SourceCords\gamesystem\character\Boss\Attach\Predict">
-      <UniqueIdentifier>{be52123a-913f-41f2-9e7a-bab117cec069}</UniqueIdentifier>
-    </Filter>
+    <FxCompile Include="Resources\Shaders\BasicPS.hlsl">
+      <Filter>Shader\3d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\FBXPS.hlsl">
+      <Filter>Shader\3d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\BasicVS.hlsl">
+      <Filter>Shader\3d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\FBXVS.hlsl">
+      <Filter>Shader\3d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\GaussianPS.hlsl">
+      <Filter>Shader\2d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\GaussianVS.hlsl">
+      <Filter>Shader\2d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\NewToneMapPS.hlsl">
+      <Filter>Shader\2d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\OBJPixelShader.hlsl">
+      <Filter>Shader\2d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\OBJVertexShader.hlsl">
+      <Filter>Shader\2d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticleGS.hlsl">
+      <Filter>Shader\2d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticlePS.hlsl">
+      <Filter>Shader\2d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticleVS.hlsl">
+      <Filter>Shader\2d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\PostEffectTestPS.hlsl">
+      <Filter>Shader\2d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\PostEffectTestVS.hlsl">
+      <Filter>Shader\2d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\SpritePS.hlsl">
+      <Filter>Shader\2d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\SpriteVS.hlsl">
+      <Filter>Shader\2d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ShadowMapPS.hlsl">
+      <Filter>Shader\2d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ShadowMapVS.hlsl">
+      <Filter>Shader\2d</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\SepiaPS.hlsl">
+      <Filter>Shader\2d</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SourceCode\engine\2d\DebugText.cpp">
-      <Filter>SourceCords\engine\2d\Sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\2d\Font.cpp">
-      <Filter>SourceCords\engine\2d\Sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\2d\IKESprite.cpp">
-      <Filter>SourceCords\engine\2d\Sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\2d\IKETexture.cpp">
-      <Filter>SourceCords\engine\2d\Texture</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\2d\ImageManager.cpp">
-      <Filter>SourceCords\engine\2d\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\2d\PostEffect.cpp">
-      <Filter>SourceCords\engine\2d\PostEffect</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\2d\ShadowMap.cpp">
-      <Filter>SourceCords\engine\2d\PostEffect</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\3d\IKEFbxLoader.cpp">
-      <Filter>SourceCords\engine\3d\Fbx</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\3d\IKEFBXModel.cpp">
-      <Filter>SourceCords\engine\3d\Fbx</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\3d\IKEFBXObject3d.cpp">
-      <Filter>SourceCords\engine\3d\Fbx</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\3d\IKEMaterial.cpp">
-      <Filter>SourceCords\engine\3d\Obj</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\3d\IKEMesh.cpp">
-      <Filter>SourceCords\engine\3d\Obj</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\3d\IKEModel.cpp">
-      <Filter>SourceCords\engine\3d\Obj</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\3d\IKEObject3d.cpp">
-      <Filter>SourceCords\engine\3d\Obj</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\3d\ModelManager.cpp">
-      <Filter>SourceCords\engine\3d\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\3d\ObjCommon.cpp">
-      <Filter>SourceCords\engine\3d\Common</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\engine\audio\Audio.cpp">
-      <Filter>SourceCords\engine\audio</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\audio\VolumManager.cpp">
-      <Filter>SourceCords\engine\audio</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\camera\Camera.cpp">
-      <Filter>SourceCords\engine\camera</Filter>
+      <Filter>engine\audio</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\engine\camera\DebugCamera.cpp">
-      <Filter>SourceCords\engine\camera</Filter>
+      <Filter>engine\camera</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\engine\camera\ShadowCamera.cpp">
-      <Filter>SourceCords\engine\camera</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\collision\BaseCollider.cpp">
-      <Filter>SourceCords\engine\collision</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\collision\Collision.cpp">
-      <Filter>SourceCords\engine\collision</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\collision\CollisionInfo.cpp">
-      <Filter>SourceCords\engine\collision</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\collision\CollisionManager.cpp">
-      <Filter>SourceCords\engine\collision</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\collision\CollisionPrimitive.cpp">
-      <Filter>SourceCords\engine\collision</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\collision\CollisionTypes.cpp">
-      <Filter>SourceCords\engine\collision</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\collision\MeshCollider.cpp">
-      <Filter>SourceCords\engine\collision</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\collision\SphereCollider.cpp">
-      <Filter>SourceCords\engine\collision</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\collision\TouchableObject.cpp">
-      <Filter>SourceCords\engine\collision</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\ease\Easing.cpp">
-      <Filter>SourceCords\engine\ease</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\enginebase\AbstractSceneFactory.cpp">
-      <Filter>SourceCords\engine\enginebase</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\enginebase\CsvLoader.cpp">
-      <Filter>SourceCords\engine\enginebase</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\enginebase\DirectXCommon.cpp">
-      <Filter>SourceCords\engine\enginebase</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\enginebase\JsonLoader.cpp">
-      <Filter>SourceCords\engine\enginebase</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\enginebase\main.cpp">
-      <Filter>SourceCords\engine\enginebase</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\enginebase\OpenBrowser.cpp">
-      <Filter>SourceCords\engine\enginebase</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\enginebase\SceneFactory.cpp">
-      <Filter>SourceCords\engine\enginebase</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\enginebase\WinApp.cpp">
-      <Filter>SourceCords\engine\enginebase</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\enginebase\XorShift.cpp">
-      <Filter>SourceCords\engine\enginebase</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\FpsManager\FPSManager.cpp">
-      <Filter>SourceCords\engine\Fps</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\helper\Helper.cpp">
-      <Filter>SourceCords\engine\helper</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\helper\Spline.cpp">
-      <Filter>SourceCords\engine\helper</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\input\Input.cpp">
-      <Filter>SourceCords\engine\input</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\shake\Shake.cpp">
-      <Filter>SourceCords\engine\helper</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\light\LightGroup.cpp">
-      <Filter>SourceCords\engine\light</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\light\PointLight.cpp">
-      <Filter>SourceCords\engine\light</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\light\SpotLight.cpp">
-      <Filter>SourceCords\engine\light</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\math\Matrix4.cpp">
-      <Filter>SourceCords\engine\math</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\math\Quaternion.cpp">
-      <Filter>SourceCords\engine\math</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\math\Vector3.cpp">
-      <Filter>SourceCords\engine\math</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\actor\BaseActor.cpp">
-      <Filter>SourceCords\gamesystem\actor\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\actor\ClearSceneActor.cpp">
-      <Filter>SourceCords\gamesystem\actor\Clear</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\actor\EditorSceneActor.cpp">
-      <Filter>SourceCords\gamesystem\actor\Editor</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\actor\FirstStageActor.cpp">
-      <Filter>SourceCords\gamesystem\actor\Play\First</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\actor\IntroductionSceneActor.cpp">
-      <Filter>SourceCords\gamesystem\actor\Introduction</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\actor\LoadSceneActor.cpp">
-      <Filter>SourceCords\gamesystem\actor\Load</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\actor\TitleSceneActor.cpp">
-      <Filter>SourceCords\gamesystem\actor\Title</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\actor\SecondStageActor.cpp">
-      <Filter>SourceCords\gamesystem\actor\Play\Second</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\backobj\BackObj.cpp">
-      <Filter>SourceCords\gamesystem\backobj</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\AttackBullet.cpp">
-      <Filter>SourceCords\gamesystem\character\Bullet\Various</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\EnemyManager.cpp">
-      <Filter>SourceCords\gamesystem\character\Enemy\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\Food.cpp">
-      <Filter>SourceCords\gamesystem\character\Food</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\Ghost.cpp">
-      <Filter>SourceCords\gamesystem\character\Ghost</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\GhostBullet.cpp">
-      <Filter>SourceCords\gamesystem\character\Bullet\Various</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\HungerGauge.cpp">
-      <Filter>SourceCords\gamesystem\character\HungerGauge</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\InterBoss.cpp">
-      <Filter>SourceCords\gamesystem\character\Boss\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\InterBullet.cpp">
-      <Filter>SourceCords\gamesystem\character\Bullet\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\InterEnemy.cpp">
-      <Filter>SourceCords\gamesystem\character\Enemy\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\NormalEnemy.cpp">
-      <Filter>SourceCords\gamesystem\character\Enemy\Various</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\Player.cpp">
-      <Filter>SourceCords\gamesystem\character\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\FirstBoss.cpp">
-      <Filter>SourceCords\gamesystem\character\Boss\Various\First</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\SecondBoss.cpp">
-      <Filter>SourceCords\gamesystem\character\Boss\Various\Second</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\ViewBullet.cpp">
-      <Filter>SourceCords\gamesystem\character\Bullet\Various</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\editor\Editor.cpp">
-      <Filter>SourceCords\gamesystem\Editor\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\editor\LoadBox.cpp">
-      <Filter>SourceCords\gamesystem\Editor\Box</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\editor\LoadManager.cpp">
-      <Filter>SourceCords\gamesystem\Editor\Load</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\editor\LoadStageObj.cpp">
-      <Filter>SourceCords\gamesystem\Editor\Load</Filter>
+    <ClCompile Include="SourceCode\engine\camera\Camera.cpp">
+      <Filter>engine\camera</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\gamecamera\CameraWork.cpp">
-      <Filter>SourceCords\gamesystem\GameCamera</Filter>
+      <Filter>engine\camera</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\ui\UI.cpp">
-      <Filter>SourceCords\gamesystem\UI</Filter>
+    <ClCompile Include="SourceCode\engine\2d\DebugText.cpp">
+      <Filter>engine\2d</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleEmitter.cpp">
-      <Filter>SourceCords\gamesystem\particle</Filter>
+    <ClCompile Include="SourceCode\engine\2d\Feed.cpp">
+      <Filter>engine\2d</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleManager.cpp">
-      <Filter>SourceCords\gamesystem\particle</Filter>
+    <ClCompile Include="SourceCode\engine\2d\Font.cpp">
+      <Filter>engine\2d</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\scene\BaseScene.cpp">
-      <Filter>SourceCords\gamesystem\Scene\Base</Filter>
+    <ClCompile Include="SourceCode\engine\2d\IKESprite.cpp">
+      <Filter>engine\2d</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\scene\Framework.cpp">
-      <Filter>SourceCords\gamesystem\Scene\Base</Filter>
+    <ClCompile Include="SourceCode\engine\2d\IKETexture.cpp">
+      <Filter>engine\2d</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\scene\IkeGame.cpp">
-      <Filter>SourceCords\gamesystem\Scene\Base</Filter>
+    <ClCompile Include="SourceCode\engine\2d\ImageManager.cpp">
+      <Filter>engine\2d\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\scene\SceneManager.cpp">
-      <Filter>SourceCords\gamesystem\Scene\Base</Filter>
+    <ClCompile Include="SourceCode\engine\2d\PostEffect.cpp">
+      <Filter>engine\2d</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\scene\SceneChanger.cpp">
-      <Filter>SourceCords\gamesystem\Scene\Base</Filter>
+    <ClCompile Include="SourceCode\engine\2d\ShadowMap.cpp">
+      <Filter>engine\2d</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\scene\ClearScene.cpp">
-      <Filter>SourceCords\gamesystem\Scene\Clear</Filter>
+    <ClCompile Include="SourceCode\engine\3d\IKEObject3d.cpp">
+      <Filter>engine\3d\Obj</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\scene\EditorScene.cpp">
-      <Filter>SourceCords\gamesystem\Scene\Editor</Filter>
+    <ClCompile Include="SourceCode\engine\3d\IKEModel.cpp">
+      <Filter>engine\3d\Obj</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\scene\GameoverScene.cpp">
-      <Filter>SourceCords\gamesystem\Scene\GameOver</Filter>
+    <ClCompile Include="SourceCode\engine\3d\IKEMesh.cpp">
+      <Filter>engine\3d\Obj</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\scene\IntroductionScene.cpp">
-      <Filter>SourceCords\gamesystem\Scene\Introduction</Filter>
+    <ClCompile Include="SourceCode\engine\3d\IKEMaterial.cpp">
+      <Filter>engine\3d\Obj</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\scene\LoadScene.cpp">
-      <Filter>SourceCords\gamesystem\Scene\Load</Filter>
+    <ClCompile Include="SourceCode\engine\3d\IKEFbxLoader.cpp">
+      <Filter>engine\3d\Fbx</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\scene\TitleScene.cpp">
-      <Filter>SourceCords\gamesystem\Scene\Title</Filter>
+    <ClCompile Include="SourceCode\engine\3d\IKEFBXModel.cpp">
+      <Filter>engine\3d\Fbx</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\scene\FirstStage.cpp">
-      <Filter>SourceCords\gamesystem\Scene\PlayScene\First</Filter>
+    <ClCompile Include="SourceCode\engine\3d\IKEFBXObject3d.cpp">
+      <Filter>engine\3d\Fbx</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\scene\SecondStage.cpp">
-      <Filter>SourceCords\gamesystem\Scene\PlayScene\Second</Filter>
+    <ClCompile Include="SourceCode\engine\3d\ModelManager.cpp">
+      <Filter>engine\3d\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\scene\PlaceBox.cpp">
-      <Filter>SourceCords\gamesystem\Editor\Box</Filter>
+    <ClCompile Include="SourceCode\engine\3d\ObjCommon.cpp">
+      <Filter>engine\3d\Base</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\scene\PlaceManager.cpp">
-      <Filter>SourceCords\gamesystem\Editor\Box</Filter>
+    <ClCompile Include="SourceCode\engine\audio\VolumManager.cpp">
+      <Filter>engine\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\camera\ShadowCamera.cpp">
+      <Filter>engine\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\ease\Easing.cpp">
+      <Filter>engine\ease</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\collision\BaseCollider.cpp">
+      <Filter>engine\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\collision\Collision.cpp">
+      <Filter>engine\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\collision\CollisionInfo.cpp">
+      <Filter>engine\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\collision\CollisionManager.cpp">
+      <Filter>engine\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\collision\CollisionPrimitive.cpp">
+      <Filter>engine\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\collision\CollisionTypes.cpp">
+      <Filter>engine\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\collision\MeshCollider.cpp">
+      <Filter>engine\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\collision\SphereCollider.cpp">
+      <Filter>engine\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\collision\TouchableObject.cpp">
+      <Filter>engine\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\enginebase\AbstractSceneFactory.cpp">
+      <Filter>engine\enginebase</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\enginebase\CsvLoader.cpp">
+      <Filter>engine\enginebase</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\enginebase\DirectXCommon.cpp">
+      <Filter>engine\enginebase</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\enginebase\JsonLoader.cpp">
+      <Filter>engine\enginebase</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\enginebase\main.cpp">
+      <Filter>engine\enginebase</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\enginebase\OpenBrowser.cpp">
+      <Filter>engine\enginebase</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\enginebase\SceneFactory.cpp">
+      <Filter>engine\enginebase</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\enginebase\WinApp.cpp">
+      <Filter>engine\enginebase</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\enginebase\XorShift.cpp">
+      <Filter>engine\enginebase</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\FpsManager\FPSManager.cpp">
+      <Filter>engine\FpsManager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\helper\Helper.cpp">
+      <Filter>engine\helper</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\helper\Spline.cpp">
+      <Filter>engine\helper</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\input\Input.cpp">
+      <Filter>engine\input</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\light\LightGroup.cpp">
+      <Filter>engine\light</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\light\PointLight.cpp">
+      <Filter>engine\light</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\light\SpotLight.cpp">
+      <Filter>engine\light</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\math\Vector3.cpp">
+      <Filter>engine\math</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\math\Quaternion.cpp">
+      <Filter>engine\math</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\math\Matrix4.cpp">
+      <Filter>engine\math</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\shake\Shake.cpp">
+      <Filter>engine\shake</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\BaseActor.cpp">
+      <Filter>gamesystem\actor\base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\ClearSceneActor.cpp">
+      <Filter>gamesystem\actor\Clear</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\EditorSceneActor.cpp">
+      <Filter>gamesystem\actor\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\FirstStageActor.cpp">
+      <Filter>gamesystem\actor\First</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\actor\GameOverSceneActor.cpp">
-      <Filter>SourceCords\gamesystem\actor\GameOver</Filter>
+      <Filter>gamesystem\actor\GameOver</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\IntroductionSceneActor.cpp">
+      <Filter>gamesystem\actor\base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\LoadSceneActor.cpp">
+      <Filter>gamesystem\actor\Load</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\SecondStageActor.cpp">
+      <Filter>gamesystem\actor\Second</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\TitleSceneActor.cpp">
+      <Filter>gamesystem\actor\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\backobj\BackObj.cpp">
+      <Filter>gamesystem\backobj</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\bossattach\InterStamp.cpp">
-      <Filter>SourceCords\gamesystem\character\Boss\Attach\Stamp\Common</Filter>
+      <Filter>gamesystem\bossattach\Stamp\Base</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\bossattach\AngerStamp.cpp">
-      <Filter>SourceCords\gamesystem\character\Boss\Attach\Stamp\Various</Filter>
+      <Filter>gamesystem\bossattach\Stamp\Derived</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\bossattach\JoyStamp.cpp">
-      <Filter>SourceCords\gamesystem\character\Boss\Attach\Stamp\Various</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\scene\TutorialScene.cpp">
-      <Filter>SourceCords\gamesystem\Scene\Tutorial</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\actor\TutorialSceneActor.cpp">
-      <Filter>SourceCords\gamesystem\actor\Tutorial</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\bossattach\ShockWave.cpp">
-      <Filter>SourceCords\gamesystem\character\Boss\Attach\ShockWave</Filter>
+      <Filter>gamesystem\bossattach\Stamp\Derived</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\bossattach\Predict.cpp">
-      <Filter>SourceCords\gamesystem\character\Boss\Attach\Predict</Filter>
+      <Filter>gamesystem\bossattach\Stamp\Derived</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\bossattach\ShockWave.cpp">
+      <Filter>gamesystem\bossattach\Stamp\Derived</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\TutorialSceneActor.cpp">
+      <Filter>gamesystem\actor\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\AttackBullet.cpp">
+      <Filter>gamesystem\charactor\Bullet\Derived\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\GhostBullet.cpp">
+      <Filter>gamesystem\charactor\Bullet\Derived\Ghost</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\InterBullet.cpp">
+      <Filter>gamesystem\charactor\Bullet\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\InterEnemy.cpp">
+      <Filter>gamesystem\charactor\Enemy\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\NormalEnemy.cpp">
+      <Filter>gamesystem\charactor\Enemy\Normal</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\Ghost.cpp">
+      <Filter>gamesystem\charactor\Ghost</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\Food.cpp">
+      <Filter>gamesystem\charactor\Food</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\FirstBoss.cpp">
+      <Filter>gamesystem\charactor\Boss\First</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\SecondBoss.cpp">
+      <Filter>gamesystem\charactor\Boss\Second</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\InterBoss.cpp">
+      <Filter>gamesystem\charactor\Boss\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\EnemyManager.cpp">
+      <Filter>gamesystem\charactor\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\Player.cpp">
+      <Filter>gamesystem\charactor\Player</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\PlayerAttach.cpp">
-      <Filter>SourceCords\gamesystem\character\Player</Filter>
+      <Filter>gamesystem\charactor\Player</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\TutorialEnemy.cpp">
-      <Filter>SourceCords\gamesystem\character\Enemy\Various</Filter>
+      <Filter>gamesystem\charactor\Enemy\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\ViewBullet.cpp">
+      <Filter>gamesystem\charactor\Bullet\Derived\View</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\HungerGauge.cpp">
+      <Filter>gamesystem\charactor\Hunger</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\editor\Editor.cpp">
+      <Filter>gamesystem\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\editor\LoadBox.cpp">
+      <Filter>gamesystem\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\editor\LoadManager.cpp">
+      <Filter>gamesystem\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\editor\LoadStageObj.cpp">
+      <Filter>gamesystem\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\InterEffect.cpp">
+      <Filter>gamesystem\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\BreakEffect.cpp">
+      <Filter>gamesystem\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleManager.cpp">
+      <Filter>gamesystem\particle</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleEmitter.cpp">
+      <Filter>gamesystem\particle</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\EditorScene.cpp">
+      <Filter>gamesystem\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\ClearScene.cpp">
+      <Filter>gamesystem\scene\Clear</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\FirstStage.cpp">
+      <Filter>gamesystem\scene\Play\First</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\LoadScene.cpp">
+      <Filter>gamesystem\scene\Load</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\GameoverScene.cpp">
+      <Filter>gamesystem\scene\GameOver</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\BaseScene.cpp">
+      <Filter>gamesystem\scene\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\SecondStage.cpp">
+      <Filter>gamesystem\scene\Play\Second</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\TutorialScene.cpp">
+      <Filter>gamesystem\scene\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\IntroductionScene.cpp">
+      <Filter>gamesystem\scene\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\Framework.cpp">
+      <Filter>gamesystem\scene\Base\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\IkeGame.cpp">
+      <Filter>gamesystem\scene\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\SceneManager.cpp">
+      <Filter>gamesystem\scene\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\SceneChanger.cpp">
+      <Filter>gamesystem\scene\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\TitleScene.cpp">
+      <Filter>gamesystem\scene\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\PlaceBox.cpp">
+      <Filter>gamesystem\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\ui\UI.cpp">
+      <Filter>gamesystem\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\PlaceManager.cpp">
+      <Filter>gamesystem\editor</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\text\Text.cpp" />
     <ClCompile Include="SourceCode\gamesystem\Conversation\Conversation.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SourceCode\engine\2d\DebugText.h">
-      <Filter>SourceCords\engine\2d\Sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\2d\Font.h">
-      <Filter>SourceCords\engine\2d\Sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\2d\IKESprite.h">
-      <Filter>SourceCords\engine\2d\Sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\2d\IKETexture.h">
-      <Filter>SourceCords\engine\2d\Texture</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\2d\ImageManager.h">
-      <Filter>SourceCords\engine\2d\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\2d\PostEffect.h">
-      <Filter>SourceCords\engine\2d\PostEffect</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\2d\ShadowMap.h">
-      <Filter>SourceCords\engine\2d\PostEffect</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\3d\IKEFbxLoader.h">
-      <Filter>SourceCords\engine\3d\Fbx</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\3d\IKEFBXModel.h">
-      <Filter>SourceCords\engine\3d\Fbx</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\3d\IKEFBXObject3d.h">
-      <Filter>SourceCords\engine\3d\Fbx</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\3d\IKEMaterial.h">
-      <Filter>SourceCords\engine\3d\Obj</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\3d\IKEMesh.h">
-      <Filter>SourceCords\engine\3d\Obj</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\3d\IKEModel.h">
-      <Filter>SourceCords\engine\3d\Obj</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\3d\IKEObject3d.h">
-      <Filter>SourceCords\engine\3d\Obj</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\3d\ObjCommon.h">
-      <Filter>SourceCords\engine\3d\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\3d\ModelManager.h">
-      <Filter>SourceCords\engine\3d\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\audio\Audio.h">
-      <Filter>SourceCords\engine\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\audio\VolumManager.h">
-      <Filter>SourceCords\engine\audio</Filter>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
+      <Filter>engine\camera</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\engine\camera\Camera.h">
-      <Filter>SourceCords\engine\camera</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
-      <Filter>SourceCords\engine\camera</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\camera\ShadowCamera.h">
-      <Filter>SourceCords\engine\camera</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\collision\BaseCollider.h">
-      <Filter>SourceCords\engine\collision</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\collision\BlockCollision.h">
-      <Filter>SourceCords\engine\collision</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\collision\Collision.h">
-      <Filter>SourceCords\engine\collision</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\collision\CollisionAttribute.h">
-      <Filter>SourceCords\engine\collision</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\collision\CollisionInfo.h">
-      <Filter>SourceCords\engine\collision</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\collision\CollisionManager.h">
-      <Filter>SourceCords\engine\collision</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\collision\CollisionPrimitive.h">
-      <Filter>SourceCords\engine\collision</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\collision\CollisionTypes.h">
-      <Filter>SourceCords\engine\collision</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\collision\MeshCollider.h">
-      <Filter>SourceCords\engine\collision</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\collision\QueryCallback.h">
-      <Filter>SourceCords\engine\collision</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\collision\RaycastHit.h">
-      <Filter>SourceCords\engine\collision</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\collision\SphereCollider.h">
-      <Filter>SourceCords\engine\collision</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\collision\TouchableObject.h">
-      <Filter>SourceCords\engine\collision</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\ease\Easing.h">
-      <Filter>SourceCords\engine\ease</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
-      <Filter>SourceCords\engine\enginebase</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\enginebase\CsvLoader.h">
-      <Filter>SourceCords\engine\enginebase</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\enginebase\DirectXCommon.h">
-      <Filter>SourceCords\engine\enginebase</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\enginebase\JsonLoader.h">
-      <Filter>SourceCords\engine\enginebase</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\enginebase\OpenBrowser.h">
-      <Filter>SourceCords\engine\enginebase</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\enginebase\SceneFactory.h">
-      <Filter>SourceCords\engine\enginebase</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\enginebase\WinApp.h">
-      <Filter>SourceCords\engine\enginebase</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\enginebase\XorShift.h">
-      <Filter>SourceCords\engine\enginebase</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\FpsManager\FPSManager.h">
-      <Filter>SourceCords\engine\Fps</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\helper\Helper.h">
-      <Filter>SourceCords\engine\helper</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\helper\Spline.h">
-      <Filter>SourceCords\engine\helper</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\helper\VariableCommon.h">
-      <Filter>SourceCords\engine\helper</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\input\Input.h">
-      <Filter>SourceCords\engine\input</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\shake\Shake.h">
-      <Filter>SourceCords\engine\helper</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\light\CircleShadow.h">
-      <Filter>SourceCords\engine\light</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\light\DirectionalLight.h">
-      <Filter>SourceCords\engine\light</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\light\LightGroup.h">
-      <Filter>SourceCords\engine\light</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\light\PointLight.h">
-      <Filter>SourceCords\engine\light</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\light\SpotLight.h">
-      <Filter>SourceCords\engine\light</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\math\Matrix4.h">
-      <Filter>SourceCords\engine\math</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\math\Quaternion.h">
-      <Filter>SourceCords\engine\math</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\math\Vector3.h">
-      <Filter>SourceCords\engine\math</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\actor\BaseActor.h">
-      <Filter>SourceCords\gamesystem\actor\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\actor\ClearSceneActor.h">
-      <Filter>SourceCords\gamesystem\actor\Clear</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\actor\EditorSceneActor.h">
-      <Filter>SourceCords\gamesystem\actor\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\actor\FirstStageActor.h">
-      <Filter>SourceCords\gamesystem\actor\Play\First</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\actor\IntroductionSceneActor.h">
-      <Filter>SourceCords\gamesystem\actor\Introduction</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\actor\LoadSceneActor.h">
-      <Filter>SourceCords\gamesystem\actor\Load</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\actor\TitleSceneActor.h">
-      <Filter>SourceCords\gamesystem\actor\Title</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\actor\SecondStageActor.h">
-      <Filter>SourceCords\gamesystem\actor\Play\Second</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\backobj\BackObj.h">
-      <Filter>SourceCords\gamesystem\backobj</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\AttackBullet.h">
-      <Filter>SourceCords\gamesystem\character\Bullet\Various</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\EnemyManager.h">
-      <Filter>SourceCords\gamesystem\character\Enemy\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\Food.h">
-      <Filter>SourceCords\gamesystem\character\Food</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\Ghost.h">
-      <Filter>SourceCords\gamesystem\character\Ghost</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\GhostBullet.h">
-      <Filter>SourceCords\gamesystem\character\Bullet\Various</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\HungerGauge.h">
-      <Filter>SourceCords\gamesystem\character\HungerGauge</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\InterBoss.h">
-      <Filter>SourceCords\gamesystem\character\Boss\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\InterBullet.h">
-      <Filter>SourceCords\gamesystem\character\Bullet\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\InterEnemy.h">
-      <Filter>SourceCords\gamesystem\character\Enemy\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\NormalEnemy.h">
-      <Filter>SourceCords\gamesystem\character\Enemy\Various</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\Player.h">
-      <Filter>SourceCords\gamesystem\character\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\FirstBoss.h">
-      <Filter>SourceCords\gamesystem\character\Boss\Various\First</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\SecondBoss.h">
-      <Filter>SourceCords\gamesystem\character\Boss\Various\Second</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\ViewBullet.h">
-      <Filter>SourceCords\gamesystem\character\Bullet\Various</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\editor\Editor.h">
-      <Filter>SourceCords\gamesystem\Editor\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\editor\LoadBox.h">
-      <Filter>SourceCords\gamesystem\Editor\Box</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\editor\LoadManager.h">
-      <Filter>SourceCords\gamesystem\Editor\Load</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\editor\LoadStageObj.h">
-      <Filter>SourceCords\gamesystem\Editor\Load</Filter>
+      <Filter>engine\camera</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\gamecamera\CameraWork.h">
-      <Filter>SourceCords\gamesystem\GameCamera</Filter>
+      <Filter>engine\camera</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\ui\UI.h">
-      <Filter>SourceCords\gamesystem\UI</Filter>
+    <ClInclude Include="SourceCode\engine\audio\Audio.h">
+      <Filter>engine\audio</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleEmitter.h">
-      <Filter>SourceCords\gamesystem\particle</Filter>
+    <ClInclude Include="SourceCode\engine\2d\DebugText.h">
+      <Filter>engine\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\2d\Feed.h">
+      <Filter>engine\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\2d\Font.h">
+      <Filter>engine\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\2d\IKESprite.h">
+      <Filter>engine\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\2d\IKETexture.h">
+      <Filter>engine\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\2d\ImageManager.h">
+      <Filter>engine\2d\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\2d\PostEffect.h">
+      <Filter>engine\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\2d\ShadowMap.h">
+      <Filter>engine\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\3d\IKEObject3d.h">
+      <Filter>engine\3d\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\3d\IKEModel.h">
+      <Filter>engine\3d\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\3d\IKEMesh.h">
+      <Filter>engine\3d\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\3d\IKEMaterial.h">
+      <Filter>engine\3d\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\3d\IKEFbxLoader.h">
+      <Filter>engine\3d\Fbx</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\3d\IKEFBXObject3d.h">
+      <Filter>engine\3d\Fbx</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\3d\IKEFBXModel.h">
+      <Filter>engine\3d\Fbx</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\3d\ModelManager.h">
+      <Filter>engine\3d\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\3d\ObjCommon.h">
+      <Filter>engine\3d\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\audio\VolumManager.h">
+      <Filter>engine\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\camera\ShadowCamera.h">
+      <Filter>engine\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\ease\Easing.h">
+      <Filter>engine\ease</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\collision\BaseCollider.h">
+      <Filter>engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\collision\BlockCollision.h">
+      <Filter>engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\collision\Collision.h">
+      <Filter>engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\collision\CollisionAttribute.h">
+      <Filter>engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\collision\CollisionInfo.h">
+      <Filter>engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\collision\CollisionManager.h">
+      <Filter>engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\collision\CollisionPrimitive.h">
+      <Filter>engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\collision\CollisionTypes.h">
+      <Filter>engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\collision\MeshCollider.h">
+      <Filter>engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\collision\QueryCallback.h">
+      <Filter>engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\collision\RaycastHit.h">
+      <Filter>engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\collision\SphereCollider.h">
+      <Filter>engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\collision\TouchableObject.h">
+      <Filter>engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\enginebase\AbstractSceneFactory.h">
+      <Filter>engine\enginebase</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\enginebase\CsvLoader.h">
+      <Filter>engine\enginebase</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\enginebase\DirectXCommon.h">
+      <Filter>engine\enginebase</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\enginebase\JsonLoader.h">
+      <Filter>engine\enginebase</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\enginebase\OpenBrowser.h">
+      <Filter>engine\enginebase</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\enginebase\SceneFactory.h">
+      <Filter>engine\enginebase</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\enginebase\WinApp.h">
+      <Filter>engine\enginebase</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\enginebase\XorShift.h">
+      <Filter>engine\enginebase</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\FpsManager\FPSManager.h">
+      <Filter>engine\FpsManager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\helper\Helper.h">
+      <Filter>engine\helper</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\helper\Spline.h">
+      <Filter>engine\helper</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\helper\VariableCommon.h">
+      <Filter>engine\helper</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\input\Input.h">
+      <Filter>engine\input</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\light\CircleShadow.h">
+      <Filter>engine\light</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\light\DirectionalLight.h">
+      <Filter>engine\light</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\light\LightGroup.h">
+      <Filter>engine\light</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\light\PointLight.h">
+      <Filter>engine\light</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\light\SpotLight.h">
+      <Filter>engine\light</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\math\Vector3.h">
+      <Filter>engine\math</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\math\Quaternion.h">
+      <Filter>engine\math</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\math\Matrix4.h">
+      <Filter>engine\math</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\shake\Shake.h">
+      <Filter>engine\shake</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\BaseActor.h">
+      <Filter>gamesystem\actor\base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\ClearSceneActor.h">
+      <Filter>gamesystem\actor\Clear</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\EditorSceneActor.h">
+      <Filter>gamesystem\actor\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\FirstStageActor.h">
+      <Filter>gamesystem\actor\First</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor.h">
+      <Filter>gamesystem\actor\GameOver</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\IntroductionSceneActor.h">
+      <Filter>gamesystem\actor\base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\LoadSceneActor.h">
+      <Filter>gamesystem\actor\Load</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\SecondStageActor.h">
+      <Filter>gamesystem\actor\Second</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\TitleSceneActor.h">
+      <Filter>gamesystem\actor\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\backobj\BackObj.h">
+      <Filter>gamesystem\backobj</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\InterStamp.h">
+      <Filter>gamesystem\bossattach\Stamp\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\AngerStamp.h">
+      <Filter>gamesystem\bossattach\Stamp\Derived</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\JoyStamp.h">
+      <Filter>gamesystem\bossattach\Stamp\Derived</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\Predict.h">
+      <Filter>gamesystem\bossattach\Stamp\Derived</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\ShockWave.h">
+      <Filter>gamesystem\bossattach\Stamp\Derived</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\TutorialSceneActor.h">
+      <Filter>gamesystem\actor\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\AttackBullet.h">
+      <Filter>gamesystem\charactor\Bullet\Derived\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\GhostBullet.h">
+      <Filter>gamesystem\charactor\Bullet\Derived\Ghost</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\InterBullet.h">
+      <Filter>gamesystem\charactor\Bullet\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\InterEnemy.h">
+      <Filter>gamesystem\charactor\Enemy\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\NormalEnemy.h">
+      <Filter>gamesystem\charactor\Enemy\Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\Ghost.h">
+      <Filter>gamesystem\charactor\Ghost</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\Food.h">
+      <Filter>gamesystem\charactor\Food</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\FirstBoss.h">
+      <Filter>gamesystem\charactor\Boss\First</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\SecondBoss.h">
+      <Filter>gamesystem\charactor\Boss\Second</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\InterBoss.h">
+      <Filter>gamesystem\charactor\Boss\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\EnemyManager.h">
+      <Filter>gamesystem\charactor\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\Player.h">
+      <Filter>gamesystem\charactor\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\PlayerAttach.h">
+      <Filter>gamesystem\charactor\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\TutorialEnemy.h">
+      <Filter>gamesystem\charactor\Enemy\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\ViewBullet.h">
+      <Filter>gamesystem\charactor\Bullet\Derived\View</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\HungerGauge.h">
+      <Filter>gamesystem\charactor\Hunger</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\editor\Editor.h">
+      <Filter>gamesystem\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\editor\LoadBox.h">
+      <Filter>gamesystem\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\editor\LoadManager.h">
+      <Filter>gamesystem\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\editor\LoadStageObj.h">
+      <Filter>gamesystem\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\BreakEffect.h">
+      <Filter>gamesystem\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\InterEffect.h">
+      <Filter>gamesystem\effect</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleManager.h">
-      <Filter>SourceCords\gamesystem\particle</Filter>
+      <Filter>gamesystem\particle</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\scene\BaseScene.h">
-      <Filter>SourceCords\gamesystem\Scene\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\scene\Framework.h">
-      <Filter>SourceCords\gamesystem\Scene\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\scene\IkeGame.h">
-      <Filter>SourceCords\gamesystem\Scene\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\scene\SceneManager.h">
-      <Filter>SourceCords\gamesystem\Scene\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\scene\SceneChanger.h">
-      <Filter>SourceCords\gamesystem\Scene\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\scene\ClearScene.h">
-      <Filter>SourceCords\gamesystem\Scene\Clear</Filter>
+    <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleEmitter.h">
+      <Filter>gamesystem\particle</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\EditorScene.h">
-      <Filter>SourceCords\gamesystem\Scene\Editor</Filter>
+      <Filter>gamesystem\scene</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\scene\GameoverScene.h">
-      <Filter>SourceCords\gamesystem\Scene\GameOver</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\scene\IntroductionScene.h">
-      <Filter>SourceCords\gamesystem\Scene\Introduction</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\scene\LoadScene.h">
-      <Filter>SourceCords\gamesystem\Scene\Load</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\scene\TitleScene.h">
-      <Filter>SourceCords\gamesystem\Scene\Title</Filter>
+    <ClInclude Include="SourceCode\gamesystem\scene\ClearScene.h">
+      <Filter>gamesystem\scene\Clear</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\FirstStage.h">
-      <Filter>SourceCords\gamesystem\Scene\PlayScene\First</Filter>
+      <Filter>gamesystem\scene\Play\First</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\LoadScene.h">
+      <Filter>gamesystem\scene\Load</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\GameoverScene.h">
+      <Filter>gamesystem\scene\GameOver</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\BaseScene.h">
+      <Filter>gamesystem\scene\Base</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\SecondStage.h">
-      <Filter>SourceCords\gamesystem\Scene\PlayScene\Second</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\scene\PlaceBox.h">
-      <Filter>SourceCords\gamesystem\Editor\Box</Filter>
+      <Filter>gamesystem\scene\Play\Second</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\PlaceManager.h">
       <Filter>SourceCords\gamesystem\Editor\Box</Filter>
@@ -898,29 +722,35 @@
     <ClInclude Include="SourceCode\gamesystem\bossattach\InterStamp.h">
       <Filter>SourceCords\gamesystem\character\Boss\Attach\Stamp\Common</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\bossattach\AngerStamp.h">
-      <Filter>SourceCords\gamesystem\character\Boss\Attach\Stamp\Various</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\bossattach\JoyStamp.h">
-      <Filter>SourceCords\gamesystem\character\Boss\Attach\Stamp\Various</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\TutorialScene.h">
-      <Filter>SourceCords\gamesystem\Scene\Tutorial</Filter>
+      <Filter>gamesystem\scene\Tutorial</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\actor\TutorialSceneActor.h">
-      <Filter>SourceCords\gamesystem\actor\Tutorial</Filter>
+    <ClInclude Include="SourceCode\gamesystem\scene\IntroductionScene.h">
+      <Filter>gamesystem\scene\Base</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\bossattach\ShockWave.h">
-      <Filter>SourceCords\gamesystem\character\Boss\Attach\ShockWave</Filter>
+    <ClInclude Include="SourceCode\gamesystem\scene\Framework.h">
+      <Filter>gamesystem\scene\Base\Framework</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\bossattach\Predict.h">
-      <Filter>SourceCords\gamesystem\character\Boss\Attach\Predict</Filter>
+    <ClInclude Include="SourceCode\gamesystem\scene\IkeGame.h">
+      <Filter>gamesystem\scene\Base</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\PlayerAttach.h">
-      <Filter>SourceCords\gamesystem\character\Player</Filter>
+    <ClInclude Include="SourceCode\gamesystem\scene\SceneManager.h">
+      <Filter>gamesystem\scene\Base</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\TutorialEnemy.h">
-      <Filter>SourceCords\gamesystem\character\Enemy\Various</Filter>
+    <ClInclude Include="SourceCode\gamesystem\scene\SceneChanger.h">
+      <Filter>gamesystem\scene\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\TitleScene.h">
+      <Filter>gamesystem\scene\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\PlaceBox.h">
+      <Filter>gamesystem\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\ui\UI.h">
+      <Filter>gamesystem\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\PlaceManager.h">
+      <Filter>gamesystem\editor</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\text\Text.h" />
     <ClInclude Include="SourceCode\gamesystem\Conversation\Conversation.h" />
@@ -929,274 +759,259 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Shaders\Gaussian.hlsli">
-      <Filter>SourceCords\shader\2d\posteffect</Filter>
-    </None>
-    <None Include="Resources\Shaders\Particle.hlsli">
-      <Filter>SourceCords\shader\2d\particle</Filter>
-    </None>
-    <None Include="Resources\Shaders\OBJShaderHeaderhlsli.hlsli">
-      <Filter>SourceCords\shader\2d\texture</Filter>
-    </None>
-    <None Include="Resources\Shaders\PostEffectTest.hlsli">
-      <Filter>SourceCords\shader\2d\posteffect</Filter>
-    </None>
-    <None Include="Resources\Shaders\ShadowMap.hlsli">
-      <Filter>SourceCords\shader\2d\shadowmap</Filter>
-    </None>
-    <None Include="Resources\Shaders\Sprite.hlsli">
-      <Filter>SourceCords\shader\2d\sprite</Filter>
-    </None>
     <None Include="Resources\Shaders\Basic.hlsli">
-      <Filter>SourceCords\shader\3d\obj</Filter>
+      <Filter>Shader\3d</Filter>
     </None>
     <None Include="Resources\Shaders\FBX.hlsli">
-      <Filter>SourceCords\shader\3d\fbx</Filter>
+      <Filter>Shader\3d</Filter>
+    </None>
+    <None Include="Resources\Shaders\Gaussian.hlsli">
+      <Filter>Shader\2d</Filter>
+    </None>
+    <None Include="Resources\Shaders\OBJShaderHeaderhlsli.hlsli">
+      <Filter>Shader\2d</Filter>
+    </None>
+    <None Include="Resources\Shaders\Particle.hlsli">
+      <Filter>Shader\2d</Filter>
+    </None>
+    <None Include="Resources\Shaders\PostEffectTest.hlsli">
+      <Filter>Shader\2d</Filter>
+    </None>
+    <None Include="Resources\Shaders\Sprite.hlsli">
+      <Filter>Shader\2d</Filter>
+    </None>
+    <None Include="Resources\Shaders\ShadowMap.hlsli">
+      <Filter>Shader\2d</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="SourceCords">
-      <UniqueIdentifier>{e7dbcef9-6343-4a14-b0cd-9e9968d5510e}</UniqueIdentifier>
+    <Filter Include="engine">
+      <UniqueIdentifier>{c595baaf-215f-4be4-8cc8-e7a484159d7f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\engine">
-      <UniqueIdentifier>{726f1109-9265-4122-86df-45a575c9d8d5}</UniqueIdentifier>
+    <Filter Include="gamesystem">
+      <UniqueIdentifier>{a30becb2-1c64-4032-87f4-51b0b07e46e3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem">
-      <UniqueIdentifier>{aff27941-f47a-44b3-b092-7dfedc032a0f}</UniqueIdentifier>
+    <Filter Include="engine\2d">
+      <UniqueIdentifier>{1a99d78d-334d-4946-bb45-62ba691dae55}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\engine\2d">
-      <UniqueIdentifier>{230e4989-eaeb-4168-99e6-2d980e95bcf1}</UniqueIdentifier>
+    <Filter Include="engine\audio">
+      <UniqueIdentifier>{44c5493b-eb95-49fd-9fce-753d24ee2805}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\engine\3d">
-      <UniqueIdentifier>{0870df84-fc30-46f1-a42f-45cba35c64b3}</UniqueIdentifier>
+    <Filter Include="engine\ease">
+      <UniqueIdentifier>{af6afea7-95a3-425d-9015-95984fb78412}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\engine\audio">
-      <UniqueIdentifier>{41c46cab-d7d5-4d64-8f9f-ab988dda1348}</UniqueIdentifier>
+    <Filter Include="engine\FpsManager">
+      <UniqueIdentifier>{22194843-90b4-4ff5-9def-bcda5c28a65f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\engine\camera">
-      <UniqueIdentifier>{36c3ae8c-7917-4b30-97fe-c060856c89fa}</UniqueIdentifier>
+    <Filter Include="engine\input">
+      <UniqueIdentifier>{19cca861-d1eb-4040-a95d-057c896d0386}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\engine\collision">
-      <UniqueIdentifier>{b6cfcb5a-4c9d-44a8-acaf-147ade27679d}</UniqueIdentifier>
+    <Filter Include="engine\light">
+      <UniqueIdentifier>{76489017-3b31-4950-b6cc-6667088935af}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\engine\ease">
-      <UniqueIdentifier>{b7561f21-bd8f-4894-9a63-3b77c606ba29}</UniqueIdentifier>
+    <Filter Include="engine\math">
+      <UniqueIdentifier>{33c1e822-19b3-484c-9a48-a4bf028aa352}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\engine\enginebase">
-      <UniqueIdentifier>{9a79fb39-4c06-4c3d-a096-d09f35abbd72}</UniqueIdentifier>
+    <Filter Include="engine\shake">
+      <UniqueIdentifier>{b3d278d2-7180-4cab-a006-17d02618fa89}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\engine\Fps">
-      <UniqueIdentifier>{978ba391-6e29-4e7e-b017-841e7d63f13e}</UniqueIdentifier>
+    <Filter Include="engine\camera">
+      <UniqueIdentifier>{eeb3fa30-a394-46b4-87a5-6aeb3bfc3c88}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\engine\helper">
-      <UniqueIdentifier>{b71f9a18-37e5-4a71-82c7-93fdd55ee725}</UniqueIdentifier>
+    <Filter Include="engine\2d\Derivation">
+      <UniqueIdentifier>{9e033b28-22e1-46d5-ba4f-42905c45be78}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\engine\math">
-      <UniqueIdentifier>{2856cc25-c586-4cd0-aff6-e1a2f07947c8}</UniqueIdentifier>
+    <Filter Include="engine\2d\Manager">
+      <UniqueIdentifier>{41db2c0e-21f9-48c7-9902-97f2ebee9b09}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\engine\light">
-      <UniqueIdentifier>{aa20b4da-ea7e-4d12-b9e5-1b9d1afcb231}</UniqueIdentifier>
+    <Filter Include="engine\3d">
+      <UniqueIdentifier>{ede81084-21fe-421e-a41a-8924671850cc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\actor">
-      <UniqueIdentifier>{3a2d588c-2e25-4f63-a7ec-6dd4cd09f876}</UniqueIdentifier>
+    <Filter Include="engine\3d\Fbx">
+      <UniqueIdentifier>{d41c832f-941a-4159-a408-27f91b846542}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\actor\Base">
-      <UniqueIdentifier>{4658aefa-f5fb-4560-8111-338ab23114f7}</UniqueIdentifier>
+    <Filter Include="engine\3d\Obj">
+      <UniqueIdentifier>{17fb0e8a-0d5b-4e26-93f3-65b32fc44c83}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\actor\Clear">
-      <UniqueIdentifier>{f63ac421-638e-488d-92a8-74a729fec2a8}</UniqueIdentifier>
+    <Filter Include="engine\3d\Manager">
+      <UniqueIdentifier>{5fa3098f-a3c1-4362-8d9a-e5454bf67630}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\actor\Editor">
-      <UniqueIdentifier>{65450f3a-b45c-43f1-b649-9540b4799c81}</UniqueIdentifier>
+    <Filter Include="engine\3d\Base">
+      <UniqueIdentifier>{43b02751-fca0-4e17-9da1-ac921e842196}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\actor\Introduction">
-      <UniqueIdentifier>{aa67aeb7-11dc-4ec7-8494-d88b4f3cc943}</UniqueIdentifier>
+    <Filter Include="engine\collision">
+      <UniqueIdentifier>{8c79944e-38c5-48c7-8515-80670b5e85dd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\actor\Load">
-      <UniqueIdentifier>{98eb754c-c7ab-4687-8ee3-1326c6dc297b}</UniqueIdentifier>
+    <Filter Include="engine\enginebase">
+      <UniqueIdentifier>{f6f2eb9f-a148-4563-b42a-5927e61afa65}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\actor\Play">
-      <UniqueIdentifier>{9b6d5160-f4c5-44b6-86b4-532c05e4b951}</UniqueIdentifier>
+    <Filter Include="engine\helper">
+      <UniqueIdentifier>{31e76bf3-e3c6-4626-a245-2e7e6077980f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\actor\Title">
-      <UniqueIdentifier>{899633dc-04e3-4c21-b59c-ab23398dd120}</UniqueIdentifier>
+    <Filter Include="engine\imgui">
+      <UniqueIdentifier>{32013d26-86f9-44ef-a932-c1ddc79b1919}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\backobj">
-      <UniqueIdentifier>{8e408510-1756-426a-bc8c-d034437ff13b}</UniqueIdentifier>
+    <Filter Include="gamesystem\backobj">
+      <UniqueIdentifier>{56fe8aaf-0619-47c2-af9f-d42c818a3122}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\character">
-      <UniqueIdentifier>{edf53ab5-ded3-4420-b1a9-034728710351}</UniqueIdentifier>
+    <Filter Include="gamesystem\bossattach">
+      <UniqueIdentifier>{c5b6abd9-4249-47a2-8449-64ba75b27c63}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\Editor">
-      <UniqueIdentifier>{3ffc2ed7-d4dd-4a54-9f48-7a4bb5665dfb}</UniqueIdentifier>
+    <Filter Include="gamesystem\editor">
+      <UniqueIdentifier>{4dde5216-4bf6-4dd4-8987-1a5af36415c2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\Editor\Base">
-      <UniqueIdentifier>{843c8567-e4e4-4aee-af5b-af5f3a5ed1d7}</UniqueIdentifier>
+    <Filter Include="gamesystem\gameEditor">
+      <UniqueIdentifier>{318a5c93-6764-4763-9b1c-89305daf7e73}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\Editor\Box">
-      <UniqueIdentifier>{c8147b77-fbe2-4e71-8310-58a2e5034b45}</UniqueIdentifier>
+    <Filter Include="gamesystem\effect">
+      <UniqueIdentifier>{aaaadd0a-a4f8-4e4b-9347-9ec53dcea3b2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\Editor\Load">
-      <UniqueIdentifier>{507eec42-e994-4fd8-b1a9-3bc608373231}</UniqueIdentifier>
+    <Filter Include="gamesystem\gamecamera">
+      <UniqueIdentifier>{9bcfd8c4-7851-4f0e-8ed7-252bdff4ce23}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\GameCamera">
-      <UniqueIdentifier>{36b65622-126d-437c-8ec9-4fd9fff00600}</UniqueIdentifier>
+    <Filter Include="gamesystem\particle">
+      <UniqueIdentifier>{48e0eb1e-cc91-487d-b504-f2487da18d23}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\Particle">
-      <UniqueIdentifier>{f0fbe216-e1ff-4c96-bc85-a9ffc0bc0d80}</UniqueIdentifier>
+    <Filter Include="gamesystem\scene">
+      <UniqueIdentifier>{88dffa51-41c6-421c-ae0e-d8f4ba011bb3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\Scene">
-      <UniqueIdentifier>{79ac28d8-5ce9-4956-8c36-9b7ade15ce31}</UniqueIdentifier>
+    <Filter Include="gamesystem\ui">
+      <UniqueIdentifier>{dc38cca5-722f-4b16-9bc0-94872d7d0a9f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\UI">
-      <UniqueIdentifier>{46b3fc30-1630-4620-b93a-af70b14401dd}</UniqueIdentifier>
+    <Filter Include="gamesystem\actor">
+      <UniqueIdentifier>{edde5480-c975-4eca-948f-fe2653c0f8ff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\shader">
-      <UniqueIdentifier>{056b11e0-9863-4358-a89b-71d817095790}</UniqueIdentifier>
+    <Filter Include="gamesystem\actor\Title">
+      <UniqueIdentifier>{5af2863b-3ba7-43d0-8af6-c80a4857c26d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\engine\2d\Common">
-      <UniqueIdentifier>{9fbf5272-1b1e-4a03-b132-04913ba89067}</UniqueIdentifier>
+    <Filter Include="gamesystem\actor\First">
+      <UniqueIdentifier>{fa61032d-4f4a-4a3c-9c38-04f689f943d7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\engine\2d\Texture">
-      <UniqueIdentifier>{521ab2fc-2fae-4df8-ad33-db3ee4562bd5}</UniqueIdentifier>
+    <Filter Include="gamesystem\actor\Second">
+      <UniqueIdentifier>{770a7a6b-a662-4805-93b1-02d97ba29f35}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\engine\2d\Sprite">
-      <UniqueIdentifier>{e4bcff3b-2b4f-48ef-a552-c1a8d1a968f6}</UniqueIdentifier>
+    <Filter Include="gamesystem\actor\Clear">
+      <UniqueIdentifier>{efe2e365-d30a-4505-b5d5-528fde6317a8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\engine\2d\PostEffect">
-      <UniqueIdentifier>{ecaf859a-8fd4-42be-88b0-9d4178f5de53}</UniqueIdentifier>
+    <Filter Include="gamesystem\actor\GameOver">
+      <UniqueIdentifier>{4344d989-a893-4320-acf7-b0d498cdda98}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\engine\3d\Common">
-      <UniqueIdentifier>{1c7cb40d-1f0c-4163-8ec1-69d9c9387f1f}</UniqueIdentifier>
+    <Filter Include="gamesystem\actor\Load">
+      <UniqueIdentifier>{b8e087c7-283d-4afa-8824-90271ef9c155}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\engine\3d\Fbx">
-      <UniqueIdentifier>{61aefa1f-7c7c-4940-bf37-501e501638f0}</UniqueIdentifier>
+    <Filter Include="gamesystem\actor\base">
+      <UniqueIdentifier>{225f0f43-5504-4e78-8266-422bf3fed8d0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\engine\3d\Obj">
-      <UniqueIdentifier>{b5d89c90-6193-4038-b4fb-960451e66aba}</UniqueIdentifier>
+    <Filter Include="gamesystem\actor\Editor">
+      <UniqueIdentifier>{85768e82-404b-4006-8830-94be69724e06}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\engine\input">
-      <UniqueIdentifier>{df1889bd-25cd-4293-95f5-af1984789c31}</UniqueIdentifier>
+    <Filter Include="gamesystem\bossattach\Stamp">
+      <UniqueIdentifier>{2908dbf1-0d18-494a-8cee-a2e4b734f7d7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\Scene\Base">
-      <UniqueIdentifier>{8edc92b8-0a9e-480d-804e-f38f83a03d71}</UniqueIdentifier>
+    <Filter Include="gamesystem\bossattach\Stamp\Base">
+      <UniqueIdentifier>{c6d6aba0-4ff3-4a8f-9028-d6ba71dbe344}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\Scene\Clear">
-      <UniqueIdentifier>{f8ceeaef-ec3a-49ab-8e13-698add4d457f}</UniqueIdentifier>
+    <Filter Include="gamesystem\bossattach\Stamp\Derived">
+      <UniqueIdentifier>{6997dd1e-71b8-48cc-b9c7-bfbe2ed17f99}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\Scene\Editor">
-      <UniqueIdentifier>{90b4b540-3a27-4a01-a3e9-2bf9fd078b92}</UniqueIdentifier>
+    <Filter Include="gamesystem\charactor">
+      <UniqueIdentifier>{a5258f31-e579-4fec-90bb-f219e9bc837e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\Scene\GameOver">
-      <UniqueIdentifier>{17a6b45b-f162-4a7d-a7f0-72c89ce678c4}</UniqueIdentifier>
+    <Filter Include="gamesystem\charactor\Bullet">
+      <UniqueIdentifier>{312960ae-c4c4-4f39-9c3e-6d6b4b59a07c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\Scene\Introduction">
-      <UniqueIdentifier>{a92c20e3-6185-4f9a-b0cf-5be69978de51}</UniqueIdentifier>
+    <Filter Include="gamesystem\charactor\Bullet\Derived">
+      <UniqueIdentifier>{1a186dd7-c321-4a49-a35d-1c5d447b9ecc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\Scene\Load">
-      <UniqueIdentifier>{4977cfc8-e9bd-4cec-a222-64a2d4bead1b}</UniqueIdentifier>
+    <Filter Include="gamesystem\charactor\Bullet\Derived\Attack">
+      <UniqueIdentifier>{307099b7-1440-48fe-9e45-37a8d0410d78}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\Scene\PlayScene">
-      <UniqueIdentifier>{9d217183-0fcf-4085-b287-8f3eaa893f77}</UniqueIdentifier>
+    <Filter Include="gamesystem\charactor\Bullet\Derived\Ghost">
+      <UniqueIdentifier>{b9b80115-24b1-4985-bdc8-5baf0a4e9880}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\Scene\Title">
-      <UniqueIdentifier>{83e78d65-3fb2-4a7e-9ce4-df3c02401957}</UniqueIdentifier>
+    <Filter Include="gamesystem\charactor\Bullet\Derived\View">
+      <UniqueIdentifier>{954c9694-ffd8-4fef-a520-3b8b5c74a56f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\shader\2d">
-      <UniqueIdentifier>{a654b242-b4e2-484a-9c78-62628c51226d}</UniqueIdentifier>
+    <Filter Include="gamesystem\charactor\Bullet\Base">
+      <UniqueIdentifier>{473167a6-26e5-450c-be72-88a2f3ceff0e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\shader\3d">
-      <UniqueIdentifier>{a298a28d-7284-4d88-a4eb-3ca8680f2e95}</UniqueIdentifier>
+    <Filter Include="gamesystem\charactor\Enemy">
+      <UniqueIdentifier>{d0ed1f2d-916a-446f-9c30-096aa67c95af}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\shader\2d\posteffect">
-      <UniqueIdentifier>{1b09c5e0-ffff-41e3-89d2-8dacc2389446}</UniqueIdentifier>
+    <Filter Include="gamesystem\charactor\Enemy\Base">
+      <UniqueIdentifier>{b2050d0c-0b32-4a36-a63c-681f0585db9b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\shader\2d\shadowmap">
-      <UniqueIdentifier>{b86d8d87-16b8-4e49-b33e-c75992111d8c}</UniqueIdentifier>
+    <Filter Include="gamesystem\charactor\Enemy\Normal">
+      <UniqueIdentifier>{711ffd51-e21a-4634-a5ed-3c9fca31d1d6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\shader\2d\sprite">
-      <UniqueIdentifier>{6a3a8233-4c83-4f28-85c8-88c1253ffe72}</UniqueIdentifier>
+    <Filter Include="gamesystem\charactor\Enemy\Tutorial">
+      <UniqueIdentifier>{ae202690-bff5-4821-8a46-0ca53072b9bd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\shader\2d\texture">
-      <UniqueIdentifier>{0a740cd4-bf9c-49f2-a17c-a1209d7f775b}</UniqueIdentifier>
+    <Filter Include="gamesystem\charactor\Ghost">
+      <UniqueIdentifier>{0558a5ad-1f6a-4138-985e-8dc79ce4a907}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\shader\3d\obj">
-      <UniqueIdentifier>{e5df4f9a-b27e-4931-9374-202e16490089}</UniqueIdentifier>
+    <Filter Include="gamesystem\charactor\Food">
+      <UniqueIdentifier>{93777701-73d1-4606-8242-f0b93be885e0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\shader\3d\fbx">
-      <UniqueIdentifier>{a243f7b5-d2ea-4b6d-adc2-041faa6b558b}</UniqueIdentifier>
+    <Filter Include="gamesystem\charactor\Boss">
+      <UniqueIdentifier>{81775484-798e-46ec-ac44-82d84b1001c4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\shader\2d\particle">
-      <UniqueIdentifier>{58d92188-a256-43dd-adef-81594b631114}</UniqueIdentifier>
+    <Filter Include="gamesystem\charactor\Boss\First">
+      <UniqueIdentifier>{b5d8bb12-35ed-41bc-b947-78cfd85a93a2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\Editor\Load\StageObj">
-      <UniqueIdentifier>{952d0f7f-df11-42dd-a187-f6112a1d8b5d}</UniqueIdentifier>
+    <Filter Include="gamesystem\charactor\Boss\Second">
+      <UniqueIdentifier>{ec828ebd-733d-473a-a83d-515c2af901f1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\Scene\PlayScene\FirstStage">
-      <UniqueIdentifier>{1302fcbc-80b1-4180-a89c-0509f8189511}</UniqueIdentifier>
+    <Filter Include="gamesystem\charactor\Boss\Base">
+      <UniqueIdentifier>{cddcc7b5-f579-4ffb-bf7a-fc05ad2ee680}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\Scene\PlayScene\SecondStage">
-      <UniqueIdentifier>{f0e78ad8-109c-4d86-88e5-6330f82941c8}</UniqueIdentifier>
+    <Filter Include="gamesystem\charactor\Manager">
+      <UniqueIdentifier>{86b3a7ac-7219-4fdc-89a1-6415863d0c42}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SourceCords\gamesystem\actor\GameOver">
-      <UniqueIdentifier>{7ea99bc2-e100-4a63-8d57-2485acc5a429}</UniqueIdentifier>
+    <Filter Include="gamesystem\charactor\Player">
+      <UniqueIdentifier>{67cc1ef3-c531-4952-b181-9f7044af6c4a}</UniqueIdentifier>
     </Filter>
-    <FxCompile Include="Resources\Shaders\GaussianPS.hlsl">
-      <Filter>SourceCords\shader\2d\posteffect</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\GaussianVS.hlsl">
-      <Filter>SourceCords\shader\2d\posteffect</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\NewToneMapPS.hlsl">
-      <Filter>SourceCords\shader\2d\posteffect</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ParticleGS.hlsl">
-      <Filter>SourceCords\shader\2d\particle</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ParticlePS.hlsl">
-      <Filter>SourceCords\shader\2d\particle</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ParticleVS.hlsl">
-      <Filter>SourceCords\shader\2d\particle</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\OBJPixelShader.hlsl">
-      <Filter>SourceCords\shader\2d\texture</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\OBJVertexShader.hlsl">
-      <Filter>SourceCords\shader\2d\texture</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\PostEffectTestPS.hlsl">
-      <Filter>SourceCords\shader\2d\posteffect</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\PostEffectTestVS.hlsl">
-      <Filter>SourceCords\shader\2d\posteffect</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\SepiaPS.hlsl">
-      <Filter>SourceCords\shader\2d\posteffect</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ShadowMapPS.hlsl">
-      <Filter>SourceCords\shader\2d\shadowmap</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ShadowMapVS.hlsl">
-      <Filter>SourceCords\shader\2d\shadowmap</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\SpritePS.hlsl">
-      <Filter>SourceCords\shader\2d\sprite</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\SpriteVS.hlsl">
-      <Filter>SourceCords\shader\2d\sprite</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\BasicPS.hlsl">
-      <Filter>SourceCords\shader\3d\obj</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\BasicVS.hlsl">
-      <Filter>SourceCords\shader\3d\obj</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\FBXPS.hlsl">
-      <Filter>SourceCords\shader\3d\fbx</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\FBXVS.hlsl">
-      <Filter>SourceCords\shader\3d\fbx</Filter>
-    </FxCompile>
+    <Filter Include="gamesystem\charactor\Hunger">
+      <UniqueIdentifier>{dfb9cc34-14dd-4752-9279-adcc9d5af84c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Tutorial">
+      <UniqueIdentifier>{40fae6cc-723f-427e-8439-66617f5c0615}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Clear">
+      <UniqueIdentifier>{836dd921-f6f8-4000-addf-b66663142475}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Load">
+      <UniqueIdentifier>{47055e9e-6cba-47a1-b497-d0672c56b841}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Base">
+      <UniqueIdentifier>{9e1f5803-f387-4e10-a4d7-972a5705d5d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Play">
+      <UniqueIdentifier>{888ff33b-a6a2-41a2-8358-dcc9d4477e5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Play\First">
+      <UniqueIdentifier>{a4f89e05-04e6-49a8-918a-b14a5ea09be7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Play\Second">
+      <UniqueIdentifier>{5cd4740c-9756-469e-808a-14707c4710a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\GameOver">
+      <UniqueIdentifier>{8340f8aa-fee7-47d7-9c77-10fd67ad1f22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\actor\Tutorial">
+      <UniqueIdentifier>{4654ff1e-0f15-48f3-b61d-9335e76f4bcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Base\Framework">
+      <UniqueIdentifier>{d99bcb95-18d3-4b65-9d94-542bc0b0bd94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{5157e7cf-15cd-4c09-bd21-31621f90b40b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\2d">
+      <UniqueIdentifier>{5ae64bb2-d148-41de-b2a8-1b9bba50e689}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\3d">
+      <UniqueIdentifier>{326306b9-9557-4886-9d61-f921d6badc29}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

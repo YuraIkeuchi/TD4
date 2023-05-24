@@ -22,12 +22,14 @@ public:
 		GhostBullet,
 		BulEnemy,
 		Tyuta,
-		Kido,
-		Sutopon
+		Sutopon,
+		Food,
+
 	};
 	//FBX‚Ì–¼‘O
 	enum FBXName {
-		PLAYER
+		PLAYER,
+		KIDO,
 	};
 
 public:

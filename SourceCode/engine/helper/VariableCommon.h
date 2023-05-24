@@ -1,8 +1,14 @@
 #pragma once
-
 #include <Windows.h>
 #include <d3d12.h>
 #include <DirectXMath.h>
+
+#include "Audio.h"
+#include "Easing.h"
+#include "SceneManager.h"
+#include "ImageManager.h"
+#include "ParticleEmitter.h"
+
 // DirectX::‚ğÈ—ª
 using XMFLOAT2 = DirectX::XMFLOAT2;
 using XMFLOAT3 = DirectX::XMFLOAT3;

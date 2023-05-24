@@ -1,4 +1,7 @@
 #include "NormalEnemy.h"
+
+#include <random>
+
 #include "Player.h"
 #include "Collision.h"
 #include "ModelManager.h"
@@ -41,6 +44,7 @@ void NormalEnemy::Action() {
 	OnCollision();
 	ColPlayer();
 	Particle();
+	DeathEffect();
 }
 //ï`âÊ
 void NormalEnemy::Draw(DirectXCommon* dxCommon) {
@@ -73,6 +77,30 @@ void NormalEnemy::Particle() {
 	float e_scale = 0.0f;
 	ParticleEmitter::GetInstance()->FireEffect(10, m_Position, s_scale, e_scale, s_color, e_color);
 }
+
+
+void NormalEnemy::DeathEffect()
+{
+	if (isAlive)return;
+
+		float l_AddSize = 2.5f;
+		const float RandScale = 3.0f;
+		float s_scale = 0.3f * l_AddSize;
+		float e_scale = (4.0f + (float)rand() / RAND_MAX * RandScale - RandScale / 2.0f) * l_AddSize;
+
+		//êF
+		const float RandRed = 0.2f;
+		const float red = 0.2f + (float)rand() / RAND_MAX * RandRed;
+		const XMFLOAT4 s_color = { 0.9f, red, 0.1f, 1.0f }; //îZÇ¢ê‘
+		const XMFLOAT4 e_color = { 0, 0, 0, 1.0f }; //ñ≥êF
+
+		//óêêîéwíË
+		mt19937 mt{ std::random_device{}() };
+		uniform_int_distribution<int> l_Randlife(10, 40);
+		int l_Life = int(l_Randlife(mt));
+
+		ParticleEmitter::GetInstance()->Explosion(l_Life, m_Position, l_AddSize, s_scale, e_scale, s_color, e_color);
+	}
 
 void NormalEnemy::Appearance()
 {
@@ -128,7 +156,6 @@ void NormalEnemy::RushAction()
 	{
 		MoveTimer = 0;
 
-		
 		XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
 		PositionA = { l_player.x,l_player.y,l_player.z };
 		PositionB = { m_Position.x,m_Position.y,m_Position.z };
@@ -168,9 +195,9 @@ void NormalEnemy::RushAction()
 	if (stopMove) {
 		if (isAlive) {
 			m_Position = {
-					m_Position.x + move.m128_f32[0] * 4.f,
+					m_Position.x + move.m128_f32[0] * 3.f,
 				m_Position.y,
-				m_Position.z + move.m128_f32[2] * 4.f
+				m_Position.z + move.m128_f32[2] * 3.f
 			};
 		}
 	}

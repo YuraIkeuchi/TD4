@@ -31,7 +31,7 @@ public:
 	/// 毎フレーム更新
 	/// </summary>
 	void Update();
-
+	
 	virtual void Action() = 0;//敵の行動
 
 	/// <summary>
@@ -44,12 +44,13 @@ public:
 	virtual void Appearance() = 0;
 protected: //静的メンバ変数
 	bool isAlive;
+	bool isStop = false;
 	int HP;
-
 	bool ShotF;
 	int ShotCount;
 public:
 	void SetShotF(bool f) { ShotF = f; }
+	void SetIsStop(bool isStop) {this->isStop = isStop; }
 
 	bool GetShotF() { return ShotF; }
 	int GetShotCount() { return ShotCount; }

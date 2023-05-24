@@ -18,6 +18,7 @@ public:
 
 	void ImGui_Origin() override;
 
+	void Draw(DirectXCommon* dxCommon) override;//描画
 private:
 	struct SummonEnemy
 	{
@@ -46,6 +47,7 @@ private:
 		int ChargeTime;
 		int Damage;
 		float RotSpeed;
+	public:
 		enum class Phase_Charge
 		{
 			NON,
@@ -54,7 +56,8 @@ private:
 			ATTACK,
 			END
 		}_phase;
-
+		void ReturnPosJudg(bool& reposf);
+	private:
 		//シェイク
 		Shake* shake;
 		float shakeX, shakeZ;
@@ -230,9 +233,19 @@ private:
 	void NoBattleMove();
 	void RemovePos();
 	XMFLOAT3 OldPos;
+
+private:
 	float EaseT_BatStart;
 	bool BattleStartF;
+	int noBattleCount;
 
+	void EndSumon_returnPos(bool &f, float& easespeed);
+	bool ReturnPosF;
+	float RePosEaseT;
+	XMFLOAT3 OldPos_EndSummon;
+
+	bool ReturnPosF_Impact;
+	float RePosEaseT_Impact;
 private:
 	void ColPlayer_Def();
 };

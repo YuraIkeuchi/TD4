@@ -1,14 +1,9 @@
 ﻿
 #pragma once
 #include "BaseActor.h"
-#include <vector>
-#include<windows.h>
-#include "UI.h"
-#include "EnemyManager.h"
-#include "FirstBoss.h"
-#include "BackObj.h"
 #include "LoadStageObj.h"
 #include"Font.h"
+//
 /// タイトルシーン
 class FirstStageActor : public BaseActor {
 private:
@@ -17,6 +12,8 @@ private:
 		FIGHT,
 		NONE,
 	};
+	//Feed*feedn;
+	bool feedF;
 public:
 	/// 初期化
 	void Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) override;
@@ -30,23 +27,6 @@ public:
 	void BackDraw(DirectXCommon* dxCommon);
 	void ImGuiDraw(DirectXCommon* dxCommon);
 private:
-	//クラス
-	
-	unique_ptr<EnemyManager> enemymanager;
-	unique_ptr<InterBoss> boss;
-	unique_ptr<UI>ui;
-	unique_ptr<BackObj> backobj;
-	unique_ptr<LoadStageObj> loadobj;
-	unique_ptr<IKESprite> conversationwindow;
-	unique_ptr<IKESprite> blackwindow;
-	unique_ptr<IKESprite> girl;
-	unique_ptr<Font> font_;
-	//��W
-	XMFLOAT2 window_pos{ WinApp::window_width/2.f,WinApp::window_height+100 };
-	XMFLOAT2 window_size{ 0.f,0.f };
-
-	XMFLOAT4 black_color{ 1.f,1.f,1.f,0.f };
-	XMFLOAT4 girl_color{ 2.f,2.f,2.f,0.f };
 
 	float maxframe = 20.f;
 	float nowframe = 0.f;

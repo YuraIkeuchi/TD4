@@ -26,9 +26,11 @@ void ModelManager::SecondInitialize()
 	LoadModel(GhostBullet, "voice");
 	LoadModel(BulEnemy, "tri");
 	LoadModel(Tyuta, "zako");
-	LoadModel(Kido, "kidokun_idol");
 	LoadModel(Sutopon, "sutopon");
+	LoadModel(Food,"food");
 	LoadFBXModel(PLAYER, "PlayerFBXNew");
+	LoadFBXModel(KIDO, "kidokun_idol");
+
 }
 
 void ModelManager::Finalize()
