@@ -57,8 +57,8 @@ void PlayerAttach::Particle() {
 }
 //e‚ÌoŒ»
 void PlayerAttach::BirthObj() {
-	float l_AfterAlpha;
-	float l_AfterScale;
+	float l_AfterAlpha = 0.0f;
+	float l_AfterScale = 0.0f;
 	//e‚ªŒ©‚¦‚é
 	if (m_Alive) {
 		m_AliveTimer++;

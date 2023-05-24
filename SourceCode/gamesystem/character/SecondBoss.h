@@ -13,6 +13,8 @@ public:
 	bool Initialize() override;//初期化
 
 	void Pause() override;//ポーズ
+
+	void Draw(DirectXCommon* dxCommon) override;//描画
 private:
 	void Action() override;//行動
 

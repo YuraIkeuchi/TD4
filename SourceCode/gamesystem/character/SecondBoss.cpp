@@ -9,11 +9,18 @@
 #include <random>
 //生成
 SecondBoss::SecondBoss() {
-	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Kido);
+	//モデル初期化と読み込み
+	m_fbxObject.reset(new IKEFBXObject3d());
+	m_fbxObject->Initialize();
+	m_fbxObject->SetModel(ModelManager::GetInstance()->GetFBXModel(ModelManager::KIDO));
+	m_fbxObject->LoadAnimation();
 
-	m_Object.reset(new IKEObject3d());
-	m_Object->Initialize();
-	m_Object->SetModel(m_Model);
+
+	//m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Kido);
+
+	//m_Object.reset(new IKEObject3d());
+	//m_Object->Initialize();
+	//m_Object->SetModel(m_Model);
 	shake = make_unique< Shake>();
 
 	mark.reset(IKETexture::Create(ImageManager::MARK, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 }));
@@ -26,13 +33,13 @@ SecondBoss::SecondBoss() {
 bool SecondBoss::Initialize() {
 
 	m_Position = { 40.0f,5.0f,30.0f };
-	m_Rotation = { 180.0f,270.0f,0.0f };
-	m_Scale = { 3.5f,3.5f,3.5f };
+	m_Rotation = { 0.0f,90.0f,0.0f };
 	m_OBBScale = { 6.0f,6.0f,6.0f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
+	m_Scale = { 0.03f,0.03f,0.03f };
 	//m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "pos")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp2")));
-	_charaState = CharaState::STATE_ROLL;
+	_charaState = CharaState::STATE_MOVE;
 	m_MoveState = MOVE_ALTER;
 	m_RandomType = RANDOM_START;
 	m_RollType = ROLL_ONE;
@@ -52,10 +59,13 @@ void SecondBoss::Action() {
 	//当たり判定（弾）
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
 	CollideBul(_playerBulA);
-	m_MatRot = m_Object->GetMatrot();
+	//m_MatRot = m_Object->GetMatrot();
 	//OBJのステータスのセット
-	Obj_SetParam();
-
+	//Obj_SetParam();
+	Fbx_SetParam();
+	//どっち使えばいいか分からなかったから保留
+	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+	m_MatRot = m_fbxObject->GetMatrot();
 	//スタンプ更新
 	StampUpdate(angerstamps);
 	StampUpdate(joystamps);
@@ -151,13 +161,22 @@ void SecondBoss::EffecttexDraw(DirectXCommon* dxCommon)
 	mark->Draw();
 	IKETexture::PostDraw();
 }
+//描画
+void SecondBoss::Draw(DirectXCommon* dxCommon) {
+	EffecttexDraw(dxCommon);
+	Fbx_Draw(dxCommon);
+}
 //ダメージ時のリアクション
 void SecondBoss::DamAction()
 {
-
 }
 //ImGui
 void SecondBoss::ImGui_Origin() {
+	ImGui::Begin("SecondBoss");
+	ImGui::Text("RotX:%f", m_Rotation.x);
+	ImGui::Text("ROTY:%f", m_Rotation.y);
+	ImGui::Text("ROTZ:%f", m_Rotation.z);
+	ImGui::End();
 }
 //移動
 void SecondBoss::Move() {
@@ -215,7 +234,7 @@ void SecondBoss::Stamp() {
 		
 		if (Helper::GetInstance()->CheckMinINT(m_StopTimer, l_TargetTimer, 1)) {		//次の行動
 			StampInit(PRESS_ATTACK, false);
-			m_AfterRotX = m_Rotation.x + 720.0f;
+			m_AfterRotX = m_Rotation.x + 540.0f;
 		}
 	}
 	else if (m_PressType == PRESS_ATTACK) {			//落下してくる
@@ -392,28 +411,24 @@ void SecondBoss::Rolling() {
 		l_AfterPos = { 55.0f,m_Position.y,-50.0f };
 		l_AddFrame = 0.007f;
 		l_AfterRotY = 90.0f;
-		m_Rotation.z++;
 		RollEaseCommn(l_AfterPos, l_AddFrame, l_AfterRotY);
 	}
 	else if (m_RollType == ROLL_THIRD) {
 		l_AfterPos = { 55.0f,m_Position.y,50.0f };
 		l_AddFrame = 0.007f;
 		l_AfterRotY = 0.0f;
-		m_Rotation.z++;
 		RollEaseCommn(l_AfterPos, l_AddFrame, l_AfterRotY);
 	}
 	else if (m_RollType == ROLL_FOURTH) {
 		l_AfterPos = { -45.0f,m_Position.y,50.0f };
 		l_AddFrame = 0.007f;
 		l_AfterRotY = -90.0f;
-		m_Rotation.z++;
 		RollEaseCommn(l_AfterPos, l_AddFrame, l_AfterRotY);
 	}
 	else if (m_RollType == ROLL_FIVE) {
 		l_AfterPos = { -45.0f,m_Position.y,-50.0f };
 		l_AddFrame = 0.007f;
 		l_AfterRotY = -225.0f;
-		m_Rotation.z++;
 		RollEaseCommn(l_AfterPos, l_AddFrame, l_AfterRotY);
 
 		m_AddPower = 0.8f;
@@ -432,11 +447,12 @@ void SecondBoss::Rolling() {
 		m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, 180.0f);
 	}
 	else {
-		m_Rotation = { 180.0f,270.0f,0.0f };
+		m_Rotation = { 0.0f,90.0f,0.0f };
 		//次の行動を決める
 		m_AddPower = 0.8f;
 		_charaState = STATE_MOVE;
 		m_MoveState = MOVE_CHOICE;
+		m_fbxObject->PlayAnimation(1);
 	}
 }
 //転がるやつの共通イージング
@@ -454,6 +470,7 @@ void SecondBoss::RollEaseCommn(const XMFLOAT3& AfterPos, const float AddFrame,co
 	//回転のイージング
 	if (m_Frame > l_CheckFrame) {
 		m_ChangeRot = true;
+		m_fbxObject->StopAnimation();
 	}
 
 	ChangeRot(AfterRot);
@@ -462,6 +479,8 @@ void SecondBoss::RollEaseCommn(const XMFLOAT3& AfterPos, const float AddFrame,co
 		m_Frame = {};
 		m_RotFrame = {};
 		m_RollType++;
+		m_AnimationSpeed = 5;
+		m_fbxObject->PlayAnimation(0);
 	}
 
 	m_Position = {
@@ -470,7 +489,6 @@ Ease(In,Cubic,m_Frame,m_Position.y,AfterPos.y),
 	Ease(In,Cubic,m_Frame,m_Position.z,AfterPos.z)
 	};
 }
-
 //回転の共通変数
 void SecondBoss::ChangeRot(const float AfterRot) {
 	const float l_AddFrame = 0.05f;
