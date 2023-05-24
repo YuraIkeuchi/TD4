@@ -41,8 +41,8 @@ void ParticleEmitter::FireEffect(const int life, const XMFLOAT3& l_pos, const fl
 }
 
 //爆発
-void ParticleEmitter::Explosion(const int life, const XMFLOAT3& pos2, const float size, const float startscale, 
-	const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor){
+void ParticleEmitter::Explosion(const int life, const XMFLOAT3& pos, const float size, const float startscale,
+	const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor) {
 	for (int j = 0; j < 3; j++) {
 		//X,Y,Z全て[-2.0f, +2.0f]でランダムに分布
 		const float RandPos = 2.0f;
@@ -64,11 +64,14 @@ void ParticleEmitter::Explosion(const int life, const XMFLOAT3& pos2, const floa
 			vel.x = ((float)rand() / RAND_MAX * RandVel - RandVel / 2.0f) * size;
 			vel.y = ((float)rand() / RAND_MAX * RandVel - RandVel / 2.0f) * size;
 			vel.z = ((float)rand() / RAND_MAX * RandVel - RandVel / 2.0f) * size;
-			
+
+
 			//追加
-			circleParticle->Add(life, pos, vel, {}, startscale, endscale, startcolor, endcolor);
+			circleParticle->Add(life, l_pos, vel, {}, startscale, endscale, startcolor, endcolor);
+		}
 	}
 }
+
 
 //�_���[�W�G�t�F�N�g
 void ParticleEmitter::Break(const int life, const XMFLOAT3& pos,const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor) {
