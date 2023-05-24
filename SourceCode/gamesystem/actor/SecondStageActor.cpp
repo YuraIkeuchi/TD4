@@ -107,6 +107,7 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 		loadobj->SecondUpdate();
 		ParticleEmitter::GetInstance()->Update();
 	}
+	camerawork->DefaultCam();
 	camerawork->Update(camera);
 	lightgroup->Update();
 }

@@ -16,7 +16,7 @@ private:
 	void Appearance()override;
 	void Particle();//パーティクル
 	void RushAction();
-	
+	void DeathEffect();
 protected:
 
 private:

@@ -4,19 +4,20 @@
 #include "ParticleEmitter.h"
 #include "VariableCommon.h"
 #include <Helper.h>
-//XV
+//è­–ï½´è­ï½°
 void InterBoss::Update() {
-	//s“®
+	//é™¦æ‚Ÿè™š
 	Action();
+	DeathAction();
 	
-	//ƒGƒtƒFƒNƒg
+	//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
 	for (InterEffect* effect : effects) {
 		if (effect != nullptr) {
 			effect->Update();
 		}
 	}
 
-	//ƒ}[ƒN‚Ìíœ
+	//ãƒãƒ¼ã‚¯ã®å‰Šé™¤
 	for (int i = 0; i < effects.size(); i++) {
 		if (effects[i] == nullptr) {
 			continue;
@@ -27,12 +28,12 @@ void InterBoss::Update() {
 		}
 	}
 }
-//•`‰æ
+//è¬ å†—åˆ¤
 void InterBoss::Draw(DirectXCommon* dxCommon) {
 }
-//ImGui•`‰æ
+//ImGuiè¬ å†—åˆ¤
 void InterBoss::ImGuiDraw() {
-	ImGui_Origin();//‚»‚ê‚¼‚ê‚ÌImGui
+	ImGui_Origin();//ç¸ºæ˜´ï½Œç¸ºæ§­ï½Œç¸ºï½®ImGui
 }
 
 float InterBoss::HpPercent() {
@@ -42,7 +43,7 @@ float InterBoss::HpPercent() {
 	return temp;
 }
 
-//’e‚Æ‚Ì“–‚½‚è”»’è
+//è ‘ï½¾ç¸ºï½¨ç¸ºï½®è –è–™â—†ç¹§é›æ„›è³
 void InterBoss::CollideBul(vector<InterBullet*> bullet)
 {
 	if (ColChangeEaseT>0.f)return;
@@ -69,7 +70,7 @@ void InterBoss::CollideBul(vector<InterBullet*> bullet)
 	}
 }
 
-//ƒGƒtƒFƒNƒg‚Ì”­¶
+//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ç™ºç”Ÿ
 void InterBoss::BirthEffect() {
 	InterEffect* neweffect;
 	neweffect = new BreakEffect();
@@ -140,15 +141,15 @@ void InterBoss::SummonEnemyUpda(std::vector<InterEnemy*> enemy)
 
 void InterBoss::EndSummon(std::vector<InterEnemy*> enemy)
 {
-	//‰¼‚ÌŠi”[”z—ñ
+	//è‰ï½®ç¸ºï½®è­¬ï½¼é‚åŸ¼ï¿½è›»
 	bool tempList[3];
-	//‘S•””­Ëó‘Ô‚È‚ç
+	//èœˆï½¨é©›ï½¨é€‹ï½ºèŸ†ï¿½æ†¾è«·ä¹â†‘ç¹§
 	for (auto i = 0; i < _countof(tempList); i++) {
 		if (enemy[i] == nullptr)continue;
 		tempList[i] = enemy[i]->GetShotF();
 	}
 	if (SummobnStop) {
-		//¢Š«ó‘Ô‰ğœ@‰~‰^“®ÄŠJ
+		//èœ¿ï½¬èŸå¤‚æ†¾è«·ç–ï½§ï½£é«¯ï½¤ç¸²èœ€ï¿½Â°èœå‹Ÿï¿½é«¢
 		if (Helper::GetInstance()->All_Of(tempList, _countof(tempList))) {
 			
 			NextActionInteval++;
@@ -181,4 +182,11 @@ void InterBoss::SummonEnemyDraw(std::vector<InterEnemy*> enemy, DirectXCommon* d
 		if (enemy[i] == nullptr)continue;
 		enemy[i]->Draw(dxcomn);
 	}
+}
+
+void InterBoss::DeathAction()
+{
+	if (isAlive)return;
+
+	DeathSceneF = true;
 }
