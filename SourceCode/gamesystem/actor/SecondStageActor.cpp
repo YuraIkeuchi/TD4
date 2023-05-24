@@ -37,7 +37,7 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	blackwindow = IKESprite::Create(ImageManager::BLACKWINDOW, {});
 
 	enemymanager = std::make_unique<EnemyManager>("SECONDSTAGE");
-
+	ui->SetBoss(enemymanager->GetBoss());
 	BackObj::GetInstance()->Initialize();
 
 	loadobj = std::make_unique<LoadStageObj>();

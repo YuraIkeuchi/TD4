@@ -39,7 +39,7 @@ bool SecondBoss::Initialize() {
 	m_Scale = { 0.03f,0.03f,0.03f };
 	//m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "pos")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp2")));
-	_charaState = CharaState::STATE_MOVE;
+	_charaState = CharaState::STATE_RANDOM;
 	m_MoveState = MOVE_ALTER;
 	m_RandomType = RANDOM_START;
 	m_RollType = ROLL_ONE;
@@ -313,10 +313,13 @@ void SecondBoss::Stamp() {
 void SecondBoss::RandomStamp() {
 	float l_AddFrame;//加算されるフレーム
 	int l_TargetTimer;//指定の時間
-	int l_MaxPosX = 62;//ランダムで取る座標の最大、最小値
-	int l_MinPosX = -52;
-	int l_MaxPosZ = 57;
-	int l_MinPosZ = -57;
+	const float l_MaxPosX = 62.0f;//ランダムで取る座標の最大、最小値
+	const float l_MinPosX = -52.0f;
+	const float l_MaxPosZ = 57.0f;
+	const float l_MinPosZ = -57.0f;
+
+	const int l_RandMax = 20;
+	const int l_RandMin = -20;
 	if (m_RandomType == RANDOM_START) {			//スタート
 		l_AddFrame = 0.01f;
 		l_TargetTimer = 1;
@@ -327,13 +330,16 @@ void SecondBoss::RandomStamp() {
 		else {
 			//乱数指定
 			mt19937 mt{ std::random_device{}() };
-			uniform_int_distribution<int> l_RandX(l_MinPosX, l_MaxPosX);
+			uniform_int_distribution<int> l_RandX(l_RandMin, l_RandMax);
 			mt19937 mt2{ std::random_device{}() };
-			uniform_int_distribution<int> l_RandZ(l_MinPosZ, l_MaxPosZ);
+			uniform_int_distribution<int> l_RandZ(l_RandMin, l_RandMax);
 			//座標をランダムで決める
 			if (Helper::GetInstance()->CheckMinINT(m_StopTimer, l_TargetTimer, 1)) {			//プレイヤーの位置に移動
-				m_Position.x = float(l_RandX(mt));
-				m_Position.z = float(l_RandZ(mt2));
+				m_Position.x = (float(l_RandX(mt))) + (Player::GetInstance()->GetPosition().x);
+				m_Position.z = (float(l_RandZ(mt2))) + (Player::GetInstance()->GetPosition().z);
+
+				Helper::GetInstance()->FloatClamp(m_Position.x, l_MinPosX,l_MaxPosX);
+				Helper::GetInstance()->FloatClamp(m_Position.z, l_MinPosZ,l_MaxPosZ);
 				StampInit(RANDOM_SET, true);
 			}
 		}
