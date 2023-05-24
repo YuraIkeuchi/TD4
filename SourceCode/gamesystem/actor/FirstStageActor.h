@@ -1,14 +1,7 @@
-#pragma once
+﻿#pragma once
 #include "BaseActor.h"
-#include <vector>
-#include<windows.h>
-#include "UI.h"
-#include "EnemyManager.h"
-#include "FirstBoss.h"
-#include "BackObj.h"
 #include "LoadStageObj.h"
 #include"Font.h"
-#include"Feed.h"
 //
 /// タイトルシーン
 class FirstStageActor : public BaseActor {
@@ -18,7 +11,7 @@ private:
 		FIGHT,
 		NONE,
 	};
-	unique_ptr<Feed> feed;
+	//Feed*feedn;
 	bool feedF;
 public:
 	/// 初期化

@@ -1,4 +1,4 @@
-#include "FirstStageActor.h"
+﻿#include "FirstStageActor.h"
 #include "Audio.h"
 #include"Easing.h"
 #include "SceneManager.h"
@@ -42,7 +42,8 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 
 	BackObj::GetInstance()->Initialize();
 
-	feed.reset(new Feed());
+	//feedn = new Feed();
+
 	loadobj = std::make_unique<LoadStageObj>();
 	loadobj->AllLoad("FIRSTSTAGE");
 	LoadStageObj::SetEnemyManager(enemymanager.get());
@@ -93,7 +94,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	{
 		feedF = true;
 	}
-	feed->FeedIn(Feed::FeedType::WHITE, 0.02f, feedF);
+//	feedn->FeedIn(Feed::FeedType::BLACK, 0.02f, feedF);
 		camerawork->Update(camera);
 	lightgroup->Update();
 }
@@ -149,7 +150,7 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	//blackwindow->Draw();
 	IKESprite::PostDraw();
 	ui->Draw();
-	feed->Draw();
+	//feedn->Draw();
 	sceneChanger_->Draw();
 }
 //IMGuiの描画

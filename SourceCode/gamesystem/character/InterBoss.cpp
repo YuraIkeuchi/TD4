@@ -1,4 +1,4 @@
-#include "InterBoss.h"
+﻿#include "InterBoss.h"
 #include"Collision.h"
 #include "Helper.h"
 #include "ParticleEmitter.h"
@@ -33,7 +33,7 @@ void InterBoss::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui謠冗判
 void InterBoss::ImGuiDraw() {
-	ImGui_Origin();//縺昴ｌ縺槭ｌ縺ｮImGui
+	ImGui_Origin();
 }
 
 float InterBoss::HpPercent() {
@@ -43,7 +43,6 @@ float InterBoss::HpPercent() {
 	return temp;
 }
 
-//蠑ｾ縺ｨ縺ｮ蠖薙◆繧雁愛螳
 void InterBoss::CollideBul(vector<InterBullet*> bullet)
 {
 	if (ColChangeEaseT>0.f)return;
@@ -141,15 +140,12 @@ void InterBoss::SummonEnemyUpda(std::vector<InterEnemy*> enemy)
 
 void InterBoss::EndSummon(std::vector<InterEnemy*> enemy)
 {
-	//莉ｮ縺ｮ譬ｼ邏埼�蛻
 	bool tempList[3];
-	//蜈ｨ驛ｨ逋ｺ蟆�憾諷九↑繧
 	for (auto i = 0; i < _countof(tempList); i++) {
 		if (enemy[i] == nullptr)continue;
 		tempList[i] = enemy[i]->GetShotF();
 	}
 	if (SummobnStop) {
-		//蜿ｬ蝟夂憾諷玖ｧ｣髯､縲蜀�°蜍募�髢
 		if (Helper::GetInstance()->All_Of(tempList, _countof(tempList))) {
 			
 			NextActionInteval++;

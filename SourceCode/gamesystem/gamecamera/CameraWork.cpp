@@ -1,4 +1,4 @@
-#include "CameraWork.h"
+﻿#include "CameraWork.h"
 #include "VariableCommon.h"
 #include <Easing.h>
 #include "Player.h"
