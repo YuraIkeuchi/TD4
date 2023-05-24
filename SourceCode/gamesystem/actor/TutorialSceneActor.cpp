@@ -163,7 +163,6 @@ void TutorialSceneActor::TextTalkState() {
 		nowstate_ = state::SPAWNENEMY;
 	}
 }
-
 void TutorialSceneActor::SpawnEnemyState() {
 	loadobj->TutorialUpdate();
 	enemymanager->TutorialUpdate(0);
@@ -333,7 +332,6 @@ bool TutorialSceneActor::DebugButton() {
 		return false;
 	}
 }
-
 void TutorialSceneActor::CameraUpdate(DebugCamera* camera) {
 	if (nowstate_ != state::SPAWNALLENEMY) {
 		camerawork->Update(camera);
@@ -341,8 +339,6 @@ void TutorialSceneActor::CameraUpdate(DebugCamera* camera) {
 		camerawork->SpecialUpdate(camera);
 	}
 }
-
-
 bool TutorialSceneActor::Clear(bool mission, int waitTimerMax) {
 	if (!mission) { return false; }
 	waitTimer++;

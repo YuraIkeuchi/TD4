@@ -69,13 +69,15 @@ private:
 	//クラス
 	Input* input = Input::GetInstance();
 
-	InterEnemy* firstEnemy = nullptr;
-
 	unique_ptr<EnemyManager> enemymanager;
-	unique_ptr<InterBoss> boss;
+	InterEnemy* firstEnemy = nullptr;
 	unique_ptr<UI>ui;
+	//後に作成
+	unique_ptr<IKEObject3d> Sutepon = nullptr;
+
 	unique_ptr<BackObj> backobj;
 	unique_ptr<LoadStageObj> loadobj;
+
 	unique_ptr<IKESprite> conversationwindow;
 	unique_ptr<IKESprite> blackwindow;
 	unique_ptr<IKESprite> girl;

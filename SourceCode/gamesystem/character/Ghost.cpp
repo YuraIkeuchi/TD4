@@ -22,8 +22,9 @@ bool Ghost::Initialize() {
 	uniform_int_distribution<int> l_distX(-50, 60);
 	uniform_int_distribution<int> l_distZ(-55, 55);
 	m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
-	m_Scale = { 0.7f,0.7f,0.7f };
-	m_Color = { 1.0f,1.0f,1.0f,0.3f };
+	m_Rotation.y = -PI_90;
+	m_Scale = { 0.5f,0.5f,0.5f };
+	m_Color = { 1.0f,1.0f,1.0f,0.2f };
 	_charaState = CharaState::STATE_NONE;
 	_searchState = SearchState::SEARCH_NO;
 	_followState = FollowState::Follow_NO;
@@ -80,12 +81,14 @@ void Ghost::Particle() {
 	float e_scale = 0.0f;
 	if (m_Alive) {
 		if (_charaState == CharaState::STATE_NONE) {
+			m_Color = { 1.0f,1.0f,1.0f,0.2f };
+			m_Scale = { 0.5f,0.5f,0.5f };
 			//ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color, e_color);
-		}
-		else if (_charaState == CharaState::STATE_FOLLOW) {
+		} else if (_charaState == CharaState::STATE_FOLLOW) {
+			m_Color = { 1.0f,1.0f,1.0f,1.0f };
+			m_Scale= { 0.6f,0.6f,0.6f };
 			ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color2, e_color2);
-		}
-		else {
+		} else {
 			ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color3, e_color3);
 		}
 	}
@@ -93,7 +96,7 @@ void Ghost::Particle() {
 //“–‚½‚è”»’è(’e)
 bool Ghost::BulletCollision() {
 	float l_AddHungerMax = HungerGauge::m_Hungervalue;//‰ÁŽZ‚³‚ê‚éÅ‘å‹Q‰ìƒQ[ƒW
-	if (Player::GetInstance()->BulletCollide(m_Position,m_Object->GetMatrot(), m_OBBScale, m_Catch) && (m_Alive)) {
+	if (Player::GetInstance()->BulletCollide(m_Position, m_Object->GetMatrot(), m_OBBScale, m_Catch) && (m_Alive)) {
 		m_Catch = true;
 		if (Player::GetInstance()->GetBulletType() == BULLET_FORROW) {
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Follower.wav", VolumManager::GetInstance()->GetSEVolum());
@@ -104,14 +107,12 @@ bool Ghost::BulletCollision() {
 			_followState = FollowState::Follow_START;
 			m_Object->SetModel(model_follow);
 			m_Follow = true;
-		}
-		else {
+		} else {
 			_charaState = CharaState::STATE_SEARCH;
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Searcher.wav", VolumManager::GetInstance()->GetSEVolum());
 		}
 		return true;
-	}
-	else {
+	} else {
 		return false;
 	}
 	return true;
@@ -121,8 +122,7 @@ bool Ghost::PlayerCollision() {
 	if (Player::GetInstance()->PlayerCollide(m_Position) && (_charaState == CharaState::STATE_FOLLOW)) {
 		m_Position = m_OldPos;
 		return true;
-	}
-	else {
+	} else {
 		return false;
 	}
 
@@ -167,7 +167,7 @@ void Ghost::Follow() {
 	float l_Vel = 0.35f;//‘¬“x
 	XMFLOAT3 l_playerPos = Player::GetInstance()->GetPosition();
 	Helper::GetInstance()->FollowMove(m_Position, l_playerPos, l_Vel);
-	m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, l_playerPos,-PI_90);
+	m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, l_playerPos, -PI_90);
 }
 //’Tõ
 void Ghost::Search() {
@@ -183,8 +183,7 @@ void Ghost::Search() {
 		if (m_SearchTimer >= l_LimitTimer) {
 			m_Alive = false;
 		}
-	}
-	else if (_searchState == SearchState::SEARCH_END) {
+	} else if (_searchState == SearchState::SEARCH_END) {
 		Helper::GetInstance()->FollowMove(m_Position, l_playerPos, l_Vel);
 		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, l_playerPos, -PI_90);
 	}
