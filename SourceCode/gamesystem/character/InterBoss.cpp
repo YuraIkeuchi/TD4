@@ -46,13 +46,10 @@ float InterBoss::HpPercent() {
 void InterBoss::CollideBul(vector<InterBullet*> bullet)
 {
 	if (ColChangeEaseT>0.f)return;
-	constexpr float BulRad = 3.f;
-
-	constexpr float BossRad = 3.f;
 
 	for (InterBullet* _bullet : bullet) {
 		if (_bullet != nullptr) {
-			if (Collision::SphereCollision(_bullet->GetPosition(), BulRad, m_Position, BossRad))
+			if (Collision::SphereCollision(_bullet->GetPosition(), m_Radius, m_Position, m_Radius))
 			{
 				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Attack_Normal.wav", VolumManager::GetInstance()->GetSEVolum());
 				ActionTimer++;

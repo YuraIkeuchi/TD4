@@ -84,6 +84,9 @@ protected:
 
 	bool m_Check = false;
 	XMFLOAT3 m_OBBScale = {};
+
+	//弾とボスの当たり判定に使う大きさ
+	float m_Radius = 0.0f;
 private:
 
 	enum class ActionList

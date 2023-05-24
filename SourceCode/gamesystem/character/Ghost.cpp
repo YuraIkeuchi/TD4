@@ -143,6 +143,7 @@ void Ghost::BirthGhost() {
 			mt19937 mt{ std::random_device{}() };
 			uniform_int_distribution<int> l_distX(-50, 60);
 			uniform_int_distribution<int> l_distZ(-55, 55);
+			m_Object->SetModel(m_Model);
 			m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
 		}
 		//ˆê’èŠÔ‚Å¶¬‚³‚ê‚é

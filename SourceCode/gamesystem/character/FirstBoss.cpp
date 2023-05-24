@@ -31,6 +31,8 @@ bool FirstBoss::Initialize() {
 	_normal.Initialize();
 	_cattack.Initialize();
 	ActionTimer = 1;
+
+	m_Radius = 5.0f;
 	return true;
 }
 //行動
