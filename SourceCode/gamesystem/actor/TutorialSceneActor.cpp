@@ -376,12 +376,11 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	//最初のエネミーの参照
 	firstEnemy = enemymanager->GetEnemy(0);
 	//背景objの生成
-	backobj = std::make_unique<BackObj>();
-	backobj->Initialize();
+	BackObj::GetInstance()->Initialize();
 	//食料objの生成
 	loadobj = std::make_unique<LoadStageObj>();
 	loadobj->AllLoad("FIRSTSTAGE");
-	loadobj->SetEnemyManager(enemymanager.get());
+	LoadStageObj::SetEnemyManager(enemymanager.get());
 	//シーンチェンジャー
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
@@ -432,7 +431,7 @@ void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 		Player::GetInstance()->Update();
 		ParticleEmitter::GetInstance()->Update();
 	}
-	backobj->Update();
+	BackObj::GetInstance()->Update();
 	CameraUpdate(camera);
 	lightgroup->Update();
 }
@@ -472,7 +471,7 @@ void TutorialSceneActor::BackDraw(DirectXCommon* dxCommon) {
 	if (nowstate_ >= state::SPAWNENEMY) {
 		loadobj->Draw(dxCommon);
 	}
-	backobj->Draw(dxCommon);
+	BackObj::GetInstance()->Draw(dxCommon);
 	enemymanager->TutorialDraw(dxCommon);
 	IKEObject3d::PostDraw();
 }

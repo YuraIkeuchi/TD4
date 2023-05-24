@@ -8,7 +8,7 @@
 #include "Player.h"
 #include <random>
 Food::Food() {
-	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Cube);
+	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Food);
 	m_Object.reset(new IKEObject3d());
 	m_Object->Initialize();
 	m_Object->SetModel(m_Model);
@@ -20,7 +20,7 @@ bool Food::Initialize() {
 	uniform_int_distribution<int> l_distX(-50, 60);
 	uniform_int_distribution<int> l_distZ(-55, 55);
 	m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
-	m_Scale = { 0.7f,0.7f,0.7f };
+	m_Scale = { 1.0f,1.0f,1.0f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_LockOn = false;
 	m_Alive = true;

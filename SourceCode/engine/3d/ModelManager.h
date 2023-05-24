@@ -22,7 +22,9 @@ public:
 		GhostBullet,
 		BulEnemy,
 		Tyuta,
-		Sutopon
+		Sutopon,
+		Food,
+
 	};
 	//FBX‚Ì–¼‘O
 	enum FBXName {
