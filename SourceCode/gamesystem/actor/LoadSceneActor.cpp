@@ -30,7 +30,7 @@ void LoadSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 //更新
 void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	lightgroup->Update();
-	camerawork->LoadActorUpdate(camera);
+	camerawork->SpecialUpdate(camera);
 
 	//関数ポインタで状態管理
 	(this->*stateTable[static_cast<size_t>(m_SceneState)])();

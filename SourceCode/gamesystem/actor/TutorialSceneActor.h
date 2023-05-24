@@ -61,6 +61,11 @@ public:
 	void BackDraw(DirectXCommon* dxCommon);
 	void ImGuiDraw(DirectXCommon* dxCommon);
 private:
+	void CameraUpdate(DebugCamera* camera);
+
+
+
+private:
 	//クラス
 	Input* input = Input::GetInstance();
 
@@ -94,7 +99,10 @@ private:
 	wchar_t* ward;
 	int conversation = 0;
 	int old_conversation = 0;
+	
 	int waitTimer = 0;
+	float cameraframe = 0.0f;
+	const float kCameraFrameMax = 90.0f;
 private://便利関数
 	bool Clear(bool mission,int waitTimerMax);
 

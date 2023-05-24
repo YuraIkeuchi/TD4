@@ -10,19 +10,17 @@ EnemyManager::EnemyManager(const std::string& sceneName) {
 		enemy->Initialize();
 		bulletenemy.resize(EnemySize);
 		for (auto i = 0; i < bulletenemy.size(); i++) {
-			bulletenemy[i]=new NormalEnemy();
+			bulletenemy[i] = new NormalEnemy();
 			bulletenemy[i]->Initialize();
 		}
-	}
-	else if (sceneName == "SECONDSTAGE") {
+	} else if (sceneName == "SECONDSTAGE") {
 		enemy.reset(new SecondBoss());
 		enemy->Initialize();
 		for (auto i = 0; i < bulletenemy.size(); i++) {
-			bulletenemy[i]=new NormalEnemy();
+			bulletenemy[i] = new NormalEnemy();
 			bulletenemy[i]->Initialize();
 		}
-	}
-	else if (sceneName == "TUTORIAL") {
+	} else if (sceneName == "TUTORIAL") {
 		for (auto i = 0; i < tutorialenemy.size(); i++) {
 			tutorialenemy[i].reset(new TutorialEnemy());
 			tutorialenemy[i]->Initialize();
@@ -31,11 +29,10 @@ EnemyManager::EnemyManager(const std::string& sceneName) {
 		tutorialenemy[0]->SetPosition({ 0,5.0f ,50.0f });
 		//カメラ追従しつつスポーン
 		for (auto i = 1; i < tutorialenemy.size(); i++) {
-			float posX = -60.0f * (i*20.f);
-			tutorialenemy[i]->SetPosition({posX ,5.0f ,50.0f});
+			float posX = -24.0f + (i * 8.f);
+			tutorialenemy[i]->SetPosition({ posX ,5.0f ,50.0f });
 		}
-	}
-	else {
+	} else {
 		assert(0);
 	}
 
@@ -44,13 +41,12 @@ EnemyManager::EnemyManager(const std::string& sceneName) {
 void EnemyManager::Update() {
 	enemy->Update();
 	if (SceneName == "FIRSTSTAGE") {
-		
 		enemy->isRespawn(bulletenemy);
 		enemy->SummonEnemyUpda(bulletenemy);
 	}
 }
 void EnemyManager::TutorialUpdate(int pattern) {
-	if (pattern==0) {
+	if (pattern == 0) {
 		tutorialenemy[0]->Update();
 	} else {
 		for (auto i = 0; i < tutorialEnemyMax; i++) {
