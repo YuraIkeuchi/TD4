@@ -7,7 +7,7 @@
 #include "ImageManager.h"
 #include <algorithm>
 #include <HungerGauge.h>
-
+#include "BackObj.h"
 //初期化
 void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	dxCommon->SetFullScreen(true);
@@ -43,8 +43,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	enemymanager->SetSceneName("FIRSTSTAGE");
 	ui->SetBoss(enemymanager->GetBoss());
 
-	backobj = std::make_unique<BackObj>();
-	backobj->Initialize();
+	BackObj::GetInstance()->Initialize();
 
 	loadobj = std::make_unique<LoadStageObj>();
 	loadobj->AllLoad("FIRSTSTAGE");
@@ -68,11 +67,11 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	VolumManager::GetInstance()->Update();
 	ui->Update();
 	//各クラス更新
-	backobj->Update();
+	BackObj::GetInstance()->Update();
 	if (nowstate != CONVERSATION) {
 		Player::GetInstance()->Update();
 		enemymanager->Update();
-		loadobj->FirstUpdate();
+		//loadobj->FirstUpdate();
 		ParticleEmitter::GetInstance()->Update();
 	}
 	camerawork->Update(camera);
@@ -121,7 +120,7 @@ void FirstStageActor::BackDraw(DirectXCommon* dxCommon) {
 	////各クラスの描画
 	Player::GetInstance()->Draw(dxCommon);
 	loadobj->Draw(dxCommon);
-	backobj->Draw(dxCommon);
+	BackObj::GetInstance()->Draw(dxCommon);
 	//パーティクル描画
 	ParticleEmitter::GetInstance()->FlontDrawAll();
 	enemymanager->Draw(dxCommon);
@@ -143,5 +142,5 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 //IMGuiの描画
 void FirstStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	Player::GetInstance()->ImGuiDraw();
-	loadobj->ImGuiDraw();
+	//loadobj->ImGuiDraw();
 }

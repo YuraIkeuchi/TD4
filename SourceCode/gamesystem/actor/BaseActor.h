@@ -1,21 +1,22 @@
-#pragma once
+ï»¿#pragma once
 #include "LightGroup.h"
 #include "DebugCamera.h"
 #include "DirectXCommon.h"
 #include "PostEffect.h"
 #include "ParticleManager.h"
 #include "VolumManager.h"
-#include "IKEFBXObject3d.h"
-#include "IKEObject3d.h"
 #include "CameraWork.h"
 #include "SceneChanger.h"
-
-using namespace std;         //  –¼‘O‹óŠÔw’è
-//ActorƒNƒ‰ƒX‚ÌŠù’è
+#include "UI.h"
+#include "EnemyManager.h"
+#include "LoadStageObj.h"
+#include"Font.h"
+using namespace std;         //  åå‰ç©ºé–“æŒ‡å®š
+//Actorã‚¯ãƒ©ã‚¹ã®æ—¢å®š
 class BaseActor
 {
 protected:
-	// DirectX::‚ğÈ—ª
+	// DirectX::ã‚’çœç•¥
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
@@ -28,36 +29,36 @@ protected:
 		FinishState,
 	};
 
-	//ŠÖ”ƒ|ƒCƒ“ƒ^
+	//é–¢æ•°ãƒã‚¤ãƒ³ã‚¿
 	static void(BaseActor::* stateTable[])();
-	//ƒƒ“ƒoŠÖ”
+	//ãƒ¡ãƒ³ãƒé–¢æ•°
 	virtual void IntroUpdate() {};
 	virtual void MainUpdate() {};
 	virtual void FinishUpdate() {};
 
 public:
-	//‰¼‘zƒfƒXƒgƒ‰ƒNƒ^
+	//ä»®æƒ³ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	virtual ~BaseActor() = default;
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	virtual void Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) = 0;
-	//ŠJ•ú
+	//é–‹æ”¾
 	virtual void Finalize() = 0;
-	//XV
+	//æ›´æ–°
 	virtual void Update(DirectXCommon* dxCommon, DebugCamera* camera,LightGroup* lightgroup) = 0;
-	//•`‰æ
+	//æç”»
 	virtual void Draw(DirectXCommon* dxCommon) = 0;
-	//‹¤’Ê‰Šú‰»
+	//å…±é€šåˆæœŸåŒ–
 	void BaseInitialize(DirectXCommon* dxCommon, XMFLOAT3 eye = { 2.0f, 45.0f, 2.0f }, XMFLOAT3 target = { 2.0f, 0.0f, 3.0f });
-	//ƒvƒŒƒCƒ„[‚Ì€–Sˆ—
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ­»äº¡å‡¦ç†
 	bool PlayerDestroy();
 public:
-	//ƒQ[ƒ€ƒ‹[ƒv‚µ‚½‚©‚Ç‚¤‚©
+	//ã‚²ãƒ¼ãƒ ãƒ«ãƒ¼ãƒ—ã—ãŸã‹ã©ã†ã‹
 	static bool s_GameLoop;
 protected:
 
 	float ambientColor0[3] = { 1,1,1 };
-	// Œõü•ûŒü‰Šú’l
+	// å…‰ç·šæ–¹å‘åˆæœŸå€¤
 	float lightDir0[3] = { 0,0,1 };
 	float lightColor0[3] = { 1,0,0 };
 
@@ -67,12 +68,12 @@ protected:
 	float lightDir2[3] = { 1,0,0 };
 	float lightColor2[3] = { 0,0,1 };
 
-	//“_ŒõŒ¹
+	//ç‚¹å…‰æº
 	float pointLightPos[3] = { 0,0,0 };
 	float pointLightColor[3] = { 1,1,1 };
 	float pointLightAtten[3] = { 15.0f,15.0f,15.0f };
 	float pointLightPower[3] = { 20.0f,20.0f,20.0f };
-	//ŠÛ‰e
+	//ä¸¸å½±
 	float circleShadowDir[3] = { 0,-1,0 };
 	float circleShadowPos[3] = { 1,2,0 };
 	float circleShadowAtten[3] = { 0.5f,0.6f,0.0f };
@@ -81,6 +82,22 @@ protected:
 	unique_ptr<CameraWork> camerawork;
 	bool PlayPostEffect = false;
 	unique_ptr<SceneChanger> sceneChanger_ = nullptr;
-	//ƒV[ƒ“‚Å‚Ì‘JˆÚ
+	//ã‚·ãƒ¼ãƒ³ã§ã®é·ç§»
 	SceneState m_SceneState = SceneState::IntroState;
+	//ã‚¯ãƒ©ã‚¹
+	unique_ptr<EnemyManager> enemymanager;
+	unique_ptr<InterBoss> boss;
+	unique_ptr<UI>ui;
+	unique_ptr<LoadStageObj> loadobj;
+	unique_ptr<IKESprite> conversationwindow;
+	unique_ptr<IKESprite> blackwindow;
+	unique_ptr<IKESprite> girl;
+	unique_ptr<Font> font_;
+	//ï¿½ï¿½W
+	XMFLOAT2 window_pos{ WinApp::window_width / 2.f,WinApp::window_height + 100 };
+	XMFLOAT2 window_size{ 0.f,0.f };
+
+	XMFLOAT4 black_color{ 1.f,1.f,1.f,0.f };
+	XMFLOAT4 girl_color{ 2.f,2.f,2.f,0.f };
+
 };

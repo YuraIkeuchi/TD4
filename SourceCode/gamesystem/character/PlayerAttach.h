@@ -22,16 +22,24 @@ public:
 	void Draw(DirectXCommon* dxCommon)override;
 	//ImGui既定
 	void ImGuiDraw();
-
+	//パーティクル
+	void Particle();
+	//弾の出現
+	void BirthObj();
 public:
 	//gettersetter
-	void SetAfterAngle(const XMFLOAT2& AfterAngle) { m_AfterAngle = AfterAngle; }
+	void SetAlive(const bool Alive) { m_Alive = Alive; }
+	void SetAngle(const XMFLOAT2& Angle) { m_Angle = Angle; }
 	//void SetAfterRot(const float AfterRotY) { m_AfterRotY = AfterRotY; }
 public:
-	XMFLOAT2 m_AfterAngle = {};//弾の角度
 	XMFLOAT2 m_Angle = {};//弾の角度
-	float m_AfterRotY = {};
+	//float m_AfterScale = 0.0f;
 	float m_AddSpeed = {};//加速度
+	bool m_Alive = false;
+	bool m_Particle = false;
+	int m_ParticleTimer = 0;
+	int m_AliveTimer = 0;
 	float m_SinAngle = {};
 	float m_SinAngle2 = {};
+	float m_Frame = 0.0f;
 };

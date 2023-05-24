@@ -230,9 +230,16 @@ private:
 	void NoBattleMove();
 	void RemovePos();
 	XMFLOAT3 OldPos;
+
+private:
 	float EaseT_BatStart;
 	bool BattleStartF;
+	int noBattleCount;
 
+	void EndSumon_returnPos();
+	bool ReturnPosF;
+	float RePosEaseT;
+	XMFLOAT3 OldPos_EndSummon;
 private:
 	void ColPlayer_Def();
 };

@@ -68,8 +68,7 @@ void FirstBoss::Action() {
 
 	}
 	/*^^^^^^^^^^^^^^^^^^^^^*/
-
-
+	
 	/*^^^^当たり判定^^^^*/
 	//弾とボスの当たり判定
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
@@ -85,8 +84,15 @@ void FirstBoss::Action() {
 
 	/*^^^^^攻撃判定^^^^^*/
 	//非戦闘時の動き
-	bool noAction = (!_normal.GetAttackF() && !_cattack.GetAttackF()&&!SummobnStop);
+	if(!EndSummonRepos)
+	{
+		OldPos_EndSummon = m_Position;
+	}
+	EndSumon_returnPos();
+
+	bool noAction = (!_normal.GetAttackF() && !_cattack.GetAttackF()&&!SummobnStop&&!EndSummonRepos);
 	if (!BattleStartF) {
+		noBattleCount = 0;
 		Recv = false;
 		NoBattleMove();
 	} else {
@@ -97,6 +103,7 @@ void FirstBoss::Action() {
 		if (noAction&& !Recv)ActionTimer++;
 
 		if (!_normal.GetAttackF()&&!SummonF && ActionTimer % 60 == 0) {
+			EndSummonRepos = false;
 			ResF = true;
 			SummobnStop = true;
 			SummonF = true;
@@ -197,10 +204,8 @@ void FirstBoss::NormalAttak::Update(XMFLOAT3& Pos, XMFLOAT3& Rot, bool& Enf)
 		shakeend = false;
 		RotEaseTime = 0.f;
 		Enf = true;
-		RushRotationF = false;
 		StayF = false;
 		RushMoveEaseT = 0.f;
-		RemovePosEaseT = 0.f;
 		StayCount = 0;
 	}
 	if (NormalAttackF) {
@@ -253,7 +258,7 @@ void FirstBoss::Move()
 
 	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
 
-	if (BattleStartF && !Recv && !_normal.GetAttackF() && !_cattack.GetAttackF() && !SummobnStop) {
+	if ((BattleStartF&&!EndSummonRepos) && !Recv && !_normal.GetAttackF() && !_cattack.GetAttackF() && !SummobnStop) {
 
 		//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
 		XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
@@ -301,6 +306,8 @@ void FirstBoss::Move_Away()
 
 	move = XMVector3TransformNormal(move, matRot);
 
+	//自由移動
+	bool battleEnd = noBattleCount > 120;
 
 	if (!GoAway)
 	{
@@ -318,10 +325,11 @@ void FirstBoss::Move_Away()
 		m_Position.z = m_Position.z + move.m128_f32[2] * 6.f;
 
 		AwayRotEaseT = 0.f;
-		if (Collision::GetLength(l_player, m_Position) > 50.f)
-		{
-			BattleStartF = false;
-		}
+
+		//一定時間逃げたら戦闘開始前の動き
+		noBattleCount++;
+		
+		if (battleEnd)BattleStartF = false;
 	}
 }
 
@@ -402,24 +410,13 @@ void FirstBoss::NormalAttak::ShakeAction(XMFLOAT3& Pos, XMFLOAT3& Rot)
 	if (RotEaseTime >= 1.f) {
 
 		RotSpeed += 0.1f;
-		if (shake->GetShakeTimer() < MaxShakeTime) {
-
-			//shake->SetShakeStart(true);
-			//shake->ShakePos(shakeX, 1, -1, MaxShakeTime, 12.f);
-			//shake->ShakePos(shakeZ, 1, -1, MaxShakeTime, 12.f);
-
-			////シェイク値足す
-			//Pos.x += shakeX;
-			//Pos.z += shakeZ;
-		}
 		if (RotSpeed >= 8.f&& !shakeend) {
 			RemovePosEaseT += 0.05f;
-			//Pos.x = Easing::EaseOut(RemovePosEaseT, pos.x, BeforeShakePos.x);
-			//Pos.z = Easing::EaseOut(RemovePosEaseT, pos.z, BeforeShakePos.z);
 			if (RemovePosEaseT >= 1.f) {
 				shakeend = true;
 			}
 		}
+
 
 
 		if (shakeend)
@@ -428,6 +425,15 @@ void FirstBoss::NormalAttak::ShakeAction(XMFLOAT3& Pos, XMFLOAT3& Rot)
 			BackSpeed -= 0.25f;
 			Pos.x = Pos.x + move.m128_f32[0] * BackSpeed;
 			Pos.z = Pos.z + move.m128_f32[2] * BackSpeed;
+		} else
+		{
+			XMVECTOR PositionA = { Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().y, Player::GetInstance()->GetPosition().z };
+			XMVECTOR PositionB = { Pos.x,Pos.y,Pos.z };
+			//プレイヤーと敵のベクトルの長さ(差)を求める
+			XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA);
+			float RotY = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
+
+			Rot.y = RotY * 60.f + 90.f;
 		}
 
 		//攻撃状態に遷移
@@ -464,21 +470,14 @@ void FirstBoss::NormalAttak::Rot(XMFLOAT3& Pos, XMFLOAT3& Rot)
 		RotEaseTime = 0.f;
 		RushOldRotY = Rot.y;
 	} else {
-		//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
-		XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
-		XMVECTOR PositionB = { Pos.x,Pos.y,Pos.z };
-		//プレイヤーと敵のベクトルの長さ(差)を求める
-		XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
-		//回転軸をプレイヤーの方に
-			//向きかえる
-
+		
 		float RotY = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
 
 		//イージングカウンタ＋＋
 		RotEaseTime += 0.02f;
 
 		//Rotation反映
-		Rot.y = Easing::EaseOut(RotEaseTime, RushOldRotY, RotY * 60.f + 90.f);
+//		Rot.y = Easing::EaseOut(RotEaseTime, RushOldRotY, RotY * 60.f + 90.f);
 
 
 	}
@@ -487,13 +486,7 @@ void FirstBoss::NormalAttak::Rot(XMFLOAT3& Pos, XMFLOAT3& Rot)
 void FirstBoss::DebRot()
 {
 	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
-	//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
-	XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
-	XMVECTOR PositionB = { m_Position.x,m_Position.y,m_Position.z };
-	//プレイヤーと敵のベクトルの長さ(差)を求める
-	XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
-
-	if (!RushRotationF)
+		if (!RushRotationF)
 	{
 		RotEaseTime = 0.f;
 		RushOldRotY = m_Rotation.y;
@@ -623,7 +616,7 @@ void FirstBoss::NoBattleMove()
 
 	constexpr float EaseAddVal = 0.04f;
 
-	bool SearchF = Collision::GetLength(m_Position, l_player) < 30.f;
+	bool SearchF = Collision::GetLength(m_Position, l_player) < 25.f;
 
 	//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
 	XMVECTOR PositionA = { l_player.x + sinf(1 * (PI / 180.0f)) * 20.0f,l_player.y, l_player.z + cosf(1 * (PI / 180.0f)) * 20.0f };
@@ -872,5 +865,25 @@ void FirstBoss::ChargeAttack::Draw()
 	for (auto i = 0; i < impacttex.size(); i++)
 	{
 		impacttex[i]->Draw();
+	}
+}
+
+void FirstBoss::EndSumon_returnPos()
+{
+	if(EndSummonRepos)
+	{
+
+		RePosEaseT += 0.04f;
+		m_Position.x = Easing::EaseOut(RePosEaseT, OldPos_EndSummon.x,Player::GetInstance()->GetPosition().x + sinf(BossAngle * (PI / 180.0f)) * 20.0f);
+		m_Position.z = Easing::EaseOut(RePosEaseT, OldPos_EndSummon.z, Player::GetInstance()->GetPosition().z + cosf(BossAngle * (PI / 180.0f)) * 20.0f);
+
+		if(RePosEaseT>=1.f)
+		{
+			EndSummonRepos = false;
+		}
+	}
+	else
+	{
+		RePosEaseT = 0.f;
 	}
 }
