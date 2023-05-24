@@ -8,7 +8,7 @@
 void InterBoss::Update() {
 	//行動
 	Action();
-	
+	DeathAction();
 }
 //描画
 void InterBoss::Draw(DirectXCommon* dxCommon) {
@@ -157,4 +157,11 @@ void InterBoss::SummonEnemyDraw(std::vector<InterEnemy*> enemy, DirectXCommon* d
 		if (enemy[i] == nullptr)continue;
 		enemy[i]->Draw(dxcomn);
 	}
+}
+
+void InterBoss::DeathAction()
+{
+	if (isAlive)return;
+
+	DeathSceneF = true;
 }

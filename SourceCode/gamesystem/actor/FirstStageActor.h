@@ -8,6 +8,7 @@
 #include "BackObj.h"
 #include "LoadStageObj.h"
 #include"Font.h"
+#include"Feed.h"
 /// タイトルシーン
 class FirstStageActor : public BaseActor {
 private:
@@ -16,6 +17,8 @@ private:
 		FIGHT,
 		NONE,
 	};
+	unique_ptr<Feed> feed;
+	bool feedF;
 public:
 	/// 初期化
 	void Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) override;

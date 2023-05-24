@@ -3,6 +3,8 @@
 #include "Camera.h"
 #include "Shake.h"
 #include <memory>
+
+#include "InterBoss.h"
 using namespace std;         //  名前空間指定
 
 //ゲームのカメラの動き
@@ -20,7 +22,8 @@ public:
 	void Update(DebugCamera* camera);//更新
 	void ImGuiDraw();
 	void LoadActorUpdate(DebugCamera* camera);//更新
-
+	void DefaultCam();
+	void SetBossCam(InterBoss* boss);
 public:
 	void EditorCamera();
 public:

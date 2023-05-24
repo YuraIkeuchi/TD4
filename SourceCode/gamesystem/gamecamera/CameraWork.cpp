@@ -12,15 +12,31 @@ CameraWork::CameraWork(XMFLOAT3 eye, XMFLOAT3 target) {
 }
 //XV
 void CameraWork::Update(DebugCamera* camera) {
-	m_eyePos.x = Player::GetInstance()->GetPosition().x;
-	m_eyePos.z = Player::GetInstance()->GetPosition().z - 20.0f;
-	m_targetPos.x = Player::GetInstance()->GetPosition().x;
-	m_targetPos.z = Player::GetInstance()->GetPosition().z;
 	camera->SetEye(m_eyePos);
 	camera->SetTarget(m_targetPos);
 	camera->Update();
 }
 
+void CameraWork::DefaultCam()
+{
+	m_eyePos.x = Player::GetInstance()->GetPosition().x;
+	m_eyePos.z = Player::GetInstance()->GetPosition().z - 20.0f;
+	m_targetPos.x = Player::GetInstance()->GetPosition().x;
+	m_targetPos.z = Player::GetInstance()->GetPosition().z;
+
+}
+
+void CameraWork::SetBossCam(InterBoss* boss)
+{
+	m_eyePos.x = boss->GetPosition().x;
+	m_eyePos.z =boss->GetPosition().z-20.f;
+	m_eyePos.y = -10.f;
+
+	m_targetPos.x = boss->GetPosition().x;
+	m_targetPos.z =boss->GetPosition().z;
+	
+}
+ 
 void CameraWork::EditorCamera()
 {
 	m_eyePos.y = 35.f;

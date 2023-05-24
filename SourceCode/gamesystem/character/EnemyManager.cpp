@@ -44,6 +44,7 @@ void EnemyManager::Update() {
 		enemy->SummonEnemyUpda(bulletenemy);
 	}
 }
+
 void EnemyManager::TutorialUpdate(int pattern) {
 	if (pattern==0) {
 		tutorialenemy[0]->Update();
@@ -60,6 +61,7 @@ void EnemyManager::Draw(DirectXCommon* dxCommon) {
 		enemy->SummonEnemyDraw(bulletenemy, dxCommon);
 	}
 }
+
 void EnemyManager::TutorialDraw(DirectXCommon* dxCommon) {
 	for (auto i = 0; i < tutorialEnemyMax; i++) {
 		tutorialenemy[i]->Draw(dxCommon);

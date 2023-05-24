@@ -58,4 +58,5 @@ public:
 	bool BossDestroy();
 
 	void SetSceneName(std::string name) { SceneName = name; }
+	
 };

@@ -35,7 +35,7 @@ bool FirstBoss::Initialize() {
 }
 //行動
 void FirstBoss::Action() {
-
+	if(m_HP>0){
 	/*^^^^^^上下運動^^^^^^^*/
 	float OldsMov = 0;
 	if (!_cattack.GetAttackF() && !_normal.GetAttackF()) {
@@ -68,7 +68,7 @@ void FirstBoss::Action() {
 
 	}
 	/*^^^^^^^^^^^^^^^^^^^^^*/
-	
+
 	/*^^^^当たり判定^^^^*/
 	//弾とボスの当たり判定
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
@@ -84,26 +84,29 @@ void FirstBoss::Action() {
 
 	/*^^^^^攻撃判定^^^^^*/
 	//非戦闘時の動き
-	if(!EndSummonRepos)
+	if (!EndSummonRepos || !ReturnPosF_Impact)
 	{
 		OldPos_EndSummon = m_Position;
 	}
-	EndSumon_returnPos();
 
-	bool noAction = (!_normal.GetAttackF() && !_cattack.GetAttackF()&&!SummobnStop&&!EndSummonRepos);
+	EndSumon_returnPos(EndSummonRepos, RePosEaseT);
+	EndSumon_returnPos(ReturnPosF_Impact, RePosEaseT_Impact);
+
+	//範囲攻撃のフェーズが最後まで行ったらプレイヤーの方に戻る
+	_cattack.ReturnPosJudg(ReturnPosF_Impact);
+
+	bool noAction = (!_normal.GetAttackF() && !_cattack.GetAttackF() && !SummobnStop && !EndSummonRepos);
 	if (!BattleStartF) {
 		noBattleCount = 0;
 		Recv = false;
 		NoBattleMove();
 	} else {
-
 		RotEaseTime_noBat = 0.f;
 		EaseT_BatStart = 0.f;
 		//タイマーカウンタ
-		if (noAction&& !Recv)ActionTimer++;
+		if (noAction && !Recv)ActionTimer++;
 
-		if (!_normal.GetAttackF()&&!SummonF && ActionTimer % 130 == 0) {
-			EndSummonRepos = false;
+		if (!_normal.GetAttackF() && !SummonF && ActionTimer % 130 == 0) {
 			ResF = true;
 			SummobnStop = true;
 			SummonF = true;
@@ -111,10 +114,10 @@ void FirstBoss::Action() {
 		}
 
 		//通常攻撃
-		if (!SummobnStop&&!_cattack.GetAttackF()&&!_normal.GetAttackF() && ActionTimer % 60 == 0)
+		if (!SummobnStop && !_cattack.GetAttackF() && !_normal.GetAttackF() && ActionTimer % 60 == 0)
 			_normal.SetNormalAttackF(true);
 		//ため攻撃
-		if (!SummobnStop &&!_cattack.GetAttackF() && ActionTimer % 93 == 0)
+		if (!SummobnStop && !_cattack.GetAttackF() && ActionTimer % 93 == 0)
 			_cattack.SetAttackF(true);
 
 
@@ -140,7 +143,7 @@ void FirstBoss::Action() {
 	_normal.ColPlayer(m_Position);
 
 	_normal.SetreposAngle();
-
+}
 	//OBJのステータスのセット
 	Obj_SetParam();
 
@@ -258,7 +261,7 @@ void FirstBoss::Move()
 
 	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
 
-	if ((BattleStartF&&!EndSummonRepos) && !Recv && !_normal.GetAttackF() && !_cattack.GetAttackF() && !SummobnStop) {
+	if ((BattleStartF&&!EndSummonRepos&&!ReturnPosF_Impact) && !Recv && !_normal.GetAttackF() && !_cattack.GetAttackF() && !SummobnStop) {
 
 		//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
 		XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
@@ -774,17 +777,20 @@ void FirstBoss::ChargeAttack::Attack(XMFLOAT3& Pos, XMFLOAT3& Rot)
 		//テクスチャ広がるやつ
 		TexScling();
 		break;
-
-	case Phase_Charge::END:
-		//終了時にフラグとフェーズ初期化
-		AttackF = false;
-		ChargeTime = 0;
-		RotSpeed = 0.f;
-		_phase = Phase_Charge::NON;
-		break;
+		
 	}
 }
 
+void FirstBoss::ChargeAttack::ReturnPosJudg(bool& reposf)
+{
+	if (_phase != Phase_Charge::END)return;
+	//終了時にフラグとフェーズ初期化
+		AttackF = false;
+		ChargeTime = 0;
+		RotSpeed = 0.f;
+		reposf = true;
+		_phase = Phase_Charge::NON;
+}
 
 void FirstBoss::ChargeAttack::JumpAction(XMFLOAT3& Pos)
 {
@@ -868,7 +874,7 @@ void FirstBoss::ChargeAttack::Draw()
 	}
 }
 
-void FirstBoss::EndSumon_returnPos()
+void FirstBoss::EndSumon_returnPos(bool &f,float&easespeed)
 {
 	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
 	XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
@@ -878,20 +884,20 @@ void FirstBoss::EndSumon_returnPos()
 
 	float RotY = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
 
-	if(EndSummonRepos)
+	if(f)
 	{
 		m_Rotation.y = RotY * 60.f + 90.f;
-		RePosEaseT += 0.04f;
-		m_Position.x = Easing::EaseOut(RePosEaseT, OldPos_EndSummon.x,Player::GetInstance()->GetPosition().x + sinf(BossAngle * (PI / 180.0f)) * 20.0f);
-		m_Position.z = Easing::EaseOut(RePosEaseT, OldPos_EndSummon.z, Player::GetInstance()->GetPosition().z + cosf(BossAngle * (PI / 180.0f)) * 20.0f);
+		easespeed += 0.04f;
+		m_Position.x = Easing::EaseOut(easespeed, OldPos_EndSummon.x,Player::GetInstance()->GetPosition().x + sinf(BossAngle * (PI / 180.0f)) * 20.0f);
+		m_Position.z = Easing::EaseOut(easespeed, OldPos_EndSummon.z, Player::GetInstance()->GetPosition().z + cosf(BossAngle * (PI / 180.0f)) * 20.0f);
 
-		if(RePosEaseT>=1.f)
+		if(easespeed>=1.f)
 		{
-			EndSummonRepos = false;
+			f = false;
 		}
 	}
 	else
 	{
-		RePosEaseT = 0.f;
+		easespeed= 0.f;
 	}
 }

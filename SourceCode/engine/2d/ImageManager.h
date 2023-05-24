@@ -35,6 +35,7 @@ public:
 		TopGauge,
 		GIRL,
 		SUTOPON,
+		FEED
 	};
 	//テクスチャの名前
 	enum tex2dName
