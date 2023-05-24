@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "DebugCamera.h"
 #include "Camera.h"
 #include "Shake.h"
