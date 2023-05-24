@@ -13,7 +13,7 @@ const XMVECTOR kWhite{ 1.f,1.f,1.f,1.f };
 const XMVECTOR kSkyBlue{ 0.f,1.f,1.f,1.f };
 const XMFLOAT2 kFirstRowPos{ 5.f,0.f };
 const XMFLOAT2 kSecondRowPos{ 5.f,-40.f };
-const XMFLOAT2 kThardRowPos{ 5.f, -80.f };
+const XMFLOAT2 kThirdRowPos{ 5.f, -80.f };
 const XMFLOAT4 kHalfClear{ 0.5f,0.5f,0.5f,0.5f };
 
 //状態遷移
@@ -48,24 +48,8 @@ void TutorialSceneActor::IntroState() {
 	black_color.w = Ease(Out, Sine, nowframe, 0, 1);
 	girl_color.w = Ease(Out, Sine, nowframe, 0, 1);
 
-	conversationwindow->SetPosition(window_pos);
-	conversationwindow->SetSize(window_size);
-	blackwindow->SetColor(black_color);
-	girl->SetColor(girl_color);
-	ward = L"ここはどこだろう?";
-	firstrow_->SetString(ward);
-	ward = L"あたりを見回してみよう";
-	secondrow_->SetString(ward);
-	ward = L"'Lスティックで移動してみよう'";
-	thardrow_->SetString(ward);
 	if (input->TriggerKey(DIK_SPACE)) {
-		nowframe = 0;
-		frame = 0;
-		ward = L" ";
-		firstrow_->SetString(ward);
-		secondrow_->SetString(ward);
-		thardrow_->SetString(ward);
-		girl->SetColor(girl_color);
+		conversation_->WardNone();
 		nowstate_ = state::MOVE;
 	}
 }
@@ -74,97 +58,22 @@ void TutorialSceneActor::MoveState() {
 	XMFLOAT3 pos=Player::GetInstance()->GetPosition();
 
 	//メガホンobjが到着次第変更
-	if (!Collision::CircleCollision(0,0,45.f,pos.x,pos.z,1.f)) {
+	if (!Collision::CircleCollision(0,0,45.f,pos.x,pos.z,1.f)||input->TriggerKey(DIK_SPACE)) {
 		nowstate_ = state::TEXT_TALK;
 	}
 }
 
 void TutorialSceneActor::TextTalkState() {
 	
-	frame+=0.1f;
-	nowframe = frame / maxframe;
-	if (frame >= maxframe) {
-		frame = maxframe;
-	}
-	sutopon_color.w = Ease(Out, Sine, nowframe, 0, 1);
-	megahon->SetColor(sutopon_color);
 
-	if (conversation == 0) {
-		ward = L"これは.....メガホン?";
-		firstrow_->SetString(ward);
-		ward = L"でも,動いてる?";
-		secondrow_->SetString(ward);
-		if (input->TriggerKey(DIK_RIGHT)) {
-			conversation = 1;
-		}
-
-		loadobj->TutorialUpdate();
-
+	if (input->TriggerKey(DIK_RIGHT)) {
+		conversation_->WardNone();
 	}
-	else if (conversation == 1) {
-		girl_color = kHalfClear;
-		ward = L"う..う........はっ!?";
-		firstrow_->SetString(ward);
-		firstrow_->SetColor(kSkyBlue);
-		ward = L"敵!?......じゃないみたいだな";
-		secondrow_->SetString(ward);
-		secondrow_->SetColor(kSkyBlue);
-		if (input->TriggerKey(DIK_RIGHT)) {
-			conversation = 2;
-		}
-	}
-	else if (conversation == 2) {
-		sutopon_color = kHalfClear;
-		girl_color = { 1.5f,1.5f,1.5f,1.f };
-		ward = L"え!?メガホンが喋った!";
-		firstrow_->SetString(ward);
-		firstrow_->SetColor(kWhite);
-		if (input->TriggerKey(DIK_RIGHT)) {
-			conversation = 3;
-		}
-	}
-	else if (conversation == 3) {
-		sutopon_color = { 1.f,1.f,1.f,1.f };
-		girl_color = kHalfClear;
-		firstrow_->SetColor(kSkyBlue);
-		secondrow_->SetColor(kSkyBlue);
-		thardrow_->SetColor(kSkyBlue);
-		ward = L"メガホンじゃない,オレはストポンだ";
-		firstrow_->SetString(ward);
-		ward = L"メガホンに取り憑いた亡霊だ!";
-		secondrow_->SetString(ward);
-		ward = L"こうしちゃいられない....追手が来ちまう!";
-		thardrow_->SetString(ward);
-
-		if (input->TriggerKey(DIK_RIGHT)) {
-			conversation = 4;
-		}
-		//loadobj->FirstUpdate();
-	}
-	else if (conversation == 4) {
-		sutopon_color = kHalfClear;
-		girl_color = {1.5f,1.5f,1.5f,1.f};
-		firstrow_->SetColor(kWhite);
-		ward = L"追手ってあれのこと?";
-		firstrow_->SetString(ward);
-		if (input->TriggerKey(DIK_RIGHT)) {
-			conversation = 4;
-		}
-		//loadobj->FirstUpdate();
-	}
-	girl->SetColor(girl_color);
-	megahon->SetColor(sutopon_color);
-	if (old_conversation < conversation) {
-		firstrow_->StringReset();
-		secondrow_->StringReset();
-		thardrow_->StringReset();
-		old_conversation = conversation;
-	}
-
+	
 	if (input->TriggerKey(DIK_SPACE)) {
 		firstrow_->StringReset();
 		secondrow_->StringReset();
-		thardrow_->StringReset();
+		thirdrow_->StringReset();
 		conversation = old_conversation = 0;
 		nowstate_ = state::SPAWNENEMY;
 	}
@@ -218,8 +127,6 @@ void TutorialSceneActor::TextShotState() {
 	if (input->TriggerKey(DIK_SPACE)) {
 		nowstate_ = state::SHOT;
 	}
-
-
 }
 void TutorialSceneActor::ShotState() {
 	loadobj->TutorialUpdate();
@@ -251,8 +158,6 @@ void TutorialSceneActor::CatchSeachState() {
 		waitTimer = 0;
 		nowstate_ = state::TEXT_CLEAR;
 	}
-
-
 }
 void TutorialSceneActor::TextClearState() {
 	ward = L"ながれをかんぜんにりかいしました";
@@ -302,31 +207,25 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	ui->Initialize();
 	enemymanager = std::make_unique<EnemyManager>("TUTORIAL");
 	firstEnemy = enemymanager->GetEnemy(0);
+	conversation_ = make_unique<Conversation>();
+	conversation_->Initialize(dxCommon);
+	//生成
 	firstrow_ = make_unique<Font>();
-	secondrow_= make_unique<Font>();
-	thardrow_ = make_unique<Font>();
+	secondrow_ = make_unique<Font>();
+	thirdrow_ = make_unique<Font>();
+	//読み込み
 	firstrow_->LoadFont(dxCommon);
 	secondrow_->LoadFont(dxCommon);
-	thardrow_->LoadFont(dxCommon);
-	firstrow_->SetColor(kWhite);
-	secondrow_->SetColor(kWhite);
-	thardrow_->SetColor(kWhite);
+	thirdrow_->LoadFont(dxCommon);
+	//座標セット
 	firstrow_->SetPos(kFirstRowPos);
 	secondrow_->SetPos(kSecondRowPos);
-	thardrow_->SetPos(kThardRowPos);
-	conversationwindow = IKESprite::Create(ImageManager::WINDOW, window_pos);
-	conversationwindow->SetAnchorPoint({ 0.5f,0.5f });
-	conversationwindow->SetSize(window_size);
+	thirdrow_->SetPos(kThirdRowPos);
+	//色
+	firstrow_->SetColor(kWhite);
+	secondrow_->SetColor(kWhite);
+	thirdrow_->SetColor(kWhite);
 
-	blackwindow = IKESprite::Create(ImageManager::BLACKWINDOW, {});
-
-	girl = IKESprite::Create(ImageManager::GIRL, { -100.f,300.f });
-	girl->SetColor(girl_color);
-
-	megahon = IKESprite::Create(ImageManager::SUTOPON, { 1100.f,560.f });
-	megahon->SetColor(sutopon_color);
-	megahon->SetAnchorPoint({ 0.5f,0.5f });
-	megahon->SetSize({ 250.f,250.f });
 	backobj = std::make_unique<BackObj>();
 	backobj->Initialize();
 
@@ -345,7 +244,8 @@ void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 
 	//状態移行(stateに合わせる)
 	(this->*stateTable[static_cast<size_t>(nowstate_)])();
-
+	conversation_->Tyutorial();
+	conversation_->Update();
 	//各クラス更新
 	if (static_cast<int>(nowstate_) % 2 == 1) {
 		ui->Update();
@@ -371,9 +271,7 @@ void TutorialSceneActor::Draw(DirectXCommon* dxCommon) {
 		FrontDraw(dxCommon);
 		ImGuiDraw(dxCommon);
 		if (static_cast<int>(nowstate_) % 2 == 0) {
-			firstrow_->Draw(dxCommon);
-			secondrow_->Draw(dxCommon);
-			thardrow_->Draw(dxCommon);
+			conversation_->FontDraw(dxCommon);
 			Font::PostDraw(dxCommon);
 		}
 		postEffect->ImGuiDraw();
@@ -386,9 +284,7 @@ void TutorialSceneActor::Draw(DirectXCommon* dxCommon) {
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
 		if (static_cast<int>(nowstate_) % 2 == 0) {
-			firstrow_->Draw(dxCommon);
-			secondrow_->Draw(dxCommon);
-			thardrow_->Draw(dxCommon);
+			conversation_->FontDraw(dxCommon);
 			Font::PostDraw(dxCommon);
 		}
 		dxCommon->PostDraw();
@@ -417,10 +313,7 @@ void TutorialSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 	//完全に前に書くスプライト
 	if (static_cast<int>(nowstate_) % 2 == 0) {
 		IKESprite::PreDraw();
-		blackwindow->Draw();
-		conversationwindow->Draw();
-		girl->Draw();
-		megahon->Draw();
+		conversation_->SproteDraw();
 		IKESprite::PostDraw();
 	}else{
 		ui->Draw();

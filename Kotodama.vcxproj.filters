@@ -579,6 +579,8 @@
     <ClCompile Include="SourceCode\gamesystem\character\TutorialEnemy.cpp">
       <Filter>SourceCords\gamesystem\character\Enemy\Various</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\text\Text.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\Conversation\Conversation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\2d\DebugText.h">
@@ -893,9 +895,6 @@
     <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor.h">
       <Filter>SourceCords\gamesystem\actor\GameOver</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>SourceCords</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\bossattach\InterStamp.h">
       <Filter>SourceCords\gamesystem\character\Boss\Attach\Stamp\Common</Filter>
     </ClInclude>
@@ -922,6 +921,11 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\TutorialEnemy.h">
       <Filter>SourceCords\gamesystem\character\Enemy\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\text\Text.h" />
+    <ClInclude Include="SourceCode\gamesystem\Conversation\Conversation.h" />
+    <ClInclude Include="resource.h">
+      <Filter>SourceCords\shader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

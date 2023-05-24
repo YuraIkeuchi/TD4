@@ -8,6 +8,8 @@
 #include "BackObj.h"
 #include "LoadStageObj.h"
 #include"Font.h"
+#include"Conversation.h"
+
 /// タイトルシーン
 class TutorialSceneActor : public BaseActor {
 private:
@@ -71,14 +73,10 @@ private:
 	unique_ptr<UI>ui;
 	unique_ptr<BackObj> backobj;
 	unique_ptr<LoadStageObj> loadobj;
-	unique_ptr<IKESprite> conversationwindow;
-	unique_ptr<IKESprite> blackwindow;
-	unique_ptr<IKESprite> girl;
-	unique_ptr<IKESprite> megahon;
 	unique_ptr<Font> firstrow_;
 	unique_ptr<Font> secondrow_;
-	unique_ptr<Font> thardrow_;
-
+	unique_ptr<Font> thirdrow_;
+	unique_ptr<Conversation>conversation_;
 	//��W
 	XMFLOAT2 window_pos{ WinApp::window_width / 2.f,WinApp::window_height + 100 };
 	XMFLOAT2 window_size{ 0.f,0.f };
