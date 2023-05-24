@@ -1,10 +1,10 @@
-#include "SceneManager.h"
+ï»¿#include "SceneManager.h"
 #include "ImageManager.h"
 #include "ModelManager.h"
 #include "BackObj.h"
 #include<cassert>
 void SceneManager::Finalize() {
-	//ÅŒã‚ÌƒV[ƒ“‚ÌI—¹‚ÆŠJ•ú
+	//æœ€å¾Œã®ã‚·ãƒ¼ãƒ³ã®çµ‚äº†ã¨é–‹æ”¾
 	scene_->Finalize();
 	delete scene_;
 }
@@ -15,9 +15,9 @@ SceneManager* SceneManager::GetInstance() {
 }
 
 void SceneManager::Update(DirectXCommon* dxCommon) {
-	//ƒV[ƒ“Ø‚è‘Ö‚¦‚ª‚ ‚é‚©‚Ç‚¤‚©
+	//ã‚·ãƒ¼ãƒ³åˆ‡ã‚Šæ›¿ãˆãŒã‚ã‚‹ã‹ã©ã†ã‹
 	if (nextScene_) {
-		//‹ŒƒV[ƒ“‚ÌI—¹
+		//æ—§ã‚·ãƒ¼ãƒ³ã®çµ‚äº†
 		if (scene_) {
 			scene_->Finalize();
 			delete scene_;
@@ -26,19 +26,19 @@ void SceneManager::Update(DirectXCommon* dxCommon) {
 		nextScene_ = nullptr;
 		scene_->Initialize(dxCommon);
 	}
-	//ƒ[ƒfƒBƒ“ƒO
+	//ãƒ­ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°
 	if (m_Load == true) {
 		switch (m_loadType)
 		{
-		case SceneManager::NoLoad://ƒ[ƒh‚µ‚Ä‚¢‚È‚¢‚Æ‚«
+		case SceneManager::NoLoad://ãƒ­ãƒ¼ãƒ‰ã—ã¦ã„ãªã„ã¨ã
 			m_th = std::thread([&] {AsyncLoad(); });
 			m_loadType = LoadStart;
 
 			break;
-		case SceneManager::LoadStart://ƒ[ƒh‚µ‚Ä‚¢‚é‚Æ‚«
+		case SceneManager::LoadStart://ãƒ­ãƒ¼ãƒ‰ã—ã¦ã„ã‚‹ã¨ã
 
 			break;
-		case SceneManager::LoadEnd://ƒ[ƒhI‚í‚Á‚½‚ç
+		case SceneManager::LoadEnd://ãƒ­ãƒ¼ãƒ‰çµ‚ã‚ã£ãŸã‚‰
 			m_th.join();
 			m_loadType = NoLoad;
 			m_Load = false;
@@ -57,7 +57,7 @@ void SceneManager::Draw(DirectXCommon* dxCommon) {
 void SceneManager::ChangeScene(const std::string& sceneName) {
 	assert(sceneFactory_);
 	assert(nextScene_ == nullptr);
-	//Ÿ‚ÌƒV[ƒ“¶¬
+	//æ¬¡ã®ã‚·ãƒ¼ãƒ³ç”Ÿæˆ
 	nextScene_ = sceneFactory_->CreateScene(sceneName);
 }
 
@@ -69,6 +69,6 @@ void SceneManager::AsyncLoad()
 			BackObj::GetInstance()->LoadMap(); });
 
 	t.join();
-	// ƒ[ƒhó‘Ô=ƒ[ƒhI—¹
+	// ãƒ­ãƒ¼ãƒ‰çŠ¶æ…‹=ãƒ­ãƒ¼ãƒ‰çµ‚äº†
 	m_loadType = LoadEnd;
 }

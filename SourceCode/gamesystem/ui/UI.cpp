@@ -1,4 +1,4 @@
-#include "UI.h"
+ï»¿#include "UI.h"
 #include"ImageManager.h"
 #include <Player.h>
 #include <HungerGauge.h>
@@ -8,33 +8,33 @@ UI::~UI() {
 	TexList.clear();
 }
 
-//‰Šú‰»
+//åˆæœŸåŒ–
 void UI::Initialize() {
 	for (int i = HeartOne; i < UnderStatusGaugeMax; i++) {
 		sprites[i] = CreateUi(ImageManager::HEART, pos[i], { 50.f,50.f }, { 1.5f, 1.5f, 1.5f,1 });
 		TexList.emplace_back(std::move(sprites[i]));
 	}
-	{//ƒQ[ƒW‰º•~‚«
+	{//ã‚²ãƒ¼ã‚¸ä¸‹æ•·ã
 		sprites[UnderStatusGaugeMax] = CreateUi(ImageManager::UnderGauge, gaugePos_, gaugeSize_, { 1.5f, 1.5f, 1.5f,0.5f });
 		sprites[UnderStatusGaugeMax].Tex->SetAnchorPoint({ 0,0.5f });
 		TexList.emplace_back(std::move(sprites[UnderStatusGaugeMax]));
 	}
-	{//ƒQ[ƒW‰º•~‚«
+	{//ã‚²ãƒ¼ã‚¸ä¸‹æ•·ã
 		sprites[UnderStatusGauge] = CreateUi(ImageManager::UnderGauge, gaugePos_, gaugeSize_, { 1.5f, 1.5f, 1.5f,1 });
 		sprites[UnderStatusGauge].Tex->SetAnchorPoint({ 0,0.5f });
 		TexList.emplace_back(std::move(sprites[UnderStatusGauge]));
 	}
-	{//ƒQ[ƒW
+	{//ã‚²ãƒ¼ã‚¸
 		sprites[StatusGauge] = CreateUi(ImageManager::Gauge, gaugePos_, gaugeSize__, { 1.5f, 1.5f, 1.5f,1 });
 		sprites[StatusGauge].Tex->SetAnchorPoint({0,0.5f});
 		TexList.emplace_back(std::move(sprites[StatusGauge]));
 	}
-	{//ƒQ[ƒW
+	{//ã‚²ãƒ¼ã‚¸
 		sprites[UnderBossGauge] = CreateUi(ImageManager::WHITE, {880,0}, {400,40}, { 1.5f, 1.5f, 1.5f,1 });
 		sprites[UnderBossGauge].Tex->SetAnchorPoint({ 0,0.f });
 		TexList.emplace_back(std::move(sprites[UnderBossGauge]));
 	}
-	{//ƒQ[ƒW
+	{//ã‚²ãƒ¼ã‚¸
 		sprites[BossGauge] = CreateUi(ImageManager::WHITE, { 880,0 }, { 400,40 }, { 0.f, 1.f, 0.f,1 });
 		sprites[BossGauge].Tex->SetAnchorPoint({ 0,0.f });
 		TexList.emplace_back(std::move(sprites[BossGauge]));
@@ -42,9 +42,9 @@ void UI::Initialize() {
 
 }
 
-//XV
+//æ›´æ–°
 void UI::Update() {
-	//Gaugeˆ—
+	//Gaugeå‡¦ç†
 	if (HungerGauge::GetInstance()->GetCatchCount() == 0.f) {
 		TexList[UnderStatusGauge].IsVisible = false;
 		TexList[StatusGauge].IsVisible = false;
@@ -54,7 +54,7 @@ void UI::Update() {
 		TexList[UnderStatusGauge].IsVisible = true;
 		TexList[StatusGauge].IsVisible = true;
 	}
-	//ƒ‰ƒCƒtˆ—
+	//ãƒ©ã‚¤ãƒ•å‡¦ç†
 	for (int i = HeartOne; i < UnderStatusGaugeMax; i++) {
 		if (i < Player::GetInstance()->GetHP()) {
 			TexList[i].IsVisible =true;
@@ -79,7 +79,7 @@ void UI::Update() {
 	}
 }
 
-//•`‰æ
+//æç”»
 void UI::Draw() {
 	IKESprite::PreDraw();
 	for (auto i = 0; i < TexList.size(); i++) {

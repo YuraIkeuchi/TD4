@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="SourceCords">
@@ -253,6 +253,8 @@
     <Filter Include="SourceCords\gamesystem\character\Boss\Attach\Predict">
       <UniqueIdentifier>{be52123a-913f-41f2-9e7a-bab117cec069}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SourceCords\engine\2d\Feed">
+      <UniqueIdentifier>{3a045a8d-81b7-4858-b3d1-bf5b586a9031}</UniqueIdentifier>
     <Filter Include="SourceCords\gamesystem\character\Boss\Various\Second">
       <UniqueIdentifier>{4ed8194f-082d-4483-a773-112e636385cd}</UniqueIdentifier>
     </Filter>
@@ -265,7 +267,19 @@
     <Filter Include="SourceCords\gamesystem\Effect\Various">
       <UniqueIdentifier>{bc65e71a-f980-487d-8807-0337c3ab1b9c}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
+    <Filter Include="SourceCords\gamesystem\character\Boss\Various\Second">
+      <UniqueIdentifier>{4ed8194f-082d-4483-a773-112e636385cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\Effect">
+      <UniqueIdentifier>{0102f901-94c1-4773-8bd6-9d50eaecf832}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\Effect\Common">
+      <UniqueIdentifier>{e8daea4f-b844-4f70-a47c-d5a49b236dce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceCords\gamesystem\Effect\Various">
+      <UniqueIdentifier>{bc65e71a-f980-487d-8807-0337c3ab1b9c}</UniqueIdentifier>
+    </Filter>
+   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\engine\2d\DebugText.cpp">
       <Filter>SourceCords\engine\2d\Sprite</Filter>
@@ -587,6 +601,14 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\TutorialEnemy.cpp">
       <Filter>SourceCords\gamesystem\character\Enemy\Various</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\2d\Feed.cpp">
+      <Filter>SourceCords\engine\2d\Feed</Filter>
+    <ClCompile Include="SourceCode\gamesystem\effect\InterEffect.cpp">
+      <Filter>SourceCords\gamesystem\Effect\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\BreakEffect.cpp">
+      <Filter>SourceCords\gamesystem\Effect\Various</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\effect\InterEffect.cpp">
       <Filter>SourceCords\gamesystem\Effect\Common</Filter>
@@ -937,6 +959,14 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\TutorialEnemy.h">
       <Filter>SourceCords\gamesystem\character\Enemy\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\2d\Feed.h">
+      <Filter>SourceCords\engine\2d\Feed</Filter>
+    <ClInclude Include="SourceCode\gamesystem\effect\InterEffect.h">
+      <Filter>SourceCords\gamesystem\Effect\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\BreakEffect.h">
+      <Filter>SourceCords\gamesystem\Effect\Various</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\effect\InterEffect.h">
       <Filter>SourceCords\gamesystem\Effect\Common</Filter>
