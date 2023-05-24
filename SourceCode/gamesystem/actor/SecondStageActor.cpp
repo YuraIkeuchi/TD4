@@ -25,6 +25,11 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	ui = std::make_unique<UI>();
 	ui->Initialize();
 
+	//シーンチェンジャー
+	sceneChanger_ = make_unique<SceneChanger>();
+	sceneChanger_->Initialize();
+
+
 	conversationwindow = IKESprite::Create(ImageManager::WINDOW, window_pos);
 	conversationwindow->SetAnchorPoint({ 0.5f,0.5f });
 	conversationwindow->SetSize(window_size);
@@ -44,11 +49,13 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	Input* input = Input::GetInstance();
 	ui->Update();
 	if (enemymanager->BossDestroy()) {
-		SceneManager::GetInstance()->ChangeScene("TITLE");
+		sceneChanger_->ChangeStart();
+		sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
 	}
 
 	if (PlayerDestroy()) {
-		SceneManager::GetInstance()->ChangeScene("TITLE");
+		sceneChanger_->ChangeStart();
+		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::Reverse);
 	}
 	//音楽の音量が変わる
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
@@ -154,6 +161,7 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	conversationwindow->Draw();
 	ui->Draw();
 	IKESprite::PostDraw();
+	sceneChanger_->Draw();
 }
 //IMGuiの描画
 void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {

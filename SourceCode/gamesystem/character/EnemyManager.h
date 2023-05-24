@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "Player.h"
-
 #include "FirstBoss.h"
 #include "SecondBoss.h"
 
@@ -19,7 +18,6 @@ private:
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
-
 public:
 	EnemyManager(const std::string& sceneName);
 	//更新
@@ -30,10 +28,11 @@ public:
 	void Draw(DirectXCommon* dxCommon);
 	//チュートリアル用の描画
 	void TutorialDraw(DirectXCommon* dxCommon);
-	//ImGui
+	//ImGuiの描画
 	void ImGuiDraw();
-
+	//チュートリアルのエネミーが全撃破
 	bool AllDeadEnemy();
+	//ボスの撃破
 	void FinishCheck();
 public://getter setter
 	//敵関係getで取る
@@ -52,11 +51,11 @@ private:
 	//チュートリアル用
 	static const int tutorialEnemyMax = 6;
 	std::array<unique_ptr<InterEnemy>, tutorialEnemyMax>tutorialenemy;
-
+	//シーンネーム
 	std::string SceneName;
 public:
 	//敵の死亡処理
 	bool BossDestroy();
-
+	//シーンネームの取得
 	void SetSceneName(std::string name) { SceneName = name; }
 };
