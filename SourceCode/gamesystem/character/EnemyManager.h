@@ -33,6 +33,7 @@ public:
 	//ImGui
 	void ImGuiDraw();
 
+	bool AllDeadEnemy();
 	void FinishCheck();
 public://getter setter
 	//敵関係getで取る

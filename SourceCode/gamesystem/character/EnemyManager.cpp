@@ -84,6 +84,13 @@ bool EnemyManager::BossDestroy() {
 	return false;
 }
 
+bool EnemyManager::AllDeadEnemy() {
+	for (auto i = 0; i < tutorialEnemyMax; i++) {
+		if (tutorialenemy[i]->GetisAlive()) { return false; }
+	}
+	return true;
+}
+
 //敵のチェック終了
 void EnemyManager::FinishCheck() {
 	enemy->SetCheck(false);

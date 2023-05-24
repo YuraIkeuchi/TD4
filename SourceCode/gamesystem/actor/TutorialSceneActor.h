@@ -63,7 +63,7 @@ public:
 private:
 	void CameraUpdate(DebugCamera* camera);
 
-
+	bool DebugButton();
 
 private:
 	//クラス
@@ -91,6 +91,9 @@ private:
 	XMFLOAT4 black_color{ 1.f,1.f,1.f,0.f };
 	XMFLOAT4 girl_color{ 1.5f,1.5f,1.5f,0.f };
 	XMFLOAT4 sutopon_color{ 1.f,1.f,1.f,0.f };
+
+
+	static bool isDebug;
 
 	float maxframe = 20.f;
 	float nowframe = 0.f;

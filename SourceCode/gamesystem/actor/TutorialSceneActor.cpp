@@ -16,6 +16,9 @@ const XMFLOAT2 kSecondRowPos{ 5.f,-40.f };
 const XMFLOAT2 kThardRowPos{ 5.f, -80.f };
 const XMFLOAT4 kHalfClear{ 0.5f,0.5f,0.5f,0.5f };
 
+bool TutorialSceneActor::isDebug = true;
+
+
 //状態遷移
 /*stateの並び順に合わせる*/
 void (TutorialSceneActor::* TutorialSceneActor::stateTable[])() = {
@@ -58,7 +61,8 @@ void TutorialSceneActor::IntroState() {
 	secondrow_->SetString(ward);
 	ward = L"'Lスティックで移動してみよう'";
 	thardrow_->SetString(ward);
-	if (input->TriggerKey(DIK_SPACE)) {
+	if (DebugButton() ||
+		input->TriggerButton(Input::B)) {
 		nowframe = 0;
 		frame = 0;
 		ward = L" ";
@@ -157,7 +161,8 @@ void TutorialSceneActor::TextTalkState() {
 		old_conversation = conversation;
 	}
 
-	if (input->TriggerKey(DIK_SPACE)) {
+	if (DebugButton()||
+		input->TriggerButton(Input::B)) {
 		firstrow_->StringReset();
 		secondrow_->StringReset();
 		thardrow_->StringReset();
@@ -171,7 +176,7 @@ void TutorialSceneActor::SpawnEnemyState() {
 	enemymanager->TutorialUpdate(0);
 	XMFLOAT3 plaPos = Player::GetInstance()->GetPosition();
 	XMFLOAT3 enePos = firstEnemy->GetPosition();
-	if (input->TriggerKey(DIK_SPACE) ||
+	if (DebugButton() ||
 		Clear(Collision::CircleCollision(plaPos.x, plaPos.z, 20.0f, enePos.x, enePos.z, 1.0f), 0)) {
 		waitTimer = 0;
 		nowstate_ = state::TEXT_CATCHFOLLOW;
@@ -189,16 +194,19 @@ void TutorialSceneActor::TextCatchFollowState() {
 		loadobj->TutorialUpdate();
 	}
 
-	if (input->TriggerKey(DIK_SPACE)) {
+	if (DebugButton() ||
+		input->TriggerButton(Input::B)) {
 		nowstate_ = state::CATCHFOLLOW;
 	}
 
 }
 void TutorialSceneActor::CatchFollowState() {
 	loadobj->TutorialUpdate();
+	firstEnemy->SetIsStop(true);
 	enemymanager->TutorialUpdate(0);
 
-	if (Clear(HungerGauge::GetInstance()->GetCatchCount() >= 1.0f, 50)) {
+	if (DebugButton() ||
+		Clear(HungerGauge::GetInstance()->GetCatchCount() >= 1.0f, 50)) {
 		waitTimer = 0;
 		nowstate_ = state::TEXT_SHOT;
 
@@ -210,7 +218,8 @@ void TutorialSceneActor::TextShotState() {
 	firstrow_->SetString(ward);
 	secondrow_->SetString(L"たまをうってたおしてください");
 
-	if (input->TriggerKey(DIK_SPACE)) {
+	if (DebugButton() ||
+		input->TriggerButton(Input::B)) {
 		nowstate_ = state::SHOT;
 	}
 
@@ -220,7 +229,7 @@ void TutorialSceneActor::ShotState() {
 	loadobj->TutorialUpdate();
 	enemymanager->TutorialUpdate(0);
 
-	if (input->TriggerKey(DIK_SPACE) ||
+	if (DebugButton() ||
 		Clear(!firstEnemy->GetisAlive(), 45)) {
 		waitTimer = 0;
 		nowstate_ = state::TEXT_CATCHSEACH;
@@ -231,7 +240,8 @@ void TutorialSceneActor::TextCatchSeachState() {
 	firstrow_->SetString(ward);
 	secondrow_->SetString(L"たんさくがたのかくとくしてください。");
 
-	if (input->TriggerKey(DIK_SPACE)) {
+	if (DebugButton() ||
+		input->TriggerButton(Input::B)) {
 		HungerGauge::GetInstance()->ResetFirstCarry();
 		nowstate_ = state::CATCHSEACH;
 	}
@@ -241,7 +251,7 @@ void TutorialSceneActor::CatchSeachState() {
 	enemymanager->TutorialUpdate(0);
 
 
-	if (input->TriggerKey(DIK_SPACE) ||
+	if (DebugButton() ||
 		Clear(HungerGauge::GetInstance()->GetFirstCarry(), 30)) {
 		waitTimer = 0;
 		nowstate_ = state::TEXT_CLEAR;
@@ -254,7 +264,8 @@ void TutorialSceneActor::TextClearState() {
 	firstrow_->SetString(ward);
 	secondrow_->SetString(L"たくさんてきがでてきました。");
 
-	if (input->TriggerKey(DIK_SPACE)) {
+	if (DebugButton() ||
+		input->TriggerButton(Input::B)) {
 		nowstate_ = state::SPAWNALLENEMY;
 	}
 }
@@ -284,12 +295,48 @@ void TutorialSceneActor::SpawnAllEnemyState() {
 		nowstate_ = state::TEXT_LAST;
 	}
 }
-void TutorialSceneActor::TextLastState() {}
+void TutorialSceneActor::TextLastState() {
+	ward = L"これがおわったらケッコンするんだ";
+	firstrow_->SetString(ward);
+	secondrow_->SetString(L"ヤムチャしやがって・・・");
+
+
+	if (DebugButton() ||
+		input->TriggerButton(Input::B)) {
+		nowstate_ = state::MAINTUTORIAL;
+	}
+}
 
 void TutorialSceneActor::MainTutorialState() {
+	loadobj->TutorialUpdate();
+	enemymanager->TutorialUpdate(1);
+
+	if (DebugButton() || 
+		Clear(enemymanager->AllDeadEnemy(), 40)) {
+		nowstate_ = state::COMPLETE;
+	}
+}
+
+void TutorialSceneActor::CompleteState() {
+
+	ward = L"あんたはオレのアイボウだぜ";
+	firstrow_->SetString(ward);
+	secondrow_->SetString(L"おれがついてるぜ");
+
+	if (DebugButton() ||
+		input->TriggerButton(Input::B)) {
+		SceneManager::GetInstance()->ChangeScene("FIRSTSTAGE");
+	}
+}
 
 
-
+bool TutorialSceneActor::DebugButton() {
+	if (!isDebug) { return false; }
+	if (input->TriggerKey(DIK_SPACE)) {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 void TutorialSceneActor::CameraUpdate(DebugCamera* camera) {
@@ -310,7 +357,6 @@ bool TutorialSceneActor::Clear(bool mission, int waitTimerMax) {
 		return false;
 	}
 }
-void TutorialSceneActor::CompleteState() {}
 
 //初期化
 void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -325,11 +371,24 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	ParticleEmitter::GetInstance()->AllDelete();
 	//各クラス
 	Player::GetInstance()->InitState({ 0.0f,0.0f,0.0f });
+	//カメラ更新
 	camerawork->Update(camera);
+	//UIの初期化
 	ui = std::make_unique<UI>();
 	ui->Initialize();
+	//エネミーの生成
 	enemymanager = std::make_unique<EnemyManager>("TUTORIAL");
+	//最初のエネミーの参照
 	firstEnemy = enemymanager->GetEnemy(0);
+	//背景objの生成
+	backobj = std::make_unique<BackObj>();
+	backobj->Initialize();
+	//食料objの生成
+	loadobj = std::make_unique<LoadStageObj>();
+	loadobj->AllLoad("FIRSTSTAGE");
+	loadobj->SetEnemyManager(enemymanager.get());
+
+
 	//font
 	firstrow_ = make_unique<Font>();
 	secondrow_ = make_unique<Font>();
@@ -355,12 +414,6 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	megahon->SetColor(sutopon_color);
 	megahon->SetAnchorPoint({ 0.5f,0.5f });
 	megahon->SetSize({ 250.f,250.f });
-	backobj = std::make_unique<BackObj>();
-	backobj->Initialize();
-
-	loadobj = std::make_unique<LoadStageObj>();
-	loadobj->AllLoad("FIRSTSTAGE");
-	loadobj->SetEnemyManager(enemymanager.get());
 }
 //更新
 void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
