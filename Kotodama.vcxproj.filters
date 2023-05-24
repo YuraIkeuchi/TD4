@@ -713,9 +713,6 @@
     <ClInclude Include="SourceCode\gamesystem\scene\SecondStage.h">
       <Filter>gamesystem\scene\Play\Second</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\scene\PlaceManager.h">
-      <Filter>SourceCords\gamesystem\Editor\Box</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor.h">
       <Filter>SourceCords\gamesystem\actor\GameOver</Filter>
     </ClInclude>
@@ -757,6 +754,7 @@
     <ClInclude Include="resource.h">
       <Filter>SourceCords\shader</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\PlaceManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
