@@ -32,7 +32,10 @@ void InterBoss::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui•`‰æ
 void InterBoss::ImGuiDraw() {
-	ImGui_Origin();//‚»‚ê‚¼‚ê‚ÌImGui
+	//ImGui::Begin("Boss");
+	//ImGui::Text("HP:%f", m_HP);
+	//ImGui::End();
+	//ImGui_Origin();//‚»‚ê‚¼‚ê‚ÌImGui
 }
 
 float InterBoss::HpPercent() {
@@ -46,13 +49,13 @@ float InterBoss::HpPercent() {
 void InterBoss::CollideBul(vector<InterBullet*> bullet)
 {
 	if (ColChangeEaseT>0.f)return;
-	constexpr float BulRad = 1.f;
+	constexpr float BulRad = 3.f;
 
 	constexpr float BossRad = 3.f;
 
 	for (InterBullet* _bullet : bullet) {
 		if (_bullet != nullptr) {
-			if (Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, BulRad, m_Position.x, m_Position.z, BossRad))
+			if (Collision::SphereCollision(_bullet->GetPosition(), BulRad, m_Position, BossRad))
 			{
 				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Attack_Normal.wav", VolumManager::GetInstance()->GetSEVolum());
 				ActionTimer++;
