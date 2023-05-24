@@ -9,7 +9,7 @@
 #include "LoadStageObj.h"
 #include"Font.h"
 #include"Feed.h"
-
+//
 /// タイトルシーン
 class FirstStageActor : public BaseActor {
 private:
