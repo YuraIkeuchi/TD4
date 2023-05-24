@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "DebugCamera.h"
 #include "Camera.h"
 #include "Shake.h"
@@ -24,12 +24,16 @@ public:
 	void LoadActorUpdate(DebugCamera* camera);//更新
 	void DefaultCam();
 	void SetBossCam(InterBoss* boss);
+	//ゲームシーン以外で使うカメラ更新(this変数で変更可能)
+	void SpecialUpdate(DebugCamera* camera);//更新
 public:
 	void EditorCamera();
 public:
 	//getter setter
-
-protected: //静的メンバ変数
+	void SetEye(const XMFLOAT3 eye) { m_eyePos = eye; }
+	XMFLOAT3 GetEye() { return m_eyePos; }
+	void SetTarget(const XMFLOAT3 target) { m_targetPos = target; }
+	XMFLOAT3 GetTarget() { return m_targetPos; }
 private:
 	//クラス
 	unique_ptr<Shake> shake = nullptr;

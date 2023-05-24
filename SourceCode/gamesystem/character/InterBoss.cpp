@@ -1,23 +1,39 @@
-﻿#include "InterBoss.h"
+#include "InterBoss.h"
 #include"Collision.h"
 #include "Helper.h"
 #include "ParticleEmitter.h"
 #include "VariableCommon.h"
 #include <Helper.h>
-//更新
+//譖ｴ譁ｰ
 void InterBoss::Update() {
-	//行動
+	//陦悟虚
 	Action();
 	DeathAction();
+	
+	//エフェクト
+	for (InterEffect* effect : effects) {
+		if (effect != nullptr) {
+			effect->Update();
+		}
+	}
+
+	//マークの削除
+	for (int i = 0; i < effects.size(); i++) {
+		if (effects[i] == nullptr) {
+			continue;
+		}
+
+		if (!effects[i]->GetAlive()) {
+			effects.erase(cbegin(effects) += i);
+		}
+	}
 }
-//描画
+//謠冗判
 void InterBoss::Draw(DirectXCommon* dxCommon) {
-	Obj_Draw();
-	EffecttexDraw(dxCommon);
 }
-//ImGui描画
+//ImGui謠冗判
 void InterBoss::ImGuiDraw() {
-	ImGui_Origin();//それぞれのImGui
+	ImGui_Origin();//縺昴ｌ縺槭ｌ縺ｮImGui
 }
 
 float InterBoss::HpPercent() {
@@ -27,7 +43,7 @@ float InterBoss::HpPercent() {
 	return temp;
 }
 
-//弾との当たり判定
+//蠑ｾ縺ｨ縺ｮ蠖薙◆繧雁愛螳
 void InterBoss::CollideBul(vector<InterBullet*> bullet)
 {
 	if (ColChangeEaseT>0.f)return;
@@ -48,11 +64,20 @@ void InterBoss::CollideBul(vector<InterBullet*> bullet)
 				} else {
 					m_HP -= 2.0f;
 				}
+				BirthEffect();
 			}
 		}
 	}
 }
 
+//エフェクトの発生
+void InterBoss::BirthEffect() {
+	InterEffect* neweffect;
+	neweffect = new BreakEffect();
+	neweffect->Initialize();
+	neweffect->SetPosition(m_Position);
+	effects.push_back(neweffect);
+}
 
 void InterBoss::SummonEnemyInit(InterEnemy* enemy)
 {
@@ -116,15 +141,15 @@ void InterBoss::SummonEnemyUpda(std::vector<InterEnemy*> enemy)
 
 void InterBoss::EndSummon(std::vector<InterEnemy*> enemy)
 {
-	//仮の格納配列
+	//莉ｮ縺ｮ譬ｼ邏埼�蛻
 	bool tempList[3];
-	//全部発射状態なら
+	//蜈ｨ驛ｨ逋ｺ蟆�憾諷九↑繧
 	for (auto i = 0; i < _countof(tempList); i++) {
 		if (enemy[i] == nullptr)continue;
 		tempList[i] = enemy[i]->GetShotF();
 	}
 	if (SummobnStop) {
-		//召喚状態解除　円運動再開
+		//蜿ｬ蝟夂憾諷玖ｧ｣髯､縲蜀�°蜍募�髢
 		if (Helper::GetInstance()->All_Of(tempList, _countof(tempList))) {
 			
 			NextActionInteval++;

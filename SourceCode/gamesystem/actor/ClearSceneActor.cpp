@@ -4,26 +4,45 @@
 #include "ImageManager.h"
 #include "VariableCommon.h"
 #include "Audio.h"
-
+bool ClearSceneActor::isFirst=false;
 //初期化
 void ClearSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	//共通の初期化
 	BaseInitialize(dxCommon);
 
 	//オーディオ
-	Audio::GetInstance()->LoadSound(3, "Resources/Sound/BGM/jto3s-8fzcz.wav");
-	Audio::GetInstance()->LoopWave(3, VolumManager::GetInstance()->GetBGMVolum());
+	//Audio::GetInstance()->LoadSound(3, "Resources/Sound/BGM/jto3s-8fzcz.wav");
+	//Audio::GetInstance()->LoopWave(3, VolumManager::GetInstance()->GetBGMVolum());
+	//シーンチェンジャー
+	sceneChanger_ = make_unique<SceneChanger>();
+	sceneChanger_->Initialize();
 
 	//タイトル
 	ClearSprite = IKESprite::Create(ImageManager::GAMECLEAR, { 0.0f,0.0f });
+
 }
 //更新
 void ClearSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
-	if (input->TriggerButton(input->X)) {
-		SceneManager::GetInstance()->ChangeScene("TITLE");
-		Audio::GetInstance()->StopWave(3);
+	if (input->TriggerButton(input->B)) {
+		isFirst = true;
+		sceneChanger_->ChangeStart();
+		//Audio::GetInstance()->StopWave(3);
 	}
+	if (input->TriggerButton(input->A)) {
+		isFirst = false;
+		sceneChanger_->ChangeStart();
+		//Audio::GetInstance()->StopWave(3);
+	}
+
+
+
+	if (isFirst) {
+		sceneChanger_->ChangeScene("SECONDSTAGE", SceneChanger::Reverse);
+	} else {
+		sceneChanger_->ChangeScene("TITLE", SceneChanger::Reverse);
+	}
+
 	lightgroup->Update();
 	//丸影
 	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
@@ -61,6 +80,7 @@ void ClearSceneActor::FrontDraw() {
 	IKESprite::PreDraw();
 	ClearSprite->Draw();
 	IKESprite::PostDraw();
+	sceneChanger_->Draw();
 }
 //背面
 void ClearSceneActor::BackDraw(DirectXCommon* dxCommon)

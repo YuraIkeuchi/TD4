@@ -15,11 +15,6 @@ public:
 	static Player* GetInstance();
 
 private:
-	
-	//アニメーション管理用
-	bool m_LoopFlag = true;
-	int m_AnimationSpeed = 1;
-	bool m_StopFlag=false;
 
 	static void (Player::* stateTable[])();
 public:

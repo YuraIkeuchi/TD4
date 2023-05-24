@@ -245,6 +245,7 @@ void Player::Bullet_Management() {
 			m_BulletType = BULLET_SEARCH;
 		}
 		ResetBullet();
+		playerattach->SetAlive(true);
 		BirthShot("Ghost", false);
 	}
 
@@ -263,6 +264,7 @@ void Player::Bullet_Management() {
 		//チャージ中に飢餓ゲージが切れた場合弾が自動で放たれる
 		if (HungerGauge::GetInstance()->GetNowHunger() == 0.0f) {
 			BirthShot("Attack", true);
+			playerattach->SetAlive(true);
 			HungerGauge::GetInstance()->SetSubVelocity(1.0f);
 			ResetBullet();
 		}
@@ -272,10 +274,12 @@ void Player::Bullet_Management() {
 		if (m_ShotTimer < l_Limit) {
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
 			BirthShot("Attack", false);
+			playerattach->SetAlive(true);
 		}
 		else {
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Charge.wav", VolumManager::GetInstance()->GetSEVolum());
 			BirthShot("Attack", true);
+			playerattach->SetAlive(true);
 			HungerGauge::GetInstance()->SetSubVelocity(1.0f);
 		}
 		ResetBullet();
@@ -349,7 +353,7 @@ void Player::BirthShot(const std::string& bulletName, bool Super) {
 			newbullet->SetScale(viewbullet->GetScale());
 		}
 		else {
-			newbullet->SetScale({ 1.0f,1.0f,1.0f });
+			newbullet->SetScale({ 1.5f,1.5f,1.5f });
 		}
 		newbullet->SetAngle(l_Angle);
 		attackbullets.push_back(newbullet);
@@ -360,7 +364,7 @@ void Player::BirthShot(const std::string& bulletName, bool Super) {
 		GhostBullet* newbullet;
 		newbullet = new GhostBullet();
 		newbullet->Initialize();
-		newbullet->SetPosition(m_Position);
+		newbullet->SetPosition(viewbullet->GetPosition());
 		newbullet->SetRotation({m_Rotation.x,m_Rotation.y + 90.0f,m_Rotation.z});
 		newbullet->SetBulletType(m_BulletType);
 		newbullet->SetAngle(l_Angle);
@@ -470,18 +474,13 @@ void Player::ReBound() {
 void Player::SutoponUpdate(){
 	XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
 	XMMATRIX matRot;
-	if (m_InterVal == 0) {
-		matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 90.0f));
-	}
-	else {
-		matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
-	}
+	matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
 	move = XMVector3TransformNormal(move, matRot);
 	XMFLOAT2 l_Angle;
 	l_Angle.x = move.m128_f32[0];
 	l_Angle.y = move.m128_f32[2];
+	playerattach->SetAngle(l_Angle);
 	playerattach->Update();
-	playerattach->SetAfterAngle(l_Angle);
 	playerattach->SetPosition({ m_Position.x,playerattach->GetPosition().y,m_Position.z });
 	playerattach->SetRotation({ m_Rotation.x,m_Rotation.y + 90.0f,m_Rotation.z });
 }

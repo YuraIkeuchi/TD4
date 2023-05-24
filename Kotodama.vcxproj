@@ -197,6 +197,8 @@
     <ClCompile Include="SourceCode\gamesystem\editor\LoadBox.cpp" />
     <ClCompile Include="SourceCode\gamesystem\editor\LoadManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\editor\LoadStageObj.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\effect\BreakEffect.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\effect\InterEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\gamecamera\CameraWork.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleEmitter.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleManager.cpp" />
@@ -314,6 +316,8 @@
     <ClInclude Include="SourceCode\gamesystem\editor\LoadBox.h" />
     <ClInclude Include="SourceCode\gamesystem\editor\LoadManager.h" />
     <ClInclude Include="SourceCode\gamesystem\editor\LoadStageObj.h" />
+    <ClInclude Include="SourceCode\gamesystem\effect\BreakEffect.h" />
+    <ClInclude Include="SourceCode\gamesystem\effect\InterEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\gamecamera\CameraWork.h" />
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleEmitter.h" />
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleManager.h" />

@@ -14,8 +14,9 @@ protected:
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
-	BackObj();
-
+	static BackObj* GetInstance();
+	//Json“Ç‚İ‚İ
+	void LoadMap();
 	bool Initialize() override;//‰Šú‰»
 	/// <summary>
 	/// –ˆƒtƒŒ[ƒ€ˆ—

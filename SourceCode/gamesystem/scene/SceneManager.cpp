@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 #include "ImageManager.h"
 #include "ModelManager.h"
+#include "BackObj.h"
 #include<cassert>
 void SceneManager::Finalize() {
 	//最後のシーンの終了と開放
@@ -32,8 +33,10 @@ void SceneManager::Update(DirectXCommon* dxCommon) {
 		case SceneManager::NoLoad://ロードしていないとき
 			m_th = std::thread([&] {AsyncLoad(); });
 			m_loadType = LoadStart;
+
 			break;
 		case SceneManager::LoadStart://ロードしているとき
+
 			break;
 		case SceneManager::LoadEnd://ロード終わったら
 			m_th.join();
@@ -62,7 +65,8 @@ void SceneManager::ChangeScene(const std::string& sceneName) {
 void SceneManager::AsyncLoad()
 {
 	std::thread t = std::thread([&] {
-		ImageManager::GetInstance()->SecondLoad2D(), ImageManager::GetInstance()->SecondLoadTex2D(), ModelManager::GetInstance()->SecondInitialize(); });
+		ImageManager::GetInstance()->SecondLoad2D(), ImageManager::GetInstance()->SecondLoadTex2D(), ModelManager::GetInstance()->SecondInitialize(),
+			BackObj::GetInstance()->LoadMap(); });
 
 	t.join();
 	// ロード状態=ロード終了

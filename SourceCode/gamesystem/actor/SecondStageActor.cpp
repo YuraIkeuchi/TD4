@@ -6,7 +6,7 @@
 #include "ParticleEmitter.h"
 #include "ImageManager.h"
 #include <algorithm>
-
+#include "BackObj.h"
 //初期化
 void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	dxCommon->SetFullScreen(true);
@@ -15,7 +15,7 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	//オーディオ
 	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/Boss.wav");
 	//ポストエフェクト
-	PlayPostEffect = true;
+	PlayPostEffect = false;
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
 
@@ -25,17 +25,20 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	ui = std::make_unique<UI>();
 	ui->Initialize();
 
+	//シーンチェンジャー
+	sceneChanger_ = make_unique<SceneChanger>();
+	sceneChanger_->Initialize();
+
+
 	conversationwindow = IKESprite::Create(ImageManager::WINDOW, window_pos);
 	conversationwindow->SetAnchorPoint({ 0.5f,0.5f });
 	conversationwindow->SetSize(window_size);
 
 	blackwindow = IKESprite::Create(ImageManager::BLACKWINDOW, {});
 
-
 	enemymanager = std::make_unique<EnemyManager>("SECONDSTAGE");
 
-	backobj = std::make_unique<BackObj>();
-	backobj->Initialize();
+	BackObj::GetInstance()->Initialize();
 
 	loadobj = std::make_unique<LoadStageObj>();
 	loadobj->AllLoad("SECONDSTAGE");
@@ -46,11 +49,13 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	Input* input = Input::GetInstance();
 	ui->Update();
 	if (enemymanager->BossDestroy()) {
-		SceneManager::GetInstance()->ChangeScene("TITLE");
+		sceneChanger_->ChangeStart();
+		sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
 	}
 
 	if (PlayerDestroy()) {
-		SceneManager::GetInstance()->ChangeScene("TITLE");
+		sceneChanger_->ChangeStart();
+		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::Reverse);
 	}
 	//音楽の音量が変わる
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
@@ -95,7 +100,7 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	blackwindow->SetColor(black_color);
 
 	//各クラス更新
-	backobj->Update();
+	BackObj::GetInstance()->Update();
 	if (nowstate != CONVERSATION) {
 		Player::GetInstance()->Update();
 		enemymanager->Update();
@@ -142,7 +147,7 @@ void SecondStageActor::BackDraw(DirectXCommon* dxCommon) {
 	////各クラスの描画
 	Player::GetInstance()->Draw(dxCommon);
 	loadobj->Draw(dxCommon);
-	backobj->Draw(dxCommon);
+	BackObj::GetInstance()->Draw(dxCommon);
 	//パーティクル描画
 	ParticleEmitter::GetInstance()->FlontDrawAll();
 	enemymanager->Draw(dxCommon);
@@ -157,6 +162,7 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	conversationwindow->Draw();
 	ui->Draw();
 	IKESprite::PostDraw();
+	sceneChanger_->Draw();
 }
 //IMGuiの描画
 void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {

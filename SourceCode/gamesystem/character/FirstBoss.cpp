@@ -233,6 +233,11 @@ void FirstBoss::EffecttexDraw(DirectXCommon* dxCommon)
 	_cattack.Draw();
 	IKETexture::PostDraw();
 }
+//描画
+void FirstBoss::Draw(DirectXCommon* dxCommon) {
+	Obj_Draw();
+	EffecttexDraw(dxCommon);
+}
 
 void FirstBoss::Rot()
 {

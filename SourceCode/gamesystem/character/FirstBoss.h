@@ -18,6 +18,7 @@ public:
 
 	void ImGui_Origin() override;
 
+	void Draw(DirectXCommon* dxCommon) override;//描画
 private:
 	struct SummonEnemy
 	{
