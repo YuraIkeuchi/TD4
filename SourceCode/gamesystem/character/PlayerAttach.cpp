@@ -33,7 +33,7 @@ void PlayerAttach::Update() {
 void PlayerAttach::Draw(DirectXCommon* dxCommon) {
 	Obj_Draw();
 	if (m_Alive) {
-		
+
 	}
 }
 //ImGui
@@ -57,16 +57,15 @@ void PlayerAttach::Particle() {
 }
 //e‚ÌoŒ»
 void PlayerAttach::BirthObj() {
-	float l_AfterAlpha;
-	float l_AfterScale;
+	float l_AfterAlpha = 0.0f;
+	float l_AfterScale = 0.0f;
 	//e‚ªŒ©‚¦‚é
 	if (m_Alive) {
 		m_AliveTimer++;
 		if (m_AliveTimer > 10) {
 			l_AfterAlpha = 0.0f;
 			l_AfterScale = 0.0f;
-		}
-		else {
+		} else {
 			l_AfterAlpha = 1.0f;
 			l_AfterScale = 0.7f;
 		}
@@ -84,7 +83,7 @@ void PlayerAttach::BirthObj() {
 			m_ParticleTimer = 0;
 		}
 	}
-	
+
 	m_Color.w = Ease(In, Cubic, 0.75f, m_Color.w, l_AfterAlpha);
 
 	m_Scale = { Ease(In,Cubic,0.75f,m_Scale.x,l_AfterScale),
