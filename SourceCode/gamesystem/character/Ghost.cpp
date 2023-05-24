@@ -9,7 +9,8 @@
 #include <random>
 #include "Player.h"
 Ghost::Ghost() {
-	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Cube);
+	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Ghost);
+	model_follow = ModelManager::GetInstance()->GetModel(ModelManager::Buddy);
 	m_Object.reset(new IKEObject3d());
 	m_Object->Initialize();
 	m_Object->SetModel(m_Model);
@@ -21,8 +22,8 @@ bool Ghost::Initialize() {
 	uniform_int_distribution<int> l_distX(-50, 60);
 	uniform_int_distribution<int> l_distZ(-55, 55);
 	m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
-	m_Scale = { 1.2f,1.2f,1.2f };
-	m_Color = { 1.0f,1.0f,1.0f,1.0f };
+	m_Scale = { 0.7f,0.7f,0.7f };
+	m_Color = { 1.0f,1.0f,1.0f,0.3f };
 	_charaState = CharaState::STATE_NONE;
 	_searchState = SearchState::SEARCH_NO;
 	_followState = FollowState::Follow_NO;
@@ -79,7 +80,7 @@ void Ghost::Particle() {
 	float e_scale = 0.0f;
 	if (m_Alive) {
 		if (_charaState == CharaState::STATE_NONE) {
-			ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color, e_color);
+			//ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color, e_color);
 		}
 		else if (_charaState == CharaState::STATE_FOLLOW) {
 			ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color2, e_color2);
@@ -101,6 +102,7 @@ bool Ghost::BulletCollision() {
 			HungerGauge::GetInstance()->SetCatchCount(HungerGauge::GetInstance()->GetCatchCount() + 1.0f);
 			_charaState = CharaState::STATE_FOLLOW;
 			_followState = FollowState::Follow_START;
+			m_Object->SetModel(model_follow);
 			m_Follow = true;
 		}
 		else {
@@ -165,6 +167,7 @@ void Ghost::Follow() {
 	float l_Vel = 0.35f;//速度
 	XMFLOAT3 l_playerPos = Player::GetInstance()->GetPosition();
 	Helper::GetInstance()->FollowMove(m_Position, l_playerPos, l_Vel);
+	m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, l_playerPos,-PI_90);
 }
 //探索
 void Ghost::Search() {
@@ -174,7 +177,7 @@ void Ghost::Search() {
 	//追従
 	if (_searchState == SearchState::SEARCH_START) {
 		Helper::GetInstance()->FollowMove(m_Position, m_SearchPos, l_Vel);
-
+		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, m_SearchPos, -PI_90);
 		//サーチ状態から一定時間立つと存在消去
 		m_SearchTimer++;
 		if (m_SearchTimer >= l_LimitTimer) {
@@ -183,6 +186,7 @@ void Ghost::Search() {
 	}
 	else if (_searchState == SearchState::SEARCH_END) {
 		Helper::GetInstance()->FollowMove(m_Position, l_playerPos, l_Vel);
+		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, l_playerPos, -PI_90);
 	}
 }
 //探索スタート

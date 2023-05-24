@@ -24,6 +24,8 @@ public:
 		Tyuta,
 		Sutopon,
 		Food,
+		Ghost,
+		Buddy
 
 	};
 	//FBX‚Ì–¼‘O
