@@ -1,8 +1,9 @@
-﻿#pragma once
+﻿
+#pragma once
 #include "BaseActor.h"
-#include <vector>
-#include<windows.h>
-
+#include "LoadStageObj.h"
+#include"Font.h"
+//
 /// タイトルシーン
 class FirstStageActor : public BaseActor {
 private:
@@ -11,6 +12,8 @@ private:
 		FIGHT,
 		NONE,
 	};
+	//Feed*feedn;
+	bool feedF;
 public:
 	/// 初期化
 	void Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) override;

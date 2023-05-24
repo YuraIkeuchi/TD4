@@ -58,4 +58,5 @@ public:
 	bool BossDestroy();
 	//シーンネームの取得
 	void SetSceneName(std::string name) { SceneName = name; }
+	
 };

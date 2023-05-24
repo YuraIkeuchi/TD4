@@ -1,4 +1,4 @@
-#include "SecondStageActor.h"
+Ôªø#include "SecondStageActor.h"
 #include "Audio.h"
 #include"Easing.h"
 #include "SceneManager.h"
@@ -7,25 +7,25 @@
 #include "ImageManager.h"
 #include <algorithm>
 #include "BackObj.h"
-//èâä˙âª
+//ÂàùÊúüÂåñ
 void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	dxCommon->SetFullScreen(true);
-	//ã§í ÇÃèâä˙âª
+	//ÂÖ±ÈÄö„ÅÆÂàùÊúüÂåñ
 	BaseInitialize(dxCommon);
-	//ÉIÅ[ÉfÉBÉI
+	//„Ç™„Éº„Éá„Ç£„Ç™
 	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/Boss.wav");
-	//É|ÉXÉgÉGÉtÉFÉNÉg
+	//„Éù„Çπ„Éà„Ç®„Éï„Çß„ÇØ„Éà
 	PlayPostEffect = false;
-	//ÉpÅ[ÉeÉBÉNÉãëSçÌèú
+	//„Éë„Éº„ÉÜ„Ç£„ÇØ„É´ÂÖ®ÂâäÈô§
 	ParticleEmitter::GetInstance()->AllDelete();
 
-	//äeÉNÉâÉX
+	//ÂêÑ„ÇØ„É©„Çπ
 	Player::GetInstance()->InitState({ 0.0f,0.0f,0.0f });
 	camerawork->Update(camera);
 	ui = std::make_unique<UI>();
 	ui->Initialize();
 
-	//ÉVÅ[ÉìÉ`ÉFÉìÉWÉÉÅ[
+	//„Ç∑„Éº„É≥„ÉÅ„Çß„É≥„Ç∏„É£„Éº
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
 
@@ -37,14 +37,14 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	blackwindow = IKESprite::Create(ImageManager::BLACKWINDOW, {});
 
 	enemymanager = std::make_unique<EnemyManager>("SECONDSTAGE");
-
+	ui->SetBoss(enemymanager->GetBoss());
 	BackObj::GetInstance()->Initialize();
 
 	loadobj = std::make_unique<LoadStageObj>();
 	loadobj->AllLoad("SECONDSTAGE");
 	loadobj->SetEnemyManager(enemymanager.get());
 }
-//çXêV
+//Êõ¥Êñ∞
 void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
 	ui->Update();
@@ -57,7 +57,7 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 		sceneChanger_->ChangeStart();
 		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::Reverse);
 	}
-	//âπäyÇÃâπó Ç™ïœÇÌÇÈ
+	//Èü≥Ê•Ω„ÅÆÈü≥Èáè„ÅåÂ§â„Çè„Çã
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 	VolumManager::GetInstance()->Update();
 
@@ -99,7 +99,7 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	conversationwindow->SetSize(window_size);
 	blackwindow->SetColor(black_color);
 
-	//äeÉNÉâÉXçXêV
+	//ÂêÑ„ÇØ„É©„ÇπÊõ¥Êñ∞
 	BackObj::GetInstance()->Update();
 	if (nowstate != CONVERSATION) {
 		Player::GetInstance()->Update();
@@ -107,13 +107,14 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 		loadobj->SecondUpdate();
 		ParticleEmitter::GetInstance()->Update();
 	}
+	camerawork->DefaultCam();
 	camerawork->Update(camera);
 	lightgroup->Update();
 }
-//ï`âÊ
+//ÊèèÁîª
 void SecondStageActor::Draw(DirectXCommon* dxCommon) {
-	//ï`âÊï˚ñ@
-	//É|ÉXÉgÉGÉtÉFÉNÉgÇÇ©ÇØÇÈÇ©
+	//ÊèèÁîªÊñπÊ≥ï
+	//„Éù„Çπ„Éà„Ç®„Éï„Çß„ÇØ„Éà„Çí„Åã„Åë„Çã„Åã
 	if (PlayPostEffect) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
@@ -137,25 +138,25 @@ void SecondStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PostDraw();
 	}
 }
-//âï˙
+//Ëß£Êîæ
 void SecondStageActor::Finalize() {
 }
-//å„ÇÎÇÃï`âÊ
+//Âæå„Çç„ÅÆÊèèÁîª
 void SecondStageActor::BackDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
-	////äeÉNÉâÉXÇÃï`âÊ
+	////ÂêÑ„ÇØ„É©„Çπ„ÅÆÊèèÁîª
 	Player::GetInstance()->Draw(dxCommon);
 	loadobj->Draw(dxCommon);
 	BackObj::GetInstance()->Draw(dxCommon);
-	//ÉpÅ[ÉeÉBÉNÉãï`âÊ
+	//„Éë„Éº„ÉÜ„Ç£„ÇØ„É´ÊèèÁîª
 	ParticleEmitter::GetInstance()->FlontDrawAll();
 	enemymanager->Draw(dxCommon);
 	IKEObject3d::PostDraw();
 }
-//É|ÉXÉgÉGÉtÉFÉNÉgÇ™Ç©Ç©ÇÁÇ»Ç¢
+//„Éù„Çπ„Éà„Ç®„Éï„Çß„ÇØ„Éà„Åå„Åã„Åã„Çâ„Å™„ÅÑ
 void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	
-	//äÆëSÇ…ëOÇ…èëÇ≠ÉXÉvÉâÉCÉg
+	//ÂÆåÂÖ®„Å´Ââç„Å´Êõ∏„Åè„Çπ„Éó„É©„Ç§„Éà
 	IKESprite::PreDraw();
 	blackwindow->Draw();
 	conversationwindow->Draw();
@@ -163,7 +164,7 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	IKESprite::PostDraw();
 	sceneChanger_->Draw();
 }
-//IMGuiÇÃï`âÊ
+//IMGui„ÅÆÊèèÁîª
 void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	Player::GetInstance()->ImGuiDraw();
 	loadobj->ImGuiDraw();

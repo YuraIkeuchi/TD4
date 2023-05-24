@@ -3,6 +3,7 @@
 #include "CollisionPrimitive.h"
 #include "InterBullet.h"
 #include "ObjCommon.h"
+#include "BreakEffect.h"
 #include <array>       // ヘッダファイルインクルード
 
 #include "InterEnemy.h"
@@ -42,6 +43,8 @@ public:
 
 	virtual void EffecttexDraw(DirectXCommon* dxCommon) = 0;
 
+	void BirthEffect();
+
 public:
 	void SummonEnemyInit(InterEnemy* enemy);
 
@@ -64,7 +67,7 @@ public://gettersetter
 
 private:
 	std::string SceneName;
-
+	vector<InterEffect*> effects;
 protected:
 	//ダメージ食らったとの色変換
 	float ColChangeEaseT;
@@ -107,5 +110,11 @@ protected:
 public:
 	bool Recv;
 	int NextActionInteval;
+
+protected:
+	bool DeathSceneF;
+	void DeathAction();
+public:
+	bool GetDeathAction() { return DeathSceneF; }
 };
 

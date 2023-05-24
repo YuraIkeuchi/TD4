@@ -315,6 +315,7 @@ Helper::XMVECTOR Helper::ChangeFLOAT(const XMFLOAT3& pos) {
 
 	return l_Result;
 }
+
 //XMFLOATをXMVECTORに変換
 Helper::XMFLOAT3 Helper::ChangeVECTOR(const XMVECTOR& pos) {
 	XMFLOAT3 l_Result;
