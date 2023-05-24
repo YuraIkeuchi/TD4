@@ -72,6 +72,7 @@ void LoadSceneActor::Draw(DirectXCommon* dxCommon) {
 }
 //前面描画
 void LoadSceneActor::SpriteDraw() {
+
 	IKESprite::PreDraw();
 	for (std::unique_ptr<IKESprite>& sprite : m_Sprites) {
 		sprite->Draw();
@@ -192,6 +193,7 @@ void LoadSceneActor::FinishUpdate() {
 }
 //背面描画
 void LoadSceneActor::BackDraw(DirectXCommon* dxCommon) {
+
 	for (std::unique_ptr<IKEObject3d>& obj : grounds) {
 		obj->Draw();
 	}

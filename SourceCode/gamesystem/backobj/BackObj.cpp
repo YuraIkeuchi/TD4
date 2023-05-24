@@ -66,17 +66,17 @@ bool BackObj::Initialize() {
 //更新
 void BackObj::Update() {
 	//Json用
-	for (auto& object : objects) {
+	/*for (auto& object : objects) {
 		object->Update();
-	}
-	//Obj_SetParam();
+	}*/
+	Obj_SetParam();
 }
 
 //描画
 void BackObj::Draw(DirectXCommon* dxCommon) {
 	//Json用
-	for (auto& object : objects) {
+	/*for (auto& object : objects) {
 		object->Draw();
-	}
-	//Obj_Draw();
+	}*/
+	Obj_Draw();
 }

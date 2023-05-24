@@ -32,7 +32,7 @@ public:
 	/// </summary>
 	virtual void Pause() = 0;
 	//描画
-	void Draw(DirectXCommon* dxCommon);
+	virtual void Draw(DirectXCommon* dxCommon)override;
 
 	virtual void Action() = 0;//ボス特有の処理
 

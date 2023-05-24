@@ -33,8 +33,10 @@ void SceneManager::Update(DirectXCommon* dxCommon) {
 		case SceneManager::NoLoad://ロードしていないとき
 			m_th = std::thread([&] {AsyncLoad(); });
 			m_loadType = LoadStart;
+
 			break;
 		case SceneManager::LoadStart://ロードしているとき
+
 			break;
 		case SceneManager::LoadEnd://ロード終わったら
 			m_th.join();
