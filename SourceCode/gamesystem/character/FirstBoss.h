@@ -47,6 +47,7 @@ private:
 		int ChargeTime;
 		int Damage;
 		float RotSpeed;
+	public:
 		enum class Phase_Charge
 		{
 			NON,
@@ -55,7 +56,8 @@ private:
 			ATTACK,
 			END
 		}_phase;
-
+		void ReturnPosJudg(bool& reposf);
+	private:
 		//シェイク
 		Shake* shake;
 		float shakeX, shakeZ;
@@ -237,10 +239,13 @@ private:
 	bool BattleStartF;
 	int noBattleCount;
 
-	void EndSumon_returnPos();
+	void EndSumon_returnPos(bool &f, float& easespeed);
 	bool ReturnPosF;
 	float RePosEaseT;
 	XMFLOAT3 OldPos_EndSummon;
+
+	bool ReturnPosF_Impact;
+	float RePosEaseT_Impact;
 private:
 	void ColPlayer_Def();
 };

@@ -1,22 +1,23 @@
-#include "InterBoss.h"
+ï»¿#include "InterBoss.h"
 #include"Collision.h"
 #include "Helper.h"
 #include "ParticleEmitter.h"
 #include "VariableCommon.h"
 #include <Helper.h>
-//XV
+//è­–ï½´è­ï½°
 void InterBoss::Update() {
-	//s“®
+	//é™¦æ‚Ÿè™š
 	Action();
+	DeathAction();
 	
-	//ƒGƒtƒFƒNƒg
+	//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
 	for (InterEffect* effect : effects) {
 		if (effect != nullptr) {
 			effect->Update();
 		}
 	}
 
-	//ƒ}[ƒN‚Ìíœ
+	//ãƒãƒ¼ã‚¯ã®å‰Šé™¤
 	for (int i = 0; i < effects.size(); i++) {
 		if (effects[i] == nullptr) {
 			continue;
@@ -27,15 +28,12 @@ void InterBoss::Update() {
 		}
 	}
 }
-//•`‰æ
+//è¬ å†—åˆ¤
 void InterBoss::Draw(DirectXCommon* dxCommon) {
 }
-//ImGui•`‰æ
+//ImGuiè¬ å†—åˆ¤
 void InterBoss::ImGuiDraw() {
-	//ImGui::Begin("Boss");
-	//ImGui::Text("HP:%f", m_HP);
-	//ImGui::End();
-	//ImGui_Origin();//‚»‚ê‚¼‚ê‚ÌImGui
+	ImGui_Origin();
 }
 
 float InterBoss::HpPercent() {
@@ -45,7 +43,6 @@ float InterBoss::HpPercent() {
 	return temp;
 }
 
-//’e‚Æ‚Ì“–‚½‚è”»’è
 void InterBoss::CollideBul(vector<InterBullet*> bullet)
 {
 	if (ColChangeEaseT>0.f)return;
@@ -72,7 +69,7 @@ void InterBoss::CollideBul(vector<InterBullet*> bullet)
 	}
 }
 
-//ƒGƒtƒFƒNƒg‚Ì”­¶
+//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ç™ºç”Ÿ
 void InterBoss::BirthEffect() {
 	InterEffect* neweffect;
 	neweffect = new BreakEffect();
@@ -143,15 +140,12 @@ void InterBoss::SummonEnemyUpda(std::vector<InterEnemy*> enemy)
 
 void InterBoss::EndSummon(std::vector<InterEnemy*> enemy)
 {
-	//‰¼‚ÌŠi”[”z—ñ
 	bool tempList[3];
-	//‘S•””­Ëó‘Ô‚È‚ç
 	for (auto i = 0; i < _countof(tempList); i++) {
 		if (enemy[i] == nullptr)continue;
 		tempList[i] = enemy[i]->GetShotF();
 	}
 	if (SummobnStop) {
-		//¢Š«ó‘Ô‰ğœ@‰~‰^“®ÄŠJ
 		if (Helper::GetInstance()->All_Of(tempList, _countof(tempList))) {
 			
 			NextActionInteval++;
@@ -184,4 +178,11 @@ void InterBoss::SummonEnemyDraw(std::vector<InterEnemy*> enemy, DirectXCommon* d
 		if (enemy[i] == nullptr)continue;
 		enemy[i]->Draw(dxcomn);
 	}
+}
+
+void InterBoss::DeathAction()
+{
+	if (isAlive)return;
+
+	DeathSceneF = true;
 }

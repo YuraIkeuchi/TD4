@@ -3,6 +3,8 @@
 #include "Camera.h"
 #include "Shake.h"
 #include <memory>
+
+#include "InterBoss.h"
 using namespace std;         //  名前空間指定
 
 //ゲームのカメラの動き
@@ -19,6 +21,9 @@ public:
 	CameraWork(XMFLOAT3 eye = { 2.0f, 30.0f, 2.0f }, XMFLOAT3 target = { 2.0f, 0.0f, 3.0f });
 	void Update(DebugCamera* camera);//更新
 	void ImGuiDraw();
+	void LoadActorUpdate(DebugCamera* camera);//更新
+	void DefaultCam();
+	void SetBossCam(InterBoss* boss);
 	//ゲームシーン以外で使うカメラ更新(this変数で変更可能)
 	void SpecialUpdate(DebugCamera* camera);//更新
 public:

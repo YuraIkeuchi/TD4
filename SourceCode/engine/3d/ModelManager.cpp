@@ -27,8 +27,10 @@ void ModelManager::SecondInitialize()
 	LoadModel(BulEnemy, "tri");
 	LoadModel(Tyuta, "zako");
 	LoadModel(Sutopon, "sutopon");
+	LoadModel(Food,"food");
 	LoadFBXModel(PLAYER, "PlayerFBXNew");
 	LoadFBXModel(KIDO, "kidokun_idol");
+
 }
 
 void ModelManager::Finalize()

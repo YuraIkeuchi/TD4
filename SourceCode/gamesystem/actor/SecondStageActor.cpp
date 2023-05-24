@@ -1,4 +1,4 @@
-#include "SecondStageActor.h"
+ï»¿#include "SecondStageActor.h"
 #include "Audio.h"
 #include"Easing.h"
 #include "SceneManager.h"
@@ -7,25 +7,25 @@
 #include "ImageManager.h"
 #include <algorithm>
 #include "BackObj.h"
-//‰Šú‰»
+//åˆæœŸåŒ–
 void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	dxCommon->SetFullScreen(true);
-	//‹¤’Ê‚Ì‰Šú‰»
+	//å…±é€šã®åˆæœŸåŒ–
 	BaseInitialize(dxCommon);
-	//ƒI[ƒfƒBƒI
+	//ã‚ªãƒ¼ãƒ‡ã‚£ã‚ª
 	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/Boss.wav");
-	//ƒ|ƒXƒgƒGƒtƒFƒNƒg
+	//ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
 	PlayPostEffect = false;
-	//ƒp[ƒeƒBƒNƒ‹‘Síœ
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«å…¨å‰Šé™¤
 	ParticleEmitter::GetInstance()->AllDelete();
 
-	//ŠeƒNƒ‰ƒX
+	//å„ã‚¯ãƒ©ã‚¹
 	Player::GetInstance()->InitState({ 0.0f,0.0f,0.0f });
 	camerawork->Update(camera);
 	ui = std::make_unique<UI>();
 	ui->Initialize();
 
-	//ƒV[ƒ“ƒ`ƒFƒ“ƒWƒƒ[
+	//ã‚·ãƒ¼ãƒ³ãƒã‚§ãƒ³ã‚¸ãƒ£ãƒ¼
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
 
@@ -44,7 +44,7 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	loadobj->AllLoad("SECONDSTAGE");
 	loadobj->SetEnemyManager(enemymanager.get());
 }
-//XV
+//æ›´æ–°
 void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
 	ui->Update();
@@ -57,7 +57,7 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 		sceneChanger_->ChangeStart();
 		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::Reverse);
 	}
-	//‰¹Šy‚Ì‰¹—Ê‚ª•Ï‚í‚é
+	//éŸ³æ¥½ã®éŸ³é‡ãŒå¤‰ã‚ã‚‹
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 	VolumManager::GetInstance()->Update();
 
@@ -99,7 +99,7 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	conversationwindow->SetSize(window_size);
 	blackwindow->SetColor(black_color);
 
-	//ŠeƒNƒ‰ƒXXV
+	//å„ã‚¯ãƒ©ã‚¹æ›´æ–°
 	BackObj::GetInstance()->Update();
 	if (nowstate != CONVERSATION) {
 		Player::GetInstance()->Update();
@@ -107,13 +107,14 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 		loadobj->SecondUpdate();
 		ParticleEmitter::GetInstance()->Update();
 	}
+	camerawork->DefaultCam();
 	camerawork->Update(camera);
 	lightgroup->Update();
 }
-//•`‰æ
+//æç”»
 void SecondStageActor::Draw(DirectXCommon* dxCommon) {
-	//•`‰æ•û–@
-	//ƒ|ƒXƒgƒGƒtƒFƒNƒg‚ğ‚©‚¯‚é‚©
+	//æç”»æ–¹æ³•
+	//ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’ã‹ã‘ã‚‹ã‹
 	if (PlayPostEffect) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
@@ -137,25 +138,25 @@ void SecondStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PostDraw();
 	}
 }
-//‰ğ•ú
+//è§£æ”¾
 void SecondStageActor::Finalize() {
 }
-//Œã‚ë‚Ì•`‰æ
+//å¾Œã‚ã®æç”»
 void SecondStageActor::BackDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
-	////ŠeƒNƒ‰ƒX‚Ì•`‰æ
+	////å„ã‚¯ãƒ©ã‚¹ã®æç”»
 	Player::GetInstance()->Draw(dxCommon);
 	loadobj->Draw(dxCommon);
 	BackObj::GetInstance()->Draw(dxCommon);
-	//ƒp[ƒeƒBƒNƒ‹•`‰æ
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æç”»
 	ParticleEmitter::GetInstance()->FlontDrawAll();
 	enemymanager->Draw(dxCommon);
 	IKEObject3d::PostDraw();
 }
-//ƒ|ƒXƒgƒGƒtƒFƒNƒg‚ª‚©‚©‚ç‚È‚¢
+//ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆãŒã‹ã‹ã‚‰ãªã„
 void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	
-	//Š®‘S‚É‘O‚É‘‚­ƒXƒvƒ‰ƒCƒg
+	//å®Œå…¨ã«å‰ã«æ›¸ãã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	IKESprite::PreDraw();
 	blackwindow->Draw();
 	conversationwindow->Draw();
@@ -163,7 +164,7 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	IKESprite::PostDraw();
 	sceneChanger_->Draw();
 }
-//IMGui‚Ì•`‰æ
+//IMGuiã®æç”»
 void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	Player::GetInstance()->ImGuiDraw();
 	loadobj->ImGuiDraw();

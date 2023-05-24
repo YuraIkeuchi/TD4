@@ -21,9 +21,6 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
 	
-	font_ = make_unique<Font>();
-	font_->LoadFont(dxCommon);
-	//シーンチェンジャー
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
 
@@ -37,10 +34,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	conversationwindow->SetSize(window_size);
 
 	blackwindow = IKESprite::Create(ImageManager::BLACKWINDOW, {});
-
-	girl = IKESprite::Create(ImageManager::GIRL, { -100.f,300.f });
-	girl->SetColor(girl_color);
-
+	
 	enemymanager = std::make_unique<EnemyManager>("FIRSTSTAGE");
 	//少しめんどくさいけど引数けすため
 	enemymanager->SetSceneName("FIRSTSTAGE");
@@ -48,9 +42,11 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 
 	BackObj::GetInstance()->Initialize();
 
+	//feedn = new Feed();
+
 	loadobj = std::make_unique<LoadStageObj>();
 	loadobj->AllLoad("FIRSTSTAGE");
-	loadobj->SetEnemyManager(enemymanager.get());
+	LoadStageObj::SetEnemyManager(enemymanager.get());
 }
 //更新
 void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -59,6 +55,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	if (input->TriggerKey(DIK_X)) {
 		Audio::GetInstance()->StopWave(1);
 		SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
+
 	}
 
 	if (enemymanager->BossDestroy()) {
@@ -85,7 +82,20 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		loadobj->FirstUpdate();
 		ParticleEmitter::GetInstance()->Update();
 	}
-	camerawork->Update(camera);
+	if(enemymanager->BossDestroy())
+	{
+		camerawork->SetBossCam(enemymanager->GetBoss());
+	}
+	else
+	{
+		camerawork->DefaultCam();
+	}
+	if (Input::GetInstance()->TriggerButton(Input::Y))
+	{
+		feedF = true;
+	}
+//	feedn->FeedIn(Feed::FeedType::BLACK, 0.02f, feedF);
+		camerawork->Update(camera);
 	lightgroup->Update();
 }
 //描画
@@ -101,10 +111,7 @@ void FirstStageActor::Draw(DirectXCommon* dxCommon) {
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
 		ImGuiDraw(dxCommon);
-		if (nowstate == CONVERSATION) {
-			font_->Draw(dxCommon);
-			Font::PostDraw(dxCommon);
-		}
+		
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	} else {
@@ -115,10 +122,7 @@ void FirstStageActor::Draw(DirectXCommon* dxCommon) {
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
 		ImGuiDraw(dxCommon);
-		if (nowstate == CONVERSATION) {
-			font_->Draw(dxCommon);
-			Font::PostDraw(dxCommon);
-		}
+	
 		dxCommon->PostDraw();
 	}
 }
@@ -144,11 +148,9 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	//完全に前に書くスプライト
 	IKESprite::PreDraw();
 	//blackwindow->Draw();
-	conversationwindow->Draw();
-	girl->Draw();
-	
 	IKESprite::PostDraw();
 	ui->Draw();
+	//feedn->Draw();
 	sceneChanger_->Draw();
 }
 //IMGuiの描画

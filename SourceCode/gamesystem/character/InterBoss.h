@@ -110,5 +110,11 @@ protected:
 public:
 	bool Recv;
 	int NextActionInteval;
+
+protected:
+	bool DeathSceneF;
+	void DeathAction();
+public:
+	bool GetDeathAction() { return DeathSceneF; }
 };
 
