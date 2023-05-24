@@ -29,7 +29,7 @@ EnemyManager::EnemyManager(const std::string& sceneName) {
 		tutorialenemy[0]->SetPosition({ 0,5.0f ,50.0f });
 		//カメラ追従しつつスポーン
 		for (auto i = 1; i < tutorialenemy.size(); i++) {
-			float posX = -24.0f + (i * 8.f);
+			float posX = -30.0f + (i * 10.f);
 			tutorialenemy[i]->SetPosition({ posX ,5.0f ,50.0f });
 		}
 	} else {
