@@ -15,12 +15,6 @@ SecondBoss::SecondBoss() {
 	m_fbxObject->SetModel(ModelManager::GetInstance()->GetFBXModel(ModelManager::KIDO));
 	m_fbxObject->LoadAnimation();
 
-
-	//m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Kido);
-
-	//m_Object.reset(new IKEObject3d());
-	//m_Object->Initialize();
-	//m_Object->SetModel(m_Model);
 	shake = make_unique< Shake>();
 
 	mark.reset(IKETexture::Create(ImageManager::MARK, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 }));
@@ -32,18 +26,21 @@ SecondBoss::SecondBoss() {
 //初期化
 bool SecondBoss::Initialize() {
 
-	m_Position = { 40.0f,5.0f,30.0f };
+	m_Position = { 0.0f,5.0f,30.0f };
 	m_Rotation = { 0.0f,90.0f,0.0f };
 	m_OBBScale = { 6.0f,6.0f,6.0f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Scale = { 0.03f,0.03f,0.03f };
 	//m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "pos")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp2")));
-	_charaState = CharaState::STATE_MOVE;
+	_charaState = CharaState::STATE_STAMP;
 	m_MoveState = MOVE_ALTER;
 	m_RandomType = RANDOM_START;
 	m_RollType = ROLL_ONE;
+	m_PressType = PRESS_START;
 	m_AddPower = 0.8f;
+	_InterValState = DownState;
+	m_Radius = 3.0f;
 	return true;
 }
 //状態遷移
@@ -234,7 +231,7 @@ void SecondBoss::Stamp() {
 		
 		if (Helper::GetInstance()->CheckMinINT(m_StopTimer, l_TargetTimer, 1)) {		//次の行動
 			StampInit(PRESS_ATTACK, false);
-			m_AfterRotX = m_Rotation.x + 540.0f;
+			m_AfterRotX = m_Rotation.x + 360.0f;
 		}
 	}
 	else if (m_PressType == PRESS_ATTACK) {			//落下してくる
@@ -281,8 +278,7 @@ void SecondBoss::Stamp() {
 		
 		//次の行動
 		if (Helper::GetInstance()->CheckMinINT(m_StopTimer, l_TargetTimer, 1)) {
-			m_Rotation.x = m_Rotation.x - 720.0f;
-			m_AfterRotX = m_Rotation.x;
+			m_Rotation.x = 0.0f;
 			StampInit(PRESS_RETURN, false);
 		}
 	
@@ -313,10 +309,13 @@ void SecondBoss::Stamp() {
 void SecondBoss::RandomStamp() {
 	float l_AddFrame;//加算されるフレーム
 	int l_TargetTimer;//指定の時間
-	int l_MaxPosX = 62;//ランダムで取る座標の最大、最小値
-	int l_MinPosX = -52;
-	int l_MaxPosZ = 57;
-	int l_MinPosZ = -57;
+	const float l_MaxPosX = 62.0f;//ランダムで取る座標の最大、最小値
+	const float l_MinPosX = -52.0f;
+	const float l_MaxPosZ = 57.0f;
+	const float l_MinPosZ = -57.0f;
+
+	const int l_RandMax = 20;
+	const int l_RandMin = -20;
 	if (m_RandomType == RANDOM_START) {			//スタート
 		l_AddFrame = 0.01f;
 		l_TargetTimer = 1;
@@ -327,13 +326,16 @@ void SecondBoss::RandomStamp() {
 		else {
 			//乱数指定
 			mt19937 mt{ std::random_device{}() };
-			uniform_int_distribution<int> l_RandX(l_MinPosX, l_MaxPosX);
+			uniform_int_distribution<int> l_RandX(l_RandMin, l_RandMax);
 			mt19937 mt2{ std::random_device{}() };
-			uniform_int_distribution<int> l_RandZ(l_MinPosZ, l_MaxPosZ);
+			uniform_int_distribution<int> l_RandZ(l_RandMin, l_RandMax);
 			//座標をランダムで決める
 			if (Helper::GetInstance()->CheckMinINT(m_StopTimer, l_TargetTimer, 1)) {			//プレイヤーの位置に移動
-				m_Position.x = float(l_RandX(mt));
-				m_Position.z = float(l_RandZ(mt2));
+				m_Position.x = (float(l_RandX(mt))) + (Player::GetInstance()->GetPosition().x);
+				m_Position.z = (float(l_RandZ(mt2))) + (Player::GetInstance()->GetPosition().z);
+
+				Helper::GetInstance()->FloatClamp(m_Position.x, l_MinPosX,l_MaxPosX);
+				Helper::GetInstance()->FloatClamp(m_Position.z, l_MinPosZ,l_MaxPosZ);
 				StampInit(RANDOM_SET, true);
 			}
 		}
@@ -436,7 +438,7 @@ void SecondBoss::Rolling() {
 	else if (m_RollType == ROLL_SIX) {
 		l_AfterPos = { 0.0f,m_Position.y,30.0f };
 		l_AddFrame = 0.007f;
-		l_AfterRotY = -90.0f;
+		l_AfterRotY = -270.0f;
 		RollEaseCommn(l_AfterPos, l_AddFrame, l_AfterRotY);
 
 		//飛ぶような感じにするため重力を入れる
@@ -444,7 +446,7 @@ void SecondBoss::Rolling() {
 
 		Helper::GetInstance()->CheckMaxFLOAT(m_Position.y, 5.0f, m_AddPower);
 
-		m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, 180.0f);
+		m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, 0.0f);
 	}
 	else {
 		m_Rotation = { 0.0f,90.0f,0.0f };
@@ -655,33 +657,46 @@ void SecondBoss::JoyMove() {
 //動きの選択
 void SecondBoss::ChoiceMove() {
 	int l_TargetTime = 50;
+	int l_RandState = 0;
 	//乱数指定
 	mt19937 mt{ std::random_device{}() };
-	uniform_int_distribution<int> l_RandomMove(0, 8);
+	uniform_int_distribution<int> l_RandomMove(0, 50);
 
 	m_StopTimer++;
 	//一定時間立ったらランダムで行動選択
 	if (m_StopTimer > l_TargetTime) {
 		m_Frame = 0.0f;
 		m_StopTimer = 0;
-		m_MoveState = int(l_RandomMove(mt));
-		//MoveStateが2以下ならそれに応じた移動にする、
-		//ムーブステートによって行動が変わる
-		if (m_MoveState <= 2) {
+		l_RandState = int(l_RandomMove(mt));
+		//RandStateが30以下ならそれに応じた移動にする、
+		if (l_RandState <= 30) {
 			m_MoveCount = 0;
 			_InterValState = UpState;
 			_charaState = STATE_MOVE;
 			m_FollowSpeed = 1.0f;
 			m_AfterPos.y = 25.0f;
+
+			if (l_RandState <= 10) {
+				m_MoveState = MOVE_ALTER;
+			}
+			else if (l_RandState >= 11 && l_RandState <= 20) {
+				m_MoveState = MOVE_JOY;
+			}
+			else {
+				m_MoveState = MOVE_ANGER;
+			}
 		}
-		//3以上なら上からの攻撃に切り替える
-		else if(3 <= m_MoveState && m_MoveState <= 5) {
+		else if (l_RandState >= 31 && l_RandState <= 37) {	//スタンプ攻撃
 			_charaState = STATE_STAMP;
 			m_PressType = PRESS_START;
 		}
-		else {
+		else if (l_RandState >= 38 && l_RandState <= 44) {	//ランダム攻撃
 			_charaState = STATE_RANDOM;
 			m_RandomType = RANDOM_START;
+		}
+		else {			//ローリング攻撃
+			_charaState = STATE_ROLL;
+			m_RollType = ROLL_ONE;
 		}
 	}
 }

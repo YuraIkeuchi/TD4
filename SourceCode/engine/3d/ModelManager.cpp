@@ -28,6 +28,8 @@ void ModelManager::SecondInitialize()
 	LoadModel(Tyuta, "zako");
 	LoadModel(Sutopon, "sutopon");
 	LoadModel(Food,"food");
+	LoadModel(Ghost,"ghost");
+	LoadModel(Buddy,"buddy");
 	LoadFBXModel(PLAYER, "PlayerFBXNew");
 	LoadFBXModel(KIDO, "kidokun_idol");
 

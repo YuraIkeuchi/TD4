@@ -1,4 +1,5 @@
-﻿#pragma once
+﻿
+#pragma once
 #include "BaseActor.h"
 #include "LoadStageObj.h"
 #include"Font.h"

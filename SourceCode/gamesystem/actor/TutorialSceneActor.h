@@ -8,6 +8,8 @@
 #include "BackObj.h"
 #include "LoadStageObj.h"
 #include"Font.h"
+#include"Conversation.h"
+
 /// タイトルシーン
 class TutorialSceneActor : public BaseActor {
 private:
@@ -69,21 +71,18 @@ private:
 	//クラス
 	Input* input = Input::GetInstance();
 
-	InterEnemy* firstEnemy = nullptr;
-
 	unique_ptr<EnemyManager> enemymanager;
-	unique_ptr<InterBoss> boss;
+	InterEnemy* firstEnemy = nullptr;
 	unique_ptr<UI>ui;
+	//後に作成
+	unique_ptr<IKEObject3d> Sutepon = nullptr;
+
 	unique_ptr<BackObj> backobj;
 	unique_ptr<LoadStageObj> loadobj;
-	unique_ptr<IKESprite> conversationwindow;
-	unique_ptr<IKESprite> blackwindow;
-	unique_ptr<IKESprite> girl;
-	unique_ptr<IKESprite> megahon;
 	unique_ptr<Font> firstrow_;
 	unique_ptr<Font> secondrow_;
-	unique_ptr<Font> thardrow_;
-
+	unique_ptr<Font> thirdrow_;
+	unique_ptr<Conversation>conversation_;
 	//��W
 	XMFLOAT2 window_pos{ WinApp::window_width / 2.f,WinApp::window_height + 100 };
 	XMFLOAT2 window_size{ 0.f,0.f };

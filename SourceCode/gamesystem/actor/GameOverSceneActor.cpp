@@ -24,9 +24,10 @@ void GameOverSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 void GameOverSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
 	if (input->TriggerButton(input->B)) {
-		sceneChanger_->ChangeScene("TITLE", SceneChanger::Reverse);
 		sceneChanger_->ChangeStart();
 	}
+	sceneChanger_->ChangeScene("TITLE", SceneChanger::Reverse);
+
 	lightgroup->Update();
 	//ŠÛ‰e
 	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
