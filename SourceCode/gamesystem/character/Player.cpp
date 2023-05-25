@@ -99,12 +99,6 @@ void Player::Update()
 	//状態移行(charastateに合わせる)
 	(this->*stateTable[_charaState])();
 
-	//基礎パラメータ設定
-	Fbx_SetParam();
-	
-	//どっち使えばいいか分からなかったから保留
-	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
-
 	//Stateに入れなくていいやつ
 	//攻撃のインターバル
 	InterVal();
@@ -116,9 +110,42 @@ void Player::Update()
 	//反発
 	ReBound();
 
+	//適当にダメージ食らってるときは赤色
+	if (m_DamageInterVal == 0) {
+		m_Color = { 1.0f,1.0f,1.0f,1.0f };
+	}
+	else {
+		m_Color = { 1.0f,0.0f,0.0f,1.0f };
+	}
+
 	//リミット制限
 	Helper::GetInstance()->FloatClamp(m_Position.x, -55.0f, 65.0f);
 	Helper::GetInstance()->FloatClamp(m_Position.z, -60.0f, 60.0f);
+
+
+	//基礎パラメータ設定
+	Fbx_SetParam();
+
+	//どっち使えばいいか分からなかったから保留
+	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+
+	//エフェクト
+	for (InterEffect* effect : effects) {
+		if (effect != nullptr) {
+			effect->Update();
+		}
+	}
+
+	//エフェクトの削除
+	for (int i = 0; i < effects.size(); i++) {
+		if (effects[i] == nullptr) {
+			continue;
+		}
+
+		if (!effects[i]->GetAlive()) {
+			effects.erase(cbegin(effects) += i);
+		}
+	}
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon)
@@ -440,6 +467,7 @@ void Player::RecvDamage(float Damage) {
 	m_HP -= Damage;
 	m_DamageInterVal = 100;
 	m_Damage = true;
+	BirthParticle();
 }
 //弾の削除
 void Player::BulletDelete() {
@@ -483,4 +511,12 @@ void Player::SutoponUpdate(){
 	playerattach->Update();
 	playerattach->SetPosition({ m_Position.x,playerattach->GetPosition().y,m_Position.z });
 	playerattach->SetRotation({ m_Rotation.x,m_Rotation.y + 90.0f,m_Rotation.z });
+}
+//ダメージパーティクル
+void Player::BirthParticle() {
+	InterEffect* neweffect;
+	neweffect = new BreakEffect();
+	neweffect->Initialize();
+	neweffect->SetPosition(m_Position);
+	effects.push_back(neweffect);
 }
