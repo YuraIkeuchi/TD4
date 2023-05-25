@@ -67,7 +67,7 @@ void FirstBoss::Action() {
 		/*^^^^当たり判定^^^^*/
 		//弾とボスの当たり判定
 		vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
-		CollideBul(_playerBulA);
+		CollideBul(_playerBulA,Type::CIRCLE);
 
 		//通常時の当たり判定
 		if (!_normal.GetAttackF() && !_cattack.GetAttackF())

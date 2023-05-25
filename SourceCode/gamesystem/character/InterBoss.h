@@ -107,7 +107,12 @@ private:
 	};
 protected:
 	//弾との当たり判定
-	void CollideBul(vector<InterBullet*>bullet);
+	enum class Type
+	{
+		CIRCLE,
+		SPHERE
+	};
+	void CollideBul(vector<InterBullet*>bullet,Type type=Type::SPHERE);
 	bool EndSummonRepos;
 	bool ResF;
 public:
