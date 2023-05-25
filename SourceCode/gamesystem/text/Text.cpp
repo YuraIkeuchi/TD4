@@ -1,4 +1,4 @@
-#include "Text.h"
+Ôªø#include "Text.h"
 #include"VariableCommon.h"
 #include<locale.h>
 #include<wchar.h>
@@ -9,35 +9,31 @@ const XMFLOAT2 kThirdRowPos{ 5.f, -80.f };
 
 void Text::Initialize(DirectXCommon* dxcommon, const XMVECTOR& color)
 {
-	//ê∂ê¨
+	//ÁîüÊàê
 	firstrow_ = make_unique<Font>();
 	secondrow_ = make_unique<Font>();
 	thirdrow_ = make_unique<Font>();
-	//ì«Ç›çûÇ›
+	//Ë™≠„ÅøËæº„Åø
 	firstrow_->LoadFont(dxcommon);
 	secondrow_->LoadFont(dxcommon);
 	thirdrow_->LoadFont(dxcommon);
-	//ç¿ïWÉZÉbÉg
+	//Â∫ßÊ®ô„Çª„ÉÉ„Éà
 	firstrow_->SetPos(kFirstRowPos);
 	secondrow_->SetPos(kSecondRowPos);
 	thirdrow_->SetPos(kThirdRowPos);
-	//êF
+	//Ëâ≤
 	firstrow_->SetColor(color);
 	secondrow_->SetColor(color);
 	thirdrow_->SetColor(color);
 }
 
-void Text::Update(wchar_t* firstrow,wchar_t* secondrow,wchar_t* thirdrow)
+void Text::Update(wchar_t* firstrow, wchar_t* secondrow, wchar_t* thirdrow)
 {
-	for (int i = 0; i < len[0]; i++) {
-		firstrow_->SetString(firstrow);
-	}
-	for (int i = 0; i < len[1]; i++) {
-		secondrow_->SetString(secondrow);
-	}
-	for (int i = 0; i < len[2]; i++) {
-		thirdrow_->SetString(thirdrow);
-	}
+
+	firstrow_->SetString(firstrow);
+	secondrow_->SetString(secondrow);
+	thirdrow_->SetString(thirdrow);
+
 }
 
 void Text::Draw(DirectXCommon* dxcommon)

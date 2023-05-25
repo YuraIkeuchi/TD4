@@ -28,6 +28,12 @@ public:
 	virtual bool Initialize() = 0;
 	//更新
 	void Update();
+	//ボス登場シーンの更新
+	void AppearUpdate();
+	//ボス撃破シーンの更新
+	void DeadUpdate();
+
+
 	/// <summary>
 	/// ポーズのとき
 	/// </summary>
@@ -36,6 +42,10 @@ public:
 	virtual void Draw(DirectXCommon* dxCommon)override;
 
 	virtual void Action() = 0;//ボス特有の処理
+
+	virtual void AppearAction() = 0;//ボス登場の固有の処理
+
+	virtual void DeadAction() = 0;//ボス撃破の固有の処理
 
 	virtual void ImGui_Origin() = 0;//ボスそれぞれのImGui
 

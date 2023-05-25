@@ -18,6 +18,9 @@ public:
 private:
 	void Action() override;//行動
 
+	void AppearAction() override;//登場
+
+	void DeadAction() override;//撃破
 
 	void ImGui_Origin() override;
 

@@ -19,7 +19,7 @@ public:
 
 	void FontDraw(DirectXCommon* dxcommon);
 
-	void Tyutorial();
+	void Tutorial();
 
 	void WardNone();
 

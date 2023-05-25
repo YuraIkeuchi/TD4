@@ -10,8 +10,16 @@ CameraWork::CameraWork(XMFLOAT3 eye, XMFLOAT3 target) {
 	Shake* shake_ = new Shake();
 	shake.reset(shake_);
 }
+/*CharaStateのState並び順に合わせる*/
+void (CameraWork::* CameraWork::stateTable[])() = {
+	&CameraWork::DefaultCam,//通常
+	&CameraWork::SpecialUpdate,//ロード
+	&CameraWork::SetBossCam,//ボスのやられたとき
+};
 //XV
 void CameraWork::Update(DebugCamera* camera) {
+	//状態移行(charastateに合わせる)
+	(this->*stateTable[m_CameraState])();
 	camera->SetEye(m_eyePos);
 	camera->SetTarget(m_targetPos);
 	camera->Update();
@@ -26,7 +34,7 @@ void CameraWork::DefaultCam()
 
 }
 
-void CameraWork::SetBossCam(InterBoss* boss)
+void CameraWork::SetBossCam()
 {
 	m_eyePos.x = boss->GetPosition().x;
 	m_eyePos.z =boss->GetPosition().z-20.f;
@@ -58,8 +66,6 @@ void CameraWork::ImGuiDraw() {
 	ImGui::End();
 }
 
-void CameraWork::SpecialUpdate(DebugCamera* camera) {
-	camera->SetEye(m_eyePos);
-	camera->SetTarget(m_targetPos);
-	camera->Update();
+void CameraWork::SpecialUpdate() {
+
 }

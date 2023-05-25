@@ -64,6 +64,7 @@ void Conversation::FontDraw(DirectXCommon* dxcommon)
 	sutopontext_->Draw(dxcommon);
 }
 
+<<<<<<< HEAD
 void Conversation::SetText(wchar_t* text,CharaText chara,int index)
 {
 	Conversation* con;
@@ -76,6 +77,9 @@ void Conversation::SetText(wchar_t* text,CharaText chara,int index)
 }
 
 void Conversation::Tyutorial()
+=======
+void Conversation::Tutorial()
+>>>>>>> 863ba26e40007fdfb988afe1695a0a16654a1a3d
 {
 	if (conversation == 0) {
 		frame++;

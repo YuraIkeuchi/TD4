@@ -4,7 +4,7 @@
 #include "ParticleEmitter.h"
 #include "VariableCommon.h"
 #include <Helper.h>
-//譖ｴ譁ｰ
+//更新
 void InterBoss::Update() {
 	//陦悟虚
 	Action();
@@ -28,7 +28,16 @@ void InterBoss::Update() {
 		}
 	}
 }
-//謠冗判
+
+//登場の更新
+void InterBoss::AppearUpdate() {
+	AppearAction();//ボス固有の更新
+}
+//撃破の更新
+void InterBoss::DeadUpdate() {
+	DeadAction();//ボス固有の更新
+}
+//描画
 void InterBoss::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui謠冗判
@@ -43,6 +52,7 @@ float InterBoss::HpPercent() {
 	return temp;
 }
 
+//弾との当たり判定
 void InterBoss::CollideBul(vector<InterBullet*> bullet,Type type)
 {
 	if (ColChangeEaseT>0.f)return;
