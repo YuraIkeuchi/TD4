@@ -882,6 +882,14 @@ void FirstBoss::ChargeAttack::Draw()
 void FirstBoss::EndSumon_returnPos(bool &f,float&easespeed)
 {
 	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
+	bool AddSpeed_Early = Collision::CircleCollision(m_Position.x, m_Position.z, 5.f, l_player.x, l_player.z, 1.f);
+	bool AddSpeed_Low= !Collision::CircleCollision(m_Position.x, m_Position.z, 5.f, l_player.x, l_player.z, 1.f);
+
+	float AddEaseTime = 0.02f;
+
+	if(AddSpeed_Early)AddEaseTime = 0.04f;
+	if (AddSpeed_Low)AddEaseTime = 0.01f;
+
 	XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
 	XMVECTOR PositionB = { m_Position.x,m_Position.y,m_Position.z };
 	//プレイヤーと敵のベクトルの長さ(差)を求める
@@ -892,7 +900,7 @@ void FirstBoss::EndSumon_returnPos(bool &f,float&easespeed)
 	if(f)
 	{
 		m_Rotation.y = RotY * 60.f + 90.f;
-		easespeed += 0.04f;
+		easespeed +=AddEaseTime;
 		m_Position.x = Easing::EaseOut(easespeed, OldPos_EndSummon.x,Player::GetInstance()->GetPosition().x + sinf(BossAngle * (PI / 180.0f)) * 20.0f);
 		m_Position.z = Easing::EaseOut(easespeed, OldPos_EndSummon.z, Player::GetInstance()->GetPosition().z + cosf(BossAngle * (PI / 180.0f)) * 20.0f);
 

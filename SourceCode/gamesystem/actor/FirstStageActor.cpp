@@ -42,7 +42,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 
 	BackObj::GetInstance()->Initialize();
 
-	//feedn = new Feed();
+	feedn = new Feed();
 
 	loadobj = std::make_unique<LoadStageObj>();
 	loadobj->AllLoad("FIRSTSTAGE");
@@ -94,7 +94,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	{
 		feedF = true;
 	}
-//	feedn->FeedIn(Feed::FeedType::BLACK, 0.02f, feedF);
+	feedn->FeedIn(Feed::FeedType::BLACK, 0.02f, feedF);
 		camerawork->Update(camera);
 	lightgroup->Update();
 }
@@ -150,7 +150,7 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	//blackwindow->Draw();
 	IKESprite::PostDraw();
 	ui->Draw();
-	//feedn->Draw();
+	feedn->Draw();
 	sceneChanger_->Draw();
 }
 //IMGuiの描画

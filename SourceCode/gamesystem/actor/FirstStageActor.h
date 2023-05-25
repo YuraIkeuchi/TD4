@@ -2,7 +2,8 @@
 #include "BaseActor.h"
 #include "LoadStageObj.h"
 #include"Font.h"
-//
+#include"Feed.h"
+
 /// タイトルシーン
 class FirstStageActor : public BaseActor {
 private:
@@ -11,7 +12,7 @@ private:
 		FIGHT,
 		NONE,
 	};
-	//Feed*feedn;
+	Feed*feedn;
 	bool feedF;
 public:
 	/// 初期化
