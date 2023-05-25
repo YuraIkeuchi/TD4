@@ -1,13 +1,12 @@
 #pragma once
 #include <any>
-#include"IKEFBXObject3d.h"
-#include<memory>
 #include "ObjCommon.h"
 #include "ViewBullet.h"
 #include "GhostBullet.h"
 #include "AttackBullet.h"
 #include "PlayerAttach.h"
 #include "CollisionPrimitive.h"
+#include "BreakEffect.h"
 using namespace DirectX;
 class Player:public ObjCommon
 {
@@ -66,6 +65,8 @@ private:
 	void BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxCommon);
 	//銃の処理
 	void SutoponUpdate();
+	//ダメージパーティクル
+	void BirthParticle();
 private:
 	//各アニメーション
 	enum class AnimeName
@@ -98,6 +99,7 @@ private://各クラス
 	vector<InterBullet*> attackbullets;//攻撃
 	unique_ptr<InterBullet> viewbullet;//可視化の弾
 	unique_ptr<PlayerAttach> playerattach;//プレイヤーの装備
+	vector<InterEffect*> effects;//エフェクト
 	//弾関係の変数
 	int m_BulletType = {};//弾の種類
 	int m_InterVal = {};//弾の発射のインターバル

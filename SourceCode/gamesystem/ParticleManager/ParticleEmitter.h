@@ -37,7 +37,7 @@ public: //メンバ関数
 	//爆発エフェクト
 	void Explosion(const int life, const XMFLOAT3& pos, const float size,const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor);
 	//ダメージエフェクト
-	void Break(const int life, const XMFLOAT3& pos,const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor);
+	void Break(const int life, const XMFLOAT3& pos,const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor,const float Gravity);
 	//削除
 	void AllDelete();
 

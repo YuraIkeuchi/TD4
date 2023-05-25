@@ -107,6 +107,8 @@ void ParticleManager::Update() {
 		// 速度に加速度を加算
 		it->velocity = it->velocity + it->accel;
 
+		//Y方向の速度に重力追加
+		it->velocity.y = it->velocity.y - it->m_GraVity;
 		// 速度による移動
 		it->position = it->position + it->velocity;
 
@@ -206,7 +208,7 @@ void ParticleManager::Draw(int type) {
 void ParticleManager::Add(const int& life,
 	const XMFLOAT3& position, const XMFLOAT3& velocity, const XMFLOAT3& accel,
 	const float& start_scale, const float& end_scale,
-	const XMFLOAT4& start_color, const XMFLOAT4& end_color)
+	const XMFLOAT4& start_color, const XMFLOAT4& end_color,const float Gravity)
 {
 	// リストに要素を追加
 	particles.emplace_front();
@@ -220,6 +222,7 @@ void ParticleManager::Add(const int& life,
 	p.e_scale = end_scale;
 	p.s_color = start_color;
 	p.e_color = end_color;
+	p.m_GraVity = Gravity;
 }
 
 void ParticleManager::InitializeDescriptorHeap() {

@@ -31,16 +31,15 @@ bool SecondBoss::Initialize() {
 	m_OBBScale = { 6.0f,6.0f,6.0f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Scale = { 0.03f,0.03f,0.03f };
-	//m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "pos")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp2")));
+	m_AddPower = 0.8f;
+	m_Radius = 3.0f;
 	_charaState = CharaState::STATE_STAMP;
 	m_MoveState = MOVE_ALTER;
 	m_RandomType = RANDOM_START;
 	m_RollType = ROLL_ONE;
-	m_PressType = PRESS_START;
-	m_AddPower = 0.8f;
+	m_PressType = PRESS_START;	
 	_InterValState = DownState;
-	m_Radius = 3.0f;
 	return true;
 }
 //状態遷移
@@ -438,7 +437,7 @@ void SecondBoss::Rolling() {
 	else if (m_RollType == ROLL_SIX) {
 		l_AfterPos = { 0.0f,m_Position.y,30.0f };
 		l_AddFrame = 0.007f;
-		l_AfterRotY = -270.0f;
+		l_AfterRotY = -90.0f;
 		RollEaseCommn(l_AfterPos, l_AddFrame, l_AfterRotY);
 
 		//飛ぶような感じにするため重力を入れる
