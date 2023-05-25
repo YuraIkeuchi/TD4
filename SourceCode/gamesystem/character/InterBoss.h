@@ -118,7 +118,9 @@ protected:
 public:
 	bool Recv;
 	int NextActionInteval;
+	bool IdleRota;
 
+	bool GetIdleRotaF() { return IdleRota; }
 protected:
 	bool DeathSceneF;
 	void DeathAction();

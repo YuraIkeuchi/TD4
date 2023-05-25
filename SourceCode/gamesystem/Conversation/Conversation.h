@@ -6,6 +6,8 @@
 
 class Conversation
 {
+public:
+	static Conversation* GetInstance();
 private:
 
 public:
@@ -20,7 +22,16 @@ public:
 	void Tyutorial();
 
 	void WardNone();
-	
+
+
+	enum class CharaText
+	{
+		GIRL,
+		PLAYER,
+		SUTOPON
+	};
+	void SetChara(CharaText chara) { m_Chara = chara; }
+	void SetText(wchar_t* text, CharaText chara,int index);
 private:
 	//クラス
 	Input* input = Input::GetInstance();
@@ -45,5 +56,35 @@ private:
 	wchar_t* sutoponward_[3];
 	int len[3];
 	int conversation = 0;
+
+	struct CharaState
+	{
+		UINT index;
+		Font* font[3];
+	};
+
+	std::vector<CharaState>textList;
+	//CharaState GetChara(){return}
+	CharaText m_Chara;
+
+public:
+	enum ChatName
+	{
+		AISATU = 0,
+		KAIWA = 1,
+		BATTLE = 2,
+	};
+	
+	void CreateText(DirectXCommon* comn, ChatName name, wchar_t* text[3]);
+	void TextUpdate(XMFLOAT2 *pos,XMFLOAT3 *color);
+	void Draw(DirectXCommon* comn,ChatName name);
+
+
+	std::vector<Font*>FontList;
+
+public:
+
+
+
 };
 

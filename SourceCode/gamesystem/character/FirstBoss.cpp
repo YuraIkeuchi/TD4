@@ -106,7 +106,10 @@ void FirstBoss::Action() {
 				SummonF = true;
 
 			}
-
+	if(SummobnStop)
+	{
+		m_Rotation.y+=3.f;
+	}
 			//通常攻撃
 			if (!SummobnStop && !_cattack.GetAttackF() && !_normal.GetAttackF() && ActionTimer % 60 == 0)
 				_normal.SetNormalAttackF(true);
