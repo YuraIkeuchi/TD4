@@ -45,6 +45,7 @@ void ObjCommon::Fbx_SetParam()
 	m_fbxObject->SetPosition(m_Position);
 	m_fbxObject->SetRotation(m_Rotation);
 	m_fbxObject->SetScale(m_Scale);
+	m_fbxObject->SetColor(m_Color);
 }
 
 void ObjCommon::Obj_Draw()
