@@ -69,32 +69,11 @@
     <ClCompile Include="SourceCode\engine\camera\Camera.cpp">
       <Filter>engine\camera</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\gamecamera\CameraWork.cpp">
-      <Filter>engine\camera</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\2d\DebugText.cpp">
-      <Filter>engine\2d</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\engine\2d\Feed.cpp">
-      <Filter>engine\2d</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\2d\Font.cpp">
-      <Filter>engine\2d</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\2d\IKESprite.cpp">
-      <Filter>engine\2d</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\2d\IKETexture.cpp">
       <Filter>engine\2d</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\engine\2d\ImageManager.cpp">
       <Filter>engine\2d\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\2d\PostEffect.cpp">
-      <Filter>engine\2d</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\engine\2d\ShadowMap.cpp">
-      <Filter>engine\2d</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\engine\3d\IKEObject3d.cpp">
       <Filter>engine\3d\Obj</Filter>
@@ -252,18 +231,6 @@
     <ClCompile Include="SourceCode\gamesystem\bossattach\InterStamp.cpp">
       <Filter>gamesystem\bossattach\Stamp\Base</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\bossattach\AngerStamp.cpp">
-      <Filter>gamesystem\bossattach\Stamp\Derived</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\bossattach\JoyStamp.cpp">
-      <Filter>gamesystem\bossattach\Stamp\Derived</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\bossattach\Predict.cpp">
-      <Filter>gamesystem\bossattach\Stamp\Derived</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\bossattach\ShockWave.cpp">
-      <Filter>gamesystem\bossattach\Stamp\Derived</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\actor\TutorialSceneActor.cpp">
       <Filter>gamesystem\actor\Tutorial</Filter>
     </ClCompile>
@@ -326,12 +293,6 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\editor\LoadStageObj.cpp">
       <Filter>gamesystem\editor</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\effect\InterEffect.cpp">
-      <Filter>gamesystem\effect</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\effect\BreakEffect.cpp">
-      <Filter>gamesystem\effect</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleManager.cpp">
       <Filter>gamesystem\particle</Filter>
@@ -396,6 +357,51 @@
     <ClCompile Include="SourceCode\gamesystem\text\Text.cpp">
       <Filter>gamesystem\ui</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\text\Text.cpp" />
+      <Filter>gamesystem\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\Conversation\Conversation.cpp" />
+      <Filter>gamesystem\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\bossattach\AngerStamp.cpp">
+      <Filter>gamesystem\bossattach\Stamp\Derived\Stamp</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\bossattach\JoyStamp.cpp">
+      <Filter>gamesystem\bossattach\Stamp\Derived\Stamp</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\bossattach\ShockWave.cpp">
+      <Filter>gamesystem\bossattach\ShockWave</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\bossattach\Predict.cpp">
+      <Filter>gamesystem\bossattach\Predict</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\InterEffect.cpp">
+      <Filter>gamesystem\effect\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\BreakEffect.cpp">
+      <Filter>gamesystem\effect\Various</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\2d\DebugText.cpp">
+      <Filter>engine\2d\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\2d\Font.cpp">
+      <Filter>engine\2d\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\2d\IKESprite.cpp">
+      <Filter>engine\2d\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\2d\PostEffect.cpp">
+      <Filter>engine\2d\PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\2d\IKETexture.cpp">
+      <Filter>engine\2d\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\2d\ShadowMap.cpp">
+      <Filter>engine\2d\PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\gamecamera\CameraWork.cpp">
+      <Filter>gamesystem\gamecamera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -405,35 +411,14 @@
     <ClInclude Include="SourceCode\engine\camera\Camera.h">
       <Filter>engine\camera</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\gamecamera\CameraWork.h">
-      <Filter>engine\camera</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\engine\audio\Audio.h">
       <Filter>engine\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\2d\DebugText.h">
-      <Filter>engine\2d</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\engine\2d\Feed.h">
       <Filter>engine\2d</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\engine\2d\Font.h">
-      <Filter>engine\2d</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\2d\IKESprite.h">
-      <Filter>engine\2d</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\2d\IKETexture.h">
-      <Filter>engine\2d</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\engine\2d\ImageManager.h">
       <Filter>engine\2d\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\2d\PostEffect.h">
-      <Filter>engine\2d</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\engine\2d\ShadowMap.h">
-      <Filter>engine\2d</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\engine\3d\IKEObject3d.h">
       <Filter>engine\3d\Obj</Filter>
@@ -678,12 +663,6 @@
     <ClInclude Include="SourceCode\gamesystem\editor\LoadStageObj.h">
       <Filter>gamesystem\editor</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\effect\BreakEffect.h">
-      <Filter>gamesystem\effect</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\effect\InterEffect.h">
-      <Filter>gamesystem\effect</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleManager.h">
       <Filter>gamesystem\particle</Filter>
     </ClInclude>
@@ -762,6 +741,45 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\text\Text.h">
       <Filter>gamesystem\ui</Filter>
+    </ClInclude> 
+    <ClInclude Include="SourceCode\gamesystem\bossattach\AngerStamp.h">
+      <Filter>gamesystem\bossattach\Stamp\Derived\Stamp</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\JoyStamp.h">
+      <Filter>gamesystem\bossattach\Stamp\Derived\Stamp</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\ShockWave.h">
+      <Filter>gamesystem\bossattach\ShockWave</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\Predict.h">
+      <Filter>gamesystem\bossattach\Predict</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\InterEffect.h">
+      <Filter>gamesystem\effect\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\BreakEffect.h">
+      <Filter>gamesystem\effect\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\2d\DebugText.h">
+      <Filter>engine\2d\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\2d\Font.h">
+      <Filter>engine\2d\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\2d\IKESprite.h">
+      <Filter>engine\2d\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\2d\PostEffect.h">
+      <Filter>engine\2d\PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\2d\IKETexture.h">
+      <Filter>engine\2d\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\2d\ShadowMap.h">
+      <Filter>engine\2d\PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\gamecamera\CameraWork.h">
+      <Filter>gamesystem\gamecamera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -823,9 +841,6 @@
     </Filter>
     <Filter Include="engine\camera">
       <UniqueIdentifier>{eeb3fa30-a394-46b4-87a5-6aeb3bfc3c88}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="engine\2d\Derivation">
-      <UniqueIdentifier>{9e033b28-22e1-46d5-ba4f-42905c45be78}</UniqueIdentifier>
     </Filter>
     <Filter Include="engine\2d\Manager">
       <UniqueIdentifier>{41db2c0e-21f9-48c7-9902-97f2ebee9b09}</UniqueIdentifier>
@@ -1018,6 +1033,33 @@
     </Filter>
     <Filter Include="gamesystem\charactor\Enemy\Base">
       <UniqueIdentifier>{b2050d0c-0b32-4a36-a63c-681f0585db9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\bossattach\Stamp\Derived\Stamp">
+      <UniqueIdentifier>{8a828b53-626f-4620-9c09-2f745a61f8cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\bossattach\ShockWave">
+      <UniqueIdentifier>{9fa49c1c-5717-4ba4-b578-96d7463312ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\bossattach\Predict">
+      <UniqueIdentifier>{43feb44b-76e1-4dd1-91a2-b2007f32223e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\effect\Base">
+      <UniqueIdentifier>{7293ae21-8ab7-4458-97a9-baf421346dea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\effect\Various">
+      <UniqueIdentifier>{ec0674cf-0624-42fb-a7d5-f799ae3f6ca8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="engine\2d\Sprite">
+      <UniqueIdentifier>{f6087c89-99cb-48ff-9f18-bad9e46288d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="engine\2d\Texture">
+      <UniqueIdentifier>{a757e3ae-501b-46f3-b31a-0263bcfd2252}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="engine\2d\Text">
+      <UniqueIdentifier>{a623d130-30b9-4dc4-afdd-a779186d5c55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="engine\2d\PostEffect">
+      <UniqueIdentifier>{85600317-d81b-41d8-b573-6151f83a2f80}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

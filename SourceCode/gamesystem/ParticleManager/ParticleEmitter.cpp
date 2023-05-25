@@ -37,7 +37,7 @@ void ParticleEmitter::FireEffect(const int life, const XMFLOAT3& l_pos, const fl
 	vel.y = (float)rand() / RAND_MAX * rnd_vel * 2.0f;// -rnd_vel / 2.0f;
 	vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 
-	circleParticle->Add(life, { pos.x,pos.y,pos.z }, vel, {}, startscale, endscale, startcolor, endcolor);
+	circleParticle->Add(life, { pos.x,pos.y,pos.z }, vel, {}, startscale, endscale, startcolor, endcolor,{});
 }
 
 //爆発
@@ -67,14 +67,15 @@ void ParticleEmitter::Explosion(const int life, const XMFLOAT3& pos, const float
 
 
 			//追加
-			circleParticle->Add(life, l_pos, vel, {}, startscale, endscale, startcolor, endcolor);
+			circleParticle->Add(life, l_pos, vel, {}, startscale, endscale, startcolor, endcolor,{});
 		}
 	}
 }
 
 
 //�_���[�W�G�t�F�N�g
-void ParticleEmitter::Break(const int life, const XMFLOAT3& pos,const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor) {
+void ParticleEmitter::Break(const int life, const XMFLOAT3& pos,const float startscale, const float endscale,
+	const XMFLOAT4& startcolor, const XMFLOAT4& endcolor,const float Gravity) {
 	//���鐔
 	const int l_Division = 80;
 	float l_AddPowerY = 0.025f;
@@ -94,7 +95,7 @@ void ParticleEmitter::Break(const int life, const XMFLOAT3& pos,const float star
 
 	vel.y += l_AddPowerY;
 
-	circleParticle->Add(life, l_pos, vel, {}, startscale, endscale, startcolor, endcolor);
+	circleParticle->Add(life, l_pos, vel, {}, startscale, endscale, startcolor, endcolor,Gravity);
 }
 
 void ParticleEmitter::AllDelete()
