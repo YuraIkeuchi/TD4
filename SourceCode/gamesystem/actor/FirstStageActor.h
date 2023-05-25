@@ -27,6 +27,7 @@ public:
 	void FrontDraw(DirectXCommon* dxCommon);
 	void BackDraw(DirectXCommon* dxCommon);
 	void ImGuiDraw(DirectXCommon* dxCommon);
+	void ColEnemy(std::vector<InterEnemy*> enelist);
 private:
 
 	float maxframe = 20.f;

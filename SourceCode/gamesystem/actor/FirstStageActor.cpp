@@ -79,6 +79,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	if (nowstate != CONVERSATION) {
 		Player::GetInstance()->Update();
 		enemymanager->Update();
+		ColEnemy(enemymanager->GetBulEnemy());
 		loadobj->FirstUpdate();
 		ParticleEmitter::GetInstance()->Update();
 	}
@@ -157,4 +158,20 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 void FirstStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	Player::GetInstance()->ImGuiDraw();
 	//loadobj->ImGuiDraw();
+}
+
+
+void FirstStageActor::ColEnemy(std::vector<InterEnemy*> enelist)
+{
+	for (auto i = 0; i < enelist.size(); ++i) {
+		for (auto j = 0; j < enelist.size(); ++j) {
+			XMFLOAT3 ghostpos = enelist[i]->GetPosition();
+			XMFLOAT3 ghostpos2 = enelist[j]->GetPosition();
+			if ((i == j)) { continue; }
+			if (Collision::SphereCollision(ghostpos, 1.5f, ghostpos2, 1.5f)) {
+				enelist[i]->EnemyColNormal(ghostpos2);
+				enelist[j]->EnemyColNormal(ghostpos);
+			}
+		}
+	}
 }

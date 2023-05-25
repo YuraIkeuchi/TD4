@@ -49,7 +49,7 @@ void InterBoss::CollideBul(vector<InterBullet*> bullet)
 
 	for (InterBullet* _bullet : bullet) {
 		if (_bullet != nullptr) {
-			if (Collision::SphereCollision(_bullet->GetPosition(), m_Radius, m_Position, m_Radius))
+			if (Collision::CircleCollision(_bullet->GetPosition().x,_bullet->GetPosition().z, m_Radius, m_Position.x,m_Position.z, m_Radius))
 			{
 				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Attack_Normal.wav", VolumManager::GetInstance()->GetSEVolum());
 				ActionTimer++;

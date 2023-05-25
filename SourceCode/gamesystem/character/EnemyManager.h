@@ -41,6 +41,7 @@ public://getter setter
 	const bool GetEnemyCheck() { return enemy.get()->GetCheck(); }
 	//チュートリアル関係のgetset
 	InterEnemy* GetEnemy(const int num) { return tutorialenemy[num].get(); }
+	std::vector<InterEnemy*>GetBulEnemy() { return bulletenemy; }
 private:
 	Player* player = Player::GetInstance();
 	//ボス(初期化によってステージごとのボスに変更)

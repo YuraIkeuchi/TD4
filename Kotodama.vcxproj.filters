@@ -602,9 +602,6 @@
     <ClInclude Include="SourceCode\gamesystem\backobj\BackObj.h">
       <Filter>gamesystem\backobj</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\bossattach\InterStamp.h">
-      <Filter>gamesystem\bossattach\Stamp\Base</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\bossattach\AngerStamp.h">
       <Filter>gamesystem\bossattach\Stamp\Derived</Filter>
     </ClInclude>
@@ -755,6 +752,9 @@
       <Filter>SourceCords\shader</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\PlaceManager.h" />
+    <ClInclude Include="SourceCode\gamesystem\bossattach\InterStamp.h">
+      <Filter>gamesystem\bossattach\Stamp\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
@@ -936,9 +936,6 @@
     <Filter Include="gamesystem\charactor\Enemy">
       <UniqueIdentifier>{d0ed1f2d-916a-446f-9c30-096aa67c95af}</UniqueIdentifier>
     </Filter>
-    <Filter Include="gamesystem\charactor\Enemy\Base">
-      <UniqueIdentifier>{b2050d0c-0b32-4a36-a63c-681f0585db9b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="gamesystem\charactor\Enemy\Normal">
       <UniqueIdentifier>{711ffd51-e21a-4634-a5ed-3c9fca31d1d6}</UniqueIdentifier>
     </Filter>
@@ -1010,6 +1007,9 @@
     </Filter>
     <Filter Include="Shader\3d">
       <UniqueIdentifier>{326306b9-9557-4886-9d61-f921d6badc29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\charactor\Enemy\Base">
+      <UniqueIdentifier>{b2050d0c-0b32-4a36-a63c-681f0585db9b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -75,6 +75,5 @@ protected:
 public:
 	void SetcanRotandRush(bool f) { canRot = f; Rush = f; }
 
-	void ColEnemy(std::vector<InterEnemy*>enelist);
 	void EnemyColNormal(const XMFLOAT3& pos);
 };
