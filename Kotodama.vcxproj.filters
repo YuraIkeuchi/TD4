@@ -351,8 +351,18 @@
     <ClCompile Include="SourceCode\gamesystem\scene\PlaceManager.cpp">
       <Filter>gamesystem\editor</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\Conversation\Conversation.cpp">
+      <Filter>gamesystem\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\text\Text.cpp">
+      <Filter>gamesystem\ui</Filter>
+    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\text\Text.cpp" />
+      <Filter>gamesystem\ui</Filter>
+    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\Conversation\Conversation.cpp" />
+      <Filter>gamesystem\ui</Filter>
+    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\bossattach\AngerStamp.cpp">
       <Filter>gamesystem\bossattach\Stamp\Derived\Stamp</Filter>
     </ClCompile>
@@ -563,9 +573,6 @@
     <ClInclude Include="SourceCode\gamesystem\actor\FirstStageActor.h">
       <Filter>gamesystem\actor\First</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor.h">
-      <Filter>gamesystem\actor\GameOver</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\actor\IntroductionSceneActor.h">
       <Filter>gamesystem\actor\base</Filter>
     </ClInclude>
@@ -580,6 +587,18 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\backobj\BackObj.h">
       <Filter>gamesystem\backobj</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\AngerStamp.h">
+      <Filter>gamesystem\bossattach\Stamp\Derived</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\JoyStamp.h">
+      <Filter>gamesystem\bossattach\Stamp\Derived</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\Predict.h">
+      <Filter>gamesystem\bossattach\Stamp\Derived</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\ShockWave.h">
+      <Filter>gamesystem\bossattach\Stamp\Derived</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\actor\TutorialSceneActor.h">
       <Filter>gamesystem\actor\Tutorial</Filter>
@@ -704,11 +723,6 @@
     <ClInclude Include="SourceCode\gamesystem\ui\UI.h">
       <Filter>gamesystem\ui</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\scene\PlaceManager.h">
-      <Filter>gamesystem\editor</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\text\Text.h" />
-    <ClInclude Include="SourceCode\gamesystem\Conversation\Conversation.h" />
     <ClInclude Include="resource.h">
       <Filter>SourceCords\shader</Filter>
     </ClInclude>
@@ -716,6 +730,18 @@
     <ClInclude Include="SourceCode\gamesystem\bossattach\InterStamp.h">
       <Filter>gamesystem\bossattach\Stamp\Base</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\Conversation\Conversation.h">
+      <Filter>gamesystem\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor.h">
+      <Filter>gamesystem\actor\GameOver</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\PlaceManager.h">
+      <Filter>gamesystem\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\text\Text.h">
+      <Filter>gamesystem\ui</Filter>
+    </ClInclude> 
     <ClInclude Include="SourceCode\gamesystem\bossattach\AngerStamp.h">
       <Filter>gamesystem\bossattach\Stamp\Derived\Stamp</Filter>
     </ClInclude>
@@ -933,9 +959,6 @@
     <Filter Include="gamesystem\charactor\Enemy">
       <UniqueIdentifier>{d0ed1f2d-916a-446f-9c30-096aa67c95af}</UniqueIdentifier>
     </Filter>
-    <Filter Include="gamesystem\charactor\Enemy\Base">
-      <UniqueIdentifier>{b2050d0c-0b32-4a36-a63c-681f0585db9b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="gamesystem\charactor\Enemy\Normal">
       <UniqueIdentifier>{711ffd51-e21a-4634-a5ed-3c9fca31d1d6}</UniqueIdentifier>
     </Filter>
@@ -1007,6 +1030,9 @@
     </Filter>
     <Filter Include="Shader\3d">
       <UniqueIdentifier>{326306b9-9557-4886-9d61-f921d6badc29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\charactor\Enemy\Base">
+      <UniqueIdentifier>{b2050d0c-0b32-4a36-a63c-681f0585db9b}</UniqueIdentifier>
     </Filter>
     <Filter Include="gamesystem\bossattach\Stamp\Derived\Stamp">
       <UniqueIdentifier>{8a828b53-626f-4620-9c09-2f745a61f8cc}</UniqueIdentifier>
