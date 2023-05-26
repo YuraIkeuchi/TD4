@@ -41,6 +41,12 @@ public:
 	//描画
 	virtual void Draw(DirectXCommon* dxCommon)override;
 
+	void ImGuiDraw();//ImGuiの描画
+
+	virtual void EffecttexDraw(DirectXCommon* dxCommon) = 0;
+
+protected:
+
 	virtual void Action() = 0;//ボス特有の処理
 
 	virtual void AppearAction() = 0;//ボス登場の固有の処理
@@ -49,12 +55,8 @@ public:
 
 	virtual void ImGui_Origin() = 0;//ボスそれぞれのImGui
 
-	void ImGuiDraw();//ImGuiの描画
-
-	virtual void EffecttexDraw(DirectXCommon* dxCommon) = 0;
-
+private:
 	void BirthEffect();
-
 public:
 	void SummonEnemyInit(InterEnemy* enemy);
 

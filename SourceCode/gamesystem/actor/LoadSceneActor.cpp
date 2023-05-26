@@ -35,6 +35,7 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	camerawork->Update(camera);
 	//関数ポインタで状態管理
 	(this->*stateTable[static_cast<size_t>(m_SceneState)])();
+
 	for (std::unique_ptr<IKEObject3d>& obj : grounds) {
 		obj->Update();
 	}

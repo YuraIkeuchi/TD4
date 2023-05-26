@@ -27,8 +27,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	//各クラス
 	Player::GetInstance()->InitState({ 0.0f,0.0f,0.0f });
 	camerawork->Update(camera);
-	ui = std::make_unique<UI>();
-	ui->Initialize();
+	
 	conversationwindow = IKESprite::Create(ImageManager::WINDOW, window_pos);
 	conversationwindow->SetAnchorPoint({ 0.5f,0.5f });
 	conversationwindow->SetSize(window_size);
@@ -36,11 +35,11 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	blackwindow = IKESprite::Create(ImageManager::BLACKWINDOW, {});
 	
 	enemymanager = std::make_unique<EnemyManager>("FIRSTSTAGE");
-	//少しめんどくさいけど引数けすため
-	enemymanager->SetSceneName("FIRSTSTAGE");
-
+	
 	camerawork->SetBoss(enemymanager->GetBoss());
 	camerawork->SetCameraState(CAMERA_NORMAL);
+	ui = std::make_unique<UI>();
+	ui->Initialize();
 	ui->SetBoss(enemymanager->GetBoss());
 
 	BackObj::GetInstance()->Initialize();
@@ -79,13 +78,11 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	ui->Update();
 	//各クラス更新
 	BackObj::GetInstance()->Update();
-	if (nowstate != CONVERSATION) {
-		Player::GetInstance()->Update();
-		enemymanager->Update();
-		ColEnemy(enemymanager->GetBulEnemy());
-		loadobj->FirstUpdate();
-		ParticleEmitter::GetInstance()->Update();
-	}
+	Player::GetInstance()->Update();
+	enemymanager->BattleUpdate();
+	ColEnemy(enemymanager->GetBulEnemy());
+	loadobj->FirstUpdate();
+	ParticleEmitter::GetInstance()->Update();
 	//カメラワークのセット
 	if(enemymanager->BossDestroy())
 	{
@@ -100,7 +97,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		feedF = true;
 	}
 	feedn->FeedIn(Feed::FeedType::BLACK, 0.02f, feedF);
-		camerawork->Update(camera);
+	camerawork->Update(camera);
 	lightgroup->Update();
 }
 //描画

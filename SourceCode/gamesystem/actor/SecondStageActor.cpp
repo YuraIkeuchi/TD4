@@ -21,10 +21,7 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 
 	//各クラス
 	Player::GetInstance()->InitState({ 0.0f,0.0f,0.0f });
-	camerawork->Update(camera);
-	ui = std::make_unique<UI>();
-	ui->Initialize();
-
+	
 	//シーンチェンジャー
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
@@ -40,77 +37,24 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 
 	camerawork->SetBoss(enemymanager->GetBoss());
 	camerawork->SetCameraState(CAMERA_NORMAL);
+	camerawork->Update(camera);
+	ui = std::make_unique<UI>();
+	ui->Initialize();
+
 	ui->SetBoss(enemymanager->GetBoss());
 	BackObj::GetInstance()->Initialize();
 
 	loadobj = std::make_unique<LoadStageObj>();
 	loadobj->AllLoad("SECONDSTAGE");
 	loadobj->SetEnemyManager(enemymanager.get());
+
+	m_SceneState = SceneState::IntroState;
 }
 //更新
 void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
-	Input* input = Input::GetInstance();
-	ui->Update();
-	if (enemymanager->BossDestroy()) {
-		sceneChanger_->ChangeStart();
-		sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
-	}
-
-	if (PlayerDestroy()) {
-		sceneChanger_->ChangeStart();
-		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::Reverse);
-	}
-	//音楽の音量が変わる
-	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
-	VolumManager::GetInstance()->Update();
-
-	if (input->Pushkey(DIK_A) &&
-		nowstate != CONVERSATION) {
-		nowstate = CONVERSATION;
-		frame = {};
-	}
-	if (input->Pushkey(DIK_S) &&
-		nowstate != FIGHT) {
-		nowstate = FIGHT;
-		frame = {};
-	}
-	if (nowstate == CONVERSATION) {
-		frame++;
-		nowframe = frame / maxframe;
-		if (frame >= maxframe) {
-			frame = maxframe;
-		}
-		window_pos.y = Ease(Out, Sine, nowframe, WinApp::window_height + 100, WinApp::window_height - 100);
-		window_size.x = Ease(Out, Sine, nowframe, 0, 1300);
-		window_size.y = Ease(Out, Sine, nowframe, 0, 223);
-		black_color.w = Ease(Out, Sine, nowframe, 0, 1);
-	}
-	else if (nowstate == FIGHT) {
-		frame++;
-		nowframe = frame / maxframe;
-		if (frame >= maxframe) {
-			frame = maxframe;
-		}
-		window_pos.y = Ease(Out, Sine, nowframe, WinApp::window_height - 100, WinApp::window_height + 100);
-		window_size.x = Ease(Out, Sine, nowframe, 1300, 0);
-		window_size.y = Ease(Out, Sine, nowframe, 225, 0);
-		black_color.w = Ease(Out, Sine, nowframe, 1, 0);
-	}
-
-
-	conversationwindow->SetPosition(window_pos);
-	conversationwindow->SetSize(window_size);
-	blackwindow->SetColor(black_color);
-
-	//各クラス更新
-	BackObj::GetInstance()->Update();
-	if (nowstate != CONVERSATION) {
-		Player::GetInstance()->Update();
-		enemymanager->Update();
-		loadobj->SecondUpdate();
-		ParticleEmitter::GetInstance()->Update();
-	}
-	camerawork->DefaultCam();
+	
+	//関数ポインタで状態管理
+	(this->*stateTable[static_cast<size_t>(m_SceneState)])();
 	camerawork->Update(camera);
 	lightgroup->Update();
 }
@@ -172,4 +116,50 @@ void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	Player::GetInstance()->ImGuiDraw();
 	loadobj->ImGuiDraw();
 	//enemymanager->ImGuiDraw();
+}
+//登場シーン
+void SecondStageActor::IntroUpdate() {
+	Input* input = Input::GetInstance();
+
+	if (input->TriggerKey(DIK_X)) {
+		m_SceneState = SceneState::MainState;
+	}
+}
+//バトルシーン
+void SecondStageActor::MainUpdate() {
+	Input* input = Input::GetInstance();
+	ui->Update();
+	if (enemymanager->BossDestroy()) {
+		sceneChanger_->ChangeStart();
+		sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
+	}
+
+	if (PlayerDestroy()) {
+		sceneChanger_->ChangeStart();
+		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::Reverse);
+	}
+
+	if (input->TriggerKey(DIK_X)) {
+		m_SceneState = SceneState::FinishState;
+	}
+	//音楽の音量が変わる
+	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
+	VolumManager::GetInstance()->Update();
+
+	conversationwindow->SetPosition(window_pos);
+	conversationwindow->SetSize(window_size);
+	blackwindow->SetColor(black_color);
+
+	//各クラス更新
+	BackObj::GetInstance()->Update();
+
+	Player::GetInstance()->Update();
+	enemymanager->BattleUpdate();
+	loadobj->SecondUpdate();
+	ParticleEmitter::GetInstance()->Update();
+
+}
+//撃破シーン
+void SecondStageActor::FinishUpdate() {
+	Input* input = Input::GetInstance();
 }
