@@ -59,9 +59,7 @@ void Ghost::Update() {
 }
 //•`‰æ
 void Ghost::Draw(DirectXCommon* dxCommon) {
-	if (m_Alive) {
-		Obj_Draw();
-	}
+	Obj_Draw();
 }
 //ImGui•`‰æ
 void Ghost::ImGuiDraw() {
@@ -102,7 +100,7 @@ bool Ghost::BulletCollision() {
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Follower.wav", VolumManager::GetInstance()->GetSEVolum());
 			HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() + l_AddHungerMax);
 			HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() + l_AddHungerMax);
-			HungerGauge::GetInstance()->SetCatchCount(HungerGauge::GetInstance()->GetCatchCount() + 1.0f);
+			HungerGauge::GetInstance()->SetCatchCount(HungerGauge::GetInstance()->GetCatchCount() + 1);
 			_charaState = CharaState::STATE_FOLLOW;
 			_followState = FollowState::Follow_START;
 			m_Object->SetModel(model_follow);
@@ -156,6 +154,7 @@ void Ghost::BirthGhost() {
 		if (m_ResPornTimer == 100) {	
 			m_Alive = true;	
 			m_ResPornTimer = 0;
+			m_Scale = { 0.5f,0.5f,0.5f };
 		
 		}
 	}
@@ -183,6 +182,7 @@ void Ghost::Search() {
 		//ƒT[ƒ`ó‘Ô‚©‚çˆê’èŽžŠÔ—§‚Â‚Æ‘¶ÝÁ‹Ž
 		m_SearchTimer++;
 		if (m_SearchTimer >= l_LimitTimer) {
+			m_Scale = { 0.0f,0.0f,0.0f };
 			m_Alive = false;
 		}
 	} else if (_searchState == SearchState::SEARCH_END) {
@@ -207,6 +207,7 @@ void Ghost::CarryFood() {
 	XMFLOAT3 l_playerPos = Player::GetInstance()->GetPosition();
 	if ((_searchState == SearchState::SEARCH_END) && (m_Alive)) {
 		if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, l_playerPos.x, l_playerPos.z, l_Radius)) {
+			m_Scale = { 0.0f,0.0f,0.0f };
 			m_Alive = false;
 			m_Search = false;
 			m_Catch = false;

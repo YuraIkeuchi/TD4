@@ -45,7 +45,7 @@ void UI::Initialize() {
 //更新
 void UI::Update() {
 	//Gauge処理
-	if (HungerGauge::GetInstance()->GetCatchCount() == 0.f) {
+	if (HungerGauge::GetInstance()->GetCatchCount() == 0) {
 		TexList[UnderStatusGauge].IsVisible = false;
 		TexList[StatusGauge].IsVisible = false;
 	} else {

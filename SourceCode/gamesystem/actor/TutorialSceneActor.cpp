@@ -118,7 +118,7 @@ void TutorialSceneActor::CatchFollowState() {
 	enemymanager->TutorialUpdate(0);
 
 	if (DebugButton() ||
-		Clear(HungerGauge::GetInstance()->GetCatchCount() >= 1.0f, 50)) {
+		Clear(HungerGauge::GetInstance()->GetCatchCount() >= 1, 50)) {
 		waitTimer = 0;
 		nowstate_ = state::TEXT_SHOT;
 
