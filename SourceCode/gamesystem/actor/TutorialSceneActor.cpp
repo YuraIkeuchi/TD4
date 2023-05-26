@@ -409,7 +409,7 @@ void TutorialSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 		if (static_cast<int>(nowstate_) % 2 == 0) {
 			firstrow_->Draw(dxCommon);
 			secondrow_->Draw(dxCommon);
-			thardrow_->Draw(dxCommon);
+			thirdrow_->Draw(dxCommon);
 			Font::PostDraw(dxCommon);
 		}
 	} else {

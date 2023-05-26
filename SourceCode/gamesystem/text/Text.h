@@ -35,6 +35,5 @@ private:
 	unique_ptr<Font> thirdrow_;
 
 	wchar_t* ward[3];
-	int len[3];
 };
 
