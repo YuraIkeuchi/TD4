@@ -394,7 +394,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="resource.h" />
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
       <Filter>engine\camera</Filter>
     </ClInclude>
@@ -668,9 +667,6 @@
     <ClInclude Include="SourceCode\gamesystem\scene\SecondStage.h">
       <Filter>gamesystem\scene\Play\Second</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor.h">
-      <Filter>SourceCords\gamesystem\actor\GameOver</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\TutorialScene.h">
       <Filter>gamesystem\scene\Tutorial</Filter>
     </ClInclude>
@@ -753,6 +749,7 @@
     <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor.h">
       <Filter>gamesystem\actor\GameOver</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">

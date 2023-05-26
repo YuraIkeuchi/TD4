@@ -93,7 +93,8 @@ private:
 
 
 	float shakeTimer = 0;
-
+	int shakeCount = 0;
+	bool isShake = false;
 
 	static bool isDebug;
 

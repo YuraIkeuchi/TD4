@@ -56,8 +56,6 @@ private://ƒƒ“ƒo•Ï”
 		text_A,
 		text_D,
 		text_I,
-		text_N,
-		text_G,
 		SpriteMax
 	};
 

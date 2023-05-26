@@ -10,7 +10,11 @@ ImageManager* ImageManager::GetInstance()
 void ImageManager::StartLoad2D()
 {
 	IKESprite::LoadTexture(TITLE, L"Resources/2d/sceneback/title.png");
-	IKESprite::LoadTexture(LOADING, L"Resources/2d/objicon/box.png");
+	IKESprite::LoadTexture(LOADING_LO, L"Resources/2d/objicon/LoadText/01_Lo.png");
+	IKESprite::LoadTexture(LOADING_O, L"Resources/2d/objicon/LoadText/02_O.png");
+	IKESprite::LoadTexture(LOADING_DI, L"Resources/2d/objicon/LoadText/03_Di.png");
+	IKESprite::LoadTexture(LOADING_N, L"Resources/2d/objicon/LoadText/04_N.png");
+	IKESprite::LoadTexture(LOADING_G, L"Resources/2d/objicon/LoadText/05_G.png");
 	IKESprite::LoadTexture(WHITE, L"Resources/2d/effect/white1x1.png");
 	IKESprite::LoadTexture(WINDOW, L"Resources/2d/objicon/ConversationWindow.png");
 	IKESprite::LoadTexture(BLACKWINDOW, L"Resources/2d/objicon/BlackWindow.png");

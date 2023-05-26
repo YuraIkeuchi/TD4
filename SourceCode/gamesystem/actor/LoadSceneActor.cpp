@@ -22,7 +22,7 @@ void LoadSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	for (int i = 0; i < SpriteMax; i++) {
 		m_SpritesPos[i].x = (i + 1) * 100.0f;
 		m_SpritesPos[i].y = 630.0f;
-		m_Sprites[i] = IKESprite::Create(ImageManager::LOADING, m_SpritesPos[i]);
+		m_Sprites[i] = IKESprite::Create(ImageManager::LOADING_LO + i, m_SpritesPos[i]);
 		m_Sprites[i]->SetAnchorPoint({ 0.5f,0.5f });
 		m_Sprites[i]->SetSize({ 96.0f, 96.0f });
 	}
@@ -160,9 +160,9 @@ void LoadSceneActor::MainUpdate() {
 	m_LoadTimer++;
 	float frame = (float)m_LoadTimer / (float)LoadTimerMax;
 	for (int i = 0; i < SpriteMax; i++) {
-		m_SpritesPos[i].x = Ease(In,Linear,frame, m_StopPos[i].x, CenterPos.x + static_cast<float>(i) * WordsInter);
+		m_SpritesPos[i].x = Ease(In, Linear, frame, m_StopPos[i].x, CenterPos.x + static_cast<float>(i) * WordsInter);
 		m_SpritesPos[i].y = Ease(In, Linear, frame, m_StopPos[i].y, 630.0f);
-		m_Sprites[i]->SetPosition(m_SpritesPos[i]); 
+		m_Sprites[i]->SetPosition(m_SpritesPos[i]);
 
 	}
 	//��莞�ԂŃV�[�����ς��
