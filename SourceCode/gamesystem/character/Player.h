@@ -94,6 +94,9 @@ public:
 	float GetHP() { return m_HP; }
 	float GetMaxHP() { return m_MaxHP; }
 
+	void SetCanShot(const bool m_canShot) {this->m_canShot = m_canShot;}
+
+
 private://各クラス
 	vector<InterBullet*> ghostbullets;//言霊
 	vector<InterBullet*> attackbullets;//攻撃
@@ -113,7 +116,7 @@ private://各クラス
 	XMFLOAT3 m_FollowPos = {};
 
 	int m_ShotTimer = {};//ショットのチャージ時間
-
+	bool m_canShot = true;
 	//ダメージ
 	bool m_Damage = false;
 	int m_DamageInterVal = {};

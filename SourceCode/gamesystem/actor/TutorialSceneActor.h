@@ -9,7 +9,7 @@
 #include "LoadStageObj.h"
 #include"Font.h"
 #include"Conversation.h"
-
+#include <random>
 /// タイトルシーン
 class TutorialSceneActor : public BaseActor {
 private:
@@ -67,6 +67,7 @@ private:
 
 	bool DebugButton();
 
+	XMFLOAT3 RandomShake(XMFLOAT3 pos);
 private:
 	//クラス
 	Input* input = Input::GetInstance();
@@ -74,9 +75,8 @@ private:
 	unique_ptr<EnemyManager> enemymanager;
 	InterEnemy* firstEnemy = nullptr;
 	unique_ptr<UI>ui;
-	//後に作成
-	unique_ptr<IKEObject3d> Sutepon = nullptr;
-
+	unique_ptr<IKEObject3d> sutepon = nullptr;
+	IKEModel* m_Model = nullptr;
 	unique_ptr<BackObj> backobj;
 	unique_ptr<LoadStageObj> loadobj;
 	unique_ptr<Font> firstrow_;
@@ -90,6 +90,9 @@ private:
 	XMFLOAT4 black_color{ 1.f,1.f,1.f,0.f };
 	XMFLOAT4 girl_color{ 1.5f,1.5f,1.5f,0.f };
 	XMFLOAT4 sutopon_color{ 1.f,1.f,1.f,0.f };
+
+
+	int shakeTimer = 0;
 
 
 	static bool isDebug;

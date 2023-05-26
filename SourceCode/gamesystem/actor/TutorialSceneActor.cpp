@@ -52,27 +52,31 @@ void TutorialSceneActor::IntroState() {
 		nowstate_ = state::MOVE;
 	}
 }
-
 void TutorialSceneActor::MoveState() {
+	//メガホンobj更新
+	sutepon->Update();
+	shakeTimer++;
+	if (shakeTimer%10==0) {
+		sutepon->SetPosition(RandomShake({ 0,0,15 }));
+		shakeTimer = 0;
+	}
 	XMFLOAT3 pos = Player::GetInstance()->GetPosition();
-
-	//メガホンobjが到着次第変更
-
-	if (!Collision::CircleCollision(0, 0, 45.f, pos.x, pos.z, 1.f)) {
+	XMFLOAT3 Spos = sutepon->GetPosition();
+	if (Collision::CircleCollision(Spos.x, Spos.z, 5.f, pos.x, pos.z, 1.f)) {
 		nowstate_ = state::TEXT_TALK;
 	}
 }
-
 void TutorialSceneActor::TextTalkState() {
 	if (input->TriggerKey(DIK_RIGHT)) {
 		conversation_->WardNone();
 	}
-	
+
 	if (DebugButton() ||
 		input->TriggerButton(Input::B)) {
 		firstrow_->StringReset();
 		secondrow_->StringReset();
 		thirdrow_->StringReset();
+		sutepon->SetPosition({ 0,0,15.0f });
 		conversation = old_conversation = 0;
 		nowstate_ = state::SPAWNENEMY;
 	}
@@ -102,6 +106,7 @@ void TutorialSceneActor::TextCatchFollowState() {
 
 	if (DebugButton() ||
 		input->TriggerButton(Input::B)) {
+		Player::GetInstance()->SetCanShot(true);
 		nowstate_ = state::CATCHFOLLOW;
 	}
 
@@ -208,17 +213,15 @@ void TutorialSceneActor::TextLastState() {
 		nowstate_ = state::MAINTUTORIAL;
 	}
 }
-
 void TutorialSceneActor::MainTutorialState() {
 	loadobj->TutorialUpdate();
 	enemymanager->TutorialUpdate(1);
 
-	if (DebugButton() || 
+	if (DebugButton() ||
 		Clear(enemymanager->AllDeadEnemy(), 60)) {
 		nowstate_ = state::COMPLETE;
 	}
 }
-
 void TutorialSceneActor::CompleteState() {
 
 	ward = L"あんたはオレのアイボウだぜ";
@@ -233,7 +236,6 @@ void TutorialSceneActor::CompleteState() {
 
 }
 
-
 bool TutorialSceneActor::DebugButton() {
 	if (!isDebug) { return false; }
 	if (input->TriggerKey(DIK_SPACE)) {
@@ -241,6 +243,13 @@ bool TutorialSceneActor::DebugButton() {
 	} else {
 		return false;
 	}
+}
+XMFLOAT3 TutorialSceneActor::RandomShake(XMFLOAT3 pos) {
+	//乱数指定
+	mt19937 mt{ std::random_device{}() };
+	std::uniform_real_distribution<float> dist(-0.5f, 0.5f);
+	//	uniform_int_distribution<int> l_distZ(-55, 55);
+	return XMFLOAT3(pos.x + dist(mt), pos.y, pos.z);
 }
 void TutorialSceneActor::CameraUpdate(DebugCamera* camera) {
 	if (nowstate_ != state::SPAWNALLENEMY) {
@@ -273,11 +282,20 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	ParticleEmitter::GetInstance()->AllDelete();
 	//各クラス
 	Player::GetInstance()->InitState({ 0.0f,0.0f,0.0f });
+	Player::GetInstance()->SetCanShot(false);
 	//カメラ更新
 	camerawork->Update(camera);
 	//UIの初期化
 	ui = std::make_unique<UI>();
 	ui->Initialize();
+
+	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Sutopon);
+	sutepon = make_unique<IKEObject3d>();
+	sutepon->Initialize();
+	sutepon->SetModel(m_Model);
+	sutepon->SetPosition({ 0,0,15.0f });
+	sutepon->SetRotation({ 60.0f,0,0 });
+
 	//エネミーの生成
 	enemymanager = std::make_unique<EnemyManager>("TUTORIAL");
 	//最初のエネミーの参照
@@ -371,6 +389,9 @@ void TutorialSceneActor::BackDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
 	////各クラスの描画
 	Player::GetInstance()->Draw(dxCommon);
+	if (nowstate_ <= state::TEXT_TALK) {
+		sutepon->Draw();
+	}
 	if (nowstate_ >= state::SPAWNENEMY) {
 		loadobj->Draw(dxCommon);
 	}
