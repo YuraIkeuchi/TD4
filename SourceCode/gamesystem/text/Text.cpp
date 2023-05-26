@@ -29,11 +29,9 @@ void Text::Initialize(DirectXCommon* dxcommon, const XMVECTOR& color)
 
 void Text::Update(wchar_t* firstrow, wchar_t* secondrow, wchar_t* thirdrow)
 {
-
 	firstrow_->SetString(firstrow);
 	secondrow_->SetString(secondrow);
 	thirdrow_->SetString(thirdrow);
-
 }
 
 void Text::Draw(DirectXCommon* dxcommon)

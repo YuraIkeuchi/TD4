@@ -290,7 +290,7 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 
 	//wchar_t* hello[3] = { L"Hello",L"World",L"aa" };
 	//wchar_t* hello2[3] = { L"しね",L"sine",L"shine" };
-	TextManager::GetInstance()->WordLoad(dxCommon);
+	//TextManager::GetInstance()->WordLoad(dxCommon);
 	/*Conversation::GetInstance()->CreateText(dxCommon, TextManager::KAIWA, hello2);
 	Conversation::GetInstance()->CreateText(dxCommon, TextManager::AISATU, hello2);*/
 
@@ -311,7 +311,7 @@ void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 
 	XMFLOAT2 pos[3] = { kFirstRowPos,kSecondRowPos,kThirdRowPos };
 	XMFLOAT3 color[3] = { {1,1,1},{1,1,1},{1,1,1} };
-	Conversation::GetInstance()->TextUpdate(pos, color);
+	//Conversation::GetInstance()->TextUpdate(pos, color);
 
 	//音楽の音量が変わる
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
@@ -380,7 +380,7 @@ void TutorialSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 		messagewindow_->Draw();
 		IKESprite::PostDraw();
 		if (messagewindow_->DisplayCheck()) {
-			Conversation::GetInstance()->Draw(dxCommon, Conversation::KAIWA);
+			//Conversation::GetInstance()->Draw(dxCommon, TextManager::AISATU);
 		}
 		Font::PostDraw(dxCommon);
 	} else {

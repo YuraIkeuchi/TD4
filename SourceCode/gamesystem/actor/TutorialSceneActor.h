@@ -78,7 +78,7 @@ private:
 	IKEModel* m_Model = nullptr;
 	unique_ptr<BackObj> backobj;
 	unique_ptr<LoadStageObj> loadobj;
-	unique_ptr<Conversation> conversation_;
+	//unique_ptr<Conversation> conversation_;
 	unique_ptr<MessageWindow> messagewindow_;
 
 	float shakeTimer = 0;
