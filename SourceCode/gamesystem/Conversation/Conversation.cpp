@@ -56,7 +56,7 @@ void Conversation::FontDraw(DirectXCommon* dxcommon)
 	sutopontext_->Draw(dxcommon);
 }
 
-void Conversation::Tyutorial()
+void Conversation::Tutorial()
 {
 	if (conversation == 0) {
 		frame++;

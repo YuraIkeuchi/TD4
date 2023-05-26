@@ -38,6 +38,9 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	enemymanager = std::make_unique<EnemyManager>("FIRSTSTAGE");
 	//少しめんどくさいけど引数けすため
 	enemymanager->SetSceneName("FIRSTSTAGE");
+
+	camerawork->SetBoss(enemymanager->GetBoss());
+	camerawork->SetCameraState(CAMERA_NORMAL);
 	ui->SetBoss(enemymanager->GetBoss());
 
 	BackObj::GetInstance()->Initialize();
@@ -83,13 +86,14 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		loadobj->FirstUpdate();
 		ParticleEmitter::GetInstance()->Update();
 	}
+	//カメラワークのセット
 	if(enemymanager->BossDestroy())
 	{
-		camerawork->SetBossCam(enemymanager->GetBoss());
+		camerawork->SetCameraState(CAMERA_BOSSDEAD);
 	}
 	else
 	{
-		camerawork->DefaultCam();
+		camerawork->SetCameraState(CAMERA_NORMAL);
 	}
 	if (Input::GetInstance()->TriggerButton(Input::Y))
 	{

@@ -253,11 +253,12 @@ XMFLOAT3 TutorialSceneActor::RandomShake(XMFLOAT3 pos) {
 }
 void TutorialSceneActor::CameraUpdate(DebugCamera* camera) {
 	if (nowstate_ != state::SPAWNALLENEMY) {
-		camerawork->DefaultCam();
-		camerawork->Update(camera);
+		camerawork->SetCameraState(CAMERA_NORMAL);
 	} else {
-		camerawork->SpecialUpdate(camera);
+		camerawork->SetCameraState(CAMERA_LOAD);
 	}
+
+	camerawork->Update(camera);
 }
 bool TutorialSceneActor::Clear(bool mission, int waitTimerMax) {
 	if (!mission) { return false; }
@@ -345,7 +346,7 @@ void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 
 	//状態移行(stateに合わせる)
 	(this->*stateTable[static_cast<size_t>(nowstate_)])();
-	conversation_->Tyutorial();
+	conversation_->Tutorial();
 	conversation_->Update();
 	//各クラス更新
 	if (static_cast<int>(nowstate_) % 2 == 1) {
