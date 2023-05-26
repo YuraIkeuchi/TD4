@@ -26,17 +26,11 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
 
-
-	conversationwindow = IKESprite::Create(ImageManager::WINDOW, window_pos);
-	conversationwindow->SetAnchorPoint({ 0.5f,0.5f });
-	conversationwindow->SetSize(window_size);
-
-	blackwindow = IKESprite::Create(ImageManager::BLACKWINDOW, {});
-
 	enemymanager = std::make_unique<EnemyManager>("SECONDSTAGE");
 
 	camerawork->SetBoss(enemymanager->GetBoss());
-	camerawork->SetCameraState(CAMERA_NORMAL);
+	camerawork->SetCameraState(CAMERA_BOSSAPPEAR);
+	camerawork->SetSceneName("SECONDSTAGE");
 	camerawork->Update(camera);
 	ui = std::make_unique<UI>();
 	ui->Initialize();
@@ -105,8 +99,6 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	
 	//完全に前に書くスプライト
 	IKESprite::PreDraw();
-	blackwindow->Draw();
-	conversationwindow->Draw();
 	ui->Draw();
 	IKESprite::PostDraw();
 	sceneChanger_->Draw();
@@ -115,6 +107,7 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	Player::GetInstance()->ImGuiDraw();
 	loadobj->ImGuiDraw();
+	camerawork->ImGuiDraw();
 	//enemymanager->ImGuiDraw();
 }
 //登場シーン
@@ -124,6 +117,15 @@ void SecondStageActor::IntroUpdate(DebugCamera* camera) {
 	if (input->TriggerKey(DIK_X)) {
 		m_SceneState = SceneState::MainState;
 	}
+
+
+	//各クラス更新
+	BackObj::GetInstance()->Update();
+
+	Player::GetInstance()->Update();
+	enemymanager->AppearUpdate();
+
+	camerawork->Update(camera);
 }
 //バトルシーン
 void SecondStageActor::MainUpdate(DebugCamera* camera) {
@@ -145,10 +147,6 @@ void SecondStageActor::MainUpdate(DebugCamera* camera) {
 	//音楽の音量が変わる
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 	VolumManager::GetInstance()->Update();
-
-	conversationwindow->SetPosition(window_pos);
-	conversationwindow->SetSize(window_size);
-	blackwindow->SetColor(black_color);
 
 	//各クラス更新
 	BackObj::GetInstance()->Update();

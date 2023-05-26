@@ -169,12 +169,13 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 }
 //ImGui
 void Player::ImGuiDraw() {
-	ImGui::Begin("Player");
+	/*ImGui::Begin("Player");
 	ImGui::Text("POSX:%f", m_Position.x);
 	ImGui::Text("POSZ:%f", m_Position.z);
 	ImGui::End();
 
-	playerattach->ImGuiDraw();
+	playerattach->ImGuiDraw();*/
+	HungerGauge::GetInstance()->ImGuiDraw();
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
@@ -258,7 +259,7 @@ XMFLOAT3 Player::MoveVECTOR(XMVECTOR v, float angle)
 //弾の更新
 void Player::Bullet_Management() {
 	if (!m_canShot) { return; }
-	const float l_TargetCount = 1.0f;
+	const int l_TargetCount = 1;
 	const int l_Limit = 20;//ショットのチャージ時間
 	/*-----------------------------*/
 	//RB||LBが押されたら弾を撃つ(言霊)

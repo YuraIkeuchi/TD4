@@ -29,23 +29,35 @@ public:
 	CameraWork(XMFLOAT3 eye = { 2.0f, 30.0f, 2.0f }, XMFLOAT3 target = { 2.0f, 0.0f, 3.0f });
 	void Update(DebugCamera* camera);//更新
 	void ImGuiDraw();
+
+public:
+	void EditorCamera();
+
+private:
 	void DefaultCam();//ふつうのカメラ
 	void BossAppear();//登場
 	void SetBossDead();//撃破
 
-	void SetBoss(InterBoss* boss) { this->boss = boss; }
 	//ゲームシーン以外で使うカメラ更新(this変数で変更可能)
 	void SpecialUpdate();//更新
-public:
-	void EditorCamera();
+
+private://各ボスの登場カメラ
+	void FirstBossAppear();
+	void SecondBossAppear();
 public:
 	//getter setter
+
+	void SetBoss(InterBoss* boss) { this->boss = boss; }
+
 	void SetEye(const XMFLOAT3& eye) { m_eyePos = eye; }
 	XMFLOAT3& GetEye() { return m_eyePos; }
 	void SetTarget(const XMFLOAT3& target) { m_targetPos = target; }
 	XMFLOAT3& GetTarget() { return m_targetPos; }
 
 	void SetCameraState(const int CameraState) { m_CameraState = CameraState; }
+
+	//シーンネームの取得
+	void SetSceneName(std::string name) { SceneName = name; }
 private:
 	//クラス
 	unique_ptr<Shake> shake = nullptr;
@@ -60,5 +72,33 @@ private:
 
 	InterBoss* boss = nullptr;
 
+	//カメラの状態
 	int m_CameraState = 0;
+
+	//シーンネーム
+	std::string SceneName;
+
+	//カメラのタイマー
+	int m_CameraTimer = 0;
+
+	//円運動のため
+	float m_PI = 3.14f;
+	float m_CameraRadius = 0.0f;
+	float m_CameraSpeed = 90.0f;
+	float m_CameraScale = 20.0f;
+	float m_CameraCircleX = 0.0f;
+	float m_CameraCircleZ = 0.0f;
+
+	float m_AfterSpeed = {};
+
+	//ボス登場シーンのカメラの動き
+	enum AppearCameraType {
+		APPEAR_ONE,
+		APPEAR_SECOND,
+		APPEAR_THIRD,
+		APPEAR_FOURTH,
+		APPEAR_FIVE,
+	};
+
+	int m_AppearType = {};
 };
