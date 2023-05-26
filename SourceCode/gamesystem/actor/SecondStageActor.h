@@ -4,12 +4,6 @@
 #include<windows.h>
 /// タイトルシーン
 class SecondStageActor : public BaseActor {
-private:
-	enum state {
-		CONVERSATION = 0,
-		FIGHT,
-		NONE,
-	};
 public:
 	/// 初期化
 	void Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) override;
@@ -23,10 +17,8 @@ public:
 	void BackDraw(DirectXCommon* dxCommon);
 	void ImGuiDraw(DirectXCommon* dxCommon);
 private:
-	
-	float maxframe = 20.f;
-	float nowframe = 0.f;
-	float frame = 0.f;
-	int nowstate = NONE;
-	bool test = false;
+
+	void IntroUpdate()override;		//登場シーン
+	void MainUpdate()override;		//バトルシーン
+	void FinishUpdate()override;		//撃破シーン
 };

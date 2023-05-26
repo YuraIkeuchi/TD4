@@ -703,9 +703,6 @@
       <Filter>SourceCords\shader</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\PlaceManager.h" />
-    <ClInclude Include="SourceCode\gamesystem\bossattach\InterStamp.h">
-      <Filter>gamesystem\bossattach\Stamp\Base</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\bossattach\AngerStamp.h">
       <Filter>gamesystem\bossattach\Stamp\Derived\Stamp</Filter>
     </ClInclude>
@@ -750,6 +747,9 @@
       <Filter>gamesystem\actor\GameOver</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor.h" />
+    <ClInclude Include="SourceCode\gamesystem\bossattach\InterStamp.h">
+      <Filter>gamesystem\bossattach\Stamp\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">

@@ -32,6 +32,7 @@ bool SecondBoss::Initialize() {
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Scale = { 0.03f,0.03f,0.03f };
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp2")));
+	m_MaxHp = m_HP;
 	m_AddPower = 0.8f;
 	m_Radius = 3.0f;
 	_charaState = CharaState::STATE_STAMP;

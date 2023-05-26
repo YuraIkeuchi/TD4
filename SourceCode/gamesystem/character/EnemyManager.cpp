@@ -2,10 +2,11 @@
 #include "Helper.h"
 #include "Input.h"
 #define EnemySize 3
-EnemyManager::EnemyManager(const std::string& sceneName) {
+EnemyManager::EnemyManager(const std::string& SceneName) {
 
+	m_SceneName = SceneName;
 	//シーンによって読み込むボスが違う
-	if (sceneName == "FIRSTSTAGE") {
+	if (m_SceneName == "FIRSTSTAGE") {
 		enemy.reset(new FirstBoss());
 		enemy->Initialize();
 		bulletenemy.resize(EnemySize);
@@ -13,14 +14,14 @@ EnemyManager::EnemyManager(const std::string& sceneName) {
 			bulletenemy[i] = new NormalEnemy();
 			bulletenemy[i]->Initialize();
 		}
-	} else if (sceneName == "SECONDSTAGE") {
+	} else if (m_SceneName == "SECONDSTAGE") {
 		enemy.reset(new SecondBoss());
 		enemy->Initialize();
 		for (auto i = 0; i < bulletenemy.size(); i++) {
 			bulletenemy[i] = new NormalEnemy();
 			bulletenemy[i]->Initialize();
 		}
-	} else if (sceneName == "TUTORIAL") {
+	} else if (m_SceneName == "TUTORIAL") {
 		for (auto i = 0; i < tutorialenemy.size(); i++) {
 			tutorialenemy[i].reset(new TutorialEnemy());
 			tutorialenemy[i]->Initialize();
@@ -37,16 +38,23 @@ EnemyManager::EnemyManager(const std::string& sceneName) {
 	}
 
 }
-//更新
-void EnemyManager::Update() {
+//バトル更新
+void EnemyManager::BattleUpdate() {
 	enemy->Update();
-	if (SceneName == "FIRSTSTAGE") {
+	if (m_SceneName == "FIRSTSTAGE") {
 
 		enemy->isRespawn(bulletenemy);
 		enemy->SummonEnemyUpda(bulletenemy);
 	}
 }
-
+//登場シーン
+void EnemyManager::AppearUpdate() {
+	enemy->AppearUpdate();
+}
+//撃破
+void EnemyManager::DeadUpdate() {
+	enemy->DeadUpdate();
+}
 void EnemyManager::TutorialUpdate(int pattern) {
 	if (pattern == 0) {
 		tutorialenemy[0]->Update();
@@ -59,7 +67,7 @@ void EnemyManager::TutorialUpdate(int pattern) {
 //描画
 void EnemyManager::Draw(DirectXCommon* dxCommon) {
 	enemy->Draw(dxCommon);
-	if (SceneName == "FIRSTSTAGE") {
+	if (m_SceneName == "FIRSTSTAGE") {
 		enemy->SummonEnemyDraw(bulletenemy, dxCommon);
 	}
 }

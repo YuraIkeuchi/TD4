@@ -20,8 +20,12 @@ private:
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
 	EnemyManager(const std::string& sceneName);
-	//更新
-	void Update();
+	//登場シーン
+	void AppearUpdate();
+	//バトル更新
+	void BattleUpdate();
+	//撃破
+	void DeadUpdate();
 	//チュートリアル用の更新
 	void TutorialUpdate(int pattern);
 	//描画
@@ -53,11 +57,8 @@ private:
 	static const int tutorialEnemyMax = 6;
 	std::array<unique_ptr<InterEnemy>, tutorialEnemyMax>tutorialenemy;
 	//シーンネーム
-	std::string SceneName;
+	std::string m_SceneName;
 public:
 	//敵の死亡処理
 	bool BossDestroy();
-	//シーンネームの取得
-	void SetSceneName(std::string name) { SceneName = name; }
-	
 };
