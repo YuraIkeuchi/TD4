@@ -52,27 +52,38 @@ void TutorialSceneActor::IntroState() {
 		nowstate_ = state::MOVE;
 	}
 }
-
 void TutorialSceneActor::MoveState() {
+	//メガホンobj更新
+	sutepon->Update();
+
+	shakeCount++;
+	if (shakeCount > 30) {
+		if (!isShake) {
+			isShake = true;
+		} else {
+			isShake = false;
+		}
+		shakeCount = 0;
+	}
+	if (isShake) {
+		shakeTimer += 0.7f;
+		sutepon->SetPosition(RandomShake({ 0,0,15 }, shakeTimer));
+	}
+
 	XMFLOAT3 pos = Player::GetInstance()->GetPosition();
-
-	//メガホンobjが到着次第変更
-
-	if (!Collision::CircleCollision(0, 0, 45.f, pos.x, pos.z, 1.f)) {
+	XMFLOAT3 Spos = sutepon->GetPosition();
+	if (Collision::CircleCollision(Spos.x, Spos.z, 5.f, pos.x, pos.z, 1.f)) {
 		nowstate_ = state::TEXT_TALK;
 	}
 }
-
 void TutorialSceneActor::TextTalkState() {
 	if (input->TriggerKey(DIK_RIGHT)) {
 		conversation_->WardNone();
 	}
-	
+
 	if (DebugButton() ||
 		input->TriggerButton(Input::B)) {
-		firstrow_->StringReset();
-		secondrow_->StringReset();
-		thirdrow_->StringReset();
+		sutepon->SetPosition({ 0,0,15.0f });
 		conversation = old_conversation = 0;
 		nowstate_ = state::SPAWNENEMY;
 	}
@@ -91,9 +102,6 @@ void TutorialSceneActor::SpawnEnemyState() {
 }
 void TutorialSceneActor::TextCatchFollowState() {
 	if (conversation == 0) {
-		ward = L"てきがせっきんしました。";
-		firstrow_->SetString(ward);
-		secondrow_->SetString(L"なかまにしましょう。");
 		if (input->TriggerKey(DIK_RIGHT)) {
 			conversation = 1;
 		}
@@ -102,6 +110,7 @@ void TutorialSceneActor::TextCatchFollowState() {
 
 	if (DebugButton() ||
 		input->TriggerButton(Input::B)) {
+		Player::GetInstance()->SetCanShot(true);
 		nowstate_ = state::CATCHFOLLOW;
 	}
 
@@ -120,10 +129,6 @@ void TutorialSceneActor::CatchFollowState() {
 
 }
 void TutorialSceneActor::TextShotState() {
-	ward = L"なかまができました。";
-	firstrow_->SetString(ward);
-	secondrow_->SetString(L"たまをうってたおしてください");
-
 	if (DebugButton() ||
 		input->TriggerButton(Input::B)) {
 		nowstate_ = state::SHOT;
@@ -140,10 +145,6 @@ void TutorialSceneActor::ShotState() {
 	}
 }
 void TutorialSceneActor::TextCatchSeachState() {
-	ward = L"たおすことにせいこうしました。";
-	firstrow_->SetString(ward);
-	secondrow_->SetString(L"たんさくがたのかくとくしてください。");
-
 	if (DebugButton() ||
 		input->TriggerButton(Input::B)) {
 		HungerGauge::GetInstance()->ResetFirstCarry();
@@ -162,13 +163,11 @@ void TutorialSceneActor::CatchSeachState() {
 	}
 }
 void TutorialSceneActor::TextClearState() {
-	ward = L"ながれをかんぜんにりかいしました";
-	firstrow_->SetString(ward);
-	secondrow_->SetString(L"たくさんてきがでてきました。");
-
 	if (DebugButton() ||
 		input->TriggerButton(Input::B)) {
 		nowstate_ = state::SPAWNALLENEMY;
+		s_eyepos = camerawork->GetEye();
+		s_targetpos = camerawork->GetTarget();
 	}
 }
 void TutorialSceneActor::SpawnAllEnemyState() {
@@ -177,14 +176,14 @@ void TutorialSceneActor::SpawnAllEnemyState() {
 	cameraframe += 1.0f / kCameraFrameMax;
 	cameraframe = min(1.0f, cameraframe);
 	eye = {
-	Ease(In,Linear,cameraframe, Player::GetInstance()->GetPosition().x,0),
+	Ease(In,Linear,cameraframe, s_eyepos.x,e_eyepos.x),
 	eye.y,
-	Ease(In,Linear,cameraframe,  Player::GetInstance()->GetPosition().z - 20.0f,30.0f),
+	Ease(In,Linear,cameraframe,  s_eyepos.z,e_eyepos.z),
 	};
 	target = {
-	Ease(In,Linear,cameraframe, Player::GetInstance()->GetPosition().x,0),
+	Ease(In,Linear,cameraframe, s_targetpos.x,e_targetpos.x),
 	target.y,
-	Ease(In,Linear,cameraframe,  Player::GetInstance()->GetPosition().z, 50.0f),
+	Ease(In,Linear,cameraframe, s_targetpos.z,e_targetpos.z),
 	};
 
 	camerawork->SetEye(eye);
@@ -198,33 +197,21 @@ void TutorialSceneActor::SpawnAllEnemyState() {
 	}
 }
 void TutorialSceneActor::TextLastState() {
-	ward = L"これがおわったらケッコンするんだ";
-	firstrow_->SetString(ward);
-	secondrow_->SetString(L"ヤムチャしやがって・・・");
-
-
 	if (DebugButton() ||
 		input->TriggerButton(Input::B)) {
 		nowstate_ = state::MAINTUTORIAL;
 	}
 }
-
 void TutorialSceneActor::MainTutorialState() {
 	loadobj->TutorialUpdate();
 	enemymanager->TutorialUpdate(1);
 
-	if (DebugButton() || 
+	if (DebugButton() ||
 		Clear(enemymanager->AllDeadEnemy(), 60)) {
 		nowstate_ = state::COMPLETE;
 	}
 }
-
 void TutorialSceneActor::CompleteState() {
-
-	ward = L"あんたはオレのアイボウだぜ";
-	firstrow_->SetString(ward);
-	secondrow_->SetString(L"おれがついてるぜ");
-
 	if (DebugButton() ||
 		input->TriggerButton(Input::B)) {
 		sceneChanger_->ChangeStart();
@@ -233,7 +220,6 @@ void TutorialSceneActor::CompleteState() {
 
 }
 
-
 bool TutorialSceneActor::DebugButton() {
 	if (!isDebug) { return false; }
 	if (input->TriggerKey(DIK_SPACE)) {
@@ -241,6 +227,14 @@ bool TutorialSceneActor::DebugButton() {
 	} else {
 		return false;
 	}
+}
+XMFLOAT3 TutorialSceneActor::RandomShake(XMFLOAT3 pos, float shakeTimer) {
+	//乱数指定
+	//mt19937 mt{ std::random_device{}() };
+	//std::uniform_real_distribution<float> dist(-0.5f, 0.5f);
+
+	float angle = sinf(shakeTimer) * 0.3f;
+	return XMFLOAT3(pos.x + angle, pos.y, pos.z);
 }
 void TutorialSceneActor::CameraUpdate(DebugCamera* camera) {
 	if (nowstate_ != state::SPAWNALLENEMY) {
@@ -274,24 +268,26 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	ParticleEmitter::GetInstance()->AllDelete();
 	//各クラス
 	Player::GetInstance()->InitState({ 0.0f,0.0f,0.0f });
+	Player::GetInstance()->SetCanShot(false);
 	//カメラ更新
 	camerawork->Update(camera);
 	//UIの初期化
 	ui = std::make_unique<UI>();
 	ui->Initialize();
+	//ストポンの初期化
+	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Sutopon);
+	sutepon = make_unique<IKEObject3d>();
+	sutepon->Initialize();
+	sutepon->SetModel(m_Model);
+	sutepon->SetPosition({ 0,0,15.0f });
+	sutepon->SetRotation({ 60.0f,0,0 });
 	//エネミーの生成
 	enemymanager = std::make_unique<EnemyManager>("TUTORIAL");
 	//最初のエネミーの参照
 	firstEnemy = enemymanager->GetEnemy(0);
-
+	//コンバージョンの初期化
 	conversation_ = make_unique<Conversation>();
 	conversation_->Initialize(dxCommon);
-	//生成
-	firstrow_ = make_unique<Font>();
-	secondrow_ = make_unique<Font>();
-	thirdrow_ = make_unique<Font>();
-	//読み込み
-
 	//背景objの生成
 	BackObj::GetInstance()->Initialize();
 
@@ -299,19 +295,6 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	wchar_t* hello2[3] = { L"しね",L"sine",L"shine" };
 	Conversation::GetInstance()->CreateText(dxCommon, Conversation::KAIWA, hello2);
 	Conversation::GetInstance()->CreateText(dxCommon, Conversation::AISATU, hello2);
-
-
-	firstrow_->LoadFont(dxCommon);
-	secondrow_->LoadFont(dxCommon);
-	thirdrow_->LoadFont(dxCommon);
-	//座標セット
-	firstrow_->SetPos(kFirstRowPos);
-	secondrow_->SetPos(kSecondRowPos);
-	thirdrow_->SetPos(kThirdRowPos);
-	//色
-	firstrow_->SetColor(kWhite);
-	secondrow_->SetColor(kWhite);
-	thirdrow_->SetColor(kWhite);
 
 	BackObj::GetInstance()->Initialize();
 
@@ -329,20 +312,14 @@ void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	}
 
 	XMFLOAT2 pos[3] = { kFirstRowPos,kSecondRowPos,kThirdRowPos };
-	XMFLOAT3 color[3] = {{1,1,1},{1,1,1},{1,1,1}};
-
-	Conversation::GetInstance()->TextUpdate(pos,color);
+	XMFLOAT3 color[3] = { {1,1,1},{1,1,1},{1,1,1} };
+	Conversation::GetInstance()->TextUpdate(pos, color);
 
 	//音楽の音量が変わる
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 	VolumManager::GetInstance()->Update();
-
 	//状態移行(stateに合わせる)
 	(this->*stateTable[static_cast<size_t>(nowstate_)])();
-	//conversation_->Tyutorial();
-	//conversation_->Update();
-	conversation_->Tutorial();
-	conversation_->Update();
 	//各クラス更新
 	if (static_cast<int>(nowstate_) % 2 == 1) {
 		ui->Update();
@@ -385,7 +362,9 @@ void TutorialSceneActor::BackDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
 	////各クラスの描画
 	Player::GetInstance()->Draw(dxCommon);
-	if (nowstate_ >= state::SPAWNENEMY) {
+	if (nowstate_ <= state::TEXT_TALK) {
+		sutepon->Draw();
+	} else {
 		loadobj->Draw(dxCommon);
 	}
 	BackObj::GetInstance()->Draw(dxCommon);
@@ -401,12 +380,8 @@ void TutorialSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 		IKESprite::PreDraw();
 		conversation_->SproteDraw();
 		IKESprite::PostDraw();
-		if (static_cast<int>(nowstate_) % 2 == 0) {
-			Conversation::GetInstance()->Draw(dxCommon, Conversation::KAIWA);
-			//conversation_->FontDraw(dxCommon);
-			Font::PostDraw(dxCommon);
-
-		}
+		Conversation::GetInstance()->Draw(dxCommon, Conversation::KAIWA);
+		Font::PostDraw(dxCommon);
 	} else {
 		ui->Draw();
 	}
