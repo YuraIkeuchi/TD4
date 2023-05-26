@@ -1,4 +1,4 @@
-#include "Text.h"
+﻿#include "Text.h"
 #include"VariableCommon.h"
 #include<locale.h>
 #include<wchar.h>
