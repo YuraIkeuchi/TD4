@@ -864,3 +864,12 @@ void FirstBoss::EndSumon_returnPos(bool& f, float& easespeed)
 		easespeed = 0.f;
 	}
 }
+
+//ボス登場シーン
+void FirstBoss::AppearAction() {
+
+}
+//ボス撃破シーン
+void FirstBoss::DeadAction() {
+
+}

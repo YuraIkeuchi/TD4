@@ -26,12 +26,13 @@ void LoadSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 		m_Sprites[i]->SetAnchorPoint({ 0.5f,0.5f });
 		m_Sprites[i]->SetSize({ 96.0f, 96.0f });
 	}
+
+	camerawork->SetCameraState(CAMERA_LOAD);
 }
 //更新
 void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	lightgroup->Update();
-	camerawork->SpecialUpdate(camera);
-
+	camerawork->Update(camera);
 	//関数ポインタで状態管理
 	(this->*stateTable[static_cast<size_t>(m_SceneState)])();
 	for (std::unique_ptr<IKEObject3d>& obj : grounds) {

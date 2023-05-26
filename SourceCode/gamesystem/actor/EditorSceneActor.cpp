@@ -39,15 +39,14 @@ void EditorSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 
 	load2 = new PlaceMap();
 	load2->Initialize();
+
+	camerawork->SetCameraState(CAMERA_NORMAL);
 }
 //更新
 void EditorSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
 	load2->Update();
 	lightgroup->Update();
-	//camerawork->SetTarget({ camera->GetEye().x,0.0f,camera->GetEye().z });
-	//camera->SetTarget({ camera->GetEye().x,camera->GetEye().y - 10.f,camera->GetEye().z + 20.f, });
-	camerawork->EditorCamera();
 	camerawork->Update(camera);
 
 	ground->SetColor({ 0.5f,0.5f,0.5f,1.0f });

@@ -14,6 +14,10 @@ public:
 
 	void Action() override;//行動
 
+	void AppearAction() override;//登場
+
+	void DeadAction() override;//撃破
+
 	void EffecttexDraw(DirectXCommon* dxCommon) override;
 
 	void ImGui_Origin() override;

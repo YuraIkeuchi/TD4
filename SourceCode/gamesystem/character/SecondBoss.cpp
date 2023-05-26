@@ -798,3 +798,11 @@ void SecondBoss::StampInit(const int AttackNumber, const bool Random) {
 		m_PressType = AttackNumber;
 	}
 }
+//ボス登場シーン
+void SecondBoss::AppearAction() {
+
+}
+//ボス撃破シーン
+void SecondBoss::DeadAction() {
+
+}
