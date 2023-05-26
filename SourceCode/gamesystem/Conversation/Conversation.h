@@ -11,18 +11,6 @@ public:
 private:
 
 public:
-	void Initialize(DirectXCommon* dxcommon);
-
-	void Update();
-
-	void SproteDraw();
-
-	void FontDraw(DirectXCommon* dxcommon);
-
-	void Tutorial();
-
-	void WardNone();
-
 
 	enum class CharaText
 	{
