@@ -16,14 +16,16 @@ void TextManager::WordLoad(DirectXCommon* dxcommon)
 
 void TextManager::WordSet()
 {
-	//Word w;
-	////w.word = {L"Hello",L"World",L"aa"};
-	//wordlist_.insert(std::make_pair(AISATU, ));
+	Word w;
+	WordSet_One(w, L"Hello", L"World", L"aa");
+	wordlist_.insert(std::make_pair(AISATU, w));
 
 
 
 }
 
 void TextManager::WordSet_One(Word& w, wchar_t* tex1, wchar_t* tex2, wchar_t* tex3) {
-
+	w.word[0] = tex1;
+	w.word[1] = tex2;
+	w.word[2] = tex3;
 }
