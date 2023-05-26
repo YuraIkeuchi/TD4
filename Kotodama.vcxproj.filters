@@ -392,6 +392,8 @@
     <ClCompile Include="SourceCode\gamesystem\gamecamera\CameraWork.cpp">
       <Filter>gamesystem\gamecamera</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\MessageWindow\MessageWindow.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\text\TextManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -562,6 +564,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\actor\FirstStageActor.h">
       <Filter>gamesystem\actor\First</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor.h">
+      <Filter>gamesystem\actor\GameOver</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\actor\IntroductionSceneActor.h">
       <Filter>gamesystem\actor\base</Filter>
@@ -750,9 +755,8 @@
       <Filter>gamesystem\gamecamera</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\bossattach\InterStamp.h" />
-    <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor.h">
-      <Filter>gamesystem\actor\GameOver</Filter>
-    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\MessageWindow\MessageWindow.h" />
+    <ClInclude Include="SourceCode\gamesystem\text\TextManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
