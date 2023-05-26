@@ -64,4 +64,5 @@ void Font::PostDraw(DirectXCommon* dxcommon)
 void Font::SetString(wchar_t* ward)
 {
 	ward_ = ward;
+	
 }

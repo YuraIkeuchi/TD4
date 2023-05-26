@@ -324,6 +324,11 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	//背景objの生成
 	BackObj::GetInstance()->Initialize();
 
+	wchar_t* hello[3] = { L"Hello",L"World",L"aa" };
+	wchar_t* hello2[3] = { L"しね",L"sine",L"shine" };
+	Conversation::GetInstance()->CreateText(dxCommon, Conversation::KAIWA, hello2);
+	Conversation::GetInstance()->CreateText(dxCommon, Conversation::AISATU, hello2);
+
 
 	firstrow_->LoadFont(dxCommon);
 	secondrow_->LoadFont(dxCommon);
@@ -351,12 +356,20 @@ void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	if (PlayerDestroy()) {
 		SceneManager::GetInstance()->ChangeScene("TITLE");
 	}
+
+	XMFLOAT2 pos[3] = { kFirstRowPos,kSecondRowPos,kThirdRowPos };
+	XMFLOAT3 color[3] = {{1,1,1},{1,1,1},{1,1,1}};
+
+	Conversation::GetInstance()->TextUpdate(pos,color);
+
 	//音楽の音量が変わる
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 	VolumManager::GetInstance()->Update();
 
 	//状態移行(stateに合わせる)
 	(this->*stateTable[static_cast<size_t>(nowstate_)])();
+	//conversation_->Tyutorial();
+	//conversation_->Update();
 	conversation_->Tutorial();
 	conversation_->Update();
 	//各クラス更新
@@ -421,9 +434,8 @@ void TutorialSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 		conversation_->SproteDraw();
 		IKESprite::PostDraw();
 		if (static_cast<int>(nowstate_) % 2 == 0) {
-			firstrow_->Draw(dxCommon);
-			secondrow_->Draw(dxCommon);
-			conversation_->FontDraw(dxCommon);
+			Conversation::GetInstance()->Draw(dxCommon, Conversation::KAIWA);
+			//conversation_->FontDraw(dxCommon);
 			Font::PostDraw(dxCommon);
 
 		}

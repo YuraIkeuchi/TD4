@@ -130,10 +130,11 @@ void InterBoss::SummonEnemyUpda(std::vector<InterEnemy*> enemy)
 
 			enemy[i]->SetPosition({ m_Position.x + move[i].m128_f32[0] * 90.f,m_Position.y,	m_Position.z + move[i].m128_f32[2] * 90.f });
 		}
+		
 	}
 
 	if (SummonF) {
-		
+		IdleRota = false;
 		for (auto i = 0; i < enemy.size(); i++)
 		{
 			if (enemy[i] == nullptr)continue;

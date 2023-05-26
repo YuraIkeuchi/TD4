@@ -32,9 +32,12 @@ public:
 	void Draw(DirectXCommon* dxcommon);
 	static void PostDraw(DirectXCommon* dxcommon);
 	void SetString(wchar_t* ward);
+	void SetNum(UINT num) { TexNumver = num; }
+	
 protected:
 	static DirectX::GraphicsMemory* _gmemory;
 private:
+	UINT TexNumver;
 	DirectX::SpriteFont* _spritefont;
 	DirectX::SpriteBatch* _spritebatch;
 	ComPtr<ID3D12DescriptorHeap> _heapForSpriteFont;
@@ -42,6 +45,6 @@ private:
 	XMFLOAT2 position_{};
 	XMFLOAT2 shadow_position_ = {};
 	XMFLOAT2 disply_place_{ 300.f,370.f };
-	wchar_t* ward_=L"Hello World";
+	wchar_t* ward_=L"w";
 };
 
