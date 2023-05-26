@@ -1,6 +1,7 @@
 ﻿#include "TutorialSceneActor.h"
 #include "VariableCommon.h"
 #include "HungerGauge.h"
+#include"TextManager.h"
 
 const XMVECTOR kWhite{ 1.f,1.f,1.f,1.f };
 const XMVECTOR kSkyBlue{ 0.f,1.f,1.f,1.f };
@@ -47,7 +48,6 @@ void TutorialSceneActor::IntroState() {
 
 	if (DebugButton() ||
 		input->TriggerButton(Input::B)) {
-		conversation_->WardNone();
 
 		nowstate_ = state::MOVE;
 	}
@@ -77,14 +77,11 @@ void TutorialSceneActor::MoveState() {
 	}
 }
 void TutorialSceneActor::TextTalkState() {
-	if (input->TriggerKey(DIK_RIGHT)) {
-		conversation_->WardNone();       
-	}
 
 	if (DebugButton() ||
 		input->TriggerButton(Input::B)) {
 		sutepon->SetPosition({ 0,0,15.0f });
-		conversation = old_conversation = 0;
+		conversation  = 0;
 		nowstate_ = state::SPAWNENEMY;
 	}
 }
@@ -285,16 +282,17 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	enemymanager = std::make_unique<EnemyManager>("TUTORIAL");
 	//最初のエネミーの参照
 	firstEnemy = enemymanager->GetEnemy(0);
-	//コンバージョンの初期化
-	conversation_ = make_unique<Conversation>();
-	conversation_->Initialize(dxCommon);
+	//メッセージウィンドウ生成
+	messagewindow_ = make_unique<MessageWindow>();
+	messagewindow_->Initialize();
 	//背景objの生成
 	BackObj::GetInstance()->Initialize();
 
-	wchar_t* hello[3] = { L"Hello",L"World",L"aa" };
-	wchar_t* hello2[3] = { L"しね",L"sine",L"shine" };
-	Conversation::GetInstance()->CreateText(dxCommon, Conversation::KAIWA, hello2);
-	Conversation::GetInstance()->CreateText(dxCommon, Conversation::AISATU, hello2);
+	//wchar_t* hello[3] = { L"Hello",L"World",L"aa" };
+	//wchar_t* hello2[3] = { L"しね",L"sine",L"shine" };
+	TextManager::GetInstance()->WordLoad(dxCommon);
+	/*Conversation::GetInstance()->CreateText(dxCommon, TextManager::KAIWA, hello2);
+	Conversation::GetInstance()->CreateText(dxCommon, TextManager::AISATU, hello2);*/
 
 	BackObj::GetInstance()->Initialize();
 
@@ -329,6 +327,7 @@ void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	BackObj::GetInstance()->Update();
 	CameraUpdate(camera);
 	lightgroup->Update();
+	messagewindow_->Update();
 }
 //描画
 void TutorialSceneActor::Draw(DirectXCommon* dxCommon) {
@@ -378,9 +377,11 @@ void TutorialSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 	//完全に前に書くスプライト
 	if (static_cast<int>(nowstate_) % 2 == 0) {
 		IKESprite::PreDraw();
-		conversation_->SproteDraw();
+		messagewindow_->Draw();
 		IKESprite::PostDraw();
-		Conversation::GetInstance()->Draw(dxCommon, Conversation::KAIWA);
+		if (messagewindow_->DisplayCheck()) {
+			Conversation::GetInstance()->Draw(dxCommon, Conversation::KAIWA);
+		}
 		Font::PostDraw(dxCommon);
 	} else {
 		ui->Draw();

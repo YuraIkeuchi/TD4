@@ -12,6 +12,8 @@ public:
 	void Draw();
 
 	void Display();
+
+	bool DisplayCheck();
 private:
 	unique_ptr<IKESprite> window_;
 	unique_ptr<IKESprite> blackback_;

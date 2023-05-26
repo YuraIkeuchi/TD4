@@ -351,7 +351,6 @@
     <ClCompile Include="SourceCode\gamesystem\scene\PlaceManager.cpp">
       <Filter>gamesystem\editor</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\text\Text.cpp" />
     <ClCompile Include="SourceCode\gamesystem\Conversation\Conversation.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\AngerStamp.cpp">
       <Filter>gamesystem\bossattach\Stamp\Derived\Stamp</Filter>
@@ -393,7 +392,12 @@
       <Filter>gamesystem\gamecamera</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\MessageWindow\MessageWindow.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\text\TextManager.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\text\Text.cpp">
+      <Filter>gamesystem\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\text\TextManager.cpp">
+      <Filter>gamesystem\Text</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
@@ -564,9 +568,6 @@
     <ClInclude Include="SourceCode\gamesystem\actor\FirstStageActor.h">
       <Filter>gamesystem\actor\First</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor.h">
-      <Filter>gamesystem\actor\GameOver</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\actor\IntroductionSceneActor.h">
       <Filter>gamesystem\actor\base</Filter>
     </ClInclude>
@@ -702,11 +703,7 @@
     <ClInclude Include="SourceCode\gamesystem\scene\PlaceManager.h">
       <Filter>gamesystem\editor</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\text\Text.h" />
     <ClInclude Include="SourceCode\gamesystem\Conversation\Conversation.h" />
-    <ClInclude Include="resource.h">
-      <Filter>SourceCords\shader</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\PlaceManager.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\AngerStamp.h">
       <Filter>gamesystem\bossattach\Stamp\Derived\Stamp</Filter>
@@ -748,16 +745,19 @@
       <Filter>gamesystem\gamecamera</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\bossattach\InterStamp.h" />
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\MessageWindow\MessageWindow.h" />
-    <ClInclude Include="SourceCode\gamesystem\text\TextManager.h" />
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor.h">
-      <Filter>gamesystem\actor\GameOver</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\InterStamp.h">
       <Filter>gamesystem\bossattach\Stamp\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\MessageWindow\MessageWindow.h" />
+    <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor.h">
+      <Filter>gamesystem\actor\GameOver</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\text\Text.h">
+      <Filter>gamesystem\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\text\TextManager.h">
+      <Filter>gamesystem\Text</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1038,6 +1038,9 @@
     </Filter>
     <Filter Include="engine\2d\PostEffect">
       <UniqueIdentifier>{85600317-d81b-41d8-b573-6151f83a2f80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\Text">
+      <UniqueIdentifier>{6b589362-730f-4fb1-bae8-d3a3afeff414}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

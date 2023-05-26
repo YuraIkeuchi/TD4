@@ -21,7 +21,7 @@ void Conversation::SetText(wchar_t* text,CharaText chara,int index)
 
 
 
-void Conversation::CreateText(DirectXCommon*comn,ChatName num, wchar_t* text[3])
+void Conversation::CreateText(DirectXCommon*comn, Conversation::ChatName num, wchar_t** text)
 {
 	//èâä˙âª
 	Font* tex[3];
@@ -59,7 +59,7 @@ void Conversation::TextUpdate(XMFLOAT2* pos, XMFLOAT3* color)
 }
 
 
-void Conversation::Draw(DirectXCommon* comn,ChatName num)
+void Conversation::Draw(DirectXCommon* comn, Conversation::ChatName num)
 {
 	for(auto i=0;i<3;i++)
 		textList[num].font[i]->Draw(comn);
