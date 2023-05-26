@@ -119,9 +119,9 @@ void NormalEnemy::Appearance()
 	m_Scale.y += AddScaling;
 	m_Scale.z += AddScaling;
 
-	Helper::GetInstance()->FloatClamp(m_Scale.x, 0.f, 1.5f);
-	Helper::GetInstance()->FloatClamp(m_Scale.y, 0.f, 1.5f);
-	Helper::GetInstance()->FloatClamp(m_Scale.z, 0.f, 1.5f);
+	Helper::GetInstance()->Clamp(m_Scale.x, 0.f, 1.5f);
+	Helper::GetInstance()->Clamp(m_Scale.y, 0.f, 1.5f);
+	Helper::GetInstance()->Clamp(m_Scale.z, 0.f, 1.5f);
 
 	float RottoPlayer;
 	RottoPlayer = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
@@ -147,7 +147,7 @@ void NormalEnemy::RushAction()
 	ShotCount = 0;
 	s_scale += 0.02f;
 
-	Helper::GetInstance()->FloatClamp(s_scale, 0.f, 5.f);
+	Helper::GetInstance()->Clamp(s_scale, 0.f, 5.f);
 
 	 // positionA - positionB;
 	//‰ñ“]Ž²‚ðƒvƒŒƒCƒ„[‚Ì•û‚É
@@ -201,7 +201,7 @@ void NormalEnemy::RushAction()
 			};
 		}
 	}
-	Helper::GetInstance()->FloatClamp(t, 0.f, 1.f);
+	Helper::GetInstance()->Clamp(t, 0.f, 1.f);
 
 }
 

@@ -27,7 +27,7 @@ void HungerGauge::Update() {
 	//ˆê’è‚¸‚Â‚ÅŒ¸­‚µ‚Ä‚¢‚­
 	m_NowHunger -= 0.01f;
 	//‹Q‰ìƒQ[ƒW‚ÌÅ‘å”‚ªŒˆ‚Ü‚Á‚Ä‚¢‚é
-	Helper::GetInstance()->FloatClamp(m_NowHunger, 0.0f, m_HungerMax);
+	Helper::GetInstance()->Clamp(m_NowHunger, 0.0f, m_HungerMax);
 	m_NowHunger = min(m_NowHunger, m_HungerMax);
 	m_HungerMax = min(m_HungerMax, l_Limit);
 }
@@ -46,7 +46,7 @@ void HungerGauge::ImGuiDraw() {
 
 float HungerGauge::GetPercentage() {
 	float temp= m_NowHunger / 50.0f;
-	Helper::GetInstance()->FloatClamp(temp,0.0f,1.0f);
+	Helper::GetInstance()->Clamp(temp,0.0f,1.0f);
 	return temp;
 }
 
@@ -59,6 +59,6 @@ void HungerGauge::AddNowHunger(float m_NowHunger) {
 void HungerGauge::RecoveryNowHunger(float m_NowHunger) {
 	carriedFood = true;
 	float add = m_NowHunger;
-	Helper::GetInstance()->FloatClamp(add, 0.f, m_HungerMax);
+	Helper::GetInstance()->Clamp(add, 0.f, m_HungerMax);
 	SetNowHunger(add);
 }

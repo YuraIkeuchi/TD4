@@ -119,8 +119,8 @@ void Player::Update()
 	}
 
 	//リミット制限
-	Helper::GetInstance()->FloatClamp(m_Position.x, -55.0f, 65.0f);
-	Helper::GetInstance()->FloatClamp(m_Position.z, -60.0f, 60.0f);
+	Helper::GetInstance()->Clamp(m_Position.x, -55.0f, 65.0f);
+	Helper::GetInstance()->Clamp(m_Position.z, -60.0f, 60.0f);
 
 
 	//基礎パラメータ設定

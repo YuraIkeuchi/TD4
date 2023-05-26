@@ -65,15 +65,6 @@ bool Helper::CheckMinINT(int& Num, const int Min, const int Add) {
 
 	return false;
 }
-//Clampを返す関数
-//int型
-void Helper::IntClamp(int& Num, const int Min, const int Max) {
-	Num = min(max(Num, Min), Max);
-}
-//float型
-void Helper::FloatClamp(float& Num, const float Min, const float Max) {
-	Num = min(max(Num, Min), Max);
-}
 //XMFLOAT3とfloatを加算する関数
 Helper::XMFLOAT3 Helper::Float3AddFloat(const XMFLOAT3& Num, float Add) {
 	XMFLOAT3 l_Result;
