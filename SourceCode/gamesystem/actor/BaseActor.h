@@ -30,11 +30,11 @@ protected:
 	};
 
 	//関数ポインタ
-	static void(BaseActor::* stateTable[])();
+	static void(BaseActor::* stateTable[])(DebugCamera* camera);
 	//メンバ関数
-	virtual void IntroUpdate() {};
-	virtual void MainUpdate() {};
-	virtual void FinishUpdate() {};
+	virtual void IntroUpdate(DebugCamera* camera) {};
+	virtual void MainUpdate(DebugCamera* camera) {};
+	virtual void FinishUpdate(DebugCamera* camera) {};
 
 public:
 	//仮想デストラクタ

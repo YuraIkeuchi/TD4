@@ -78,7 +78,7 @@ void TutorialSceneActor::MoveState() {
 }
 void TutorialSceneActor::TextTalkState() {
 	if (input->TriggerKey(DIK_RIGHT)) {
-		conversation_->WardNone();
+		conversation_->WardNone();       
 	}
 
 	if (DebugButton() ||

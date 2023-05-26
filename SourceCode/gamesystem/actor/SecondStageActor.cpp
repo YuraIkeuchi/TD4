@@ -54,8 +54,8 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	
 	//関数ポインタで状態管理
-	(this->*stateTable[static_cast<size_t>(m_SceneState)])();
-	camerawork->Update(camera);
+	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+
 	lightgroup->Update();
 }
 //描画
@@ -118,7 +118,7 @@ void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	//enemymanager->ImGuiDraw();
 }
 //登場シーン
-void SecondStageActor::IntroUpdate() {
+void SecondStageActor::IntroUpdate(DebugCamera* camera) {
 	Input* input = Input::GetInstance();
 
 	if (input->TriggerKey(DIK_X)) {
@@ -126,7 +126,7 @@ void SecondStageActor::IntroUpdate() {
 	}
 }
 //バトルシーン
-void SecondStageActor::MainUpdate() {
+void SecondStageActor::MainUpdate(DebugCamera* camera) {
 	Input* input = Input::GetInstance();
 	ui->Update();
 	if (enemymanager->BossDestroy()) {
@@ -158,8 +158,10 @@ void SecondStageActor::MainUpdate() {
 	loadobj->SecondUpdate();
 	ParticleEmitter::GetInstance()->Update();
 
+	camerawork->Update(camera);
+
 }
 //撃破シーン
-void SecondStageActor::FinishUpdate() {
+void SecondStageActor::FinishUpdate(DebugCamera* camera) {
 	Input* input = Input::GetInstance();
 }

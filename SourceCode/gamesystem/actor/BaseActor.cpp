@@ -3,7 +3,7 @@
 #include "Player.h"
 bool BaseActor::s_GameLoop = false;
 
-void (BaseActor::* BaseActor::stateTable[])() = {
+void (BaseActor::* BaseActor::stateTable[])(DebugCamera* camera) = {
 	&BaseActor::IntroUpdate,//—v‘f0
 	&BaseActor::MainUpdate, //—v‘f1
 	&BaseActor::FinishUpdate,

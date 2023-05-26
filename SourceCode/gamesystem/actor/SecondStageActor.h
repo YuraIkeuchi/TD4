@@ -18,7 +18,7 @@ public:
 	void ImGuiDraw(DirectXCommon* dxCommon);
 private:
 
-	void IntroUpdate()override;		//登場シーン
-	void MainUpdate()override;		//バトルシーン
-	void FinishUpdate()override;		//撃破シーン
+	void IntroUpdate(DebugCamera* camera)override;		//登場シーン
+	void MainUpdate(DebugCamera* camera)override;		//バトルシーン
+	void FinishUpdate(DebugCamera* camera)override;		//撃破シーン
 };

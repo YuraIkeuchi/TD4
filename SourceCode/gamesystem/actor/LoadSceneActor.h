@@ -20,9 +20,9 @@ public:
 	void SpriteDraw();
 private:
 	void CreateStage();
-	void IntroUpdate()override;
-	void MainUpdate()override;
-	void FinishUpdate()override;
+	void IntroUpdate(DebugCamera* camera)override;
+	void MainUpdate(DebugCamera* camera)override;
+	void FinishUpdate(DebugCamera* camera)override;
 
 
 private://ƒƒ“ƒo•Ï”
