@@ -3,7 +3,8 @@
 #include "BaseActor.h"
 #include "LoadStageObj.h"
 #include"Font.h"
-//
+#include"Feed.h"
+
 /// タイトルシーン
 class FirstStageActor : public BaseActor {
 private:
@@ -12,7 +13,7 @@ private:
 		FIGHT,
 		NONE,
 	};
-	//Feed*feedn;
+	Feed*feedn;
 	bool feedF;
 public:
 	/// 初期化
@@ -26,6 +27,7 @@ public:
 	void FrontDraw(DirectXCommon* dxCommon);
 	void BackDraw(DirectXCommon* dxCommon);
 	void ImGuiDraw(DirectXCommon* dxCommon);
+	void ColEnemy(std::vector<InterEnemy*> enelist);
 private:
 
 	float maxframe = 20.f;

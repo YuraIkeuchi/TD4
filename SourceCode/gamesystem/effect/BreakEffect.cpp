@@ -28,6 +28,6 @@ void BreakEffect::BirthEffect() {
 	const float s_scale = 5.0f;
 	const float e_scale = 0.0f;
 	for (int i = 0; i < 30; i++) {
-		ParticleEmitter::GetInstance()->Break(l_life, m_Position, s_scale, e_scale, s_color, e_color);
+		ParticleEmitter::GetInstance()->Break(l_life, m_Position, s_scale, e_scale, s_color, e_color,0.02f);
 	}
 }

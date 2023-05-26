@@ -84,6 +84,9 @@ private:
 	}_charaState;
 
 private:
+	IKEModel* model_follow=nullptr;
+	IKEModel* model_seach = nullptr;
+
 	XMFLOAT3 m_OldPos = {};
 	bool m_Follow = false;
 	//í«è]èÛë‘

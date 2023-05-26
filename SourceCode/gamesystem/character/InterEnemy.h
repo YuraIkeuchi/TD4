@@ -74,4 +74,6 @@ protected:
 	bool Rush;
 public:
 	void SetcanRotandRush(bool f) { canRot = f; Rush = f; }
+
+	void EnemyColNormal(const XMFLOAT3& pos);
 };

@@ -84,6 +84,9 @@ protected:
 
 	bool m_Check = false;
 	XMFLOAT3 m_OBBScale = {};
+
+	//弾とボスの当たり判定に使う大きさ
+	float m_Radius = 0.0f;
 private:
 
 	enum class ActionList
@@ -104,7 +107,12 @@ private:
 	};
 protected:
 	//弾との当たり判定
-	void CollideBul(vector<InterBullet*>bullet);
+	enum class Type
+	{
+		CIRCLE,
+		SPHERE
+	};
+	void CollideBul(vector<InterBullet*>bullet,Type type=Type::SPHERE);
 	bool EndSummonRepos;
 	bool ResF;
 public:

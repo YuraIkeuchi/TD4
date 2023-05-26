@@ -41,6 +41,7 @@ EnemyManager::EnemyManager(const std::string& sceneName) {
 void EnemyManager::Update() {
 	enemy->Update();
 	if (SceneName == "FIRSTSTAGE") {
+
 		enemy->isRespawn(bulletenemy);
 		enemy->SummonEnemyUpda(bulletenemy);
 	}

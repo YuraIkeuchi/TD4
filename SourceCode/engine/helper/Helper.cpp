@@ -291,6 +291,21 @@ void Helper::ChangeViewPort(XMMATRIX& matviewport, const XMVECTOR& offset) {
 	matviewport.r[3].m128_f32[2] = 0;
 	matviewport.r[3].m128_f32[3] = 1;
 }
+float Helper::DirRotation(const XMFLOAT3& target, const XMFLOAT3& base, float margin){
+	float itr{};
+	XMFLOAT3 pos = base;
+	XMFLOAT3 position{};
+	position.x = (target.x - pos.x);
+	position.z = (target.z - pos.z);
+	itr = (atan2f(position.x, position.z) * (PI_180 / DirectX::XM_PI)) + margin; //- 90;// *(XM_PI / 180.0f);
+	if (itr >= 0) {
+		itr = (float)((int)itr % (int)PI_360);
+	} else {
+		itr += PI_360;
+		itr = (float)((int)itr % (int)PI_360);
+	}
+	return itr;
+}
 //XMFLOATをXMVECTORに変換
 Helper::XMVECTOR Helper::ChangeFLOAT(const XMFLOAT3& pos) {
 	XMVECTOR l_Result;
