@@ -67,7 +67,7 @@ private:
 
 	bool DebugButton();
 
-	XMFLOAT3 RandomShake(XMFLOAT3 pos);
+	XMFLOAT3 RandomShake(XMFLOAT3 pos,float shakeTimer);
 private:
 	//クラス
 	Input* input = Input::GetInstance();
@@ -92,7 +92,7 @@ private:
 	XMFLOAT4 sutopon_color{ 1.f,1.f,1.f,0.f };
 
 
-	int shakeTimer = 0;
+	float shakeTimer = 0;
 
 
 	static bool isDebug;

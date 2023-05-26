@@ -55,11 +55,8 @@ void TutorialSceneActor::IntroState() {
 void TutorialSceneActor::MoveState() {
 	//メガホンobj更新
 	sutepon->Update();
-	shakeTimer++;
-	if (shakeTimer%10==0) {
-		sutepon->SetPosition(RandomShake({ 0,0,15 }));
-		shakeTimer = 0;
-	}
+	shakeTimer+=0.5f;
+	sutepon->SetPosition(RandomShake({ 0,0,15 }, shakeTimer));
 	XMFLOAT3 pos = Player::GetInstance()->GetPosition();
 	XMFLOAT3 Spos = sutepon->GetPosition();
 	if (Collision::CircleCollision(Spos.x, Spos.z, 5.f, pos.x, pos.z, 1.f)) {
@@ -244,12 +241,13 @@ bool TutorialSceneActor::DebugButton() {
 		return false;
 	}
 }
-XMFLOAT3 TutorialSceneActor::RandomShake(XMFLOAT3 pos) {
+XMFLOAT3 TutorialSceneActor::RandomShake(XMFLOAT3 pos, float shakeTimer) {
 	//乱数指定
-	mt19937 mt{ std::random_device{}() };
-	std::uniform_real_distribution<float> dist(-0.5f, 0.5f);
-	//	uniform_int_distribution<int> l_distZ(-55, 55);
-	return XMFLOAT3(pos.x + dist(mt), pos.y, pos.z);
+	//mt19937 mt{ std::random_device{}() };
+	//std::uniform_real_distribution<float> dist(-0.5f, 0.5f);
+
+	float angle=sinf(shakeTimer)*0.5f;
+	return XMFLOAT3(pos.x + angle, pos.y, pos.z);
 }
 void TutorialSceneActor::CameraUpdate(DebugCamera* camera) {
 	if (nowstate_ != state::SPAWNALLENEMY) {
