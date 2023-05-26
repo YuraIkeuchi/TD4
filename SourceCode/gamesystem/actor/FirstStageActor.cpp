@@ -79,13 +79,11 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	ui->Update();
 	//各クラス更新
 	BackObj::GetInstance()->Update();
-	if (nowstate != CONVERSATION) {
-		Player::GetInstance()->Update();
-		enemymanager->Update();
-		ColEnemy(enemymanager->GetBulEnemy());
-		loadobj->FirstUpdate();
-		ParticleEmitter::GetInstance()->Update();
-	}
+	Player::GetInstance()->Update();
+	enemymanager->BattleUpdate();
+	ColEnemy(enemymanager->GetBulEnemy());
+	loadobj->FirstUpdate();
+	ParticleEmitter::GetInstance()->Update();
 	//カメラワークのセット
 	if(enemymanager->BossDestroy())
 	{

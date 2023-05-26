@@ -20,8 +20,12 @@ private:
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
 	EnemyManager(const std::string& sceneName);
-	//更新
-	void Update();
+	//登場シーン
+	void AppearUpdate();
+	//バトル更新
+	void BattleUpdate();
+	//撃破
+	void DeadUpdate();
 	//チュートリアル用の更新
 	void TutorialUpdate(int pattern);
 	//描画

@@ -37,8 +37,8 @@ EnemyManager::EnemyManager(const std::string& sceneName) {
 	}
 
 }
-//更新
-void EnemyManager::Update() {
+//バトル更新
+void EnemyManager::BattleUpdate() {
 	enemy->Update();
 	if (SceneName == "FIRSTSTAGE") {
 
@@ -46,7 +46,14 @@ void EnemyManager::Update() {
 		enemy->SummonEnemyUpda(bulletenemy);
 	}
 }
-
+//登場シーン
+void EnemyManager::AppearUpdate() {
+	enemy->AppearUpdate();
+}
+//撃破
+void EnemyManager::DeadUpdate() {
+	enemy->DeadUpdate();
+}
 void EnemyManager::TutorialUpdate(int pattern) {
 	if (pattern == 0) {
 		tutorialenemy[0]->Update();
