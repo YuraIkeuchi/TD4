@@ -181,8 +181,7 @@ void LoadStageObj::CollideFood() {
 			float l_dir = Helper::GetInstance()->ChechLength(l_ghostpos, l_foodpos);
 			if ((ghosts[i]->GetSearch()) && (l_dir < l_Radius)) {
 				ghosts[i]->EndSearch();
-				foods[j]->SetAlive(false);
-				foods[j]->SetLockOn(false);
+				foods[j]->CarryStart(ghosts[i]);
 			}
 		}
 	}

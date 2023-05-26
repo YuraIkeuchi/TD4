@@ -29,6 +29,7 @@ bool Food::Initialize() {
 
 //更新
 void Food::Update() {
+	if (CarriedGhost()) { return; }
 	//タイプによって色を一旦変えてる
 	Obj_SetParam();
 	//食料生成
@@ -53,6 +54,11 @@ void Food::ImGuiDraw() {
 	ImGui::Begin("Food");
 	ImGui::Text("Alive:%d", m_Alive);
 	ImGui::End();
+}
+void Food::CarryStart(Ghost* ghost) {
+	m_ghost = ghost;
+	m_IsCarried = true;
+	m_LockOn = false;
 }
 //パーティクル
 void Food::Particle() {
@@ -109,4 +115,20 @@ void Food::DeleteFood() {
 			m_Alive = false;
 		}
 	}
+}
+
+bool Food::CarriedGhost() {
+	if (!m_IsCarried) { return false; }
+	if (!m_ghost) { return false; }
+	XMFLOAT3 pos = m_ghost->GetPosition();
+	m_Position = { pos.x,3.0f,pos.z };
+	m_Object->SetPosition(m_Position);
+	m_Object->Update();
+
+	if (!m_ghost->GetAlive()) {
+		m_Alive = false;
+		m_IsCarried = false;
+		m_ghost = false;
+	}
+	return true;
 }
