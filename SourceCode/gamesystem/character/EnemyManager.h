@@ -57,11 +57,8 @@ private:
 	static const int tutorialEnemyMax = 6;
 	std::array<unique_ptr<InterEnemy>, tutorialEnemyMax>tutorialenemy;
 	//シーンネーム
-	std::string SceneName;
+	std::string m_SceneName;
 public:
 	//敵の死亡処理
 	bool BossDestroy();
-	//シーンネームの取得
-	void SetSceneName(std::string name) { SceneName = name; }
-	
 };

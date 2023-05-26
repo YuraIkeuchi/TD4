@@ -139,23 +139,24 @@ void Ghost::BirthGhost() {
 		m_ResPornTimer++;
 		//描画バグ起きるから先に座標セット
 		if (m_ResPornTimer == 20) {
+			_charaState = CharaState::STATE_NONE;
+			_searchState = SearchState::SEARCH_NO;
 			//乱数指定
 			mt19937 mt{ std::random_device{}() };
 			uniform_int_distribution<int> l_distX(-50, 60);
 			uniform_int_distribution<int> l_distZ(-55, 55);
 			m_Object->SetModel(m_Model);
 			m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
-		}
-		//一定時間で生成される
-		if (m_ResPornTimer == 100) {
-			_charaState = CharaState::STATE_NONE;
-			_searchState = SearchState::SEARCH_NO;
-			m_Alive = true;
 			m_Catch = false;
 			m_Search = false;
 			m_Follow = false;
-			m_ResPornTimer = 0;
 			m_SearchTimer = 0;
+		}
+		//一定時間で生成される
+		if (m_ResPornTimer == 100) {	
+			m_Alive = true;	
+			m_ResPornTimer = 0;
+		
 		}
 	}
 }
