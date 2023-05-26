@@ -38,7 +38,7 @@ void MessageWindow::Draw()
 
 void MessageWindow::Display()
 {
-	if (frame>=1) { return; }
+	if (nowframe >= 1) { return; }
 	frame++;
 	nowframe = frame / maxframe;
 	if (frame >= maxframe) {
@@ -49,4 +49,12 @@ void MessageWindow::Display()
 	window_size.y = Ease(Out, Sine, nowframe, 0, 223);
 	black_color.w = Ease(Out, Sine, nowframe, 0, 1);
 	girl_color.w = Ease(Out, Sine, nowframe, 0, 1);
+}
+
+bool MessageWindow::DisplayCheck()
+{
+	if (nowframe >= 1) {
+		return true;
+	}
+	return false;
 }
