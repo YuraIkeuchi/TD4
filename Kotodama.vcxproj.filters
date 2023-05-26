@@ -396,7 +396,6 @@
     <ClCompile Include="SourceCode\gamesystem\text\TextManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="resource.h" />
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
       <Filter>engine\camera</Filter>
     </ClInclude>
@@ -673,9 +672,6 @@
     <ClInclude Include="SourceCode\gamesystem\scene\SecondStage.h">
       <Filter>gamesystem\scene\Play\Second</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor.h">
-      <Filter>SourceCords\gamesystem\actor\GameOver</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\TutorialScene.h">
       <Filter>gamesystem\scene\Tutorial</Filter>
     </ClInclude>
@@ -712,9 +708,6 @@
       <Filter>SourceCords\shader</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\PlaceManager.h" />
-    <ClInclude Include="SourceCode\gamesystem\bossattach\InterStamp.h">
-      <Filter>gamesystem\bossattach\Stamp\Base</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\bossattach\AngerStamp.h">
       <Filter>gamesystem\bossattach\Stamp\Derived\Stamp</Filter>
     </ClInclude>
@@ -755,8 +748,17 @@
       <Filter>gamesystem\gamecamera</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\bossattach\InterStamp.h" />
+    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\MessageWindow\MessageWindow.h" />
     <ClInclude Include="SourceCode\gamesystem\text\TextManager.h" />
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor.h">
+      <Filter>gamesystem\actor\GameOver</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor.h" />
+    <ClInclude Include="SourceCode\gamesystem\bossattach\InterStamp.h">
+      <Filter>gamesystem\bossattach\Stamp\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">

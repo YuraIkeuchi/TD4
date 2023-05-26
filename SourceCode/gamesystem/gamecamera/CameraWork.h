@@ -10,6 +10,7 @@ using namespace std;         //  名前空間指定
 enum CameraState {
 	CAMERA_NORMAL,
 	CAMERA_LOAD,
+	CAMERA_BOSSAPPEAR,
 	CAMERA_BOSSDEAD
 };
 //ゲームのカメラの動き
@@ -28,8 +29,9 @@ public:
 	CameraWork(XMFLOAT3 eye = { 2.0f, 30.0f, 2.0f }, XMFLOAT3 target = { 2.0f, 0.0f, 3.0f });
 	void Update(DebugCamera* camera);//更新
 	void ImGuiDraw();
-	void DefaultCam();
-	void SetBossCam();
+	void DefaultCam();//ふつうのカメラ
+	void BossAppear();//登場
+	void SetBossDead();//撃破
 
 	void SetBoss(InterBoss* boss) { this->boss = boss; }
 	//ゲームシーン以外で使うカメラ更新(this変数で変更可能)

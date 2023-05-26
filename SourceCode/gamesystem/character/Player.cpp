@@ -257,6 +257,7 @@ XMFLOAT3 Player::MoveVECTOR(XMVECTOR v, float angle)
 }
 //弾の更新
 void Player::Bullet_Management() {
+	if (!m_canShot) { return; }
 	const float l_TargetCount = 1.0f;
 	const int l_Limit = 20;//ショットのチャージ時間
 	/*-----------------------------*/

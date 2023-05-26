@@ -22,7 +22,7 @@ void LoadSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	for (int i = 0; i < SpriteMax; i++) {
 		m_SpritesPos[i].x = (i + 1) * 100.0f;
 		m_SpritesPos[i].y = 630.0f;
-		m_Sprites[i] = IKESprite::Create(ImageManager::LOADING, m_SpritesPos[i]);
+		m_Sprites[i] = IKESprite::Create(ImageManager::LOADING_LO + i, m_SpritesPos[i]);
 		m_Sprites[i]->SetAnchorPoint({ 0.5f,0.5f });
 		m_Sprites[i]->SetSize({ 96.0f, 96.0f });
 	}
@@ -34,7 +34,8 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	lightgroup->Update();
 	camerawork->Update(camera);
 	//関数ポインタで状態管理
-	(this->*stateTable[static_cast<size_t>(m_SceneState)])();
+	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+
 	for (std::unique_ptr<IKEObject3d>& obj : grounds) {
 		obj->Update();
 	}
@@ -138,7 +139,7 @@ void LoadSceneActor::CreateStage() {
 
 }
 //ロード中の動き
-void LoadSceneActor::IntroUpdate() {
+void LoadSceneActor::IntroUpdate(DebugCamera* camera) {
 	//�ŏ��̕�����������Ɠ�����
 	m_SpritesAngle[0] += AddMovingVal;
 	for (int i = 0; i < SpriteMax; i++) {
@@ -156,13 +157,13 @@ void LoadSceneActor::IntroUpdate() {
 		m_SceneState = SceneState::MainState;
 	}
 }
-void LoadSceneActor::MainUpdate() {
+void LoadSceneActor::MainUpdate(DebugCamera* camera) {
 	m_LoadTimer++;
 	float frame = (float)m_LoadTimer / (float)LoadTimerMax;
 	for (int i = 0; i < SpriteMax; i++) {
-		m_SpritesPos[i].x = Ease(In,Linear,frame, m_StopPos[i].x, CenterPos.x + static_cast<float>(i) * WordsInter);
+		m_SpritesPos[i].x = Ease(In, Linear, frame, m_StopPos[i].x, CenterPos.x + static_cast<float>(i) * WordsInter);
 		m_SpritesPos[i].y = Ease(In, Linear, frame, m_StopPos[i].y, 630.0f);
-		m_Sprites[i]->SetPosition(m_SpritesPos[i]); 
+		m_Sprites[i]->SetPosition(m_SpritesPos[i]);
 
 	}
 	//��莞�ԂŃV�[�����ς��
@@ -172,7 +173,7 @@ void LoadSceneActor::MainUpdate() {
 	}
 
 }
-void LoadSceneActor::FinishUpdate() {
+void LoadSceneActor::FinishUpdate(DebugCamera* camera) {
 	//一定時間でシーンが変わる
 	if (m_LoadTimer >= LoadTimerMax) {
 		sceneChanger_->ChangeStart();

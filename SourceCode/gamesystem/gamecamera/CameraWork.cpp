@@ -14,7 +14,8 @@ CameraWork::CameraWork(XMFLOAT3 eye, XMFLOAT3 target) {
 void (CameraWork::* CameraWork::stateTable[])() = {
 	&CameraWork::DefaultCam,//通常
 	&CameraWork::SpecialUpdate,//ロード
-	&CameraWork::SetBossCam,//ボスのやられたとき
+	&CameraWork::BossAppear,//ボス登場
+	&CameraWork::SetBossDead,//ボスのやられたとき
 };
 //XV
 void CameraWork::Update(DebugCamera* camera) {
@@ -34,7 +35,12 @@ void CameraWork::DefaultCam()
 
 }
 
-void CameraWork::SetBossCam()
+//ボス登場
+void CameraWork::BossAppear() {
+
+}
+//ボス撃破
+void CameraWork::SetBossDead()
 {
 	m_eyePos.x = boss->GetPosition().x;
 	m_eyePos.z =boss->GetPosition().z-20.f;

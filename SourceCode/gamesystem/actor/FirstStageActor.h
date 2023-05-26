@@ -7,12 +7,6 @@
 
 /// タイトルシーン
 class FirstStageActor : public BaseActor {
-private:
-	enum state {
-		CONVERSATION=0,
-		FIGHT,
-		NONE,
-	};
 	Feed*feedn;
 	bool feedF;
 public:
@@ -29,10 +23,4 @@ public:
 	void ImGuiDraw(DirectXCommon* dxCommon);
 	void ColEnemy(std::vector<InterEnemy*> enelist);
 private:
-
-	float maxframe = 20.f;
-	float nowframe = 0.f;
-	float frame = 0.f;
-	int nowstate = NONE;
-	bool test = false;
 };
