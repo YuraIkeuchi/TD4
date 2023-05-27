@@ -292,7 +292,8 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	BackObj::GetInstance()->Initialize();
 
 	wchar_t* hello[3] = { L"Hello",L"World",L"aa" };
-	wchar_t* hello2[3] = { L"しね",L"sine",L"shine" };
+	wchar_t* hello2[3] = { L"しね",L" ",L" " };
+
 	Conversation::GetInstance()->CreateText(dxCommon, Conversation::KAIWA, hello2);
 	Conversation::GetInstance()->CreateText(dxCommon, Conversation::AISATU, hello2);
 

@@ -25,7 +25,7 @@ void ModelManager::SecondInitialize()
 	LoadModel(Bullet, "UVSphere");
 	LoadModel(GhostBullet, "voice");
 	LoadModel(BulEnemy, "tri");
-	LoadModel(Tyuta, "zako");
+	LoadModel(Tyuta, "tieyosi_idol");
 	LoadModel(Sutopon, "sutopon");
 	LoadModel(Food,"food");
 	LoadModel(Ghost,"ghost");

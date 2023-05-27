@@ -19,7 +19,7 @@ FirstBoss::FirstBoss() {
 
 bool FirstBoss::Initialize() {
 	m_Position = { 0.0f,0.0f,30.0f };
-	m_Scale = { 2.5f,2.4f,2.5f };
+	m_Scale = { 1.5f,1.4f,1.5f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Rotation.y = 90.f;
 	RTime = 1;
@@ -525,14 +525,14 @@ void FirstBoss::NormalAttak::Remove(XMFLOAT3& Pos, XMFLOAT3& Scl, bool Enf)
 		OldPos_Remove = Pos;
 	}
 
-	Scl.x = Easing::EaseOut(SPosMoveEaseT, 2.5f, 0.f);
-	Scl.y = Easing::EaseOut(SPosMoveEaseT, 2.5f, 0.f);
-	Scl.z = Easing::EaseOut(SPosMoveEaseT, 2.5f, 0.f);
+	Scl.x = Easing::EaseOut(SPosMoveEaseT, 1.5f, 0.f);
+	Scl.y = Easing::EaseOut(SPosMoveEaseT, 1.5f, 0.f);
+	Scl.z = Easing::EaseOut(SPosMoveEaseT, 1.5f, 0.f);
 
 	Helper::GetInstance()->FloatClamp(SPosMoveEaseT, 0.f, 1.f);
-	Helper::GetInstance()->FloatClamp(Scl.x, 0.f, 2.5f);
-	Helper::GetInstance()->FloatClamp(Scl.y, 0.f, 2.5f);
-	Helper::GetInstance()->FloatClamp(Scl.z, 0.f, 2.5f);
+	Helper::GetInstance()->FloatClamp(Scl.x, 0.f, 1.5f);
+	Helper::GetInstance()->FloatClamp(Scl.y, 0.f, 1.5f);
+	Helper::GetInstance()->FloatClamp(Scl.z, 0.f, 1.5f);
 }
 
 void FirstBoss::RemovePos()
@@ -773,13 +773,13 @@ void FirstBoss::ChargeAttack::JumpAction(XMFLOAT3& Pos)
 }
 void FirstBoss::ChargeAttack::TexScling()
 {
-	constexpr float AddScling = 0.15f;
+	constexpr float AddScling = 0.08f;
 	bool flagOff = texAlpha[0] < 0.f && texAlpha[1] < 0.f;
 
 	texScl[0].x += AddScling;
 	texScl[0].y += AddScling;
 
-	if (texScl[0].x > 3.f)
+	if (texScl[0].x > 2.f)
 	{
 		texScl[1].x += AddScling;
 		texScl[1].y += AddScling;
@@ -875,4 +875,6 @@ void FirstBoss::AppearAction() {
 //ボス撃破シーン
 void FirstBoss::DeadAction() {
 
+	m_Rotation.y += 0.1f;
+	m_Rotation.z += 0.08f;
 }

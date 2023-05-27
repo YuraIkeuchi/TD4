@@ -252,4 +252,9 @@ private:
 	float RePosEaseT_Impact;
 private:
 	void ColPlayer_Def();
+
+	std::unique_ptr<IKESprite>deathImpactTex[2];
+	XMFLOAT2 DeathTexScl[2];
+	float DeathTexAlpha[2];
+	float DeathMotionTimer;
 };

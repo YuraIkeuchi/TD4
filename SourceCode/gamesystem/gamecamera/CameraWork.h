@@ -4,6 +4,7 @@
 #include "Shake.h"
 #include <memory>
 
+#include "Feed.h"
 #include "InterBoss.h"
 using namespace std;         //  名前空間指定
 
@@ -11,7 +12,8 @@ enum CameraState {
 	CAMERA_NORMAL,
 	CAMERA_LOAD,
 	CAMERA_BOSSAPPEAR,
-	CAMERA_BOSSDEAD
+	CAMERA_BOSSDEAD_FIRST,
+	CAMERA_BOSSDEAD_SECOND
 };
 //ゲームのカメラの動き
 class CameraWork {
@@ -31,13 +33,21 @@ public:
 	void ImGuiDraw();
 	void DefaultCam();//ふつうのカメラ
 	void BossAppear();//登場
-	void SetBossDead();//撃破
-
+	void SetBossDead_Cam();//撃破
+	void SetBossDead_Act();//撃破時（フェード後）
 	void SetBoss(InterBoss* boss) { this->boss = boss; }
 	//ゲームシーン以外で使うカメラ更新(this変数で変更可能)
 	void SpecialUpdate();//更新
 public:
 	void EditorCamera();
+	void BossDefeatcamera();
+	void feedDraw();
+
+	bool GetFeedEnd() { return FeedEndF; }
+private:
+	bool FeedEndF;
+	int DeathTimer;
+	bool FeedF;
 public:
 	//getter setter
 	void SetEye(const XMFLOAT3& eye) { m_eyePos = eye; }
@@ -45,6 +55,7 @@ public:
 	void SetTarget(const XMFLOAT3& target) { m_targetPos = target; }
 	XMFLOAT3& GetTarget() { return m_targetPos; }
 
+	bool GetFeedF() { return FeedF; }
 	void SetCameraState(const int CameraState) { m_CameraState = CameraState; }
 private:
 	//クラス
@@ -61,4 +72,6 @@ private:
 	InterBoss* boss = nullptr;
 
 	int m_CameraState = 0;
+
+	unique_ptr<Feed> feed;
 };

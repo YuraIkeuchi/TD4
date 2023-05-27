@@ -1,4 +1,6 @@
 #include "Feed.h"
+
+#include "FirstBoss.h"
 #include"Helper.h"
 #include"ImageManager.h"
 #define WindowW 1920
@@ -10,6 +12,7 @@ Feed::Feed()
 	FeedTex->SetAnchorPoint({ 0.f,0.f });
 	FeedTex->SetSize({ WindowW,WindowH });
 
+	Color_RGB = { 0,0,0 };
 	m_Alpha = 0.f;
 }
 
@@ -41,9 +44,14 @@ void Feed::FeedIn(FeedType type, float feedspeed, bool& feedf)
 			//ŠeŽí‰Šú‰»
 			feedf = false;
 			FeedInCounter = 0;
-			_phase = FeedPhase::NON;
+			_phase = FeedPhase::END;
 		}
 		break;
+
+		case FeedPhase::END:
+			if (feedf)_phase = FeedPhase::NON;
+			break;
+
 	}
 
 	FeedTex->SetColor({ Color_RGB.x,Color_RGB.y,Color_RGB.z,m_Alpha });
