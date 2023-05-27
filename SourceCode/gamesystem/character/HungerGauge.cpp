@@ -4,8 +4,7 @@
 #include "CsvLoader.h"
 #include "Helper.h"
 float HungerGauge::m_Hungervalue = 5.0f;
-HungerGauge* HungerGauge::GetInstance()
-{
+HungerGauge* HungerGauge::GetInstance() {
 	static HungerGauge instance;
 
 	return &instance;
@@ -23,7 +22,7 @@ bool HungerGauge::Initialize() {
 	m_SubHunger[2] = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/hungergauge.csv", "Sub3")));
 	m_SubHunger[3] = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/hungergauge.csv", "Sub4")));
 	m_SubHunger[4] = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/hungergauge.csv", "Sub5")));
-	
+
 	return true;
 }
 
@@ -31,10 +30,9 @@ bool HungerGauge::Initialize() {
 void HungerGauge::Update() {
 	float l_Limit = 50.0f;
 	//ˆê’è‚¸‚Â‚ÅŒ¸­‚µ‚Ä‚¢‚­
-	if (m_CatchCount <= 5) {
+	if (m_CatchCount <= 5 && m_CatchCount > 0) {
 		m_NowHunger -= m_SubHunger[m_CatchCount - 1];
-	}
-	else {
+	} else {
 		m_NowHunger -= m_SubHunger[SUB_MAX - 1];
 	}
 	//‹Q‰ìƒQ[ƒW‚ÌÅ‘å”‚ªŒˆ‚Ü‚Á‚Ä‚¢‚é
@@ -46,7 +44,9 @@ void HungerGauge::Update() {
 //ImGui
 void HungerGauge::ImGuiDraw() {
 	ImGui::Begin("Hunger");
-	ImGui::Text("Sub:%f", m_SubHunger[m_CatchCount - 1]);
+	if (m_CatchCount>0) {
+		ImGui::Text("Sub:%f", m_SubHunger[m_CatchCount - 1]);
+	}
 	ImGui::SliderFloat("Now", &m_NowHunger, 0.0f, 50.0f);
 	ImGui::SliderFloat("Max", &m_HungerMax, 0.0f, 50.0f);
 	//ImGui::SliderFloat("Percent", &(m_NowHunger / m_HungerMax), 0.0f, 50.0f);
@@ -56,8 +56,8 @@ void HungerGauge::ImGuiDraw() {
 }
 
 float HungerGauge::GetPercentage() {
-	float temp= m_NowHunger / 50.0f;
-	Helper::GetInstance()->Clamp(temp,0.0f,1.0f);
+	float temp = m_NowHunger / 50.0f;
+	Helper::GetInstance()->Clamp(temp, 0.0f, 1.0f);
 	return temp;
 }
 
