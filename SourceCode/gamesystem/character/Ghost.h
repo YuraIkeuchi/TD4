@@ -46,6 +46,8 @@ private:
 	void BirthGhost();
 	//âΩÇ‡Ç»Ç¢èÛë‘
 	void None();
+	//ê∂Ç‹ÇÍÇÈèÛë‘
+	void Spawm();
 	//í«è]
 	void Follow();
 	//íTçı
@@ -79,6 +81,7 @@ private:
 	enum CharaState
 	{
 		STATE_NONE,
+		STATE_SPAWN,
 		STATE_FOLLOW,
 		STATE_SEARCH,
 	}_charaState;
@@ -99,6 +102,10 @@ private://íTçı
 	bool m_Search = false;
 	XMFLOAT3 m_SearchPos = {};
 
+	float noneTimer = 0.0f;
+
+	float m_SpawnTimer = 0.f;
+	float kSpawnTimerMax = 60.f;
 	//íTçıèÛë‘
 	enum SearchState {
 		SEARCH_NO,
