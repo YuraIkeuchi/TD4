@@ -3,6 +3,7 @@
 #include <Easing.h>
 #include "Player.h"
 #include  "imgui.h"
+#include <Easing.h>
 CameraWork::CameraWork(XMFLOAT3 eye, XMFLOAT3 target) {
 	m_eyePos = eye;
 	m_targetPos = target;
@@ -37,7 +38,13 @@ void CameraWork::DefaultCam()
 
 //ボス登場
 void CameraWork::BossAppear() {
-
+	//シーンによってカメラの関数が違う
+	if (SceneName == "FIRSTSTAGE") {
+		FirstBossAppear();
+	}
+	else if (SceneName == "SECONDSTAGE") {
+		SecondBossAppear();
+	}
 }
 //ボス撃破
 void CameraWork::SetBossDead()
@@ -61,17 +68,75 @@ void CameraWork::EditorCamera()
 //ImGui
 void CameraWork::ImGuiDraw() {
 	ImGui::Begin("Camera");
-	ImGui::Text("eyeX:%f", m_eyePos.x);
-	ImGui::SliderFloat("PosX", &m_eyePos.x, -200.f, 200.f);
-	ImGui::SliderFloat("PosY", &m_eyePos.y, 0.f, 20.f);
-	ImGui::SliderFloat("PosZ", &m_eyePos.z, -200.f, 200.f);
-	ImGui::Text("targetX:%f", m_targetPos.x);
-	ImGui::SliderFloat("tPosX", &m_targetPos.x, -200.f, 200.f);
-	ImGui::SliderFloat("tPosY", &m_targetPos.y, 0.0f, 20.0f);
-	ImGui::SliderFloat("tPosZ", &m_targetPos.z, -200.0f, 200.0f);
+	ImGui::SliderFloat("Speed", &m_CameraSpeed, 0.0f, 360.0f);
+	ImGui::Text("After:%f", m_AfterSpeed);
+	ImGui::Text("Timer:%d", m_CameraTimer);
+	ImGui::Text("APP:%d", m_AppearType);
+	ImGui::Text("targetPosX:%f", m_targetPos.x);
+	ImGui::Text("targetPosZ:%f", m_targetPos.z);
 	ImGui::End();
 }
 
 void CameraWork::SpecialUpdate() {
 
+}
+
+//最初のボスのカメラ
+void CameraWork::FirstBossAppear() {
+
+}
+//2個目のボスのカメラ
+void CameraWork::SecondBossAppear() {
+	float l_AddFrame = 0.0f;
+	m_CameraTimer++;
+	if (m_AppearType == APPEAR_ONE) {
+		m_AfterSpeed = m_CameraSpeed;
+		m_targetPos.x = 0.0f;
+		m_eyePos = {
+			Player::GetInstance()->GetPosition().x,
+			Player::GetInstance()->GetPosition().y,
+			Player::GetInstance()->GetPosition().z + 3.0f,
+		};
+
+		if (m_CameraTimer == 10) {
+			m_AfterSpeed = 0.0f;
+			m_AppearType = APPEAR_SECOND;
+		
+		}
+	}
+	else if (m_AppearType == APPEAR_SECOND) {
+		l_AddFrame = 0.005f;
+		if (m_Frame < m_FrameMax) {
+			m_Frame += l_AddFrame;
+		}
+		else {
+			m_AfterSpeed =   180.0f;
+			m_AppearType = APPEAR_THIRD;
+			m_Frame = 0.0f;
+		}
+		m_CameraSpeed = Ease(In, Cubic, m_Frame, m_CameraSpeed, m_AfterSpeed);
+	}
+	else if (m_AppearType == APPEAR_THIRD) {
+		l_AddFrame = 0.005f;
+		if (m_Frame < m_FrameMax) {
+			m_Frame += l_AddFrame;
+		}
+		else {
+			//m_AfterSpeed = -60.0f;
+			m_AppearType = APPEAR_FOURTH;
+			m_Frame = 0.0f;
+		}
+		m_CameraSpeed = Ease(In, Cubic, m_Frame, m_CameraSpeed, m_AfterSpeed);
+	}
+	if (m_CameraTimer == 1) {
+	
+	}
+
+	//円運動の計算
+	m_CameraRadius = m_CameraSpeed * m_PI / 180.0f;
+	m_CameraCircleX = cosf(m_CameraRadius) * m_CameraScale;
+	m_CameraCircleZ = sinf(m_CameraRadius) * m_CameraScale;
+	m_targetPos.x = m_CameraCircleX;
+	m_targetPos.z = m_CameraCircleZ;
+	//m_eyePos.y = 10.0f;
 }

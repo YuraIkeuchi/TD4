@@ -3,6 +3,7 @@
 #include"Input.h"
 #include"IKESprite.h"
 #include"VariableCommon.h"
+#include"TextManager.h"
 
 class Conversation
 {
@@ -11,18 +12,6 @@ public:
 private:
 
 public:
-	void Initialize(DirectXCommon* dxcommon);
-
-	void Update();
-
-	void SproteDraw();
-
-	void FontDraw(DirectXCommon* dxcommon);
-
-	void Tutorial();
-
-	void WardNone();
-
 
 	enum class CharaText
 	{
@@ -75,9 +64,9 @@ public:
 		BATTLE = 2,
 	};
 	
-	void CreateText(DirectXCommon* comn, ChatName name, wchar_t* text[3]);
+	void CreateText(DirectXCommon* comn, Conversation::ChatName num, wchar_t* text[3]);
 	void TextUpdate(XMFLOAT2 *pos,XMFLOAT3 *color);
-	void Draw(DirectXCommon* comn,ChatName name);
+	void Draw(DirectXCommon* comn, Conversation::ChatName num);
 
 
 	std::vector<Font*>FontList;

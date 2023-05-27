@@ -28,12 +28,6 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	Player::GetInstance()->InitState({ 0.0f,0.0f,0.0f });
 	camerawork->Update(camera);
 	
-	conversationwindow = IKESprite::Create(ImageManager::WINDOW, window_pos);
-	conversationwindow->SetAnchorPoint({ 0.5f,0.5f });
-	conversationwindow->SetSize(window_size);
-
-	blackwindow = IKESprite::Create(ImageManager::BLACKWINDOW, {});
-	
 	enemymanager = std::make_unique<EnemyManager>("FIRSTSTAGE");
 	
 	camerawork->SetBoss(enemymanager->GetBoss());

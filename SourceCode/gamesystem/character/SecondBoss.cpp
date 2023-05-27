@@ -170,9 +170,9 @@ void SecondBoss::DamAction()
 //ImGui
 void SecondBoss::ImGui_Origin() {
 	ImGui::Begin("SecondBoss");
-	ImGui::Text("RotX:%f", m_Rotation.x);
-	ImGui::Text("ROTY:%f", m_Rotation.y);
-	ImGui::Text("ROTZ:%f", m_Rotation.z);
+	ImGui::Text("POSX:%f", m_Position.x);
+	ImGui::Text("POSY:%f", m_Position.y);
+	ImGui::Text("POSZ:%f", m_Position.z);
 	ImGui::End();
 }
 //移動
@@ -801,7 +801,8 @@ void SecondBoss::StampInit(const int AttackNumber, const bool Random) {
 }
 //ボス登場シーン
 void SecondBoss::AppearAction() {
-
+	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+	Fbx_SetParam();
 }
 //ボス撃破シーン
 void SecondBoss::DeadAction() {

@@ -89,10 +89,6 @@ protected:
 	unique_ptr<InterBoss> boss;
 	unique_ptr<UI>ui;
 	unique_ptr<LoadStageObj> loadobj;
-	unique_ptr<IKESprite> conversationwindow;
-	unique_ptr<IKESprite> blackwindow;
-	unique_ptr<IKESprite> girl;
-	unique_ptr<Font> font_;
 	//��W
 	XMFLOAT2 window_pos{ WinApp::window_width / 2.f,WinApp::window_height + 100 };
 	XMFLOAT2 window_size{ 0.f,0.f };
