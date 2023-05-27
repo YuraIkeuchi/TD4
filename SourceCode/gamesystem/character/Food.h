@@ -41,8 +41,10 @@ private:
 	void BirthFood();
 	//食料削除
 	void DeleteFood();
-
+	//食べ物を運ばせる
 	bool CarriedGhost();
+	//
+	bool FallSpawn();
 public://getter setter
 public:
 	//gettersetter
@@ -57,10 +59,15 @@ public:
 
 private:
 	bool m_Alive = true;//生存フラグ
+	bool m_Spawn = true;
 	bool m_LockOn = false;
 	bool m_IsCarried = false;
 	int m_Timer = 0;
 	
+	bool m_Jump = false;
+	float m_Degree = 0.0f;
+	float m_SpawnTimer = 0.0f;
+	float m_SpawnTimerMax = 15.0f;
 	Ghost* m_ghost = nullptr;
 	//制限時間を超えたかどうか
 	bool m_Limit = false;
