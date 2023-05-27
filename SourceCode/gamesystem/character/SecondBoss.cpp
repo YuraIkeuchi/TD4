@@ -334,8 +334,8 @@ void SecondBoss::RandomStamp() {
 				m_Position.x = (float(l_RandX(mt))) + (Player::GetInstance()->GetPosition().x);
 				m_Position.z = (float(l_RandZ(mt2))) + (Player::GetInstance()->GetPosition().z);
 
-				Helper::GetInstance()->FloatClamp(m_Position.x, l_MinPosX,l_MaxPosX);
-				Helper::GetInstance()->FloatClamp(m_Position.z, l_MinPosZ,l_MaxPosZ);
+				Helper::GetInstance()->Clamp(m_Position.x, l_MinPosX,l_MaxPosX);
+				Helper::GetInstance()->Clamp(m_Position.z, l_MinPosZ,l_MaxPosZ);
 				StampInit(RANDOM_SET, true);
 			}
 		}

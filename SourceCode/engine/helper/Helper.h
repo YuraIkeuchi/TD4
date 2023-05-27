@@ -29,8 +29,8 @@ public:
 	bool CheckMinINT(int& Num, const int Min, const int Add);
 	bool CheckMaxINT(int& Num, const int Max, const int Add);
 	//Clamp‚ğ•Ô‚·ŠÖ”
-	void IntClamp(int& Num, const int Min, const int Max);
-	void FloatClamp(float& Num, const float Min, const float Max);
+	template<typename T>
+	void Clamp(T& Num, const T Min, const T Max);
 	//XMFLOAT3‚Æfloat‚ğ‰ÁZ‚·‚éŠÖ”
 	XMFLOAT3 Float3AddFloat(const XMFLOAT3& Num, const float Add);
 	//XMFLOAT3‚ÆXMFLOAT3‚ğ‰ÁZ‚·‚éŠÖ”
@@ -98,4 +98,9 @@ namespace Easing
 
 	inline float EaseInOut(int& t);
 	inline float EaseOutIn(int& t);
+}
+
+template<typename T>
+inline void Helper::Clamp(T& Num, const T Min, const T Max) {
+	Num = min(max(Num, Min), Max);
 }

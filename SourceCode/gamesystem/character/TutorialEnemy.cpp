@@ -1,4 +1,4 @@
-#include "TutorialEnemy.h"
+ï»¿#include "TutorialEnemy.h"
 #include "Player.h"
 #include "Collision.h"
 #include "ModelManager.h"
@@ -6,11 +6,11 @@
 #include "ParticleEmitter.h"
 #include <random>
 
-//ƒ‚ƒfƒ‹“Ç‚İ‚İ
+//ãƒ¢ãƒ‡ãƒ«èª­ã¿è¾¼ã¿
 TutorialEnemy::TutorialEnemy() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::BulEnemy);
 }
-//‰Šú‰»
+//åˆæœŸåŒ–
 bool TutorialEnemy::Initialize() {
 
 	m_Object = make_unique<IKEObject3d>();
@@ -30,7 +30,7 @@ bool TutorialEnemy::Initialize() {
 	isAlive = true;
 	return true;
 }
-//s“®
+//è¡Œå‹•
 void TutorialEnemy::Action() {
 	if (!isStop) {
 		Appearance();
@@ -41,14 +41,14 @@ void TutorialEnemy::Action() {
 	ColPlayer();
 	Particle();
 }
-//•`‰æ
+//æç”»
 void TutorialEnemy::Draw(DirectXCommon* dxCommon) {
 
 	if (m_Color.w <= 0.f)return;
 	IKEObject3d::PreDraw();
 	Obj_Draw();
 }
-//ImGui•`‰æ
+//ImGuiæç”»
 void TutorialEnemy::ImGuiDraw() {
 	ImGui::Begin("Enemy");
 	//ImGui::Text("time %f", t);
@@ -58,12 +58,12 @@ void TutorialEnemy::ImGuiDraw() {
 	ImGui::Text("EnePosZ:%f", m_Position.z);
 	ImGui::End();
 }
-//ŠJ•ú
+//é–‹æ”¾
 void TutorialEnemy::Finalize() {
 
 }
 
-//ƒp[ƒeƒBƒNƒ‹
+//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
 void TutorialEnemy::Particle() {
 	if (!isAlive)return;
 	XMFLOAT4 s_color = { 1.0f,0.5f,1.0f,1.5f };
@@ -77,10 +77,10 @@ void TutorialEnemy::Appearance() {
 	//	if (Rush)return;
 	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
 
-	//Šp“x‚Ìæ“¾ ƒvƒŒƒCƒ„[‚ª“G‚Ìõ“GˆÊ’u‚É“ü‚Á‚½‚çŒü‚«‚ğƒvƒŒƒCƒ„[‚Ì•û‚É
+	//è§’åº¦ã®å–å¾— ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæ•µã®ç´¢æ•µä½ç½®ã«å…¥ã£ãŸã‚‰å‘ãã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ–¹ã«
 	PositionA = { l_player.x,l_player.y,l_player.z };
 	PositionB = { m_Position.x,m_Position.y,m_Position.z };
-	//ƒvƒŒƒCƒ„[‚Æ“G‚ÌƒxƒNƒgƒ‹‚Ì’·‚³(·)‚ğ‹‚ß‚é
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨æ•µã®ãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•(å·®)ã‚’æ±‚ã‚ã‚‹
 	SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
 
 	constexpr float AddScaling = 0.03f;
@@ -89,9 +89,9 @@ void TutorialEnemy::Appearance() {
 	m_Scale.y += AddScaling;
 	m_Scale.z += AddScaling;
 
-	Helper::GetInstance()->FloatClamp(m_Scale.x, 0.f, 1.5f);
-	Helper::GetInstance()->FloatClamp(m_Scale.y, 0.f, 1.5f);
-	Helper::GetInstance()->FloatClamp(m_Scale.z, 0.f, 1.5f);
+	Helper::GetInstance()->Clamp(m_Scale.x, 0.f, 1.5f);
+	Helper::GetInstance()->Clamp(m_Scale.y, 0.f, 1.5f);
+	Helper::GetInstance()->Clamp(m_Scale.z, 0.f, 1.5f);
 
 	float RottoPlayer;
 	RottoPlayer = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
@@ -110,11 +110,11 @@ void TutorialEnemy::RushAction() {
 	if (!Rush)return;
 	s_scale += 0.02f;
 
-	Helper::GetInstance()->FloatClamp(s_scale, 0.f, 3.f);
+	Helper::GetInstance()->Clamp(s_scale, 0.f, 3.f);
 
 	// positionA - positionB;
-   //‰ñ“]²‚ğƒvƒŒƒCƒ„[‚Ì•û‚É
-	   //Œü‚«‚©‚¦‚é
+   //å›è»¢è»¸ã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ–¹ã«
+	   //å‘ãã‹ãˆã‚‹
 	if (ret) {
 		MoveTimer = 0;
 
@@ -122,13 +122,13 @@ void TutorialEnemy::RushAction() {
 		XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
 		PositionA = { l_player.x,l_player.y,l_player.z };
 		PositionB = { m_Position.x,m_Position.y,m_Position.z };
-		//ƒvƒŒƒCƒ„[‚Æ“G‚ÌƒxƒNƒgƒ‹‚Ì’·‚³(·)‚ğ‹‚ß‚é
+		//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨æ•µã®ãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•(å·®)ã‚’æ±‚ã‚ã‚‹
 		SubVector = XMVectorSubtract(PositionB, PositionA);
 		RotY = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
 
-		//ƒC[ƒWƒ“ƒOƒJƒEƒ“ƒ^{{
+		//ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã‚«ã‚¦ãƒ³ã‚¿ï¼‹ï¼‹
 		t += 0.03f;
-		//Rotation”½‰f
+		//Rotationåæ˜ 
 		//if (randMove > 50) {
 		if (canRot)
 			m_Rotation.y = Easing::EaseOut(t, old * 50.f + 180.f, RotY * 50.f + 180.f);
@@ -153,7 +153,7 @@ void TutorialEnemy::RushAction() {
 
 	move = XMVector3TransformNormal(move, matRot);
 
-	//Œü‚«•Ï‚¦‚Ä‚éÅ’†‚Í“®‚«~‚ß‚é
+	//å‘ãå¤‰ãˆã¦ã‚‹æœ€ä¸­ã¯å‹•ãæ­¢ã‚ã‚‹
 	bool stopMove = !(t > 0.01f);
 	if (stopMove) {
 		if (isAlive) {
@@ -164,7 +164,7 @@ void TutorialEnemy::RushAction() {
 			};
 		}
 	}
-	Helper::GetInstance()->FloatClamp(t, 0.f, 1.f);
+	Helper::GetInstance()->Clamp(t, 0.f, 1.f);
 
 }
 

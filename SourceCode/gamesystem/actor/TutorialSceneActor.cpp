@@ -168,36 +168,30 @@ void TutorialSceneActor::TextClearState() {
 	}
 }
 void TutorialSceneActor::SpawnAllEnemyState() {
-	XMFLOAT3 eye = camerawork->GetEye();
-	XMFLOAT3 target = camerawork->GetTarget();
-	cameraframe += 1.0f / kCameraFrameMax;
-	cameraframe = min(1.0f, cameraframe);
-	eye = {
-	Ease(In,Linear,cameraframe, s_eyepos.x,e_eyepos.x),
-	eye.y,
-	Ease(In,Linear,cameraframe,  s_eyepos.z,e_eyepos.z),
-	};
-	target = {
-	Ease(In,Linear,cameraframe, s_targetpos.x,e_targetpos.x),
-	target.y,
-	Ease(In,Linear,cameraframe, s_targetpos.z,e_targetpos.z),
-	};
-
-	camerawork->SetEye(eye);
-	camerawork->SetTarget(target);
 	loadobj->TutorialUpdate();
-	if (cameraframe >= 1.0f) {
+	if (MovingCamera(s_eyepos, e_eyepos, s_targetpos, e_targetpos)) {
 		enemymanager->TutorialUpdate(1);
 	}
 	if (Clear(cameraframe >= 1.0f, 50)) {
 		nowstate_ = state::TEXT_LAST;
+		cameraframe = 0.0f;
 	}
 }
 void TutorialSceneActor::TextLastState() {
-	if (DebugButton() ||
-		input->TriggerButton(Input::B)) {
-		nowstate_ = state::MAINTUTORIAL;
+	if (MovingCamera(e_eyepos, s_eyepos, e_targetpos, s_targetpos)) {
+		if ((DebugButton() ||
+			input->TriggerButton(Input::B))
+			) {
+			nowstate_ = state::MAINTUTORIAL;
+			Player::GetInstance()->SetCanShot(true);
+
+		}
 	}
+	loadobj->TutorialUpdate();
+	enemymanager->TutorialUpdate(2);
+	Player::GetInstance()->Update();
+	Player::GetInstance()->SetCanShot(false);
+
 }
 void TutorialSceneActor::MainTutorialState() {
 	loadobj->TutorialUpdate();
@@ -233,8 +227,34 @@ XMFLOAT3 TutorialSceneActor::RandomShake(XMFLOAT3 pos, float shakeTimer) {
 	float angle = sinf(shakeTimer) * 0.3f;
 	return XMFLOAT3(pos.x + angle, pos.y, pos.z);
 }
+bool TutorialSceneActor::MovingCamera(const XMFLOAT3& s_eye, const XMFLOAT3& e_eye, const XMFLOAT3& s_target, const XMFLOAT3& e_target) {
+	XMFLOAT3 eye = camerawork->GetEye();
+	XMFLOAT3 target = camerawork->GetTarget();
+	cameraframe += 1.0f / kCameraFrameMax;
+	cameraframe = min(1.0f, cameraframe);
+	eye = {
+	Ease(In,Linear,cameraframe, s_eye.x,e_eye.x),
+	eye.y,
+	Ease(In,Linear,cameraframe,  s_eye.z,e_eye.z),
+	};
+	target = {
+	Ease(In,Linear,cameraframe, s_target.x,e_target.x),
+	target.y,
+	Ease(In,Linear,cameraframe, s_target.z,e_target.z),
+	};
+
+	camerawork->SetEye(eye);
+	camerawork->SetTarget(target);
+	Helper::GetInstance()->Clamp(cameraframe, 0.0f, 1.0f);
+
+	if (cameraframe == 1.0f) {
+		return true;
+	} else {
+		return false;
+	}
+}
 void TutorialSceneActor::CameraUpdate(DebugCamera* camera) {
-	if (nowstate_ != state::SPAWNALLENEMY) {
+	if (!(nowstate_ == state::SPAWNALLENEMY|| nowstate_ == state::TEXT_LAST)) {
 		camerawork->SetCameraState(CAMERA_NORMAL);
 	} else {
 		camerawork->SetCameraState(CAMERA_LOAD);
