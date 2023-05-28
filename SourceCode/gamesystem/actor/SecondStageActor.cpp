@@ -122,7 +122,7 @@ void SecondStageActor::IntroUpdate(DebugCamera* camera) {
 	//各クラス更新
 	BackObj::GetInstance()->Update();
 
-	Player::GetInstance()->Update();
+	Player::GetInstance()->AppearUpdate();
 	enemymanager->AppearUpdate();
 
 	camerawork->Update(camera);

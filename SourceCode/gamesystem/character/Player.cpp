@@ -522,3 +522,11 @@ void Player::BirthParticle() {
 	neweffect->SetPosition(m_Position);
 	effects.push_back(neweffect);
 }
+//ボス登場シーンの更新
+void Player::AppearUpdate() {
+	//基礎パラメータ設定
+	Fbx_SetParam();
+
+	//どっち使えばいいか分からなかったから保留
+	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+}

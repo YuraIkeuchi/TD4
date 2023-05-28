@@ -95,48 +95,62 @@ void CameraWork::SecondBossAppear() {
 		m_eyePos = {
 			Player::GetInstance()->GetPosition().x,
 			Player::GetInstance()->GetPosition().y,
-			Player::GetInstance()->GetPosition().z + 3.0f,
+			Player::GetInstance()->GetPosition().z + 10.0f,
 		};
 
 		if (m_CameraTimer == 10) {
-			m_AfterSpeed = 0.0f;
+			m_AfterSpeed = 30.0f;
 			m_AppearType = APPEAR_SECOND;
 		
 		}
 	}
 	else if (m_AppearType == APPEAR_SECOND) {
-		l_AddFrame = 0.005f;
+		l_AddFrame = 0.01f;
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
 		}
 		else {
-			m_AfterSpeed =   180.0f;
+			m_AfterSpeed =   150.0f;
 			m_AppearType = APPEAR_THIRD;
 			m_Frame = 0.0f;
 		}
 		m_CameraSpeed = Ease(In, Cubic, m_Frame, m_CameraSpeed, m_AfterSpeed);
 	}
 	else if (m_AppearType == APPEAR_THIRD) {
-		l_AddFrame = 0.005f;
+		l_AddFrame = 0.01f;
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
 		}
 		else {
-			//m_AfterSpeed = -60.0f;
+			m_AfterSpeed = 90.0f;
 			m_AppearType = APPEAR_FOURTH;
 			m_Frame = 0.0f;
 		}
 		m_CameraSpeed = Ease(In, Cubic, m_Frame, m_CameraSpeed, m_AfterSpeed);
 	}
-	if (m_CameraTimer == 1) {
-	
+	else if (m_AppearType == APPEAR_FOURTH) {
+		l_AddFrame = 0.01f;
+		if (m_Frame < m_FrameMax) {
+			m_Frame += l_AddFrame;
+		}
+		else {
+			m_AppearType = APPEAR_FIVE;
+			m_Frame = 0.0f;
+		}
+		m_CameraSpeed = Ease(In, Cubic, m_Frame, m_CameraSpeed, m_AfterSpeed);
+		m_CameraScale = Ease(In, Cubic, m_Frame, m_CameraScale, m_AfterScale);
+		m_targetPos.y = Ease(In, Cubic, m_Frame, m_targetPos.y, 20.0f);
 	}
 
+	SetCircleCamera();
+}
+
+//円運動の際のカメラ位置更新
+void CameraWork::SetCircleCamera() {
 	//円運動の計算
 	m_CameraRadius = m_CameraSpeed * m_PI / 180.0f;
 	m_CameraCircleX = cosf(m_CameraRadius) * m_CameraScale;
 	m_CameraCircleZ = sinf(m_CameraRadius) * m_CameraScale;
 	m_targetPos.x = m_CameraCircleX;
 	m_targetPos.z = m_CameraCircleZ;
-	//m_eyePos.y = 10.0f;
 }

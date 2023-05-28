@@ -26,7 +26,7 @@ SecondBoss::SecondBoss() {
 //初期化
 bool SecondBoss::Initialize() {
 
-	m_Position = { 0.0f,5.0f,30.0f };
+	m_Position = { 0.0f,20.0f,12.0f };
 	m_Rotation = { 0.0f,90.0f,0.0f };
 	m_OBBScale = { 6.0f,6.0f,6.0f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
@@ -173,6 +173,7 @@ void SecondBoss::ImGui_Origin() {
 	ImGui::Text("POSX:%f", m_Position.x);
 	ImGui::Text("POSY:%f", m_Position.y);
 	ImGui::Text("POSZ:%f", m_Position.z);
+	ImGui::Text("ROTY:%f", m_Rotation.y);
 	ImGui::End();
 }
 //移動

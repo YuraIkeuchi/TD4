@@ -70,7 +70,7 @@ void PlaceBox::Update()
 		if (imguilist[i]->GetBoxnumber() == CreateImGui::STONE && BoxsList[i] != Boxs::CUBE)
 		{
 			boxes[i]->SetModeName("Cube");
-			boxes[i]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Cube));
+			boxes[i]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Box));
 			BoxsList[i] = Boxs::CUBE;
 		}
 
@@ -89,7 +89,7 @@ void PlaceBox::Update()
 
 	if (StoneArgment) {
 		BoxsList.push_back(Boxs::CUBE);
-		ArgmentObj(StoneArgment, "Cube", ModelManager::GetInstance()->GetModel(ModelManager::Cube));
+		ArgmentObj(StoneArgment, "Cube", ModelManager::GetInstance()->GetModel(ModelManager::Box));
 	}
 
 }

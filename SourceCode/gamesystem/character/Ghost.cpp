@@ -42,7 +42,7 @@ void (Ghost::* Ghost::stateTable[])() = {
 };
 //更新
 void Ghost::Update() {
-	float l_AddScale = 1.0f;//OBB用に少し大きめのスケールを取る
+	float l_AddScale = 1.5f;//OBB用に少し大きめのスケールを取る
 	m_OldPos = m_Position;
 	m_OBBScale = { m_Scale.x + l_AddScale,m_Scale.y + l_AddScale, m_Scale.z + l_AddScale };
 	//状態移行(charastateに合わせる)
