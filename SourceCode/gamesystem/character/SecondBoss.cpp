@@ -173,7 +173,7 @@ void SecondBoss::ImGui_Origin() {
 	ImGui::Text("POSX:%f", m_Position.x);
 	ImGui::Text("POSY:%f", m_Position.y);
 	ImGui::Text("POSZ:%f", m_Position.z);
-	ImGui::Text("ROTY:%f", m_Rotation.y);
+	ImGui::Text("AppearTimer:%d", m_AppearTimer);
 	ImGui::End();
 }
 //移動
@@ -213,7 +213,7 @@ void SecondBoss::Stamp() {
 		}
 		else {
 			m_Frame = 1.0f;
-			if (Helper::GetInstance()->CheckMinINT(m_StopTimer,l_TargetTimer,1)) {			//プレイヤーの位置に移動
+			if (Helper::GetInstance()->CheckMin(m_StopTimer,l_TargetTimer,1)) {			//プレイヤーの位置に移動
 				m_Position = { Player::GetInstance()->GetPosition().x,
 				m_Position.y,
 				Player::GetInstance()->GetPosition().z };
@@ -230,7 +230,7 @@ void SecondBoss::Stamp() {
 	else if (m_PressType == PRESS_SET) {		//一定時間上で待機
 		l_TargetTimer = 100;
 		
-		if (Helper::GetInstance()->CheckMinINT(m_StopTimer, l_TargetTimer, 1)) {		//次の行動
+		if (Helper::GetInstance()->CheckMin(m_StopTimer, l_TargetTimer, 1)) {		//次の行動
 			StampInit(PRESS_ATTACK, false);
 			m_AfterRotX = m_Rotation.x + 360.0f;
 		}
@@ -247,7 +247,7 @@ void SecondBoss::Stamp() {
 			if (m_StopTimer == 1) {
 				BirthWave();//ウェーブの生成
 			}
-			if (Helper::GetInstance()->CheckMinINT(m_StopTimer, l_TargetTimer, 1)){			//シェイクが始まる
+			if (Helper::GetInstance()->CheckMin(m_StopTimer, l_TargetTimer, 1)){			//シェイクが始まる
 				StampInit(PRESS_SHAKE, false);
 				shake->SetShakeStart(true);
 			}
@@ -278,7 +278,7 @@ void SecondBoss::Stamp() {
 		}
 		
 		//次の行動
-		if (Helper::GetInstance()->CheckMinINT(m_StopTimer, l_TargetTimer, 1)) {
+		if (Helper::GetInstance()->CheckMin(m_StopTimer, l_TargetTimer, 1)) {
 			m_Rotation.x = 0.0f;
 			StampInit(PRESS_RETURN, false);
 		}
@@ -293,7 +293,7 @@ void SecondBoss::Stamp() {
 			m_Frame += l_AddFrame;
 		}
 		else {
-			if (Helper::GetInstance()->CheckMinINT(m_StopTimer, l_TargetTimer, 1)) {
+			if (Helper::GetInstance()->CheckMin(m_StopTimer, l_TargetTimer, 1)) {
 				StampInit(PRESS_END, false);
 			}
 		}
@@ -331,7 +331,7 @@ void SecondBoss::RandomStamp() {
 			mt19937 mt2{ std::random_device{}() };
 			uniform_int_distribution<int> l_RandZ(l_RandMin, l_RandMax);
 			//座標をランダムで決める
-			if (Helper::GetInstance()->CheckMinINT(m_StopTimer, l_TargetTimer, 1)) {			//プレイヤーの位置に移動
+			if (Helper::GetInstance()->CheckMin(m_StopTimer, l_TargetTimer, 1)) {			//プレイヤーの位置に移動
 				m_Position.x = (float(l_RandX(mt))) + (Player::GetInstance()->GetPosition().x);
 				m_Position.z = (float(l_RandZ(mt2))) + (Player::GetInstance()->GetPosition().z);
 
@@ -352,7 +352,7 @@ void SecondBoss::RandomStamp() {
 		if (m_StopTimer == 1) {
 			BirthPredict();//予測位置にマークを出す
 		}
-		if (Helper::GetInstance()->CheckMinINT(m_StopTimer, l_TargetTimer, 1)) {		//次の行動
+		if (Helper::GetInstance()->CheckMin(m_StopTimer, l_TargetTimer, 1)) {		//次の行動
 			StampInit(RANDOM_ATTACK, true);
 			m_Rotation.x = 0.0f;
 		}
@@ -372,7 +372,7 @@ void SecondBoss::RandomStamp() {
 				BirthStamp("Anger");
 				BirthWave();
 			}
-			if (Helper::GetInstance()->CheckMinINT(m_StopTimer, l_TargetTimer, 1)) {
+			if (Helper::GetInstance()->CheckMin(m_StopTimer, l_TargetTimer, 1)) {
 				if (m_MoveCount < l_MoveMax) {		//何回スタンプを押したかで最初に戻るか別の行動をするか決まる
 					m_MoveCount++;
 					StampInit(RANDOM_START, true);
@@ -405,7 +405,7 @@ void SecondBoss::Rolling() {
 		RollEaseCommn(l_AfterPos, l_AddFrame,l_AfterRotY);
 		//飛ぶような感じにするため重力を入れる
 		m_AddPower -= m_Gravity;
-		Helper::GetInstance()->CheckMaxFLOAT(m_Position.y, 5.0f, m_AddPower);
+		Helper::GetInstance()->CheckMax(m_Position.y, 5.0f, m_AddPower);
 		//回転を決める
 		m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, 90.0f);
 
@@ -445,7 +445,7 @@ void SecondBoss::Rolling() {
 		//飛ぶような感じにするため重力を入れる
 		m_AddPower -= m_Gravity;
 
-		Helper::GetInstance()->CheckMaxFLOAT(m_Position.y, 5.0f, m_AddPower);
+		Helper::GetInstance()->CheckMax(m_Position.y, 5.0f, m_AddPower);
 
 		m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, 0.0f);
 	}
@@ -732,7 +732,7 @@ bool SecondBoss::Collide() {
 	};
 
 	//OBBの当たり判定を取る
-	if (!Helper::GetInstance()->CheckMinINT(m_CheckTimer,10,1)) { return false; }
+	if (!Helper::GetInstance()->CheckMin(m_CheckTimer,10,1)) { return false; }
 	m_OBB1.SetParam_Pos(l_OBBPosition);
 	m_OBB1.SetParam_Rot(m_MatRot);
 	m_OBB1.SetParam_Scl(m_OBBScale);
@@ -802,6 +802,26 @@ void SecondBoss::StampInit(const int AttackNumber, const bool Random) {
 }
 //ボス登場シーン
 void SecondBoss::AppearAction() {
+	const float m_AddFrame = 0.01f;
+	m_AppearTimer++;
+	if (m_AppearState == APPEAR_START) {//初期座標セット
+		if (m_AppearTimer == 300) {
+			m_AppearState = APPEAR_SET;
+			m_Frame = 0.0f;
+			m_AfterPos.y = 5.0f;
+		}
+	}
+	else if (m_AppearState == APPEAR_SET) {//落下してくる
+		if (m_Frame < m_FrameMax) {
+			m_Frame += m_AddFrame;
+		}
+		else {
+			m_Frame = {};
+			m_AppearState = APPEAR_ANGER;
+		}
+		m_Position.y = Ease(In, Cubic, m_Frame, m_Position.y, m_AfterPos.y);
+	}
+
 	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 	Fbx_SetParam();
 }

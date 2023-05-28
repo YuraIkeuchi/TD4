@@ -186,4 +186,16 @@ private:
 private:
 	unique_ptr<IKETexture> mark;
 	XMFLOAT4 m_MarkColor = { 1.0f,1.0f,1.0f,0.0f };
+private:
+	enum AppearState {
+		APPEAR_START,
+		APPEAR_SET,
+		APPEAR_JOY,
+		APPEAR_ANGER,
+		APPEAR_END,
+	};
+
+	int m_AppearState = APPEAR_START;
+
+	int m_AppearTimer = {};
 };

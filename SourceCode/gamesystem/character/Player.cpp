@@ -105,7 +105,7 @@ void Player::Update()
 	//飢餓ゲージ更新
 	HungerGauge::GetInstance()->Update();
 
-	Helper::GetInstance()->CheckMaxINT(m_DamageInterVal, 0, -1);
+	Helper::GetInstance()->CheckMax(m_DamageInterVal, 0, -1);
 
 	//反発
 	ReBound();
@@ -412,8 +412,8 @@ void Player::Idle()
 }
 //インターバル
 void Player::InterVal() {
-	Helper::GetInstance()->CheckMaxINT(m_InterVal, 0, -1);
-	Helper::GetInstance()->CheckMaxINT(m_RigidityTime, 0, -1);
+	Helper::GetInstance()->CheckMax(m_InterVal, 0, -1);
+	Helper::GetInstance()->CheckMax(m_RigidityTime, 0, -1);
 }
 //弾との当たり判定
 bool Player::BulletCollide(const XMFLOAT3& pos, const XMMATRIX& matrot, const XMFLOAT3& scale, const bool Catch) {

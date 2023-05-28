@@ -3,7 +3,7 @@
 #include <Easing.h>
 #include "Player.h"
 #include  "imgui.h"
-#include <Easing.h>
+#include "Helper.h"
 CameraWork::CameraWork(XMFLOAT3 eye, XMFLOAT3 target) {
 	m_eyePos = eye;
 	m_targetPos = target;
@@ -101,48 +101,57 @@ void CameraWork::SecondBossAppear() {
 		if (m_CameraTimer == 10) {
 			m_AfterSpeed = 30.0f;
 			m_AppearType = APPEAR_SECOND;
-		
 		}
+
+		SetCircleCamera();
 	}
 	else if (m_AppearType == APPEAR_SECOND) {
 		l_AddFrame = 0.01f;
-		if (m_Frame < m_FrameMax) {
-			m_Frame += l_AddFrame;
-		}
-		else {
-			m_AfterSpeed =   150.0f;
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_AfterSpeed = 150.0f;
 			m_AppearType = APPEAR_THIRD;
 			m_Frame = 0.0f;
 		}
+	
 		m_CameraSpeed = Ease(In, Cubic, m_Frame, m_CameraSpeed, m_AfterSpeed);
+
+		SetCircleCamera();
 	}
 	else if (m_AppearType == APPEAR_THIRD) {
 		l_AddFrame = 0.01f;
-		if (m_Frame < m_FrameMax) {
-			m_Frame += l_AddFrame;
-		}
-		else {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 			m_AfterSpeed = 90.0f;
 			m_AppearType = APPEAR_FOURTH;
 			m_Frame = 0.0f;
+			m_CameraTimer = 0;
 		}
+	
 		m_CameraSpeed = Ease(In, Cubic, m_Frame, m_CameraSpeed, m_AfterSpeed);
+
+		SetCircleCamera();
 	}
 	else if (m_AppearType == APPEAR_FOURTH) {
 		l_AddFrame = 0.01f;
-		if (m_Frame < m_FrameMax) {
-			m_Frame += l_AddFrame;
-		}
-		else {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 			m_AppearType = APPEAR_FIVE;
-			m_Frame = 0.0f;
+			m_Frame = 1.0f;
+
+			m_CameraTimer++;
+
+			if (m_CameraTimer == 50) {
+
+			}
 		}
+
 		m_CameraSpeed = Ease(In, Cubic, m_Frame, m_CameraSpeed, m_AfterSpeed);
 		m_CameraScale = Ease(In, Cubic, m_Frame, m_CameraScale, m_AfterScale);
 		m_targetPos.y = Ease(In, Cubic, m_Frame, m_targetPos.y, 20.0f);
-	}
 
-	SetCircleCamera();
+		SetCircleCamera();
+	}
+	else if (m_AppearType == APPEAR_FIVE) {
+
+	}
 }
 
 //円運動の際のカメラ位置更新

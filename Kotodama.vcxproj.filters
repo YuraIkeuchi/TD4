@@ -409,9 +409,6 @@
     <ClInclude Include="SourceCode\engine\audio\Audio.h">
       <Filter>engine\audio</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\engine\2d\Feed.h">
-      <Filter>engine\2d</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\engine\2d\ImageManager.h">
       <Filter>engine\2d\Manager</Filter>
     </ClInclude>
@@ -758,6 +755,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\text\TextManager.h">
       <Filter>gamesystem\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\2d\Feed.h">
+      <Filter>engine\2d</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
