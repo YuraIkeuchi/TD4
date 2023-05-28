@@ -81,7 +81,7 @@ private:
 	//前座標
 	XMFLOAT3 m_OldPos = {};
 	//X方向の回転
-	float m_AfterRotX = 180.0f;
+	XMFLOAT3 m_AfterRot = { 180.0f,0.0f,0.0f };
 
 	//追従関係に使う
 	float m_FollowSpeed = 0.0f;
@@ -92,9 +92,6 @@ private:
 
 	//どの行動にするか
 	int m_MoveState = {};
-
-	//加算されるフレーム数
-	float m_AddFrame = 0.01f;
 
 	//イージング後の位置
 	XMFLOAT3 m_AfterPos = {};
@@ -190,6 +187,7 @@ private:
 	enum AppearState {
 		APPEAR_START,
 		APPEAR_SET,
+		APPEAR_LOOK,
 		APPEAR_JOY,
 		APPEAR_ANGER,
 		APPEAR_END,

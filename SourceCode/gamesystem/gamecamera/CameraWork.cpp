@@ -88,8 +88,8 @@ void CameraWork::FirstBossAppear() {
 //2個目のボスのカメラ
 void CameraWork::SecondBossAppear() {
 	float l_AddFrame = 0.0f;
-	m_CameraTimer++;
-	if (m_AppearType == APPEAR_ONE) {
+	if (m_AppearType == APPEAR_START) {
+		m_CameraTimer++;
 		m_AfterSpeed = m_CameraSpeed;
 		m_targetPos.x = 0.0f;
 		m_eyePos = {
@@ -105,6 +105,7 @@ void CameraWork::SecondBossAppear() {
 
 		SetCircleCamera();
 	}
+	//右を見る
 	else if (m_AppearType == APPEAR_SECOND) {
 		l_AddFrame = 0.01f;
 		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
@@ -117,6 +118,7 @@ void CameraWork::SecondBossAppear() {
 
 		SetCircleCamera();
 	}
+	//左を見る
 	else if (m_AppearType == APPEAR_THIRD) {
 		l_AddFrame = 0.01f;
 		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
@@ -130,6 +132,7 @@ void CameraWork::SecondBossAppear() {
 
 		SetCircleCamera();
 	}
+	//上を見る
 	else if (m_AppearType == APPEAR_FOURTH) {
 		l_AddFrame = 0.01f;
 		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
@@ -137,21 +140,72 @@ void CameraWork::SecondBossAppear() {
 			m_Frame = 1.0f;
 
 			m_CameraTimer++;
-
-			if (m_CameraTimer == 50) {
-
+			if (m_CameraTimer == 120) {
+				m_AppearType = APPEAR_FIVE;
+				m_CameraTimer = 0;
 			}
 		}
-
+	
 		m_CameraSpeed = Ease(In, Cubic, m_Frame, m_CameraSpeed, m_AfterSpeed);
 		m_CameraScale = Ease(In, Cubic, m_Frame, m_CameraScale, m_AfterScale);
 		m_targetPos.y = Ease(In, Cubic, m_Frame, m_targetPos.y, 20.0f);
 
 		SetCircleCamera();
 	}
-	else if (m_AppearType == APPEAR_FIVE) {
+	//ボスの後ろにいる
+	else if(m_AppearType == APPEAR_FIVE) {
+		m_targetPos = boss->GetPosition();
+		m_eyePos = { boss->GetPosition().x - 10.0f,boss->GetPosition().y,boss->GetPosition().z + 10.0f };
+		m_CameraTimer++;
 
+		if (m_CameraTimer == 30) {
+			m_AfterEye = { boss->GetPosition().x - 5.0f, boss->GetPosition().y, boss->GetPosition().z - 20.0f };
+			m_AppearType = APPEAR_SIX;
+			m_Frame = {};
+			m_CameraTimer = {};
+		}
 	}
+	//プレイヤーの右後ろに来る
+	else if (m_AppearType == APPEAR_SIX) {
+		l_AddFrame = 0.01f;
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = 1.0f;
+			m_CameraTimer++;
+			if (m_CameraTimer == 40) {
+				m_AfterEye = { Player::GetInstance()->GetPosition().x,45.0f,Player::GetInstance()->GetPosition().z - 20.0f };
+				m_AfterTarget = { Player::GetInstance()->GetPosition().x,5.0f,Player::GetInstance()->GetPosition().z };
+				m_Frame = {};
+				m_CameraTimer = {};
+				m_AppearType = APPEAR_END;
+			}
+		}
+
+		m_eyePos = {
+			Ease(In,Cubic,m_Frame,m_eyePos.x,m_AfterEye.x),
+			Ease(In,Cubic,m_Frame,m_eyePos.y,m_AfterEye.y),
+			Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
+		};
+	}
+	//バトル前のカメラに戻る
+	else if (m_AppearType == APPEAR_END) {
+		l_AddFrame = 0.01f;
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = 1.0f;
+		}
+
+		m_eyePos = {
+		Ease(In,Cubic,m_Frame,m_eyePos.x,m_AfterEye.x),
+		Ease(In,Cubic,m_Frame,m_eyePos.y,m_AfterEye.y),
+		Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
+		};
+
+		m_targetPos = {
+		Ease(In,Cubic,m_Frame,m_targetPos.x,m_AfterTarget.x),
+		Ease(In,Cubic,m_Frame,m_targetPos.y,m_AfterTarget.y),
+		Ease(In,Cubic,m_Frame,m_targetPos.z,m_AfterTarget.z),
+		};
+	}
+
 }
 
 //円運動の際のカメラ位置更新

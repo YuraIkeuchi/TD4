@@ -170,9 +170,9 @@ void SecondBoss::DamAction()
 //ImGui
 void SecondBoss::ImGui_Origin() {
 	ImGui::Begin("SecondBoss");
-	ImGui::Text("POSX:%f", m_Position.x);
-	ImGui::Text("POSY:%f", m_Position.y);
-	ImGui::Text("POSZ:%f", m_Position.z);
+	ImGui::Text("ROTX:%f", m_Rotation.x);
+	ImGui::Text("ROTY:%f", m_Rotation.y);
+	ImGui::Text("ROTZ:%f", m_Rotation.z);
 	ImGui::Text("AppearTimer:%d", m_AppearTimer);
 	ImGui::End();
 }
@@ -194,7 +194,7 @@ void SecondBoss::Move() {
 	
 	//イージングで設定する
 	m_FollowSpeed = Ease(In, Cubic, m_Frame, m_FollowSpeed, m_AfterFollowSpeed);
-	m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, m_AfterRotX);
+	m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, m_AfterRot.x);
 	m_Position.y = Ease(In, Cubic, m_Frame, m_Position.y, m_AfterPos.y);
 	//追従
 	Helper::GetInstance()->FollowMove(m_Position, Player::GetInstance()->GetPosition(), m_FollowSpeed);
@@ -232,7 +232,7 @@ void SecondBoss::Stamp() {
 		
 		if (Helper::GetInstance()->CheckMin(m_StopTimer, l_TargetTimer, 1)) {		//次の行動
 			StampInit(PRESS_ATTACK, false);
-			m_AfterRotX = m_Rotation.x + 360.0f;
+			m_AfterRot.x = m_Rotation.x + 360.0f;
 		}
 	}
 	else if (m_PressType == PRESS_ATTACK) {			//落下してくる
@@ -257,7 +257,7 @@ void SecondBoss::Stamp() {
 			Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
 			Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z)
 		};
-		m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, m_AfterRotX);
+		m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, m_AfterRot.x);
 	}
 	else if (m_PressType == PRESS_SHAKE) {			//シェイク
 		l_TargetTimer = 250;
@@ -408,7 +408,6 @@ void SecondBoss::Rolling() {
 		Helper::GetInstance()->CheckMax(m_Position.y, 5.0f, m_AddPower);
 		//回転を決める
 		m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, 90.0f);
-
 	}
 	else if (m_RollType == ROLL_SECOND) {
 		l_AfterPos = { 55.0f,m_Position.y,-50.0f };
@@ -444,9 +443,7 @@ void SecondBoss::Rolling() {
 
 		//飛ぶような感じにするため重力を入れる
 		m_AddPower -= m_Gravity;
-
 		Helper::GetInstance()->CheckMax(m_Position.y, 5.0f, m_AddPower);
-
 		m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, 0.0f);
 	}
 	else {
@@ -562,7 +559,7 @@ void SecondBoss::AlterMove() {
 	else {
 		//上に上がる
 		if (_InterValState == UpState) {
-			m_AfterRotX += 180.0f;
+			m_AfterRot.x += 180.0f;
 			MoveInit("UPSTATE");
 		}
 		//下に落ちる
@@ -574,7 +571,7 @@ void SecondBoss::AlterMove() {
 				if (m_Rotation.x == 360.0f) {
 					BirthStamp("Anger");
 					m_Rotation.x = 0.0f;
-					m_AfterRotX = 0.0f;
+					m_AfterRot.x = 0.0f;
 				}
 				else {
 					BirthStamp("Joy");
@@ -602,7 +599,7 @@ void SecondBoss::AngerMove() {
 	else {
 		//上に上がる
 		if (_InterValState == UpState) {
-			m_AfterRotX = 0.0f;
+			m_AfterRot.x = 0.0f;
 			MoveInit("UPSTATE");
 		}
 		else {
@@ -633,7 +630,7 @@ void SecondBoss::JoyMove() {
 	else {
 		//上に上がる
 		if (_InterValState == UpState) {
-			m_AfterRotX = 180.0f;
+			m_AfterRot.x = 180.0f;
 			MoveInit("UPSTATE");
 		}
 		//下に落ちる(喜びのスタンプが押される)
@@ -802,24 +799,61 @@ void SecondBoss::StampInit(const int AttackNumber, const bool Random) {
 }
 //ボス登場シーン
 void SecondBoss::AppearAction() {
-	const float m_AddFrame = 0.01f;
-	m_AppearTimer++;
+	float l_AddFrame = 0.0f;
 	if (m_AppearState == APPEAR_START) {//初期座標セット
+		m_AppearTimer++;
 		if (m_AppearTimer == 300) {
 			m_AppearState = APPEAR_SET;
-			m_Frame = 0.0f;
+			m_Frame = {};
 			m_AfterPos.y = 5.0f;
+			m_AppearTimer = {};
 		}
 	}
 	else if (m_AppearState == APPEAR_SET) {//落下してくる
-		if (m_Frame < m_FrameMax) {
-			m_Frame += m_AddFrame;
-		}
-		else {
+		l_AddFrame = 0.1f;
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 			m_Frame = {};
-			m_AppearState = APPEAR_ANGER;
+			m_AppearState = APPEAR_LOOK;
 		}
 		m_Position.y = Ease(In, Cubic, m_Frame, m_Position.y, m_AfterPos.y);
+	}
+	else if (m_AppearState == APPEAR_LOOK) {
+		m_AppearTimer++;
+		if (m_AppearTimer == 50) {
+			m_AppearTimer = 0;
+			m_AppearState = APPEAR_ANGER;
+			m_AfterRot = { 180.0f,90.0f,90.0f };
+		}
+	}
+	else if (m_AppearState == APPEAR_ANGER) {
+		l_AddFrame = 0.01f;
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = 1.0f;
+			m_AppearTimer++;
+
+			if (m_AppearTimer == 50) {
+				m_Frame = {};
+				m_AppearTimer = 0;
+				m_AppearState = APPEAR_END;
+				m_AfterRot = { 0.0f,90.0f,0.0f };
+			}
+		}
+		m_Rotation = { Ease(In,Cubic,m_Frame,m_Rotation.x,m_AfterRot.x),
+			Ease(In,Cubic,m_Frame,m_Rotation.y,m_AfterRot.y),
+			Ease(In,Cubic,m_Frame,m_Rotation.z,m_AfterRot.z),
+		};
+	}
+	else if (m_AppearState == APPEAR_END) {
+		l_AddFrame = 0.01f;
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = 0.0f;
+			m_FinishAppear = true;
+		}
+		m_Rotation = { Ease(In,Cubic,m_Frame,m_Rotation.x,m_AfterRot.x),
+			Ease(In,Cubic,m_Frame,m_Rotation.y,m_AfterRot.y),
+			Ease(In,Cubic,m_Frame,m_Rotation.z,m_AfterRot.z),
+		};
+		m_Position.y = Ease(In, Cubic, m_Frame, m_Position.y, 20.0f);
 	}
 
 	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);

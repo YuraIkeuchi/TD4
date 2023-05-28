@@ -48,6 +48,7 @@ bool Player::Initialize()
 //ステータスの初期化
 void Player::InitState(const XMFLOAT3& pos) {
 	m_Position = pos;
+	m_Rotation = { 0.0f,0.0f,0.0f };
 	//初期化ぶち込み
 	Initialize();
 	//移動処理用
