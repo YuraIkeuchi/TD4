@@ -7,6 +7,7 @@ void MessageWindow::Initialize()
 	window_->SetSize(window_size);
 
 	blackback_ = IKESprite::Create(ImageManager::BLACKWINDOW, {});
+	blackback_->SetSize({ 1280.0f,720.0f });
 
 	girl_ = IKESprite::Create(ImageManager::GIRL, { -100.f,300.f });
 	girl_->SetColor(girl_color);

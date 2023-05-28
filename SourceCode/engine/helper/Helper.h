@@ -23,11 +23,14 @@ public:
 	void SetCamera(Camera* camera) {
 		m_Camera = camera;
 	}
+	//Clamp‚ğ•Ô‚·ŠÖ”
+	template<typename T>
 	//ŒvZŒn
-	bool CheckMaxFLOAT(float& Num, const float Max, const float Add);
-	bool CheckMinFLOAT(float& Num, const float Min, const float Add);
-	bool CheckMinINT(int& Num, const int Min, const int Add);
-	bool CheckMaxINT(int& Num, const int Max, const int Add);
+	bool CheckMax(T& Num, const T Max, const T Add);
+	//Clamp‚ğ•Ô‚·ŠÖ”
+	template<typename T>
+	bool CheckMin(T& Num, const T Min, const T Add);
+	bool FrameCheck(float& frame, const float addframe);
 	//Clamp‚ğ•Ô‚·ŠÖ”
 	template<typename T>
 	void Clamp(T& Num, const T Min, const T Max);
@@ -103,4 +106,38 @@ namespace Easing
 template<typename T>
 inline void Helper::Clamp(T& Num, const T Min, const T Max) {
 	Num = min(max(Num, Min), Max);
+}
+
+//floatŒ^
+//max min‚ğbool•ª‚Å•Ô‚·
+template<typename T>
+inline bool Helper::CheckMax(T& Num, const T Max, const T Add) {
+	Num += Add;
+
+	Num = max(Num, Max);
+
+
+	if (Num <= Max) {
+		return true;
+	}
+	else {
+		return false;
+	}
+
+	return false;
+}
+//Min‚ğŒŸõ
+template<typename T>
+inline bool Helper::CheckMin(T& Num, const T Min, const T Add) {
+	Num += Add;
+	Num = min(Num, Min);
+
+	if (Num >= Min) {
+		return true;
+	}
+	else {
+		return false;
+	}
+
+	return false;
 }

@@ -33,7 +33,7 @@ void AttackBullet::Action() {
 		m_Position.x += m_Angle.x * m_AddSpeed;
 		m_Position.z += m_Angle.y * m_AddSpeed;
 		//ˆê’èŽžŠÔ—§‚Â‚ÆÁ‚¦‚é
-		if (Helper::GetInstance()->CheckMinINT(m_Timer, m_TargetTimer, 1)) {
+		if (Helper::GetInstance()->CheckMin(m_Timer, m_TargetTimer, 1)) {
 			m_Timer = 0;
 			m_Alive = false;
 		}

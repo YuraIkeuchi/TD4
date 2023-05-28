@@ -48,6 +48,7 @@ bool Player::Initialize()
 //ステータスの初期化
 void Player::InitState(const XMFLOAT3& pos) {
 	m_Position = pos;
+	m_Rotation = { 0.0f,0.0f,0.0f };
 	//初期化ぶち込み
 	Initialize();
 	//移動処理用
@@ -105,7 +106,7 @@ void Player::Update()
 	//飢餓ゲージ更新
 	HungerGauge::GetInstance()->Update();
 
-	Helper::GetInstance()->CheckMaxINT(m_DamageInterVal, 0, -1);
+	Helper::GetInstance()->CheckMax(m_DamageInterVal, 0, -1);
 
 	//反発
 	ReBound();
@@ -412,8 +413,8 @@ void Player::Idle()
 }
 //インターバル
 void Player::InterVal() {
-	Helper::GetInstance()->CheckMaxINT(m_InterVal, 0, -1);
-	Helper::GetInstance()->CheckMaxINT(m_RigidityTime, 0, -1);
+	Helper::GetInstance()->CheckMax(m_InterVal, 0, -1);
+	Helper::GetInstance()->CheckMax(m_RigidityTime, 0, -1);
 }
 //弾との当たり判定
 bool Player::BulletCollide(const XMFLOAT3& pos, const XMMATRIX& matrot, const XMFLOAT3& scale, const bool Catch) {
@@ -521,4 +522,12 @@ void Player::BirthParticle() {
 	neweffect->Initialize();
 	neweffect->SetPosition(m_Position);
 	effects.push_back(neweffect);
+}
+//ボス登場シーンの更新
+void Player::AppearUpdate() {
+	//基礎パラメータ設定
+	Fbx_SetParam();
+
+	//どっち使えばいいか分からなかったから保留
+	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 }

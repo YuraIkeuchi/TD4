@@ -15,9 +15,7 @@ public:
 	//OBJ‚Ì–¼‘O
 	enum ModelName {
 		Ground,
-		Cube,
 		Box,
-		Boss,
 		Bullet,
 		GhostBullet,
 		BulEnemy,
