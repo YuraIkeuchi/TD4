@@ -6,6 +6,7 @@
 #include "LoadStageObj.h"
 #include "Conversation.h"
 #include"MessageWindow.h"
+#include"TextManager.h"
 #include <random>
 #include <vector>
 #include <windows.h>
@@ -78,8 +79,9 @@ private:
 	IKEModel* m_Model = nullptr;
 	unique_ptr<BackObj> backobj;
 	unique_ptr<LoadStageObj> loadobj;
-	unique_ptr<Conversation> conversation_;
+	//unique_ptr<Conversation> conversation_;
 	unique_ptr<MessageWindow> messagewindow_;
+	unique_ptr<TextManager> text_;
 
 	float shakeTimer = 0;
 	int shakeCount = 0;
