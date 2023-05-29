@@ -19,7 +19,8 @@ private:
 	{
 		NON,
 		FEEDIN,
-		FEEDOUT
+		FEEDOUT,
+		END
 	}_phase;
 public:
 	enum class FeedType
@@ -32,6 +33,6 @@ public:
 	void FeedIn(FeedType type,float feedspeed,bool &feedf);
 	void Draw();
 
-	inline bool GetFeedEnd() { if (_phase == FeedPhase::NON)return true; return false; }
+	inline bool GetFeedEnd() { if (_phase == FeedPhase::FEEDOUT)return true; return false; }
 };
 

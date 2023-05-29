@@ -19,7 +19,7 @@ FirstBoss::FirstBoss() {
 
 bool FirstBoss::Initialize() {
 	m_Position = { 0.0f,0.0f,30.0f };
-	m_Scale = { 2.5f,2.4f,2.5f };
+	m_Scale = { 1.5f,1.4f,1.5f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Rotation.y = 90.f;
 	RTime = 1;
@@ -283,7 +283,7 @@ void FirstBoss::Move()
 		m_Position.z = l_player.z + cosf(BossAngle * (PI / 180.0f)) * 20.0f;
 
 	}
-
+	
 }
 
 
@@ -525,14 +525,14 @@ void FirstBoss::NormalAttak::Remove(XMFLOAT3& Pos, XMFLOAT3& Scl, bool Enf)
 		OldPos_Remove = Pos;
 	}
 
-	Scl.x = Easing::EaseOut(SPosMoveEaseT, 2.5f, 0.f);
-	Scl.y = Easing::EaseOut(SPosMoveEaseT, 2.5f, 0.f);
-	Scl.z = Easing::EaseOut(SPosMoveEaseT, 2.5f, 0.f);
+	Scl.x = Easing::EaseOut(SPosMoveEaseT, 1.5f, 0.f);
+	Scl.y = Easing::EaseOut(SPosMoveEaseT, 1.5f, 0.f);
+	Scl.z = Easing::EaseOut(SPosMoveEaseT, 1.5f, 0.f);
 
 	Helper::GetInstance()->Clamp(SPosMoveEaseT, 0.f, 1.f);
-	Helper::GetInstance()->Clamp(Scl.x, 0.f, 2.5f);
-	Helper::GetInstance()->Clamp(Scl.y, 0.f, 2.5f);
-	Helper::GetInstance()->Clamp(Scl.z, 0.f, 2.5f);
+	Helper::GetInstance()->Clamp(Scl.x, 0.f, 1.5f);
+	Helper::GetInstance()->Clamp(Scl.y, 0.f, 1.5f);
+	Helper::GetInstance()->Clamp(Scl.z, 0.f, 1.5f);
 }
 
 void FirstBoss::RemovePos()
@@ -730,11 +730,11 @@ void FirstBoss::ChargeAttack::Attack(XMFLOAT3& Pos, XMFLOAT3& Rot)
 	case Phase_Charge::JUMP:
 		shake->SetShakeTimer(0);
 
-		JumpAction(Pos);
+		JumpAction(Pos,Rot);
 		break;
 	case Phase_Charge::ATTACK:
 		//テクスチャ広がるやつ
-		TexScling();
+		TexScling(Rot);
 		break;
 
 	}
@@ -751,7 +751,7 @@ void FirstBoss::ChargeAttack::ReturnPosJudg(bool& reposf)
 	_phase = Phase_Charge::NON;
 }
 
-void FirstBoss::ChargeAttack::JumpAction(XMFLOAT3& Pos)
+void FirstBoss::ChargeAttack::JumpAction(XMFLOAT3& Pos, XMFLOAT3& Rot)
 {
 	float SubPower = 0.001f;
 	//落下の緩急
@@ -769,17 +769,29 @@ void FirstBoss::ChargeAttack::JumpAction(XMFLOAT3& Pos)
 	{
 		_phase = Phase_Charge::ATTACK;
 	}
+
+	if(JFrame>=1.0f/2.0f)
+	{
+		Rot.z -= 5.0f;
+	}
+	Helper::GetInstance()->FloatClamp(Rot.z, -90, 0);
+	Helper::GetInstance()->FloatClamp(JFrame, 0.f, 1.f);
 	Helper::GetInstance()->Clamp(JFrame, 0.f, 1.f);
 }
-void FirstBoss::ChargeAttack::TexScling()
+
+
+void FirstBoss::ChargeAttack::TexScling(XMFLOAT3& Rot)
 {
-	constexpr float AddScling = 0.15f;
+	Rot.z += 5.0f;
+	Helper::GetInstance()->FloatClamp(Rot.x, -90, 0);
+
+	constexpr float AddScling = 0.08f;
 	bool flagOff = texAlpha[0] < 0.f && texAlpha[1] < 0.f;
 
 	texScl[0].x += AddScling;
 	texScl[0].y += AddScling;
 
-	if (texScl[0].x > 3.f)
+	if (texScl[0].x > 2.f)
 	{
 		texScl[1].x += AddScling;
 		texScl[1].y += AddScling;
@@ -873,6 +885,24 @@ void FirstBoss::AppearAction() {
 
 }
 //ボス撃破シーン
+void FirstBoss::DeadAction_Throw() {
+	if (!ResetRota) {
+		m_Rotation.y = 90.f;
+		m_Rotation.x= 0.f;
+		m_Rotation.z= 0.f;
+		ResetRota = true;
+	}
+	else
+	{
+		m_Position.y = 0;
+		m_Rotation.y += 0.02f;
+		m_Rotation.z += 0.09f;
+	}
+}
+//ボス撃破シーン
 void FirstBoss::DeadAction() {
+	m_Rotation.y += 0.03f;
+	m_Rotation.z += 1.6f;
 
+	Helper::GetInstance()->FloatClamp(m_Rotation.z, 0, 90);
 }

@@ -37,9 +37,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	ui->SetBoss(enemymanager->GetBoss());
 
 	BackObj::GetInstance()->Initialize();
-
-	feedn = new Feed();
-
+	
 	loadobj = std::make_unique<LoadStageObj>();
 	loadobj->AllLoad("FIRSTSTAGE");
 	LoadStageObj::SetEnemyManager(enemymanager.get());
@@ -56,8 +54,8 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 
 	if (enemymanager->BossDestroy()) {
 		Audio::GetInstance()->StopWave(1);
-		sceneChanger_->ChangeStart();
-		sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
+	//	sceneChanger_->ChangeStart();
+	//	sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
 
 	}
 
@@ -78,9 +76,21 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	loadobj->FirstUpdate();
 	ParticleEmitter::GetInstance()->Update();
 	//カメラワークのセット
-	if(enemymanager->BossDestroy())
+	if (enemymanager->BossDestroy())
 	{
-		camerawork->SetCameraState(CAMERA_BOSSDEAD);
+		//フェード前
+		if (!camerawork->GetFeedEnd()) {
+			enemymanager->SetDeadThrow(true);
+			enemymanager->DeadUpdate();
+			camerawork->SetCameraState(CAMERA_BOSSDEAD_FIRST);
+		}
+		//フェード後
+		else
+		{
+			enemymanager->SetDeadThrow(false);
+			enemymanager->DeadUpdate();
+			camerawork->SetCameraState(CAMERA_BOSSDEAD_SECOND);
+		}
 	}
 	else
 	{
@@ -90,7 +100,6 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	{
 		feedF = true;
 	}
-	feedn->FeedIn(Feed::FeedType::BLACK, 0.02f, feedF);
 	camerawork->Update(camera);
 	lightgroup->Update();
 }
@@ -141,13 +150,12 @@ void FirstStageActor::BackDraw(DirectXCommon* dxCommon) {
 //ポストエフェクトがかからない
 void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	
-	//完全に前に書くスプライト
-	IKESprite::PreDraw();
+
+	ui->Draw();;
+	sceneChanger_->Draw();	//完全に前に書くスプライト
+	//IKESprite::PreDraw();
 	//blackwindow->Draw();
-	IKESprite::PostDraw();
-	ui->Draw();
-	feedn->Draw();
-	sceneChanger_->Draw();
+	camerawork->feedDraw();
 }
 //IMGuiの描画
 void FirstStageActor::ImGuiDraw(DirectXCommon* dxCommon) {

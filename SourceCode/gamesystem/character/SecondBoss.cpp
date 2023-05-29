@@ -887,3 +887,9 @@ void SecondBoss::AppearAction() {
 void SecondBoss::DeadAction() {
 
 }
+
+//ボス撃破シーン
+void SecondBoss::DeadAction_Throw() {
+
+}
+

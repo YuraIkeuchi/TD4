@@ -44,6 +44,7 @@ void NormalEnemy::Action() {
 	OnCollision();
 	ColPlayer();
 	Particle();
+	
 	DeathEffect();
 }
 //•`‰æ
@@ -81,7 +82,7 @@ void NormalEnemy::Particle() {
 
 void NormalEnemy::DeathEffect()
 {
-	if (isAlive)return;
+	if (!DeathEffectF)return;
 
 		float l_AddSize = 2.5f;
 		const float RandScale = 3.0f;
@@ -100,7 +101,8 @@ void NormalEnemy::DeathEffect()
 		int l_Life = int(l_Randlife(mt));
 
 		ParticleEmitter::GetInstance()->Explosion(l_Life, m_Position, l_AddSize, s_scale, e_scale, s_color, e_color);
-	}
+		DeathEffectF = false;
+}
 
 void NormalEnemy::Appearance()
 {

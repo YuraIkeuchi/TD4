@@ -53,6 +53,8 @@ protected:
 
 	virtual void DeadAction() = 0;//ボス撃破の固有の処理
 
+	virtual void DeadAction_Throw() = 0;//ボス撃破の固有の処理 スロー
+
 	virtual void ImGui_Origin() = 0;//ボスそれぞれのImGui
 
 private:
@@ -141,7 +143,11 @@ public:
 protected:
 	bool DeathSceneF;
 	void DeathAction();
+	void DeathAction_Throw();
+	bool ThrowUpdateF;
+
 public:
 	bool GetDeathAction() { return DeathSceneF; }
+	void SetThrowUpdateF(bool f) { ThrowUpdateF = f; }
 };
 

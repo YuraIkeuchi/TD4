@@ -19,7 +19,10 @@ private:
 	void Action() override;//行動
 	void AppearAction() override;//登場
 	void DeadAction() override;//撃破
-	void ImGui_Origin() override;//Imgui
+	void DeadAction_Throw() override;//撃破
+
+	void ImGui_Origin() override;
+
 	//エフェクト
 	void EffecttexDraw(DirectXCommon* dxCommon) override;
 	//基本移動

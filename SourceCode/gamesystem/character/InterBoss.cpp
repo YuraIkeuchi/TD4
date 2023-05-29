@@ -35,7 +35,10 @@ void InterBoss::AppearUpdate() {
 }
 //撃破の更新
 void InterBoss::DeadUpdate() {
-	DeadAction();//ボス固有の更新
+	if (ThrowUpdateF)
+		DeadAction_Throw();
+	else
+		DeadAction();//ボス固有の更新
 }
 //描画
 void InterBoss::Draw(DirectXCommon* dxCommon) {

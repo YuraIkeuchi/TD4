@@ -7,16 +7,21 @@
 CameraWork::CameraWork(XMFLOAT3 eye, XMFLOAT3 target) {
 	m_eyePos = eye;
 	m_targetPos = target;
-	
+
 	Shake* shake_ = new Shake();
 	shake.reset(shake_);
+
+	Feed* feed_ = new Feed();
+	feed.reset(feed_);
+
 }
 /*CharaStateのState並び順に合わせる*/
 void (CameraWork::* CameraWork::stateTable[])() = {
 	&CameraWork::DefaultCam,//通常
 	&CameraWork::SpecialUpdate,//ロード
 	&CameraWork::BossAppear,//ボス登場
-	&CameraWork::SetBossDead,//ボスのやられたとき
+	&CameraWork::SetBossDead_Cam,//ボスのやられたとき
+	&CameraWork::SetBossDead_Act,//ボスのやられたとき（フェード五）
 };
 //XV
 void CameraWork::Update(DebugCamera* camera) {
@@ -47,21 +52,49 @@ void CameraWork::BossAppear() {
 	}
 }
 //ボス撃破
-void CameraWork::SetBossDead()
+void CameraWork::SetBossDead_Cam()
 {
 	m_eyePos.x = boss->GetPosition().x;
-	m_eyePos.z =boss->GetPosition().z-20.f;
-	m_eyePos.y = -10.f;
+
+	m_eyePos.z = boss->GetPosition().z -30.f;
+	m_eyePos.y = 20.f;
 
 	m_targetPos.x = boss->GetPosition().x;
-	m_targetPos.z =boss->GetPosition().z;
-	
+	m_targetPos.z = boss->GetPosition().z;
+
+
+	if (DeathTimer > 120 && !FeedF)
+	{
+		FeedF = true;
+	}
+
+	if (FeedF) {
+		DeathTimer = 0;
+		feed->FeedIn(Feed::FeedType::WHITE, 0.02f, FeedF);
+		if (feed->GetFeedEnd())FeedEndF = true;
+	} else
+		DeathTimer++;
+
 }
- 
+
+//フェード後の撃破アクション
+void CameraWork::SetBossDead_Act()
+{
+	m_eyePos.x = Player::GetInstance()->GetPosition().x;
+	m_eyePos.y = Player::GetInstance()->GetPosition().y+50;
+	m_eyePos.z = Player::GetInstance()->GetPosition().z - 20.0f;
+	m_targetPos.x = Player::GetInstance()->GetPosition().x;
+	m_targetPos.z = Player::GetInstance()->GetPosition().z;
+
+	DeathTimer = 0;
+	FeedF = false;
+}
+
+
 void CameraWork::EditorCamera()
 {
 	m_eyePos.y = 35.f;
-	m_targetPos.z= m_eyePos.z+30.0f;
+	m_targetPos.z = m_eyePos.z + 30.0f;
 	m_targetPos.x = m_eyePos.x;
 }
 
@@ -81,6 +114,10 @@ void CameraWork::SpecialUpdate() {
 
 }
 
+void CameraWork::feedDraw()
+{
+	if (!FeedF) return;
+	feed->Draw();
 //最初のボスのカメラ
 void CameraWork::FirstBossAppear() {
 
