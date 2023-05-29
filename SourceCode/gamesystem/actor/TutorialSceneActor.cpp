@@ -178,25 +178,23 @@ void TutorialSceneActor::SpawnAllEnemyState() {
 	}
 }
 void TutorialSceneActor::TextLastState() {
+	loadobj->TutorialUpdate();
+	enemymanager->TutorialUpdate(2);
+	Player::GetInstance()->Update();
+	Player::GetInstance()->SetCanShot(false);
 	if (MovingCamera(e_eyepos, s_eyepos, e_targetpos, s_targetpos)) {
 		if ((DebugButton() ||
 			input->TriggerButton(Input::B))
 			) {
 			nowstate_ = state::MAINTUTORIAL;
 			Player::GetInstance()->SetCanShot(true);
-
 		}
 	}
-	loadobj->TutorialUpdate();
-	enemymanager->TutorialUpdate(2);
-	Player::GetInstance()->Update();
-	Player::GetInstance()->SetCanShot(false);
 
 }
 void TutorialSceneActor::MainTutorialState() {
 	loadobj->TutorialUpdate();
 	enemymanager->TutorialUpdate(1);
-
 	if (DebugButton() ||
 		Clear(enemymanager->AllDeadEnemy(), 60)) {
 		nowstate_ = state::COMPLETE;

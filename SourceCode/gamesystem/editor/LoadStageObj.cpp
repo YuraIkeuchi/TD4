@@ -172,7 +172,7 @@ void LoadStageObj::SearchFood() {
 }
 //食料とゴーストの当たり判定
 void LoadStageObj::CollideFood() {
-	float l_Radius = 1.0f;
+	float l_Radius = 1.5f;
 	for (auto i = 0; i < ghosts.size(); i++) {
 		XMFLOAT3 l_ghostpos = ghosts[i]->GetPosition();
 		for (auto j = 0; j < foods.size(); j++) {

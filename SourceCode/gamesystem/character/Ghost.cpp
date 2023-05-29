@@ -150,6 +150,7 @@ void Ghost::BirthGhost() {
 			m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
 			uniform_int_distribution<int> spawn(30, 45);
 			kSpawnTimerMax = float(spawn(mt));
+			m_Color = { 1.0f,1.0f,1.0f,0.2f };
 			m_Catch = false;
 			m_Search = false;
 			m_Follow = false;
