@@ -20,7 +20,7 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	ParticleEmitter::GetInstance()->AllDelete();
 
 	//各クラス
-	Player::GetInstance()->InitState({ 0.0f,0.0f,0.0f });
+	Player::GetInstance()->InitState({ 0.0f,0.0f,-5.0f });
 	
 	//シーンチェンジャー
 	sceneChanger_ = make_unique<SceneChanger>();
@@ -115,11 +115,6 @@ void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 //登場シーン
 void SecondStageActor::IntroUpdate(DebugCamera* camera) {
 	Input* input = Input::GetInstance();
-
-	if (input->TriggerKey(DIK_X)) {
-		m_SceneState = SceneState::MainState;
-	}
-
 	if (enemymanager->GetEnemyFinishAppear()) {
 		m_SceneState = SceneState::MainState;
 		camerawork->SetCameraState(CAMERA_NORMAL);

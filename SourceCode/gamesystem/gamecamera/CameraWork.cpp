@@ -95,7 +95,7 @@ void CameraWork::SecondBossAppear() {
 		m_eyePos = {
 			Player::GetInstance()->GetPosition().x,
 			Player::GetInstance()->GetPosition().y,
-			Player::GetInstance()->GetPosition().z + 10.0f,
+			Player::GetInstance()->GetPosition().z + 23.0f,
 		};
 
 		if (m_CameraTimer == 10) {
@@ -122,7 +122,7 @@ void CameraWork::SecondBossAppear() {
 	else if (m_AppearType == APPEAR_THIRD) {
 		l_AddFrame = 0.01f;
 		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
-			m_AfterSpeed = 90.0f;
+			m_AfterTarget = { boss->GetPosition().x,20.0f,boss->GetPosition().z };
 			m_AppearType = APPEAR_FOURTH;
 			m_Frame = 0.0f;
 			m_CameraTimer = 0;
@@ -148,9 +148,10 @@ void CameraWork::SecondBossAppear() {
 	
 		m_CameraSpeed = Ease(In, Cubic, m_Frame, m_CameraSpeed, m_AfterSpeed);
 		m_CameraScale = Ease(In, Cubic, m_Frame, m_CameraScale, m_AfterScale);
-		m_targetPos.y = Ease(In, Cubic, m_Frame, m_targetPos.y, 20.0f);
-
-		SetCircleCamera();
+		m_targetPos = { Ease(In, Cubic, m_Frame, m_targetPos.x, m_AfterTarget.x),
+			Ease(In, Cubic, m_Frame, m_targetPos.y, m_AfterTarget.y),
+			Ease(In, Cubic, m_Frame, m_targetPos.z, m_AfterTarget.z),
+		};
 	}
 	//ボスの後ろにいる
 	else if(m_AppearType == APPEAR_FIVE) {

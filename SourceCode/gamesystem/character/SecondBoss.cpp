@@ -25,14 +25,14 @@ SecondBoss::SecondBoss() {
 }
 //初期化
 bool SecondBoss::Initialize() {
-	m_Position = { 0.0f,20.0f,12.0f };
+	m_Position = { 0.0f,30.0f,20.0f };
 	m_Rotation = { 0.0f,90.0f,0.0f };
 	m_OBBScale = { 6.0f,6.0f,6.0f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
-	m_Scale = { 0.03f,0.03f,0.03f };
+	m_Scale = { 0.05f,0.05f,0.05f };
 	m_MaxHp = m_HP;
 	m_AddPower = 0.8f;
-	m_Radius = 3.0f;
+	m_Radius = 5.0f;
 	_charaState = CharaState::STATE_STAMP;
 	m_MoveState = MOVE_ALTER;
 	m_RandomType = RANDOM_START;
@@ -187,14 +187,8 @@ void SecondBoss::DamAction()
 }
 //ImGui
 void SecondBoss::ImGui_Origin() {
-	ImGui::Begin("SecondBoss");
-	for (int i = 0; i < m_StampInterval.size(); i++) {
-		ImGui::Text("MoveInterval[%d]:%d",i, m_StampInterval[i]);
-	}
-	for (int i = 0; i < m_RandomInterval.size(); i++) {
-		ImGui::Text("RandomInterval[%d]:%d", i, m_RandomInterval[i]);
-	}
-	ImGui::End();
+	/*ImGui::Begin("SecondBoss");
+	ImGui::End();*/
 }
 //移動
 void SecondBoss::Move() {
@@ -253,7 +247,7 @@ void SecondBoss::Stamp() {
 	}
 	else if (m_PressType == PRESS_ATTACK) {			//落下してくる
 		l_AddFrame = 0.05f;
-		m_AfterPos = { m_Position.x,5.0f,m_Position.z };
+		m_AfterPos = { m_Position.x,8.0f,m_Position.z };
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
 		}
@@ -301,7 +295,7 @@ void SecondBoss::Stamp() {
 	else if (m_PressType == PRESS_RETURN) {//上に戻る
 		l_AddFrame = 0.01f;
 		//上に戻る
-		m_AfterPos = { m_Position.x,25.0f,m_Position.z };
+		m_AfterPos = { m_Position.x,30.0f,m_Position.z };
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
 		}
@@ -369,7 +363,7 @@ void SecondBoss::RandomStamp() {
 	}
 	else if (m_RandomType == RANDOM_ATTACK) {
 		l_AddFrame = 0.05f;
-		m_AfterPos.y = 5.0f;
+		m_AfterPos.y = 8.0f;
 		const int l_MoveMax = 10;
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
@@ -452,7 +446,7 @@ void SecondBoss::Rolling() {
 
 		//飛ぶような感じにするため重力を入れる
 		m_AddPower -= m_Gravity;
-		Helper::GetInstance()->CheckMax(m_Position.y, 5.0f, m_AddPower);
+		Helper::GetInstance()->CheckMax(m_Position.y, 8.0f, m_AddPower);
 		m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, 0.0f);
 	}
 	else {
@@ -676,7 +670,7 @@ void SecondBoss::ChoiceMove() {
 			_InterValState = UpState;
 			_charaState = STATE_MOVE;
 			m_FollowSpeed = 1.0f;
-			m_AfterPos.y = 25.0f;
+			m_AfterPos.y = 30.0f;
 
 			if (l_RandState <= 10) {
 				m_MoveState = MOVE_ALTER;
@@ -708,11 +702,11 @@ void SecondBoss::MoveInit(const std::string& HighState) {
 	if (HighState == "UPSTATE") {
 		_InterValState = DownState;
 		m_Frame = 0.0f;
-		m_AfterPos.y = 5.0f;
+		m_AfterPos.y = 8.0f;
 	}
 	else if (HighState == "DOWNSTATE") {
 		_InterValState = UpState;
-		m_AfterPos.y = 25.0f;
+		m_AfterPos.y = 30.0f;
 		m_FollowSpeed = 1.0f;
 		m_Frame = 0.0f;
 		m_StopTimer = 0;

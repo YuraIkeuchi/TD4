@@ -42,7 +42,7 @@ protected:
 	float m_Frame = 0.0f;
 	XMFLOAT3 m_Position = { 0.0f,-200.0f,0.0f };
 	XMFLOAT3 m_Rotation = { 90.0f,0.0f,0.0f };
-	XMFLOAT3 m_Scale = { 1.0f,1.0f,1.0f };
+	XMFLOAT3 m_Scale = { 1.3f,1.3f,1.3f };
 	XMFLOAT4 m_Color = { 1.0f,1.0f,1.0f,0.0f };
 };
 
