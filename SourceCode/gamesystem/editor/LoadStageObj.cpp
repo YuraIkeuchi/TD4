@@ -158,7 +158,7 @@ void LoadStageObj::SearchFood() {
 			if (ghosts[i]->GetFollow()) { continue; }
 			XMFLOAT3 l_foodpos = foods[j]->GetPosition();
 			float l_dir = Helper::GetInstance()->ChechLength(l_ghostpos, l_foodpos);
-			if ((!ghosts[i]->GetSearch()) && (foods[j]->GetAlive()) && (!foods[j]->GetLockOn())) {
+			if ((!ghosts[i]->GetSearch()) && (foods[j]->GetAlive()) && (!foods[j]->GetLockOn())&&(!foods[j]->GetIsCarried())) {
 				if (l_dir < ghosts[i]->GetLimit()) {
 					ghosts[i]->StartSearch(l_foodpos);
 					foods[j]->SetLockOn(true);
@@ -172,7 +172,7 @@ void LoadStageObj::SearchFood() {
 }
 //食料とゴーストの当たり判定
 void LoadStageObj::CollideFood() {
-	float l_Radius = 1.0f;
+	float l_Radius = 1.5f;
 	for (auto i = 0; i < ghosts.size(); i++) {
 		XMFLOAT3 l_ghostpos = ghosts[i]->GetPosition();
 		for (auto j = 0; j < foods.size(); j++) {
@@ -181,15 +181,14 @@ void LoadStageObj::CollideFood() {
 			float l_dir = Helper::GetInstance()->ChechLength(l_ghostpos, l_foodpos);
 			if ((ghosts[i]->GetSearch()) && (l_dir < l_Radius)) {
 				ghosts[i]->EndSearch();
-				foods[j]->SetAlive(false);
-				foods[j]->SetLockOn(false);
+				foods[j]->CarryStart(ghosts[i]);
 			}
 		}
 	}
 }
 //ゴーストが消える
 void LoadStageObj::VanishGhost() {
-	float l_TargetCatchCount = HungerGauge::GetInstance()->GetCatchCount() - 1.0f;
+	int l_TargetCatchCount = HungerGauge::GetInstance()->GetCatchCount() - 1;
 	float l_Value = HungerGauge::m_Hungervalue;
 	//除算をする
 	m_Division = HungerGauge::GetInstance()->GetNowHunger() / 5.0f;
@@ -205,7 +204,7 @@ void LoadStageObj::VanishGhost() {
 		//for分抜ける
 		if (m_Vanish) {
 			ghosts[i]->SetAlive(false);
-			HungerGauge::GetInstance()->SetCatchCount(HungerGauge::GetInstance()->GetCatchCount() - 1.0f);
+			HungerGauge::GetInstance()->SetCatchCount(HungerGauge::GetInstance()->GetCatchCount() - 1);
 			HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() - l_Value);
 			m_Vanish = false;
 			break;

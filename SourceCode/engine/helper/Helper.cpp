@@ -1,78 +1,21 @@
 ﻿#include "Helper.h"
 #include"WinApp.h"	
-
+#include "VariableCommon.h"
 Helper* Helper::GetInstance()
 {
 	static Helper instance;
 
 	return &instance;
 }
-//float型
-//max minをbool分で返す
-bool Helper::CheckMaxFLOAT(float& Num, const float Max, const float Add) {
-	Num += Add;
-
-	Num = max(Num, Max);
-
-
-	if (Num <= Max) {
+bool Helper::FrameCheck(float& frame, const float addframe) {
+	if (frame < m_FrameMax) {
+		frame += addframe;
+	}
+	else {
 		return true;
-	} else {
-		return false;
 	}
 
 	return false;
-}
-//Minを検索
-bool Helper::CheckMinFLOAT(float& Num, const float Min, const float Add) {
-	Num += Add;
-	Num = min(Num, Min);
-
-	if (Num >= Min) {
-		return true;
-	} else {
-		return false;
-	}
-
-	return false;
-}
-//int型
-//max minをbool分で返す
-bool Helper::CheckMaxINT(int& Num, const int Max, const int Add) {
-	Num += Add;
-
-	Num = max(Num, Max);
-
-
-	if (Num <= Max) {
-		return true;
-	} else {
-		return false;
-	}
-
-	return false;
-}
-//Minを検索
-bool Helper::CheckMinINT(int& Num, const int Min, const int Add) {
-	Num += Add;
-	Num = min(Num, Min);
-
-	if (Num >= Min) {
-		return true;
-	} else {
-		return false;
-	}
-
-	return false;
-}
-//Clampを返す関数
-//int型
-void Helper::IntClamp(int& Num, const int Min, const int Max) {
-	Num = min(max(Num, Min), Max);
-}
-//float型
-void Helper::FloatClamp(float& Num, const float Min, const float Max) {
-	Num = min(max(Num, Min), Max);
 }
 //XMFLOAT3とfloatを加算する関数
 Helper::XMFLOAT3 Helper::Float3AddFloat(const XMFLOAT3& Num, float Add) {

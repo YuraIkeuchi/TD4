@@ -69,6 +69,9 @@ private:
 	bool DebugButton();
 
 	XMFLOAT3 RandomShake(XMFLOAT3 pos,float shakeTimer);
+
+	bool MovingCamera(const XMFLOAT3& s_eye, const XMFLOAT3& e_eye, const XMFLOAT3& s_target,const XMFLOAT3& e_target);
+
 private:
 	//クラス
 	Input* input = Input::GetInstance();
@@ -97,7 +100,7 @@ private:
 	
 	int waitTimer = 0;
 	float cameraframe = 0.0f;
-	const float kCameraFrameMax = 90.0f;
+	const float kCameraFrameMax = 120.0f;
 
 	XMFLOAT3 s_eyepos = {};
 	XMFLOAT3 e_eyepos = { 0,0,30.0f};

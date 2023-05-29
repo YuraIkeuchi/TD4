@@ -26,6 +26,8 @@ public:
 	void Draw(DirectXCommon* dxCommon)override;
 	//ImGui
 	void ImGuiDraw();
+	//ボス登場シーンの動き
+	void AppearUpdate();
 
 	//キャラの状態
 	enum CharaState

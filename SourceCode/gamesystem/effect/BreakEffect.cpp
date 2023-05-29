@@ -15,7 +15,7 @@ void BreakEffect::Action() {
 	if (m_Alive) {
 		BirthEffect();
 
-		if (Helper::GetInstance()->CheckMaxINT(m_AliveTimer, l_TargetTimer, 1)) {
+		if (Helper::GetInstance()->CheckMax(m_AliveTimer, l_TargetTimer, 1)) {
 			m_Alive = false;
 		}
 	}

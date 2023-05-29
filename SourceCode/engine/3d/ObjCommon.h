@@ -3,10 +3,11 @@
 #include"IKEModel.h"
 #include"IKEFBXObject3d.h"
 #include"IKEFBXModel.h"
-#include "DirectXCommon.h"
-#include"ModelManager.h"
+
+#include"DirectXCommon.h"
 #include"Audio.h"
-#include "VolumManager.h"
+#include"ModelManager.h"
+#include"VolumManager.h"
 #include<memory>
 using namespace std;         //  –¼‘O‹óŠÔŽw’è
 

@@ -51,7 +51,7 @@ void InterBoss::ImGuiDraw() {
 float InterBoss::HpPercent() {
 
 	float temp = m_HP / m_MaxHp;
-	Helper::GetInstance()->FloatClamp(temp, 0.0f, 1.0f);
+	Helper::GetInstance()->Clamp(temp, 0.0f, 1.0f);
 	return temp;
 }
 

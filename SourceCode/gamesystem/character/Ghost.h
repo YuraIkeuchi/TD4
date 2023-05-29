@@ -46,6 +46,8 @@ private:
 	void BirthGhost();
 	//âΩÇ‡Ç»Ç¢èÛë‘
 	void None();
+	//ê∂Ç‹ÇÍÇÈèÛë‘
+	void Spawm();
 	//í«è]
 	void Follow();
 	//íTçı
@@ -79,9 +81,10 @@ private:
 	enum CharaState
 	{
 		STATE_NONE,
+		STATE_SPAWN,
 		STATE_FOLLOW,
 		STATE_SEARCH,
-	}_charaState;
+	}_charaState = CharaState::STATE_NONE;
 
 private:
 	IKEModel* model_follow=nullptr;
@@ -94,17 +97,21 @@ private:
 		Follow_NO,
 		Follow_START,
 		Follow_END,
-	}_followState;
+	}_followState = FollowState::Follow_NO;
 private://íTçı
 	bool m_Search = false;
 	XMFLOAT3 m_SearchPos = {};
 
+	float noneTimer = 0.0f;
+
+	float m_SpawnTimer = 0.f;
+	float kSpawnTimerMax = 60.f;
 	//íTçıèÛë‘
 	enum SearchState {
 		SEARCH_NO,
 		SEARCH_START,
 		SEARCH_END,
-	}_searchState;
+	}_searchState=SearchState::SEARCH_NO;
 
 	int m_SearchTimer = 0;
 private:

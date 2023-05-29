@@ -17,16 +17,11 @@ public:
 	void Draw(DirectXCommon* dxCommon) override;//描画
 private:
 	void Action() override;//行動
-
 	void AppearAction() override;//登場
-
 	void DeadAction() override;//撃破
-
-	void ImGui_Origin() override;
-
+	void ImGui_Origin() override;//Imgui
 	//エフェクト
 	void EffecttexDraw(DirectXCommon* dxCommon) override;
-
 	//基本移動
 	void Move();
 	//攻撃(スタンプ攻撃)
@@ -35,6 +30,8 @@ private:
 	void RandomStamp();
 	//当たり判定
 	bool Collide();
+	//CSV読み込み系
+	void CSVLoad();
 private:
 	//キャラの行動繊維
 	static void (SecondBoss::* stateTable[])();
@@ -81,24 +78,16 @@ private:
 	//前座標
 	XMFLOAT3 m_OldPos = {};
 	//X方向の回転
-	float m_AfterRotX = 180.0f;
-
+	XMFLOAT3 m_AfterRot = { 180.0f,0.0f,0.0f };
 	//追従関係に使う
 	float m_FollowSpeed = 0.0f;
 	float m_AfterFollowSpeed = 0.0f;
-
 	//停止時間
 	int m_StopTimer = 0;
-
 	//どの行動にするか
 	int m_MoveState = {};
-
-	//加算されるフレーム数
-	float m_AddFrame = 0.01f;
-
 	//イージング後の位置
 	XMFLOAT3 m_AfterPos = {};
-
 	//シェイク用変数
 	XMFLOAT3 m_ShakePos = { 0.0f,0.0f,0.0f };
 private:
@@ -136,7 +125,6 @@ private:
 		MOVE_CHOICE,//どの動きかの選択するターン
 	};
 
-
 	OBB m_OBB1 = {};
 	OBB m_OBB2 = {};
 
@@ -150,7 +138,6 @@ private:
 		PRESS_RETURN,
 		PRESS_END,
 	};
-
 	int m_PressType;
 	//ランダム攻撃
 	enum RandomType {
@@ -159,7 +146,6 @@ private:
 		RANDOM_ATTACK,
 		RANDOM_END,
 	};
-
 	int m_RandomType;
 
 	//転がる攻撃
@@ -172,7 +158,6 @@ private:
 		ROLL_SIX,
 		ROLL_END,
 	};
-
 	int m_RollType;
 
 	//上昇度
@@ -186,4 +171,25 @@ private:
 private:
 	unique_ptr<IKETexture> mark;
 	XMFLOAT4 m_MarkColor = { 1.0f,1.0f,1.0f,0.0f };
+private:
+	enum AppearState {
+		APPEAR_START,
+		APPEAR_SET,
+		APPEAR_LOOK,
+		APPEAR_JOY,
+		APPEAR_ANGER,
+		APPEAR_END,
+	};
+
+	int m_AppearState = APPEAR_START;
+
+	int m_AppearTimer = {};
+
+
+	//すべてのインターバル系
+	vector<int>m_StampInterval;
+	vector<int>m_RandomInterval;
+	int m_MoveInterval = {};
+	int m_QuickMoveInterval = {};
+	int m_ChoiceInterval = {};
 };

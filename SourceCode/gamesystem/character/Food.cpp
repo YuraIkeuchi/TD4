@@ -1,5 +1,4 @@
 #include "Food.h"
-#include "ModelManager.h"
 #include "imgui.h"
 #include "CsvLoader.h"
 #include "ParticleEmitter.h"
@@ -7,6 +6,7 @@
 #include "HungerGauge.h"
 #include "Player.h"
 #include <random>
+#include <Easing.h>
 Food::Food() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Food);
 	m_Object.reset(new IKEObject3d());
@@ -18,8 +18,11 @@ bool Food::Initialize() {
 	//乱数指定
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> l_distX(-50, 60);
+	uniform_int_distribution<int> l_distY(10, 15);
 	uniform_int_distribution<int> l_distZ(-55, 55);
-	m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
+	m_Position = { float(l_distX(mt)), float(l_distY(mt)),float(l_distZ(mt)) };
+	uniform_int_distribution<int> l_degree(0, 360);
+	m_Degree = float(l_degree(mt));
 	m_Scale = { 0.8f,0.8f,0.8f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_LockOn = false;
@@ -29,6 +32,8 @@ bool Food::Initialize() {
 
 //更新
 void Food::Update() {
+	if (FallSpawn()) { return; }
+	if (CarriedGhost()) { return; }
 	//タイプによって色を一旦変えてる
 	Obj_SetParam();
 	//食料生成
@@ -54,6 +59,11 @@ void Food::ImGuiDraw() {
 	ImGui::Text("Alive:%d", m_Alive);
 	ImGui::End();
 }
+void Food::CarryStart(Ghost* ghost) {
+	m_ghost = ghost;
+	m_IsCarried = true;
+	m_LockOn = false;
+}
 //パーティクル
 void Food::Particle() {
 	XMFLOAT4 s_color = { 1.0f,0.0f,0.0f,1.0f };
@@ -74,8 +84,7 @@ bool Food::Collision() {
 		m_LockOn = false;
 		HungerGauge::GetInstance()->AddNowHunger(HungerGauge::GetInstance()->GetNowHunger() + l_AddHunger);
 		return true;
-	}
-	else {
+	} else {
 		return false;
 	}
 
@@ -90,12 +99,16 @@ void Food::BirthFood() {
 			//乱数指定
 			mt19937 mt{ std::random_device{}() };
 			uniform_int_distribution<int> l_distX(-50, 60);
+			uniform_int_distribution<int> l_distY(10, 15);
 			uniform_int_distribution<int> l_distZ(-55, 55);
-			m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
+			m_Position = { float(l_distX(mt)), float(l_distY(mt)),float(l_distZ(mt)) };
+			uniform_int_distribution<int> l_degree(0, 360);
+			m_Degree = float(l_degree(mt));
 		}
 		//一定時間で生成される
 		if (m_Timer == 100) {
 			m_Alive = true;
+			m_Spawn = true;
 			m_Timer = 0;
 		}
 	}
@@ -109,4 +122,51 @@ void Food::DeleteFood() {
 			m_Alive = false;
 		}
 	}
+}
+
+bool Food::CarriedGhost() {
+	if (!m_IsCarried) { return false; }
+	if (!m_ghost) { return false; }
+	XMFLOAT3 pos = m_ghost->GetPosition();
+	m_Position = { pos.x,3.0f,pos.z };
+	m_Object->SetPosition(m_Position);
+	m_Object->Update();
+
+	if (!m_ghost->GetAlive()) {
+		m_Alive = false;
+		m_IsCarried = false;
+		m_ghost = false;
+	}
+	return true;
+}
+
+bool Food::FallSpawn() {
+	if (!m_Spawn) { return false; }
+	if (m_Position.y == 0.0f && !m_Jump) {
+		m_Jump = true;
+	} else {
+		m_Position.y -= 0.5f;
+		Helper::GetInstance()->Clamp(m_Position.y, 0.0f, 30.0f);
+	}
+	if (m_Jump) {
+		m_SpawnTimer += 1.0f / m_SpawnTimerMax;
+		Helper::GetInstance()->Clamp(m_SpawnTimer, 0.0f, 1.0f);
+		m_Position.x+= sinf(m_Degree * (PI_180 / XM_PI)) * 0.1f;
+		if (m_SpawnTimer > 0.5f) {
+			m_Position.y = Ease(InOut,Linear, m_SpawnTimer,5.f,0.f);
+		} else {
+			m_Position.y = Ease(InOut, Linear, m_SpawnTimer, 0.f, 5.f);
+		}
+		m_Position.z += cosf(m_Degree * (PI_180 / XM_PI)) * 0.1f;
+		if (m_SpawnTimer==1.0f) {
+			m_Jump = false;
+			m_Spawn = false;
+		}
+	}
+
+	m_Object->SetPosition(m_Position);
+	m_Object->Update();
+
+
+	return true;
 }

@@ -43,6 +43,7 @@ public://getter setter
 	InterBoss* GetBoss() { return enemy.get(); }
 	const XMFLOAT3& GetEnemyPosition() { return enemy.get()->GetPosition(); }
 	const bool GetEnemyCheck() { return enemy.get()->GetCheck(); }
+	const bool GetEnemyFinishAppear() { return enemy.get()->GetFinishAppear(); }
 	//チュートリアル関係のgetset
 	InterEnemy* GetEnemy(const int num) { return tutorialenemy[num].get(); }
 	std::vector<InterEnemy*>GetBulEnemy() { return bulletenemy; }

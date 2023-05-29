@@ -759,6 +759,7 @@
     <ClInclude Include="SourceCode\gamesystem\text\TextManager.h">
       <Filter>gamesystem\Text</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\engine\enginebase\resource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
@@ -1042,5 +1043,11 @@
     <Filter Include="gamesystem\Text">
       <UniqueIdentifier>{6b589362-730f-4fb1-bae8-d3a3afeff414}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Kotodama.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\2d\objicon\Kotodama.ico" />
   </ItemGroup>
 </Project>

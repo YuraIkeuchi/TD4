@@ -77,6 +77,8 @@ public://gettersetter
 	void SetCheck(bool Check) { m_Check = Check; };
 	bool GetCheck() { return m_Check; }
 
+	bool GetFinishAppear() { return m_FinishAppear; }
+
 private:
 	std::string SceneName;
 	vector<InterEffect*> effects;
@@ -99,6 +101,9 @@ protected:
 
 	//弾とボスの当たり判定に使う大きさ
 	float m_Radius = 0.0f;
+
+	//登場シーンが終わったかどうか
+	bool m_FinishAppear = false;
 private:
 
 	enum class ActionList
