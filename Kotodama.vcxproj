@@ -225,6 +225,7 @@
     <ClCompile Include="SourceCode\gamesystem\ui\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="SourceCode\engine\2d\DebugText.h" />
     <ClInclude Include="SourceCode\engine\2d\Feed.h" />
     <ClInclude Include="SourceCode\engine\2d\Font.h" />
@@ -266,6 +267,7 @@
     <ClInclude Include="SourceCode\engine\enginebase\DirectXCommon.h" />
     <ClInclude Include="SourceCode\engine\enginebase\JsonLoader.h" />
     <ClInclude Include="SourceCode\engine\enginebase\OpenBrowser.h" />
+    <ClInclude Include="SourceCode\engine\enginebase\resource.h" />
     <ClInclude Include="SourceCode\engine\enginebase\SceneFactory.h" />
     <ClInclude Include="SourceCode\engine\enginebase\WinApp.h" />
     <ClInclude Include="SourceCode\engine\enginebase\XorShift.h" />
@@ -471,6 +473,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Kotodama.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\2d\objicon\Kotodama.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

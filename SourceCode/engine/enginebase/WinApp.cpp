@@ -1,6 +1,7 @@
 #include "WinApp.h"
 #include "windows.h"
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+#include"resource.h"
 LRESULT WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
 
@@ -28,7 +29,7 @@ void WinApp::Initialize()
 	w.lpszClassName = L"言魂";
 	w.hInstance = GetModuleHandle(nullptr);
 	w.hCursor = LoadCursor(NULL, IDC_ARROW);
-
+	w.hIcon = LoadIcon(w.hInstance, MAKEINTRESOURCE(IDI_ICON2));	//ウィンドウクラスをOSに登録
 	RegisterClassEx(&w);
 
 	RECT wrc = { 0,0,window_width,window_height };

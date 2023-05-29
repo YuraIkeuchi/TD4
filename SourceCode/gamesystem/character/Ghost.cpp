@@ -25,9 +25,9 @@ bool Ghost::Initialize() {
 	m_Rotation.y = -PI_90;
 	m_Scale = { 0.5f,0.5f,0.5f };
 	m_Color = { 1.0f,1.0f,1.0f,0.2f };
-	_charaState = CharaState::STATE_SPAWN;
 	uniform_int_distribution<int> spawn(60, 90);
 	kSpawnTimerMax = float(spawn(mt));
+	_charaState = CharaState::STATE_SPAWN;
 	_searchState = SearchState::SEARCH_NO;
 	_followState = FollowState::Follow_NO;
 	return true;
@@ -162,7 +162,6 @@ void Ghost::BirthGhost() {
 			m_Alive = true;
 			m_ResPornTimer = 0;
 			m_Scale = { 0.5f,0.5f,0.5f };
-
 		}
 	}
 }
