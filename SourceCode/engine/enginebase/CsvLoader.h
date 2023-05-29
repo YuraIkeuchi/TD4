@@ -20,6 +20,7 @@ namespace LoadCSV
 
 	void LoadCsvParam_XMFLOAT3(std::string FileName, std::vector<XMFLOAT3>&obj,std::string LoadName);
 	void LoadCsvParam_String(std::string FileName, std::vector<std::string>& obj, std::string LoadName);
+	void LoadCsvParam_Int(std::string FileName, std::vector<int>& obj, std::string LoadName);
 }
 
 

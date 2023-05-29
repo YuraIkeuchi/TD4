@@ -154,3 +154,42 @@ void LoadCSV::LoadCsvParam_String(std::string FileName, std::vector<std::string>
 		obj[i] = l_obj[i];
 	}
 }
+
+void LoadCSV::LoadCsvParam_Int(std::string FileName, std::vector<int>& obj, std::string LoadName) {
+	std::string line;
+	std::stringstream popcom;
+	std::ifstream file;
+
+	file.open(FileName);
+
+	popcom << file.rdbuf();
+
+	file.close();
+
+	std::vector<int>l_obj(obj.size());
+	for (int i = 0; i < obj.size(); i++) {
+		while (std::getline(popcom, line))
+		{
+			std::istringstream line_stream(line);
+			std::string word;
+			std::getline(line_stream, word, ',');
+
+			if (word.find("//") == 0)
+			{
+				continue;
+			}
+			if (word.find(LoadName) == 0)
+			{
+
+				std::getline(line_stream, word, ',');
+				int variable = (int)std::atof(word.c_str());
+				l_obj[i] = variable;
+				break;
+			}
+		}
+	}
+	for (int i = 0; i < obj.size(); i++) {
+
+		obj[i] = l_obj[i];
+	}
+}
