@@ -1,7 +1,7 @@
 ﻿#include "TutorialSceneActor.h"
 #include "VariableCommon.h"
 #include "HungerGauge.h"
-#include"TextManager.h"
+
 
 const XMVECTOR kWhite{ 1.f,1.f,1.f,1.f };
 const XMVECTOR kSkyBlue{ 0.f,1.f,1.f,1.f };
@@ -11,7 +11,7 @@ const XMFLOAT2 kThirdRowPos{ 5.f, -80.f };
 const XMFLOAT4 kHalfClear{ 0.5f,0.5f,0.5f,0.5f };
 
 bool TutorialSceneActor::isDebug = true;
-
+TextManager* instance = TextManager::GetInstance();
 
 //状態遷移
 /*stateの並び順に合わせる*/
@@ -306,14 +306,11 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	//背景objの生成
 	BackObj::GetInstance()->Initialize();
 
-	//wchar_t* hello[3] = { L"Hello",L"World",L"aa" };
-	//wchar_t* hello2[3] = { L"しね",L"sine",L"shine" };
-	TextManager::GetInstance()->WordLoad(dxCommon);
-	/*Conversation::GetInstance()->CreateText(dxCommon, TextManager::KAIWA, hello2);
-	Conversation::GetInstance()->CreateText(dxCommon, TextManager::AISATU, hello2);*/
+	text_ = make_unique<TextManager>();
+	text_->Initialize(dxCommon);
+	text_->SetConversation(TextManager::AISATU);
 
 	BackObj::GetInstance()->Initialize();
-
 	loadobj = std::make_unique<LoadStageObj>();
 	loadobj->AllLoad("FIRSTSTAGE");
 	LoadStageObj::SetEnemyManager(enemymanager.get());
@@ -329,7 +326,6 @@ void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 
 	XMFLOAT2 pos[3] = { kFirstRowPos,kSecondRowPos,kThirdRowPos };
 	XMFLOAT3 color[3] = { {1,1,1},{1,1,1},{1,1,1} };
-	Conversation::GetInstance()->TextUpdate(pos, color);
 
 	//音楽の音量が変わる
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
@@ -398,9 +394,8 @@ void TutorialSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 		messagewindow_->Draw();
 		IKESprite::PostDraw();
 		if (messagewindow_->DisplayCheck()) {
-			Conversation::GetInstance()->Draw(dxCommon, Conversation::KAIWA);
+			text_->Draw(dxCommon);
 		}
-		Font::PostDraw(dxCommon);
 	} else {
 		ui->Draw();
 	}
