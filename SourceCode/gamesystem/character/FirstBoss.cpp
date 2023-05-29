@@ -50,7 +50,7 @@ void FirstBoss::Action() {
 			PosYMovingT = Easing::EaseOut(YmovEaseT, OldsMov, 0.f);
 		}
 
-		Helper::GetInstance()->FloatClamp(YmovEaseT, 0.f, 1.f);
+		Helper::GetInstance()->Clamp(YmovEaseT, 0.f, 1.f);
 
 		if (YmovEaseT <= 1.f)
 			m_Position.y = 10.f + sinf(PI * 2.f / 120.f * PosYMovingT) * -5.f;
@@ -146,8 +146,8 @@ void FirstBoss::Action() {
 
 
 	//リミット制限
-	Helper::GetInstance()->FloatClamp(m_Position.x, -55.0f, 65.0f);
-	Helper::GetInstance()->FloatClamp(m_Position.z, -60.0f, 60.0f);
+	Helper::GetInstance()->Clamp(m_Position.x, -55.0f, 65.0f);
+	Helper::GetInstance()->Clamp(m_Position.z, -60.0f, 60.0f);
 }
 //ポーズ
 void FirstBoss::Pause() {
@@ -346,9 +346,9 @@ void FirstBoss::NormalAttak::Attack(XMFLOAT3& Pos, XMFLOAT3& Rot)
 	}
 	RushOldRotY = Rot.y;
 
-	Helper::GetInstance()->FloatClamp(RushMoveEaseT, 0.f, 1.f);
-	Helper::GetInstance()->FloatClamp(BackSpeed, 0.f, 8.f);
-	Helper::GetInstance()->FloatClamp(RotEaseTime, 0.f, 1.f);
+	Helper::GetInstance()->Clamp(RushMoveEaseT, 0.f, 1.f);
+	Helper::GetInstance()->Clamp(BackSpeed, 0.f, 8.f);
+	Helper::GetInstance()->Clamp(RotEaseTime, 0.f, 1.f);
 }
 
 void FirstBoss::NormalAttak::ShakeAction(XMFLOAT3& Pos, XMFLOAT3& Rot)
@@ -497,7 +497,7 @@ void FirstBoss::DamAction()
 	m_Color.x = 1.f;
 	m_Color.w = 1.f;
 
-	Helper::GetInstance()->FloatClamp(ColChangeEaseT, 0.f, 1.f);
+	Helper::GetInstance()->Clamp(ColChangeEaseT, 0.f, 1.f);
 
 }
 
@@ -529,10 +529,10 @@ void FirstBoss::NormalAttak::Remove(XMFLOAT3& Pos, XMFLOAT3& Scl, bool Enf)
 	Scl.y = Easing::EaseOut(SPosMoveEaseT, 1.5f, 0.f);
 	Scl.z = Easing::EaseOut(SPosMoveEaseT, 1.5f, 0.f);
 
-	Helper::GetInstance()->FloatClamp(SPosMoveEaseT, 0.f, 1.f);
-	Helper::GetInstance()->FloatClamp(Scl.x, 0.f, 1.5f);
-	Helper::GetInstance()->FloatClamp(Scl.y, 0.f, 1.5f);
-	Helper::GetInstance()->FloatClamp(Scl.z, 0.f, 1.5f);
+	Helper::GetInstance()->Clamp(SPosMoveEaseT, 0.f, 1.f);
+	Helper::GetInstance()->Clamp(Scl.x, 0.f, 1.5f);
+	Helper::GetInstance()->Clamp(Scl.y, 0.f, 1.5f);
+	Helper::GetInstance()->Clamp(Scl.z, 0.f, 1.5f);
 }
 
 void FirstBoss::RemovePos()
@@ -558,10 +558,10 @@ void FirstBoss::RemovePos()
 	m_Scale.y = Easing::EaseOut(SPosMoveEaseT, 2.5f, 0.f);
 	m_Scale.z = Easing::EaseOut(SPosMoveEaseT, 2.5f, 0.f);
 
-	Helper::GetInstance()->FloatClamp(SPosMoveEaseT, 0.f, 1.f);
-	Helper::GetInstance()->FloatClamp(m_Scale.x, 0.f, 2.5f);
-	Helper::GetInstance()->FloatClamp(m_Scale.y, 0.f, 2.5f);
-	Helper::GetInstance()->FloatClamp(m_Scale.z, 0.f, 2.5f);
+	Helper::GetInstance()->Clamp(SPosMoveEaseT, 0.f, 1.f);
+	Helper::GetInstance()->Clamp(m_Scale.x, 0.f, 2.5f);
+	Helper::GetInstance()->Clamp(m_Scale.y, 0.f, 2.5f);
+	Helper::GetInstance()->Clamp(m_Scale.z, 0.f, 2.5f);
 }
 
 void FirstBoss::NoBattleMove()
@@ -644,8 +644,8 @@ void FirstBoss::NoBattleMove()
 		}
 	}
 
-	Helper::GetInstance()->FloatClamp(RotEaseTime_noBat, 0.f, 1.f);
-	Helper::GetInstance()->FloatClamp(EaseT_BatStart, 0.f, 1.f);
+	Helper::GetInstance()->Clamp(RotEaseTime_noBat, 0.f, 1.f);
+	Helper::GetInstance()->Clamp(EaseT_BatStart, 0.f, 1.f);
 }
 
 void FirstBoss::NormalAttak::ColPlayer(XMFLOAT3& Pos)
@@ -776,6 +776,7 @@ void FirstBoss::ChargeAttack::JumpAction(XMFLOAT3& Pos, XMFLOAT3& Rot)
 	}
 	Helper::GetInstance()->FloatClamp(Rot.z, -90, 0);
 	Helper::GetInstance()->FloatClamp(JFrame, 0.f, 1.f);
+	Helper::GetInstance()->Clamp(JFrame, 0.f, 1.f);
 }
 
 

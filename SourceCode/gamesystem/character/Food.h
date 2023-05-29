@@ -1,5 +1,6 @@
 #pragma once
 #include "ObjCommon.h"
+#include <Ghost.h>
 //食べ物のクラス
 class Food :
 	public ObjCommon {
@@ -28,6 +29,9 @@ public:
 	/// ImGui描画
 	/// </summary>
 	void ImGuiDraw();
+
+
+	void CarryStart(Ghost* ghost);
 private:
 	//パーティクル
 	void Particle();
@@ -37,19 +41,34 @@ private:
 	void BirthFood();
 	//食料削除
 	void DeleteFood();
+	//食べ物を運ばせる
+	bool CarriedGhost();
+	//
+	bool FallSpawn();
 public://getter setter
 public:
 	//gettersetter
 	const bool& GetAlive() { return m_Alive; }
 	const bool& GetLockOn() { return m_LockOn; }
+	const bool& GetIsCarried() { return m_IsCarried; }
+
 	void SetAlive(const bool Alive) { m_Alive = Alive; }
 	void SetLockOn(const bool LockOn) { m_LockOn = LockOn; }
 	void SetLimit(const bool Limit) { m_Limit = Limit; }
+	void SetIsCarried(const bool IsCarried) { m_IsCarried = IsCarried; }
+
 private:
 	bool m_Alive = true;//生存フラグ
+	bool m_Spawn = true;
 	bool m_LockOn = false;
+	bool m_IsCarried = false;
 	int m_Timer = 0;
-
+	
+	bool m_Jump = false;
+	float m_Degree = 0.0f;
+	float m_SpawnTimer = 0.0f;
+	float m_SpawnTimerMax = 15.0f;
+	Ghost* m_ghost = nullptr;
 	//制限時間を超えたかどうか
 	bool m_Limit = false;
 	//削除までの時間

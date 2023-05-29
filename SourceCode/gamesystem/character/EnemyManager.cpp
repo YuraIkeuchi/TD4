@@ -58,9 +58,13 @@ void EnemyManager::DeadUpdate() {
 void EnemyManager::TutorialUpdate(int pattern) {
 	if (pattern == 0) {
 		tutorialenemy[0]->Update();
-	} else {
+	} else if (pattern == 1) {
 		for (auto i = 0; i < tutorialEnemyMax; i++) {
 			tutorialenemy[i]->Update();
+		}
+	} else {
+		for (auto i = 0; i < tutorialEnemyMax; i++) {
+			tutorialenemy[i]->Obj_SetParam();
 		}
 	}
 }

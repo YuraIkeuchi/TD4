@@ -2,11 +2,11 @@
 #include "BaseActor.h"
 #include "EnemyManager.h"
 #include "UI.h"
-
 #include "BackObj.h"
 #include "LoadStageObj.h"
 #include "Conversation.h"
-
+#include"MessageWindow.h"
+#include"TextManager.h"
 #include <random>
 #include <vector>
 #include <windows.h>
@@ -69,6 +69,9 @@ private:
 	bool DebugButton();
 
 	XMFLOAT3 RandomShake(XMFLOAT3 pos,float shakeTimer);
+
+	bool MovingCamera(const XMFLOAT3& s_eye, const XMFLOAT3& e_eye, const XMFLOAT3& s_target,const XMFLOAT3& e_target);
+
 private:
 	//クラス
 	Input* input = Input::GetInstance();
@@ -79,7 +82,9 @@ private:
 	IKEModel* m_Model = nullptr;
 	unique_ptr<BackObj> backobj;
 	unique_ptr<LoadStageObj> loadobj;
-	unique_ptr<Conversation> conversation_;
+	//unique_ptr<Conversation> conversation_;
+	unique_ptr<MessageWindow> messagewindow_;
+	unique_ptr<TextManager> text_;
 
 	float shakeTimer = 0;
 	int shakeCount = 0;
@@ -95,7 +100,7 @@ private:
 	
 	int waitTimer = 0;
 	float cameraframe = 0.0f;
-	const float kCameraFrameMax = 90.0f;
+	const float kCameraFrameMax = 120.0f;
 
 	XMFLOAT3 s_eyepos = {};
 	XMFLOAT3 e_eyepos = { 0,0,30.0f};
