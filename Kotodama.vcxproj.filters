@@ -760,7 +760,6 @@
       <Filter>gamesystem\Text</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\engine\enginebase\resource.h" />
-    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
