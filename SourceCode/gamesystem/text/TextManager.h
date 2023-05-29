@@ -20,29 +20,40 @@ private:
 public:
 	enum Name
 	{
-		AISATU = 0,
-		KAIWA = 1,
-		BATTLE = 2,
+		NONE=0,
+		AISATU =1,
+		KAIWA =2,
+		BATTLE=3,
 	};
 
 	static TextManager* GetInstance();
 
-	void Initialize();
+	//
+	void Create(DirectXCommon* dxcomon);
+
+	void Initialize(DirectXCommon* dxcomon);
 
 
 	void Draw(DirectXCommon* dxcommon);
 
-	void SetConversation(Name name);
+	void SetColor(const XMVECTOR& color={1.f,1.f,1.f,1.f});
+
+	void SetConversation(Name name=NONE);
 private:
+	
 	//
 	void CreateWord(Name name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
 	//
 	Word SetWord(wchar_t* tex1, wchar_t* tex2, wchar_t* tex3);
 	//
 	Conversation CreateConversation(Word word);
+
+	void CreateCon(Conversation con, Word word);
 private:
 	std::map<TextManager::Name, Word> wordlist_;
 
 	Conversation conversation_ = {};
+
+	XMVECTOR color_{ 1.f,1.f,1.f,1.f };
 };
 
