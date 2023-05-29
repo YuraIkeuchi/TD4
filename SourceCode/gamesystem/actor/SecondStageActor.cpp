@@ -99,7 +99,9 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	
 	//完全に前に書くスプライト
 	IKESprite::PreDraw();
-	ui->Draw();
+	if (m_SceneState == SceneState::MainState) {
+		ui->Draw();
+	}
 	IKESprite::PostDraw();
 	sceneChanger_->Draw();
 }
@@ -118,11 +120,14 @@ void SecondStageActor::IntroUpdate(DebugCamera* camera) {
 		m_SceneState = SceneState::MainState;
 	}
 
-
+	if (enemymanager->GetEnemyFinishAppear()) {
+		m_SceneState = SceneState::MainState;
+		camerawork->SetCameraState(CAMERA_NORMAL);
+	}
 	//各クラス更新
 	BackObj::GetInstance()->Update();
 
-	Player::GetInstance()->Update();
+	Player::GetInstance()->AppearUpdate();
 	enemymanager->AppearUpdate();
 
 	camerawork->Update(camera);

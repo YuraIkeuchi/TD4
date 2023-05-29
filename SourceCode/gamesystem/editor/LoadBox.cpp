@@ -39,7 +39,7 @@ void LoadBox::Load()
 		}
 		else if(Name[i]=="Cube")
 		{
-			boxes[i]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Cube));
+			boxes[i]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Box));
 		}
 
 		boxes[i]->SetPosition(Pos[i]);

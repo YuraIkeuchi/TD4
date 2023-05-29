@@ -4,7 +4,7 @@
 #include "Shake.h"
 #include <memory>
 
-#include "InterBoss.h"
+#include"InterBoss.h"
 using namespace std;         //  名前空間指定
 
 enum CameraState {
@@ -44,6 +44,9 @@ private:
 private://各ボスの登場カメラ
 	void FirstBossAppear();
 	void SecondBossAppear();
+
+	//円運動のカメラセットの際のやつ
+	void SetCircleCamera();
 public:
 	//getter setter
 
@@ -90,14 +93,17 @@ private:
 	float m_CameraCircleZ = 0.0f;
 
 	float m_AfterSpeed = {};
+	float m_AfterScale = 5.0f;
 
 	//ボス登場シーンのカメラの動き
 	enum AppearCameraType {
-		APPEAR_ONE,
+		APPEAR_START,
 		APPEAR_SECOND,
 		APPEAR_THIRD,
 		APPEAR_FOURTH,
 		APPEAR_FIVE,
+		APPEAR_SIX,
+		APPEAR_END,
 	};
 
 	int m_AppearType = {};

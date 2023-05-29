@@ -78,7 +78,7 @@ void PlayerAttach::BirthObj() {
 	}
 
 	if (m_Particle) {
-		if (Helper::GetInstance()->CheckMinINT(m_ParticleTimer, 5, 1)) {
+		if (Helper::GetInstance()->CheckMin(m_ParticleTimer, 5, 1)) {
 			m_Particle = false;
 			m_ParticleTimer = 0;
 		}
