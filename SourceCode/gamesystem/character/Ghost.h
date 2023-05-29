@@ -84,7 +84,7 @@ private:
 		STATE_SPAWN,
 		STATE_FOLLOW,
 		STATE_SEARCH,
-	}_charaState;
+	}_charaState = CharaState::STATE_NONE;
 
 private:
 	IKEModel* model_follow=nullptr;
@@ -97,7 +97,7 @@ private:
 		Follow_NO,
 		Follow_START,
 		Follow_END,
-	}_followState;
+	}_followState = FollowState::Follow_NO;
 private://íTçı
 	bool m_Search = false;
 	XMFLOAT3 m_SearchPos = {};
@@ -111,7 +111,7 @@ private://íTçı
 		SEARCH_NO,
 		SEARCH_START,
 		SEARCH_END,
-	}_searchState;
+	}_searchState=SearchState::SEARCH_NO;
 
 	int m_SearchTimer = 0;
 private:

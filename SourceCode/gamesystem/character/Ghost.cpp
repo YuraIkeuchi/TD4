@@ -162,7 +162,6 @@ void Ghost::BirthGhost() {
 			m_Alive = true;
 			m_ResPornTimer = 0;
 			m_Scale = { 0.5f,0.5f,0.5f };
-
 		}
 	}
 }
