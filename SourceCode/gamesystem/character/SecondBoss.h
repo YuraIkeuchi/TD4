@@ -22,6 +22,8 @@ private:
 
 	void DeadAction() override;//撃破
 
+	void DeadAction_Throw() override;//撃破
+
 	void ImGui_Origin() override;
 
 	//エフェクト

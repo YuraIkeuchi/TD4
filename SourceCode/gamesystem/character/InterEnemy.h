@@ -48,6 +48,7 @@ protected: //Ã“Iƒƒ“ƒo•Ï”
 	int HP;
 	bool ShotF;
 	int ShotCount;
+	bool DeathEffectF;
 public:
 	void SetShotF(bool f) { ShotF = f; }
 	void SetIsStop(bool isStop) {this->isStop = isStop; }

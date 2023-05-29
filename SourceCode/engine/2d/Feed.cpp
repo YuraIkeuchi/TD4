@@ -39,7 +39,7 @@ void Feed::FeedIn(FeedType type, float feedspeed, bool& feedf)
 		if (FeedInCounter > inStaymax)_phase = FeedPhase::FEEDOUT;
 		break;
 	case FeedPhase::FEEDOUT:
-		m_Alpha -= feedspeed;
+		m_Alpha -= (feedspeed-0.01f);
 		if (m_Alpha <= 0.f) {
 			//ŠeŽí‰Šú‰»
 			feedf = false;

@@ -33,6 +33,6 @@ public:
 	void FeedIn(FeedType type,float feedspeed,bool &feedf);
 	void Draw();
 
-	inline bool GetFeedEnd() { if (_phase == FeedPhase::END)return true; return false; }
+	inline bool GetFeedEnd() { if (_phase == FeedPhase::FEEDOUT)return true; return false; }
 };
 

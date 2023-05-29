@@ -17,7 +17,7 @@ public:
 	void AppearAction() override;//登場
 
 	void DeadAction() override;//撃破
-
+	void DeadAction_Throw() override;//撃破
 	void EffecttexDraw(DirectXCommon* dxCommon) override;
 
 	void ImGui_Origin() override;
@@ -79,8 +79,8 @@ private:
 		void Update(XMFLOAT3& Pos, XMFLOAT3& Rot);
 		void Attack(XMFLOAT3& Pos, XMFLOAT3& Rot);
 		void ChargeAction();
-		void JumpAction(XMFLOAT3& Pos);
-		void TexScling();
+		void JumpAction(XMFLOAT3& Pos, XMFLOAT3& Rot);
+		void TexScling( XMFLOAT3& Rot);
 		void Draw();
 	public:
 		void SetAttackF(bool f) { AttackF = f; }
@@ -257,4 +257,6 @@ private:
 	XMFLOAT2 DeathTexScl[2];
 	float DeathTexAlpha[2];
 	float DeathMotionTimer;
+
+	bool ResetRota;
 };

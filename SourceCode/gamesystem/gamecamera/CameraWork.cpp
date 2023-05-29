@@ -74,11 +74,10 @@ void CameraWork::SetBossDead_Cam()
 void CameraWork::SetBossDead_Act()
 {
 	m_eyePos.x = Player::GetInstance()->GetPosition().x;
+	m_eyePos.y = Player::GetInstance()->GetPosition().y+50;
 	m_eyePos.z = Player::GetInstance()->GetPosition().z - 20.0f;
 	m_targetPos.x = Player::GetInstance()->GetPosition().x;
 	m_targetPos.z = Player::GetInstance()->GetPosition().z;
-
-	//DeathTimer++;
 
 	DeathTimer = 0;
 	FeedF = false;

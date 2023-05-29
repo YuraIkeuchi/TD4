@@ -61,4 +61,5 @@ private:
 public:
 	//敵の死亡処理
 	bool BossDestroy();
+	void SetDeadThrow(bool f) { enemy->SetThrowUpdateF(f); }
 };
