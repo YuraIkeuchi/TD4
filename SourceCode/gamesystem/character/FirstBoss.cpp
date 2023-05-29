@@ -774,8 +774,8 @@ void FirstBoss::ChargeAttack::JumpAction(XMFLOAT3& Pos, XMFLOAT3& Rot)
 	{
 		Rot.z -= 5.0f;
 	}
-	Helper::GetInstance()->FloatClamp(Rot.z, -90, 0);
-	Helper::GetInstance()->FloatClamp(JFrame, 0.f, 1.f);
+	Helper::GetInstance()->Clamp(Rot.z, -90.f, 0.f);
+	Helper::GetInstance()->Clamp(JFrame, 0.f, 1.f);
 	Helper::GetInstance()->Clamp(JFrame, 0.f, 1.f);
 }
 
@@ -783,7 +783,7 @@ void FirstBoss::ChargeAttack::JumpAction(XMFLOAT3& Pos, XMFLOAT3& Rot)
 void FirstBoss::ChargeAttack::TexScling(XMFLOAT3& Rot)
 {
 	Rot.z += 5.0f;
-	Helper::GetInstance()->FloatClamp(Rot.x, -90, 0);
+	Helper::GetInstance()->Clamp(Rot.x, -90.f, 0.f);
 
 	constexpr float AddScling = 0.08f;
 	bool flagOff = texAlpha[0] < 0.f && texAlpha[1] < 0.f;
@@ -904,5 +904,5 @@ void FirstBoss::DeadAction() {
 	m_Rotation.y += 0.03f;
 	m_Rotation.z += 1.6f;
 
-	Helper::GetInstance()->FloatClamp(m_Rotation.z, 0, 90);
+	Helper::GetInstance()->Clamp(m_Rotation.z, 0.f, 90.f);
 }

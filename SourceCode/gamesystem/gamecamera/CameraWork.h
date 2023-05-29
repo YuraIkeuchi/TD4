@@ -39,11 +39,11 @@ private:
 	void BossAppear();//登場
 	void SetBossDead_Cam();//撃破
 	void SetBossDead_Act();//撃破時（フェード後）
-	void SetBoss(InterBoss* boss) { this->boss = boss; }
+	//void SetBoss(InterBoss* boss) { this->boss = boss; }
 	//ゲームシーン以外で使うカメラ更新(this変数で変更可能)
 	void SpecialUpdate();//更新
 public:
-	void EditorCamera();
+	//void EditorCamera();
 	void BossDefeatcamera();
 	void feedDraw();
 
@@ -55,7 +55,7 @@ private:
 	void SetBossDead();//撃破
 
 	//ゲームシーン以外で使うカメラ更新(this変数で変更可能)
-	void SpecialUpdate();//更新
+//	void SpecialUpdate();//更新
 
 private://各ボスの登場カメラ
 	void FirstBossAppear();

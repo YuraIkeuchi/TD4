@@ -118,6 +118,7 @@ void CameraWork::feedDraw()
 {
 	if (!FeedF) return;
 	feed->Draw();
+}
 //最初のボスのカメラ
 void CameraWork::FirstBossAppear() {
 
