@@ -2,6 +2,7 @@
 #include "BaseActor.h"
 #include <vector>
 #include<windows.h>
+#include "BossText.h"
 /// タイトルシーン
 class SecondStageActor : public BaseActor {
 public:
@@ -21,4 +22,6 @@ private:
 	void IntroUpdate(DebugCamera* camera)override;		//登場シーン
 	void MainUpdate(DebugCamera* camera)override;		//バトルシーン
 	void FinishUpdate(DebugCamera* camera)override;		//撃破シーン
+
+	unique_ptr<BossText> text_;
 };

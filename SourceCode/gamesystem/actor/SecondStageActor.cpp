@@ -27,7 +27,9 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	sceneChanger_->Initialize();
 
 	enemymanager = std::make_unique<EnemyManager>("SECONDSTAGE");
-
+	//enemymanager->Initialize(dxCommon);
+	text_ = make_unique<BossText>();
+	text_->Initialize(dxCommon);
 	camerawork->SetBoss(enemymanager->GetBoss());
 	camerawork->SetCameraState(CAMERA_BOSSAPPEAR);
 	camerawork->SetSceneName("SECONDSTAGE");
@@ -102,6 +104,7 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	if (m_SceneState == SceneState::MainState) {
 		ui->Draw();
 	}
+	text_->SpriteDraw(dxCommon);
 	IKESprite::PostDraw();
 	sceneChanger_->Draw();
 }

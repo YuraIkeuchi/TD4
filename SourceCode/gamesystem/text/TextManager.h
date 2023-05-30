@@ -24,6 +24,8 @@ public:
 		AISATU =1,
 		KAIWA =2,
 		BATTLE=3,
+		BOSS_TALK=4,
+		BOSS_TALK2=5,
 	};
 
 	static TextManager* GetInstance();
@@ -53,6 +55,8 @@ private:
 	std::map<TextManager::Name, Word> wordlist_;
 
 	Conversation conversation_ = {};
+
+	Conversation bossconversation_ = {};
 
 	XMVECTOR color_{ 1.f,1.f,1.f,1.f };
 };

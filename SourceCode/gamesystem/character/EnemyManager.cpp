@@ -36,6 +36,8 @@ EnemyManager::EnemyManager(const std::string& SceneName) {
 	} else {
 		assert(0);
 	}
+}
+void EnemyManager::Initialize(DirectXCommon* dxCommon) {
 
 }
 //バトル更新
@@ -75,7 +77,10 @@ void EnemyManager::Draw(DirectXCommon* dxCommon) {
 		enemy->SummonEnemyDraw(bulletenemy, dxCommon);
 	}
 }
+//描画
+void EnemyManager::SpriteDraw(DirectXCommon* dxCommon) {
 
+}
 void EnemyManager::TutorialDraw(DirectXCommon* dxCommon) {
 	for (auto i = 0; i < tutorialEnemyMax; i++) {
 		tutorialenemy[i]->Draw(dxCommon);
@@ -84,7 +89,6 @@ void EnemyManager::TutorialDraw(DirectXCommon* dxCommon) {
 }
 //ImGui
 void EnemyManager::ImGuiDraw() {
-	//enemy->ImGuiDraw();
 	enemy->ImGuiDraw();
 }
 

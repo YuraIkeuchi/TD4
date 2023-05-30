@@ -35,7 +35,8 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	//ワード追加
 	CreateWord(NONE, L"Hello", L"World", L"GoodBye");
 	CreateWord(AISATU,L"おはよう",L"こんにちは",L"こんばんは");
-
+	CreateWord(BOSS_TALK, L"オマエは", L"いま", L"おこってイルノカ!?");
+	CreateWord(BOSS_TALK2, L"それとも", L"いま", L"よろこんでいるかな?");
 	//コンヴァージョン初期化
 	Create(dxcomon);
 
