@@ -99,12 +99,12 @@ void CameraWork::EditorCamera()
 //ImGui
 void CameraWork::ImGuiDraw() {
 	ImGui::Begin("Camera");
-	ImGui::SliderFloat("Speed", &m_CameraSpeed, 0.0f, 360.0f);
-	ImGui::Text("After:%f", m_AfterSpeed);
-	ImGui::Text("Timer:%d", m_CameraTimer);
-	ImGui::Text("APP:%d", m_AppearType);
 	ImGui::Text("targetPosX:%f", m_targetPos.x);
+	ImGui::Text("targetPosY:%f", m_targetPos.y);
 	ImGui::Text("targetPosZ:%f", m_targetPos.z);
+	ImGui::Text("eyePosX:%f", m_eyePos.x);
+	ImGui::Text("eyePosY:%f", m_eyePos.y);
+	ImGui::Text("eyePosZ:%f", m_eyePos.z);
 	ImGui::End();
 }
 
@@ -214,17 +214,43 @@ void CameraWork::SecondBossAppear() {
 	else if (m_AppearType == APPEAR_SEVEN) {
 		//カメラが寄るフラグになったら次のシーン移行
 		if (m_Approach) {
-			m_AfterEye = { Player::GetInstance()->GetPosition().x,45.0f,Player::GetInstance()->GetPosition().z - 35.0f };
-			m_AfterTarget = { Player::GetInstance()->GetPosition().x,5.0f,Player::GetInstance()->GetPosition().z };
+			m_AfterEye = { boss->GetPosition().x,boss->GetPosition().y,boss->GetPosition().z - 20.0f };
+			m_AfterTarget = { boss->GetPosition().x,boss->GetPosition().y,boss->GetPosition().z };
 			m_Frame = {};
 			m_CameraTimer = {};
-			m_AppearType = APPEAR_END;
+			m_AppearType = APPEAR_EIGHT;
 			m_Approach = false;
 		}
 	}
+	//カメラをボスの前に
+	else if (m_AppearType == APPEAR_EIGHT) {
+		l_AddFrame = 0.05f;
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			//一定時間でカメラを戻す
+			if (Helper::GetInstance()->CheckMin(m_CameraTimer, 50, 1)) {
+				m_AfterEye = { Player::GetInstance()->GetPosition().x,45.0f,Player::GetInstance()->GetPosition().z - 20.0f };
+				m_AfterTarget = { Player::GetInstance()->GetPosition().x,5.0f,Player::GetInstance()->GetPosition().z };
+				m_Frame = {};
+				m_CameraTimer = {};
+				m_AppearType = APPEAR_END;
+				boss->SetFinishApp(true);
+			}
+		}
+		m_eyePos = {
+		Ease(In,Cubic,m_Frame,m_eyePos.x,m_AfterEye.x),
+		Ease(In,Cubic,m_Frame,m_eyePos.y,m_AfterEye.y),
+		Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
+		};
+
+		m_targetPos = {
+		Ease(In,Cubic,m_Frame,m_targetPos.x,m_AfterTarget.x),
+		Ease(In,Cubic,m_Frame,m_targetPos.y,m_AfterTarget.y),
+		Ease(In,Cubic,m_Frame,m_targetPos.z,m_AfterTarget.z),
+		};
+	}
 	//バトル前のカメラに戻る
 	else if (m_AppearType == APPEAR_END) {
-		l_AddFrame = 0.01f;
+		l_AddFrame = 0.05f;
 		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 			m_Frame = 1.0f;
 		}

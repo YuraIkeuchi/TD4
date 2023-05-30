@@ -38,6 +38,8 @@ public:
 	bool AllDeadEnemy();
 	//ボスの撃破
 	void FinishCheck();
+	//ボスの向き
+	void DirSet(int Dir);
 public://getter setter
 	//敵関係getで取る
 	InterBoss* GetBoss() { return enemy.get(); }

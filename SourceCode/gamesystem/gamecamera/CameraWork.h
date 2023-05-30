@@ -16,7 +16,7 @@ enum CameraState {
 	CAMERA_BOSSDEAD_SECOND
 };
 
-//ボス登場シーンのカメラの動き
+//ボス登場シーンのカメラの動き(2個目のボスがこの量なだけでボスによってはへらしてもいいよ)
 enum AppearCameraType {
 	APPEAR_START,
 	APPEAR_SECOND,
@@ -25,6 +25,7 @@ enum AppearCameraType {
 	APPEAR_FIVE,
 	APPEAR_SIX,
 	APPEAR_SEVEN,
+	APPEAR_EIGHT,
 	APPEAR_END,
 };
 

@@ -6,6 +6,10 @@
 #include "Predict.h"
 #include "Collision.h"
 #include "Shake.h"
+enum DirEmo {
+	DIR_ANGER,
+	DIR_JOY,
+};
 class SecondBoss :
 	public InterBoss {
 public:
@@ -15,6 +19,8 @@ public:
 	void Pause() override;//ポーズ
 
 	void Draw(DirectXCommon* dxCommon) override;//描画
+public:
+	
 private:
 	void Action() override;//行動
 	void AppearAction() override;//登場
@@ -179,8 +185,8 @@ private:
 		APPEAR_START,
 		APPEAR_SET,
 		APPEAR_LOOK,
-		APPEAR_JOY,
-		APPEAR_ANGER,
+		APPEAR_DIR,
+		APPEAR_STOP,
 		APPEAR_END,
 	};
 

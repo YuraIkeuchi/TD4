@@ -114,3 +114,8 @@ bool EnemyManager::AllDeadEnemy() {
 void EnemyManager::FinishCheck() {
 	enemy->SetCheck(false);
 }
+
+//敵の向き(2個めのボス)
+void EnemyManager::DirSet(int dir) {
+	enemy->SetDirEmo(dir);
+}

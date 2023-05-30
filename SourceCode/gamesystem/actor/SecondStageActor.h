@@ -34,7 +34,11 @@ private:
 		JOY_START,
 		JOY_SECOND,
 		JOY_THIRD,
-		SELECT_EMO
+		SELECT_EMO,
+		EMO_JOY,
+		EMO_JOY2,
+		EMO_ANGER,
+		EMO_ANGER2,
 	};
 
 	//シーンでの遷移

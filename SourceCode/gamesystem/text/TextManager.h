@@ -30,6 +30,10 @@ public:
 		JOY_TALK2 = 7,
 		JOY_TALK3 = 8,
 		SELECT_TALK = 9,
+		SELECT_ANGER = 10,
+		SELECT_ANGER2 = 11,
+		SELECT_JOY = 12,
+		SELECT_JOY2 = 13,
 	};
 
 	static TextManager* GetInstance();

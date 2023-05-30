@@ -820,52 +820,35 @@ void SecondBoss::AppearAction() {
 		m_AppearTimer++;
 		if (m_AppearTimer == 50) {
 			m_AppearTimer = 0;
-			m_AppearState = APPEAR_ANGER;
+			m_AppearState = APPEAR_DIR;
 			m_AfterRot = { 180.0f,90.0f,90.0f };
 		}
 	}
-	else if (m_AppearState == APPEAR_ANGER) {
+	else if (m_AppearState == APPEAR_DIR) {
 		l_AddFrame = 0.01f;
-
-		/*if (Input::GetInstance()->TriggerButton(Input::A)) {
-			m_Frame = {};
-			m_AppearTimer = 0;
-			m_AppearState = APPEAR_JOY;
-			m_AfterRot = { 180.0f,270.0f,90.0f };
-		}*/
-
 		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
-			m_Frame = 1.0f;
-			//m_AppearTimer++;
-
-			//if (m_AppearTimer == 50) {
-			//	//m_Frame = {};
-			//	m_AppearTimer = 0;
-			//	//m_AppearState = APPEAR_END;
-			//	m_AfterRot = { 0.0f,90.0f,0.0f };
-			//}
+			m_Frame = 0.0f;
+			m_AppearState = APPEAR_STOP;
 		}
 		m_Rotation = { Ease(In,Cubic,m_Frame,m_Rotation.x,m_AfterRot.x),
-			Ease(In,Cubic,m_Frame,m_Rotation.y,m_AfterRot.y),
+			m_Rotation.y,
 			Ease(In,Cubic,m_Frame,m_Rotation.z,m_AfterRot.z),
 		};
 	}
-	else if (m_AppearState == APPEAR_JOY) {
-		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
-			m_Frame = 1.0f;
+	//テキストが出てる間
+	else if (m_AppearState == APPEAR_STOP) {
+		if (m_DirEmo == DIR_ANGER) {
+			m_AfterRot.y = 90.0f;
 		}
-
-		//if (Input::GetInstance()->TriggerButton(Input::B)) {
-		//	m_Frame = {};
-		//	m_AppearTimer = 0;
-		//	m_AppearState = APPEAR_ANGER;
-		//	m_AfterRot = { 180.0f,90.0f,90.0f };
-		//}
-
-		m_Rotation = { Ease(In,Cubic,m_Frame,m_Rotation.x,m_AfterRot.x),
-			Ease(In,Cubic,m_Frame,m_Rotation.y,m_AfterRot.y),
-			Ease(In,Cubic,m_Frame,m_Rotation.z,m_AfterRot.z),
-		};
+		else {
+			m_AfterRot.y = 270.0f;
+		}
+		m_Rotation.y = Ease(In, Cubic, 0.5f, m_Rotation.y, m_AfterRot.y);
+		if (m_FinishApp) {
+			m_Frame = 0.0f;
+			m_AppearState = APPEAR_END;
+			m_AfterRot = { 0.0f,90.0f,0.0f };
+		}
 	}
 	else if (m_AppearState == APPEAR_END) {
 		l_AddFrame = 0.01f;
