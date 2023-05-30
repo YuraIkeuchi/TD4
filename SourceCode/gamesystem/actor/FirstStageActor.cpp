@@ -9,6 +9,7 @@
 #include <HungerGauge.h>
 #include "BackObj.h"
 //初期化
+
 void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	dxCommon->SetFullScreen(true);
 	//共通の初期化
@@ -25,13 +26,14 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	sceneChanger_->Initialize();
 
 	//各クラス
-	Player::GetInstance()->InitState({ 0.0f,0.0f,0.0f });
+	Player::GetInstance()->InitState({ 0.0f,0.0f,-70.0f });
 	camerawork->Update(camera);
 	
 	enemymanager = std::make_unique<EnemyManager>("FIRSTSTAGE");
 	
 	camerawork->SetBoss(enemymanager->GetBoss());
-	camerawork->SetCameraState(CAMERA_NORMAL);
+	camerawork->SetCameraState(CAMERA_BOSSAPPEAR);
+	camerawork->SetSceneName("FIRSTSTAGE");
 	ui = std::make_unique<UI>();
 	ui->Initialize();
 	ui->SetBoss(enemymanager->GetBoss());
@@ -44,6 +46,8 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 }
 //更新
 void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
+
+	
 	Input* input = Input::GetInstance();
 
 	if (input->TriggerKey(DIK_X)) {
@@ -94,12 +98,12 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	}
 	else
 	{
-		camerawork->SetCameraState(CAMERA_NORMAL);
+		if (camerawork->FinishAppear()) {
+			//m_SceneState = SceneState::MainState;
+		//	camerawork->SetCameraState(CAMERA_NORMAL);
+		}
 	}
-	if (Input::GetInstance()->TriggerButton(Input::Y))
-	{
-		feedF = true;
-	}
+	
 	camerawork->Update(camera);
 	lightgroup->Update();
 }

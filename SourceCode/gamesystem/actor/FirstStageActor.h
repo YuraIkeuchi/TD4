@@ -4,11 +4,11 @@
 #include "LoadStageObj.h"
 #include"Font.h"
 #include"Feed.h"
+#include"Spline.h"
 
 /// タイトルシーン
 class FirstStageActor : public BaseActor {
-	Feed*feedn;
-	bool feedF;
+
 public:
 	/// 初期化
 	void Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) override;
@@ -23,4 +23,7 @@ public:
 	void ImGuiDraw(DirectXCommon* dxCommon);
 	void ColEnemy(std::vector<InterEnemy*> enelist);
 private:
+	Spline* spline;
+	vector<XMFLOAT3> pointsList;
+	void SetPoints();
 };

@@ -5,6 +5,7 @@
 #include <memory>
 #include "Feed.h"
 #include "InterBoss.h"
+#include"Spline.h"
 using namespace std;         //  名前空間指定
 
 enum CameraState {
@@ -58,13 +59,18 @@ private:
 //	void SpecialUpdate();//更新
 
 private://各ボスの登場カメラ
+	Spline* spline;
+	vector<XMFLOAT3>pointsList;
 	void FirstBossAppear();
+	
 	void SecondBossAppear();
 
 	//円運動のカメラセットの際のやつ
 	void SetCircleCamera();
 public:
+	bool Finish;
 	//getter setter
+bool FinishAppear() { if (spline->GetIndex() >= static_cast<int>(pointsList.size() -1))return true; return false; }
 
 	void SetBoss(InterBoss* boss) { this->boss = boss; }
 
