@@ -175,13 +175,8 @@ void CameraWork::SecondBossAppear() {
 		l_AddFrame = 0.01f;
 		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 			m_AppearType = APPEAR_FIVE;
-			m_Frame = 1.0f;
-
-			m_CameraTimer++;
-			if (m_CameraTimer == 120) {
-				m_AppearType = APPEAR_FIVE;
-				m_CameraTimer = 0;
-			}
+			m_Frame = 0.0f;
+			m_CameraTimer = {};
 		}
 	
 		m_CameraSpeed = Ease(In, Cubic, m_Frame, m_CameraSpeed, m_AfterSpeed);
@@ -194,11 +189,11 @@ void CameraWork::SecondBossAppear() {
 	//ボスの後ろにいる
 	else if(m_AppearType == APPEAR_FIVE) {
 		m_targetPos = boss->GetPosition();
-		m_eyePos = { boss->GetPosition().x - 10.0f,boss->GetPosition().y,boss->GetPosition().z + 10.0f };
+		m_eyePos = { boss->GetPosition().x - 10.0f,boss->GetPosition().y,boss->GetPosition().z + 20.0f };
 		m_CameraTimer++;
 
 		if (m_CameraTimer == 30) {
-			m_AfterEye = { boss->GetPosition().x - 5.0f, boss->GetPosition().y, boss->GetPosition().z - 20.0f };
+			m_AfterEye = { boss->GetPosition().x - 5.0f, boss->GetPosition().y, boss->GetPosition().z - 40.0f };
 			m_AppearType = APPEAR_SIX;
 			m_Frame = {};
 			m_CameraTimer = {};
@@ -211,7 +206,7 @@ void CameraWork::SecondBossAppear() {
 			m_Frame = 1.0f;
 			m_CameraTimer++;
 			if (m_CameraTimer == 40) {
-				m_AfterEye = { Player::GetInstance()->GetPosition().x,45.0f,Player::GetInstance()->GetPosition().z - 20.0f };
+				m_AfterEye = { Player::GetInstance()->GetPosition().x,45.0f,Player::GetInstance()->GetPosition().z - 35.0f };
 				m_AfterTarget = { Player::GetInstance()->GetPosition().x,5.0f,Player::GetInstance()->GetPosition().z };
 				m_Frame = {};
 				m_CameraTimer = {};
@@ -244,7 +239,6 @@ void CameraWork::SecondBossAppear() {
 		Ease(In,Cubic,m_Frame,m_targetPos.z,m_AfterTarget.z),
 		};
 	}
-
 }
 
 //円運動の際のカメラ位置更新

@@ -247,7 +247,7 @@ void SecondBoss::Stamp() {
 	}
 	else if (m_PressType == PRESS_ATTACK) {			//落下してくる
 		l_AddFrame = 0.05f;
-		m_AfterPos = { m_Position.x,8.0f,m_Position.z };
+		m_AfterPos = { m_Position.x,6.0f,m_Position.z };
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
 		}
@@ -363,7 +363,7 @@ void SecondBoss::RandomStamp() {
 	}
 	else if (m_RandomType == RANDOM_ATTACK) {
 		l_AddFrame = 0.05f;
-		m_AfterPos.y = 8.0f;
+		m_AfterPos.y = 6.0f;
 		const int l_MoveMax = 10;
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
@@ -446,7 +446,7 @@ void SecondBoss::Rolling() {
 
 		//飛ぶような感じにするため重力を入れる
 		m_AddPower -= m_Gravity;
-		Helper::GetInstance()->CheckMax(m_Position.y, 8.0f, m_AddPower);
+		Helper::GetInstance()->CheckMax(m_Position.y, 6.0f, m_AddPower);
 		m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, 0.0f);
 	}
 	else {
@@ -702,7 +702,7 @@ void SecondBoss::MoveInit(const std::string& HighState) {
 	if (HighState == "UPSTATE") {
 		_InterValState = DownState;
 		m_Frame = 0.0f;
-		m_AfterPos.y = 8.0f;
+		m_AfterPos.y = 6.0f;
 	}
 	else if (HighState == "DOWNSTATE") {
 		_InterValState = UpState;
@@ -804,7 +804,7 @@ void SecondBoss::AppearAction() {
 		if (m_AppearTimer == 300) {
 			m_AppearState = APPEAR_SET;
 			m_Frame = {};
-			m_AfterPos.y = 5.0f;
+			m_AfterPos.y = 8.0f;
 			m_AppearTimer = {};
 		}
 	}
@@ -887,7 +887,6 @@ void SecondBoss::AppearAction() {
 void SecondBoss::DeadAction() {
 
 }
-
 //ボス撃破シーン
 void SecondBoss::DeadAction_Throw() {
 
