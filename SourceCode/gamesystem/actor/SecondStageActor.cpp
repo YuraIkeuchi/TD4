@@ -30,6 +30,7 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	//enemymanager->Initialize(dxCommon);
 	text_ = make_unique<BossText>();
 	text_->Initialize(dxCommon);
+	text_->SelectText(TextManager::ANGER_TALK);
 	camerawork->SetBoss(enemymanager->GetBoss());
 	camerawork->SetCameraState(CAMERA_BOSSAPPEAR);
 	camerawork->SetSceneName("SECONDSTAGE");
@@ -104,7 +105,9 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	if (m_SceneState == SceneState::MainState) {
 		ui->Draw();
 	}
-	text_->SpriteDraw(dxCommon);
+	if (camerawork->GetAppearType() == APPEAR_SEVEN) {
+		text_->SpriteDraw(dxCommon);
+	}
 	IKESprite::PostDraw();
 	sceneChanger_->Draw();
 }
@@ -117,7 +120,27 @@ void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 }
 //登場シーン
 void SecondStageActor::IntroUpdate(DebugCamera* camera) {
-	Input* input = Input::GetInstance();
+	if (camerawork->GetAppearType() == APPEAR_SEVEN) {
+		text_->Display();
+		//最初の言葉(怒り)
+		if (m_AppState == AppState::ANGER_START) {
+			text_->SelectText(TextManager::ANGER_TALK);
+			if (Input::GetInstance()->TriggerButton(Input::B)) {
+				m_AppState = AppState::ANGER_SECOND;
+			}
+		}
+		//2つ目の言葉(怒り)
+		else if (m_AppState == AppState::ANGER_SECOND) {
+			text_->SelectText(TextManager::ANGER_TALK2);
+			if (Input::GetInstance()->TriggerButton(Input::B)) {
+				m_AppState = AppState::JOY_START;
+			}
+		}
+		//最初の言葉(喜び)
+		else if (m_AppState == AppState::JOY_START) {
+			text_->SelectText(TextManager::JOY_TALK);
+		}
+	}
 	if (enemymanager->GetEnemyFinishAppear()) {
 		m_SceneState = SceneState::MainState;
 		camerawork->SetCameraState(CAMERA_NORMAL);

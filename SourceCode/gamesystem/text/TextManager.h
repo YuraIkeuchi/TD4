@@ -24,8 +24,12 @@ public:
 		AISATU =1,
 		KAIWA =2,
 		BATTLE=3,
-		BOSS_TALK=4,
-		BOSS_TALK2=5,
+		ANGER_TALK=4,
+		ANGER_TALK2=5,
+		JOY_TALK = 6,
+		JOY_TALK2 = 7,
+		JOY_TALK3 = 8,
+		SELECT_TALK = 9,
 	};
 
 	static TextManager* GetInstance();

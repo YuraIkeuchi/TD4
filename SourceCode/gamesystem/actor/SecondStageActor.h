@@ -24,4 +24,19 @@ private:
 	void FinishUpdate(DebugCamera* camera)override;		//撃破シーン
 
 	unique_ptr<BossText> text_;
+
+private:
+
+	//導入シーン
+	enum class AppState : int {
+		ANGER_START,
+		ANGER_SECOND,
+		JOY_START,
+		JOY_SECOND,
+		JOY_THIRD,
+		SELECT_EMO
+	};
+
+	//シーンでの遷移
+	AppState m_AppState = AppState::ANGER_START;
 };

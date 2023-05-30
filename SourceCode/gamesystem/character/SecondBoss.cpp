@@ -816,7 +816,7 @@ void SecondBoss::AppearAction() {
 		}
 		m_Position.y = Ease(In, Cubic, m_Frame, m_Position.y, m_AfterPos.y);
 	}
-	else if (m_AppearState == APPEAR_LOOK) {
+	else if (m_AppearState == APPEAR_LOOK) {		//プレイヤーを見てくる
 		m_AppearTimer++;
 		if (m_AppearTimer == 50) {
 			m_AppearTimer = 0;
@@ -836,14 +836,14 @@ void SecondBoss::AppearAction() {
 
 		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 			m_Frame = 1.0f;
-			m_AppearTimer++;
+			//m_AppearTimer++;
 
-			if (m_AppearTimer == 50) {
-				m_Frame = {};
-				m_AppearTimer = 0;
-				m_AppearState = APPEAR_END;
-				m_AfterRot = { 0.0f,90.0f,0.0f };
-			}
+			//if (m_AppearTimer == 50) {
+			//	//m_Frame = {};
+			//	m_AppearTimer = 0;
+			//	//m_AppearState = APPEAR_END;
+			//	m_AfterRot = { 0.0f,90.0f,0.0f };
+			//}
 		}
 		m_Rotation = { Ease(In,Cubic,m_Frame,m_Rotation.x,m_AfterRot.x),
 			Ease(In,Cubic,m_Frame,m_Rotation.y,m_AfterRot.y),
@@ -891,4 +891,3 @@ void SecondBoss::DeadAction() {
 void SecondBoss::DeadAction_Throw() {
 
 }
-
