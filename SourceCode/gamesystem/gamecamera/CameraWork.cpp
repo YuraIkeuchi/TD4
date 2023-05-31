@@ -14,6 +14,20 @@ CameraWork::CameraWork(XMFLOAT3 eye, XMFLOAT3 target) {
 	Feed* feed_ = new Feed();
 	feed.reset(feed_);
 
+#pragma region First
+	{
+		pointsList.emplace_back(XMFLOAT3{ 0,160,0 });
+		pointsList.emplace_back(XMFLOAT3{ 0,80,-30 });
+		pointsList.emplace_back(XMFLOAT3{ 50,0,0 });
+		pointsList.emplace_back(XMFLOAT3{ 0,0,50 });
+		pointsList.emplace_back(XMFLOAT3{ -50,20,-90 });
+		pointsList.emplace_back(XMFLOAT3{ 0,20,-90 });
+		pointsList.emplace_back(Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().y+50, Player::GetInstance()->GetPosition().z-30);
+		pointsList.emplace_back(Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().y + 50, Player::GetInstance()->GetPosition().z - 30);
+		spline = new Spline();
+		spline->Init(pointsList,static_cast<int>(pointsList.size()));
+	}
+#pragma endregion
 }
 /*CharaStateのState並び順に合わせる*/
 void (CameraWork::* CameraWork::stateTable[])() = {
@@ -35,6 +49,8 @@ void CameraWork::Update(DebugCamera* camera) {
 void CameraWork::DefaultCam()
 {
 	m_eyePos.x = Player::GetInstance()->GetPosition().x;
+	m_eyePos.y = Player::GetInstance()->GetPosition().y+50.0f;
+
 	m_eyePos.z = Player::GetInstance()->GetPosition().z - 20.0f;
 	m_targetPos.x = Player::GetInstance()->GetPosition().x;
 	m_targetPos.z = Player::GetInstance()->GetPosition().z;
@@ -119,6 +135,34 @@ void CameraWork::feedDraw()
 }
 //最初のボスのカメラ
 void CameraWork::FirstBossAppear() {
+<<<<<<< HEAD
+=======
+	if(!Finish)
+	spline->Upda(m_eyePos);
+
+	if (spline->GetIndex() >=pointsList.size()-1)
+	{
+		Finish = true;
+		if (Helper::GetInstance()->FrameCheck(m_Frame,0.02f)) {
+			m_Frame = 1.0f;
+		}
+		m_AfterEye = { Player::GetInstance()->GetPosition().x,45.0f,Player::GetInstance()->GetPosition().z - 20.0f };
+		m_AfterTarget = Player::GetInstance()->GetPosition();
+		m_targetPos = {
+Ease(In,Cubic,m_Frame,boss->GetPosition().x,m_AfterTarget.x),
+Ease(In,Cubic,m_Frame,boss->GetPosition().y,m_AfterTarget.y),
+Ease(In,Cubic,m_Frame,boss->GetPosition().z,m_AfterTarget.z),
+		};
+
+		m_eyePos = {
+Ease(In,Cubic,m_Frame,m_eyePos.x,m_AfterEye.x),
+Ease(In,Cubic,m_Frame,m_eyePos.y,m_AfterEye.y),
+Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
+		};
+	}
+	else
+	  m_targetPos = { boss->GetPosition() };
+>>>>>>> main
 }
 //2個目のボスのカメラ
 void CameraWork::SecondBossAppear() {
