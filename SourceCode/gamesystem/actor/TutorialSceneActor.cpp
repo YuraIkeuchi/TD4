@@ -34,21 +34,11 @@ void (TutorialSceneActor::* TutorialSceneActor::stateTable[])() = {
 };
 
 void TutorialSceneActor::IntroState() {
-	frame++;
-	nowframe = frame / maxframe;
-	if (frame >= maxframe) {
-		frame = maxframe;
-	}
-	window_pos.y = Ease(Out, Sine, nowframe, WinApp::window_height + 100, WinApp::window_height - 100);
-	window_size.x = Ease(Out, Sine, nowframe, 0, 1300);
-	window_size.y = Ease(Out, Sine, nowframe, 0, 223);
-	black_color.w = Ease(Out, Sine, nowframe, 0, 1);
-	girl_color.w = Ease(Out, Sine, nowframe, 0, 1);
 
 
 	if (DebugButton() ||
 		input->TriggerButton(Input::B)) {
-
+		text_->NoneText();
 		nowstate_ = state::MOVE;
 	}
 }
@@ -75,13 +65,38 @@ void TutorialSceneActor::MoveState() {
 	if (Collision::CircleCollision(Spos.x, Spos.z, 5.f, pos.x, pos.z, 1.f)) {
 		nowstate_ = state::TEXT_TALK;
 	}
+	if (input->TriggerKey(DIK_O)) {
+		nowstate_ = state::TEXT_TALK;
+	}
 }
 void TutorialSceneActor::TextTalkState() {
+
+	messagewindow_->DisplayCharacter(sutopon_color_);
+	if (input->TriggerKey(DIK_RIGHT)) {
+		conversation += 1;
+	}
+
+	if (conversation == 0) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK2);
+	}
+	else if (conversation == 1) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK3);
+	}
+	else if (conversation == 2) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK4);
+	}
+	else if (conversation == 3) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK5);
+	}
+	else if (conversation == 4) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK6);
+	}
+
 
 	if (DebugButton() ||
 		input->TriggerButton(Input::B)) {
 		sutepon->SetPosition({ 0,0,15.0f });
-		conversation  = 0;
+		conversation = 0;
 		nowstate_ = state::SPAWNENEMY;
 	}
 }
@@ -173,6 +188,11 @@ void TutorialSceneActor::SpawnAllEnemyState() {
 		enemymanager->TutorialUpdate(1);
 	}
 	if (Clear(cameraframe >= 1.0f, 50)) {
+		s_eyepos = { Player::GetInstance()->GetPosition().x,
+		Player::GetInstance()->GetPosition().y + 50.0f,
+		Player::GetInstance()->GetPosition().z - 20.0f };
+		s_targetpos.x = Player::GetInstance()->GetPosition().x;
+		s_targetpos.z = Player::GetInstance()->GetPosition().z;
 		nowstate_ = state::TEXT_LAST;
 		cameraframe = 0.0f;
 	}
@@ -252,7 +272,7 @@ bool TutorialSceneActor::MovingCamera(const XMFLOAT3& s_eye, const XMFLOAT3& e_e
 	}
 }
 void TutorialSceneActor::CameraUpdate(DebugCamera* camera) {
-	if (!(nowstate_ == state::SPAWNALLENEMY|| nowstate_ == state::TEXT_LAST)) {
+	if (!(nowstate_ == state::SPAWNALLENEMY || nowstate_ == state::TEXT_LAST)) {
 		camerawork->SetCameraState(CAMERA_NORMAL);
 	} else {
 		camerawork->SetCameraState(CAMERA_LOAD);
@@ -278,7 +298,7 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	//オーディオ
 	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/BGM_boss.wav");
 	//ポストエフェクト
-	PlayPostEffect = true;
+	PlayPostEffect = false;
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
 	//各クラス
@@ -303,13 +323,15 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	//メッセージウィンドウ生成
 	messagewindow_ = make_unique<MessageWindow>();
 	messagewindow_->Initialize();
+	messagewindow_->Display();
 	//背景objの生成
 	BackObj::GetInstance()->Initialize();
 
 
 	text_ = make_unique<TextManager>();
 	text_->Initialize(dxCommon);
-	text_->SetConversation(TextManager::AISATU);
+	text_->SetConversation(TextManager::TYUTORIAL_TALK1)
+		;
 	BackObj::GetInstance()->Initialize();
 	loadobj = std::make_unique<LoadStageObj>();
 	loadobj->AllLoad("FIRSTSTAGE");
@@ -336,12 +358,12 @@ void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	if (static_cast<int>(nowstate_) % 2 == 1) {
 		ui->Update();
 		Player::GetInstance()->Update();
-		ParticleEmitter::GetInstance()->Update();
 	}
+	ParticleEmitter::GetInstance()->Update();
 	BackObj::GetInstance()->Update();
 	CameraUpdate(camera);
 	lightgroup->Update();
-	messagewindow_->Update();
+	messagewindow_->Update(girl_color_,sutopon_color_);
 }
 //描画
 void TutorialSceneActor::Draw(DirectXCommon* dxCommon) {
@@ -405,6 +427,6 @@ void TutorialSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 void TutorialSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	//Player::GetInstance()->ImGuiDraw();
 	//loadobj->ImGuiDraw();
-	//enemymanager->ImGuiDraw();
+	enemymanager->ImGuiDraw();
 	//camerawork->ImGuiDraw();
 }
