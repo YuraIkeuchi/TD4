@@ -75,10 +75,10 @@ void ParticleEmitter::Explosion(const int life, const XMFLOAT3& pos, const float
 
 //�_���[�W�G�t�F�N�g
 void ParticleEmitter::Break(const int life, const XMFLOAT3& pos,const float startscale, const float endscale,
-	const XMFLOAT4& startcolor, const XMFLOAT4& endcolor,const float Gravity) {
+	const XMFLOAT4& startcolor, const XMFLOAT4& endcolor,const float Gravity,float divi) {
 	//���鐔
 	const int l_Division = 80;
-	float l_AddPowerY = 0.025f;
+	float l_AddPowerY = 0.0f;
 	//�����w��(-50����50)
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> l_bounddist(-50, 50);
@@ -95,7 +95,7 @@ void ParticleEmitter::Break(const int life, const XMFLOAT3& pos,const float star
 
 	vel.y += l_AddPowerY;
 
-	circleParticle->Add(life, l_pos, vel, {}, startscale, endscale, startcolor, endcolor,Gravity);
+	circleParticle->Add(life, l_pos, vel, {}, startscale, endscale, startcolor, endcolor,Gravity,divi);
 }
 
 void ParticleEmitter::AllDelete()

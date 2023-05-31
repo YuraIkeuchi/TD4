@@ -29,7 +29,7 @@ private:
 
 public:
 	void Init(std::vector<XMFLOAT3>points,int pointssize);
-	void Upda(XMFLOAT3& Epos);
+	void Upda(XMFLOAT3& Epos,float DiviSpeed=300.0f);
 	XMVECTOR SplinePosition(const std::vector<XMVECTOR>& points, size_t startindex, float t);
 
 	size_t GetIndex() { return startindex; }

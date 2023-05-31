@@ -9,14 +9,14 @@
 #include "ParticleEmitter.h"
 //ÉÇÉfÉãì«Ç›çûÇ›
 NormalEnemy::NormalEnemy() {
-	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::BulEnemy);
+	m_fbxModel = ModelManager::GetInstance()->GetFBXModel(ModelManager::SIORI);
 }
 //èâä˙âª
 bool NormalEnemy::Initialize() {
 
-	m_Object = make_unique<IKEObject3d>();
-	m_Object->Initialize();
-	m_Object->SetModel(m_Model);
+	m_fbxObject = make_unique<IKEFBXObject3d>();
+	m_fbxObject->Initialize();
+	m_fbxObject->SetModel(m_fbxModel);
 	m_Scale = { 0.0f,0.0f,0.0f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Position.y = 5.0f;
@@ -40,7 +40,9 @@ void NormalEnemy::Action() {
 		t = 0.f;
 	}
 
-	Obj_SetParam();	//m_Position = Helper::GetInstance()->CircleMove({ 0.0f,5.0f,0.0f }, m_CircleScale, m_CircleSpeed);
+	//Obj_SetParam();	//m_Position = Helper::GetInstance()->CircleMove({ 0.0f,5.0f,0.0f }, m_CircleScale, m_CircleSpeed);
+	Fbx_SetParam();
+
 	OnCollision();
 	ColPlayer();
 	Particle();
@@ -52,7 +54,8 @@ void NormalEnemy::Draw(DirectXCommon* dxCommon) {
 
 	if (m_Color.w <= 0.f)return;
 	IKEObject3d::PreDraw();
-	Obj_Draw();
+	Fbx_Draw(dxCommon);
+	//Obj_Draw();
 }
 //ImGuiï`âÊ
 void NormalEnemy::ImGuiDraw() {
@@ -121,9 +124,9 @@ void NormalEnemy::Appearance()
 	m_Scale.y += AddScaling;
 	m_Scale.z += AddScaling;
 
-	Helper::GetInstance()->Clamp(m_Scale.x, 0.f, 1.5f);
-	Helper::GetInstance()->Clamp(m_Scale.y, 0.f, 1.5f);
-	Helper::GetInstance()->Clamp(m_Scale.z, 0.f, 1.5f);
+	Helper::GetInstance()->Clamp(m_Scale.x, 0.f, 0.15f);
+	Helper::GetInstance()->Clamp(m_Scale.y, 0.f, 0.15f);
+	Helper::GetInstance()->Clamp(m_Scale.z, 0.f, 0.15f);
 
 	float RottoPlayer;
 	RottoPlayer = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);

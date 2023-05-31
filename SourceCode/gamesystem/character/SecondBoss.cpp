@@ -1,4 +1,5 @@
-﻿#include "SecondBoss.h"
+﻿
+#include "SecondBoss.h"
 #include "ModelManager.h"
 #include "ImageManager.h"
 #include "Helper.h"

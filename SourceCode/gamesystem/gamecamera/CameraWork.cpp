@@ -16,16 +16,19 @@ CameraWork::CameraWork(XMFLOAT3 eye, XMFLOAT3 target) {
 
 #pragma region First
 	{
-		pointsList.emplace_back(XMFLOAT3{ 0,160,0 });
-		pointsList.emplace_back(XMFLOAT3{ 0,80,-30 });
-		pointsList.emplace_back(XMFLOAT3{ 50,0,0 });
-		pointsList.emplace_back(XMFLOAT3{ 0,0,50 });
-		pointsList.emplace_back(XMFLOAT3{ -50,20,-90 });
-		pointsList.emplace_back(XMFLOAT3{ 0,20,-90 });
-		pointsList.emplace_back(Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().y+50, Player::GetInstance()->GetPosition().z-30);
-		pointsList.emplace_back(Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().y + 50, Player::GetInstance()->GetPosition().z - 30);
+		if (pointsList.size() == 0) {
+			pointsList.emplace_back(XMFLOAT3{ 0,160,200 });
+			pointsList.emplace_back(XMFLOAT3{ 0,80,120 });
+			//pointsList.emplace_back(XMFLOAT3{ 25,30,-15 });
+			pointsList.emplace_back(XMFLOAT3{ 60,30,70 });
+			//pointsList.emplace_back(XMFLOAT3{ 30,50,45 });
+			pointsList.emplace_back(XMFLOAT3{ 30,30,50 });
+			pointsList.emplace_back(XMFLOAT3{ 0,30,0});
+			pointsList.emplace_back(XMFLOAT3{ -20,10,-30 });
+			pointsList.emplace_back(XMFLOAT3{ -10,10,-70 });
+		}
 		spline = new Spline();
-		spline->Init(pointsList,static_cast<int>(pointsList.size()));
+		spline->Init(pointsList, static_cast<int>(pointsList.size()));
 	}
 #pragma endregion
 }
@@ -40,6 +43,7 @@ void (CameraWork::* CameraWork::stateTable[])() = {
 //XV
 void CameraWork::Update(DebugCamera* camera) {
 	//状態移行(charastateに合わせる)
+	
 	(this->*stateTable[m_CameraState])();
 	camera->SetEye(m_eyePos);
 	camera->SetTarget(m_targetPos);
@@ -138,7 +142,7 @@ void CameraWork::feedDraw()
 //最初のボスのカメラ
 void CameraWork::FirstBossAppear() {
 	if(!Finish)
-	spline->Upda(m_eyePos);
+	spline->Upda(m_eyePos,180.00f);
 
 	if (spline->GetIndex() >=pointsList.size()-1)
 	{

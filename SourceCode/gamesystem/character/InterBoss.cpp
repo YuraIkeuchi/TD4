@@ -91,13 +91,23 @@ void InterBoss::BirthEffect() {
 	neweffect = new BreakEffect();
 	neweffect->Initialize();
 	neweffect->SetPosition(m_Position);
+	if (m_HP <= 0.f) {
+		neweffect->SetLife(1000);
+		neweffect->SetDiviSpeed(8.0f);
+	} else {
+		neweffect->SetDiviSpeed(1.0f);
+		neweffect->SetLife(50);
+	}
+
 	effects.push_back(neweffect);
 }
 
+
 void InterBoss::SummonEnemyInit(InterEnemy* enemy)
 {
-
+	
 }
+
 
 void InterBoss::isRespawn(std::vector<InterEnemy*> enemy)
 {
