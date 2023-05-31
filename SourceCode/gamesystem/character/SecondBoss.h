@@ -177,6 +177,8 @@ private:
 	//方向転換するためのもの
 	bool m_ChangeRot = false;
 	float m_RotFrame = 0.0f;
+
+	bool ResetRota = false;
 private:
 	unique_ptr<IKETexture> mark;
 	XMFLOAT4 m_MarkColor = { 1.0f,1.0f,1.0f,0.0f };

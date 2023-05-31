@@ -868,9 +868,23 @@ void SecondBoss::AppearAction() {
 }
 //ボス撃破シーン
 void SecondBoss::DeadAction() {
+	m_Rotation.y += 0.03f;
+	m_Rotation.z += 1.6f;
 
+	Helper::GetInstance()->Clamp(m_Rotation.z, 0.f, 90.f);
 }
 //ボス撃破シーン
 void SecondBoss::DeadAction_Throw() {
-
+	if (!ResetRota) {
+		m_Rotation.y = 90.f;
+		m_Rotation.x = 0.f;
+		m_Rotation.z = 0.f;
+		ResetRota = true;
+	}
+	else
+	{
+		m_Position.y = 0;
+		m_Rotation.y += 0.02f;
+		m_Rotation.z += 0.09f;
+	}
 }
