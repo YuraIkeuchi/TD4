@@ -13,7 +13,6 @@ TextManager* TextManager::GetInstance()
 
 void TextManager::Create(DirectXCommon* dxcomon)
 {
-
 	conversation_.FirstFont = new Font();
 	conversation_.SecondFont = new Font();
 	conversation_.ThirdFont = new Font();
@@ -46,9 +45,9 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	CreateWord(SELECT_JOY, L"キミよくわかってるね!", L"ってことはさ、キミは", L"このぼくのカンジョウ・・・");
 	CreateWord(SELECT_JOY2, L"めのまえのやつをたおすヨロコビを", L"リカイしてくれるよね!!!", L"!!!!!!!!!!");
 
-	CreateWord(Name_First::VIEWBOSS, L"なにかうごきまわってる。。。。");
+	CreateWord(Name_First::VIEWBOSS, L"ちちうえ!ほんがうごきまわってるでござる!",L"どうするでござるか!?",L"しめるでござるか!?");
 	CreateWord(Name_First::SPEAKPLAYER1, L"。。。。。。。");
-	CreateWord(Name_First::SPEALPLAYER2, L" 何じゃありゃ ");
+	CreateWord(Name_First::SPEALPLAYER2, L"あれはわしらにはすくえぬものじゃ",L"ぜんりょくでころすのじゃ");
 	//コンヴァージョン初期化
 	Create(dxcomon);
 

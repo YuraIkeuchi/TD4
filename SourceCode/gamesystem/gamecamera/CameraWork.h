@@ -82,6 +82,7 @@ private://各ボスの登場カメラ
 	
 	void SecondBossAppear();
 
+	void FirstBossDead_AfterFeed();
 	//円運動のカメラセットの際のやつ
 	void SetCircleCamera();
 public:

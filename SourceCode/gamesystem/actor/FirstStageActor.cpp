@@ -52,11 +52,11 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 
 	textT++;
-	if(textT>90)
+	if(textT>240)
 	{
 		text_->SelectText(TextManager::Name_First::SPEAKPLAYER1);
 	}
-	if(textT>180)
+	if(textT>480)
 	{
 		text_->SelectText(TextManager::Name_First::SPEALPLAYER2);
 	}

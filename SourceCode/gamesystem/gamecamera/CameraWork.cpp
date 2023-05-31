@@ -112,6 +112,9 @@ void CameraWork::SetBossDead_AfterFirst()
 //フェード後の撃破アクション(1ボス)
 void CameraWork::SetBossDead_AfterSecond()
 {
+	if (SceneName == "FIRSTSTAGE") {
+		FirstBossDead_AfterFeed();
+	}
 	m_eyePos.x = Player::GetInstance()->GetPosition().x;
 	m_eyePos.y = Player::GetInstance()->GetPosition().y + 50;
 	m_eyePos.z = Player::GetInstance()->GetPosition().z - 20.0f;
@@ -179,6 +182,13 @@ Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
 	else
 	  m_targetPos = { boss->GetPosition() };
 }
+
+
+void CameraWork::FirstBossDead_AfterFeed()
+{
+	
+}
+
 //2個目のボスのカメラ
 void CameraWork::SecondBossAppear() {
 	float l_AddFrame = 0.0f;
