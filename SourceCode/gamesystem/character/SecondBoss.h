@@ -6,7 +6,8 @@
 #include "Predict.h"
 #include "Collision.h"
 #include "Shake.h"
-//#include "Sprine.h"
+
+class Spline;
 enum DirEmo {
 	DIR_ANGER,
 	DIR_JOY,
@@ -205,6 +206,6 @@ private:
 	int m_QuickMoveInterval = {};
 	int m_ChoiceInterval = {};
 
-	/*Spline* spline;
-	vector<XMFLOAT3>pointsList;*/
+	Spline* spline;
+	vector<XMFLOAT3>pointsList;
 };

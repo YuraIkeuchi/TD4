@@ -42,12 +42,24 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	loadobj->AllLoad("FIRSTSTAGE");
 	LoadStageObj::SetEnemyManager(enemymanager.get());
 
+	text_ = make_unique<BossText>();
+	text_->Initialize(dxCommon);
+	text_->SelectText(TextManager::Name_First::VIEWBOSS);
+
 	lightgroup->SetCircleShadowActive(0, true);
 }
 //更新
 void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 
-	
+	textT++;
+	if(textT>240)
+	{
+		text_->SelectText(TextManager::Name_First::SPEAKPLAYER1);
+	}
+	if(textT>480)
+	{
+		text_->SelectText(TextManager::Name_First::SPEALPLAYER2);
+	}
 	Input* input = Input::GetInstance();
 
 	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
@@ -90,14 +102,14 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		if (!camerawork->GetFeedEnd()) {
 			enemymanager->SetDeadThrow(true);
 			enemymanager->DeadUpdate();
-			camerawork->SetCameraState(CAMERA_BOSSDEAD_FIRST);
+			camerawork->SetCameraState(CAMERA_BOSSDEAD_BEFORE);
 		}
 		//フェード後
 		else
 		{
 			enemymanager->SetDeadThrow(false);
 			enemymanager->DeadUpdate();
-			camerawork->SetCameraState(CAMERA_BOSSDEAD_SECOND);
+			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_FIRST);
 		}
 	}
 	else
@@ -107,7 +119,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		//	camerawork->SetCameraState(CAMERA_NORMAL);
 		}
 	}
-	
+	text_->Display();
 	camerawork->Update(camera);
 	lightgroup->Update();
 }
@@ -161,6 +173,9 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 
 	ui->Draw();;
 	sceneChanger_->Draw();	//完全に前に書くスプライト
+	//if (camerawork->GetAppearType() == APPEAR_SEVEN || camerawork->GetAppearType() == APPEAR_EIGHT) {
+		text_->SpriteDraw(dxCommon);
+	//}
 	//IKESprite::PreDraw();
 	//blackwindow->Draw();
 	camerawork->feedDraw();

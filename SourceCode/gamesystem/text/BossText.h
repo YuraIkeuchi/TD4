@@ -29,6 +29,7 @@ public:
 	void Display();
 	//メッセージ選択
 	void SelectText(TextManager::Name name);
+	void SelectText(TextManager::Name_First name);
 public:
 	void SetTextState(const int TextState) { m_TextState = TextState; }
 private:
