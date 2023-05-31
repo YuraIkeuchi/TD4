@@ -2,7 +2,6 @@
 #include "VariableCommon.h"
 #include "Easing.h"
 #include "ImageManager.h"
-#include "ParticleEmitter.h"
 #include "Collision.h"
 #include <random>
 #include "Player.h"

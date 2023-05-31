@@ -401,6 +401,9 @@
     <ClCompile Include="SourceCode\gamesystem\text\BossText.cpp">
       <Filter>gamesystem\charactor\Boss\Text</Filter>
     </ClCompile>
+    <ClCompile Include="Heart.cpp">
+      <Filter>gamesystem\charactor\Heart</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
@@ -766,6 +769,9 @@
     <ClInclude Include="SourceCode\gamesystem\text\BossText.h">
       <Filter>gamesystem\charactor\Boss\Text</Filter>
     </ClInclude>
+    <ClInclude Include="Heart.h">
+      <Filter>gamesystem\charactor\Heart</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
@@ -1051,6 +1057,9 @@
     </Filter>
     <Filter Include="gamesystem\charactor\Boss\Text">
       <UniqueIdentifier>{09ec16d5-a106-4dae-a612-3fe4d8dcfa6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\charactor\Heart">
+      <UniqueIdentifier>{3c194e04-e0a4-4bae-b8b5-2e3b77f47d2c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

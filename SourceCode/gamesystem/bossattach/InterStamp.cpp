@@ -1,5 +1,4 @@
 #include "InterStamp.h"
-#include "VariableCommon.h"
 
 //XV
 void InterStamp::Update() {

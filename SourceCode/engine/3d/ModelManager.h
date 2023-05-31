@@ -25,7 +25,7 @@ public:
 		Ghost,
 		Buddy,
 		MobUsa,
-
+		Heart,
 	};
 	//FBX‚Ì–¼‘O
 	enum FBXName {

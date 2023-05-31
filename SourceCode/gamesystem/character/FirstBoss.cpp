@@ -1,13 +1,10 @@
 ﻿#include "FirstBoss.h"
-#include "ModelManager.h"
-#include "Helper.h"
 #include <any>
-
 #include "Collision.h"
 #include "CsvLoader.h"
 #include "ImageManager.h"
-#include "Input.h"
 #include "Shake.h"
+#include "Player.h"
 //生成
 FirstBoss::FirstBoss() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Tyuta);

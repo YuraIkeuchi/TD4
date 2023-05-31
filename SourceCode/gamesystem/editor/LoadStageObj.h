@@ -1,10 +1,7 @@
 #pragma once
 #include<DirectXMath.h>
 #include<memory>
-#include<fstream>
 #include<string>
-#include<sstream>
-#include <iostream>
 #include "Ghost.h"
 #include "Food.h"
 #include "LoadManager.h"

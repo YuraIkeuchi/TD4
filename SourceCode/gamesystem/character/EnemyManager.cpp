@@ -1,6 +1,5 @@
 ﻿#include "EnemyManager.h"
 #include "Helper.h"
-#include "Input.h"
 #define EnemySize 3
 EnemyManager::EnemyManager(const std::string& SceneName) {
 

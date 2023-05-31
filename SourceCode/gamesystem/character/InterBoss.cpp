@@ -1,9 +1,7 @@
 ﻿#include "InterBoss.h"
 #include"Collision.h"
 #include "Helper.h"
-#include "ParticleEmitter.h"
 #include "VariableCommon.h"
-#include <Helper.h>
 //更新
 void InterBoss::Update() {
 	//陦悟虚

@@ -1,20 +1,15 @@
 ﻿#include "TutorialEnemy.h"
 #include "Player.h"
 #include "Collision.h"
-#include "ModelManager.h"
 #include "Helper.h"
-#include "ParticleEmitter.h"
 #include <random>
 #include <Easing.h>
-
-
 void (TutorialEnemy::* TutorialEnemy::commandTable[])() = {
 	&TutorialEnemy::SpawnUpdate,//要素0
 	&TutorialEnemy::WaitUpdate, //要素1
 	&TutorialEnemy::LockOnUpdate,
 	&TutorialEnemy::JumpUpdate,
 };
-
 
 //モデル読み込み
 TutorialEnemy::TutorialEnemy() {

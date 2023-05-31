@@ -1,7 +1,6 @@
 ﻿#include "Player.h"
 #include "CsvLoader.h"
 #include"Helper.h"
-#include"ModelManager.h"
 #include "VariableCommon.h"
 #include "HungerGauge.h"
 #include "Collision.h"

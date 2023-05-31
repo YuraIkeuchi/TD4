@@ -1,6 +1,4 @@
 #include "BackObj.h"
-#include "ModelManager.h"
-#include "imgui.h"
 #include "VariableCommon.h"
 #include "JsonLoader.h"
 BackObj* BackObj::GetInstance()

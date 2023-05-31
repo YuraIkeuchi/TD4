@@ -3,7 +3,6 @@
 #include "SceneManager.h"
 #include "imgui.h"
 #include "ParticleEmitter.h"
-
 #include <HungerGauge.h>
 #include "BackObj.h"
 //初期化

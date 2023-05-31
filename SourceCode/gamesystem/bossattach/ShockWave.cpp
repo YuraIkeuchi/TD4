@@ -1,11 +1,9 @@
 #include "ShockWave.h"
 #include "ImageManager.h"
 #include"Collision.h"
-#include "imgui.h"
 #include "Helper.h"
 #include "Easing.h"
 #include "VariableCommon.h"
-#include "imgui.h"
 void ShockWave::Initialize(const XMFLOAT3& pos) {
 	tex = IKETexture::Create(ImageManager::IMPACT, { 0,0,0 }, { 12,12,12 }, { 1,1,1,0.6f });
 	tex->TextureCreate();

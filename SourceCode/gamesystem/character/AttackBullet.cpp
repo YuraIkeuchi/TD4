@@ -1,6 +1,4 @@
 #include "AttackBullet.h"
-#include "ModelManager.h"
-#include "imgui.h"
 #include "VariableCommon.h"
 #include "CsvLoader.h"
 #include "Helper.h"
@@ -22,9 +20,6 @@ bool AttackBullet::Initialize() {
 }
 //ImGui•`‰æ
 void AttackBullet::ImGui_Origin() {
-	ImGui::Begin("Attack");
-	ImGui::Text("Alive:%d", m_Alive);
-	ImGui::End();
 }
 //’e‚Ì“Á—Lˆ—
 void AttackBullet::Action() {

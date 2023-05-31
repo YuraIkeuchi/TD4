@@ -4,8 +4,6 @@
 #include "InterBullet.h"
 #include "ObjCommon.h"
 #include "BreakEffect.h"
-#include <array>       // ヘッダファイルインクルード
-
 #include "InterEnemy.h"
 using namespace std;         //  名前空間指定
 

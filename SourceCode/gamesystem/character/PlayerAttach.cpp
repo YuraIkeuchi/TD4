@@ -1,9 +1,7 @@
 #include "PlayerAttach.h"
-#include "ModelManager.h"
 #include "Helper.h"
 #include "Player.h"
 #include "CsvLoader.h"
-#include "ParticleEmitter.h"
 #include <Easing.h>
 PlayerAttach::PlayerAttach() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Sutopon);

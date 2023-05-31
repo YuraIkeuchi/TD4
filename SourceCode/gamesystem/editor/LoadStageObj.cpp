@@ -3,9 +3,7 @@
 #include "HungerGauge.h"
 #include "Collision.h"
 #include "Helper.h"
-#include "Input.h"
 #include "Player.h"
-
 EnemyManager* LoadStageObj::enemy = nullptr;
 //ゴーストのロード
 void LoadStageObj::GhostLoad() {
