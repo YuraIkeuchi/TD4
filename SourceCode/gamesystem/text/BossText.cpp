@@ -16,6 +16,9 @@ void BossText::Initialize(DirectXCommon* dxCommon) {
 void BossText::SelectText(TextManager::Name name) {
 	text_->SetConversation(name);
 }
+void BossText::SelectText(TextManager::Name_First name) {
+	text_->SetConversation(name);
+}
 void BossText::SpriteDraw(DirectXCommon* dxCommon) {
 	IKESprite::PreDraw();
 	window_->Draw();

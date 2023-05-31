@@ -45,6 +45,7 @@ void InterBoss::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui謠冗判
 void InterBoss::ImGuiDraw() {
+	if (!this) { return; }
 	ImGui::Begin("STATE");
 	ImGui::Text("HP:%f", m_HP);
 	ImGui::End();

@@ -110,6 +110,7 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	}
 	IKESprite::PostDraw();
 	sceneChanger_->Draw();
+	camerawork->feedDraw();
 }
 //IMGuiの描画
 void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
@@ -209,10 +210,34 @@ void SecondStageActor::IntroUpdate(DebugCamera* camera) {
 void SecondStageActor::MainUpdate(DebugCamera* camera) {
 	Input* input = Input::GetInstance();
 	ui->Update();
-	if (enemymanager->BossDestroy()) {
+	//カメラワークのセット
+	if (enemymanager->BossDestroy())
+	{
+		//フェード前
+		if (!camerawork->GetFeedEnd()) {
+			enemymanager->SetDeadThrow(true);
+			enemymanager->DeadUpdate();
+			camerawork->SetCameraState(CAMERA_BOSSDEAD_BEFORE);
+		}
+		//フェード後
+		else
+		{
+			enemymanager->SetDeadThrow(false);
+			enemymanager->DeadUpdate();
+			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_SECOND);
+		}
+	}
+	else
+	{
+		if (camerawork->FinishAppear()) {
+			//m_SceneState = SceneState::MainState;
+		//	camerawork->SetCameraState(CAMERA_NORMAL);
+		}
+	}
+	/*if (enemymanager->BossDestroy()) {
 		sceneChanger_->ChangeStart();
 		sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
-	}
+	}*/
 
 	if (PlayerDestroy()) {
 		sceneChanger_->ChangeStart();

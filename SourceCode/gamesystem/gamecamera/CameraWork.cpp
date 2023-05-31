@@ -37,8 +37,9 @@ void (CameraWork::* CameraWork::stateTable[])() = {
 	&CameraWork::DefaultCam,//通常
 	&CameraWork::SpecialUpdate,//ロード
 	&CameraWork::BossAppear,//ボス登場
-	&CameraWork::SetBossDead_Cam,//ボスのやられたとき
-	&CameraWork::SetBossDead_Act,//ボスのやられたとき（フェード五）
+	&CameraWork::SetBossDead_Before,//ボスのやられたとき
+	&CameraWork::SetBossDead_AfterFirst,//1ボスのやられたとき（フェード後）
+	&CameraWork::SetBossDead_AfterSecond,//2ボスのやられたとき（フェード後）
 };
 //XV
 void CameraWork::Update(DebugCamera* camera) {
@@ -71,7 +72,7 @@ void CameraWork::BossAppear() {
 	}
 }
 //ボス撃破
-void CameraWork::SetBossDead_Cam()
+void CameraWork::SetBossDead_Before()
 {
 	m_eyePos.x = boss->GetPosition().x;
 
@@ -96,11 +97,26 @@ void CameraWork::SetBossDead_Cam()
 
 }
 
-//フェード後の撃破アクション
-void CameraWork::SetBossDead_Act()
+//フェード後の撃破アクション(1ボス)
+void CameraWork::SetBossDead_AfterFirst()
 {
 	m_eyePos.x = Player::GetInstance()->GetPosition().x;
 	m_eyePos.y = Player::GetInstance()->GetPosition().y+50;
+	m_eyePos.z = Player::GetInstance()->GetPosition().z - 20.0f;
+	m_targetPos.x = Player::GetInstance()->GetPosition().x;
+	m_targetPos.z = Player::GetInstance()->GetPosition().z;
+
+	DeathTimer = 0;
+	FeedF = false;
+}
+//フェード後の撃破アクション(1ボス)
+void CameraWork::SetBossDead_AfterSecond()
+{
+	if (SceneName == "FIRSTSTAGE") {
+		FirstBossDead_AfterFeed();
+	}
+	m_eyePos.x = Player::GetInstance()->GetPosition().x;
+	m_eyePos.y = Player::GetInstance()->GetPosition().y + 50;
 	m_eyePos.z = Player::GetInstance()->GetPosition().z - 20.0f;
 	m_targetPos.x = Player::GetInstance()->GetPosition().x;
 	m_targetPos.z = Player::GetInstance()->GetPosition().z;
@@ -166,6 +182,13 @@ Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
 	else
 	  m_targetPos = { boss->GetPosition() };
 }
+
+
+void CameraWork::FirstBossDead_AfterFeed()
+{
+	
+}
+
 //2個目のボスのカメラ
 void CameraWork::SecondBossAppear() {
 	float l_AddFrame = 0.0f;

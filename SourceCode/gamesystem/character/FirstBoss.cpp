@@ -100,7 +100,7 @@ void FirstBoss::Action() {
 			//タイマーカウンタ
 			if (noAction && !Recv)ActionTimer++;
 
-			if (!_normal.GetAttackF() && !SummonF && ActionTimer % 130 == 0) {
+			if (!_normal.GetAttackF() && !SummonF && ActionTimer % 3 == 0) {
 				ResF = true;
 				SummobnStop = true;
 				SummonF = true;

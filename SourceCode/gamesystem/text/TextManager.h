@@ -6,9 +6,9 @@ class TextManager
 {
 private:
 	struct Word {
-		wchar_t* FirstWord;//ˆês–Ú
-		wchar_t* SecondWord;//“ñs–Ú
-		wchar_t* ThirdWord;//Os–Ú
+		wchar_t* FirstWord;//Ë†ÃªÂsâ€“Ãš
+		wchar_t* SecondWord;//â€œÃ±Âsâ€“Ãš
+		wchar_t* ThirdWord;//Å½OÂsâ€“Ãš
 	};
 	struct Conversation
 	{
@@ -42,6 +42,12 @@ public:
 		SELECT_JOY2,
 	};
 
+	enum Name_First
+	{
+		VIEWBOSS,
+		SPEAKPLAYER1,
+		SPEALPLAYER2
+	};
 	static TextManager* GetInstance();
 
 	//
@@ -57,12 +63,14 @@ public:
 
 	void SetConversation(Name name=NONE);
 
-
 	void NoneText();
+	void SetConversation(Name_First name = VIEWBOSS);
 private:
 	
 	//
 	void CreateWord(Name name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
+	void CreateWord(Name_First name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
+
 	//
 	Word SetWord(wchar_t* tex1, wchar_t* tex2, wchar_t* tex3);
 	//
@@ -71,7 +79,7 @@ private:
 	void CreateCon(Conversation con, Word word);
 private:
 	std::map<TextManager::Name, Word> wordlist_;
-
+	std::map<TextManager::Name_First, Word> wordlist_first;
 	Conversation conversation_ = {};
 
 	Conversation bossconversation_ = {};

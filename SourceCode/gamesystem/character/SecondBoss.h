@@ -6,6 +6,8 @@
 #include "Predict.h"
 #include "Collision.h"
 #include "Shake.h"
+
+class Spline;
 enum DirEmo {
 	DIR_ANGER,
 	DIR_JOY,
@@ -177,6 +179,8 @@ private:
 	//方向転換するためのもの
 	bool m_ChangeRot = false;
 	float m_RotFrame = 0.0f;
+
+	bool ResetRota = false;
 private:
 	unique_ptr<IKETexture> mark;
 	XMFLOAT4 m_MarkColor = { 1.0f,1.0f,1.0f,0.0f };
@@ -201,4 +205,7 @@ private:
 	int m_MoveInterval = {};
 	int m_QuickMoveInterval = {};
 	int m_ChoiceInterval = {};
+
+	Spline* spline;
+	vector<XMFLOAT3>pointsList;
 };
