@@ -85,11 +85,8 @@ private://各ボスの登場カメラ
 public:
 	bool Finish;
 	//getter setter
-<<<<<<< HEAD
-=======
 bool FinishAppear() { if (spline->GetIndex() >= static_cast<int>(pointsList.size() -1))return true; return false; }
 
->>>>>>> main
 	void SetBoss(InterBoss* boss) { this->boss = boss; }
 
 	void SetEye(const XMFLOAT3& eye) { m_eyePos = eye; }

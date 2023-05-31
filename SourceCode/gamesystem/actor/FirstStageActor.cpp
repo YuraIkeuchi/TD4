@@ -1,11 +1,9 @@
 ﻿#include "FirstStageActor.h"
 #include "Audio.h"
-#include"Easing.h"
 #include "SceneManager.h"
 #include "imgui.h"
 #include "ParticleEmitter.h"
-#include "ImageManager.h"
-#include <algorithm>
+
 #include <HungerGauge.h>
 #include "BackObj.h"
 //初期化
@@ -43,6 +41,8 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	loadobj = std::make_unique<LoadStageObj>();
 	loadobj->AllLoad("FIRSTSTAGE");
 	LoadStageObj::SetEnemyManager(enemymanager.get());
+
+	lightgroup->SetCircleShadowActive(0, true);
 }
 //更新
 void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -50,6 +50,10 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	
 	Input* input = Input::GetInstance();
 
+	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
+	lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().y, Player::GetInstance()->GetPosition().z}));
+	lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
+	lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
 	if (input->TriggerKey(DIK_X)) {
 		Audio::GetInstance()->StopWave(1);
 		SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
