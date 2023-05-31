@@ -13,8 +13,9 @@ enum CameraState {
 	CAMERA_NORMAL,
 	CAMERA_LOAD,
 	CAMERA_BOSSAPPEAR,
-	CAMERA_BOSSDEAD_FIRST,
-	CAMERA_BOSSDEAD_SECOND
+	CAMERA_BOSSDEAD_BEFORE,
+	CAMERA_BOSSDEAD_AFTER_FIRST,
+	CAMERA_BOSSDEAD_AFTER_SECOND,
 };
 
 //ボス登場シーンのカメラの動き(2個目のボスがこの量なだけでボスによってはへらしてもいいよ)
@@ -53,8 +54,9 @@ public:
 private:
 	void DefaultCam();//ふつうのカメラ
 	void BossAppear();//登場
-	void SetBossDead_Cam();//撃破
-	void SetBossDead_Act();//撃破時（フェード後）
+	void SetBossDead_Before();//撃破
+	void SetBossDead_AfterFirst();//撃破時（フェード後）
+	void SetBossDead_AfterSecond();//撃破時（フェード後）
 	//void SetBoss(InterBoss* boss) { this->boss = boss; }
 	//ゲームシーン以外で使うカメラ更新(this変数で変更可能)
 	void SpecialUpdate();//更新

@@ -94,14 +94,14 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		if (!camerawork->GetFeedEnd()) {
 			enemymanager->SetDeadThrow(true);
 			enemymanager->DeadUpdate();
-			camerawork->SetCameraState(CAMERA_BOSSDEAD_FIRST);
+			camerawork->SetCameraState(CAMERA_BOSSDEAD_BEFORE);
 		}
 		//フェード後
 		else
 		{
 			enemymanager->SetDeadThrow(false);
 			enemymanager->DeadUpdate();
-			camerawork->SetCameraState(CAMERA_BOSSDEAD_SECOND);
+			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_FIRST);
 		}
 	}
 	else
