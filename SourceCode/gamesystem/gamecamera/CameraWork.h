@@ -8,6 +8,7 @@
 #include"Spline.h"
 using namespace std;         //  名前空間指定
 
+//カメラの種類
 enum CameraState {
 	CAMERA_NORMAL,
 	CAMERA_LOAD,
@@ -15,6 +16,20 @@ enum CameraState {
 	CAMERA_BOSSDEAD_FIRST,
 	CAMERA_BOSSDEAD_SECOND
 };
+
+//ボス登場シーンのカメラの動き(2個目のボスがこの量なだけでボスによってはへらしてもいいよ)
+enum AppearCameraType {
+	APPEAR_START,
+	APPEAR_SECOND,
+	APPEAR_THIRD,
+	APPEAR_FOURTH,
+	APPEAR_FIVE,
+	APPEAR_SIX,
+	APPEAR_SEVEN,
+	APPEAR_EIGHT,
+	APPEAR_END,
+};
+
 //ゲームのカメラの動き
 class CameraWork {
 private:
@@ -70,8 +85,11 @@ private://各ボスの登場カメラ
 public:
 	bool Finish;
 	//getter setter
+<<<<<<< HEAD
+=======
 bool FinishAppear() { if (spline->GetIndex() >= static_cast<int>(pointsList.size() -1))return true; return false; }
 
+>>>>>>> main
 	void SetBoss(InterBoss* boss) { this->boss = boss; }
 
 	void SetEye(const XMFLOAT3& eye) { m_eyePos = eye; }
@@ -80,10 +98,14 @@ bool FinishAppear() { if (spline->GetIndex() >= static_cast<int>(pointsList.size
 	XMFLOAT3& GetTarget() { return m_targetPos; }
 
 	bool GetFeedF() { return FeedF; }
+
+	int GetAppearType() { return m_AppearType; }
 	void SetCameraState(const int CameraState) { m_CameraState = CameraState; }
 
 	//シーンネームの取得
 	void SetSceneName(std::string name) { SceneName = name; }
+
+	void SetApproach(const bool Approach) { m_Approach = Approach; }
 private:
 	//クラス
 	unique_ptr<Shake> shake = nullptr;
@@ -119,16 +141,8 @@ private:
 	float m_AfterSpeed = {};
 	float m_AfterScale = 5.0f;
 
-	//ボス登場シーンのカメラの動き
-	enum AppearCameraType {
-		APPEAR_START,
-		APPEAR_SECOND,
-		APPEAR_THIRD,
-		APPEAR_FOURTH,
-		APPEAR_FIVE,
-		APPEAR_SIX,
-		APPEAR_END,
-	};
-
 	int m_AppearType = {};
+
+	//カメラが寄る
+	bool m_Approach = false;
 };

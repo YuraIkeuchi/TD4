@@ -2,13 +2,10 @@
 #include "Player.h"
 #include "FirstBoss.h"
 #include "SecondBoss.h"
-
 #include "NormalEnemy.h"
 #include "TutorialEnemy.h"
-
 #include<array>
 #include<vector>
-
 //敵の管理系クラス
 class EnemyManager {
 private:
@@ -20,6 +17,8 @@ private:
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
 	EnemyManager(const std::string& sceneName);
+	//初期化
+	void Initialize(DirectXCommon* dxCommon);
 	//登場シーン
 	void AppearUpdate();
 	//バトル更新
@@ -30,6 +29,7 @@ public:
 	void TutorialUpdate(int pattern);
 	//描画
 	void Draw(DirectXCommon* dxCommon);
+	void SpriteDraw(DirectXCommon* dxCommon);
 	//チュートリアル用の描画
 	void TutorialDraw(DirectXCommon* dxCommon);
 	//ImGuiの描画
@@ -38,6 +38,8 @@ public:
 	bool AllDeadEnemy();
 	//ボスの撃破
 	void FinishCheck();
+	//ボスの向き
+	void DirSet(int Dir);
 public://getter setter
 	//敵関係getで取る
 	InterBoss* GetBoss() { return enemy.get(); }

@@ -49,7 +49,7 @@ void CameraWork::Update(DebugCamera* camera) {
 	camera->SetTarget(m_targetPos);
 	camera->Update();
 }
-
+//通常のカメラ
 void CameraWork::DefaultCam()
 {
 	m_eyePos.x = Player::GetInstance()->GetPosition().x;
@@ -60,7 +60,6 @@ void CameraWork::DefaultCam()
 	m_targetPos.z = Player::GetInstance()->GetPosition().z;
 
 }
-
 //ボス登場
 void CameraWork::BossAppear() {
 	//シーンによってカメラの関数が違う
@@ -110,7 +109,6 @@ void CameraWork::SetBossDead_Act()
 	FeedF = false;
 }
 
-
 void CameraWork::EditorCamera()
 {
 	m_eyePos.y = 35.f;
@@ -121,12 +119,12 @@ void CameraWork::EditorCamera()
 //ImGui
 void CameraWork::ImGuiDraw() {
 	ImGui::Begin("Camera");
-	ImGui::SliderFloat("Speed", &m_CameraSpeed, 0.0f, 360.0f);
-	ImGui::Text("After:%f", m_AfterSpeed);
-	ImGui::Text("Timer:%d", m_CameraTimer);
-	ImGui::Text("APP:%d", m_AppearType);
 	ImGui::Text("targetPosX:%f", m_targetPos.x);
+	ImGui::Text("targetPosY:%f", m_targetPos.y);
 	ImGui::Text("targetPosZ:%f", m_targetPos.z);
+	ImGui::Text("eyePosX:%f", m_eyePos.x);
+	ImGui::Text("eyePosY:%f", m_eyePos.y);
+	ImGui::Text("eyePosZ:%f", m_eyePos.z);
 	ImGui::End();
 }
 
@@ -141,6 +139,8 @@ void CameraWork::feedDraw()
 }
 //最初のボスのカメラ
 void CameraWork::FirstBossAppear() {
+<<<<<<< HEAD
+=======
 	if(!Finish)
 	spline->Upda(m_eyePos,180.00f);
 
@@ -166,6 +166,7 @@ Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
 	}
 	else
 	  m_targetPos = { boss->GetPosition() };
+>>>>>>> main
 }
 //2個目のボスのカメラ
 void CameraWork::SecondBossAppear() {
@@ -219,13 +220,8 @@ void CameraWork::SecondBossAppear() {
 		l_AddFrame = 0.01f;
 		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 			m_AppearType = APPEAR_FIVE;
-			m_Frame = 1.0f;
-
-			m_CameraTimer++;
-			if (m_CameraTimer == 120) {
-				m_AppearType = APPEAR_FIVE;
-				m_CameraTimer = 0;
-			}
+			m_Frame = 0.0f;
+			m_CameraTimer = {};
 		}
 	
 		m_CameraSpeed = Ease(In, Cubic, m_Frame, m_CameraSpeed, m_AfterSpeed);
@@ -238,11 +234,11 @@ void CameraWork::SecondBossAppear() {
 	//ボスの後ろにいる
 	else if(m_AppearType == APPEAR_FIVE) {
 		m_targetPos = boss->GetPosition();
-		m_eyePos = { boss->GetPosition().x - 10.0f,boss->GetPosition().y,boss->GetPosition().z + 10.0f };
+		m_eyePos = { boss->GetPosition().x - 10.0f,boss->GetPosition().y,boss->GetPosition().z + 20.0f };
 		m_CameraTimer++;
 
 		if (m_CameraTimer == 30) {
-			m_AfterEye = { boss->GetPosition().x - 5.0f, boss->GetPosition().y, boss->GetPosition().z - 20.0f };
+			m_AfterEye = { boss->GetPosition().x - 5.0f, boss->GetPosition().y, boss->GetPosition().z - 40.0f };
 			m_AppearType = APPEAR_SIX;
 			m_Frame = {};
 			m_CameraTimer = {};
@@ -252,15 +248,8 @@ void CameraWork::SecondBossAppear() {
 	else if (m_AppearType == APPEAR_SIX) {
 		l_AddFrame = 0.01f;
 		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
-			m_Frame = 1.0f;
-			m_CameraTimer++;
-			if (m_CameraTimer == 40) {
-				m_AfterEye = { Player::GetInstance()->GetPosition().x,45.0f,Player::GetInstance()->GetPosition().z - 20.0f };
-				m_AfterTarget = { Player::GetInstance()->GetPosition().x,5.0f,Player::GetInstance()->GetPosition().z };
-				m_Frame = {};
-				m_CameraTimer = {};
-				m_AppearType = APPEAR_END;
-			}
+			m_Frame = 0.0f;
+			m_AppearType = APPEAR_SEVEN;
 		}
 
 		m_eyePos = {
@@ -269,9 +258,47 @@ void CameraWork::SecondBossAppear() {
 			Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
 		};
 	}
+	//カメラを停止させる
+	else if (m_AppearType == APPEAR_SEVEN) {
+		//カメラが寄るフラグになったら次のシーン移行
+		if (m_Approach) {
+			m_AfterEye = { boss->GetPosition().x,boss->GetPosition().y,boss->GetPosition().z - 20.0f };
+			m_AfterTarget = { boss->GetPosition().x,boss->GetPosition().y,boss->GetPosition().z };
+			m_Frame = {};
+			m_CameraTimer = {};
+			m_AppearType = APPEAR_EIGHT;
+			m_Approach = false;
+		}
+	}
+	//カメラをボスの前に
+	else if (m_AppearType == APPEAR_EIGHT) {
+		l_AddFrame = 0.05f;
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			//一定時間でカメラを戻す
+			if (Helper::GetInstance()->CheckMin(m_CameraTimer, 50, 1)) {
+				m_AfterEye = { Player::GetInstance()->GetPosition().x,45.0f,Player::GetInstance()->GetPosition().z - 20.0f };
+				m_AfterTarget = { Player::GetInstance()->GetPosition().x,5.0f,Player::GetInstance()->GetPosition().z };
+				m_Frame = {};
+				m_CameraTimer = {};
+				m_AppearType = APPEAR_END;
+				boss->SetFinishApp(true);
+			}
+		}
+		m_eyePos = {
+		Ease(In,Cubic,m_Frame,m_eyePos.x,m_AfterEye.x),
+		Ease(In,Cubic,m_Frame,m_eyePos.y,m_AfterEye.y),
+		Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
+		};
+
+		m_targetPos = {
+		Ease(In,Cubic,m_Frame,m_targetPos.x,m_AfterTarget.x),
+		Ease(In,Cubic,m_Frame,m_targetPos.y,m_AfterTarget.y),
+		Ease(In,Cubic,m_Frame,m_targetPos.z,m_AfterTarget.z),
+		};
+	}
 	//バトル前のカメラに戻る
 	else if (m_AppearType == APPEAR_END) {
-		l_AddFrame = 0.01f;
+		l_AddFrame = 0.05f;
 		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 			m_Frame = 1.0f;
 		}
@@ -288,7 +315,6 @@ void CameraWork::SecondBossAppear() {
 		Ease(In,Cubic,m_Frame,m_targetPos.z,m_AfterTarget.z),
 		};
 	}
-
 }
 
 //円運動の際のカメラ位置更新

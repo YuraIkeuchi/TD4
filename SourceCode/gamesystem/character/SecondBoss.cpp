@@ -248,7 +248,7 @@ void SecondBoss::Stamp() {
 	}
 	else if (m_PressType == PRESS_ATTACK) {			//落下してくる
 		l_AddFrame = 0.05f;
-		m_AfterPos = { m_Position.x,8.0f,m_Position.z };
+		m_AfterPos = { m_Position.x,6.0f,m_Position.z };
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
 		}
@@ -364,7 +364,7 @@ void SecondBoss::RandomStamp() {
 	}
 	else if (m_RandomType == RANDOM_ATTACK) {
 		l_AddFrame = 0.05f;
-		m_AfterPos.y = 8.0f;
+		m_AfterPos.y = 6.0f;
 		const int l_MoveMax = 10;
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
@@ -447,7 +447,7 @@ void SecondBoss::Rolling() {
 
 		//飛ぶような感じにするため重力を入れる
 		m_AddPower -= m_Gravity;
-		Helper::GetInstance()->CheckMax(m_Position.y, 8.0f, m_AddPower);
+		Helper::GetInstance()->CheckMax(m_Position.y, 6.0f, m_AddPower);
 		m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, 0.0f);
 	}
 	else {
@@ -703,7 +703,7 @@ void SecondBoss::MoveInit(const std::string& HighState) {
 	if (HighState == "UPSTATE") {
 		_InterValState = DownState;
 		m_Frame = 0.0f;
-		m_AfterPos.y = 8.0f;
+		m_AfterPos.y = 6.0f;
 	}
 	else if (HighState == "DOWNSTATE") {
 		_InterValState = UpState;
@@ -805,7 +805,7 @@ void SecondBoss::AppearAction() {
 		if (m_AppearTimer == 300) {
 			m_AppearState = APPEAR_SET;
 			m_Frame = {};
-			m_AfterPos.y = 5.0f;
+			m_AfterPos.y = 8.0f;
 			m_AppearTimer = {};
 		}
 	}
@@ -817,56 +817,39 @@ void SecondBoss::AppearAction() {
 		}
 		m_Position.y = Ease(In, Cubic, m_Frame, m_Position.y, m_AfterPos.y);
 	}
-	else if (m_AppearState == APPEAR_LOOK) {
+	else if (m_AppearState == APPEAR_LOOK) {		//プレイヤーを見てくる
 		m_AppearTimer++;
 		if (m_AppearTimer == 50) {
 			m_AppearTimer = 0;
-			m_AppearState = APPEAR_ANGER;
+			m_AppearState = APPEAR_DIR;
 			m_AfterRot = { 180.0f,90.0f,90.0f };
 		}
 	}
-	else if (m_AppearState == APPEAR_ANGER) {
+	else if (m_AppearState == APPEAR_DIR) {
 		l_AddFrame = 0.01f;
-
-		/*if (Input::GetInstance()->TriggerButton(Input::A)) {
-			m_Frame = {};
-			m_AppearTimer = 0;
-			m_AppearState = APPEAR_JOY;
-			m_AfterRot = { 180.0f,270.0f,90.0f };
-		}*/
-
 		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
-			m_Frame = 1.0f;
-			m_AppearTimer++;
-
-			if (m_AppearTimer == 50) {
-				m_Frame = {};
-				m_AppearTimer = 0;
-				m_AppearState = APPEAR_END;
-				m_AfterRot = { 0.0f,90.0f,0.0f };
-			}
+			m_Frame = 0.0f;
+			m_AppearState = APPEAR_STOP;
 		}
 		m_Rotation = { Ease(In,Cubic,m_Frame,m_Rotation.x,m_AfterRot.x),
-			Ease(In,Cubic,m_Frame,m_Rotation.y,m_AfterRot.y),
+			m_Rotation.y,
 			Ease(In,Cubic,m_Frame,m_Rotation.z,m_AfterRot.z),
 		};
 	}
-	else if (m_AppearState == APPEAR_JOY) {
-		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
-			m_Frame = 1.0f;
+	//テキストが出てる間
+	else if (m_AppearState == APPEAR_STOP) {
+		if (m_DirEmo == DIR_ANGER) {
+			m_AfterRot.y = 90.0f;
 		}
-
-		//if (Input::GetInstance()->TriggerButton(Input::B)) {
-		//	m_Frame = {};
-		//	m_AppearTimer = 0;
-		//	m_AppearState = APPEAR_ANGER;
-		//	m_AfterRot = { 180.0f,90.0f,90.0f };
-		//}
-
-		m_Rotation = { Ease(In,Cubic,m_Frame,m_Rotation.x,m_AfterRot.x),
-			Ease(In,Cubic,m_Frame,m_Rotation.y,m_AfterRot.y),
-			Ease(In,Cubic,m_Frame,m_Rotation.z,m_AfterRot.z),
-		};
+		else {
+			m_AfterRot.y = 270.0f;
+		}
+		m_Rotation.y = Ease(In, Cubic, 0.5f, m_Rotation.y, m_AfterRot.y);
+		if (m_FinishApp) {
+			m_Frame = 0.0f;
+			m_AppearState = APPEAR_END;
+			m_AfterRot = { 0.0f,90.0f,0.0f };
+		}
 	}
 	else if (m_AppearState == APPEAR_END) {
 		l_AddFrame = 0.01f;
@@ -888,9 +871,7 @@ void SecondBoss::AppearAction() {
 void SecondBoss::DeadAction() {
 
 }
-
 //ボス撃破シーン
 void SecondBoss::DeadAction_Throw() {
 
 }
-
