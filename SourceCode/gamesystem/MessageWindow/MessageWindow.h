@@ -4,14 +4,19 @@
 
 class MessageWindow
 {
+
 public:
 	void Initialize();
 
-	void Update();
+	void characterColor();
+
+	void Update(const XMFLOAT4& girlcolor , const XMFLOAT4& sutoponcolor );
 
 	void Draw();
 
 	void Display();
+
+	void DisplayCharacter(XMFLOAT4& color);
 
 	bool DisplayCheck();
 private:
@@ -29,5 +34,9 @@ private:
 	float maxframe = 20.f;
 	float nowframe = 0.f;
 	float frame = 0.f;
+
+	float maxcolorframe = 20.f;
+	float nowcolorframe = 0.f;
+	float colorframe = 0.f;
 };
 

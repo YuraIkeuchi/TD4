@@ -18,10 +18,11 @@ void MessageWindow::Initialize()
 	sutopon_->SetSize({ 250.f,250.f });
 }
 
-void MessageWindow::Update()
+void MessageWindow::Update(const XMFLOAT4& girlcolor, const XMFLOAT4& sutoponcolor )
 {
 	Display();
-
+	this->girl_color = girlcolor;
+	this->sutopon_color = sutoponcolor;
 	girl_->SetColor(girl_color);
 	sutopon_->SetColor(sutopon_color);
 	window_->SetPosition(window_pos);
@@ -50,6 +51,17 @@ void MessageWindow::Display()
 	window_size.y = Ease(Out, Sine, nowframe, 0, 223);
 	black_color.w = Ease(Out, Sine, nowframe, 0, 1);
 	girl_color.w = Ease(Out, Sine, nowframe, 0, 1);
+}
+
+void MessageWindow::DisplayCharacter(XMFLOAT4& color)
+{
+	
+	colorframe++;
+	nowcolorframe = colorframe / maxcolorframe;
+	if (colorframe >= maxcolorframe) {
+		colorframe = maxcolorframe;
+	}
+	color.w = Ease(Out, Sine, nowcolorframe, 0, 1);
 }
 
 bool MessageWindow::DisplayCheck()
