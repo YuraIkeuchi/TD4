@@ -2,6 +2,7 @@
 #include "BaseActor.h"
 #include <vector>
 #include<windows.h>
+#include "BossText.h"
 /// タイトルシーン
 class SecondStageActor : public BaseActor {
 public:
@@ -21,4 +22,25 @@ private:
 	void IntroUpdate(DebugCamera* camera)override;		//登場シーン
 	void MainUpdate(DebugCamera* camera)override;		//バトルシーン
 	void FinishUpdate(DebugCamera* camera)override;		//撃破シーン
+
+	unique_ptr<BossText> text_;
+
+private:
+
+	//導入シーン
+	enum class AppState : int {
+		ANGER_START,
+		ANGER_SECOND,
+		JOY_START,
+		JOY_SECOND,
+		JOY_THIRD,
+		SELECT_EMO,
+		EMO_JOY,
+		EMO_JOY2,
+		EMO_ANGER,
+		EMO_ANGER2,
+	};
+
+	//シーンでの遷移
+	AppState m_AppState = AppState::ANGER_START;
 };

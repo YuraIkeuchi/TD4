@@ -29,10 +29,14 @@ public:
 	
 	virtual void Action() = 0;//エフェクト特有の処理
 protected:
-
+	float DiviSpeed;
 	XMFLOAT3 m_Position = { 0.0f,0.0f,0.0f };
 	bool m_Alive = false;
 
 	int m_AliveTimer = 0;
+	int m_Life;
+public:
+	void SetLife(int life) { m_Life = life; }
+	void SetDiviSpeed(float speed) { DiviSpeed = speed; }
 };
 

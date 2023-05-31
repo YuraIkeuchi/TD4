@@ -19,9 +19,9 @@ FirstBoss::FirstBoss() {
 
 bool FirstBoss::Initialize() {
 	m_Position = { 0.0f,0.0f,30.0f };
-	m_Scale = { 1.5f,1.4f,1.5f };
+	m_Scale = { 1.0f,1.4f,1.0f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
-	m_Rotation.y = 90.f;
+	m_Rotation.y = -90.f;
 	RTime = 1;
 	m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "pos")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp1")));
@@ -525,14 +525,14 @@ void FirstBoss::NormalAttak::Remove(XMFLOAT3& Pos, XMFLOAT3& Scl, bool Enf)
 		OldPos_Remove = Pos;
 	}
 
-	Scl.x = Easing::EaseOut(SPosMoveEaseT, 1.5f, 0.f);
-	Scl.y = Easing::EaseOut(SPosMoveEaseT, 1.5f, 0.f);
-	Scl.z = Easing::EaseOut(SPosMoveEaseT, 1.5f, 0.f);
+	Scl.x = Easing::EaseOut(SPosMoveEaseT, 1.0f, 0.f);
+	Scl.y = Easing::EaseOut(SPosMoveEaseT, 1.0f, 0.f);
+	Scl.z = Easing::EaseOut(SPosMoveEaseT, 1.0f, 0.f);
 
 	Helper::GetInstance()->Clamp(SPosMoveEaseT, 0.f, 1.f);
-	Helper::GetInstance()->Clamp(Scl.x, 0.f, 1.5f);
-	Helper::GetInstance()->Clamp(Scl.y, 0.f, 1.5f);
-	Helper::GetInstance()->Clamp(Scl.z, 0.f, 1.5f);
+	Helper::GetInstance()->Clamp(Scl.x, 0.f, 1.0f);
+	Helper::GetInstance()->Clamp(Scl.y, 0.f, 1.0f);
+	Helper::GetInstance()->Clamp(Scl.z, 0.f, 1.0f);
 }
 
 void FirstBoss::RemovePos()

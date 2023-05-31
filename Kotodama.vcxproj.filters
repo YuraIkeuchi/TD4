@@ -398,6 +398,9 @@
     <ClCompile Include="SourceCode\gamesystem\text\TextManager.cpp">
       <Filter>gamesystem\Text</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\text\BossText.cpp">
+      <Filter>gamesystem\charactor\Boss\Text</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
@@ -760,6 +763,9 @@
       <Filter>gamesystem\Text</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\engine\enginebase\resource.h" />
+    <ClInclude Include="SourceCode\gamesystem\text\BossText.h">
+      <Filter>gamesystem\charactor\Boss\Text</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
@@ -1042,6 +1048,9 @@
     </Filter>
     <Filter Include="gamesystem\Text">
       <UniqueIdentifier>{6b589362-730f-4fb1-bae8-d3a3afeff414}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\charactor\Boss\Text">
+      <UniqueIdentifier>{09ec16d5-a106-4dae-a612-3fe4d8dcfa6b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

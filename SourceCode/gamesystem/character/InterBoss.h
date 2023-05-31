@@ -79,8 +79,12 @@ public://gettersetter
 	void SetCheck(bool Check) { m_Check = Check; };
 	bool GetCheck() { return m_Check; }
 
+	void SetFinishApp(bool FinishApp) { m_FinishApp = FinishApp; };
+
 	bool GetFinishAppear() { return m_FinishAppear; }
 
+	bool GetDirEmo() { return m_DirEmo; }
+	void SetDirEmo(int DirEmo) { m_DirEmo = DirEmo; };
 private:
 	std::string SceneName;
 	vector<InterEffect*> effects;
@@ -106,6 +110,10 @@ protected:
 
 	//登場シーンが終わったかどうか
 	bool m_FinishAppear = false;
+
+	//どっちの顔を向けているか
+	int m_DirEmo = {};
+	bool m_FinishApp = false;
 private:
 
 	enum class ActionList

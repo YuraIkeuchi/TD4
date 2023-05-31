@@ -31,6 +31,7 @@ public:
 	enum FBXName {
 		PLAYER,
 		KIDO,
+		SIORI
 	};
 
 public:

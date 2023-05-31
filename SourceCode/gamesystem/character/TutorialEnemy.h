@@ -31,7 +31,7 @@ private:
 
 	void GetRotation2Player();
 
-
+	const float scale_ = 0.6f;
 
 	float RottoPlayer = 0.0f;
 	float moveTimer = 0.6f;
@@ -47,6 +47,15 @@ private:
 	float spawnTimer = 0.0f;
 	const float kSpawnTimeMax = 30.0f;
 	float rot = 0.0f;
+
+
+	float kLockOnTimeMax = 15.0f;
+	float kJumpTimeMax = 60.0f;
+
+	int jumpCount = 1;
+	const int kJumpCountMax = 3;
+
+
 	XMFLOAT3 s_pos, e_pos = {};
 private:
 	//í«è]ópïœêî

@@ -278,7 +278,7 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	//オーディオ
 	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/BGM_boss.wav");
 	//ポストエフェクト
-	PlayPostEffect = true;
+	PlayPostEffect = false;
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
 	//各クラス
@@ -336,8 +336,8 @@ void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	if (static_cast<int>(nowstate_) % 2 == 1) {
 		ui->Update();
 		Player::GetInstance()->Update();
-		ParticleEmitter::GetInstance()->Update();
 	}
+	ParticleEmitter::GetInstance()->Update();
 	BackObj::GetInstance()->Update();
 	CameraUpdate(camera);
 	lightgroup->Update();

@@ -78,6 +78,8 @@ public: // サブクラス
 		XMFLOAT4 e_color = {};
 		//重力
 		float m_GraVity = {};
+
+		float DiviSpeed = 1.0f;
 	};
 
 private: // 定数
@@ -126,7 +128,7 @@ public: // メンバ関数
 	void Add(const int& life,
 		const XMFLOAT3& position, const XMFLOAT3& velocity, const XMFLOAT3& accel,
 		const float& start_scale, const float& end_scale,
-		const XMFLOAT4& start_color, const XMFLOAT4& end_color,const float Gravity);
+		const XMFLOAT4& start_color, const XMFLOAT4& end_color,const float Gravity,float divi=1.0f);
 
 	/// <summary>
 	/// 生成処理

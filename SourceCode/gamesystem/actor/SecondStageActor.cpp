@@ -27,7 +27,10 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	sceneChanger_->Initialize();
 
 	enemymanager = std::make_unique<EnemyManager>("SECONDSTAGE");
-
+	//enemymanager->Initialize(dxCommon);
+	text_ = make_unique<BossText>();
+	text_->Initialize(dxCommon);
+	text_->SelectText(TextManager::ANGER_TALK);
 	camerawork->SetBoss(enemymanager->GetBoss());
 	camerawork->SetCameraState(CAMERA_BOSSAPPEAR);
 	camerawork->SetSceneName("SECONDSTAGE");
@@ -102,8 +105,12 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	if (m_SceneState == SceneState::MainState) {
 		ui->Draw();
 	}
+	if (camerawork->GetAppearType() == APPEAR_SEVEN || camerawork->GetAppearType() == APPEAR_EIGHT) {
+		text_->SpriteDraw(dxCommon);
+	}
 	IKESprite::PostDraw();
 	sceneChanger_->Draw();
+	camerawork->feedDraw();
 }
 //IMGuiの描画
 void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
@@ -114,7 +121,79 @@ void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 }
 //登場シーン
 void SecondStageActor::IntroUpdate(DebugCamera* camera) {
-	Input* input = Input::GetInstance();
+	if (camerawork->GetAppearType() == APPEAR_SEVEN || camerawork->GetAppearType() == APPEAR_EIGHT) {
+		text_->Display();
+		//最初の言葉(怒り)
+		if (m_AppState == AppState::ANGER_START) {
+			text_->SelectText(TextManager::ANGER_TALK);
+			if (Input::GetInstance()->TriggerButton(Input::B)) {
+				m_AppState = AppState::ANGER_SECOND;
+			}
+		}
+		//2つ目の言葉(怒り)
+		else if (m_AppState == AppState::ANGER_SECOND) {
+			text_->SelectText(TextManager::ANGER_TALK2);
+			if (Input::GetInstance()->TriggerButton(Input::B)) {
+				m_AppState = AppState::JOY_START;
+				enemymanager->DirSet(DIR_JOY);
+			}
+		}
+		//最初の言葉(喜び)
+		else if (m_AppState == AppState::JOY_START) {
+			text_->SelectText(TextManager::JOY_TALK);
+			if (Input::GetInstance()->TriggerButton(Input::B)) {
+				m_AppState = AppState::JOY_SECOND;
+			}
+		}
+		//2個目の言葉(喜び)
+		else if (m_AppState == AppState::JOY_SECOND) {
+			text_->SelectText(TextManager::JOY_TALK2);
+			if (Input::GetInstance()->TriggerButton(Input::B)) {
+				m_AppState = AppState::JOY_THIRD;
+			}
+		}
+		//3個めの言葉(喜び)
+		else if (m_AppState == AppState::JOY_THIRD) {
+			text_->SelectText(TextManager::JOY_TALK3);
+			if (Input::GetInstance()->TriggerButton(Input::B)) {
+				m_AppState = AppState::SELECT_EMO;
+			}
+		}
+		//選択肢
+		else if (m_AppState == AppState::SELECT_EMO) {
+			text_->SelectText(TextManager::SELECT_TALK);
+			if (Input::GetInstance()->TriggerButton(Input::Y)) {
+				enemymanager->DirSet(DIR_ANGER);
+				m_AppState = AppState::EMO_ANGER;
+			}
+			else if (Input::GetInstance()->TriggerButton(Input::X)) {
+				enemymanager->DirSet(DIR_JOY);
+				m_AppState = AppState::EMO_JOY;
+			}
+		}
+		//イカリを選んだ場合
+		else if (m_AppState == AppState::EMO_ANGER) {
+			text_->SelectText(TextManager::SELECT_ANGER);
+			if (Input::GetInstance()->TriggerButton(Input::B)) {
+				m_AppState = AppState::EMO_ANGER2;
+				camerawork->SetApproach(true);
+			}
+		}
+		else if (m_AppState == AppState::EMO_ANGER2) {
+			text_->SelectText(TextManager::SELECT_ANGER2);
+		}
+		//よろこびを選んだ場合
+		else if (m_AppState == AppState::EMO_JOY) {
+			text_->SelectText(TextManager::SELECT_JOY);
+			if (Input::GetInstance()->TriggerButton(Input::B)) {
+				m_AppState = AppState::EMO_JOY2;
+				camerawork->SetApproach(true);
+			}
+		}
+		else if (m_AppState == AppState::EMO_JOY2) {
+			text_->SelectText(TextManager::SELECT_JOY2);
+		}
+	}
 	if (enemymanager->GetEnemyFinishAppear()) {
 		m_SceneState = SceneState::MainState;
 		camerawork->SetCameraState(CAMERA_NORMAL);
@@ -131,10 +210,34 @@ void SecondStageActor::IntroUpdate(DebugCamera* camera) {
 void SecondStageActor::MainUpdate(DebugCamera* camera) {
 	Input* input = Input::GetInstance();
 	ui->Update();
-	if (enemymanager->BossDestroy()) {
+	//カメラワークのセット
+	if (enemymanager->BossDestroy())
+	{
+		//フェード前
+		if (!camerawork->GetFeedEnd()) {
+			enemymanager->SetDeadThrow(true);
+			enemymanager->DeadUpdate();
+			camerawork->SetCameraState(CAMERA_BOSSDEAD_FIRST);
+		}
+		//フェード後
+		else
+		{
+			enemymanager->SetDeadThrow(false);
+			enemymanager->DeadUpdate();
+			camerawork->SetCameraState(CAMERA_BOSSDEAD_SECOND);
+		}
+	}
+	else
+	{
+		if (camerawork->FinishAppear()) {
+			//m_SceneState = SceneState::MainState;
+		//	camerawork->SetCameraState(CAMERA_NORMAL);
+		}
+	}
+	/*if (enemymanager->BossDestroy()) {
 		sceneChanger_->ChangeStart();
 		sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
-	}
+	}*/
 
 	if (PlayerDestroy()) {
 		sceneChanger_->ChangeStart();

@@ -30,6 +30,7 @@ void ModelManager::SecondInitialize()
 	LoadModel(Buddy,"buddy");
 	LoadModel(MobUsa, "mobusa");
 	LoadFBXModel(PLAYER, "PlayerFBXNew");
+	LoadFBXModel(SIORI, "siori_idol");
 	LoadFBXModel(KIDO, "kidokun_idol");
 
 }

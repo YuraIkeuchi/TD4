@@ -108,9 +108,9 @@ void ParticleManager::Update() {
 		it->velocity = it->velocity + it->accel;
 
 		//Y方向の速度に重力追加
-		it->velocity.y = it->velocity.y - it->m_GraVity;
+		//it->velocity.y = it->velocity.y - it->m_GraVity;
 		// 速度による移動
-		it->position = it->position + it->velocity;
+		it->position = it->position + it->velocity/it->DiviSpeed;
 
 		// カラーの線形補間
 		it->color.x = it->s_color.x + (it->e_color.x - it->s_color.x) / f;
@@ -208,7 +208,7 @@ void ParticleManager::Draw(int type) {
 void ParticleManager::Add(const int& life,
 	const XMFLOAT3& position, const XMFLOAT3& velocity, const XMFLOAT3& accel,
 	const float& start_scale, const float& end_scale,
-	const XMFLOAT4& start_color, const XMFLOAT4& end_color,const float Gravity)
+	const XMFLOAT4& start_color, const XMFLOAT4& end_color,const float Gravity, float divi)
 {
 	// リストに要素を追加
 	particles.emplace_front();
@@ -223,6 +223,7 @@ void ParticleManager::Add(const int& life,
 	p.s_color = start_color;
 	p.e_color = end_color;
 	p.m_GraVity = Gravity;
+	p.DiviSpeed = divi;
 }
 
 void ParticleManager::InitializeDescriptorHeap() {

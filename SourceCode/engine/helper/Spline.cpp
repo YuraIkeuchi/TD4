@@ -44,11 +44,11 @@ XMVECTOR Spline::SplinePosition(const std::vector<XMVECTOR>& points, size_t star
 }
 
 
-void Spline::Upda(XMFLOAT3& Epos)
+void Spline::Upda(XMFLOAT3& Epos, float DiviSpeed)
 {
 	nowCount = static_cast<float>(GetTickCount64());
 	elapsedCount = nowCount - startCount;
-	elapsedTime = elapsedCount / 300.000f;
+	elapsedTime = elapsedCount / DiviSpeed;
 
 	timerate = elapsedTime / maxtime;
 	if (timerate >= 1)
