@@ -79,6 +79,7 @@ private:
 	//テクスチャの更新
 	void MarkUpdate();
 
+	void DeathParticle();
 private:
 	//移動回数の計算
 	int m_MoveCount = 0;
@@ -208,4 +209,6 @@ private:
 
 	Spline* spline;
 	vector<XMFLOAT3>pointsList;
+
+	bool m_SplineEnd = false;
 };

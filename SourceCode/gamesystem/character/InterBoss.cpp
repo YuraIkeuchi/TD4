@@ -7,9 +7,10 @@
 //更新
 void InterBoss::Update() {
 	//陦悟虚
-	Action();
-	DeathAction();
-	
+	if (m_HP >= 1) {
+		Action();
+		DeathAction();
+	}
 	//エフェクト
 	for (InterEffect* effect : effects) {
 		if (effect != nullptr) {
