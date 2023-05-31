@@ -401,7 +401,7 @@
     <ClCompile Include="SourceCode\gamesystem\text\BossText.cpp">
       <Filter>gamesystem\charactor\Boss\Text</Filter>
     </ClCompile>
-    <ClCompile Include="Heart.cpp">
+    <ClCompile Include="SourceCode\gamesystem\character\Heart.cpp">
       <Filter>gamesystem\charactor\Heart</Filter>
     </ClCompile>
   </ItemGroup>
@@ -769,7 +769,7 @@
     <ClInclude Include="SourceCode\gamesystem\text\BossText.h">
       <Filter>gamesystem\charactor\Boss\Text</Filter>
     </ClInclude>
-    <ClInclude Include="Heart.h">
+    <ClInclude Include="SourceCode\gamesystem\character\Heart.h">
       <Filter>gamesystem\charactor\Heart</Filter>
     </ClInclude>
   </ItemGroup>

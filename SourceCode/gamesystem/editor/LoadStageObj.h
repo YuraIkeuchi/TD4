@@ -4,6 +4,7 @@
 #include<string>
 #include "Ghost.h"
 #include "Food.h"
+#include "Heart.h"
 #include "LoadManager.h"
 #include "EnemyManager.h"
 using namespace DirectX;
@@ -38,10 +39,12 @@ private:
 	void VanishGhost();
 	//共通の更新
 	void CommonUpdate();
+	//ハートの生成
+	void BirthHeart();
 public:
-	static void SetEnemyManager(EnemyManager* enemy) { LoadStageObj::enemy = enemy; }
+	static void SetEnemyManager(EnemyManager* boss) { LoadStageObj::boss = boss; }
 protected:
-	static EnemyManager* enemy;
+	static EnemyManager* boss;
 
 private:
 	//当たり判定
@@ -49,6 +52,7 @@ private:
 private:
 	std::vector<Ghost*> ghosts;
 	std::vector<Food*> foods;
+	std::vector<Heart*> hearts;
 	//ゴーストを消す処理
 	float m_VanishCount = 0.0f;
 	bool m_Vanish = false;

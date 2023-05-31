@@ -36,23 +36,27 @@ public:
 	void ImGuiDraw();
 	//チュートリアルのエネミーが全撃破
 	bool AllDeadEnemy();
-	//ボスの撃破
+	//一瞬のフラグ管理
 	void FinishCheck();
+	//ハート生成の終了
+	void FinishHeart();
 	//ボスの向き
 	void DirSet(int Dir);
 public://getter setter
 	//敵関係getで取る
-	InterBoss* GetBoss() { return enemy.get(); }
-	const XMFLOAT3& GetEnemyPosition() { return enemy.get()->GetPosition(); }
-	const bool GetEnemyCheck() { return enemy.get()->GetCheck(); }
-	const bool GetEnemyFinishAppear() { return enemy.get()->GetFinishAppear(); }
+	InterBoss* GetBoss() { return boss.get(); }
+	const XMFLOAT3& GetEnemyPosition() { return boss.get()->GetPosition(); }
+	const bool GetEnemyCheck() { return boss.get()->GetCheck(); }
+	const bool GetEnemyFinishAppear() { return boss.get()->GetFinishAppear(); }
+
+	const bool GetBirthHeart() { return boss.get()->GetBirthHeart(); }
 	//チュートリアル関係のgetset
 	InterEnemy* GetEnemy(const int num) { return tutorialenemy[num].get(); }
 	std::vector<InterEnemy*>GetBulEnemy() { return bulletenemy; }
 private:
 	Player* player = Player::GetInstance();
 	//ボス(初期化によってステージごとのボスに変更)
-	unique_ptr<InterBoss> enemy;
+	unique_ptr<InterBoss> boss;
 	//ファーストステージ用
 	static const int firstEnemyMax = 3;
 	std::vector<InterEnemy*>bulletenemy;
@@ -64,5 +68,5 @@ private:
 public:
 	//敵の死亡処理
 	bool BossDestroy();
-	void SetDeadThrow(bool f) { enemy->SetThrowUpdateF(f); }
+	void SetDeadThrow(bool f) { boss->SetThrowUpdateF(f); }
 };

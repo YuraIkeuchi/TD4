@@ -54,7 +54,8 @@ public:
 	enum particleName
 	{
 		Normal,
-		Smoke
+		Smoke,
+		Heal
 	};
 
 public:

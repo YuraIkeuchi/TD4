@@ -22,6 +22,7 @@ bool FirstBoss::Initialize() {
 	RTime = 1;
 	m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "pos")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp1")));
+	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "HeartTarget")));
 	m_MaxHp = m_HP;
 	MoveCount = 1;
 	_phaseN = Phase_Normal::NON;

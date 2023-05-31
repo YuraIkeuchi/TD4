@@ -41,6 +41,7 @@ private:
 	//当たり判定(プレイヤー)
 	bool PlayerCollision();
 public://getter setter
+	const bool& GetAlive() { return m_Alive; }
 private:
 	//生存フラグ
 	bool m_Alive = false;
@@ -53,4 +54,7 @@ private:
 	}_heartState;
 
 	XMFLOAT3 m_AddPower = {};
+	float m_Gravity = 0.05f;
+
+	float m_Frame = 0.0f;
 };

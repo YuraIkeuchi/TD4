@@ -74,6 +74,8 @@ void SecondBoss::CSVLoad() {
 
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp2")));
 
+	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "HeartTarget")));
+
 	m_MoveInterval = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bossinterval.csv", "MoveInterVal")));
 	m_QuickMoveInterval = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bossinterval.csv", "MoveInterVal2")));
 	m_ChoiceInterval = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bossinterval.csv", "ChoiceInterVal")));
@@ -206,14 +208,6 @@ void SecondBoss::DamAction()
 }
 //ImGui
 void SecondBoss::ImGui_Origin() {
-	ImGui::Begin("SecondBoss");
-	ImGui::Text("PosX:%f", m_Position.x);
-	ImGui::Text("PosY:%f", m_Position.y);
-	ImGui::Text("PosZ:%f", m_Position.z);
-	ImGui::Text("RotX:%f", m_Rotation.x);
-	ImGui::Text("RotY:%f", m_Rotation.y);
-	ImGui::Text("RotZ:%f", m_Rotation.z);
-	ImGui::End();
 }
 //移動
 void SecondBoss::Move() {
@@ -936,7 +930,7 @@ void SecondBoss::DeadAction() {
 		}
 		else {
 			m_Gravity = 0.05f;
-			if (Helper::GetInstance()->FrameCheck(m_Frame, 0.05f)) {
+			if (Helper::GetInstance()->FrameCheck(m_Frame, 0.025f)) {
 				m_Frame = 1.0f;
 			}
 			//飛ぶような感じにするため重力を入れる
