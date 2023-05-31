@@ -1,4 +1,4 @@
-#include "TextManager.h"
+﻿#include "TextManager.h"
 
 const XMFLOAT2 kFirstRowPos{ 5.f,0.f };
 const XMFLOAT2 kSecondRowPos{ 5.f,-40.f };
