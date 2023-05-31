@@ -38,7 +38,9 @@ public:
 
 	enum Name_First
 	{
-		VIEWBOSS
+		VIEWBOSS,
+		SPEAKPLAYER1,
+		SPEALPLAYER2
 	};
 	static TextManager* GetInstance();
 

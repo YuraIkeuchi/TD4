@@ -47,6 +47,8 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	CreateWord(SELECT_JOY2, L"めのまえのやつをたおすヨロコビを", L"リカイしてくれるよね!!!", L"!!!!!!!!!!");
 
 	CreateWord(Name_First::VIEWBOSS, L"なにかうごきまわってる。。。。");
+	CreateWord(Name_First::SPEAKPLAYER1, L"。。。。。。。");
+	CreateWord(Name_First::SPEALPLAYER2, L" 何じゃありゃ ");
 	//コンヴァージョン初期化
 	Create(dxcomon);
 

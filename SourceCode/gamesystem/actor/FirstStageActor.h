@@ -24,7 +24,7 @@ public:
 	void ImGuiDraw(DirectXCommon* dxCommon);
 	void ColEnemy(std::vector<InterEnemy*> enelist);
 private:
-
+	int textT;
 	unique_ptr<BossText> text_;
 	Spline* spline;
 	vector<XMFLOAT3> pointsList;

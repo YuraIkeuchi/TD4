@@ -51,7 +51,15 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 //更新
 void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 
-	
+	textT++;
+	if(textT>90)
+	{
+		text_->SelectText(TextManager::Name_First::SPEAKPLAYER1);
+	}
+	if(textT>180)
+	{
+		text_->SelectText(TextManager::Name_First::SPEALPLAYER2);
+	}
 	Input* input = Input::GetInstance();
 
 	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
@@ -111,7 +119,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		//	camerawork->SetCameraState(CAMERA_NORMAL);
 		}
 	}
-	
+	text_->Display();
 	camerawork->Update(camera);
 	lightgroup->Update();
 }
