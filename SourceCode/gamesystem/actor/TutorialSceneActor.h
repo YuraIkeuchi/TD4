@@ -106,6 +106,9 @@ private:
 	XMFLOAT3 e_eyepos = { 0,0,30.0f};
 	XMFLOAT3 s_targetpos = {};
 	XMFLOAT3 e_targetpos = { 0,0,50.0f };
+
+	XMFLOAT4 girl_color_ = { 1.5f,1.5f,1.5f,1.f };
+	XMFLOAT4 sutopon_color_ = { 1.f,1.f,1.f,0.f };
 private://便利関数
 	bool Clear(bool mission,int waitTimerMax);
 

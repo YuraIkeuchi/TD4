@@ -33,7 +33,13 @@ void TextManager::Create(DirectXCommon* dxcomon)
 void TextManager::Initialize(DirectXCommon* dxcomon)
 {
 	//ワード追加
-	CreateWord(NONE, L"Hello", L"World", L"GoodBye");
+	CreateWord(NONE, L" ", L" ", L" ");
+	CreateWord(TYUTORIAL_TALK1, L"ここはどこだろう!", L"あたりを見回してみよう", L"Lスティックで移動してみよう");
+	CreateWord(TYUTORIAL_TALK2, L"これは.....メガホン?", L"でも、動いてる?");
+	CreateWord(TYUTORIAL_TALK3, L"う..う.......はっ!?", L"敵!?.......じゃないみたいだな", L" ");
+	CreateWord(TYUTORIAL_TALK4, L"え!?メガホンが喋った!", L" ", L" ");
+	CreateWord(TYUTORIAL_TALK5, L"メガホンじゃない、オレはストポンだ", L"メガホンに取り憑いた亡霊だ!", L"こうしちゃいられない....追手が来ちまう");
+	CreateWord(TYUTORIAL_TALK6, L"　追手ってあれのこと?", L" ", L" ");
 	CreateWord(AISATU,L"おはよう",L"こんにちは",L"こんばんは");
 	CreateWord(ANGER_TALK, L"うぉおおおおい!!!", L"いったいオマエは!!!!!!", L"ナニしにキタ!?!?!?!?!?!?");
 	CreateWord(ANGER_TALK2, L"もしかして", L"おれにたいして", L"ケンカをうりにきたのか!?");
@@ -65,11 +71,25 @@ void TextManager::Draw(DirectXCommon* dxcommon)
 	Font::PostDraw(dxcommon);
 }
 
-void TextManager::SetColor(const XMVECTOR& color)
+void TextManager::SetAllColor(const XMVECTOR& color)
 {
 	conversation_.FirstFont->SetColor(color);
 	conversation_.SecondFont->SetColor(color);
 	conversation_.ThirdFont->SetColor(color);
+}
+
+void TextManager::SetOnceColor(int row, const XMVECTOR& color)
+{
+	assert(row > 2);
+	if (row == 0) {
+		conversation_.FirstFont->SetColor(color);
+	}
+	else if (row == 1) {
+		conversation_.SecondFont->SetColor(color);
+	}
+	else if (row == 2) {
+		conversation_.ThirdFont->SetColor(color);
+	}
 }
 
 //名前から文字列を呼び出しセットする
@@ -86,6 +106,7 @@ void TextManager::CreateWord(Name name, wchar_t* tex1, wchar_t* tex2, wchar_t* t
 	Word temp = SetWord(tex1, tex2, tex3);
 	wordlist_.insert(std::make_pair(name, temp));
 }
+
 //文字列保存
 TextManager::Word TextManager::SetWord(wchar_t* tex1, wchar_t* tex2, wchar_t* tex3)
 {
@@ -94,6 +115,12 @@ TextManager::Word TextManager::SetWord(wchar_t* tex1, wchar_t* tex2, wchar_t* te
 	word.SecondWord = tex2;
 	word.ThirdWord = tex3;
 	return word;
+}
+void TextManager::NoneText()
+{
+	std::map<TextManager::Name, Word>::iterator itr = wordlist_.find(NONE);
+	
+	CreateCon(conversation_, itr->second);
 }
 //文字列呼び出し
 //TextManager::Conversation TextManager::CreateConversation(Word word)

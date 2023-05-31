@@ -139,8 +139,7 @@ void CameraWork::feedDraw()
 }
 //最初のボスのカメラ
 void CameraWork::FirstBossAppear() {
-<<<<<<< HEAD
-=======
+
 	if(!Finish)
 	spline->Upda(m_eyePos,180.00f);
 
@@ -166,7 +165,6 @@ Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
 	}
 	else
 	  m_targetPos = { boss->GetPosition() };
->>>>>>> main
 }
 //2個目のボスのカメラ
 void CameraWork::SecondBossAppear() {
