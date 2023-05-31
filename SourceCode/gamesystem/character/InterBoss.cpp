@@ -1,9 +1,8 @@
 ﻿#include "InterBoss.h"
 #include"Collision.h"
 #include "Helper.h"
-#include "ParticleEmitter.h"
 #include "VariableCommon.h"
-#include <Helper.h>
+#include <random>
 //更新
 void InterBoss::Update() {
 	//陦悟虚
@@ -49,6 +48,7 @@ void InterBoss::ImGuiDraw() {
 	if (!this) { return; }
 	ImGui::Begin("STATE");
 	ImGui::Text("HP:%f", m_HP);
+	ImGui::Text("Target:%d", m_BirthTarget);
 	ImGui::End();
 	ImGui_Origin();
 }
@@ -63,6 +63,8 @@ float InterBoss::HpPercent() {
 //弾との当たり判定
 void InterBoss::CollideBul(vector<InterBullet*> bullet,Type type)
 {
+	int l_RandCount = 0;
+
 	if (ColChangeEaseT>0.f)return;
 
 	for (InterBullet* _bullet : bullet) {
@@ -72,16 +74,27 @@ void InterBoss::CollideBul(vector<InterBullet*> bullet,Type type)
 			if (type == Type::SPHERE)JudgColide=Collision::SphereCollision(_bullet->GetPosition(), m_Radius, m_Position, m_Radius);
 			if (JudgColide)
 			{
+				//乱数指定
+				mt19937 mt{ std::random_device{}() };
+				uniform_int_distribution<int> l_RandomRange(1, 100);
+				l_RandCount = int(l_RandomRange(mt));
+				//乱数が一定の値より大きかったらハートが出る
+				if (l_RandCount > m_BirthTarget) {
+					m_BirthHeart = true;
+				}
+
 				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Attack_Normal.wav", VolumManager::GetInstance()->GetSEVolum());
 				ActionTimer++;
 				Recv = true;
 				_bullet->SetAlive(false);
+				
+				BirthEffect();
+				//弾の大きさによって与えるダメージが違う
 				if (_bullet->GetScale().x == 1.0f) {
 					m_HP--;
 				} else {
 					m_HP -= 2.0f;
 				}
-				BirthEffect();
 			}
 		}
 	}
@@ -105,25 +118,25 @@ void InterBoss::BirthEffect() {
 }
 
 
-void InterBoss::SummonEnemyInit(InterEnemy* enemy)
+void InterBoss::SummonEnemyInit(InterEnemy* boss)
 {
 	
 }
 
 
-void InterBoss::isRespawn(std::vector<InterEnemy*> enemy)
+void InterBoss::isRespawn(std::vector<InterEnemy*> boss)
 {
 	if(ResF)
 	{
 		for(auto i=0;i<3;i++)
 		{
 			NextActionInteval = 0;
-			enemy[i]->SetHP(1);
-			enemy[i]->SetScale({ 0,0,0});
-			enemy[i]->SetColor({ 1,1,1,1 });
-			enemy[i]->SetShotF(false);
-			enemy[i]->SetcanRotandRush(false);
-			enemy[i]->SetAlive(true);
+			boss[i]->SetHP(1);
+			boss[i]->SetScale({ 0,0,0});
+			boss[i]->SetColor({ 1,1,1,1 });
+			boss[i]->SetShotF(false);
+			boss[i]->SetcanRotandRush(false);
+			boss[i]->SetAlive(true);
 			
 		}
 		ResF = false;
@@ -131,48 +144,48 @@ void InterBoss::isRespawn(std::vector<InterEnemy*> enemy)
 }
 
 
-void InterBoss::SummonEnemyUpda(std::vector<InterEnemy*> enemy)
+void InterBoss::SummonEnemyUpda(std::vector<InterEnemy*> boss)
 {
-	std::vector<XMVECTOR> move(enemy.size());
-	std::vector<XMMATRIX>matRot(enemy.size());
+	std::vector<XMVECTOR> move(boss.size());
+	std::vector<XMMATRIX>matRot(boss.size());
 
-	for (auto i = 0; i < enemy.size(); i++) {
+	for (auto i = 0; i < boss.size(); i++) {
 		move[i] = { 0.f,0.f, 0.1f, 0.0f };
 	}
 	if (!SummonF) {
-		for (auto i = 0; i < enemy.size(); i++) {
-			if (enemy[i] == nullptr)continue;
+		for (auto i = 0; i < boss.size(); i++) {
+			if (boss[i] == nullptr)continue;
 			move[i] = { 0.f,0.f, 0.1f, 0.0f };
 			matRot[i] = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + (0.f + static_cast<float>(i) * 45.f)));
 			move[i] = XMVector3TransformNormal(move[i], matRot[i]);
 
-			enemy[i]->SetPosition({ m_Position.x + move[i].m128_f32[0] * 90.f,m_Position.y,	m_Position.z + move[i].m128_f32[2] * 90.f });
+			boss[i]->SetPosition({ m_Position.x + move[i].m128_f32[0] * 90.f,m_Position.y,	m_Position.z + move[i].m128_f32[2] * 90.f });
 		}
 		
 	}
 
 	if (SummonF) {
 		IdleRota = false;
-		for (auto i = 0; i < enemy.size(); i++)
+		for (auto i = 0; i < boss.size(); i++)
 		{
-			if (enemy[i] == nullptr)continue;
-			enemy[i]->Update();
+			if (boss[i] == nullptr)continue;
+			boss[i]->Update();
 		}
-		for (auto i = 0; i < enemy.size(); i++) {
-			if (enemy[i] == nullptr)continue;
-			enemy[i]->SetShotF(true);
+		for (auto i = 0; i < boss.size(); i++) {
+			if (boss[i] == nullptr)continue;
+			boss[i]->SetShotF(true);
 		}
 		
 	}
-	EndSummon(enemy);
+	EndSummon(boss);
 }
 
-void InterBoss::EndSummon(std::vector<InterEnemy*> enemy)
+void InterBoss::EndSummon(std::vector<InterEnemy*> boss)
 {
 	bool tempList[3];
 	for (auto i = 0; i < _countof(tempList); i++) {
-		if (enemy[i] == nullptr)continue;
-		tempList[i] = enemy[i]->GetShotF();
+		if (boss[i] == nullptr)continue;
+		tempList[i] = boss[i]->GetShotF();
 	}
 	if (SummobnStop) {
 		if (Helper::GetInstance()->All_Of(tempList, _countof(tempList))) {
@@ -191,8 +204,8 @@ void InterBoss::EndSummon(std::vector<InterEnemy*> enemy)
 	}
 	bool tempList2[3];
 	for (auto i = 0; i < _countof(tempList2); i++) {
-		if (enemy[i] == nullptr)continue;
-		tempList2[i] = !enemy[i]->GetisAlive() && enemy[i]->GEtAlpha() <= 0.f;
+		if (boss[i] == nullptr)continue;
+		tempList2[i] = !boss[i]->GetisAlive() && boss[i]->GEtAlpha() <= 0.f;
 	}
 	if(Helper::GetInstance()->All_Of(tempList2,_countof(tempList2)))
 	{
@@ -200,12 +213,12 @@ void InterBoss::EndSummon(std::vector<InterEnemy*> enemy)
 	}
 }
 
-void InterBoss::SummonEnemyDraw(std::vector<InterEnemy*> enemy, DirectXCommon* dxcomn)
+void InterBoss::SummonEnemyDraw(std::vector<InterEnemy*> boss, DirectXCommon* dxcomn)
 {
-	for (auto i = 0; i < enemy.size(); i++)
+	for (auto i = 0; i < boss.size(); i++)
 	{
-		if (enemy[i] == nullptr)continue;
-		enemy[i]->Draw(dxcomn);
+		if (boss[i] == nullptr)continue;
+		boss[i]->Draw(dxcomn);
 	}
 }
 

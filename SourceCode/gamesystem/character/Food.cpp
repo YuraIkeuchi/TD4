@@ -1,12 +1,9 @@
 #include "Food.h"
-#include "imgui.h"
-#include "CsvLoader.h"
-#include "ParticleEmitter.h"
 #include "Collision.h"
 #include "HungerGauge.h"
 #include "Player.h"
 #include <random>
-#include <Easing.h>
+#include "Easing.h"
 Food::Food() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Food);
 	m_Object.reset(new IKEObject3d());
@@ -29,7 +26,6 @@ bool Food::Initialize() {
 	m_Alive = true;
 	return true;
 }
-
 //更新
 void Food::Update() {
 	if (FallSpawn()) { return; }
@@ -46,7 +42,6 @@ void Food::Update() {
 	//時間制限による削除(今のところ2個目のステージのみ)
 	DeleteFood();
 }
-
 //描画
 void Food::Draw(DirectXCommon* dxCommon) {
 	if (m_Alive) {
@@ -55,9 +50,6 @@ void Food::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui描画
 void Food::ImGuiDraw() {
-	ImGui::Begin("Food");
-	ImGui::Text("Alive:%d", m_Alive);
-	ImGui::End();
 }
 void Food::CarryStart(Ghost* ghost) {
 	m_ghost = ghost;

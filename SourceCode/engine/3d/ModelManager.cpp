@@ -29,10 +29,10 @@ void ModelManager::SecondInitialize()
 	LoadModel(Ghost,"ghost");
 	LoadModel(Buddy,"buddy");
 	LoadModel(MobUsa, "mobusa");
+	LoadModel(Heart, "heart");
 	LoadFBXModel(PLAYER, "PlayerFBXNew");
 	LoadFBXModel(SIORI, "siori_idol");
 	LoadFBXModel(KIDO, "kidokun_idol");
-
 }
 
 void ModelManager::Finalize()

@@ -60,4 +60,5 @@ void ImageManager::LoadParticle()
 {
 	ParticleManager::LoadTexture(Normal, "effect1");
 	ParticleManager::LoadTexture(Smoke, "hootEffect");
+	ParticleManager::LoadTexture(Heal, "effect2");
 }

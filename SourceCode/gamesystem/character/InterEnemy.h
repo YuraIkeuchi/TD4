@@ -1,5 +1,4 @@
 #pragma once
-#include "DirectXCommon.h"
 #include "ObjCommon.h"
 //“GŠî’ê
 class InterEnemy :

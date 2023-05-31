@@ -1,8 +1,7 @@
 ﻿#include "HungerGauge.h"
-#include "imgui.h"
-#include"WinApp.h"
 #include "CsvLoader.h"
 #include "Helper.h"
+#include "WinApp.h"
 float HungerGauge::m_Hungervalue = 5.0f;
 HungerGauge* HungerGauge::GetInstance() {
 	static HungerGauge instance;

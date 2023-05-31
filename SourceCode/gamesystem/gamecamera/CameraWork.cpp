@@ -2,7 +2,6 @@
 #include "VariableCommon.h"
 #include <Easing.h>
 #include "Player.h"
-#include  "imgui.h"
 #include "Helper.h"
 CameraWork::CameraWork(XMFLOAT3 eye, XMFLOAT3 target) {
 	m_eyePos = eye;

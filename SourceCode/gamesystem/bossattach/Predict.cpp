@@ -1,11 +1,9 @@
 #include "Predict.h"
 #include "ImageManager.h"
 #include"Collision.h"
-#include "imgui.h"
 #include "Helper.h"
 #include "Easing.h"
 #include "VariableCommon.h"
-#include "imgui.h"
 void Predict::Initialize(const XMFLOAT3& pos) {
 	tex = IKETexture::Create(ImageManager::MARK, { 0,0,0 }, { 12,12,12 }, { 1,1,1,0.6f });
 	tex->TextureCreate();
@@ -43,8 +41,5 @@ void Predict::Draw(DirectXCommon* dxCommon) {
 	IKETexture::PostDraw();
 }
 void Predict::ImGuiDraw() {
-	ImGui::Begin("Predict");
-	ImGui::Text("Color:%f", m_Color);
-	ImGui::Text("Frame:%f", m_Frame);
-	ImGui::End();
+
 }

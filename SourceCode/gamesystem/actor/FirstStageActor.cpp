@@ -3,7 +3,6 @@
 #include "SceneManager.h"
 #include "imgui.h"
 #include "ParticleEmitter.h"
-
 #include <HungerGauge.h>
 #include "BackObj.h"
 //初期化
@@ -183,7 +182,7 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 //IMGuiの描画
 void FirstStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	Player::GetInstance()->ImGuiDraw();
-	//loadobj->ImGuiDraw();
+	enemymanager->ImGuiDraw();
 }
 
 

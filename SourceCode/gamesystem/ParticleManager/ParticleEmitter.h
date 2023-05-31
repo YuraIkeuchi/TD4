@@ -40,6 +40,8 @@ public: //メンバ関数
 	void Break(const int life, const XMFLOAT3& pos,const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor,const float Gravity,float divi);
 	//死んだ時のエフェクト
 	void DeathEffect(int life, XMFLOAT3 l_pos, float startscale, float endscale, XMFLOAT4 startcolor, XMFLOAT4 endcolor, float velocity);
+	//ヒールエフェクト
+	void HealEffect(const int life, const XMFLOAT3& pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor);
 	//削除
 	void AllDelete();
 
@@ -52,4 +54,6 @@ private: //メンバ関数
 private: //メンバ変数
 	//パーティクルマネージャー(丸)
 	unique_ptr<ParticleManager> circleParticle;
+	//パーティクルマネージャー(ヒール)
+	unique_ptr<ParticleManager> healParticle;
 };
