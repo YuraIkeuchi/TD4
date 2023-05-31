@@ -45,6 +45,8 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	CreateWord(SELECT_ANGER2, L"このカンジョウにまかせて", L"オマエをたおしてもいいってことだな!!!", L"!!!!!!!!");
 	CreateWord(SELECT_JOY, L"キミよくわかってるね!", L"ってことはさ、キミは", L"このぼくのカンジョウ・・・");
 	CreateWord(SELECT_JOY2, L"めのまえのやつをたおすヨロコビを", L"リカイしてくれるよね!!!", L"!!!!!!!!!!");
+
+	CreateWord(Name_First::VIEWBOSS, L"なにかうごきまわってる。。。。");
 	//コンヴァージョン初期化
 	Create(dxcomon);
 
@@ -80,11 +82,25 @@ void TextManager::SetConversation(Name name)
 	CreateCon(conversation_, itr->second);
 	//conversation_ = CreateConversation(itr->second);
 }
+//名前から文字列を呼び出しセットする
+void TextManager::SetConversation(Name_First name)
+{
+	std::map<TextManager::Name_First, Word>::iterator itr = wordlist_first.find(name);
+
+	CreateCon(conversation_, itr->second);
+	//conversation_ = CreateConversation(itr->second);
+}
 //名前と文字列セットで保存
 void TextManager::CreateWord(Name name, wchar_t* tex1, wchar_t* tex2, wchar_t* tex3)
 {
 	Word temp = SetWord(tex1, tex2, tex3);
 	wordlist_.insert(std::make_pair(name, temp));
+}
+//名前と文字列セットで保存
+void TextManager::CreateWord(Name_First name, wchar_t* tex1, wchar_t* tex2, wchar_t* tex3)
+{
+	Word temp = SetWord(tex1, tex2, tex3);
+	wordlist_first.insert(std::make_pair(name, temp));
 }
 //文字列保存
 TextManager::Word TextManager::SetWord(wchar_t* tex1, wchar_t* tex2, wchar_t* tex3)

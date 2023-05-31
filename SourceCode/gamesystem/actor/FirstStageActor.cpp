@@ -42,6 +42,10 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	loadobj->AllLoad("FIRSTSTAGE");
 	LoadStageObj::SetEnemyManager(enemymanager.get());
 
+	text_ = make_unique<BossText>();
+	text_->Initialize(dxCommon);
+	text_->SelectText(TextManager::Name_First::VIEWBOSS);
+
 	lightgroup->SetCircleShadowActive(0, true);
 }
 //更新
@@ -161,6 +165,9 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 
 	ui->Draw();;
 	sceneChanger_->Draw();	//完全に前に書くスプライト
+	//if (camerawork->GetAppearType() == APPEAR_SEVEN || camerawork->GetAppearType() == APPEAR_EIGHT) {
+		text_->SpriteDraw(dxCommon);
+	//}
 	//IKESprite::PreDraw();
 	//blackwindow->Draw();
 	camerawork->feedDraw();

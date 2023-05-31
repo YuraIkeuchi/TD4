@@ -1,6 +1,7 @@
 ﻿
 #pragma once
 #include "BaseActor.h"
+#include "BossText.h"
 #include "LoadStageObj.h"
 #include"Font.h"
 #include"Feed.h"
@@ -23,6 +24,8 @@ public:
 	void ImGuiDraw(DirectXCommon* dxCommon);
 	void ColEnemy(std::vector<InterEnemy*> enelist);
 private:
+
+	unique_ptr<BossText> text_;
 	Spline* spline;
 	vector<XMFLOAT3> pointsList;
 	void SetPoints();
