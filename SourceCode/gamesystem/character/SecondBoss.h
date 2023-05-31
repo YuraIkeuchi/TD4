@@ -6,6 +6,7 @@
 #include "Predict.h"
 #include "Collision.h"
 #include "Shake.h"
+//#include "Sprine.h"
 enum DirEmo {
 	DIR_ANGER,
 	DIR_JOY,
@@ -203,4 +204,7 @@ private:
 	int m_MoveInterval = {};
 	int m_QuickMoveInterval = {};
 	int m_ChoiceInterval = {};
+
+	/*Spline* spline;
+	vector<XMFLOAT3>pointsList;*/
 };
