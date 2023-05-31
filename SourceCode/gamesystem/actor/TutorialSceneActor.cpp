@@ -81,7 +81,7 @@ void TutorialSceneActor::TextTalkState() {
 	if (DebugButton() ||
 		input->TriggerButton(Input::B)) {
 		sutepon->SetPosition({ 0,0,15.0f });
-		conversation  = 0;
+		conversation = 0;
 		nowstate_ = state::SPAWNENEMY;
 	}
 }
@@ -173,6 +173,11 @@ void TutorialSceneActor::SpawnAllEnemyState() {
 		enemymanager->TutorialUpdate(1);
 	}
 	if (Clear(cameraframe >= 1.0f, 50)) {
+		s_eyepos = { Player::GetInstance()->GetPosition().x,
+		Player::GetInstance()->GetPosition().y + 50.0f,
+		Player::GetInstance()->GetPosition().z - 20.0f };
+		s_targetpos.x = Player::GetInstance()->GetPosition().x;
+		s_targetpos.z = Player::GetInstance()->GetPosition().z;
 		nowstate_ = state::TEXT_LAST;
 		cameraframe = 0.0f;
 	}
@@ -252,7 +257,7 @@ bool TutorialSceneActor::MovingCamera(const XMFLOAT3& s_eye, const XMFLOAT3& e_e
 	}
 }
 void TutorialSceneActor::CameraUpdate(DebugCamera* camera) {
-	if (!(nowstate_ == state::SPAWNALLENEMY|| nowstate_ == state::TEXT_LAST)) {
+	if (!(nowstate_ == state::SPAWNALLENEMY || nowstate_ == state::TEXT_LAST)) {
 		camerawork->SetCameraState(CAMERA_NORMAL);
 	} else {
 		camerawork->SetCameraState(CAMERA_LOAD);

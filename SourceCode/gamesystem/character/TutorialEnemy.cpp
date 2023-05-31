@@ -28,9 +28,15 @@ bool TutorialEnemy::Initialize() {
 	m_Object->SetModel(m_Model);
 	m_Scale = { scale_,scale_,scale_ };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
-	//m_Rotation.x = 90.f;
+
+	//乱数指定
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> r_kWaitTimeMax(100, 150);
+	kWaitTimeMax =(float)r_kWaitTimeMax(mt);
+	uniform_int_distribution<int> r_kJumpTimeMax(60, 90);
+	kJumpTimeMax= (float)r_kJumpTimeMax(mt);
+
 	m_Position = {};
-	ret = true;
 	HP = 1;
 	isAlive = true;
 	return true;
@@ -79,16 +85,16 @@ void TutorialEnemy::Particle() {
 }
 
 void TutorialEnemy::SpawnUpdate() {
-	spawnTimer += 1.0f / kSpawnTimeMax;
-	Helper::GetInstance()->Clamp(spawnTimer, 0.0f, 1.0f);
+	commandTimer += 1.0f / kSpawnTimeMax;
+	Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);
 
-	float scale = Ease(Out, Quart, spawnTimer, 0.0f, scale_);
+	float scale = Ease(Out, Quart, commandTimer, 0.0f, scale_);
 	m_Scale = { scale ,scale ,scale };
 
 	GetRotation2Player();
-	if (spawnTimer == 1.0f) {
+	if (commandTimer == 1.0f) {
 		commandState = CommandState::WaitState;
-		spawnTimer = 0.0f;
+		commandTimer = 0.0f;
 	}
 }
 
@@ -108,55 +114,56 @@ void TutorialEnemy::WaitUpdate() {
 	float scale = Ease(Out, Quart, moveTimer, 0.3f, 1.0f);
 	m_Scale = { scale ,scale ,scale };
 	
-	spawnTimer += 1.0f / kWaitTimeMax;
-	Helper::GetInstance()->Clamp(spawnTimer, 0.0f, 1.0f);
+	commandTimer += 1.0f / kWaitTimeMax;
+	Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);
 
-	if (spawnTimer==1.0f) {
+	if (commandTimer==1.0f) {
 		m_Scale = { 1.f,1.f,1.f };
 		rot = m_Rotation.y;
 		s_pos = m_Position;
 		e_pos = { m_Position.x+sinf(RottoPlayer) *-10.0f,0.f, m_Position.z + cosf(RottoPlayer) * -10.0f };
 		commandState = CommandState::JumpState;
-		spawnTimer = 0.0f;
+		commandTimer = 0.0f;
 	}
 }
 
 void TutorialEnemy::LockOnUpdate() {
 	GetRotation2Player();
-	spawnTimer += 1.0f / kLockOnTimeMax;
-	Helper::GetInstance()->Clamp(spawnTimer, 0.0f, 1.0f);
+	commandTimer += 1.0f / kLockOnTimeMax;
+	Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);
 
-	if (spawnTimer == 1.0f) {
+	if (commandTimer == 1.0f) {
 		jumpCount++;
-		spawnTimer = 0.0f;
+		commandTimer = 0.0f;
 		rot = m_Rotation.y;
 		s_pos = m_Position;
 		e_pos = { m_Position.x + sinf(RottoPlayer) * -(8.f*(float)jumpCount),0.f, m_Position.z + cosf(RottoPlayer) * -(15.0f * (float)jumpCount) };
+		//kJumpTimeMax=100
 		commandState = CommandState::JumpState;
 	}
 }
 
 void TutorialEnemy::JumpUpdate() {
 
-	spawnTimer += 1.0f / kJumpTimeMax;
-	Helper::GetInstance()->Clamp(spawnTimer, 0.0f, 1.0f);	
+	commandTimer += 1.0f / kJumpTimeMax;
+	Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);	
 
 
-	float hight = Ease(In, Quad, spawnTimer, 1.0f, 0.0f);
+	float hight = Ease(In, Quad, commandTimer, 1.0f, 0.0f);
 
 	m_Position = {
-	Ease(Out, Quart, spawnTimer, s_pos.x, e_pos.x),
+	Ease(Out, Quart, commandTimer, s_pos.x, e_pos.x),
 	5.0f,
-	Ease(Out, Quart, spawnTimer, s_pos.z, e_pos.z),
+	Ease(Out, Quart, commandTimer, s_pos.z, e_pos.z),
 	};
-	if (spawnTimer == 1.0f) {
+	if (commandTimer == 1.0f) {
 		if (jumpCount<kJumpCountMax) {
 			commandState = CommandState::LockOnState;
 		} else {
 			jumpCount = 1;
 			commandState = CommandState::WaitState;
 		}
-		spawnTimer = 0.0f;
+		commandTimer = 0.0f;
 	}
 }
 

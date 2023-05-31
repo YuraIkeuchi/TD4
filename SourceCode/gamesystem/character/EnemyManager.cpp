@@ -28,6 +28,7 @@ EnemyManager::EnemyManager(const std::string& SceneName) {
 		}
 		//最初の敵のみ固定湧き
 		tutorialenemy[0]->SetPosition({ 0,5.0f ,30.0f });
+		tutorialenemy[0]->SetUnrival(true);
 		//カメラ追従しつつスポーン
 		for (auto i = 1; i < tutorialenemy.size(); i++) {
 			float posX = -30.0f + (i * 10.f);

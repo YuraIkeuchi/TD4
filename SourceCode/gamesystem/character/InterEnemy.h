@@ -31,7 +31,7 @@ public:
 	/// 毎フレーム更新
 	/// </summary>
 	void Update();
-	
+
 	virtual void Action() = 0;//敵の行動
 
 	/// <summary>
@@ -43,15 +43,17 @@ public:
 
 	virtual void Appearance() {};
 protected: //静的メンバ変数
-	bool isAlive;
+	bool isAlive = true;
 	bool isStop = false;
-	int HP;
-	bool ShotF;
-	int ShotCount;
-	bool DeathEffectF;
+	bool isUnrival = false;
+	int HP = 0;
+	float radius = 2.5f;
+	bool ShotF = false;
+	int ShotCount = 0;
+	bool DeathEffectF = false;
 public:
 	void SetShotF(bool f) { ShotF = f; }
-	void SetIsStop(bool isStop) {this->isStop = isStop; }
+	void SetIsStop(bool isStop) { this->isStop = isStop; }
 
 	bool GetShotF() { return ShotF; }
 	int GetShotCount() { return ShotCount; }
@@ -65,14 +67,17 @@ public:
 	void SetColor(XMFLOAT4 color) { m_Color = color; }
 
 	void SetHP(int HP) { this->HP = HP; }
+
+	float GetRadius() { return radius; }
+	void SetUnrival(bool isUnrival) { this->isUnrival = isUnrival; };
 protected:
 	void ColPlayer();
 	void OnCollision();
 	void DeathAction();
 protected:
-	bool canRot;
+	bool canRot = false;
 
-	bool Rush;
+	bool Rush = false;
 public:
 	void SetcanRotandRush(bool f) { canRot = f; Rush = f; }
 

@@ -43,31 +43,16 @@ private:
 	float move = addNum;
 
 	float waitTimer = 0.0f;
-	const float kWaitTimeMax = 150.0f;
-	float spawnTimer = 0.0f;
-	const float kSpawnTimeMax = 30.0f;
+	float commandTimer = 0.0f;
 	float rot = 0.0f;
-
-
-	float kLockOnTimeMax = 15.0f;
-	float kJumpTimeMax = 60.0f;
 
 	int jumpCount = 1;
 	const int kJumpCountMax = 3;
 
+	float kWaitTimeMax = 150.0f;
+	const float kSpawnTimeMax = 30.0f;
+	float kLockOnTimeMax = 50.0f;
+	float kJumpTimeMax = 60.0f;
 
-	XMFLOAT3 s_pos, e_pos = {};
-private:
-	//í«è]ópïœêî
-	XMFLOAT3 m_FollowVel{};
-	float old;
-	bool ret;
-	bool appF;
-	float t;
-	float RotY;
-	int randMove;
-	bool Rush;
-
-	bool canRot;
-
+	XMFLOAT3 s_pos = {}, e_pos = {};
 };
