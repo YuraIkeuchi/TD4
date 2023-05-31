@@ -101,11 +101,10 @@ void CameraWork::SetBossDead_Before()
 void CameraWork::SetBossDead_AfterFirst()
 {
 	m_eyePos.x = Player::GetInstance()->GetPosition().x;
-	m_eyePos.y = Player::GetInstance()->GetPosition().y+50;
-	m_eyePos.z = Player::GetInstance()->GetPosition().z - 20.0f;
-	m_targetPos.x = Player::GetInstance()->GetPosition().x;
-	m_targetPos.z = Player::GetInstance()->GetPosition().z;
-
+	m_eyePos.y = Player::GetInstance()->GetPosition().y+5.f;
+	m_eyePos.z = Player::GetInstance()->GetPosition().z +5.0f;
+	m_targetPos.x = boss->GetPosition().x;
+	m_targetPos.z = boss->GetPosition().z;
 	DeathTimer = 0;
 	FeedF = false;
 }
@@ -118,8 +117,7 @@ void CameraWork::SetBossDead_AfterSecond()
 	m_eyePos.x = Player::GetInstance()->GetPosition().x;
 	m_eyePos.y = Player::GetInstance()->GetPosition().y + 50;
 	m_eyePos.z = Player::GetInstance()->GetPosition().z - 20.0f;
-	m_targetPos.x = Player::GetInstance()->GetPosition().x;
-	m_targetPos.z = Player::GetInstance()->GetPosition().z;
+
 
 	DeathTimer = 0;
 	FeedF = false;

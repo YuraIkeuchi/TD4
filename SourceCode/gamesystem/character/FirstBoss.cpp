@@ -30,6 +30,8 @@ bool FirstBoss::Initialize() {
 	_phaseN = Phase_Normal::NON;
 	_normal.Initialize();
 	_cattack.Initialize();
+	shake = new Shake();
+	
 	ActionTimer = 1;
 
 	m_Radius = 5.0f;
@@ -886,6 +888,7 @@ void FirstBoss::AppearAction() {
 }
 //ボス撃破シーン
 void FirstBoss::DeadAction_Throw() {
+	m_Position = { 0,-90,80.f };
 	if (!ResetRota) {
 		m_Rotation.y = 90.f;
 		m_Rotation.x= 0.f;
@@ -898,11 +901,46 @@ void FirstBoss::DeadAction_Throw() {
 		m_Rotation.y += 0.02f;
 		m_Rotation.z += 0.09f;
 	}
+	RotFrontSpeed = 3.f;
+	Player::GetInstance()->SetPosition({ 0,0,10 });
 }
 //ボス撃破シーン
 void FirstBoss::DeadAction() {
-	m_Rotation.y += 0.03f;
-	m_Rotation.z += 1.6f;
 
-	Helper::GetInstance()->Clamp(m_Rotation.z, 0.f, 90.f);
+	constexpr int ShakeTimer = 200;
+
+	if(shake->GetShakeTimer()>=ShakeTimer-5){
+		shake->SetShakeStart(false);
+
+		m_Rotation.y+= 0.06f;
+		DeathSpeed += 0.05f;
+		m_Rotation.z += DeathSpeed;
+		if(DeathSpeed>=3.f)
+		{
+			m_Rotation.y += 0.4f;
+			m_Rotation.z += 1.f;
+		}
+	}
+	else
+	{
+		shake->SetShakeStart(true);
+		shake->ShakePos(ShakePos.x, 5, -5, ShakeTimer, 10);
+		shake->ShakePos(ShakePos.z, 5, -5, ShakeTimer, 10);
+		m_Position.x += ShakePos.x/2.f;
+		m_Position.z += ShakePos.z/2.f;
+
+		m_Rotation.z -= RotFrontSpeed;
+		RotFrontSpeed -= 0.04f;
+		
+		//シェイクを止める
+		if (!shake->GetShakeStart()) {
+			ShakePos = { 0.0f,0.0f,0.0f };
+		}
+		DeathSpeed = 0.f;
+	}
+
+	Player::GetInstance()->SetPosition({ 0,0,10 });
+	Helper::GetInstance()->Clamp(m_Rotation.z, -90.f, 90.f);
+	Helper::GetInstance()->Clamp(DeathSpeed, 0.f, 3.f);
+	Helper::GetInstance()->Clamp(RotFrontSpeed, 0.f, 2.f);
 }

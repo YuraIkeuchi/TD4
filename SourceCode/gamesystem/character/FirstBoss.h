@@ -259,4 +259,9 @@ private:
 	float DeathMotionTimer;
 
 	bool ResetRota;
+	Shake* shake;
+	float DeathSpeed;
+	float RotFrontSpeed;
+	XMFLOAT3 ShakePos;
+	
 };

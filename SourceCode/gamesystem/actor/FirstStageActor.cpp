@@ -60,6 +60,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	{
 		text_->SelectText(TextManager::Name_First::SPEALPLAYER2);
 	}
+
 	Input* input = Input::GetInstance();
 
 	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
