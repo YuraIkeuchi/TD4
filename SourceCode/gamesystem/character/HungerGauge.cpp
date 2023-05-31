@@ -1,4 +1,4 @@
-#include "HungerGauge.h"
+﻿#include "HungerGauge.h"
 #include "imgui.h"
 #include"WinApp.h"
 #include "CsvLoader.h"
@@ -43,10 +43,7 @@ void HungerGauge::Update() {
 
 //ImGui
 void HungerGauge::ImGuiDraw() {
-<<<<<<< HEAD
-=======
 
->>>>>>> f0fc41e0b22fc97a5ced8bf1c94ab0799f4c73b1
 }
 
 float HungerGauge::GetPercentage() {
