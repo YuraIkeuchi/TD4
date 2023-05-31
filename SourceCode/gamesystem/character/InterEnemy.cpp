@@ -29,7 +29,7 @@ void InterEnemy::OnCollision()
 	//�U���̒e�Ƃ̔���
 	for (InterBullet* _bullet : Player::GetInstance()->GetBulllet_attack()) {
 		if (_bullet->GetAlive()) {
-			if (Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, 1.f, m_Position.x, m_Position.z, 1.3f))
+			if (Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, 1.f, m_Position.x, m_Position.z, radius))
 			{
 				//�̗�
 				HP--;
@@ -57,14 +57,19 @@ void InterEnemy::DeathAction()
 
 void InterEnemy::ColPlayer()
 {
-	constexpr int damage = 1;
+	const int damage = 1;
 	if (!isAlive) { return; }
 	if (Collision::CircleCollision(Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z, 2.f, m_Position.x, m_Position.z, 1.f))
 	{
 		Player::GetInstance()->PlayerHit(m_Position);
-		Player::GetInstance()->RecvDamage(damage);
-		isAlive = false;
+		if (!isUnrival) {
+			Player::GetInstance()->RecvDamage(damage);
+			isAlive = false;
+		} else {
+			Player::GetInstance()->RecvDamage(0);
+		}
 	}
+
 	if (HP <= 0)
 	{
 		isAlive = false;

@@ -6,6 +6,9 @@
 #include "TutorialEnemy.h"
 #include<array>
 #include<vector>
+#include<memory>
+
+
 //敵の管理系クラス
 class EnemyManager {
 private:
