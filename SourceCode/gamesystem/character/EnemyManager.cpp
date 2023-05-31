@@ -23,11 +23,11 @@ EnemyManager::EnemyManager(const std::string& SceneName) {
 		}
 	} else if (m_SceneName == "TUTORIAL") {
 		for (auto i = 0; i < tutorialenemy.size(); i++) {
-			tutorialenemy[i].reset(new TutorialEnemy());
+			tutorialenemy[i] = make_unique<TutorialEnemy>();
 			tutorialenemy[i]->Initialize();
 		}
 		//最初の敵のみ固定湧き
-		tutorialenemy[0]->SetPosition({ 0,5.0f ,50.0f });
+		tutorialenemy[0]->SetPosition({ 0,5.0f ,30.0f });
 		//カメラ追従しつつスポーン
 		for (auto i = 1; i < tutorialenemy.size(); i++) {
 			float posX = -30.0f + (i * 10.f);
@@ -86,6 +86,10 @@ void EnemyManager::TutorialDraw(DirectXCommon* dxCommon) {
 void EnemyManager::ImGuiDraw() {
 	//enemy->ImGuiDraw();
 	enemy->ImGuiDraw();
+	if (m_SceneName == "TUTORIAL") {
+		tutorialenemy[0]->ImGuiDraw();
+
+	}
 }
 
 //敵の死亡処置

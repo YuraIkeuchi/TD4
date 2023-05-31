@@ -28,6 +28,7 @@ void ModelManager::SecondInitialize()
 	LoadModel(Food,"food");
 	LoadModel(Ghost,"ghost");
 	LoadModel(Buddy,"buddy");
+	LoadModel(MobUsa, "mobusa");
 	LoadFBXModel(PLAYER, "PlayerFBXNew");
 	LoadFBXModel(KIDO, "kidokun_idol");
 

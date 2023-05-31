@@ -405,6 +405,6 @@ void TutorialSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 void TutorialSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	//Player::GetInstance()->ImGuiDraw();
 	//loadobj->ImGuiDraw();
-	//enemymanager->ImGuiDraw();
+	enemymanager->ImGuiDraw();
 	//camerawork->ImGuiDraw();
 }

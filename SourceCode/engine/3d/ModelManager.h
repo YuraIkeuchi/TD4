@@ -23,7 +23,8 @@ public:
 		Sutopon,
 		Food,
 		Ghost,
-		Buddy
+		Buddy,
+		MobUsa,
 
 	};
 	//FBX‚Ì–¼‘O

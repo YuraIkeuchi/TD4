@@ -41,7 +41,7 @@ public:
 
 	virtual void ImGuiDraw() = 0;
 
-	virtual void Appearance() = 0;
+	virtual void Appearance() {};
 protected: //Ã“Iƒƒ“ƒo•Ï”
 	bool isAlive;
 	bool isStop = false;

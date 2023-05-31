@@ -9,35 +9,56 @@ public:
 	void Finalize() override;//開放
 	void Action()override;//更新
 	void ImGuiDraw()override;
-	//void Circle();//円運動
-	//void Follow();//追従
 	void Draw(DirectXCommon* dxCommon) override;//描画
 private:
-	void Appearance()override;
 	void Particle();//パーティクル
-	void RushAction();
-	
-protected:
 
+	enum class CommandState : int {
+		SpawnState = 0,
+		WaitState,
+		LockOnState,
+		JumpState,
+	}commandState = CommandState::SpawnState;
+
+	//関数ポインタ
+	static void(TutorialEnemy::* commandTable[])();
+	//メンバ関数
+	void SpawnUpdate();
+	void WaitUpdate();
+	void LockOnUpdate();
+	void JumpUpdate();
 private:
-	//円運動の変数
-	float m_CircleAngle = 0.0f;
-	float m_CircleRadius = 0.0f;
-	float m_CircleSpeed = 0.0f;
-	float m_CircleScale = 20.0f;
+
+	void GetRotation2Player();
+
+
+
+	float RottoPlayer = 0.0f;
+	float moveTimer = 0.6f;
+	float scaleCount = 0.05f;
+	enum {
+		addNum = 1,
+		subNum = -1,
+	};
+	float move = addNum;
+
+	float waitTimer = 0.0f;
+	const float kWaitTimeMax = 150.0f;
+	float spawnTimer = 0.0f;
+	const float kSpawnTimeMax = 30.0f;
+	float rot = 0.0f;
+	XMFLOAT3 s_pos, e_pos = {};
+private:
 	//追従用変数
 	XMFLOAT3 m_FollowVel{};
 	float old;
 	bool ret;
 	bool appF;
-	XMVECTOR PositionA, PositionB;
-	XMVECTOR SubVector;
-	float t; float RotY;
+	float t;
+	float RotY;
 	int randMove;
 	bool Rush;
-	float s_scale = 0.0f;
-	int MoveTimer;
 
 	bool canRot;
-};
 
+};
