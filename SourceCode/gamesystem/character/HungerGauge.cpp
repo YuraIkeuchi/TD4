@@ -10,13 +10,13 @@ HungerGauge* HungerGauge::GetInstance() {
 	return &instance;
 }
 
-//‰Šú‰»
+//åˆæœŸåŒ–
 bool HungerGauge::Initialize() {
 	m_CatchCount = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/hungergauge.csv", "Catch")));
 	m_NowHunger = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/hungergauge.csv", "Now")));
 	m_HungerMax = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/hungergauge.csv", "Max")));
 
-	//‚¾‚é‚¢‚ñ‚Åˆê’U‚±‚ê‚Å
+	//ã ã‚‹ã„ã‚“ã§ä¸€æ—¦ã“ã‚Œã§
 	m_SubHunger[0] = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/hungergauge.csv", "Sub1")));
 	m_SubHunger[1] = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/hungergauge.csv", "Sub2")));
 	m_SubHunger[2] = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/hungergauge.csv", "Sub3")));
@@ -26,16 +26,16 @@ bool HungerGauge::Initialize() {
 	return true;
 }
 
-//XV
+//æ›´æ–°
 void HungerGauge::Update() {
 	float l_Limit = 50.0f;
-	//ˆê’è‚¸‚Â‚ÅŒ¸­‚µ‚Ä‚¢‚­
+	//ä¸€å®šãšã¤ã§æ¸›å°‘ã—ã¦ã„ã
 	if (m_CatchCount <= 5 && m_CatchCount > 0) {
 		m_NowHunger -= m_SubHunger[m_CatchCount - 1];
 	} else {
 		m_NowHunger -= m_SubHunger[SUB_MAX - 1];
 	}
-	//‹Q‰ìƒQ[ƒW‚ÌÅ‘å”‚ªŒˆ‚Ü‚Á‚Ä‚¢‚é
+	//é£¢é¤“ã‚²ãƒ¼ã‚¸ã®æœ€å¤§æ•°ãŒæ±ºã¾ã£ã¦ã„ã‚‹
 	Helper::GetInstance()->Clamp(m_NowHunger, 0.0f, m_HungerMax);
 	m_NowHunger = min(m_NowHunger, m_HungerMax);
 	m_HungerMax = min(m_HungerMax, l_Limit);
@@ -43,13 +43,10 @@ void HungerGauge::Update() {
 
 //ImGui
 void HungerGauge::ImGuiDraw() {
-	//ImGui::Begin("Hunger");
-	//ImGui::SliderFloat("Now", &m_NowHunger, 0.0f, 50.0f);
-	//ImGui::SliderFloat("Max", &m_HungerMax, 0.0f, 50.0f);
-	//ImGui::SliderFloat("Percent", &(m_NowHunger / m_HungerMax), 0.0f, 50.0f);
-	//ImGui::Text("m_SubVelocity:%f", m_SubVelocity);
-	//ImGui::Text("CatchCount:%f", m_CatchCount);
-	//ImGui::End();
+<<<<<<< HEAD
+=======
+
+>>>>>>> f0fc41e0b22fc97a5ced8bf1c94ab0799f4c73b1
 }
 
 float HungerGauge::GetPercentage() {

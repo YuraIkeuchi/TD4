@@ -114,6 +114,8 @@ protected:
 	//どっちの顔を向けているか
 	int m_DirEmo = {};
 	bool m_FinishApp = false;
+
+	int m_DeathTimer = 0;
 private:
 
 	enum class ActionList

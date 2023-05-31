@@ -98,6 +98,18 @@ void ParticleEmitter::Break(const int life, const XMFLOAT3& pos,const float star
 	circleParticle->Add(life, l_pos, vel, {}, startscale, endscale, startcolor, endcolor,Gravity,divi);
 }
 
+
+void ParticleEmitter::DeathEffect(int life, XMFLOAT3 l_pos, float startscale, float endscale, XMFLOAT4 startcolor, XMFLOAT4 endcolor, float velocity) {
+	XMFLOAT3 pos = l_pos;
+	float angle = (float)rand() / RAND_MAX * 360.0f;
+	const float rnd_vel = 0.1f;
+	XMFLOAT3 vel{};
+	vel.x = velocity * sinf(angle);
+	vel.y = velocity * cosf(angle);
+	vel.z = 0.0f;
+	circleParticle->Add(life, pos, vel, XMFLOAT3(), startscale, endscale, startcolor, endcolor,{});
+}
+
 void ParticleEmitter::AllDelete()
 {
 	//全パーティクルの削除

@@ -28,7 +28,8 @@ public:
 	void ImGuiDraw();
 	//ボス登場シーンの動き
 	void AppearUpdate();
-
+	//ボス撃破シーンの動き
+	void DeathUpdate();
 	//キャラの状態
 	enum CharaState
 	{
