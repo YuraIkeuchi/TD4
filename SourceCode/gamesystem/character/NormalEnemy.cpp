@@ -17,19 +17,23 @@ bool NormalEnemy::Initialize() {
 	m_fbxObject = make_unique<IKEFBXObject3d>();
 	m_fbxObject->Initialize();
 	m_fbxObject->SetModel(m_fbxModel);
+	m_fbxObject->LoadAnimation();
+
 	m_Scale = { 0.0f,0.0f,0.0f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Position.y = 5.0f;
 	ret = true;
 	HP = 1;
 	isAlive = true;
+
+	m_fbxObject->PlayAnimation(0);
 	return true;
 }
 //行動
 void NormalEnemy::Action() {
 	float l_Vel = 0.15f;
 	//m_CircleSpeed += 1.0f;
-	m_Rotation.x = 90.f;
+	m_Rotation.x = 0.f;
 
 	if (ShotF) {
 		Appearance();
@@ -42,7 +46,7 @@ void NormalEnemy::Action() {
 
 	//Obj_SetParam();	//m_Position = Helper::GetInstance()->CircleMove({ 0.0f,5.0f,0.0f }, m_CircleScale, m_CircleSpeed);
 	Fbx_SetParam();
-
+	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 	OnCollision();
 	ColPlayer();
 	Particle();
@@ -118,15 +122,15 @@ void NormalEnemy::Appearance()
 	//プレイヤーと敵のベクトルの長さ(差)を求める
 	SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
 
-	constexpr float AddScaling = 0.03f;
+	constexpr float AddScaling = 0.001f;
 
 	m_Scale.x += AddScaling;
 	m_Scale.y += AddScaling;
 	m_Scale.z += AddScaling;
 
-	Helper::GetInstance()->Clamp(m_Scale.x, 0.f, 0.15f);
-	Helper::GetInstance()->Clamp(m_Scale.y, 0.f, 0.15f);
-	Helper::GetInstance()->Clamp(m_Scale.z, 0.f, 0.15f);
+	Helper::GetInstance()->Clamp(m_Scale.x, 0.f, 0.010f);
+	Helper::GetInstance()->Clamp(m_Scale.y, 0.f, 0.015f);
+	Helper::GetInstance()->Clamp(m_Scale.z, 0.f, 0.006f);
 
 	float RottoPlayer;
 	RottoPlayer = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
