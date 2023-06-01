@@ -19,12 +19,11 @@ CameraWork::CameraWork(XMFLOAT3 eye, XMFLOAT3 target) {
 			pointsList.emplace_back(XMFLOAT3{ 0,160,200 });
 			pointsList.emplace_back(XMFLOAT3{ 0,80,120 });
 			//pointsList.emplace_back(XMFLOAT3{ 25,30,-15 });
-			pointsList.emplace_back(XMFLOAT3{ 60,30,70 });
-			//pointsList.emplace_back(XMFLOAT3{ 30,50,45 });
-			pointsList.emplace_back(XMFLOAT3{ 30,30,50 });
+			pointsList.emplace_back(XMFLOAT3{ -90,30,70 });
+			pointsList.emplace_back(XMFLOAT3{ 0,50,0 });
+			pointsList.emplace_back(XMFLOAT3{ 90,30,50 });
 			pointsList.emplace_back(XMFLOAT3{ 0,30,0});
 			pointsList.emplace_back(XMFLOAT3{ -20,10,-30 });
-			pointsList.emplace_back(XMFLOAT3{ -10,10,-70 });
 		}
 		spline = new Spline();
 		spline->Init(pointsList, static_cast<int>(pointsList.size()));
@@ -173,7 +172,7 @@ void CameraWork::feedDraw()
 void CameraWork::FirstBossAppear() {
 
 	if(!Finish)
-	spline->Upda(m_eyePos,180.00f);
+	spline->Upda(m_eyePos,250.00f);
 
 	if (spline->GetIndex() >=pointsList.size()-1)
 	{
