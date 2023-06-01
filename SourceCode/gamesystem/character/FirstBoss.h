@@ -262,5 +262,6 @@ private:
 	float DeathSpeed;
 	float RotFrontSpeed;
 	XMFLOAT3 ShakePos;
+	float SinRotCount;
 	
 };

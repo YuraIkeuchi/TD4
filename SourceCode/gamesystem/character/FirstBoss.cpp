@@ -886,7 +886,7 @@ void FirstBoss::AppearAction() {
 }
 //ボス撃破シーン
 void FirstBoss::DeadAction_Throw() {
-	m_Position = { 0,-90,80.f };
+	m_Position = { 0,-90,20.f };
 	if (!ResetRota) {
 		m_Rotation.y = 90.f;
 		m_Rotation.x= 0.f;
@@ -901,11 +901,12 @@ void FirstBoss::DeadAction_Throw() {
 	}
 	RotFrontSpeed = 3.f;
 	Player::GetInstance()->SetPosition({ 0,0,10 });
+	Obj_SetParam();
 }
 //ボス撃破シーン
 void FirstBoss::DeadAction() {
 
-	constexpr int ShakeTimer = 200;
+	constexpr int ShakeTimer = 250;
 
 	if(shake->GetShakeTimer()>=ShakeTimer-5){
 		shake->SetShakeStart(false);
@@ -926,7 +927,8 @@ void FirstBoss::DeadAction() {
 		shake->ShakePos(ShakePos.z, 5, -5, ShakeTimer, 10);
 		m_Position.x += ShakePos.x/2.f;
 		m_Position.z += ShakePos.z/2.f;
-
+		SinRotCount += 3.f;
+		m_Rotation.y = 90+sin(PI * 2 / 240 * SinRotCount) * 40;
 		m_Rotation.z -= RotFrontSpeed;
 		RotFrontSpeed -= 0.04f;
 		
@@ -937,7 +939,9 @@ void FirstBoss::DeadAction() {
 		DeathSpeed = 0.f;
 	}
 
-	Player::GetInstance()->SetPosition({ 0,0,10 });
+	Obj_SetParam();
+
+	Player::GetInstance()->SetPosition({ 0,0,0 });
 	Helper::GetInstance()->Clamp(m_Rotation.z, -90.f, 90.f);
 	Helper::GetInstance()->Clamp(DeathSpeed, 0.f, 3.f);
 	Helper::GetInstance()->Clamp(RotFrontSpeed, 0.f, 2.f);
