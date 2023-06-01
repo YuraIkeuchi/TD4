@@ -1,5 +1,4 @@
 ﻿#include "InterEnemy.h"
-
 #include "Collision.h"
 #include "Helper.h"
 #include "Player.h"

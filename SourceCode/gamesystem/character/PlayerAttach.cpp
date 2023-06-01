@@ -1,9 +1,7 @@
 #include "PlayerAttach.h"
-#include "ModelManager.h"
 #include "Helper.h"
 #include "Player.h"
 #include "CsvLoader.h"
-#include "ParticleEmitter.h"
 #include <Easing.h>
 PlayerAttach::PlayerAttach() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Sutopon);
@@ -16,7 +14,7 @@ bool PlayerAttach::Initialize() {
 	m_Position = { 0.0f,0.0f,0.0f };
 	m_Scale = { 0.0f,0.0f,0.0f };
 	m_Color = { 1.0f,1.0f,1.0f,0.0f };
-	m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet.csv", "speed4")));
+	m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet/bullet.csv", "speed4")));
 	return true;
 }
 //çXêV

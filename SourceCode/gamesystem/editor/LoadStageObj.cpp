@@ -3,13 +3,11 @@
 #include "HungerGauge.h"
 #include "Collision.h"
 #include "Helper.h"
-#include "Input.h"
 #include "Player.h"
-
-EnemyManager* LoadStageObj::enemy = nullptr;
+EnemyManager* LoadStageObj::boss = nullptr;
 //ゴーストのロード
 void LoadStageObj::GhostLoad() {
-	auto Size = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/ghost.csv", "Quantity")));
+	auto Size = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/ghost/ghost.csv", "Quantity")));
 
 	ghosts.resize(Size);
 
@@ -92,14 +90,14 @@ void LoadStageObj::SecondUpdate()
 	}
 
 	//食料生成
-	if (enemy->GetEnemyCheck()) {
+	if (boss->GetEnemyCheck()) {
 		Food* newFood;
 		newFood = new Food();
 		newFood->Initialize();
-		newFood->SetPosition({ enemy->GetEnemyPosition().x,0.0f,enemy->GetEnemyPosition().z});
+		newFood->SetPosition({ boss->GetEnemyPosition().x,0.0f,boss->GetEnemyPosition().z});
 		newFood->SetLimit(true);
 		foods.push_back(newFood);
-		enemy->FinishCheck();
+		boss->FinishCheck();
 	}
 }
 //描画
@@ -116,6 +114,12 @@ void LoadStageObj::Draw(DirectXCommon* dxCommon)
 	{
 		foods[i]->Draw(dxCommon);
 	}
+
+	//ハート
+	for (auto i = 0; i < hearts.size(); i++)
+	{
+		hearts[i]->Draw(dxCommon);
+	}
 	//
 }
 //ImGui
@@ -130,7 +134,12 @@ void LoadStageObj::ImGuiDraw() {
 	//	foods[i]->ImGuiDraw();
 	//}
 	//
-	enemy->ImGuiDraw();
+	//ハート
+	for (auto i = 0; i < hearts.size(); i++)
+	{
+		hearts[i]->ImGuiDraw();
+	}
+	boss->ImGuiDraw();
 }
 //当たり判定(ゴースト)
 void LoadStageObj::Collide() {
@@ -225,6 +234,23 @@ void LoadStageObj::CommonUpdate() {
 	{
 		foods[i]->Update();
 	}
+
+	//ハート
+	for (auto i = 0; i < hearts.size(); i++)
+	{
+		hearts[i]->Update();
+	}
+
+	//食料の削除(このステージのみ)
+	for (int i = 0; i < hearts.size(); i++) {
+		if (hearts[i] == nullptr) {
+			continue;
+		}
+
+		if (!hearts[i]->GetAlive()) {
+			hearts.erase(cbegin(hearts) + i);
+		}
+	}
 	//
 	//当たり判定
 	Collide();
@@ -234,4 +260,17 @@ void LoadStageObj::CommonUpdate() {
 	SearchFood();
 	//ゴーストが消える
 	VanishGhost();
+	//ハートの生成
+	BirthHeart();
+}
+//ハートの生成
+void LoadStageObj::BirthHeart() {
+	if (boss->GetBirthHeart()) {
+		Heart* newHeart;
+		newHeart = new Heart();
+		newHeart->Initialize();
+		newHeart->SetPosition({ boss->GetEnemyPosition().x,0.0f,boss->GetEnemyPosition().z });
+		hearts.push_back(newHeart);
+		boss->FinishHeart();
+	}
 }

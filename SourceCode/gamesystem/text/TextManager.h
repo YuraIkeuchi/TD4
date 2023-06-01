@@ -1,4 +1,4 @@
-#pragma once
+Ôªø#pragma once
 #include"DirectXCommon.h"
 #include"VariableCommon.h"
 #include"Font.h"
@@ -6,9 +6,9 @@ class TextManager
 {
 private:
 	struct Word {
-		wchar_t* FirstWord;//àÍçsñ⁄
-		wchar_t* SecondWord;//ìÒçsñ⁄
-		wchar_t* ThirdWord;//éOçsñ⁄
+		wchar_t* FirstWord;//ÀÜ√™¬çs‚Äì√ö
+		wchar_t* SecondWord;//‚Äú√±¬çs‚Äì√ö
+		wchar_t* ThirdWord;//≈ΩO¬çs‚Äì√ö
 	};
 	struct Conversation
 	{
@@ -20,20 +20,26 @@ private:
 public:
 	enum Name
 	{
-		NONE=0,
-		AISATU =1,
-		KAIWA =2,
-		BATTLE=3,
-		ANGER_TALK=4,
-		ANGER_TALK2=5,
-		JOY_TALK = 6,
-		JOY_TALK2 = 7,
-		JOY_TALK3 = 8,
-		SELECT_TALK = 9,
-		SELECT_ANGER = 10,
-		SELECT_ANGER2 = 11,
-		SELECT_JOY = 12,
-		SELECT_JOY2 = 13,
+		NONE = 0,
+		TYUTORIAL_TALK1,
+		TYUTORIAL_TALK2,
+		TYUTORIAL_TALK3,
+		TYUTORIAL_TALK4,
+		TYUTORIAL_TALK5,
+		TYUTORIAL_TALK6,
+		AISATU ,
+		KAIWA,
+		BATTLE,
+		ANGER_TALK,
+		ANGER_TALK2,
+		JOY_TALK,
+		JOY_TALK2,
+		JOY_TALK3,
+		SELECT_TALK,
+		SELECT_ANGER,
+		SELECT_ANGER2,
+		SELECT_JOY,
+		SELECT_JOY2,
 	};
 
 	enum Name_First
@@ -49,12 +55,15 @@ public:
 
 	void Initialize(DirectXCommon* dxcomon);
 
-
 	void Draw(DirectXCommon* dxcommon);
 
-	void SetColor(const XMVECTOR& color={1.f,1.f,1.f,1.f});
+	void SetAllColor(const XMVECTOR& color={1.f,1.f,1.f,1.f});
+
+	void SetOnceColor(int row, const XMVECTOR& color = { 1.f,1.f,1.f,1.f });
 
 	void SetConversation(Name name=NONE);
+
+	void NoneText();
 	void SetConversation(Name_First name = VIEWBOSS);
 private:
 	

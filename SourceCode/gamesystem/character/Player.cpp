@@ -1,7 +1,6 @@
 ﻿#include "Player.h"
 #include "CsvLoader.h"
 #include"Helper.h"
-#include"ModelManager.h"
 #include "VariableCommon.h"
 #include "HungerGauge.h"
 #include "Collision.h"
@@ -25,14 +24,14 @@ bool Player::Initialize()
 	/*CSV読み込み(CSVファイル名,読み込むパラメータの名前,受け取る値)　今は単一の方のみ対応(int float double charとか)*/
 
 	//spから間接的にアクセスする方法 (Update()内で専用の変数に代入する必要あり)
-	/*①*/LoadCSV::LoadCsvParam("Resources/csv/chara/player.csv", "speed1", sp);/*m_AddSpeedにspを代入*/
+	/*①*/LoadCSV::LoadCsvParam("Resources/csv/chara/player/player.csv", "speed1", sp);/*m_AddSpeedにspを代入*/
 
 	//関数の戻り値から直接値を取る方法(こっちのほうが楽ではある　ただ行数が少し長くなる)
-	/*②*/m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player.csv", "speed2")));
-	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player.csv", "HP")));
+	/*②*/m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player/player.csv", "speed2")));
+	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player/player.csv", "HP")));
 	m_MaxHP = m_HP;
-	m_TargetInterVal = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player.csv", "InterVal")));
-	m_TargetRigidityTime = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player.csv", "Rigidity")));
+	m_TargetInterVal = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player/player.csv", "InterVal")));
+	m_TargetRigidityTime = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player/player.csv", "Rigidity")));
 
 	m_BoundPower = { 0.0f,0.0f };
 	//飢餓ゲージはプレイヤーで管理する
@@ -124,7 +123,7 @@ void Player::Update()
 	//リミット制限
 	Helper::GetInstance()->Clamp(m_Position.x, -55.0f, 65.0f);
 	Helper::GetInstance()->Clamp(m_Position.z, -60.0f, 60.0f);
-
+	Helper::GetInstance()->Clamp(m_HP, 0.0f, 5.0f);
 
 	//基礎パラメータ設定
 	Fbx_SetParam();
@@ -172,13 +171,9 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 }
 //ImGui
 void Player::ImGuiDraw() {
-	/*ImGui::Begin("Player");
-	ImGui::Text("POSX:%f", m_Position.x);
-	ImGui::Text("POSZ:%f", m_Position.z);
+	ImGui::Begin("Player");
+	ImGui::Text("HP:%f", m_HP);
 	ImGui::End();
-
-	playerattach->ImGuiDraw();*/
-	HungerGauge::GetInstance()->ImGuiDraw();
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
@@ -523,10 +518,20 @@ void Player::BirthParticle() {
 	neweffect = new BreakEffect();
 	neweffect->Initialize();
 	neweffect->SetPosition(m_Position);
+	neweffect->SetDiviSpeed(1.0f);
+	neweffect->SetLife(50);
 	effects.push_back(neweffect);
 }
 //ボス登場シーンの更新
 void Player::AppearUpdate() {
+	//基礎パラメータ設定
+	Fbx_SetParam();
+
+	//どっち使えばいいか分からなかったから保留
+	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+}
+//ボス撃破シーンの更新
+void Player::DeathUpdate() {
 	//基礎パラメータ設定
 	Fbx_SetParam();
 

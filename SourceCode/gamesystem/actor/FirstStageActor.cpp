@@ -3,7 +3,6 @@
 #include "SceneManager.h"
 #include "imgui.h"
 #include "ParticleEmitter.h"
-
 #include <HungerGauge.h>
 #include "BackObj.h"
 //初期化
@@ -60,6 +59,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	{
 		text_->SelectText(TextManager::Name_First::SPEALPLAYER2);
 	}
+
 	Input* input = Input::GetInstance();
 
 	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
@@ -182,8 +182,8 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void FirstStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	Player::GetInstance()->ImGuiDraw();
-	//loadobj->ImGuiDraw();
+	//Player::GetInstance()->ImGuiDraw();
+	enemymanager->ImGuiDraw();
 }
 
 

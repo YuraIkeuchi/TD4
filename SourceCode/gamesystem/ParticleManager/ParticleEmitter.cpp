@@ -16,16 +16,25 @@ void ParticleEmitter::Initialize()
 	LoadTexture();
 	//パーティクルマネージャー生成
 	circleParticle.reset(ParticleManager::Create(ImageManager::Normal));
+	healParticle.reset(ParticleManager::Create(ImageManager::Heal));
+	deathParticle.reset(ParticleManager::Create(ImageManager::Normal));
 }
 
 void ParticleEmitter::Update()
 {
 	//パーティクルマネージャー更新
 	circleParticle->Update();
+	healParticle->Update();
+	deathParticle->Update();
 }
 
 void ParticleEmitter::FlontDrawAll() {
 	circleParticle->Draw(AddBlendType);
+	healParticle->Draw(AddBlendType);
+}
+
+void ParticleEmitter::DeathDrawAll() {
+	deathParticle->Draw(AddBlendType);
 }
 
 void ParticleEmitter::FireEffect(const int life, const XMFLOAT3& l_pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor)
@@ -73,13 +82,12 @@ void ParticleEmitter::Explosion(const int life, const XMFLOAT3& pos, const float
 }
 
 
-//�_���[�W�G�t�F�N�g
+//ダメージ時のエフェクト
 void ParticleEmitter::Break(const int life, const XMFLOAT3& pos,const float startscale, const float endscale,
 	const XMFLOAT4& startcolor, const XMFLOAT4& endcolor,const float Gravity,float divi) {
-	//���鐔
 	const int l_Division = 80;
 	float l_AddPowerY = 0.0f;
-	//�����w��(-50����50)
+	//乱数の範囲(-50から50)
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> l_bounddist(-50, 50);
 
@@ -98,10 +106,34 @@ void ParticleEmitter::Break(const int life, const XMFLOAT3& pos,const float star
 	circleParticle->Add(life, l_pos, vel, {}, startscale, endscale, startcolor, endcolor,Gravity,divi);
 }
 
+
+void ParticleEmitter::DeathEffect(int life, XMFLOAT3 l_pos, float startscale, float endscale, XMFLOAT4 startcolor, XMFLOAT4 endcolor, float velocity) {
+	XMFLOAT3 pos = l_pos;
+	float angle = (float)rand() / RAND_MAX * 360.0f;
+	const float rnd_vel = 0.1f;
+	XMFLOAT3 vel{};
+	vel.x = velocity * sinf(angle);
+	vel.y = velocity * cosf(angle);
+	vel.z = 0.0f;
+	deathParticle->Add(life, pos, vel, XMFLOAT3(), startscale, endscale, startcolor, endcolor,{});
+}
+
+void ParticleEmitter::HealEffect(const int life, const XMFLOAT3& l_pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor) {
+	XMFLOAT3 pos = l_pos;
+	const float rnd_vel = 0.05f;
+	XMFLOAT3 vel{};
+	vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+	vel.y = (float)rand() / RAND_MAX * rnd_vel * 2.0f;// -rnd_vel / 2.0f;
+	vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+
+	healParticle->Add(life, { pos.x,pos.y,pos.z }, vel, {}, startscale, endscale, startcolor, endcolor, {});
+}
 void ParticleEmitter::AllDelete()
 {
 	//全パーティクルの削除
 	circleParticle->AllDelete();
+	healParticle->AllDelete();
+	deathParticle->AllDelete();
 }
 
 void ParticleEmitter::LoadTexture() {

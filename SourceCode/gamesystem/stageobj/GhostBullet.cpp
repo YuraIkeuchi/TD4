@@ -1,6 +1,4 @@
 #include "GhostBullet.h"
-#include "ModelManager.h"
-#include "imgui.h"
 #include "VariableCommon.h"
 #include "CsvLoader.h"
 #include "Easing.h"
@@ -17,8 +15,8 @@ bool GhostBullet::Initialize() {
 	m_Scale = { 1.0f,1.0f,1.0f };
 	m_Color = { 0.0f,0.0f,0.0f,1.0f };
 	//CSVÇ©ÇÁì«Ç›çûÇ›
-	m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet.csv", "speed2")));
-	m_TargetTimer = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet.csv", "Timer")));
+	m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet/bullet.csv", "speed2")));
+	m_TargetTimer = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet/bullet.csv", "Timer")));
 	return true;
 }
 //ImGuiï`âÊ

@@ -1,9 +1,8 @@
 ﻿#pragma once
 #include"IKESprite.h"
 #include "InterBoss.h"
-#include "Player.h"
 #include "Shake.h"
-
+#include "Player.h"
 class FirstBoss :
 	public InterBoss {
 public:
@@ -259,4 +258,10 @@ private:
 	float DeathMotionTimer;
 
 	bool ResetRota;
+	Shake* shake;
+	float DeathSpeed;
+	float RotFrontSpeed;
+	XMFLOAT3 ShakePos;
+	float SinRotCount;
+	
 };

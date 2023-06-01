@@ -88,18 +88,23 @@ void SecondStageActor::Finalize() {
 //後ろの描画
 void SecondStageActor::BackDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
-	////各クラスの描画
-	Player::GetInstance()->Draw(dxCommon);
-	loadobj->Draw(dxCommon);
 	BackObj::GetInstance()->Draw(dxCommon);
-	//パーティクル描画
-	ParticleEmitter::GetInstance()->FlontDrawAll();
+	////各クラスの描画
+	if (!camerawork->GetFeedEnd()) {
+		Player::GetInstance()->Draw(dxCommon);
+		loadobj->Draw(dxCommon);
+	}
 	enemymanager->Draw(dxCommon);
 	IKEObject3d::PostDraw();
 }
 //ポストエフェクトがかからない
 void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
-	
+	//パーティクル描画
+	if (!camerawork->GetFeedEnd()) {
+		ParticleEmitter::GetInstance()->FlontDrawAll();
+	}
+
+	ParticleEmitter::GetInstance()->DeathDrawAll();
 	//完全に前に書くスプライト
 	IKESprite::PreDraw();
 	if (m_SceneState == SceneState::MainState) {
@@ -114,10 +119,10 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	Player::GetInstance()->ImGuiDraw();
-	loadobj->ImGuiDraw();
+	//Player::GetInstance()->ImGuiDraw();
+	//loadobj->ImGuiDraw();
 	camerawork->ImGuiDraw();
-	//enemymanager->ImGuiDraw();
+	enemymanager->ImGuiDraw();
 }
 //登場シーン
 void SecondStageActor::IntroUpdate(DebugCamera* camera) {
@@ -222,17 +227,22 @@ void SecondStageActor::MainUpdate(DebugCamera* camera) {
 		//フェード後
 		else
 		{
+			Player::GetInstance()->InitState({ 0.0f,0.0f,-5.0f });
 			enemymanager->SetDeadThrow(false);
 			enemymanager->DeadUpdate();
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_SECOND);
 		}
+
+		if (camerawork->GetEndDeath()) {
+			sceneChanger_->ChangeStart();
+			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
+		}
+
+		Player::GetInstance()->DeathUpdate();
 	}
 	else
 	{
-		if (camerawork->FinishAppear()) {
-			//m_SceneState = SceneState::MainState;
-		//	camerawork->SetCameraState(CAMERA_NORMAL);
-		}
+		Player::GetInstance()->Update();
 	}
 	/*if (enemymanager->BossDestroy()) {
 		sceneChanger_->ChangeStart();
@@ -254,7 +264,7 @@ void SecondStageActor::MainUpdate(DebugCamera* camera) {
 	//各クラス更新
 	BackObj::GetInstance()->Update();
 
-	Player::GetInstance()->Update();
+	
 	enemymanager->BattleUpdate();
 	loadobj->SecondUpdate();
 	ParticleEmitter::GetInstance()->Update();

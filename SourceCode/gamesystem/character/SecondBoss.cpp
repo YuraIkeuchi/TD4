@@ -1,6 +1,4 @@
-﻿
-#include "SecondBoss.h"
-#include "ModelManager.h"
+﻿#include "SecondBoss.h"
 #include "ImageManager.h"
 #include "Helper.h"
 #include "Player.h"
@@ -22,6 +20,25 @@ SecondBoss::SecondBoss() {
 	mark->SetRotation({ 90.0f,0.0f,0.0f });
 	mark->SetScale({ 3.5f,3.5f,3.5f });
 	mark->SetColor(m_MarkColor);
+
+#pragma region Second
+	{
+		if (pointsList.size() == 0) {
+			pointsList.emplace_back(XMFLOAT3{ 40,25,20 });
+			pointsList.emplace_back(XMFLOAT3{ -40,30,20 });
+			pointsList.emplace_back(XMFLOAT3{ 40,35,20 });
+			pointsList.emplace_back(XMFLOAT3{ -40,40,20 });
+			pointsList.emplace_back(XMFLOAT3{ 20,25,20 });
+			pointsList.emplace_back(XMFLOAT3{ -20,30,20 });
+			pointsList.emplace_back(XMFLOAT3{ 10,35,20 });
+			pointsList.emplace_back(XMFLOAT3{ -10,40,20 });
+			pointsList.emplace_back(XMFLOAT3{ 0,60,20 });
+			pointsList.emplace_back(XMFLOAT3{ 0,60,20 });
+		}
+		spline = new Spline();
+		spline->Init(pointsList, static_cast<int>(pointsList.size()));
+	}
+#pragma endregion
 }
 //初期化
 bool SecondBoss::Initialize() {
@@ -30,7 +47,6 @@ bool SecondBoss::Initialize() {
 	m_OBBScale = { 6.0f,6.0f,6.0f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Scale = { 0.05f,0.05f,0.05f };
-	m_MaxHp = m_HP;
 	m_AddPower = 0.8f;
 	m_Radius = 5.0f;
 	_charaState = CharaState::STATE_STAMP;
@@ -41,25 +57,28 @@ bool SecondBoss::Initialize() {
 	_InterValState = DownState;
 	//CSVはこっから
 	CSVLoad();
+	m_MaxHp = m_HP;
 	return true;
 }
 //CSVロード系
 void SecondBoss::CSVLoad() {
 	//インターバル系を読み込む
-	auto PressSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bossinterval.csv", "PRESS_NUM")));
-	auto RandomSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bossinterval.csv", "RANDOM_NUM")));
+	auto PressSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "PRESS_NUM")));
+	auto RandomSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "RANDOM_NUM")));
 
 	m_StampInterval.resize(PressSize);
 	m_RandomInterval.resize(RandomSize);
 
-	LoadCSV::LoadCsvParam_Int("Resources/csv/chara/bossinterval.csv", m_StampInterval, "Interval");
-	LoadCSV::LoadCsvParam_Int("Resources/csv/chara/bossinterval.csv", m_RandomInterval, "RandomInterval");
+	LoadCSV::LoadCsvParam_Int("Resources/csv/chara/boss/second/secondboss.csv", m_StampInterval, "Interval");
+	LoadCSV::LoadCsvParam_Int("Resources/csv/chara/boss/second/secondboss.csv", m_RandomInterval, "RandomInterval");
 
-	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp2")));
+	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "hp1")));
+	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "Magnification")));
+	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "HeartTarget")));
 
-	m_MoveInterval = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bossinterval.csv", "MoveInterVal")));
-	m_QuickMoveInterval = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bossinterval.csv", "MoveInterVal2")));
-	m_ChoiceInterval = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bossinterval.csv", "ChoiceInterVal")));
+	m_MoveInterval = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "MoveInterVal")));
+	m_QuickMoveInterval = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "MoveInterVal2")));
+	m_ChoiceInterval = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "ChoiceInterVal")));
 }
 //状態遷移
 /*CharaStateのState並び順に合わせる*/
@@ -178,7 +197,9 @@ void SecondBoss::EffecttexDraw(DirectXCommon* dxCommon)
 }
 //描画
 void SecondBoss::Draw(DirectXCommon* dxCommon) {
-	EffecttexDraw(dxCommon);
+	if (m_HP >= 0.0f) {
+		EffecttexDraw(dxCommon);
+	}
 	Fbx_Draw(dxCommon);
 }
 //ダメージ時のリアクション
@@ -187,8 +208,6 @@ void SecondBoss::DamAction()
 }
 //ImGui
 void SecondBoss::ImGui_Origin() {
-	/*ImGui::Begin("SecondBoss");
-	ImGui::End();*/
 }
 //移動
 void SecondBoss::Move() {
@@ -868,23 +887,82 @@ void SecondBoss::AppearAction() {
 }
 //ボス撃破シーン
 void SecondBoss::DeadAction() {
-	m_Rotation.y += 0.03f;
-	m_Rotation.z += 1.6f;
+	int l_ShakeTimer = 100;
+	if (!m_SplineEnd) {
+		m_DeathTimer++;
+		if (m_DeathTimer == 1) {
+			m_Position = { 0.0f,30.0f,20.0f };
+			m_Rotation = { 0.0f,0.0f,0.0f };
+			m_fbxObject->PlayAnimation(0);
+			m_Frame = {};
+			m_AfterRot = { 90.0f,90.0f,0.0f };
+			m_AddPower = 0.0f;
+		}
 
-	Helper::GetInstance()->Clamp(m_Rotation.z, 0.f, 90.f);
+		if (m_DeathTimer >= 2) {
+
+			spline->Upda(m_Position, 150.0f);
+
+			if (spline->GetIndex() >= pointsList.size() - 1)
+			{
+				m_fbxObject->StopAnimation();
+				m_SplineEnd = true;
+				shake->SetShakeStart(true);
+				m_DeathTimer = 0;
+			}
+			else {
+				m_Rotation = Helper::GetInstance()->Float3AddFloat(m_Rotation, 5.0f);
+			}
+		}
+	}
+	else {
+		m_DeathTimer++;
+		if (m_DeathTimer < 100) {
+			shake->ShakePos(m_ShakePos.x, 20, -20, l_ShakeTimer, 10);
+			shake->ShakePos(m_ShakePos.z, 20, -20, l_ShakeTimer, 10);
+			m_Position.x += m_ShakePos.x;
+			m_Position.z += m_ShakePos.z;
+			//シェイクを止める
+			if (!shake->GetShakeStart()) {
+				m_ShakePos = { 0.0f,0.0f,0.0f };
+			}
+			DeathParticle();
+		}
+		else {
+			m_Gravity = 0.05f;
+			if (Helper::GetInstance()->FrameCheck(m_Frame, 0.025f)) {
+				m_Frame = 1.0f;
+			}
+			//飛ぶような感じにするため重力を入れる
+			m_AddPower -= m_Gravity;
+		}
+		Helper::GetInstance()->CheckMax(m_Position.y, 6.0f, m_AddPower);
+		m_Rotation = { Ease(In,Cubic,m_Frame,m_Rotation.x,m_AfterRot.x),
+		Ease(In,Cubic,0.5f,m_Frame,m_AfterRot.y),
+		Ease(In,Cubic,0.5f,m_Frame,m_AfterRot.z) };
+	}
+	
+	if (m_Rotation.x >= 360.0f) {
+		m_Rotation = { 0.0f,0.0f,0.0f };
+	}
+	Fbx_SetParam();
+	//どっち使えばいいか分からなかったから保留
+	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 }
 //ボス撃破シーン
 void SecondBoss::DeadAction_Throw() {
-	if (!ResetRota) {
-		m_Rotation.y = 90.f;
-		m_Rotation.x = 0.f;
-		m_Rotation.z = 0.f;
-		ResetRota = true;
-	}
-	else
-	{
-		m_Position.y = 0;
-		m_Rotation.y += 0.02f;
-		m_Rotation.z += 0.09f;
+	Fbx_SetParam();
+	//どっち使えばいいか分からなかったから保留
+	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+}
+//撃破パーティクル
+void SecondBoss::DeathParticle() {
+	const XMFLOAT4 s_color = { 1.0f,1.0f,1.0f,1.0f };
+	const XMFLOAT4 e_color = { 0.0f,0.0f,1.0f,1.0f };
+	float s_scale = 5.0f;
+	float e_scale = 0.0f;
+	float l_velocity = 0.5f;
+	for (int i = 0; i < 3; ++i) {
+		ParticleEmitter::GetInstance()->DeathEffect(50, { m_Position.x,(m_Position.y - 1.0f),m_Position.z }, s_scale, e_scale, s_color, e_color,l_velocity);
 	}
 }

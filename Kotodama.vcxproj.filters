@@ -234,15 +234,6 @@
     <ClCompile Include="SourceCode\gamesystem\actor\TutorialSceneActor.cpp">
       <Filter>gamesystem\actor\Tutorial</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\AttackBullet.cpp">
-      <Filter>gamesystem\charactor\Bullet\Derived\Attack</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\GhostBullet.cpp">
-      <Filter>gamesystem\charactor\Bullet\Derived\Ghost</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\InterBullet.cpp">
-      <Filter>gamesystem\charactor\Bullet\Base</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\InterEnemy.cpp">
       <Filter>gamesystem\charactor\Enemy\Base</Filter>
     </ClCompile>
@@ -251,9 +242,6 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\Ghost.cpp">
       <Filter>gamesystem\charactor\Ghost</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\Food.cpp">
-      <Filter>gamesystem\charactor\Food</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\FirstBoss.cpp">
       <Filter>gamesystem\charactor\Boss\First</Filter>
@@ -270,17 +258,8 @@
     <ClCompile Include="SourceCode\gamesystem\character\Player.cpp">
       <Filter>gamesystem\charactor\Player</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\PlayerAttach.cpp">
-      <Filter>gamesystem\charactor\Player</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\TutorialEnemy.cpp">
       <Filter>gamesystem\charactor\Enemy\Tutorial</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\ViewBullet.cpp">
-      <Filter>gamesystem\charactor\Bullet\Derived\View</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\HungerGauge.cpp">
-      <Filter>gamesystem\charactor\Hunger</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\editor\Editor.cpp">
       <Filter>gamesystem\editor</Filter>
@@ -289,9 +268,6 @@
       <Filter>gamesystem\editor</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\editor\LoadManager.cpp">
-      <Filter>gamesystem\editor</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\editor\LoadStageObj.cpp">
       <Filter>gamesystem\editor</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleManager.cpp">
@@ -400,6 +376,33 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\text\BossText.cpp">
       <Filter>gamesystem\charactor\Boss\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\PlayerAttach.cpp">
+      <Filter>gamesystem\stageobj\playerattach</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\stageobj\InterBullet.cpp">
+      <Filter>gamesystem\stageobj\Bullet\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\stageobj\AttackBullet.cpp">
+      <Filter>gamesystem\stageobj\Bullet\Derived\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\stageobj\GhostBullet.cpp">
+      <Filter>gamesystem\stageobj\Bullet\Derived\Ghost</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\stageobj\ViewBullet.cpp">
+      <Filter>gamesystem\stageobj\Bullet\Derived\View</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\stageobj\Food.cpp">
+      <Filter>gamesystem\stageobj\Food</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\stageobj\Heart.cpp">
+      <Filter>gamesystem\stageobj\Heart</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\stageobj\HungerGauge.cpp">
+      <Filter>gamesystem\stageobj\Hunger</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\editor\LoadStageObj.cpp">
+      <Filter>gamesystem\stageobj\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -589,15 +592,6 @@
     <ClInclude Include="SourceCode\gamesystem\actor\TutorialSceneActor.h">
       <Filter>gamesystem\actor\Tutorial</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\AttackBullet.h">
-      <Filter>gamesystem\charactor\Bullet\Derived\Attack</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\GhostBullet.h">
-      <Filter>gamesystem\charactor\Bullet\Derived\Ghost</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\InterBullet.h">
-      <Filter>gamesystem\charactor\Bullet\Base</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\InterEnemy.h">
       <Filter>gamesystem\charactor\Enemy\Base</Filter>
     </ClInclude>
@@ -606,9 +600,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\Ghost.h">
       <Filter>gamesystem\charactor\Ghost</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\Food.h">
-      <Filter>gamesystem\charactor\Food</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\FirstBoss.h">
       <Filter>gamesystem\charactor\Boss\First</Filter>
@@ -625,17 +616,8 @@
     <ClInclude Include="SourceCode\gamesystem\character\Player.h">
       <Filter>gamesystem\charactor\Player</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\PlayerAttach.h">
-      <Filter>gamesystem\charactor\Player</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\TutorialEnemy.h">
       <Filter>gamesystem\charactor\Enemy\Tutorial</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\ViewBullet.h">
-      <Filter>gamesystem\charactor\Bullet\Derived\View</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\HungerGauge.h">
-      <Filter>gamesystem\charactor\Hunger</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\editor\Editor.h">
       <Filter>gamesystem\editor</Filter>
@@ -644,9 +626,6 @@
       <Filter>gamesystem\editor</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\editor\LoadManager.h">
-      <Filter>gamesystem\editor</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\editor\LoadStageObj.h">
       <Filter>gamesystem\editor</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleManager.h">
@@ -765,6 +744,33 @@
     <ClInclude Include="SourceCode\engine\enginebase\resource.h" />
     <ClInclude Include="SourceCode\gamesystem\text\BossText.h">
       <Filter>gamesystem\charactor\Boss\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\PlayerAttach.h">
+      <Filter>gamesystem\stageobj\playerattach</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\stageobj\InterBullet.h">
+      <Filter>gamesystem\stageobj\Bullet\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\stageobj\AttackBullet.h">
+      <Filter>gamesystem\stageobj\Bullet\Derived\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\stageobj\GhostBullet.h">
+      <Filter>gamesystem\stageobj\Bullet\Derived\Ghost</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\stageobj\ViewBullet.h">
+      <Filter>gamesystem\stageobj\Bullet\Derived\View</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\stageobj\Food.h">
+      <Filter>gamesystem\stageobj\Food</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\stageobj\Heart.h">
+      <Filter>gamesystem\stageobj\Heart</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\stageobj\HungerGauge.h">
+      <Filter>gamesystem\stageobj\Hunger</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\editor\LoadStageObj.h">
+      <Filter>gamesystem\stageobj\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -923,24 +929,6 @@
     <Filter Include="gamesystem\charactor">
       <UniqueIdentifier>{a5258f31-e579-4fec-90bb-f219e9bc837e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="gamesystem\charactor\Bullet">
-      <UniqueIdentifier>{312960ae-c4c4-4f39-9c3e-6d6b4b59a07c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gamesystem\charactor\Bullet\Derived">
-      <UniqueIdentifier>{1a186dd7-c321-4a49-a35d-1c5d447b9ecc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gamesystem\charactor\Bullet\Derived\Attack">
-      <UniqueIdentifier>{307099b7-1440-48fe-9e45-37a8d0410d78}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gamesystem\charactor\Bullet\Derived\Ghost">
-      <UniqueIdentifier>{b9b80115-24b1-4985-bdc8-5baf0a4e9880}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gamesystem\charactor\Bullet\Derived\View">
-      <UniqueIdentifier>{954c9694-ffd8-4fef-a520-3b8b5c74a56f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gamesystem\charactor\Bullet\Base">
-      <UniqueIdentifier>{473167a6-26e5-450c-be72-88a2f3ceff0e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="gamesystem\charactor\Enemy">
       <UniqueIdentifier>{d0ed1f2d-916a-446f-9c30-096aa67c95af}</UniqueIdentifier>
     </Filter>
@@ -955,9 +943,6 @@
     </Filter>
     <Filter Include="gamesystem\charactor\Ghost">
       <UniqueIdentifier>{0558a5ad-1f6a-4138-985e-8dc79ce4a907}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gamesystem\charactor\Food">
-      <UniqueIdentifier>{93777701-73d1-4606-8242-f0b93be885e0}</UniqueIdentifier>
     </Filter>
     <Filter Include="gamesystem\charactor\Boss">
       <UniqueIdentifier>{81775484-798e-46ec-ac44-82d84b1001c4}</UniqueIdentifier>
@@ -976,9 +961,6 @@
     </Filter>
     <Filter Include="gamesystem\charactor\Player">
       <UniqueIdentifier>{67cc1ef3-c531-4952-b181-9f7044af6c4a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gamesystem\charactor\Hunger">
-      <UniqueIdentifier>{dfb9cc34-14dd-4752-9279-adcc9d5af84c}</UniqueIdentifier>
     </Filter>
     <Filter Include="gamesystem\scene\Tutorial">
       <UniqueIdentifier>{40fae6cc-723f-427e-8439-66617f5c0615}</UniqueIdentifier>
@@ -1051,6 +1033,42 @@
     </Filter>
     <Filter Include="gamesystem\charactor\Boss\Text">
       <UniqueIdentifier>{09ec16d5-a106-4dae-a612-3fe4d8dcfa6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\stageobj">
+      <UniqueIdentifier>{35ffb921-99b5-4576-a020-7fa6f2c9559f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\stageobj\Heart">
+      <UniqueIdentifier>{3c194e04-e0a4-4bae-b8b5-2e3b77f47d2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\stageobj\Hunger">
+      <UniqueIdentifier>{dfb9cc34-14dd-4752-9279-adcc9d5af84c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\stageobj\Bullet">
+      <UniqueIdentifier>{312960ae-c4c4-4f39-9c3e-6d6b4b59a07c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\stageobj\Bullet\Derived">
+      <UniqueIdentifier>{1a186dd7-c321-4a49-a35d-1c5d447b9ecc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\stageobj\Bullet\Derived\Attack">
+      <UniqueIdentifier>{307099b7-1440-48fe-9e45-37a8d0410d78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\stageobj\Bullet\Derived\Ghost">
+      <UniqueIdentifier>{b9b80115-24b1-4985-bdc8-5baf0a4e9880}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\stageobj\Bullet\Derived\View">
+      <UniqueIdentifier>{954c9694-ffd8-4fef-a520-3b8b5c74a56f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\stageobj\Bullet\Base">
+      <UniqueIdentifier>{473167a6-26e5-450c-be72-88a2f3ceff0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\stageobj\Food">
+      <UniqueIdentifier>{93777701-73d1-4606-8242-f0b93be885e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\stageobj\playerattach">
+      <UniqueIdentifier>{b33149e9-ba19-4533-8aa2-e77eeeac1bb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\stageobj\Manager">
+      <UniqueIdentifier>{4ea7e426-1892-48d6-9868-3ea119b7ccf3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

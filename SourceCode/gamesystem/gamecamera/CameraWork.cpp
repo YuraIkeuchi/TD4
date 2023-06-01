@@ -2,7 +2,6 @@
 #include "VariableCommon.h"
 #include <Easing.h>
 #include "Player.h"
-#include  "imgui.h"
 #include "Helper.h"
 CameraWork::CameraWork(XMFLOAT3 eye, XMFLOAT3 target) {
 	m_eyePos = eye;
@@ -20,12 +19,11 @@ CameraWork::CameraWork(XMFLOAT3 eye, XMFLOAT3 target) {
 			pointsList.emplace_back(XMFLOAT3{ 0,160,200 });
 			pointsList.emplace_back(XMFLOAT3{ 0,80,120 });
 			//pointsList.emplace_back(XMFLOAT3{ 25,30,-15 });
-			pointsList.emplace_back(XMFLOAT3{ 60,30,70 });
-			//pointsList.emplace_back(XMFLOAT3{ 30,50,45 });
-			pointsList.emplace_back(XMFLOAT3{ 30,30,50 });
+			pointsList.emplace_back(XMFLOAT3{ -90,30,70 });
+			pointsList.emplace_back(XMFLOAT3{ 0,50,0 });
+			pointsList.emplace_back(XMFLOAT3{ 90,30,50 });
 			pointsList.emplace_back(XMFLOAT3{ 0,30,0});
 			pointsList.emplace_back(XMFLOAT3{ -20,10,-30 });
-			pointsList.emplace_back(XMFLOAT3{ -10,10,-70 });
 		}
 		spline = new Spline();
 		spline->Init(pointsList, static_cast<int>(pointsList.size()));
@@ -74,54 +72,76 @@ void CameraWork::BossAppear() {
 //ボス撃破
 void CameraWork::SetBossDead_Before()
 {
-	m_eyePos.x = boss->GetPosition().x;
+	DeathTimer++;
+	if (DeathTimer == 1) {
+		m_eyePos.x = boss->GetPosition().x - 10.0f;
+		m_eyePos.z = boss->GetPosition().z - 20.f;
+		m_eyePos.y = 20.f;
+	}
 
-	m_eyePos.z = boss->GetPosition().z -30.f;
-	m_eyePos.y = 20.f;
+	if (DeathTimer == 100) {
+		m_eyePos.x = boss->GetPosition().x + 10.0f;
+		m_eyePos.z = boss->GetPosition().z - 20.f;
+		m_eyePos.y = 20.f;
+	}
 
-	m_targetPos.x = boss->GetPosition().x;
-	m_targetPos.z = boss->GetPosition().z;
+	if (DeathTimer == 200) {
+		m_eyePos.x = boss->GetPosition().x;
+		m_eyePos.z = boss->GetPosition().z - 20.f;
+		m_eyePos.y = 20.f;
+	}
 
+	m_eyePos.z += 0.08f;
 
-	if (DeathTimer > 120 && !FeedF)
+	if (!FeedF)
 	{
 		FeedF = true;
 	}
 
 	if (FeedF) {
-		DeathTimer = 0;
-		feed->FeedIn(Feed::FeedType::WHITE, 0.02f, FeedF);
-		if (feed->GetFeedEnd())FeedEndF = true;
-	} else
-		DeathTimer++;
+		//DeathTimer = 0;
+		feed->FeedIn(Feed::FeedType::WHITE, 0.004f, FeedF);
+		if (feed->GetFeedEnd()) {
+			FeedEndF = true;
+			ParticleEmitter::GetInstance()->AllDelete();
+			DeathTimer = 0;
+		}
+	}
 
+
+	m_targetPos.x = boss->GetPosition().x;
+	m_targetPos.y = boss->GetPosition().y;
+	m_targetPos.z = boss->GetPosition().z;
 }
 
 //フェード後の撃破アクション(1ボス)
 void CameraWork::SetBossDead_AfterFirst()
 {
 	m_eyePos.x = Player::GetInstance()->GetPosition().x;
-	m_eyePos.y = Player::GetInstance()->GetPosition().y+50;
-	m_eyePos.z = Player::GetInstance()->GetPosition().z - 20.0f;
-	m_targetPos.x = Player::GetInstance()->GetPosition().x;
-	m_targetPos.z = Player::GetInstance()->GetPosition().z;
-
-	DeathTimer = 0;
+	m_eyePos.y = Player::GetInstance()->GetPosition().y+5.f;
+	m_eyePos.z = Player::GetInstance()->GetPosition().z +5.0f;
+	m_targetPos.x = boss->GetPosition().x;
+	m_targetPos.z = boss->GetPosition().z;
 	FeedF = false;
 }
-//フェード後の撃破アクション(1ボス)
+//フェード後の撃破アクション(2ボス)
 void CameraWork::SetBossDead_AfterSecond()
 {
 	if (SceneName == "FIRSTSTAGE") {
 		FirstBossDead_AfterFeed();
 	}
 	m_eyePos.x = Player::GetInstance()->GetPosition().x;
-	m_eyePos.y = Player::GetInstance()->GetPosition().y + 50;
+	m_eyePos.y = Player::GetInstance()->GetPosition().y + 3.0f;
 	m_eyePos.z = Player::GetInstance()->GetPosition().z - 20.0f;
-	m_targetPos.x = Player::GetInstance()->GetPosition().x;
-	m_targetPos.z = Player::GetInstance()->GetPosition().z;
 
-	DeathTimer = 0;
+
+	m_targetPos = { boss->GetPosition().x,boss->GetPosition().y,boss->GetPosition().z };
+	
+	DeathTimer++;
+
+	if (DeathTimer == 620) {
+		m_EndDeath = true;
+	}
 	FeedF = false;
 }
 
@@ -135,12 +155,7 @@ void CameraWork::EditorCamera()
 //ImGui
 void CameraWork::ImGuiDraw() {
 	ImGui::Begin("Camera");
-	ImGui::Text("targetPosX:%f", m_targetPos.x);
-	ImGui::Text("targetPosY:%f", m_targetPos.y);
-	ImGui::Text("targetPosZ:%f", m_targetPos.z);
-	ImGui::Text("eyePosX:%f", m_eyePos.x);
-	ImGui::Text("eyePosY:%f", m_eyePos.y);
-	ImGui::Text("eyePosZ:%f", m_eyePos.z);
+	ImGui::Text("Death:%d", DeathTimer);
 	ImGui::End();
 }
 
@@ -157,7 +172,7 @@ void CameraWork::feedDraw()
 void CameraWork::FirstBossAppear() {
 
 	if(!Finish)
-	spline->Upda(m_eyePos,180.00f);
+	spline->Upda(m_eyePos,250.00f);
 
 	if (spline->GetIndex() >=pointsList.size()-1)
 	{

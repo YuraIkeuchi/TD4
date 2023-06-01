@@ -1,13 +1,10 @@
 ﻿#include "FirstBoss.h"
-#include "ModelManager.h"
-#include "Helper.h"
 #include <any>
-
 #include "Collision.h"
 #include "CsvLoader.h"
 #include "ImageManager.h"
-#include "Input.h"
 #include "Shake.h"
+#include "Player.h"
 //生成
 FirstBoss::FirstBoss() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Tyuta);
@@ -23,13 +20,17 @@ bool FirstBoss::Initialize() {
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Rotation.y = -90.f;
 	RTime = 1;
-	m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "pos")));
-	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp1")));
+	m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/firstboss.csv", "pos")));
+	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/firstboss.csv", "Magnification")));
+	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/firstboss.csv", "hp1")));
+	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/firstboss.csv", "HeartTarget")));
 	m_MaxHp = m_HP;
 	MoveCount = 1;
 	_phaseN = Phase_Normal::NON;
 	_normal.Initialize();
 	_cattack.Initialize();
+	shake = new Shake();
+	
 	ActionTimer = 1;
 
 	m_Radius = 5.0f;
@@ -886,6 +887,7 @@ void FirstBoss::AppearAction() {
 }
 //ボス撃破シーン
 void FirstBoss::DeadAction_Throw() {
+	m_Position = { 0,-90,20.f };
 	if (!ResetRota) {
 		m_Rotation.y = 90.f;
 		m_Rotation.x= 0.f;
@@ -898,11 +900,50 @@ void FirstBoss::DeadAction_Throw() {
 		m_Rotation.y += 0.02f;
 		m_Rotation.z += 0.09f;
 	}
+	RotFrontSpeed = 3.f;
+	Player::GetInstance()->SetPosition({ 0,0,10 });
+	Obj_SetParam();
 }
 //ボス撃破シーン
 void FirstBoss::DeadAction() {
-	m_Rotation.y += 0.03f;
-	m_Rotation.z += 1.6f;
 
-	Helper::GetInstance()->Clamp(m_Rotation.z, 0.f, 90.f);
+	constexpr int ShakeTimer = 250;
+
+	if(shake->GetShakeTimer()>=ShakeTimer-5){
+		shake->SetShakeStart(false);
+
+		m_Rotation.y+= 0.06f;
+		DeathSpeed += 0.05f;
+		m_Rotation.z += DeathSpeed;
+		if(DeathSpeed>=3.f)
+		{
+			m_Rotation.y += 0.4f;
+			m_Rotation.z += 1.f;
+		}
+	}
+	else
+	{
+		shake->SetShakeStart(true);
+		shake->ShakePos(ShakePos.x, 5, -5, ShakeTimer, 10);
+		shake->ShakePos(ShakePos.z, 5, -5, ShakeTimer, 10);
+		m_Position.x += ShakePos.x/2.f;
+		m_Position.z += ShakePos.z/2.f;
+		SinRotCount += 3.f;
+		m_Rotation.y = 90+sin(PI * 2 / 240 * SinRotCount) * 40;
+		m_Rotation.z -= RotFrontSpeed;
+		RotFrontSpeed -= 0.04f;
+		
+		//シェイクを止める
+		if (!shake->GetShakeStart()) {
+			ShakePos = { 0.0f,0.0f,0.0f };
+		}
+		DeathSpeed = 0.f;
+	}
+
+	Obj_SetParam();
+
+	Player::GetInstance()->SetPosition({ 0,0,0 });
+	Helper::GetInstance()->Clamp(m_Rotation.z, -90.f, 90.f);
+	Helper::GetInstance()->Clamp(DeathSpeed, 0.f, 3.f);
+	Helper::GetInstance()->Clamp(RotFrontSpeed, 0.f, 2.f);
 }

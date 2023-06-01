@@ -1,11 +1,7 @@
 #include "Ghost.h"
-#include "ModelManager.h"
 #include "VariableCommon.h"
-#include "CsvLoader.h"
-#include "ParticleEmitter.h"
 #include "Collision.h"
 #include "HungerGauge.h"
-#include "Helper.h"
 #include <random>
 #include "Player.h"
 Ghost::Ghost() {

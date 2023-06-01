@@ -1,12 +1,8 @@
 #include "NormalEnemy.h"
-
 #include <random>
-
 #include "Player.h"
 #include "Collision.h"
-#include "ModelManager.h"
 #include "Helper.h"
-#include "ParticleEmitter.h"
 //ƒ‚ƒfƒ‹“Ç‚Ýž‚Ý
 NormalEnemy::NormalEnemy() {
 	m_fbxModel = ModelManager::GetInstance()->GetFBXModel(ModelManager::SIORI);
