@@ -3,6 +3,7 @@
 #include <Player.h>
 #include <HungerGauge.h>
 #include "EnemyManager.h"
+#include <Easing.h>
 
 UI::~UI() {
 	TexList.clear();
@@ -11,21 +12,21 @@ UI::~UI() {
 //初期化
 void UI::Initialize() {
 	for (int i = HeartOne; i < UnderStatusGaugeMax; i++) {
-		sprites[i] = CreateUi(ImageManager::HEART, pos[i], { 50.f,50.f }, { 1.5f, 1.5f, 1.5f,1 });
+		sprites[i] = CreateUi(ImageManager::WHITE, m_PlayerHpPos, m_PlayerHpSize, { 1.5f, 1.5f, 1.5f,1 });
 		TexList.emplace_back(std::move(sprites[i]));
 	}
 	{//ゲージ下敷き
-		sprites[UnderStatusGaugeMax] = CreateUi(ImageManager::UnderGauge, gaugePos_, gaugeSize_, { 1.5f, 1.5f, 1.5f,0.5f });
+		sprites[UnderStatusGaugeMax] = CreateUi(ImageManager::UnderGauge, m_GaugePos, m_GaugeSize, { 1.5f, 1.5f, 1.5f,0.5f });
 		sprites[UnderStatusGaugeMax].Tex->SetAnchorPoint({ 0,0.5f });
 		TexList.emplace_back(std::move(sprites[UnderStatusGaugeMax]));
 	}
 	{//ゲージ下敷き
-		sprites[UnderStatusGauge] = CreateUi(ImageManager::UnderGauge, gaugePos_, gaugeSize_, { 1.5f, 1.5f, 1.5f,1 });
+		sprites[UnderStatusGauge] = CreateUi(ImageManager::UnderGauge, m_GaugePos, m_GaugeSize, { 1.5f, 1.5f, 1.5f,1 });
 		sprites[UnderStatusGauge].Tex->SetAnchorPoint({ 0,0.5f });
 		TexList.emplace_back(std::move(sprites[UnderStatusGauge]));
 	}
 	{//ゲージ
-		sprites[StatusGauge] = CreateUi(ImageManager::Gauge, gaugePos_, gaugeSize__, { 1.5f, 1.5f, 1.5f,1 });
+		sprites[StatusGauge] = CreateUi(ImageManager::Gauge, m_GaugePos, m_GaugeSizeMini, { 1.5f, 1.5f, 1.5f,1 });
 		sprites[StatusGauge].Tex->SetAnchorPoint({0,0.5f});
 		TexList.emplace_back(std::move(sprites[StatusGauge]));
 	}
@@ -49,19 +50,20 @@ void UI::Update() {
 		TexList[UnderStatusGauge].IsVisible = false;
 		TexList[StatusGauge].IsVisible = false;
 	} else {
-		TexList[StatusGauge].Size = { HungerGauge::GetInstance()->GetPercentage() * gaugeSize__.x,gaugeSize__.y };
-		TexList[UnderStatusGauge].Size = { (HungerGauge::GetInstance()->GetHungerMax()/5.f) * gaugeSize_.x/10.f,gaugeSize_.y };
+		TexList[StatusGauge].Size = { HungerGauge::GetInstance()->GetPercentage() * m_GaugeSizeMini.x,m_GaugeSizeMini.y };
+		TexList[UnderStatusGauge].Size = { (HungerGauge::GetInstance()->GetHungerMax()/5.f) * m_GaugeSize.x/10.f,m_GaugeSize.y };
 		TexList[UnderStatusGauge].IsVisible = true;
 		TexList[StatusGauge].IsVisible = true;
 	}
 	//ライフ処理
-	for (int i = HeartOne; i < UnderStatusGaugeMax; i++) {
-		if (i < Player::GetInstance()->GetHP()) {
-			TexList[i].IsVisible =true;
-		} else {
-			TexList[i].IsVisible = false;
-		}
-	}
+	TexList[HeartThree].Size = { (Player::GetInstance()->GetHP()/ Player::GetInstance()->GetMaxHP()) * m_PlayerHpSize.x,m_PlayerHpSize.y };
+	TexList[HeartThree].Color = {0,1,0,1};
+	TexList[HeartTwo].Size = { 
+		Ease(In,Quad,0.3f,TexList[HeartTwo].Size.x,TexList[HeartThree].Size.x),
+		Ease(In,Quad,0.3f,TexList[HeartTwo].Size.y,TexList[HeartThree].Size.y),
+	};
+	TexList[HeartTwo].Color = { 1,0,0,1 };
+
 	if (boss) {
 		TexList[BossGauge].Size = { boss->HpPercent() * 400.f,40.f };
 	} else {
