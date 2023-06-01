@@ -197,7 +197,7 @@ void SecondBoss::EffecttexDraw(DirectXCommon* dxCommon)
 }
 //描画
 void SecondBoss::Draw(DirectXCommon* dxCommon) {
-	if (m_HP >= 1.0f) {
+	if (m_HP >= 0.0f) {
 		EffecttexDraw(dxCommon);
 	}
 	Fbx_Draw(dxCommon);

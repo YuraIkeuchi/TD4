@@ -55,7 +55,7 @@ void BackObj::LoadMap() {
 
 //èâä˙âª
 bool BackObj::Initialize() {
-	m_Position = { 0.0f,8.0f,0.0f };
+	m_Position = { 0.0f,15.0f,0.0f };
 	m_Scale = { 0.3f,0.3f,0.3f };
 	m_Color = { 0.5f,0.5f,0.5f,1.0f };
 	return true;

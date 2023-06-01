@@ -121,7 +121,7 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	//Player::GetInstance()->ImGuiDraw();
 	//loadobj->ImGuiDraw();
-	//camerawork->ImGuiDraw();
+	camerawork->ImGuiDraw();
 	enemymanager->ImGuiDraw();
 }
 //登場シーン
@@ -231,6 +231,11 @@ void SecondStageActor::MainUpdate(DebugCamera* camera) {
 			enemymanager->SetDeadThrow(false);
 			enemymanager->DeadUpdate();
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_SECOND);
+		}
+
+		if (camerawork->GetEndDeath()) {
+			sceneChanger_->ChangeStart();
+			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
 		}
 
 		Player::GetInstance()->DeathUpdate();

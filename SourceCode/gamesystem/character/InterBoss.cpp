@@ -6,7 +6,7 @@
 //更新
 void InterBoss::Update() {
 	//陦悟虚
-	if (m_HP >= 1) {
+	if (m_HP > 0.0f) {
 		Action();
 		DeathAction();
 	}
