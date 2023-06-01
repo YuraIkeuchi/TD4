@@ -47,7 +47,6 @@ bool SecondBoss::Initialize() {
 	m_OBBScale = { 6.0f,6.0f,6.0f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Scale = { 0.05f,0.05f,0.05f };
-	m_MaxHp = m_HP;
 	m_AddPower = 0.8f;
 	m_Radius = 5.0f;
 	_charaState = CharaState::STATE_STAMP;
@@ -58,6 +57,7 @@ bool SecondBoss::Initialize() {
 	_InterValState = DownState;
 	//CSVはこっから
 	CSVLoad();
+	m_MaxHp = m_HP;
 	return true;
 }
 //CSVロード系
@@ -73,7 +73,7 @@ void SecondBoss::CSVLoad() {
 	LoadCSV::LoadCsvParam_Int("Resources/csv/chara/boss/second/secondboss.csv", m_RandomInterval, "RandomInterval");
 
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "hp1")));
-
+	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "Magnification")));
 	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "HeartTarget")));
 
 	m_MoveInterval = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "MoveInterVal")));

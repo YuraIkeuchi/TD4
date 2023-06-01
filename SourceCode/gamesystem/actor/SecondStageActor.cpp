@@ -88,20 +88,23 @@ void SecondStageActor::Finalize() {
 //後ろの描画
 void SecondStageActor::BackDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
+	BackObj::GetInstance()->Draw(dxCommon);
 	////各クラスの描画
 	if (!camerawork->GetFeedEnd()) {
 		Player::GetInstance()->Draw(dxCommon);
+		loadobj->Draw(dxCommon);
 	}
-	loadobj->Draw(dxCommon);
-	BackObj::GetInstance()->Draw(dxCommon);
-	
 	enemymanager->Draw(dxCommon);
 	IKEObject3d::PostDraw();
 }
 //ポストエフェクトがかからない
 void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	//パーティクル描画
-	ParticleEmitter::GetInstance()->FlontDrawAll();
+	if (!camerawork->GetFeedEnd()) {
+		ParticleEmitter::GetInstance()->FlontDrawAll();
+	}
+
+	ParticleEmitter::GetInstance()->DeathDrawAll();
 	//完全に前に書くスプライト
 	IKESprite::PreDraw();
 	if (m_SceneState == SceneState::MainState) {
@@ -116,10 +119,10 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	Player::GetInstance()->ImGuiDraw();
-	loadobj->ImGuiDraw();
-	camerawork->ImGuiDraw();
-	//enemymanager->ImGuiDraw();
+	//Player::GetInstance()->ImGuiDraw();
+	//loadobj->ImGuiDraw();
+	//camerawork->ImGuiDraw();
+	enemymanager->ImGuiDraw();
 }
 //登場シーン
 void SecondStageActor::IntroUpdate(DebugCamera* camera) {

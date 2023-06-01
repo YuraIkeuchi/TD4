@@ -62,9 +62,6 @@ void Heart::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui描画
 void Heart::ImGuiDraw() {
-	ImGui::Begin("Heart");
-	ImGui::Text("Timer:%d", m_LimitTimer);
-	ImGui::End();
 }
 //パーティクル
 void Heart::Particle() {

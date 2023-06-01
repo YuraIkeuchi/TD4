@@ -48,7 +48,7 @@ void InterBoss::ImGuiDraw() {
 	if (!this) { return; }
 	ImGui::Begin("STATE");
 	ImGui::Text("HP:%f", m_HP);
-	ImGui::Text("Target:%d", m_BirthTarget);
+	ImGui::Text("Target:%f", m_Magnification);
 	ImGui::End();
 	ImGui_Origin();
 }
@@ -91,9 +91,9 @@ void InterBoss::CollideBul(vector<InterBullet*> bullet,Type type)
 				BirthEffect();
 				//弾の大きさによって与えるダメージが違う
 				if (_bullet->GetScale().x == 1.0f) {
-					m_HP--;
+					m_HP -= 1.0f * m_Magnification;
 				} else {
-					m_HP -= 2.0f;
+					m_HP -= 2.0f * m_Magnification;
 				}
 			}
 		}

@@ -32,6 +32,8 @@ public: //メンバ関数
 
 	//描画
 	void FlontDrawAll();
+
+	void DeathDrawAll();
 	//エフェクト
 	void FireEffect(const int life,const XMFLOAT3& pos,const float startscale, const float endscale,const XMFLOAT4& startcolor,const XMFLOAT4& endcolor);
 	//爆発エフェクト
@@ -54,6 +56,8 @@ private: //メンバ関数
 private: //メンバ変数
 	//パーティクルマネージャー(丸)
 	unique_ptr<ParticleManager> circleParticle;
+	//パーティクルマネージャー(丸)
+	unique_ptr<ParticleManager> deathParticle;
 	//パーティクルマネージャー(ヒール)
 	unique_ptr<ParticleManager> healParticle;
 };
