@@ -7,7 +7,7 @@
 EnemyManager* LoadStageObj::boss = nullptr;
 //ゴーストのロード
 void LoadStageObj::GhostLoad() {
-	auto Size = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/ghost.csv", "Quantity")));
+	auto Size = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/ghost/ghost.csv", "Quantity")));
 
 	ghosts.resize(Size);
 

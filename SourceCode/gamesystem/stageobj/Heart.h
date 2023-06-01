@@ -46,7 +46,9 @@ private:
 	//¶‘¶ƒtƒ‰ƒO
 	bool m_Alive = false;
 	//¶‘¶ŠÔ
-	int m_AliveTimer = 0;
+	int m_AliveTimer = {};
+	//¶‘¶ŠÔ‚Ì§ŒÀ
+	int m_LimitTimer = {};
 private:
 	enum HeartState {
 		HEART_JUMP,
