@@ -1,7 +1,7 @@
 #include "Heart.h"
 #include "VariableCommon.h"
 #include "Collision.h"
-#include "Helper.h"
+#include "CsvLoader.h"
 #include <random>
 #include "Player.h"
 Heart::Heart() {
@@ -30,6 +30,7 @@ bool Heart::Initialize() {
 		(float)(l_bounddist(mt)) / l_Division,
 	};
 
+	m_LimitTimer = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/heart/heart.csv", "Limit")));
 	return true;
 }
 //状態遷移
@@ -99,11 +100,10 @@ void Heart::HeartJump() {
 
 //ハートの着地後
 void Heart::HeartSet() {
-	const int l_TargetTimer = 300;
 	const float l_AddFrame = 0.05f;
 	m_AliveTimer++;
 
-	if (m_AliveTimer >= l_TargetTimer) {
+	if (m_AliveTimer >= m_LimitTimer) {
 		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 			m_Alive = false;
 			m_AliveTimer = {};

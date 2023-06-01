@@ -182,7 +182,7 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void FirstStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	Player::GetInstance()->ImGuiDraw();
+	//Player::GetInstance()->ImGuiDraw();
 	enemymanager->ImGuiDraw();
 }
 

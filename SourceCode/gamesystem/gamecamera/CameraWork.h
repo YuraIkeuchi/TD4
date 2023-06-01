@@ -99,6 +99,8 @@ bool FinishAppear() { if (spline->GetIndex() >= static_cast<int>(pointsList.size
 
 	bool GetFeedF() { return FeedF; }
 
+	bool GetEndDeath() { return m_EndDeath; }
+
 	int GetAppearType() { return m_AppearType; }
 	void SetCameraState(const int CameraState) { m_CameraState = CameraState; }
 
@@ -145,4 +147,7 @@ private:
 
 	//カメラが寄る
 	bool m_Approach = false;
+
+	//撃破カメラ終了
+	bool m_EndDeath = false;
 };

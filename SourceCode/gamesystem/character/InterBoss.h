@@ -118,6 +118,9 @@ protected:
 	int m_DeathTimer = 0;
 
 	bool m_BirthHeart = false;
+
+	//ダメージ倍率
+	float m_Magnification = {};
 private:
 
 	enum class ActionList

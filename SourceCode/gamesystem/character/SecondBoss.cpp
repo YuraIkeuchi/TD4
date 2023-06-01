@@ -47,7 +47,6 @@ bool SecondBoss::Initialize() {
 	m_OBBScale = { 6.0f,6.0f,6.0f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Scale = { 0.05f,0.05f,0.05f };
-	m_MaxHp = m_HP;
 	m_AddPower = 0.8f;
 	m_Radius = 5.0f;
 	_charaState = CharaState::STATE_STAMP;
@@ -58,27 +57,28 @@ bool SecondBoss::Initialize() {
 	_InterValState = DownState;
 	//CSVはこっから
 	CSVLoad();
+	m_MaxHp = m_HP;
 	return true;
 }
 //CSVロード系
 void SecondBoss::CSVLoad() {
 	//インターバル系を読み込む
-	auto PressSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bossinterval.csv", "PRESS_NUM")));
-	auto RandomSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bossinterval.csv", "RANDOM_NUM")));
+	auto PressSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "PRESS_NUM")));
+	auto RandomSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "RANDOM_NUM")));
 
 	m_StampInterval.resize(PressSize);
 	m_RandomInterval.resize(RandomSize);
 
-	LoadCSV::LoadCsvParam_Int("Resources/csv/chara/bossinterval.csv", m_StampInterval, "Interval");
-	LoadCSV::LoadCsvParam_Int("Resources/csv/chara/bossinterval.csv", m_RandomInterval, "RandomInterval");
+	LoadCSV::LoadCsvParam_Int("Resources/csv/chara/boss/second/secondboss.csv", m_StampInterval, "Interval");
+	LoadCSV::LoadCsvParam_Int("Resources/csv/chara/boss/second/secondboss.csv", m_RandomInterval, "RandomInterval");
 
-	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "hp2")));
+	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "hp1")));
+	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "Magnification")));
+	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "HeartTarget")));
 
-	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss.csv", "HeartTarget")));
-
-	m_MoveInterval = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bossinterval.csv", "MoveInterVal")));
-	m_QuickMoveInterval = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bossinterval.csv", "MoveInterVal2")));
-	m_ChoiceInterval = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bossinterval.csv", "ChoiceInterVal")));
+	m_MoveInterval = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "MoveInterVal")));
+	m_QuickMoveInterval = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "MoveInterVal2")));
+	m_ChoiceInterval = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "ChoiceInterVal")));
 }
 //状態遷移
 /*CharaStateのState並び順に合わせる*/
@@ -197,7 +197,7 @@ void SecondBoss::EffecttexDraw(DirectXCommon* dxCommon)
 }
 //描画
 void SecondBoss::Draw(DirectXCommon* dxCommon) {
-	if (m_HP >= 1.0f) {
+	if (m_HP >= 0.0f) {
 		EffecttexDraw(dxCommon);
 	}
 	Fbx_Draw(dxCommon);

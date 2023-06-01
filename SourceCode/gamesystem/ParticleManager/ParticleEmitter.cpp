@@ -17,6 +17,7 @@ void ParticleEmitter::Initialize()
 	//パーティクルマネージャー生成
 	circleParticle.reset(ParticleManager::Create(ImageManager::Normal));
 	healParticle.reset(ParticleManager::Create(ImageManager::Heal));
+	deathParticle.reset(ParticleManager::Create(ImageManager::Normal));
 }
 
 void ParticleEmitter::Update()
@@ -24,11 +25,16 @@ void ParticleEmitter::Update()
 	//パーティクルマネージャー更新
 	circleParticle->Update();
 	healParticle->Update();
+	deathParticle->Update();
 }
 
 void ParticleEmitter::FlontDrawAll() {
 	circleParticle->Draw(AddBlendType);
 	healParticle->Draw(AddBlendType);
+}
+
+void ParticleEmitter::DeathDrawAll() {
+	deathParticle->Draw(AddBlendType);
 }
 
 void ParticleEmitter::FireEffect(const int life, const XMFLOAT3& l_pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor)
@@ -109,7 +115,7 @@ void ParticleEmitter::DeathEffect(int life, XMFLOAT3 l_pos, float startscale, fl
 	vel.x = velocity * sinf(angle);
 	vel.y = velocity * cosf(angle);
 	vel.z = 0.0f;
-	circleParticle->Add(life, pos, vel, XMFLOAT3(), startscale, endscale, startcolor, endcolor,{});
+	deathParticle->Add(life, pos, vel, XMFLOAT3(), startscale, endscale, startcolor, endcolor,{});
 }
 
 void ParticleEmitter::HealEffect(const int life, const XMFLOAT3& l_pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor) {
@@ -127,6 +133,7 @@ void ParticleEmitter::AllDelete()
 	//全パーティクルの削除
 	circleParticle->AllDelete();
 	healParticle->AllDelete();
+	deathParticle->AllDelete();
 }
 
 void ParticleEmitter::LoadTexture() {
