@@ -1,5 +1,6 @@
 #pragma once
 #include "Camera.h"
+#include "WinApp.h"
 /*--‰~ü‚Æ‚©‹‚ß‚é—p--*/
 #define PI 3.14f
 #define PI_90 90.00f

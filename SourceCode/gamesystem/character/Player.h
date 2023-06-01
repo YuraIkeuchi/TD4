@@ -1,5 +1,4 @@
 #pragma once
-#include <any>
 #include "ObjCommon.h"
 #include "ViewBullet.h"
 #include "GhostBullet.h"
@@ -7,6 +6,7 @@
 #include "PlayerAttach.h"
 #include "CollisionPrimitive.h"
 #include "BreakEffect.h"
+#include <any>
 using namespace DirectX;
 class Player:public ObjCommon
 {
@@ -28,7 +28,8 @@ public:
 	void ImGuiDraw();
 	//ボス登場シーンの動き
 	void AppearUpdate();
-
+	//ボス撃破シーンの動き
+	void DeathUpdate();
 	//キャラの状態
 	enum CharaState
 	{

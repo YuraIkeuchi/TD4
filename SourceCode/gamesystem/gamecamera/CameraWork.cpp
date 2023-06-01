@@ -2,7 +2,6 @@
 #include "VariableCommon.h"
 #include <Easing.h>
 #include "Player.h"
-#include  "imgui.h"
 #include "Helper.h"
 CameraWork::CameraWork(XMFLOAT3 eye, XMFLOAT3 target) {
 	m_eyePos = eye;
@@ -74,27 +73,45 @@ void CameraWork::BossAppear() {
 //ボス撃破
 void CameraWork::SetBossDead_Before()
 {
-	m_eyePos.x = boss->GetPosition().x;
+	DeathTimer++;
+	if (DeathTimer == 1) {
+		m_eyePos.x = boss->GetPosition().x - 10.0f;
+		m_eyePos.z = boss->GetPosition().z - 20.f;
+		m_eyePos.y = 20.f;
+	}
 
-	m_eyePos.z = boss->GetPosition().z -30.f;
-	m_eyePos.y = 20.f;
+	if (DeathTimer == 100) {
+		m_eyePos.x = boss->GetPosition().x + 10.0f;
+		m_eyePos.z = boss->GetPosition().z - 20.f;
+		m_eyePos.y = 20.f;
+	}
 
-	m_targetPos.x = boss->GetPosition().x;
-	m_targetPos.z = boss->GetPosition().z;
+	if (DeathTimer == 200) {
+		m_eyePos.x = boss->GetPosition().x;
+		m_eyePos.z = boss->GetPosition().z - 20.f;
+		m_eyePos.y = 20.f;
+	}
 
+	m_eyePos.z += 0.08f;
 
-	if (DeathTimer > 120 && !FeedF)
+	if (!FeedF)
 	{
 		FeedF = true;
 	}
 
 	if (FeedF) {
-		DeathTimer = 0;
-		feed->FeedIn(Feed::FeedType::WHITE, 0.02f, FeedF);
-		if (feed->GetFeedEnd())FeedEndF = true;
-	} else
-		DeathTimer++;
+		//DeathTimer = 0;
+		feed->FeedIn(Feed::FeedType::WHITE, 0.004f, FeedF);
+		if (feed->GetFeedEnd()) {
+			FeedEndF = true;
+			ParticleEmitter::GetInstance()->AllDelete();
+		}
+	}
 
+
+	m_targetPos.x = boss->GetPosition().x;
+	m_targetPos.y = boss->GetPosition().y;
+	m_targetPos.z = boss->GetPosition().z;
 }
 
 //フェード後の撃破アクション(1ボス)
@@ -115,10 +132,11 @@ void CameraWork::SetBossDead_AfterSecond()
 		FirstBossDead_AfterFeed();
 	}
 	m_eyePos.x = Player::GetInstance()->GetPosition().x;
-	m_eyePos.y = Player::GetInstance()->GetPosition().y + 50;
+	m_eyePos.y = Player::GetInstance()->GetPosition().y + 3.0f;
 	m_eyePos.z = Player::GetInstance()->GetPosition().z - 20.0f;
 
 
+	m_targetPos = { boss->GetPosition().x,boss->GetPosition().y,boss->GetPosition().z };
 	DeathTimer = 0;
 	FeedF = false;
 }

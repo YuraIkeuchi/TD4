@@ -183,6 +183,7 @@
     <ClCompile Include="SourceCode\gamesystem\character\Food.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\Ghost.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\GhostBullet.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\character\Heart.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\HungerGauge.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\InterBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\InterBullet.cpp" />
@@ -307,6 +308,7 @@
     <ClInclude Include="SourceCode\gamesystem\character\Food.h" />
     <ClInclude Include="SourceCode\gamesystem\character\Ghost.h" />
     <ClInclude Include="SourceCode\gamesystem\character\GhostBullet.h" />
+    <ClInclude Include="SourceCode\gamesystem\character\Heart.h" />
     <ClInclude Include="SourceCode\gamesystem\character\HungerGauge.h" />
     <ClInclude Include="SourceCode\gamesystem\character\InterBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\InterBullet.h" />

@@ -1,33 +1,33 @@
 ﻿#include "EnemyManager.h"
 #include "Helper.h"
-#include "Input.h"
 #define EnemySize 3
 EnemyManager::EnemyManager(const std::string& SceneName) {
 
 	m_SceneName = SceneName;
 	//シーンによって読み込むボスが違う
 	if (m_SceneName == "FIRSTSTAGE") {
-		enemy.reset(new FirstBoss());
-		enemy->Initialize();
+		boss.reset(new FirstBoss());
+		boss->Initialize();
 		bulletenemy.resize(EnemySize);
 		for (auto i = 0; i < bulletenemy.size(); i++) {
 			bulletenemy[i] = new NormalEnemy();
 			bulletenemy[i]->Initialize();
 		}
 	} else if (m_SceneName == "SECONDSTAGE") {
-		enemy.reset(new SecondBoss());
-		enemy->Initialize();
+		boss.reset(new SecondBoss());
+		boss->Initialize();
 		for (auto i = 0; i < bulletenemy.size(); i++) {
 			bulletenemy[i] = new NormalEnemy();
 			bulletenemy[i]->Initialize();
 		}
 	} else if (m_SceneName == "TUTORIAL") {
 		for (auto i = 0; i < tutorialenemy.size(); i++) {
-			tutorialenemy[i].reset(new TutorialEnemy());
+			tutorialenemy[i] = make_unique<TutorialEnemy>();
 			tutorialenemy[i]->Initialize();
 		}
 		//最初の敵のみ固定湧き
 		tutorialenemy[0]->SetPosition({ 0,5.0f ,50.0f });
+		tutorialenemy[0]->SetUnrival(true);
 		//カメラ追従しつつスポーン
 		for (auto i = 1; i < tutorialenemy.size(); i++) {
 			float posX = -30.0f + (i * 10.f);
@@ -42,20 +42,20 @@ void EnemyManager::Initialize(DirectXCommon* dxCommon) {
 }
 //バトル更新
 void EnemyManager::BattleUpdate() {
-	enemy->Update();
+	boss->Update();
 	if (m_SceneName == "FIRSTSTAGE") {
 
-		enemy->isRespawn(bulletenemy);
-		enemy->SummonEnemyUpda(bulletenemy);
+		boss->isRespawn(bulletenemy);
+		boss->SummonEnemyUpda(bulletenemy);
 	}
 }
 //登場シーン
 void EnemyManager::AppearUpdate() {
-	enemy->AppearUpdate();
+	boss->AppearUpdate();
 }
 //撃破
 void EnemyManager::DeadUpdate() {
-	enemy->DeadUpdate();
+	boss->DeadUpdate();
 }
 void EnemyManager::TutorialUpdate(int pattern) {
 	if (pattern == 0) {
@@ -72,9 +72,9 @@ void EnemyManager::TutorialUpdate(int pattern) {
 }
 //描画
 void EnemyManager::Draw(DirectXCommon* dxCommon) {
-	enemy->Draw(dxCommon);
+	boss->Draw(dxCommon);
 	if (m_SceneName == "FIRSTSTAGE") {
-		enemy->SummonEnemyDraw(bulletenemy, dxCommon);
+		boss->SummonEnemyDraw(bulletenemy, dxCommon);
 	}
 }
 //描画
@@ -89,12 +89,16 @@ void EnemyManager::TutorialDraw(DirectXCommon* dxCommon) {
 }
 //ImGui
 void EnemyManager::ImGuiDraw() {
-	enemy->ImGuiDraw();
+	boss->ImGuiDraw();
+	if (m_SceneName == "TUTORIAL") {
+		tutorialenemy[0]->ImGuiDraw();
+
+	}
 }
 
 //敵の死亡処置
 bool EnemyManager::BossDestroy() {
-	if (enemy->GetHP() <= 0.0f) {
+	if (boss->GetHP() <= 0.0f) {
 		return true;
 	} else {
 		return false;
@@ -112,10 +116,15 @@ bool EnemyManager::AllDeadEnemy() {
 
 //敵のチェック終了
 void EnemyManager::FinishCheck() {
-	enemy->SetCheck(false);
+	boss->SetCheck(false);
+}
+
+//ハート生成の終了
+void EnemyManager::FinishHeart() {
+	boss->SetBirthHeart(false);
 }
 
 //敵の向き(2個めのボス)
 void EnemyManager::DirSet(int dir) {
-	enemy->SetDirEmo(dir);
+	boss->SetDirEmo(dir);
 }

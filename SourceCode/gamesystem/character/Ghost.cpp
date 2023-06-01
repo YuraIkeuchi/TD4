@@ -1,11 +1,7 @@
 #include "Ghost.h"
-#include "ModelManager.h"
 #include "VariableCommon.h"
-#include "CsvLoader.h"
-#include "ParticleEmitter.h"
 #include "Collision.h"
 #include "HungerGauge.h"
-#include "Helper.h"
 #include <random>
 #include "Player.h"
 Ghost::Ghost() {
@@ -24,7 +20,7 @@ bool Ghost::Initialize() {
 	m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
 	m_Rotation.y = -PI_90;
 	m_Scale = { 0.5f,0.5f,0.5f };
-	m_Color = { 1.0f,1.0f,1.0f,0.2f };
+	m_Color = { 1.0f,1.0f,1.0f,0.7f };
 	uniform_int_distribution<int> spawn(60, 90);
 	kSpawnTimerMax = float(spawn(mt));
 	_charaState = CharaState::STATE_SPAWN;
@@ -82,7 +78,7 @@ void Ghost::Particle() {
 	float e_scale = 0.0f;
 	if (m_Alive) {
 		if (_charaState == CharaState::STATE_NONE) {
-			m_Color = { 1.0f,1.0f,1.0f,0.2f };
+			m_Color = { 1.0f,1.0f,1.0f,0.7f };
 			m_Scale = { 0.5f,0.5f,0.5f };
 			//ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color, e_color);
 		} else if (_charaState == CharaState::STATE_FOLLOW) {
@@ -150,7 +146,7 @@ void Ghost::BirthGhost() {
 			m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
 			uniform_int_distribution<int> spawn(30, 45);
 			kSpawnTimerMax = float(spawn(mt));
-			m_Color = { 1.0f,1.0f,1.0f,0.2f };
+			m_Color = { 1.0f,1.0f,1.0f,0.7f };
 			m_Catch = false;
 			m_Search = false;
 			m_Follow = false;
@@ -169,7 +165,7 @@ void Ghost::BirthGhost() {
 void Ghost::None() {
 	noneTimer += 0.05f;
 
-	float size = sinf(noneTimer) * 0.1f;
+	float size = sinf(noneTimer) * 0.05f;
 	m_Position.x += cosf(m_Rotation.y*(PI_180/XM_PI)) * size;
 	m_Position.y = sinf(noneTimer)*1.5f;
 	m_Position.z += sinf(m_Rotation.y * (PI_180 / XM_PI)) * size;

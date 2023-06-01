@@ -1,4 +1,4 @@
-#include "TextManager.h"
+ï»¿#include "TextManager.h"
 
 const XMFLOAT2 kFirstRowPos{ 5.f,0.f };
 const XMFLOAT2 kSecondRowPos{ 5.f,-40.f };
@@ -28,54 +28,74 @@ void TextManager::Create(DirectXCommon* dxcomon)
 }
 
 
-//‰Šú‰»
+//åˆæœŸåŒ–
 void TextManager::Initialize(DirectXCommon* dxcomon)
 {
-	//ƒ[ƒh’Ç‰Á
-	CreateWord(NONE, L"Hello", L"World", L"GoodBye");
-	CreateWord(AISATU,L"‚¨‚Í‚æ‚¤",L"‚±‚ñ‚É‚¿‚Í",L"‚±‚ñ‚Î‚ñ‚Í");
-	CreateWord(ANGER_TALK, L"‚¤‚§‚¨‚¨‚¨‚¨‚¢!!!", L"‚¢‚Á‚½‚¢ƒIƒ}ƒG‚Í!!!!!!", L"ƒiƒj‚µ‚ÉƒLƒ^!?!?!?!?!?!?");
-	CreateWord(ANGER_TALK2, L"‚à‚µ‚©‚µ‚Ä", L"‚¨‚ê‚É‚½‚¢‚µ‚Ä", L"ƒPƒ“ƒJ‚ğ‚¤‚è‚É‚«‚½‚Ì‚©!?");
-	CreateWord(JOY_TALK, L"‚Ü‚ ‚Ü‚ ‚¨‚¿‚Â‚¢‚Ä‚æ", L"‚Ù‚ç‚İ‚Ä‚İ‚È‚æ", L"‚±‚í‚ª‚Á‚Ä‚é‚¶‚á‚ñ‚©!");
-	CreateWord(JOY_TALK2, L"‚¢‚«‚È‚è‚È‚ñ‚¾‚¯‚Çƒqƒgƒc‚«‚İ‚É", L"‚«‚¢‚Ä‚İ‚½‚¢‚±‚Æ‚ª‚ ‚é‚ñ‚¾!", L"");
-	CreateWord(JOY_TALK3, L"‚«‚İ‚Í", L"ƒCƒJƒŠ‚ÆƒˆƒƒRƒr‚Æ‚¢‚¤ƒLƒ‚ƒ`", L"‚Ç‚Á‚¿‚ªƒ_ƒCƒW‚¾‚Æ‚¨‚à‚¤?");
-	CreateWord(SELECT_TALK, L"‚Ç‚Á‚¿‚¾‚ë‚¤EEE?", L"Y:ƒCƒJƒŠ", L"X:ƒˆƒƒRƒr");
-	CreateWord(SELECT_ANGER, L"ƒCƒJƒŠ‚ªƒ_ƒCƒW‚¾‚Æ‚¨‚à‚¤‚©", L"‚æ‚­‚í‚©‚Á‚Ä‚é‚¶‚á‚È‚¢‚©EEE", L"‚Á‚Ä‚±‚Æ‚Í‚æEEE");
-	CreateWord(SELECT_ANGER2, L"‚±‚ÌƒJƒ“ƒWƒ‡ƒE‚É‚Ü‚©‚¹‚Ä", L"ƒIƒ}ƒG‚ğ‚½‚¨‚µ‚Ä‚à‚¢‚¢‚Á‚Ä‚±‚Æ‚¾‚È!!!", L"!!!!!!!!");
-	CreateWord(SELECT_JOY, L"ƒLƒ~‚æ‚­‚í‚©‚Á‚Ä‚é‚Ë!", L"‚Á‚Ä‚±‚Æ‚Í‚³AƒLƒ~‚Í", L"‚±‚Ì‚Ú‚­‚ÌƒJƒ“ƒWƒ‡ƒEEEE");
-	CreateWord(SELECT_JOY2, L"‚ß‚Ì‚Ü‚¦‚Ì‚â‚Â‚ğ‚½‚¨‚·ƒˆƒƒRƒr‚ğ", L"ƒŠƒJƒC‚µ‚Ä‚­‚ê‚é‚æ‚Ë!!!", L"!!!!!!!!!!");
+	//ãƒ¯ãƒ¼ãƒ‰è¿½åŠ 
+	CreateWord(NONE, L" ", L" ", L" ");
+	CreateWord(TYUTORIAL_TALK1, L"ã“ã“ã¯ã©ã“ã ã‚ã†!", L"ã‚ãŸã‚Šã‚’è¦‹å›ã—ã¦ã¿ã‚ˆã†", L"Lã‚¹ãƒ†ã‚£ãƒƒã‚¯ã§ç§»å‹•ã—ã¦ã¿ã‚ˆã†");
+	CreateWord(TYUTORIAL_TALK2, L"ã“ã‚Œã¯.....ãƒ¡ã‚¬ãƒ›ãƒ³?", L"ã§ã‚‚ã€å‹•ã„ã¦ã‚‹?");
+	CreateWord(TYUTORIAL_TALK3, L"ã†..ã†.......ã¯ã£!?", L"æ•µ!?.......ã˜ã‚ƒãªã„ã¿ãŸã„ã ãª", L" ");
+	CreateWord(TYUTORIAL_TALK4, L"ãˆ!?ãƒ¡ã‚¬ãƒ›ãƒ³ãŒå–‹ã£ãŸ!", L" ", L" ");
+	CreateWord(TYUTORIAL_TALK5, L"ãƒ¡ã‚¬ãƒ›ãƒ³ã˜ã‚ƒãªã„ã€ã‚ªãƒ¬ã¯ã‚¹ãƒˆãƒãƒ³ã ", L"ãƒ¡ã‚¬ãƒ›ãƒ³ã«å–ã‚Šæ†‘ã„ãŸäº¡éœŠã !", L"ã“ã†ã—ã¡ã‚ƒã„ã‚‰ã‚Œãªã„....è¿½æ‰‹ãŒæ¥ã¡ã¾ã†");
+	CreateWord(TYUTORIAL_TALK6, L"ã€€è¿½æ‰‹ã£ã¦ã‚ã‚Œã®ã“ã¨?", L" ", L" ");
+	CreateWord(AISATU,L"ãŠã¯ã‚ˆã†",L"ã“ã‚“ã«ã¡ã¯",L"ã“ã‚“ã°ã‚“ã¯");
+	CreateWord(ANGER_TALK, L"ã†ã‰ãŠãŠãŠãŠã„!!!", L"ã„ã£ãŸã„ã‚ªãƒã‚¨ã¯!!!!!!", L"ãƒŠãƒ‹ã—ã«ã‚­ã‚¿!?!?!?!?!?!?");
+	CreateWord(ANGER_TALK2, L"ã‚‚ã—ã‹ã—ã¦", L"ãŠã‚Œã«ãŸã„ã—ã¦", L"ã‚±ãƒ³ã‚«ã‚’ã†ã‚Šã«ããŸã®ã‹!?");
+	CreateWord(JOY_TALK, L"ã¾ã‚ã¾ã‚ãŠã¡ã¤ã„ã¦ã‚ˆ", L"ã»ã‚‰ã¿ã¦ã¿ãªã‚ˆ", L"ã“ã‚ãŒã£ã¦ã‚‹ã˜ã‚ƒã‚“ã‹!");
+	CreateWord(JOY_TALK2, L"ã„ããªã‚Šãªã‚“ã ã‘ã©ãƒ’ãƒˆãƒ„ãã¿ã«", L"ãã„ã¦ã¿ãŸã„ã“ã¨ãŒã‚ã‚‹ã‚“ã !", L"");
+	CreateWord(JOY_TALK3, L"ãã¿ã¯", L"ã‚¤ã‚«ãƒªã¨ãƒ¨ãƒ­ã‚³ãƒ“ã¨ã„ã†ã‚­ãƒ¢ãƒ", L"ã©ã£ã¡ãŒãƒ€ã‚¤ã‚¸ã ã¨ãŠã‚‚ã†?");
+	CreateWord(SELECT_TALK, L"ã©ã£ã¡ã ã‚ã†ãƒ»ãƒ»ãƒ»?", L"Y:ã‚¤ã‚«ãƒª", L"X:ãƒ¨ãƒ­ã‚³ãƒ“");
+	CreateWord(SELECT_ANGER, L"ã‚¤ã‚«ãƒªãŒãƒ€ã‚¤ã‚¸ã ã¨ãŠã‚‚ã†ã‹", L"ã‚ˆãã‚ã‹ã£ã¦ã‚‹ã˜ã‚ƒãªã„ã‹ãƒ»ãƒ»ãƒ»", L"ã£ã¦ã“ã¨ã¯ã‚ˆãƒ»ãƒ»ãƒ»");
+	CreateWord(SELECT_ANGER2, L"ã“ã®ã‚«ãƒ³ã‚¸ãƒ§ã‚¦ã«ã¾ã‹ã›ã¦", L"ã‚ªãƒã‚¨ã‚’ãŸãŠã—ã¦ã‚‚ã„ã„ã£ã¦ã“ã¨ã ãª!!!", L"!!!!!!!!");
+	CreateWord(SELECT_JOY, L"ã‚­ãƒŸã‚ˆãã‚ã‹ã£ã¦ã‚‹ã­!", L"ã£ã¦ã“ã¨ã¯ã•ã€ã‚­ãƒŸã¯", L"ã“ã®ã¼ãã®ã‚«ãƒ³ã‚¸ãƒ§ã‚¦ãƒ»ãƒ»ãƒ»");
+	CreateWord(SELECT_JOY2, L"ã‚ã®ã¾ãˆã®ã‚„ã¤ã‚’ãŸãŠã™ãƒ¨ãƒ­ã‚³ãƒ“ã‚’", L"ãƒªã‚«ã‚¤ã—ã¦ãã‚Œã‚‹ã‚ˆã­!!!", L"!!!!!!!!!!");
 
-	CreateWord(Name_First::VIEWBOSS, L"‚¿‚¿‚¤‚¦!‚Ù‚ñ‚ª‚¤‚²‚«‚Ü‚í‚Á‚Ä‚é‚Å‚²‚´‚é!",L"‚Ç‚¤‚·‚é‚Å‚²‚´‚é‚©!?",L"‚µ‚ß‚é‚Å‚²‚´‚é‚©!?");
-	CreateWord(Name_First::SPEAKPLAYER1, L"BBBBBBB");
-	CreateWord(Name_First::SPEALPLAYER2, L"‚ ‚ê‚Í‚í‚µ‚ç‚É‚Í‚·‚­‚¦‚Ê‚à‚Ì‚¶‚á",L"‚º‚ñ‚è‚å‚­‚Å‚±‚ë‚·‚Ì‚¶‚á");
-	//ƒRƒ“ƒ”ƒ@[ƒWƒ‡ƒ“‰Šú‰»
+	CreateWord(Name_First::VIEWBOSS, L"ã¡ã¡ã†ãˆ!ã»ã‚“ãŒã†ã”ãã¾ã‚ã£ã¦ã‚‹ã§ã”ã–ã‚‹!",L"ã©ã†ã™ã‚‹ã§ã”ã–ã‚‹ã‹!?",L"ã—ã‚ã‚‹ã§ã”ã–ã‚‹ã‹!?");
+	CreateWord(Name_First::SPEAKPLAYER1, L"ã€‚ã€‚ã€‚ã€‚ã€‚ã€‚ã€‚");
+	CreateWord(Name_First::SPEALPLAYER2, L"ã‚ã‚Œã¯ã‚ã—ã‚‰ã«ã¯ã™ããˆã¬ã‚‚ã®ã˜ã‚ƒ",L"ãœã‚“ã‚Šã‚‡ãã§ã“ã‚ã™ã®ã˜ã‚ƒ");
+	//ã‚³ãƒ³ãƒ´ã‚¡ãƒ¼ã‚¸ãƒ§ãƒ³åˆæœŸåŒ–
 	Create(dxcomon);
 
-	//ƒtƒHƒ“ƒg‚Ì‚ ‚ê‚±‚ê
+	//ãƒ•ã‚©ãƒ³ãƒˆã®ã‚ã‚Œã“ã‚Œ
 	conversation_.FirstFont->SetPos(kFirstRowPos);
 	conversation_.SecondFont->SetPos(kSecondRowPos);
 	conversation_.ThirdFont->SetPos(kThirdRowPos);
 
 
 }
-//•`‰æ?
+//æç”»?
 void TextManager::Draw(DirectXCommon* dxcommon)
 {
-	//ƒRƒ“ƒ”ƒ@[ƒWƒ‡ƒ“.ƒtƒHƒ“ƒgƒhƒ[‚·‚é
+	//ã‚³ãƒ³ãƒ´ã‚¡ãƒ¼ã‚¸ãƒ§ãƒ³.ãƒ•ã‚©ãƒ³ãƒˆãƒ‰ãƒ­ãƒ¼ã™ã‚‹
 	conversation_.FirstFont->Draw(dxcommon);
 	conversation_.SecondFont->Draw(dxcommon);
 	conversation_.ThirdFont->Draw(dxcommon);
 	Font::PostDraw(dxcommon);
 }
 
-void TextManager::SetColor(const XMVECTOR& color)
+void TextManager::SetAllColor(const XMVECTOR& color)
 {
 	conversation_.FirstFont->SetColor(color);
 	conversation_.SecondFont->SetColor(color);
 	conversation_.ThirdFont->SetColor(color);
 }
 
-//–¼‘O‚©‚ç•¶š—ñ‚ğŒÄ‚Ño‚µƒZƒbƒg‚·‚é
+void TextManager::SetOnceColor(int row, const XMVECTOR& color)
+{
+	assert(row > 2);
+	if (row == 0) {
+		conversation_.FirstFont->SetColor(color);
+	}
+	else if (row == 1) {
+		conversation_.SecondFont->SetColor(color);
+	}
+	else if (row == 2) {
+		conversation_.ThirdFont->SetColor(color);
+	}
+}
+
+//åå‰ã‹ã‚‰æ–‡å­—åˆ—ã‚’å‘¼ã³å‡ºã—ã‚»ãƒƒãƒˆã™ã‚‹
 void TextManager::SetConversation(Name name)
 {
 	std::map<TextManager::Name, Word>::iterator itr = wordlist_.find(name);
@@ -83,7 +103,7 @@ void TextManager::SetConversation(Name name)
 	CreateCon(conversation_, itr->second);
 	//conversation_ = CreateConversation(itr->second);
 }
-//–¼‘O‚©‚ç•¶š—ñ‚ğŒÄ‚Ño‚µƒZƒbƒg‚·‚é
+//åå‰ã‹ã‚‰æ–‡å­—åˆ—ã‚’å‘¼ã³å‡ºã—ã‚»ãƒƒãƒˆã™ã‚‹
 void TextManager::SetConversation(Name_First name)
 {
 	std::map<TextManager::Name_First, Word>::iterator itr = wordlist_first.find(name);
@@ -91,19 +111,21 @@ void TextManager::SetConversation(Name_First name)
 	CreateCon(conversation_, itr->second);
 	//conversation_ = CreateConversation(itr->second);
 }
-//–¼‘O‚Æ•¶š—ñƒZƒbƒg‚Å•Û‘¶
+//åå‰ã¨æ–‡å­—åˆ—ã‚»ãƒƒãƒˆã§ä¿å­˜
 void TextManager::CreateWord(Name name, wchar_t* tex1, wchar_t* tex2, wchar_t* tex3)
 {
 	Word temp = SetWord(tex1, tex2, tex3);
 	wordlist_.insert(std::make_pair(name, temp));
 }
-//–¼‘O‚Æ•¶š—ñƒZƒbƒg‚Å•Û‘¶
+
+//åå‰ã¨æ–‡å­—åˆ—ã‚»ãƒƒãƒˆã§ä¿å­˜
 void TextManager::CreateWord(Name_First name, wchar_t* tex1, wchar_t* tex2, wchar_t* tex3)
 {
 	Word temp = SetWord(tex1, tex2, tex3);
 	wordlist_first.insert(std::make_pair(name, temp));
 }
-//•¶š—ñ•Û‘¶
+
+//æ–‡å­—åˆ—ä¿å­˜
 TextManager::Word TextManager::SetWord(wchar_t* tex1, wchar_t* tex2, wchar_t* tex3)
 {
 	Word word = {};
@@ -112,7 +134,13 @@ TextManager::Word TextManager::SetWord(wchar_t* tex1, wchar_t* tex2, wchar_t* te
 	word.ThirdWord = tex3;
 	return word;
 }
-//•¶š—ñŒÄ‚Ño‚µ
+void TextManager::NoneText()
+{
+	std::map<TextManager::Name, Word>::iterator itr = wordlist_.find(NONE);
+	
+	CreateCon(conversation_, itr->second);
+}
+//æ–‡å­—åˆ—å‘¼ã³å‡ºã—
 //TextManager::Conversation TextManager::CreateConversation(Word word)
 //{
 //	/*Conversation* temp = {};

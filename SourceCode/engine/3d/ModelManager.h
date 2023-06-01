@@ -23,8 +23,9 @@ public:
 		Sutopon,
 		Food,
 		Ghost,
-		Buddy
-
+		Buddy,
+		MobUsa,
+		Heart,
 	};
 	//FBX‚Ì–¼‘O
 	enum FBXName {

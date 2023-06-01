@@ -4,8 +4,6 @@
 #include "InterBullet.h"
 #include "ObjCommon.h"
 #include "BreakEffect.h"
-#include <array>       // ヘッダファイルインクルード
-
 #include "InterEnemy.h"
 using namespace std;         //  名前空間指定
 
@@ -60,14 +58,14 @@ protected:
 private:
 	void BirthEffect();
 public:
-	void SummonEnemyInit(InterEnemy* enemy);
+	void SummonEnemyInit(InterEnemy* boss);
 
-	void SummonEnemyUpda(std::vector<InterEnemy*> enemy);
+	void SummonEnemyUpda(std::vector<InterEnemy*> boss);
 
-	void SummonEnemyDraw(std::vector<InterEnemy*> enemy, DirectXCommon* dxcomn);
+	void SummonEnemyDraw(std::vector<InterEnemy*> boss, DirectXCommon* dxcomn);
 
-	void EndSummon(std::vector<InterEnemy*> enemy);
-	void isRespawn(std::vector<InterEnemy*> enemy);
+	void EndSummon(std::vector<InterEnemy*> boss);
+	void isRespawn(std::vector<InterEnemy*> boss);
 protected:
 	bool SummonF;
 	bool SummobnStop;
@@ -83,7 +81,9 @@ public://gettersetter
 
 	bool GetFinishAppear() { return m_FinishAppear; }
 
-	bool GetDirEmo() { return m_DirEmo; }
+	bool GetBirthHeart() { return m_BirthHeart; }
+	void SetBirthHeart(bool HeartBirth) { m_BirthHeart = HeartBirth; };
+
 	void SetDirEmo(int DirEmo) { m_DirEmo = DirEmo; };
 private:
 	std::string SceneName;
@@ -114,6 +114,10 @@ protected:
 	//どっちの顔を向けているか
 	int m_DirEmo = {};
 	bool m_FinishApp = false;
+
+	int m_DeathTimer = 0;
+
+	bool m_BirthHeart = false;
 private:
 
 	enum class ActionList
@@ -157,5 +161,7 @@ protected:
 public:
 	bool GetDeathAction() { return DeathSceneF; }
 	void SetThrowUpdateF(bool f) { ThrowUpdateF = f; }
+
+	int m_BirthTarget = {};
 };
 

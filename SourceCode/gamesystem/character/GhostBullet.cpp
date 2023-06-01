@@ -1,6 +1,4 @@
 #include "GhostBullet.h"
-#include "ModelManager.h"
-#include "imgui.h"
 #include "VariableCommon.h"
 #include "CsvLoader.h"
 #include "Easing.h"

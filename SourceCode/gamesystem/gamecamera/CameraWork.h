@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "DebugCamera.h"
-#include "Camera.h"
 #include "Shake.h"
 #include <memory>
 #include "Feed.h"
@@ -79,7 +78,7 @@ private://各ボスの登場カメラ
 	Spline* spline;
 	vector<XMFLOAT3>pointsList;
 	void FirstBossAppear();
-	
+
 	void SecondBossAppear();
 
 	void FirstBossDead_AfterFeed();
@@ -88,6 +87,7 @@ private://各ボスの登場カメラ
 public:
 	bool Finish;
 	//getter setter
+
 bool FinishAppear() { if (spline->GetIndex() >= static_cast<int>(pointsList.size() -1))return true; return false; }
 
 	void SetBoss(InterBoss* boss) { this->boss = boss; }

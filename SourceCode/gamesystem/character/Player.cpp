@@ -1,7 +1,6 @@
 ﻿#include "Player.h"
 #include "CsvLoader.h"
 #include"Helper.h"
-#include"ModelManager.h"
 #include "VariableCommon.h"
 #include "HungerGauge.h"
 #include "Collision.h"
@@ -124,7 +123,7 @@ void Player::Update()
 	//リミット制限
 	Helper::GetInstance()->Clamp(m_Position.x, -55.0f, 65.0f);
 	Helper::GetInstance()->Clamp(m_Position.z, -60.0f, 60.0f);
-
+	Helper::GetInstance()->Clamp(m_HP, 0.0f, 5.0f);
 
 	//基礎パラメータ設定
 	Fbx_SetParam();
@@ -172,13 +171,9 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 }
 //ImGui
 void Player::ImGuiDraw() {
-	/*ImGui::Begin("Player");
-	ImGui::Text("POSX:%f", m_Position.x);
-	ImGui::Text("POSZ:%f", m_Position.z);
+	ImGui::Begin("Player");
+	ImGui::Text("HP:%f", m_HP);
 	ImGui::End();
-
-	playerattach->ImGuiDraw();*/
-	HungerGauge::GetInstance()->ImGuiDraw();
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
@@ -523,10 +518,20 @@ void Player::BirthParticle() {
 	neweffect = new BreakEffect();
 	neweffect->Initialize();
 	neweffect->SetPosition(m_Position);
+	neweffect->SetDiviSpeed(1.0f);
+	neweffect->SetLife(50);
 	effects.push_back(neweffect);
 }
 //ボス登場シーンの更新
 void Player::AppearUpdate() {
+	//基礎パラメータ設定
+	Fbx_SetParam();
+
+	//どっち使えばいいか分からなかったから保留
+	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+}
+//ボス撃破シーンの更新
+void Player::DeathUpdate() {
 	//基礎パラメータ設定
 	Fbx_SetParam();
 
