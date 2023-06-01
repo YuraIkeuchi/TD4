@@ -28,8 +28,6 @@ private:
 		HeartOne=0,
 		HeartTwo,
 		HeartThree,
-		HeartFour,
-		HeartFive,
 		UnderStatusGaugeMax,
 		UnderStatusGauge,
 		StatusGauge,
@@ -41,18 +39,21 @@ private:
 	//スプライト
 	std::array<SpriteData, UiMax> sprites = {};
 
-	std::array<XMFLOAT2, UnderStatusGauge> pos = {
-	XMFLOAT2(15.f,650.f),
-	XMFLOAT2(65.f,650.f),
-	XMFLOAT2(115.f,650.f),
-	XMFLOAT2(165.f,650.f),
-	XMFLOAT2(215.f,650.f)
-	};
+	//std::array<XMFLOAT2, UnderStatusGauge> pos = {
+	//XMFLOAT2(15.f,650.f),
+	//XMFLOAT2(65.f,650.f),
+	//XMFLOAT2(115.f,650.f),
+	//XMFLOAT2(165.f,650.f),
+	//XMFLOAT2(215.f,650.f)
+	//};
 
 
-	XMFLOAT2 gaugePos_ = { 340,665.f };
-	XMFLOAT2 gaugeSize_ = { 600.f,50.f };
-	XMFLOAT2 gaugeSize__ = { 600.f,40.f };
+	XMFLOAT2 m_GaugePos = { 340,665.f };
+	XMFLOAT2 m_GaugeSize = { 600.f,50.f };
+	XMFLOAT2 m_GaugeSizeMini = { 600.f,40.f };
+
+	XMFLOAT2 m_PlayerHpPos = { 15.f, 680.f };
+	XMFLOAT2 m_PlayerHpSize = { 300.f, 30.f };
 
 
 	std::vector<SpriteData>TexList;
