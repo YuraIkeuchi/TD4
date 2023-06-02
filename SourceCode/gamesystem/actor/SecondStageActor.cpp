@@ -110,8 +110,10 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd()) {
 		ui->Draw();
 	}
-	if (camerawork->GetAppearType() == APPEAR_SEVEN || camerawork->GetAppearType() == APPEAR_EIGHT) {
-		text_->SpriteDraw(dxCommon);
+	if (m_SceneState == SceneState::IntroState) {
+		if ((camerawork->GetAppearType() == APPEAR_SEVEN) || (camerawork->GetAppearType() == APPEAR_EIGHT)) {
+			text_->SpriteDraw(dxCommon);
+		}
 	}
 	IKESprite::PostDraw();
 	sceneChanger_->Draw();
@@ -211,10 +213,10 @@ void SecondStageActor::IntroUpdate(DebugCamera* camera) {
 		camerawork->SetCameraSkip(true);
 	}
 
-	if (camerawork->GetFeedEnd()) {
-	/*	m_SceneState = SceneState::MainState;
+	if (camerawork->GetAppearEndF()) {
+		m_SceneState = SceneState::MainState;
 		camerawork->SetCameraState(CAMERA_NORMAL);
-		enemymanager->SkipInitialize();*/
+		enemymanager->SkipInitialize();
 	}
 
 	//各クラス更新
