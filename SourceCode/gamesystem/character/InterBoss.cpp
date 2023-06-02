@@ -47,8 +47,6 @@ void InterBoss::Draw(DirectXCommon* dxCommon) {
 void InterBoss::ImGuiDraw() {
 	if (!this) { return; }
 	ImGui::Begin("STATE");
-	ImGui::Text("HP:%f", m_HP);
-	ImGui::Text("Target:%f", m_Magnification);
 	ImGui::End();
 	ImGui_Origin();
 }

@@ -22,5 +22,7 @@ private:
 	float m_DamagRadius = 0.0f;
 	bool m_Alive = true;
 	float m_Frame = 0.0f;
+private:
+	float m_DamagePower = {};
 };
 

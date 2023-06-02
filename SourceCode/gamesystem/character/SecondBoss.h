@@ -203,6 +203,7 @@ private:
 	//すべてのインターバル系
 	vector<int>m_StampInterval;
 	vector<int>m_RandomInterval;
+	vector<float>m_DamagePower;
 	int m_MoveInterval = {};
 	int m_QuickMoveInterval = {};
 	int m_ChoiceInterval = {};

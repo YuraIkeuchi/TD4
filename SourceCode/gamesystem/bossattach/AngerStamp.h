@@ -13,4 +13,7 @@ private:
 	void BirthParticle();	//パーティクルの生成
 
 	bool Collide();	//当たり判定
+
+private:
+	float m_DamagePower = {};
 };

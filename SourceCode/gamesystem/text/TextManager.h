@@ -30,6 +30,16 @@ public:
 		AISATU ,
 		KAIWA,
 		BATTLE,
+	};
+
+	enum Name_First
+	{
+		VIEWBOSS,
+		SPEAKPLAYER1,
+		SPEALPLAYER2
+	};
+
+	enum Name_Second {
 		ANGER_TALK,
 		ANGER_TALK2,
 		JOY_TALK,
@@ -40,13 +50,6 @@ public:
 		SELECT_ANGER2,
 		SELECT_JOY,
 		SELECT_JOY2,
-	};
-
-	enum Name_First
-	{
-		VIEWBOSS,
-		SPEAKPLAYER1,
-		SPEALPLAYER2
 	};
 	static TextManager* GetInstance();
 
@@ -65,11 +68,14 @@ public:
 
 	void NoneText();
 	void SetConversation(Name_First name = VIEWBOSS);
+
+	void SetSecondConversation(Name_Second name = ANGER_TALK);
 private:
 	
 	//
 	void CreateWord(Name name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
 	void CreateWord(Name_First name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
+	void SecondCreateWord(Name_Second name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
 
 	//
 	Word SetWord(wchar_t* tex1, wchar_t* tex2, wchar_t* tex3);
@@ -80,6 +86,7 @@ private:
 private:
 	std::map<TextManager::Name, Word> wordlist_;
 	std::map<TextManager::Name_First, Word> wordlist_first;
+	std::map<TextManager::Name_Second, Word> wordlist_second;
 	Conversation conversation_ = {};
 
 	Conversation bossconversation_ = {};
