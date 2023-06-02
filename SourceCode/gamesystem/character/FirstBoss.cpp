@@ -869,6 +869,11 @@ void FirstBoss::EndSumon_returnPos(bool& f, float& easespeed)
 void FirstBoss::AppearAction() {
 
 }
+void FirstBoss::EndAppear()
+{
+	
+}
+
 //ボス撃破シーン
 void FirstBoss::DeadAction_Throw() {
 	m_Position = { 0,-90,20.f };

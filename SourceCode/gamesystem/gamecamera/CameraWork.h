@@ -65,10 +65,12 @@ public:
 	void feedDraw();
 
 	bool GetFeedEnd() { return FeedEndF; }
+	bool GetAppearEnd() { return AppearEndF; }
 private:
 	bool FeedEndF;
 	int DeathTimer;
 	bool FeedF;
+	bool AppearEndF;
 	void SetBossDead();//撃破
 
 	//ゲームシーン以外で使うカメラ更新(this変数で変更可能)

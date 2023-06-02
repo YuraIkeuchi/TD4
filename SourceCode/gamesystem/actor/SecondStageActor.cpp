@@ -199,6 +199,7 @@ void SecondStageActor::IntroUpdate(DebugCamera* camera) {
 			text_->SelectText(TextManager::SELECT_JOY2);
 		}
 	}
+	
 	//最後までテキストを見た
 	if (enemymanager->GetEnemyFinishAppear()) {
 		m_SceneState = SceneState::MainState;

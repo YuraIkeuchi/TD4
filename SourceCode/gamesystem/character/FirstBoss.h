@@ -278,4 +278,5 @@ private:
 	bool Active;
 	void AttackDecision();
 	void SelAttack();
+	void EndAppear() override;
 };

@@ -76,13 +76,15 @@ void CameraWork::BossAppear() {
 			FeedF = true;
 		}
 	}
-
 	if (FeedF) {
 		feed->FeedIn(Feed::FeedType::WHITE, 0.01f, FeedF);
 		if (feed->GetFeedEnd()) {
-			FeedEndF = true;
+			AppearEndF = true;
+			m_CameraSkip = false;
+			FeedF = false;
 		}
 	}
+	
 }
 //ボス撃破
 void CameraWork::SetBossDead_Before()
