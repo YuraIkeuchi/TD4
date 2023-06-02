@@ -263,5 +263,17 @@ private:
 	float RotFrontSpeed;
 	XMFLOAT3 ShakePos;
 	float SinRotCount;
-	
+
+	enum Action
+	{
+		NON,
+		NORMAL,
+		CHARGE,
+		SUMMON
+	}_attackAction;
+	int RandActionCount;
+	int S_DecisionCount=50;
+	bool Active;
+	void AttackDecision();
+	void SelAttack();
 };

@@ -99,31 +99,11 @@ void FirstBoss::Action() {
 			RotEaseTime_noBat = 0.f;
 			EaseT_BatStart = 0.f;
 			//タイマーカウンタ
-			if (noAction && !Recv)ActionTimer++;
+			AttackDecision();
 
-			if (!_normal.GetAttackF() && !SummonF && ActionTimer % 3 == 0) {
-				ResF = true;
-				SummobnStop = true;
-				SummonF = true;
-
-			}
+			
 	if(SummobnStop)
-	{
-		m_Rotation.y+=3.f;
-	}
-			//通常攻撃
-			if (!SummobnStop && !_cattack.GetAttackF() && !_normal.GetAttackF() && ActionTimer % 60 == 0)
-				_normal.SetNormalAttackF(true);
-			//ため攻撃
-			if (!SummobnStop && !_cattack.GetAttackF() && ActionTimer % 93 == 0)
-				_cattack.SetAttackF(true);
-
-
-			//タイマーリセット(通常攻撃とため攻撃が重ならないように)
-			if (ActionTimer >= 800)
-			{
-				ActionTimer = 0;
-			}
+		
 			//通常移動（円運動）
 			Move();
 
@@ -946,4 +926,52 @@ void FirstBoss::DeadAction() {
 	Helper::GetInstance()->Clamp(m_Rotation.z, -90.f, 90.f);
 	Helper::GetInstance()->Clamp(DeathSpeed, 0.f, 3.f);
 	Helper::GetInstance()->Clamp(RotFrontSpeed, 0.f, 2.f);
+}
+
+void FirstBoss::AttackDecision()
+{
+	if(ActionTimer%S_DecisionCount==0)
+		Active = true;
+
+	if (Active) {
+		RandActionCount = rand() % 5;
+
+		if (RandActionCount == 1)_attackAction = SUMMON;
+		else if (RandActionCount == 2)_attackAction = CHARGE;
+		else  _attackAction = NORMAL;
+
+		SelAttack();
+
+		S_DecisionCount = rand() % 190 + 120;
+
+		Active = false;
+	}
+	else {
+		_attackAction = NON;
+		if(!SummobnStop && !EndSummonRepos &&!_charge.GetAttackF()&&!_normal.GetAttackF())
+		ActionTimer++;
+	}
+	
+	//タイマーリセット(通常攻撃とため攻撃が重ならないように)
+	if (ActionTimer >= 800)
+	{
+		ActionTimer = 0;
+	}
+}
+
+void FirstBoss::SelAttack()
+{
+	if (!_normal.GetAttackF() && !SummonF &&_attackAction==SUMMON) {
+		ResF = true;
+		SummobnStop = true;
+		SummonF = true;
+	}
+	//通常攻撃
+	if (!SummobnStop && !_cattack.GetAttackF() && !_normal.GetAttackF() &&_attackAction==NORMAL)
+		_normal.SetNormalAttackF(true);
+	//ため攻撃
+	if (!SummobnStop && !_cattack.GetAttackF() && !_normal.GetAttackF() &&_attackAction==CHARGE)
+		_cattack.SetAttackF(true);
+
+
 }
