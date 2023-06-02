@@ -213,6 +213,5 @@ private:
 	bool m_SplineEnd = false;
 
 public:
-	void EndAppear() override;
 	void SetAppearEnd(bool end) { if (end) { m_AppearState = APPEAR_END; } }
 };

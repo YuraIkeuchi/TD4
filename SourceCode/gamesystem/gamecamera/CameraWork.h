@@ -65,7 +65,6 @@ public:
 	void feedDraw();
 
 	bool GetFeedEnd() { return FeedEndF; }
-	bool GetAppearEnd() { return AppearEndF; }
 private:
 	bool FeedEndF;
 	int DeathTimer;

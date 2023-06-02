@@ -972,7 +972,3 @@ void SecondBoss::DeathParticle() {
 	}
 }
 
-void SecondBoss::EndAppear()
-{
-	m_AppearState = APPEAR_LOOK;
-}

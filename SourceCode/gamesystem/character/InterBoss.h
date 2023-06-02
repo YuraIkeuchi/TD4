@@ -164,9 +164,7 @@ protected:
 public:
 	bool GetDeathAction() { return DeathSceneF; }
 	void SetThrowUpdateF(bool f) { ThrowUpdateF = f; }
-
-	//スキップ時の処理　状態とばしたりは各ボスごとに書く
-	virtual void EndAppear()=0;
+	
 	int m_BirthTarget = {};
 };
 
