@@ -9,6 +9,8 @@ public:
 	FirstBoss();
 	bool Initialize() override;//初期化
 
+	void SkipInitialize() override;//スキップ時の初期化
+
 	void Pause() override;//ポーズ
 
 	void Action() override;//行動

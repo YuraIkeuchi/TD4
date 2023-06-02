@@ -38,7 +38,9 @@ EnemyManager::EnemyManager(const std::string& SceneName) {
 	}
 }
 void EnemyManager::Initialize(DirectXCommon* dxCommon) {
-
+}
+void EnemyManager::SkipInitialize() {
+	boss->SkipInitialize();
 }
 //バトル更新
 void EnemyManager::BattleUpdate() {

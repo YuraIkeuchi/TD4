@@ -51,6 +51,7 @@ void CameraWork::Update(DebugCamera* camera) {
 //通常のカメラ
 void CameraWork::DefaultCam()
 {
+	FeedF = false;
 	m_eyePos.x = Player::GetInstance()->GetPosition().x;
 	m_eyePos.y = Player::GetInstance()->GetPosition().y+50.0f;
 
@@ -67,6 +68,20 @@ void CameraWork::BossAppear() {
 	}
 	else if (SceneName == "SECONDSTAGE") {
 		SecondBossAppear();
+	}
+
+	if (m_CameraSkip) {
+		if (!FeedF)
+		{
+			FeedF = true;
+		}
+	}
+
+	if (FeedF) {
+		feed->FeedIn(Feed::FeedType::WHITE, 0.01f, FeedF);
+		if (feed->GetFeedEnd()) {
+			FeedEndF = true;
+		}
 	}
 }
 //ボス撃破
