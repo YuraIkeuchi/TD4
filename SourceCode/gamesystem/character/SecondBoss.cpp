@@ -216,11 +216,6 @@ void SecondBoss::DamAction()
 }
 //ImGui
 void SecondBoss::ImGui_Origin() {
-	ImGui::Begin("Second");
-	for (int i = 0; i < m_DamagePower.size(); i++) {
-		ImGui::Text("Damage[%d]:%f", i, m_DamagePower[i]);
-	}
-	ImGui::End();
 }
 //移動
 void SecondBoss::Move() {
@@ -979,4 +974,3 @@ void SecondBoss::DeathParticle() {
 		ParticleEmitter::GetInstance()->DeathEffect(50, { m_Position.x,(m_Position.y - 1.0f),m_Position.z }, s_scale, e_scale, s_color, e_color,l_velocity);
 	}
 }
-

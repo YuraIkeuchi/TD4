@@ -51,7 +51,13 @@ void CameraWork::Update(DebugCamera* camera) {
 //通常のカメラ
 void CameraWork::DefaultCam()
 {
-	FeedF = false;
+	if (FeedF) {
+		feed->FeedIn(Feed::FeedType::WHITE, 0.01f, FeedF);
+		if (feed->GetFeedEnd()) {
+			AppearEndF = true;
+			m_CameraSkip = false;
+		}
+	}
 	m_eyePos.x = Player::GetInstance()->GetPosition().x;
 	m_eyePos.y = Player::GetInstance()->GetPosition().y+50.0f;
 
@@ -81,7 +87,6 @@ void CameraWork::BossAppear() {
 		if (feed->GetFeedEnd()) {
 			AppearEndF = true;
 			m_CameraSkip = false;
-			FeedF = false;
 		}
 	}
 	
@@ -144,6 +149,9 @@ void CameraWork::SetBossDead_AfterFirst()
 //フェード後の撃破アクション(2ボス)
 void CameraWork::SetBossDead_AfterSecond()
 {
+	if (FeedF) {
+		feed->FeedIn(Feed::FeedType::WHITE, 0.01f, FeedF);
+	}
 	if (SceneName == "FIRSTSTAGE") {
 		FirstBossDead_AfterFeed();
 	}
@@ -159,7 +167,6 @@ void CameraWork::SetBossDead_AfterSecond()
 	if (DeathTimer == 620) {
 		m_EndDeath = true;
 	}
-	FeedF = false;
 }
 
 void CameraWork::EditorCamera()
