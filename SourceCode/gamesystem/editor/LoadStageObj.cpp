@@ -265,6 +265,7 @@ void LoadStageObj::CommonUpdate() {
 }
 //ƒn[ƒg‚Ì¶¬
 void LoadStageObj::BirthHeart() {
+	if (!boss->GetBoss()) { return; }
 	if (boss->GetBirthHeart()) {
 		Heart* newHeart;
 		newHeart = new Heart();

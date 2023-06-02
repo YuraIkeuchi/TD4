@@ -50,7 +50,8 @@ void TutorialSceneActor::MoveState() {
 	if (shakeCount > 30) {
 		if (!isShake) {
 			isShake = true;
-		} else {
+		}
+		else {
 			isShake = false;
 		}
 		shakeCount = 0;
@@ -72,7 +73,7 @@ void TutorialSceneActor::MoveState() {
 void TutorialSceneActor::TextTalkState() {
 
 	messagewindow_->DisplayCharacter(sutopon_color_);
-	if (input->TriggerKey(DIK_RIGHT)) {
+	if (input->TriggerButton(Input::B)) {
 		conversation += 1;
 	}
 
@@ -80,13 +81,13 @@ void TutorialSceneActor::TextTalkState() {
 		text_->SetConversation(TextManager::TYUTORIAL_TALK2);
 	}
 	else if (conversation == 1) {
-		text_->SetConversation(TextManager::TYUTORIAL_TALK3);
+		text_->SetConversation(TextManager::TYUTORIAL_TALK3, { 0.f,0.5f,0.5f,1.f });
 	}
 	else if (conversation == 2) {
 		text_->SetConversation(TextManager::TYUTORIAL_TALK4);
 	}
 	else if (conversation == 3) {
-		text_->SetConversation(TextManager::TYUTORIAL_TALK5);
+		text_->SetConversation(TextManager::TYUTORIAL_TALK5, { 0.f,0.5f,0.5f,1.f });
 	}
 	else if (conversation == 4) {
 		text_->SetConversation(TextManager::TYUTORIAL_TALK6);
@@ -94,7 +95,8 @@ void TutorialSceneActor::TextTalkState() {
 
 
 	if (DebugButton() ||
-		input->TriggerButton(Input::B)) {
+		conversation == 5) {
+		text_->SetConversation(TextManager::NONE);
 		sutepon->SetPosition({ 0,0,15.0f });
 		conversation = 0;
 		nowstate_ = state::SPAWNENEMY;
@@ -113,15 +115,20 @@ void TutorialSceneActor::SpawnEnemyState() {
 
 }
 void TutorialSceneActor::TextCatchFollowState() {
+
+	if (input->TriggerButton(Input::B)) {
+		conversation += 1;
+	}
 	if (conversation == 0) {
-		if (input->TriggerKey(DIK_RIGHT)) {
-			conversation = 1;
-		}
+		text_->SetConversation(TextManager::TYUTORIAL_TALK7, { 0.f,0.5f,0.5f,1.f });
 		loadobj->TutorialUpdate();
+	}
+	else if (conversation == 1) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK8, { 0.f,0.5f,0.5f,1.f });
 	}
 
 	if (DebugButton() ||
-		input->TriggerButton(Input::B)) {
+		conversation == 5) {
 		Player::GetInstance()->SetCanShot(true);
 		nowstate_ = state::CATCHFOLLOW;
 	}
@@ -233,7 +240,8 @@ bool TutorialSceneActor::DebugButton() {
 	if (!isDebug) { return false; }
 	if (input->TriggerKey(DIK_SPACE)) {
 		return true;
-	} else {
+	}
+	else {
 		return false;
 	}
 }
@@ -267,14 +275,16 @@ bool TutorialSceneActor::MovingCamera(const XMFLOAT3& s_eye, const XMFLOAT3& e_e
 
 	if (cameraframe == 1.0f) {
 		return true;
-	} else {
+	}
+	else {
 		return false;
 	}
 }
 void TutorialSceneActor::CameraUpdate(DebugCamera* camera) {
 	if (!(nowstate_ == state::SPAWNALLENEMY || nowstate_ == state::TEXT_LAST)) {
 		camerawork->SetCameraState(CAMERA_NORMAL);
-	} else {
+	}
+	else {
 		camerawork->SetCameraState(CAMERA_LOAD);
 	}
 
@@ -285,7 +295,8 @@ bool TutorialSceneActor::Clear(bool mission, int waitTimerMax) {
 	waitTimer++;
 	if (waitTimer >= waitTimerMax) {
 		return true;
-	} else {
+	}
+	else {
 		return false;
 	}
 }
@@ -363,7 +374,7 @@ void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	BackObj::GetInstance()->Update();
 	CameraUpdate(camera);
 	lightgroup->Update();
-	messagewindow_->Update(girl_color_,sutopon_color_);
+	messagewindow_->Update(girl_color_, sutopon_color_);
 }
 //描画
 void TutorialSceneActor::Draw(DirectXCommon* dxCommon) {
@@ -379,7 +390,8 @@ void TutorialSceneActor::Draw(DirectXCommon* dxCommon) {
 		ImGuiDraw(dxCommon);
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
-	} else {
+	}
+	else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
@@ -399,7 +411,8 @@ void TutorialSceneActor::BackDraw(DirectXCommon* dxCommon) {
 	Player::GetInstance()->Draw(dxCommon);
 	if (nowstate_ <= state::TEXT_TALK) {
 		sutepon->Draw();
-	} else {
+	}
+	else {
 		loadobj->Draw(dxCommon);
 	}
 	BackObj::GetInstance()->Draw(dxCommon);
@@ -418,7 +431,8 @@ void TutorialSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 		if (messagewindow_->DisplayCheck()) {
 			text_->Draw(dxCommon);
 		}
-	} else {
+	}
+	else {
 		ui->Draw();
 	}
 	sceneChanger_->Draw();
