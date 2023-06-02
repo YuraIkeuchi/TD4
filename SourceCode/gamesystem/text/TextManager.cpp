@@ -39,6 +39,9 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	CreateWord(TYUTORIAL_TALK4, L"え!?メガホンが喋った!", L" ", L" ");
 	CreateWord(TYUTORIAL_TALK5, L"メガホンじゃない、オレはストポンだ", L"メガホンに取り憑いた亡霊だ!", L"こうしちゃいられない....追手が来ちまう");
 	CreateWord(TYUTORIAL_TALK6, L"　追手ってあれのこと?", L" ", L" ");
+	CreateWord(TYUTORIAL_TALK7, L"チッ、もう追ってきやがった",L"おい人間、今からいうことをしっかり聞け",L" ");
+	CreateWord(TYUTORIAL_TALK8, L"今からあの追手を倒す", L"その為にそこらへんにいる亡霊を仲間にする", L"亡霊に近づいてRBを押せ");
+
 	CreateWord(AISATU,L"おはよう",L"こんにちは",L"こんばんは");
 
 	CreateWord(Name_First::VIEWBOSS, L"ちちうえ!ほんがうごきまわってるでござる!",L"どうするでござるか!?",L"しめるでござるか!?");
@@ -97,12 +100,15 @@ void TextManager::SetOnceColor(int row, const XMVECTOR& color)
 }
 
 //名前から文字列を呼び出しセットする
-void TextManager::SetConversation(Name name)
+void TextManager::SetConversation(Name name,const XMVECTOR& color)
 {
 	std::map<TextManager::Name, Word>::iterator itr = wordlist_.find(name);
 
 	CreateCon(conversation_, itr->second);
-	//conversation_ = CreateConversation(itr->second);
+
+	conversation_.FirstFont->SetColor(color);
+	conversation_.SecondFont->SetColor(color);
+	conversation_.ThirdFont->SetColor(color);
 }
 //名前から文字列を呼び出しセットする
 void TextManager::SetConversation(Name_First name)

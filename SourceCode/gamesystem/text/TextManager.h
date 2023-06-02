@@ -27,6 +27,11 @@ public:
 		TYUTORIAL_TALK4,
 		TYUTORIAL_TALK5,
 		TYUTORIAL_TALK6,
+		TYUTORIAL_TALK7,
+		TYUTORIAL_TALK8,
+		TYUTORIAL_TALK9,
+		TYUTORIAL_TALK10,
+		TYUTORIAL_TALK11,
 		AISATU ,
 		KAIWA,
 		BATTLE,
@@ -64,9 +69,10 @@ public:
 
 	void SetOnceColor(int row, const XMVECTOR& color = { 1.f,1.f,1.f,1.f });
 
-	void SetConversation(Name name=NONE);
+	void SetConversation(Name name=NONE,const XMVECTOR& color={1.f,1.f,1.f,1.f});
 
 	void NoneText();
+
 	void SetConversation(Name_First name = VIEWBOSS);
 
 	void SetSecondConversation(Name_Second name = ANGER_TALK);
