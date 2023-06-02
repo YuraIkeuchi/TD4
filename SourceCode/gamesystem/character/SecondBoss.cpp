@@ -70,12 +70,15 @@ void SecondBoss::CSVLoad() {
 	//インターバル系を読み込む
 	auto PressSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "PRESS_NUM")));
 	auto RandomSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "RANDOM_NUM")));
+	auto DamageSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "DAMAGE_NUM")));
 
 	m_StampInterval.resize(PressSize);
 	m_RandomInterval.resize(RandomSize);
+	m_DamagePower.resize(DamageSize);
 
 	LoadCSV::LoadCsvParam_Int("Resources/csv/chara/boss/second/secondboss.csv", m_StampInterval, "Interval");
 	LoadCSV::LoadCsvParam_Int("Resources/csv/chara/boss/second/secondboss.csv", m_RandomInterval, "RandomInterval");
+	LoadCSV::LoadCsvParam_Float("Resources/csv/chara/boss/second/secondboss.csv", m_DamagePower, "Damage");
 
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "hp1")));
 	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "Magnification")));
@@ -213,6 +216,11 @@ void SecondBoss::DamAction()
 }
 //ImGui
 void SecondBoss::ImGui_Origin() {
+	ImGui::Begin("Second");
+	for (int i = 0; i < m_DamagePower.size(); i++) {
+		ImGui::Text("Damage[%d]:%f", i, m_DamagePower[i]);
+	}
+	ImGui::End();
 }
 //移動
 void SecondBoss::Move() {
@@ -746,7 +754,7 @@ bool SecondBoss::Collide() {
 
 	//本来のポジションより低い位置で取る
 	l_OBBPosition = { m_Position.x,
-		m_Position.y,
+		m_Position.y - 3.0f,
 		m_Position.z
 	};
 
@@ -763,7 +771,7 @@ bool SecondBoss::Collide() {
 	if ((Collision::OBBCollision(m_OBB1, m_OBB2) && 
 		Player::GetInstance()->GetDamageInterVal() == 0)) {
 		Player::GetInstance()->PlayerHit(m_Position);
-		Player::GetInstance()->RecvDamage(1.0f);
+		Player::GetInstance()->RecvDamage(m_DamagePower[static_cast<int>(_charaState)]);
 
 		return true;
 	}

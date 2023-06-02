@@ -13,8 +13,8 @@ void BossText::Initialize(DirectXCommon* dxCommon) {
 	text_->SetConversation(TextManager::AISATU);
 }
 
-void BossText::SelectText(TextManager::Name name) {
-	text_->SetConversation(name);
+void BossText::SelectText(TextManager::Name_Second name) {
+	text_->SetSecondConversation(name);
 }
 void BossText::SelectText(TextManager::Name_First name) {
 	text_->SetConversation(name);

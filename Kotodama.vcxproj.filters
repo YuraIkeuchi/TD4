@@ -604,9 +604,6 @@
     <ClInclude Include="SourceCode\gamesystem\character\FirstBoss.h">
       <Filter>gamesystem\charactor\Boss\First</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\SecondBoss.h">
-      <Filter>gamesystem\charactor\Boss\Second</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\InterBoss.h">
       <Filter>gamesystem\charactor\Boss\Base</Filter>
     </ClInclude>
@@ -771,6 +768,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\editor\LoadStageObj.h">
       <Filter>gamesystem\stageobj\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\SecondBoss.h">
+      <Filter>gamesystem\charactor\Boss\Second</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
