@@ -930,24 +930,33 @@ void FirstBoss::DeadAction() {
 
 void FirstBoss::AttackDecision()
 {
+	//攻撃hラグ
 	if(ActionTimer%S_DecisionCount==0)
 		Active = true;
 
+
 	if (Active) {
+		//攻撃の種類はランダム
 		RandActionCount = rand() % 5;
 
+		//比重は通常攻撃多め
 		if (RandActionCount == 1)_attackAction = SUMMON;
 		else if (RandActionCount == 2)_attackAction = CHARGE;
 		else  _attackAction = NORMAL;
 
+		//核攻撃のフラグオン
 		SelAttack();
 
+		//次のアクションまでの猶予
 		S_DecisionCount = rand() % 190 + 120;
 
+		//最初から
 		Active = false;
 	}
 	else {
+
 		_attackAction = NON;
+		//こうげきちゅうはTIMER切る7
 		if(!SummobnStop && !EndSummonRepos &&!_charge.GetAttackF()&&!_normal.GetAttackF())
 		ActionTimer++;
 	}
