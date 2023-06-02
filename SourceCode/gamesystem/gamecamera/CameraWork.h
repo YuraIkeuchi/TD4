@@ -108,6 +108,8 @@ bool FinishAppear() { if (spline->GetIndex() >= static_cast<int>(pointsList.size
 	void SetSceneName(std::string name) { SceneName = name; }
 
 	void SetApproach(const bool Approach) { m_Approach = Approach; }
+
+	void SetCameraSkip(const bool CameraSkip) { m_CameraSkip = CameraSkip; }
 private:
 	//クラス
 	unique_ptr<Shake> shake = nullptr;
@@ -150,4 +152,7 @@ private:
 
 	//撃破カメラ終了
 	bool m_EndDeath = false;
+
+	//カメラをスキップするか
+	bool m_CameraSkip = false;
 };

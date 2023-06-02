@@ -36,6 +36,10 @@ bool FirstBoss::Initialize() {
 	m_Radius = 5.0f;
 	return true;
 }
+
+void FirstBoss::SkipInitialize() {
+
+}
 //行動
 void FirstBoss::Action() {
 	if (m_HP > 0) {

@@ -60,6 +60,11 @@ bool SecondBoss::Initialize() {
 	m_MaxHp = m_HP;
 	return true;
 }
+void SecondBoss::SkipInitialize() {
+	m_Position = { 0.0f,20.0f,20.0f };
+	m_Rotation = { 0.0f,90.0f,0.0f };
+	m_Frame = 0.0f;
+}
 //CSVロード系
 void SecondBoss::CSVLoad() {
 	//インターバル系を読み込む

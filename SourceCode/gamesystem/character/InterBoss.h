@@ -31,7 +31,7 @@ public:
 	//ボス撃破シーンの更新
 	void DeadUpdate();
 
-
+	virtual void SkipInitialize() = 0;
 	/// <summary>
 	/// ポーズのとき
 	/// </summary>

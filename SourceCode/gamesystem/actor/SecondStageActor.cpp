@@ -107,7 +107,7 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	ParticleEmitter::GetInstance()->DeathDrawAll();
 	//完全に前に書くスプライト
 	IKESprite::PreDraw();
-	if (m_SceneState == SceneState::MainState) {
+	if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd()) {
 		ui->Draw();
 	}
 	if (camerawork->GetAppearType() == APPEAR_SEVEN || camerawork->GetAppearType() == APPEAR_EIGHT) {
@@ -199,10 +199,23 @@ void SecondStageActor::IntroUpdate(DebugCamera* camera) {
 			text_->SelectText(TextManager::SELECT_JOY2);
 		}
 	}
+	//最後までテキストを見た
 	if (enemymanager->GetEnemyFinishAppear()) {
 		m_SceneState = SceneState::MainState;
 		camerawork->SetCameraState(CAMERA_NORMAL);
 	}
+
+	//演出スキップ
+	if (Input::GetInstance()->TriggerButton(Input::A)) {
+		camerawork->SetCameraSkip(true);
+	}
+
+	if (camerawork->GetFeedEnd()) {
+	/*	m_SceneState = SceneState::MainState;
+		camerawork->SetCameraState(CAMERA_NORMAL);
+		enemymanager->SkipInitialize();*/
+	}
+
 	//各クラス更新
 	BackObj::GetInstance()->Update();
 
@@ -244,11 +257,7 @@ void SecondStageActor::MainUpdate(DebugCamera* camera) {
 	{
 		Player::GetInstance()->Update();
 	}
-	/*if (enemymanager->BossDestroy()) {
-		sceneChanger_->ChangeStart();
-		sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
-	}*/
-
+	
 	if (PlayerDestroy()) {
 		sceneChanger_->ChangeStart();
 		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::Reverse);
@@ -270,7 +279,6 @@ void SecondStageActor::MainUpdate(DebugCamera* camera) {
 	ParticleEmitter::GetInstance()->Update();
 
 	camerawork->Update(camera);
-
 }
 //撃破シーン
 void SecondStageActor::FinishUpdate(DebugCamera* camera) {

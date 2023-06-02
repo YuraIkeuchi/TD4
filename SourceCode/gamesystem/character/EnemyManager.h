@@ -19,6 +19,8 @@ public:
 	EnemyManager(const std::string& sceneName);
 	//初期化
 	void Initialize(DirectXCommon* dxCommon);
+	//スキップ時の初期化
+	void SkipInitialize();
 	//登場シーン
 	void AppearUpdate();
 	//バトル更新
