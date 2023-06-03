@@ -176,6 +176,10 @@ void SecondBoss::Action() {
 	Collide();
 	//テキスチャ
 	MarkUpdate();
+
+	if (m_HP < 0.0f) {
+		m_fbxObject->StopAnimation();
+	}
 }
 //ポーズ
 void SecondBoss::Pause() {
@@ -901,7 +905,6 @@ void SecondBoss::DeadAction() {
 		if (m_DeathTimer == 1) {
 			m_Position = { 0.0f,30.0f,20.0f };
 			m_Rotation = { 0.0f,0.0f,0.0f };
-			m_fbxObject->PlayAnimation(0);
 			m_Frame = {};
 			m_AfterRot = { 90.0f,90.0f,0.0f };
 			m_AddPower = 0.0f;
@@ -913,7 +916,6 @@ void SecondBoss::DeadAction() {
 
 			if (spline->GetIndex() >= pointsList.size() - 1)
 			{
-				m_fbxObject->StopAnimation();
 				m_SplineEnd = true;
 				shake->SetShakeStart(true);
 				m_DeathTimer = 0;
