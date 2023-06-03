@@ -6,8 +6,8 @@
 //更新
 void InterBoss::Update() {
 	//陦悟虚
+	Action();
 	if (m_HP > 0.0f) {
-		Action();
 		DeathAction();
 	}
 	//エフェクト
@@ -47,6 +47,7 @@ void InterBoss::Draw(DirectXCommon* dxCommon) {
 void InterBoss::ImGuiDraw() {
 	if (!this) { return; }
 	ImGui::Begin("STATE");
+	ImGui::Text("HP:%f", m_HP);
 	ImGui::End();
 	ImGui_Origin();
 }
@@ -66,7 +67,7 @@ void InterBoss::CollideBul(vector<InterBullet*> bullet,Type type)
 	if (ColChangeEaseT>0.f)return;
 
 	for (InterBullet* _bullet : bullet) {
-		if (_bullet != nullptr) {
+		if (_bullet != nullptr && _bullet->GetAlive()) {
 			bool JudgColide;
 			if (type == Type::CIRCLE)JudgColide=Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, m_Radius, m_Position.x, m_Position.z, m_Radius);
 			if (type == Type::SPHERE)JudgColide=Collision::SphereCollision(_bullet->GetPosition(), m_Radius, m_Position, m_Radius);
@@ -86,13 +87,14 @@ void InterBoss::CollideBul(vector<InterBullet*> bullet,Type type)
 				Recv = true;
 				_bullet->SetAlive(false);
 				
-				BirthEffect();
 				//弾の大きさによって与えるダメージが違う
 				if (_bullet->GetScale().x == 1.0f) {
 					m_HP -= 1.0f * m_Magnification;
 				} else {
 					m_HP -= 2.0f * m_Magnification;
 				}
+
+				BirthEffect();
 			}
 		}
 	}
@@ -104,7 +106,7 @@ void InterBoss::BirthEffect() {
 	neweffect = new BreakEffect();
 	neweffect->Initialize();
 	neweffect->SetPosition(m_Position);
-	if (m_HP <= 0.f) {
+	if (m_HP < 0.1f) {
 		neweffect->SetLife(1000);
 		neweffect->SetDiviSpeed(8.0f);
 	} else {

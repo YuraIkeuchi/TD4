@@ -40,6 +40,7 @@ void LoadStageObj::FoodLoad(const std::string& sceneName) {
 //すべてロード
 void LoadStageObj::AllLoad(const std::string& sceneName)
 {
+	m_SceneName = sceneName;
 	//ゴースト関係
 	GhostLoad();
 	//初期化
@@ -135,22 +136,7 @@ void LoadStageObj::Draw(DirectXCommon* dxCommon)
 }
 //ImGui
 void LoadStageObj::ImGuiDraw() {
-	////ゴースト
-	//for (auto i = 0; i < ghosts.size(); i++) {
-	//	ghosts[i]->ImGuiDraw();
-	//}
-	////
-	////食べ物
-	//for (auto i = 0; i < foods.size(); i++) {
-	//	foods[i]->ImGuiDraw();
-	//}
-	//
-	//ハート
-	for (auto i = 0; i < hearts.size(); i++)
-	{
-		hearts[i]->ImGuiDraw();
-	}
-	boss->ImGuiDraw();
+	//boss->ImGuiDraw();
 }
 //当たり判定(ゴースト)
 void LoadStageObj::Collide() {
@@ -244,14 +230,16 @@ void LoadStageObj::CommonUpdate() {
 	for (auto i = 0; i < foods.size(); i++)
 	{
 		foods[i]->Update();
-		if (foods[i]->GetAlive() && foods[i] != nullptr && !boss->BossDestroy()) {
-			lightgroup->SetCircleShadowDir(i + 2, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-			lightgroup->SetCircleShadowCasterPos(i + 2, XMFLOAT3({ foods[i]->GetPosition().x, foods[i]->GetPosition().y, foods[i]->GetPosition().z }));
-			lightgroup->SetCircleShadowAtten(i + 2, XMFLOAT3(circleShadowAtten));
-			lightgroup->SetCircleShadowFactorAngle(i + 2, XMFLOAT2(circleShadowFactorAngle));
-		}
-		else {
-			lightgroup->SetCircleShadowActive(i + 2, false);
+		if (m_SceneName == "FIRSTSTAGE") {
+			if (foods[i]->GetAlive() && foods[i] != nullptr && !boss->BossDestroy()) {
+				lightgroup->SetCircleShadowDir(i + 2, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
+				lightgroup->SetCircleShadowCasterPos(i + 2, XMFLOAT3({ foods[i]->GetPosition().x, foods[i]->GetPosition().y, foods[i]->GetPosition().z }));
+				lightgroup->SetCircleShadowAtten(i + 2, XMFLOAT3(circleShadowAtten));
+				lightgroup->SetCircleShadowFactorAngle(i + 2, XMFLOAT2(circleShadowFactorAngle));
+			}
+			else {
+				lightgroup->SetCircleShadowActive(i + 2, false);
+			}
 		}
 	}
 
@@ -260,14 +248,27 @@ void LoadStageObj::CommonUpdate() {
 	{
 		hearts[i]->Update();
 
-		if (hearts[i]->GetAlive() && hearts[i] != nullptr && !boss->BossDestroy()) {
-			lightgroup->SetCircleShadowDir(i + (2 + (int)(foods.size())), XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-			lightgroup->SetCircleShadowCasterPos(i + (2 + (int)(foods.size())), XMFLOAT3({ hearts[i]->GetPosition().x, hearts[i]->GetPosition().y, hearts[i]->GetPosition().z }));
-			lightgroup->SetCircleShadowAtten(i + (2 + (int)(foods.size())), XMFLOAT3(circleShadowAtten));
-			lightgroup->SetCircleShadowFactorAngle(i + (2 + (int)(foods.size())), XMFLOAT2(circleShadowFactorAngle));
+		if (m_SceneName == "FIRSTSTAGE") {
+			if (hearts[i]->GetAlive() && hearts[i] != nullptr && !boss->BossDestroy()) {
+				lightgroup->SetCircleShadowDir(i + (2 + (int)(foods.size())), XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
+				lightgroup->SetCircleShadowCasterPos(i + (2 + (int)(foods.size())), XMFLOAT3({ hearts[i]->GetPosition().x, hearts[i]->GetPosition().y, hearts[i]->GetPosition().z }));
+				lightgroup->SetCircleShadowAtten(i + (2 + (int)(foods.size())), XMFLOAT3(circleShadowAtten));
+				lightgroup->SetCircleShadowFactorAngle(i + (2 + (int)(foods.size())), XMFLOAT2(circleShadowFactorAngle));
+			}
+			else {
+				lightgroup->SetCircleShadowActive(i + (2 + (int)(foods.size())), false);
+			}
 		}
-		else {
-			lightgroup->SetCircleShadowActive(i + (2 + (int)(foods.size())), false);
+		else if(m_SceneName == "SECONDSTAGE") {
+			if (hearts[i]->GetAlive() && hearts[i] != nullptr && !boss->BossDestroy()) {
+				lightgroup->SetCircleShadowDir(i + 2, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
+				lightgroup->SetCircleShadowCasterPos(i + 2, XMFLOAT3({ hearts[i]->GetPosition().x, hearts[i]->GetPosition().y, hearts[i]->GetPosition().z }));
+				lightgroup->SetCircleShadowAtten(i + 2, XMFLOAT3(circleShadowAtten));
+				lightgroup->SetCircleShadowFactorAngle(i + 2, XMFLOAT2(circleShadowFactorAngle));
+			}
+			else {
+				lightgroup->SetCircleShadowActive(i + 2, false);
+			}
 		}
 	}
 
@@ -307,7 +308,12 @@ void LoadStageObj::BirthHeart() {
 		boss->FinishHeart();
 
 		for (int i = 0; i < hearts.size(); i++) {
-			lightgroup->SetCircleShadowActive(i + (2 + (int)(foods.size())), true);
+			if (m_SceneName == "FIRSTSTAGE") {
+				lightgroup->SetCircleShadowActive(i + (2 + (int)(foods.size())), true);
+			}
+			else if (m_SceneName == "SECONDSTAGE") {
+				lightgroup->SetCircleShadowActive(i + 2, true);
+			}
 		}
 	}
 }
