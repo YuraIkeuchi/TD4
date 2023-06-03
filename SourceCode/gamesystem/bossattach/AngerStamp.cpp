@@ -1,10 +1,10 @@
 #include "AngerStamp.h"
 #include "VariableCommon.h"
-#include "Easing.h"
 #include "ImageManager.h"
 #include "Collision.h"
 #include <random>
 #include "Player.h"
+#include "CsvLoader.h"
 AngerStamp::AngerStamp() {
 	
 }
@@ -16,7 +16,7 @@ bool AngerStamp::Initialize(const XMFLOAT3& pos) {
 	m_Birth = true;
 	m_Position = { pos.x,0.0f,pos.z };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
-
+	m_DamagePower = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "StampDamage")));
 	return true;
 }
 
@@ -96,7 +96,7 @@ bool AngerStamp::Collide() {
 
 	const float l_Radius = 2.3f;
 	if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, l_PlayerPos.x, l_PlayerPos.z, l_Radius) && (m_Color.w < 0.1f) && (Player::GetInstance()->GetDamageInterVal() == 0)) {
-		Player::GetInstance()->RecvDamage(1.0f);
+		Player::GetInstance()->RecvDamage(m_DamagePower);
 		Player::GetInstance()->PlayerHit(m_Position);
 		return true;
 	}

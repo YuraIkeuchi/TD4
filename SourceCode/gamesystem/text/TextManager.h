@@ -27,9 +27,24 @@ public:
 		TYUTORIAL_TALK4,
 		TYUTORIAL_TALK5,
 		TYUTORIAL_TALK6,
+		TYUTORIAL_TALK7,
+		TYUTORIAL_TALK8,
+		TYUTORIAL_TALK9,
+		TYUTORIAL_TALK10,
+		TYUTORIAL_TALK11,
 		AISATU ,
 		KAIWA,
 		BATTLE,
+	};
+
+	enum Name_First
+	{
+		VIEWBOSS,
+		SPEAKPLAYER1,
+		SPEALPLAYER2
+	};
+
+	enum Name_Second {
 		ANGER_TALK,
 		ANGER_TALK2,
 		JOY_TALK,
@@ -40,13 +55,6 @@ public:
 		SELECT_ANGER2,
 		SELECT_JOY,
 		SELECT_JOY2,
-	};
-
-	enum Name_First
-	{
-		VIEWBOSS,
-		SPEAKPLAYER1,
-		SPEALPLAYER2
 	};
 	static TextManager* GetInstance();
 
@@ -61,15 +69,19 @@ public:
 
 	void SetOnceColor(int row, const XMVECTOR& color = { 1.f,1.f,1.f,1.f });
 
-	void SetConversation(Name name=NONE);
+	void SetConversation(Name name=NONE,const XMVECTOR& color={1.f,1.f,1.f,1.f});
 
 	void NoneText();
+
 	void SetConversation(Name_First name = VIEWBOSS);
+
+	void SetSecondConversation(Name_Second name = ANGER_TALK);
 private:
 	
 	//
 	void CreateWord(Name name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
 	void CreateWord(Name_First name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
+	void SecondCreateWord(Name_Second name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
 
 	//
 	Word SetWord(wchar_t* tex1, wchar_t* tex2, wchar_t* tex3);
@@ -80,6 +92,7 @@ private:
 private:
 	std::map<TextManager::Name, Word> wordlist_;
 	std::map<TextManager::Name_First, Word> wordlist_first;
+	std::map<TextManager::Name_Second, Word> wordlist_second;
 	Conversation conversation_ = {};
 
 	Conversation bossconversation_ = {};

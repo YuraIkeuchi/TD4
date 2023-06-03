@@ -2,8 +2,8 @@
 #include "ImageManager.h"
 #include"Collision.h"
 #include "Helper.h"
-#include "Easing.h"
 #include "VariableCommon.h"
+#include "CsvLoader.h"
 void ShockWave::Initialize(const XMFLOAT3& pos) {
 	tex = IKETexture::Create(ImageManager::IMPACT, { 0,0,0 }, { 12,12,12 }, { 1,1,1,0.6f });
 	tex->TextureCreate();
@@ -12,6 +12,8 @@ void ShockWave::Initialize(const XMFLOAT3& pos) {
 	tex->SetScale({ 0.0f,0.0f,0.0f });
 
 	m_Alive = true;
+
+	m_DamagePower = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "WaveDamage")));
 }
 
 void ShockWave::Update() {
@@ -40,7 +42,7 @@ void ShockWave::ImGuiDraw() {
 //ボスによって衝撃波が走る
 void ShockWave::WideWave() {
 	//イージング語の各ステータス
-	const float l_AfterScale = 3.5f;
+	const float l_AfterScale = 4.0f;
 	const float l_AfterDamage = 8.0f;
 	const float l_AfterColor = 0.0f;
 	const float l_AddFrame = 0.01f;
@@ -64,10 +66,10 @@ void ShockWave::WideWave() {
 
 bool ShockWave::CollideWave() {
 	if (Player::GetInstance()->GetDamageInterVal() != 0) { return false; }
-	if (m_Color.w < 0.1f) { return false; }
+	if (m_Color.w < 0.05f) { return false; }
 	if (Collision::CircleCollision(m_Position.x, m_Position.z, m_DamagRadius,
 		Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z,m_DamagRadius)) {
-		Player::GetInstance()->RecvDamage(1.0f);
+		Player::GetInstance()->RecvDamage(m_DamagePower);
 		Player::GetInstance()->PlayerHit(m_Position);
 		return true;
 	}

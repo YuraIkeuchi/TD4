@@ -39,21 +39,28 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	CreateWord(TYUTORIAL_TALK4, L"え!?メガホンが喋った!", L" ", L" ");
 	CreateWord(TYUTORIAL_TALK5, L"メガホンじゃない、オレはストポンだ", L"メガホンに取り憑いた亡霊だ!", L"こうしちゃいられない....追手が来ちまう");
 	CreateWord(TYUTORIAL_TALK6, L"　追手ってあれのこと?", L" ", L" ");
+	CreateWord(TYUTORIAL_TALK7, L"チッ、もう追ってきやがった",L"おい人間、今からいうことをしっかり聞け",L" ");
+	CreateWord(TYUTORIAL_TALK8, L"今からあの追手を倒す", L"その為にそこらへんにいる亡霊を仲間にする", L"亡霊に近づいてRBを押せ");
+
 	CreateWord(AISATU,L"おはよう",L"こんにちは",L"こんばんは");
-	CreateWord(ANGER_TALK, L"うぉおおおおい!!!", L"いったいオマエは!!!!!!", L"ナニしにキタ!?!?!?!?!?!?");
-	CreateWord(ANGER_TALK2, L"もしかして", L"おれにたいして", L"ケンカをうりにきたのか!?");
-	CreateWord(JOY_TALK, L"まあまあおちついてよ", L"ほらみてみなよ", L"こわがってるじゃんか!");
-	CreateWord(JOY_TALK2, L"いきなりなんだけどヒトツきみに", L"きいてみたいことがあるんだ!", L"");
-	CreateWord(JOY_TALK3, L"きみは", L"イカリとヨロコビというキモチ", L"どっちがダイジだとおもう?");
-	CreateWord(SELECT_TALK, L"どっちだろう・・・?", L"Y:イカリ", L"X:ヨロコビ");
-	CreateWord(SELECT_ANGER, L"イカリがダイジだとおもうか", L"よくわかってるじゃないか・・・", L"ってことはよ・・・");
-	CreateWord(SELECT_ANGER2, L"このカンジョウにまかせて", L"オマエをたおしてもいいってことだな!!!", L"!!!!!!!!");
-	CreateWord(SELECT_JOY, L"キミよくわかってるね!", L"ってことはさ、キミは", L"このぼくのカンジョウ・・・");
-	CreateWord(SELECT_JOY2, L"めのまえのやつをたおすヨロコビを", L"リカイしてくれるよね!!!", L"!!!!!!!!!!");
 
 	CreateWord(Name_First::VIEWBOSS, L"ちえよしもどってこい!!!",L"そんなにうごきまわったらしんでしまうぞ!!",L"");
 	CreateWord(Name_First::SPEAKPLAYER1, L"すてぽん。。ちえよしはもう。。");
 	CreateWord(Name_First::SPEALPLAYER2, L"ちえよしは、とっしんすることしかあたまにないんじゃろう。。。",L"くっ。。。にんげんときにはあきらめもたいせつか。。。",L"ちえよし。。しんでくれ!!!");
+	CreateWord(Name_First::VIEWBOSS, L"ちちうえ!ほんがうごきまわってるでござる!",L"どうするでござるか!?",L"しめるでござるか!?");
+	CreateWord(Name_First::SPEAKPLAYER1, L"。。。。。。。");
+	CreateWord(Name_First::SPEALPLAYER2, L"あれはわしらにはすくえぬものじゃ",L"ぜんりょくでころすのじゃ");
+
+	SecondCreateWord(ANGER_TALK, L"うぉおおおおい!!!", L"いったいオマエは!!!!!!", L"ナニしにキタ!?!?!?!?!?!?");
+	SecondCreateWord(ANGER_TALK2, L"もしかして", L"おれにたいして", L"ケンカをうりにきたのか!?");
+	SecondCreateWord(JOY_TALK, L"まあまあおちついてよ", L"ほらみてみなよ", L"こわがってるじゃんか!");
+	SecondCreateWord(JOY_TALK2, L"いきなりなんだけどヒトツきみに", L"きいてみたいことがあるんだ!", L"");
+	SecondCreateWord(JOY_TALK3, L"きみは", L"イカリとヨロコビというキモチ", L"どっちがダイジだとおもう?");
+	SecondCreateWord(SELECT_TALK, L"どっちだろう・・・?", L"Y:イカリ", L"X:ヨロコビ");
+	SecondCreateWord(SELECT_ANGER, L"イカリがダイジだとおもうか", L"よくわかってるじゃないか・・・", L"ってことはよ・・・");
+	SecondCreateWord(SELECT_ANGER2, L"このカンジョウにまかせて", L"オマエをたおしてもいいってことだな!!!", L"!!!!!!!!");
+	SecondCreateWord(SELECT_JOY, L"キミよくわかってるね!", L"ってことはさ、キミは", L"このぼくのカンジョウ・・・");
+	SecondCreateWord(SELECT_JOY2, L"めのまえのやつをたおすヨロコビを", L"リカイしてくれるよね!!!", L"!!!!!!!!!!");
 	//コンヴァージョン初期化
 	Create(dxcomon);
 
@@ -96,17 +103,29 @@ void TextManager::SetOnceColor(int row, const XMVECTOR& color)
 }
 
 //名前から文字列を呼び出しセットする
-void TextManager::SetConversation(Name name)
+void TextManager::SetConversation(Name name,const XMVECTOR& color)
 {
 	std::map<TextManager::Name, Word>::iterator itr = wordlist_.find(name);
 
 	CreateCon(conversation_, itr->second);
-	//conversation_ = CreateConversation(itr->second);
+
+	conversation_.FirstFont->SetColor(color);
+	conversation_.SecondFont->SetColor(color);
+	conversation_.ThirdFont->SetColor(color);
 }
 //名前から文字列を呼び出しセットする
 void TextManager::SetConversation(Name_First name)
 {
 	std::map<TextManager::Name_First, Word>::iterator itr = wordlist_first.find(name);
+
+	CreateCon(conversation_, itr->second);
+	//conversation_ = CreateConversation(itr->second);
+}
+
+//名前から文字列を呼び出しセットする
+void TextManager::SetSecondConversation(Name_Second name)
+{
+	std::map<TextManager::Name_Second, Word>::iterator itr = wordlist_second.find(name);
 
 	CreateCon(conversation_, itr->second);
 	//conversation_ = CreateConversation(itr->second);
@@ -123,6 +142,13 @@ void TextManager::CreateWord(Name_First name, wchar_t* tex1, wchar_t* tex2, wcha
 {
 	Word temp = SetWord(tex1, tex2, tex3);
 	wordlist_first.insert(std::make_pair(name, temp));
+}
+
+//名前と文字列セットで保存(2個目のボス)
+void TextManager::SecondCreateWord(Name_Second name, wchar_t* tex1, wchar_t* tex2, wchar_t* tex3)
+{
+	Word temp = SetWord(tex1, tex2, tex3);
+	wordlist_second.insert(std::make_pair(name, temp));
 }
 
 //文字列保存

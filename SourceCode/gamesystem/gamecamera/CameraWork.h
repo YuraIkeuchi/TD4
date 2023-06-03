@@ -102,6 +102,8 @@ bool FinishAppear() { if (spline->GetIndex() >= static_cast<int>(pointsList.size
 
 	bool GetEndDeath() { return m_EndDeath; }
 
+	bool GetAppearEndF() { return AppearEndF; }
+
 	int GetAppearType() { return m_AppearType; }
 	void SetCameraState(const int CameraState) { m_CameraState = CameraState; }
 
