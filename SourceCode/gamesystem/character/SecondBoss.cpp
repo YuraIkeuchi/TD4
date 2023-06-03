@@ -759,7 +759,7 @@ bool SecondBoss::Collide() {
 	m_OBB1.SetParam_Rot(m_MatRot);
 	m_OBB1.SetParam_Scl(m_OBBScale);
 
-	m_OBB2.SetParam_Pos(Player::GetInstance()->GetPosition());
+	m_OBB2.SetParam_Pos({ Player::GetInstance()->GetPosition().x,0.0f,Player::GetInstance()->GetPosition().z});
 	m_OBB2.SetParam_Rot(Player::GetInstance()->GetMatRot());
 	m_OBB2.SetParam_Scl(Player::GetInstance()->GetScale());
 

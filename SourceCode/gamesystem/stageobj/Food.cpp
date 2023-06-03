@@ -99,6 +99,7 @@ void Food::BirthFood() {
 		}
 		//ˆê’èŠÔ‚Å¶¬‚³‚ê‚é
 		if (m_Timer == 100) {
+			m_LightSet = true;
 			m_Alive = true;
 			m_Spawn = true;
 			m_Timer = 0;

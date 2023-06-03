@@ -348,7 +348,7 @@ void Player::Bullet_Management() {
 	//可視化の弾関係
 	viewbullet->Update();
 	viewbullet->SetAngle(l_Angle);
-	viewbullet->SetPosition(m_Position);
+	viewbullet->SetPosition({ m_Position.x,0.0f,m_Position.z });
 
 	SutoponUpdate();
 }

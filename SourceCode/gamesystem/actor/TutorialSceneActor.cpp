@@ -346,13 +346,31 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	BackObj::GetInstance()->Initialize();
 	loadobj = std::make_unique<LoadStageObj>();
 	loadobj->AllLoad("FIRSTSTAGE");
+	loadobj->LightSet(lightgroup);
 	LoadStageObj::SetEnemyManager(enemymanager.get());
 	//シーンチェンジャー
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
+
+	lightgroup->SetCircleShadowActive(0, true);
+	lightgroup->SetCircleShadowActive(1, true);
 }
 //更新
 void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
+
+	//プレイヤー
+	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
+	lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().y, Player::GetInstance()->GetPosition().z }));
+	lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
+	lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
+
+	//ボス一旦放置
+	//lightgroup->SetCircleShadowDir(1, XMVECTOR({ BosscircleShadowDir[0], BosscircleShadowDir[1], BosscircleShadowDir[2], 0 }));
+	//lightgroup->SetCircleShadowCasterPos(1, XMFLOAT3({ firstEnemy->GetPosition().x, 	firstEnemy->GetPosition().y, 	firstEnemy->GetPosition().z }));
+	//lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
+	//lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
+
+
 	if (PlayerDestroy()) {
 		SceneManager::GetInstance()->ChangeScene("TITLE");
 	}

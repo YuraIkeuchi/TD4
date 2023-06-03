@@ -20,7 +20,7 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	ParticleEmitter::GetInstance()->AllDelete();
 
 	//各クラス
-	Player::GetInstance()->InitState({ 0.0f,0.0f,-5.0f });
+	Player::GetInstance()->InitState({ 0.0f,5.0f,-5.0f });
 	
 	//シーンチェンジャー
 	sceneChanger_ = make_unique<SceneChanger>();
@@ -43,9 +43,12 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 
 	loadobj = std::make_unique<LoadStageObj>();
 	loadobj->AllLoad("SECONDSTAGE");
-	loadobj->SetEnemyManager(enemymanager.get());
+	LoadStageObj::SetEnemyManager(enemymanager.get());
 
 	m_SceneState = SceneState::IntroState;
+
+	lightgroup->SetCircleShadowActive(0, true);
+	lightgroup->SetCircleShadowActive(1, true);
 }
 //更新
 void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -53,6 +56,17 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	//関数ポインタで状態管理
 	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
 
+	//プレイヤー
+	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
+	lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().y, Player::GetInstance()->GetPosition().z }));
+	lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
+	lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
+
+	//ボス
+	lightgroup->SetCircleShadowDir(1, XMVECTOR({ BosscircleShadowDir[0], BosscircleShadowDir[1], BosscircleShadowDir[2], 0 }));
+	lightgroup->SetCircleShadowCasterPos(1, XMFLOAT3({ enemymanager->GetBoss()->GetPosition().x, 	enemymanager->GetBoss()->GetPosition().y, 	enemymanager->GetBoss()->GetPosition().z }));
+	lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
+	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
 	lightgroup->Update();
 }
 //描画
