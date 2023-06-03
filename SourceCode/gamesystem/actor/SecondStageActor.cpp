@@ -43,6 +43,7 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 
 	loadobj = std::make_unique<LoadStageObj>();
 	loadobj->AllLoad("SECONDSTAGE");
+	loadobj->LightSet(lightgroup);
 	LoadStageObj::SetEnemyManager(enemymanager.get());
 
 	m_SceneState = SceneState::IntroState;

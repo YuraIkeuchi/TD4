@@ -105,6 +105,10 @@ void LoadStageObj::SecondUpdate()
 		newFood->SetLimit(true);
 		foods.push_back(newFood);
 		boss->FinishCheck();
+
+		for (int i = 0; i < foods.size(); i++) {
+			foods[i]->SetLightSet(true);
+		}
 	}
 }
 //•`‰æ
@@ -240,7 +244,7 @@ void LoadStageObj::CommonUpdate() {
 	for (auto i = 0; i < foods.size(); i++)
 	{
 		foods[i]->Update();
-		if (foods[i]->GetAlive()) {
+		if (foods[i]->GetAlive() && foods[i] != nullptr) {
 			lightgroup->SetCircleShadowDir(i + 2, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
 			lightgroup->SetCircleShadowCasterPos(i + 2, XMFLOAT3({ foods[i]->GetPosition().x, foods[i]->GetPosition().y, foods[i]->GetPosition().z }));
 			lightgroup->SetCircleShadowAtten(i + 2, XMFLOAT3(circleShadowAtten));

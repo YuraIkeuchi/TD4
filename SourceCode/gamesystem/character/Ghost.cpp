@@ -93,7 +93,7 @@ void Ghost::Particle() {
 //“–‚½‚è”»’è(’e)
 bool Ghost::BulletCollision() {
 	float l_AddHungerMax = HungerGauge::m_Hungervalue;//‰ÁŽZ‚³‚ê‚éÅ‘å‹Q‰ìƒQ[ƒW
-	if (Player::GetInstance()->BulletCollide(m_Position, m_Object->GetMatrot(), m_OBBScale, m_Catch) && (m_Alive)) {
+	if (Player::GetInstance()->BulletCollide({ m_Position.x,0.0f,m_Position.z }, m_Object->GetMatrot(), m_OBBScale, m_Catch) && (m_Alive)) {
 		m_Catch = true;
 		if (Player::GetInstance()->GetBulletType() == BULLET_FORROW) {
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Follower.wav", VolumManager::GetInstance()->GetSEVolum());
