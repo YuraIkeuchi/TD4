@@ -36,5 +36,8 @@ private:
 	int randMove;
 	float s_scale = 0.0f;
 	int MoveTimer;
+
+	XMFLOAT3 OldPos_BefRot;
+	float tmpLength;
 };
 

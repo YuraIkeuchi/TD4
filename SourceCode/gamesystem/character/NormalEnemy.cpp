@@ -17,7 +17,7 @@ bool NormalEnemy::Initialize() {
 
 	m_Scale = { 0.0f,0.0f,0.0f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
-	m_Position.y = 5.0f;
+	m_Position.y = 0.0f;
 	ret = true;
 	HP = 1;
 	isAlive = true;
@@ -109,7 +109,7 @@ void NormalEnemy::DeathEffect()
 
 void NormalEnemy::Appearance()
 {
-//	if (Rush)return;
+	if (Rush)return;
 	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
 
 	//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
@@ -149,6 +149,8 @@ void NormalEnemy::RushAction()
 {
 	if (!Rush)return;
 
+	XMFLOAT3 PPos = Player::GetInstance()->GetPosition();
+
 	ShotCount = 0;
 	s_scale += 0.02f;
 
@@ -157,6 +159,8 @@ void NormalEnemy::RushAction()
 	 // positionA - positionB;
 	//回転軸をプレイヤーの方に
 		//向きかえる
+
+	
 	if (ret)
 	{
 		MoveTimer = 0;
@@ -175,16 +179,23 @@ void NormalEnemy::RushAction()
 		if(canRot)
 		m_Rotation.y = Easing::EaseOut(t, old * 50.f + 180.f, RotY * 50.f+180.f);
 		if (t >= 1.f) {
-			canRot = true; 
-			ret = false;//	} else {
-		}	//m_Rotation.y = Easing::EaseOut(t, old * 60.f + 180.f, RotY * 60.f + 180.f - 360.f);
-			//}
+			canRot = false;
+			ret = false;
+		}
+		tmpLength = Collision::GetLength(XMFLOAT2(m_Position.x, m_Position.z), XMFLOAT2(PPos.x, PPos.z));
 	} else
 	{
+		float NowLength= Collision::GetLength(XMFLOAT2(m_Position.x, m_Position.z), XMFLOAT2(PPos.x, PPos.z));;
+
+		bool JudgRet = MoveTimer>120&&sqrtf((NowLength-tmpLength)* (NowLength - tmpLength))<20;
+		
 		t = 0.f;
 		old = RotY;
 		MoveTimer++;
-		if (MoveTimer>120) {
+
+		if (JudgRet) {
+			OldPos_BefRot = m_Position;
+			canRot = true;
 			randMove = rand() % 100;
 			ret = true;
 		}

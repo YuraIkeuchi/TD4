@@ -738,6 +738,8 @@ void FirstBoss::ChargeAttack::ReturnPosJudg(bool& reposf)
 
 void FirstBoss::ChargeAttack::JumpAction(XMFLOAT3& Pos, XMFLOAT3& Rot)
 {
+	XMFLOAT3 PPos = Player::GetInstance()->GetPosition();
+
 	float SubPower = 0.001f;
 	//落下の緩急
 	constexpr float Distortion = 3.f;
@@ -752,6 +754,11 @@ void FirstBoss::ChargeAttack::JumpAction(XMFLOAT3& Pos, XMFLOAT3& Rot)
 
 	if (JFrame >= 1.f)
 	{
+		if(Collision::CircleCollision(PPos.x,PPos.z,2.f,Pos.x,Pos.z,5.f))
+		{
+			Player::GetInstance()->RecvDamage(2.0f);
+		}
+
 		_phase = Phase_Charge::ATTACK;
 	}
 
@@ -901,7 +908,7 @@ void FirstBoss::DeadAction() {
 		m_Rotation.z += DeathSpeed;
 		if(DeathSpeed>=3.f)
 		{
-			m_Rotation.y += 0.4f;
+			//m_Rotation.y += 0.4f;
 			m_Rotation.z += 1.f;
 		}
 	}
@@ -944,9 +951,9 @@ void FirstBoss::AttackDecision()
 		RandActionCount = rand() % 5;
 
 		//比重は通常攻撃多め
-		if (RandActionCount == 1)_attackAction = SUMMON;
-		else if (RandActionCount == 2)_attackAction = CHARGE;
-		else  _attackAction = NORMAL;
+		if (RandActionCount > 0)_attackAction = SUMMON;
+		//else if (RandActionCount == 2)_attackAction = CHARGE;
+		//else  _attackAction = NORMAL;
 
 		//核攻撃のフラグオン
 		SelAttack();
@@ -985,6 +992,5 @@ void FirstBoss::SelAttack()
 	//ため攻撃
 	if (!SummobnStop && !_cattack.GetAttackF() && !_normal.GetAttackF() &&_attackAction==CHARGE)
 		_cattack.SetAttackF(true);
-
-
+	
 }

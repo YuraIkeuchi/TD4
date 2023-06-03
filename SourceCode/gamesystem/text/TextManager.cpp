@@ -51,9 +51,9 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	CreateWord(SELECT_JOY, L"キミよくわかってるね!", L"ってことはさ、キミは", L"このぼくのカンジョウ・・・");
 	CreateWord(SELECT_JOY2, L"めのまえのやつをたおすヨロコビを", L"リカイしてくれるよね!!!", L"!!!!!!!!!!");
 
-	CreateWord(Name_First::VIEWBOSS, L"ちちうえ!ほんがうごきまわってるでござる!",L"どうするでござるか!?",L"しめるでござるか!?");
-	CreateWord(Name_First::SPEAKPLAYER1, L"。。。。。。。");
-	CreateWord(Name_First::SPEALPLAYER2, L"あれはわしらにはすくえぬものじゃ",L"ぜんりょくでころすのじゃ");
+	CreateWord(Name_First::VIEWBOSS, L"ちえよしもどってこい!!!",L"そんなにうごきまわったらしんでしまうぞ!!",L"");
+	CreateWord(Name_First::SPEAKPLAYER1, L"すてぽん。。ちえよしはもう。。");
+	CreateWord(Name_First::SPEALPLAYER2, L"ちえよしは、とっしんすることしかあたまにないんじゃろう。。。",L"くっ。。。にんげんときにはあきらめもたいせつか。。。",L"ちえよし。。しんでくれ!!!");
 	//コンヴァージョン初期化
 	Create(dxcomon);
 

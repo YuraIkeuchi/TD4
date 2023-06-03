@@ -16,6 +16,14 @@ float Collision::GetLength(XMFLOAT3 position, XMFLOAT3 position2)
 	return len;
 }
 
+float Collision::GetLength(XMFLOAT2 position, XMFLOAT2 position2)
+{
+	float len;
+	len = sqrtf(
+		(position.x - position2.x) * (position.x - position2.x) + (position.y - position2.y) * (position.y - position2.
+			y));
+	return len;
+}
 bool Collision::SphereCollision(const XMFLOAT3& pos, const float& R1, const XMFLOAT3& pos2, const float& R2) {
 	float a = pos.x - pos2.x;
 	float b = pos.y - pos2.y;

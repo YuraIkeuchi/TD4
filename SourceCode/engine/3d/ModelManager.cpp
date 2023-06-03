@@ -33,6 +33,7 @@ void ModelManager::SecondInitialize()
 	LoadFBXModel(PLAYER, "PlayerFBXNew");
 	LoadFBXModel(SIORI, "siori_idol");
 	LoadFBXModel(KIDO, "kidokun_idol");
+	LoadFBXModel(TIEYOSHI, "tieyosi_anime");
 }
 
 void ModelManager::Finalize()

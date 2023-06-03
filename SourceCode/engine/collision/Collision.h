@@ -21,6 +21,8 @@ public:
 
 	static float GetLength(XMFLOAT3 position, XMFLOAT3 position2);
 
+	static float GetLength(XMFLOAT2 position, XMFLOAT2 position2);
+
 	//“–‚½‚è”»’èŠÖ”
 	//‹…‚Æ‹…
 	static bool SphereCollision(const XMFLOAT3& pos, const float& R1, const XMFLOAT3& pos2, const float& R2);
