@@ -237,7 +237,7 @@ void CameraWork::SecondBossAppear() {
 		m_targetPos.x = 0.0f;
 		m_eyePos = {
 			Player::GetInstance()->GetPosition().x,
-			Player::GetInstance()->GetPosition().y,
+			0.0f,
 			Player::GetInstance()->GetPosition().z + 23.0f,
 		};
 

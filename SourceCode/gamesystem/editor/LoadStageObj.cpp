@@ -56,6 +56,13 @@ void LoadStageObj::AllLoad(const std::string& sceneName)
 		foods[i]->Initialize();
 	}
 }
+//ライトセット(食べ物に使う)
+void LoadStageObj::LightSet(LightGroup* light) {
+	lightgroup = light;
+	for (auto i = 0; i < foods.size(); i++) {
+		lightgroup->SetCircleShadowActive(i + 2, true);
+	}
+}
 //初期化
 void LoadStageObj::Initialize()
 {
@@ -98,6 +105,10 @@ void LoadStageObj::SecondUpdate()
 		newFood->SetLimit(true);
 		foods.push_back(newFood);
 		boss->FinishCheck();
+
+		for (int i = 0; i < foods.size(); i++) {
+			foods[i]->SetLightSet(true);
+		}
 	}
 }
 //描画
@@ -233,6 +244,15 @@ void LoadStageObj::CommonUpdate() {
 	for (auto i = 0; i < foods.size(); i++)
 	{
 		foods[i]->Update();
+		if (foods[i]->GetAlive() && foods[i] != nullptr && !boss->BossDestroy()) {
+			lightgroup->SetCircleShadowDir(i + 2, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
+			lightgroup->SetCircleShadowCasterPos(i + 2, XMFLOAT3({ foods[i]->GetPosition().x, foods[i]->GetPosition().y, foods[i]->GetPosition().z }));
+			lightgroup->SetCircleShadowAtten(i + 2, XMFLOAT3(circleShadowAtten));
+			lightgroup->SetCircleShadowFactorAngle(i + 2, XMFLOAT2(circleShadowFactorAngle));
+		}
+		else {
+			lightgroup->SetCircleShadowActive(i + 2, false);
+		}
 	}
 
 	//ハート
@@ -262,6 +282,8 @@ void LoadStageObj::CommonUpdate() {
 	VanishGhost();
 	//ハートの生成
 	BirthHeart();
+	//ライト生成
+	LightReturn();
 }
 //ハートの生成
 void LoadStageObj::BirthHeart() {
@@ -273,5 +295,14 @@ void LoadStageObj::BirthHeart() {
 		newHeart->SetPosition({ boss->GetEnemyPosition().x,0.0f,boss->GetEnemyPosition().z });
 		hearts.push_back(newHeart);
 		boss->FinishHeart();
+	}
+}
+
+void LoadStageObj::LightReturn() {
+	for (auto i = 0; i < foods.size(); i++) {
+		if (foods[i]->GetLightSet()) {
+			lightgroup->SetCircleShadowActive(i + 2, true);
+			foods[i]->SetLightSet(false);
+		}
 	}
 }

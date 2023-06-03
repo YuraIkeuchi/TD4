@@ -109,6 +109,11 @@ private:
 
 	XMFLOAT4 girl_color_ = { 1.5f,1.5f,1.5f,1.f };
 	XMFLOAT4 sutopon_color_ = { 1.f,1.f,1.f,0.f };
+
+	//丸影(ボス)
+	float BosscircleShadowDir[3] = { 0,-1,0 };
+	float BosscircleShadowAtten[3] = { 0.5f,0.6f,0.0f };
+	float BosscircleShadowFactorAngle[2] = { 0.0f, 2.0f };
 private://便利関数
 	bool Clear(bool mission,int waitTimerMax);
 

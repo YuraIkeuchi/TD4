@@ -51,11 +51,13 @@ public:
 	const bool& GetAlive() { return m_Alive; }
 	const bool& GetLockOn() { return m_LockOn; }
 	const bool& GetIsCarried() { return m_IsCarried; }
+	const bool& GetLightSet() { return m_LightSet; }
 
 	void SetAlive(const bool Alive) { m_Alive = Alive; }
 	void SetLockOn(const bool LockOn) { m_LockOn = LockOn; }
 	void SetLimit(const bool Limit) { m_Limit = Limit; }
 	void SetIsCarried(const bool IsCarried) { m_IsCarried = IsCarried; }
+	void SetLightSet(const bool LightSet) { m_LightSet = LightSet; }
 
 private:
 	bool m_Alive = true;//¶‘¶ƒtƒ‰ƒO
@@ -73,4 +75,6 @@ private:
 	bool m_Limit = false;
 	//íœ‚Ü‚Å‚ÌŠÔ
 	int m_DeleteTimer = 0;
+
+	bool m_LightSet = false;
 };

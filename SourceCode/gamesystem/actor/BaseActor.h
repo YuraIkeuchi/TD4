@@ -73,11 +73,11 @@ protected:
 	float pointLightColor[3] = { 1,1,1 };
 	float pointLightAtten[3] = { 15.0f,15.0f,15.0f };
 	float pointLightPower[3] = { 20.0f,20.0f,20.0f };
-	//丸影
+	//丸影(プレイヤー)
 	float circleShadowDir[3] = { 0,-1,0 };
-	float circleShadowPos[3] = { 1,2,0 };
 	float circleShadowAtten[3] = { 0.5f,0.6f,0.0f };
-	float circleShadowFactorAngle[2] = { 0.0f, 0.8f };
+	float circleShadowFactorAngle[2] = { 0.0f, 1.2f };
+
 	unique_ptr<PostEffect> postEffect = nullptr;
 	unique_ptr<CameraWork> camerawork;
 	bool PlayPostEffect = false;

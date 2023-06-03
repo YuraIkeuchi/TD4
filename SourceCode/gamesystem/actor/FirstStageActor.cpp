@@ -23,22 +23,25 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	sceneChanger_->Initialize();
 
 	//各クラス
-	Player::GetInstance()->InitState({ 0.0f,0.0f,-70.0f });
-	camerawork->Update(camera);
-	
+	//プレイヤー
+	Player::GetInstance()->InitState({ 0.0f,5.0f,-70.0f });
+	//敵
 	enemymanager = std::make_unique<EnemyManager>("FIRSTSTAGE");
-	
+	//カメラ
+	camerawork->Update(camera);
 	camerawork->SetBoss(enemymanager->GetBoss());
 	camerawork->SetCameraState(CAMERA_BOSSAPPEAR);
 	camerawork->SetSceneName("FIRSTSTAGE");
+	//UI
 	ui = std::make_unique<UI>();
 	ui->Initialize();
 	ui->SetBoss(enemymanager->GetBoss());
-
+	//背景
 	BackObj::GetInstance()->Initialize();
-	
+	//ステージOBJ
 	loadobj = std::make_unique<LoadStageObj>();
 	loadobj->AllLoad("FIRSTSTAGE");
+	loadobj->LightSet(lightgroup);
 	LoadStageObj::SetEnemyManager(enemymanager.get());
 
 	text_ = make_unique<BossText>();
@@ -46,6 +49,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	text_->SelectText(TextManager::Name_First::VIEWBOSS);
 
 	lightgroup->SetCircleShadowActive(0, true);
+	lightgroup->SetCircleShadowActive(1, true);
 }
 //更新
 void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -62,10 +66,18 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 
 	Input* input = Input::GetInstance();
 
+	//プレイヤー
 	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
 	lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().y, Player::GetInstance()->GetPosition().z}));
 	lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
 	lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
+
+	//ボス
+	lightgroup->SetCircleShadowDir(1, XMVECTOR({ BosscircleShadowDir[0], BosscircleShadowDir[1], BosscircleShadowDir[2], 0 }));
+	lightgroup->SetCircleShadowCasterPos(1, XMFLOAT3({ enemymanager->GetBoss()->GetPosition().x, 	enemymanager->GetBoss()->GetPosition().y, 	enemymanager->GetBoss()->GetPosition().z }));
+	lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
+	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
+
 	if (input->TriggerKey(DIK_X)) {
 		Audio::GetInstance()->StopWave(1);
 		SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
