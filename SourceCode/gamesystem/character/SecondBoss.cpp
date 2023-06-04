@@ -127,8 +127,9 @@ void SecondBoss::Action() {
 	}
 
 	//状態移行(charastateに合わせる)
-	(this->*stateTable[_charaState])();
-
+	if (m_HP > 0.0f) {
+		(this->*stateTable[_charaState])();
+	}
 	//スタンプの削除
 	for (int i = 0; i < angerstamps.size(); i++) {
 		if (angerstamps[i] == nullptr) {
@@ -319,6 +320,7 @@ void SecondBoss::Stamp() {
 		//次の行動
 		if (Helper::GetInstance()->CheckMin(m_StopTimer, m_StampInterval[PRESS_SHAKE], 1)) {
 			m_Rotation.x = 0.0f;
+			m_AfterRot.x = 0.0f;
 			StampInit(PRESS_RETURN, false);
 		}
 	
@@ -695,14 +697,13 @@ void SecondBoss::ChoiceMove() {
 		m_Frame = 0.0f;
 		m_StopTimer = 0;
 		l_RandState = int(l_RandomMove(mt));
-		//RandStateが30以下ならそれに応じた移動にする、
+		m_MoveCount = 0;
+		_InterValState = UpState;
+		_charaState = STATE_MOVE;
+		m_FollowSpeed = 1.0f;
+		m_AfterPos.y = 30.0f;
+		////RandStateが30以下ならそれに応じた移動にする、
 		if (l_RandState <= 30) {
-			m_MoveCount = 0;
-			_InterValState = UpState;
-			_charaState = STATE_MOVE;
-			m_FollowSpeed = 1.0f;
-			m_AfterPos.y = 30.0f;
-
 			if (l_RandState <= 10) {
 				m_MoveState = MOVE_ALTER;
 			}

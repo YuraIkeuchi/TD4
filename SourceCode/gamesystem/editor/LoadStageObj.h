@@ -72,5 +72,7 @@ private:
 	float circleShadowPos[3] = { 1,2,0 };
 	float circleShadowAtten[3] = { 0.5f,0.6f,0.0f };
 	float circleShadowFactorAngle[2] = { 0.0f, 0.8f };
+
+	string m_SceneName;
 };
 
