@@ -89,6 +89,8 @@ void FirstBoss::Action() {
 			OldPos_EndSummon = m_Position;
 		}
 
+		if (SummobnStop)m_Rotation.y += 10.f;
+
 		EndSumon_returnPos(EndSummonRepos, RePosEaseT);
 		EndSumon_returnPos(ReturnPosF_Impact, RePosEaseT_Impact);
 
@@ -104,13 +106,10 @@ void FirstBoss::Action() {
 			EaseT_BatStart = 0.f;
 			//タイマーカウンタ
 			AttackDecision();
-
-			
-	if(SummobnStop)
-		
-			//通常移動（円運動）
-			Move();
-
+			if (!SummobnStop){
+				//通常移動（円運動）
+				Move();
+		}
 			//通常攻撃
 			_normal.Update(m_Position, m_Rotation, EncF);
 			//ため攻撃
@@ -948,12 +947,12 @@ void FirstBoss::AttackDecision()
 
 	if (Active) {
 		//攻撃の種類はランダム
-		RandActionCount = rand() % 5;
+		RandActionCount = rand() % 4;
 
 		//比重は通常攻撃多め
-		if (RandActionCount > 0)_attackAction = SUMMON;
-		//else if (RandActionCount == 2)_attackAction = CHARGE;
-		//else  _attackAction = NORMAL;
+		if (RandActionCount == 0)_attackAction = SUMMON;
+		else if (RandActionCount == 1)_attackAction = CHARGE;
+		else  _attackAction = NORMAL;
 
 		//核攻撃のフラグオン
 		SelAttack();

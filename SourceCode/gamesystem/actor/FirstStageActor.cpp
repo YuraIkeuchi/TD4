@@ -86,9 +86,13 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 
 	if (enemymanager->BossDestroy()) {
 		Audio::GetInstance()->StopWave(1);
-	//	sceneChanger_->ChangeStart();
-	//	sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
-
+	}
+	if (Input::GetInstance()->TriggerButton(Input::A)) {
+		camerawork->SetCameraSkip(true);
+	}
+	if (camerawork->GetAppearEndF()) {
+		camerawork->SetCameraState(CAMERA_NORMAL);
+		//enemymanager->SkipInitialize();
 	}
 
 	if (PlayerDestroy()) {
