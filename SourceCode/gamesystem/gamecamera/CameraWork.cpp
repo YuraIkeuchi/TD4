@@ -16,14 +16,20 @@ CameraWork::CameraWork(XMFLOAT3 eye, XMFLOAT3 target) {
 #pragma region First
 	{
 		if (pointsList.size() == 0) {
-			pointsList.emplace_back(XMFLOAT3{ 0,160,200 });
-			pointsList.emplace_back(XMFLOAT3{ 0,80,120 });
+			pointsList.emplace_back(XMFLOAT3{ 150,5,0 });
+			pointsList.emplace_back(XMFLOAT3{ 130,5,120 });
+
+			pointsList.emplace_back(XMFLOAT3{ 0,5,120 });
+
+			pointsList.emplace_back(XMFLOAT3{ -150,5,100 });
+			pointsList.emplace_back(XMFLOAT3{ -120,5,20 });
+
+
+			pointsList.emplace_back(XMFLOAT3{ 0,5,200 });
+			pointsList.emplace_back(XMFLOAT3{ 0,5,80 });
+			pointsList.emplace_back(XMFLOAT3{ 0,90,60 });
 			//pointsList.emplace_back(XMFLOAT3{ 25,30,-15 });
-			pointsList.emplace_back(XMFLOAT3{ -90,30,70 });
-			pointsList.emplace_back(XMFLOAT3{ 0,50,0 });
-			pointsList.emplace_back(XMFLOAT3{ 90,30,50 });
-			pointsList.emplace_back(XMFLOAT3{ 0,30,0});
-			pointsList.emplace_back(XMFLOAT3{ -20,10,-30 });
+		
 		}
 		spline = new Spline();
 		spline->Init(pointsList, static_cast<int>(pointsList.size()));
@@ -189,19 +195,38 @@ void CameraWork::SpecialUpdate() {
 
 void CameraWork::feedDraw()
 {
-	if (!FeedF) return;
+	if (FeedF||Feed_Spline)
 	feed->Draw();
 }
 //最初のボスのカメラ
 void CameraWork::FirstBossAppear() {
 
-	if(!Finish)
-	spline->Upda(m_eyePos,250.00f);
+	if (!Finish)
+		spline->Upda(m_eyePos, 300.00f);
+
+	XMVECTOR move = { 0.f,0.f, 0.1f, 0.0f };
+		XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(boss->GetRotation().y + 60));
+		move = XMVector3TransformNormal(move, matRot);
+
+	/*ほりゅう*/
+	//if (_firstState == ONE) {
+	//	m_eyePos = { boss->GetPosition().x + move.m128_f32[0] * 300.f,boss->GetPosition().y,boss->GetPosition().z + move.m128_f32[2] * 300.f };
+	//	if (Timer_first == 90) { _firstState = TWO; }
+	//	else Timer_first++;
+	//}
+
+	//if (_firstState == TWO) {
+	//	m_eyePos = { boss->GetPosition().x + move.m128_f32[0] * -300.f,boss->GetPosition().y,boss->GetPosition().z + move.m128_f32[2] * -300.f };
+	//	
+	//	if (Timer_first == 180)_firstState = THREE;
+	//	else Timer_first++;
+	//}
+
 
 	if (spline->GetIndex() >=pointsList.size()-1)
 	{
 		Finish = true;
-		if (Helper::GetInstance()->FrameCheck(m_Frame,0.02f)) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame,0.01f)) {
 			m_Frame = 1.0f;
 		}
 		m_AfterEye = { Player::GetInstance()->GetPosition().x,45.0f,Player::GetInstance()->GetPosition().z - 20.0f };

@@ -29,6 +29,7 @@ void Feed::FeedIn(FeedType type, float feedspeed, bool& feedf)
 	{
 	case FeedPhase::NON:
 		m_Alpha = 0.f;
+		FeedInCounter = 0;
 		if (feedf)_phase = FeedPhase::FEEDIN;
 		break;
 
@@ -43,7 +44,7 @@ void Feed::FeedIn(FeedType type, float feedspeed, bool& feedf)
 		if (m_Alpha <= 0.f) {
 			//ŠeŽí‰Šú‰»
 			feedf = false;
-			FeedInCounter = 0;
+			
 			_phase = FeedPhase::END;
 		}
 		break;
@@ -66,3 +67,5 @@ void Feed::Draw()
 	FeedTex->Draw();
 	IKESprite::PostDraw();
 }
+
+bool Feed::GetFeedEnd(){ if (_phase == FeedPhase::FEEDOUT)return true; else return false; }

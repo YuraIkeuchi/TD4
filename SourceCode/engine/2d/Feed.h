@@ -33,6 +33,9 @@ public:
 	void FeedIn(FeedType type,float feedspeed,bool &feedf);
 	void Draw();
 
-	inline bool GetFeedEnd() { if (_phase == FeedPhase::FEEDOUT)return true; return false; }
+	void SetIni() { _phase = FeedPhase::NON; }
+	bool GetFeedEnd();
+
+	float GetAlpha() { return m_Alpha; }
 };
 

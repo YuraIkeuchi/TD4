@@ -87,8 +87,18 @@ private://各ボスの登場カメラ
 	void SetCircleCamera();
 public:
 	bool Finish;
-	//getter setter
+	int Timer_first=1;
+	bool StartSpl;
 
+	enum FirstBossCamState
+	{
+		ONE,
+		TWO,
+		THREE
+
+	}_firstState;
+	//getter setter
+	bool Feed_Spline;
 bool FinishAppear() { if (spline->GetIndex() >= static_cast<int>(pointsList.size() -1))return true; return false; }
 
 	void SetBoss(InterBoss* boss) { this->boss = boss; }
