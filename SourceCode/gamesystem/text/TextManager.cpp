@@ -38,8 +38,8 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	CreateWord(TYUTORIAL_TALK3, L"う..う.......はっ!?", L"敵!?.......じゃないみたいだな", L" ");
 	CreateWord(TYUTORIAL_TALK4, L"え!?メガホンが喋った!", L" ", L" ");
 	CreateWord(TYUTORIAL_TALK5, L"メガホンじゃない、オレはストポンだ", L"メガホンに取り憑いた亡霊だ!", L"こうしちゃいられない....追手が来ちまう");
-	CreateWord(TYUTORIAL_TALK6, L"　追手ってあれのこと?", L" ", L" ");
-	CreateWord(TYUTORIAL_TALK7, L"チッ、もう追ってきやがった",L"おい人間、死にたくないなら",L" 今からいうことをしっかり聞くんだ");
+	CreateWord(TYUTORIAL_TALK6, L"追手ってあれのこと?", L" ", L" ");
+	CreateWord(TYUTORIAL_TALK7, L"チッ、もう追ってきやがった",L"おい人間、死にたくないなら",L"今からいうことをしっかり聞くんだ");
 	CreateWord(TYUTORIAL_TALK8, L"う、うん! ", L" ", L" ");
 	CreateWord(TYUTORIAL_TALK9, L"今からあの追手を倒す", L"その為に近くにいる亡霊に魂を吹き込んで仲間にしろ", L"亡霊に近づいてRBを押せ");
 	CreateWord(TYUTORIAL_TALK10, L"よし、仲間にできたな", L"そしたら亡霊の力を借りて攻撃だ", L"");

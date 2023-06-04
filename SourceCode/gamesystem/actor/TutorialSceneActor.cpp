@@ -134,6 +134,7 @@ void TutorialSceneActor::TextCatchFollowState() {
 		conversation == 3) {
 		Player::GetInstance()->SetCanShot(true);
 		nowstate_ = state::CATCHFOLLOW;
+		text_->SetConversation(TextManager::NONE);
 		conversation = 0;
 	}
 
@@ -166,6 +167,7 @@ void TutorialSceneActor::TextShotState() {
 	if (DebugButton() ||
 		conversation == 1) {
 		nowstate_ = state::SHOT;
+		text_->SetConversation(TextManager::NONE);
 		conversation = 0;
 	}
 }
@@ -209,6 +211,7 @@ void TutorialSceneActor::TextCatchSeachState() {
 		conversation == 6) {
 		HungerGauge::GetInstance()->ResetFirstCarry();
 		nowstate_ = state::CATCHSEACH;
+		text_->SetConversation(TextManager::NONE);
 		conversation = 0;
 	}
 }
@@ -242,6 +245,7 @@ void TutorialSceneActor::TextClearState() {
 		nowstate_ = state::SPAWNALLENEMY;
 		s_eyepos = camerawork->GetEye();
 		s_targetpos = camerawork->GetTarget();
+		text_->SetConversation(TextManager::NONE);
 		conversation = 0;
 	}
 }
@@ -283,6 +287,7 @@ void TutorialSceneActor::TextLastState() {
 		if ((DebugButton() ||
 			conversation==2)
 			) {
+			text_->SetConversation(TextManager::NONE);
 			conversation = 0;
 			nowstate_ = state::MAINTUTORIAL;
 			Player::GetInstance()->SetCanShot(true);
