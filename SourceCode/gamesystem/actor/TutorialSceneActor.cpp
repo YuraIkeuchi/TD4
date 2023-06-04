@@ -81,13 +81,13 @@ void TutorialSceneActor::TextTalkState() {
 		text_->SetConversation(TextManager::TYUTORIAL_TALK2);
 	}
 	else if (conversation == 1) {
-		text_->SetConversation(TextManager::TYUTORIAL_TALK3, { 0.f,0.5f,0.5f,1.f });
+		text_->SetConversation(TextManager::TYUTORIAL_TALK3, kSkyBlue);
 	}
 	else if (conversation == 2) {
 		text_->SetConversation(TextManager::TYUTORIAL_TALK4);
 	}
 	else if (conversation == 3) {
-		text_->SetConversation(TextManager::TYUTORIAL_TALK5, { 0.f,0.5f,0.5f,1.f });
+		text_->SetConversation(TextManager::TYUTORIAL_TALK5, kSkyBlue);
 	}
 	else if (conversation == 4) {
 		text_->SetConversation(TextManager::TYUTORIAL_TALK6);
@@ -120,11 +120,11 @@ void TutorialSceneActor::TextCatchFollowState() {
 		conversation += 1;
 	}
 	if (conversation == 0) {
-		text_->SetConversation(TextManager::TYUTORIAL_TALK7, { 0.f,0.5f,0.5f,1.f });
+		text_->SetConversation(TextManager::TYUTORIAL_TALK7, kSkyBlue);
 		loadobj->TutorialUpdate();
 	}
 	else if (conversation == 1) {
-		text_->SetConversation(TextManager::TYUTORIAL_TALK8, { 0.f,0.5f,0.5f,1.f });
+		text_->SetConversation(TextManager::TYUTORIAL_TALK8, kSkyBlue);
 	}
 
 	if (DebugButton() ||
