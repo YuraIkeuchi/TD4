@@ -25,10 +25,7 @@ CameraWork::CameraWork(XMFLOAT3 eye, XMFLOAT3 target) {
 			pointsList.emplace_back(XMFLOAT3{ -120,5,20 });
 
 
-			pointsList.emplace_back(XMFLOAT3{ 0,5,200 });
-			pointsList.emplace_back(XMFLOAT3{ 0,5,80 });
-			pointsList.emplace_back(XMFLOAT3{ 0,90,60 });
-			//pointsList.emplace_back(XMFLOAT3{ 25,30,-15 });
+			pointsList.emplace_back(XMFLOAT3{ 60,30,20 });
 		
 		}
 		spline = new Spline();

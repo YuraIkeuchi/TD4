@@ -58,7 +58,7 @@ void FirstBoss::Action() {
 		Helper::GetInstance()->Clamp(YmovEaseT, 0.f, 1.f);
 
 		if (YmovEaseT <= 1.f)
-			m_Position.y = 10.f + sinf(PI * 2.f / 120.f * PosYMovingT) * -5.f;
+			m_Position.y = 20.f + sinf(PI * 2.f / 120.f * PosYMovingT) * -5.f;
 
 		/*^^^^^^^^^^^^^^^^^^*/
 
