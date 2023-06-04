@@ -313,7 +313,7 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
 	//各クラス
-	Player::GetInstance()->InitState({ 0.0f,0.0f,0.0f });
+	Player::GetInstance()->InitState({ 0.0f,5.0f,0.0f });
 	Player::GetInstance()->SetCanShot(false);
 	//カメラ更新
 	camerawork->Update(camera);
@@ -345,7 +345,7 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 		;
 	BackObj::GetInstance()->Initialize();
 	loadobj = std::make_unique<LoadStageObj>();
-	loadobj->AllLoad("FIRSTSTAGE");
+	loadobj->AllLoad("TUTORIAL");
 	loadobj->LightSet(lightgroup);
 	LoadStageObj::SetEnemyManager(enemymanager.get());
 	//シーンチェンジャー
@@ -365,11 +365,15 @@ void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
 
 	//ボス一旦放置
-	//lightgroup->SetCircleShadowDir(1, XMVECTOR({ BosscircleShadowDir[0], BosscircleShadowDir[1], BosscircleShadowDir[2], 0 }));
-	//lightgroup->SetCircleShadowCasterPos(1, XMFLOAT3({ firstEnemy->GetPosition().x, 	firstEnemy->GetPosition().y, 	firstEnemy->GetPosition().z }));
-	//lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
-	//lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
-
+	if (firstEnemy->GetisAlive()) {
+		lightgroup->SetCircleShadowDir(1, XMVECTOR({ BosscircleShadowDir[0], BosscircleShadowDir[1], BosscircleShadowDir[2], 0 }));
+		lightgroup->SetCircleShadowCasterPos(1, XMFLOAT3({ firstEnemy->GetPosition().x, 	firstEnemy->GetPosition().y, 	firstEnemy->GetPosition().z }));
+		lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
+		lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
+	}
+	else {
+		lightgroup->SetCircleShadowActive(1, false);
+	}
 
 	if (PlayerDestroy()) {
 		SceneManager::GetInstance()->ChangeScene("TITLE");
@@ -459,6 +463,6 @@ void TutorialSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 void TutorialSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	//Player::GetInstance()->ImGuiDraw();
 	//loadobj->ImGuiDraw();
-	enemymanager->ImGuiDraw();
+	//enemymanager->ImGuiDraw();
 	//camerawork->ImGuiDraw();
 }
