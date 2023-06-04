@@ -203,13 +203,13 @@ void LoadSceneActor::BackDraw(DirectXCommon* dxCommon) {
 }
 //ImGuiの描画
 void LoadSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	ImGui::Begin("Load");
+	/*ImGui::Begin("Load");
 	ImGui::SetWindowPos(ImVec2(0, 0));
 	ImGui::SetWindowSize(ImVec2(200, 200));
 	ImGui::SliderInt("LoadTimer", &m_LoadTimer, 0, 200);
 
 	ImGui::End();
-	camerawork->ImGuiDraw();
+	camerawork->ImGuiDraw();*/
 }
 //解放
 void LoadSceneActor::Finalize() {

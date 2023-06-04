@@ -167,7 +167,7 @@ void Ghost::None() {
 
 	float size = sinf(noneTimer) * 0.05f;
 	m_Position.x += cosf(m_Rotation.y*(PI_180/XM_PI)) * size;
-	m_Position.y = sinf(noneTimer)*1.5f;
+	m_Position.y = sinf(noneTimer)*1.2f;
 	m_Position.z += sinf(m_Rotation.y * (PI_180 / XM_PI)) * size;
 
 }
