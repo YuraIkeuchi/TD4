@@ -33,7 +33,7 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 {
 	//ワード追加
 	CreateWord(NONE, L" ", L" ", L" ");
-	CreateWord(TYUTORIAL_TALK1, L"ここはどこだろう!", L"あたりを見回してみよう", L"Lスティックで移動してみよう");
+	CreateWord(TYUTORIAL_TALK1, L"ここはどこだろう?", L"あたりを見回してみよう", L"Lスティックで移動してみよう");
 	CreateWord(TYUTORIAL_TALK2, L"これは.....メガホン?", L"でも、動いてる?");
 	CreateWord(TYUTORIAL_TALK3, L"う..う.......はっ!?", L"敵!?.......じゃないみたいだな", L" ");
 	CreateWord(TYUTORIAL_TALK4, L"え!?メガホンが喋った!", L" ", L" ");
