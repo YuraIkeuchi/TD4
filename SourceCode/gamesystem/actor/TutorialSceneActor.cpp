@@ -124,13 +124,17 @@ void TutorialSceneActor::TextCatchFollowState() {
 		loadobj->TutorialUpdate();
 	}
 	else if (conversation == 1) {
-		text_->SetConversation(TextManager::TYUTORIAL_TALK8, kSkyBlue);
+		text_->SetConversation(TextManager::TYUTORIAL_TALK8);
+	}
+	else if (conversation == 2) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK9, kSkyBlue);
 	}
 
 	if (DebugButton() ||
-		conversation == 5) {
+		conversation == 3) {
 		Player::GetInstance()->SetCanShot(true);
 		nowstate_ = state::CATCHFOLLOW;
+		conversation = 0;
 	}
 
 }
@@ -148,9 +152,21 @@ void TutorialSceneActor::CatchFollowState() {
 
 }
 void TutorialSceneActor::TextShotState() {
+	if (input->TriggerButton(Input::B)) {
+		conversation += 1;
+	}
+
+	if (conversation == 0) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK10, kSkyBlue);
+		loadobj->TutorialUpdate();
+	}
+	
+
+
 	if (DebugButton() ||
-		input->TriggerButton(Input::B)) {
+		conversation == 1) {
 		nowstate_ = state::SHOT;
+		conversation = 0;
 	}
 }
 void TutorialSceneActor::ShotState() {
@@ -164,10 +180,36 @@ void TutorialSceneActor::ShotState() {
 	}
 }
 void TutorialSceneActor::TextCatchSeachState() {
+	if (input->TriggerButton(Input::B)) {
+		conversation += 1;
+	}
+
+	if (conversation == 0) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK11, kSkyBlue);
+		loadobj->TutorialUpdate();
+	}
+	else if (conversation == 1) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK12);
+	}
+	else if (conversation == 2) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK13, kSkyBlue);
+	}
+	else if (conversation == 3) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK14,kSkyBlue);
+	}
+	else if (conversation == 4) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK15,kSkyBlue);
+	}
+	else if (conversation == 5) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK16,kSkyBlue);
+	}
+
+
 	if (DebugButton() ||
-		input->TriggerButton(Input::B)) {
+		conversation == 6) {
 		HungerGauge::GetInstance()->ResetFirstCarry();
 		nowstate_ = state::CATCHSEACH;
+		conversation = 0;
 	}
 }
 void TutorialSceneActor::CatchSeachState() {
@@ -182,11 +224,25 @@ void TutorialSceneActor::CatchSeachState() {
 	}
 }
 void TutorialSceneActor::TextClearState() {
+
+	if (input->TriggerButton(Input::B)) {
+		conversation += 1;
+	}
+
+	if (conversation == 0) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK17, kSkyBlue);
+		loadobj->TutorialUpdate();
+	}
+	else if (conversation == 1) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK18,kSkyBlue);
+	}	
+
 	if (DebugButton() ||
-		input->TriggerButton(Input::B)) {
+		conversation==2) {
 		nowstate_ = state::SPAWNALLENEMY;
 		s_eyepos = camerawork->GetEye();
 		s_targetpos = camerawork->GetTarget();
+		conversation = 0;
 	}
 }
 void TutorialSceneActor::SpawnAllEnemyState() {
@@ -209,10 +265,25 @@ void TutorialSceneActor::TextLastState() {
 	enemymanager->TutorialUpdate(2);
 	Player::GetInstance()->Update();
 	Player::GetInstance()->SetCanShot(false);
+
+	if (input->TriggerButton(Input::B)) {
+		conversation += 1;
+	}
+
+	if (conversation == 0) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK19, kSkyBlue);
+		loadobj->TutorialUpdate();
+	}
+	else if (conversation == 1) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK20, kSkyBlue);
+	}
+	
+
 	if (MovingCamera(e_eyepos, s_eyepos, e_targetpos, s_targetpos)) {
 		if ((DebugButton() ||
-			input->TriggerButton(Input::B))
+			conversation==2)
 			) {
+			conversation = 0;
 			nowstate_ = state::MAINTUTORIAL;
 			Player::GetInstance()->SetCanShot(true);
 		}
@@ -228,8 +299,54 @@ void TutorialSceneActor::MainTutorialState() {
 	}
 }
 void TutorialSceneActor::CompleteState() {
+	if (input->TriggerButton(Input::B)) {
+		conversation += 1;
+	}
+
+	if (conversation == 0) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK21, kSkyBlue);
+		loadobj->TutorialUpdate();
+	}
+	else if (conversation == 1) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK22,kSkyBlue);
+	}
+	else if (conversation == 2) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK23);
+	}
+	else if (conversation == 3) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK24, kSkyBlue);
+	}
+	else if (conversation == 4) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK25, kSkyBlue);
+	}
+	else if (conversation == 5) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK26,kSkyBlue);
+	}
+	else if (conversation == 6) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK27);
+	}
+	else if (conversation == 7) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK28,kSkyBlue);
+	}
+	else if (conversation == 8) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK29, kSkyBlue);
+	}
+	else if (conversation == 9) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK30,kSkyBlue);
+	}
+	else if (conversation == 10) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK31);
+	}
+	else if (conversation == 11) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK32,kSkyBlue);
+	}
+	else if (conversation == 12) {
+		text_->SetConversation(TextManager::TYUTORIAL_TALK33, kSkyBlue);
+	}
+
+
 	if (DebugButton() ||
-		input->TriggerButton(Input::B)) {
+		conversation == 12) {
 		sceneChanger_->ChangeStart();
 	}
 	sceneChanger_->ChangeScene("FIRSTSTAGE", SceneChanger::NonReverse);
