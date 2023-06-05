@@ -251,6 +251,7 @@ void CameraWork::FirstBossAppear() {
 	{
 		Finish = true;
 		if (Helper::GetInstance()->FrameCheck(m_Frame,0.01f)) {
+			m_CameraState = CAMERA_NORMAL;
 			m_Frame = 1.0f;
 		}
 		m_AfterEye = { Player::GetInstance()->GetPosition().x,45.0f,Player::GetInstance()->GetPosition().z - 20.0f };
@@ -266,10 +267,14 @@ Ease(In,Cubic,m_Frame,m_eyePos.x,m_AfterEye.x),
 Ease(In,Cubic,m_Frame,m_eyePos.y,m_AfterEye.y),
 Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
 		};
+
+		
 	}
 	else
 	  m_targetPos = { boss->GetPosition() };
 }
+
+
 
 
 void CameraWork::FirstBossDead_AfterFeed()

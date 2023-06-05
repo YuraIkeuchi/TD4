@@ -540,14 +540,14 @@ void FirstBoss::RemovePos()
 		OldPos_Remove = m_Position;
 	}
 
-	m_Scale.x = Easing::EaseOut(SPosMoveEaseT, 2.5f, 0.f);
-	m_Scale.y = Easing::EaseOut(SPosMoveEaseT, 2.5f, 0.f);
-	m_Scale.z = Easing::EaseOut(SPosMoveEaseT, 2.5f, 0.f);
+	m_Scale.x = Easing::EaseOut(SPosMoveEaseT, 1.5f, 0.f);
+	m_Scale.y = Easing::EaseOut(SPosMoveEaseT, 1.5f, 0.f);
+	m_Scale.z = Easing::EaseOut(SPosMoveEaseT, 1.5f, 0.f);
 
 	Helper::GetInstance()->Clamp(SPosMoveEaseT, 0.f, 1.f);
-	Helper::GetInstance()->Clamp(m_Scale.x, 0.f, 2.5f);
-	Helper::GetInstance()->Clamp(m_Scale.y, 0.f, 2.5f);
-	Helper::GetInstance()->Clamp(m_Scale.z, 0.f, 2.5f);
+	Helper::GetInstance()->Clamp(m_Scale.x, 0.f, 1.5f);
+	Helper::GetInstance()->Clamp(m_Scale.y, 0.f, 1.5f);
+	Helper::GetInstance()->Clamp(m_Scale.z, 0.f, 1.5f);
 }
 
 void FirstBoss::NoBattleMove()
@@ -879,6 +879,7 @@ void FirstBoss::AppearAction() {
 }
 //ボス撃破シーン
 void FirstBoss::DeadAction_Throw() {
+	m_Scale = { 1.0f,1.4f,1.0f };
 	m_Position = { 0,40,20.f };
 	if (!ResetRota) {
 		m_Rotation.y = 90.f;

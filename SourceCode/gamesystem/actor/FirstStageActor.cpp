@@ -79,6 +79,21 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 			_Tscne = TextScene::ENDTEXT;
 		}
 	}
+
+	if( _Tscne == TextScene::TIEYOSHI_EXP||
+		_Tscne == TextScene::NON)
+	{
+		Player::GetInstance()->SetCanShot(false);
+		Player::GetInstance()->MoveStop(true);
+	}
+	else
+	{
+		if (camerawork->GetCameraState()) {
+			Player::GetInstance()->SetCanShot(true);
+			Player::GetInstance()->MoveStop(false);
+		}
+	}
+	
 	
 	Input* input = Input::GetInstance();
 
