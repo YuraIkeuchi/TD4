@@ -78,7 +78,7 @@ void TutorialSceneActor::MoveState() {
 void TutorialSceneActor::TextTalkState() {
 
 	messagewindow_->DisplayCharacter(sutopon_color_);
-	if (input->TriggerButton(Input::B)) {
+	if (input->TriggerButton(Input::B) && conversation < 5) {
 		conversation += 1;
 	}
 
@@ -130,7 +130,7 @@ void TutorialSceneActor::SpawnEnemyState() {
 }
 void TutorialSceneActor::TextCatchFollowState() {
 
-	if (input->TriggerButton(Input::B)) {
+	if (input->TriggerButton(Input::B) && conversation < 3) {
 		conversation += 1;
 	}
 	if (conversation == 0) {
@@ -172,7 +172,7 @@ void TutorialSceneActor::CatchFollowState() {
 
 }
 void TutorialSceneActor::TextShotState() {
-	if (input->TriggerButton(Input::B)) {
+	if (input->TriggerButton(Input::B) && conversation < 1) {
 		conversation += 1;
 	}
 
@@ -205,7 +205,7 @@ void TutorialSceneActor::ShotState() {
 	}
 }
 void TutorialSceneActor::TextCatchSeachState() {
-	if (input->TriggerButton(Input::B)) {
+	if (input->TriggerButton(Input::B) && conversation < 6) {
 		conversation += 1;
 	}
 
@@ -259,7 +259,7 @@ void TutorialSceneActor::CatchSeachState() {
 }
 void TutorialSceneActor::TextClearState() {
 
-	if (input->TriggerButton(Input::B)) {
+	if (input->TriggerButton(Input::B) && conversation < 2) {
 		conversation += 1;
 	}
 
@@ -303,10 +303,7 @@ void TutorialSceneActor::TextLastState() {
 	loadobj->TutorialUpdate();
 	enemymanager->TutorialUpdate(2);
 	Player::GetInstance()->Update();
-	if (input->TriggerButton(Input::B)) {
-		conversation += 1;
-	}
-
+	
 	if (conversation == 0) {
 		girl_color_ = kHalfClear;
 		sutopon_color_ = kOriginalSutoponColor;
@@ -316,9 +313,11 @@ void TutorialSceneActor::TextLastState() {
 	else if (conversation == 1) {
 		text_->SetConversation(TextManager::TYUTORIAL_TALK20, kSkyBlue);
 	}
-	
 
 	if (MovingCamera(e_eyepos, s_eyepos, e_targetpos, s_targetpos)) {
+		if (input->TriggerButton(Input::B) && conversation < 2) {
+			conversation += 1;
+		}
 		if ((DebugButton() ||
 			conversation==2)
 			) {
