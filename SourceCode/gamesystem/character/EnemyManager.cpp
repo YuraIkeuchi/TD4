@@ -94,7 +94,6 @@ void EnemyManager::ImGuiDraw() {
 	boss->ImGuiDraw();
 	if (m_SceneName == "TUTORIAL") {
 		tutorialenemy[0]->ImGuiDraw();
-
 	}
 }
 
