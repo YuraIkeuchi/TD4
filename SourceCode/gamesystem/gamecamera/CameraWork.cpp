@@ -22,10 +22,11 @@ CameraWork::CameraWork(XMFLOAT3 eye, XMFLOAT3 target) {
 			pointsList.emplace_back(XMFLOAT3{ 0,5,120 });
 
 			pointsList.emplace_back(XMFLOAT3{ -150,5,100 });
-			pointsList.emplace_back(XMFLOAT3{ -120,5,20 });
 
 
-			pointsList.emplace_back(XMFLOAT3{ 60,30,20 });
+			pointsList.emplace_back(XMFLOAT3{ 0,2,180 });
+			pointsList.emplace_back(XMFLOAT3{ 0,10,90 });
+			pointsList.emplace_back(XMFLOAT3{ 0,30,0 });
 		
 		}
 		spline = new Spline();
@@ -132,7 +133,7 @@ void CameraWork::SetBossDead_Before()
 			DeathTimer = 0;
 		}
 	}
-
+	RadEffect = 20;
 
 	m_targetPos.x = boss->GetPosition().x;
 	m_targetPos.y = boss->GetPosition().y;
@@ -142,16 +143,23 @@ void CameraWork::SetBossDead_Before()
 //フェード後の撃破アクション(1ボス)
 void CameraWork::SetBossDead_AfterFirst()
 {
+	RadEffect = 20;
 	m_eyePos.x = Player::GetInstance()->GetPosition().x;
 	m_eyePos.y = Player::GetInstance()->GetPosition().y+5.f;
 	m_eyePos.z = Player::GetInstance()->GetPosition().z +5.0f;
 	m_targetPos.x = boss->GetPosition().x;
 	m_targetPos.z = boss->GetPosition().z;
+
+	if(boss->GetPosition().y<=0.f)
+	{
+		m_EndDeath = true;
+	}
 	FeedF = false;
 }
 //フェード後の撃破アクション(2ボス)
 void CameraWork::SetBossDead_AfterSecond()
 {
+	RadEffect -= 0.1f;
 	if (FeedF) {
 		feed->FeedIn(Feed::FeedType::WHITE, 0.01f, FeedF);
 	}
@@ -198,9 +206,6 @@ void CameraWork::feedDraw()
 //最初のボスのカメラ
 void CameraWork::FirstBossAppear() {
 
-	if (!Finish)
-		spline->Upda(m_eyePos, 300.00f);
-
 	XMVECTOR move = { 0.f,0.f, 0.1f, 0.0f };
 		XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(boss->GetRotation().y + 60));
 		move = XMVector3TransformNormal(move, matRot);
@@ -219,6 +224,24 @@ void CameraWork::FirstBossAppear() {
 	//	else Timer_first++;
 	//}
 
+	
+	if(spline->GetIndex() >= pointsList.size() - 2)
+	{
+			RadEffect -= 0.2f;
+	}
+	else if (spline->GetIndex() >= pointsList.size() )
+	{
+		RadEffect += 0.2f;
+		SplineSpeed = 400.f;
+	}
+		else
+		{
+			SplineSpeed = 300.f;
+		}
+		if (!Finish)
+			spline->Upda(m_eyePos, SplineSpeed);
+
+		Helper::GetInstance()->Clamp(RadEffect, 0.f, 15.f);
 
 	if (spline->GetIndex() >=pointsList.size()-1)
 	{

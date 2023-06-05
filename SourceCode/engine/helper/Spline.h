@@ -33,4 +33,6 @@ public:
 	XMVECTOR SplinePosition(const std::vector<XMVECTOR>& points, size_t startindex, float t);
 
 	size_t GetIndex() { return startindex; }
+
+	float GetTRate() { return startCount; }
 };

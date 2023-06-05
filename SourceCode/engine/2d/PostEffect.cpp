@@ -350,6 +350,8 @@ void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList)
 		constMap->P1 = this->P1;
 		constMap->P2 = this->P2;
 		constMap->P3 = this->P3;
+		constMap->RadPower = RadPowers;
+		constMap->CenterPos = RadCenterPos;
 		constBuff->Unmap(0, nullptr);
 	}
 	// パイプラインステートの設定

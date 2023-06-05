@@ -278,4 +278,9 @@ private:
 	bool Active;
 	void AttackDecision();
 	void SelAttack();
+
+	void DeathEffect();
+	bool DeathEffectF;
+
+	void DeathParticle();
 };

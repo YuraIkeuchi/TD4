@@ -89,7 +89,10 @@ public:
 	bool Finish;
 	int Timer_first=1;
 	bool StartSpl;
-
+	float RadEffect;
+	bool PlusRad;
+	float SplineSpeed;
+	float GetEffectPower() { return RadEffect; }
 	enum FirstBossCamState
 	{
 		ONE,

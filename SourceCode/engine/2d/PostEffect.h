@@ -17,6 +17,8 @@ public:
 		XMFLOAT2 P1;
 		XMFLOAT2 P2;
 		XMFLOAT2 P3;
+		float RadPower;
+		XMFLOAT2 CenterPos;
 	};
 
 public:
@@ -70,4 +72,5 @@ private: //ÉÅÉìÉoïœêî
 	XMFLOAT2 P1 = {0.10f, 0.05f};
 	XMFLOAT2 P2 = {0.50f, 0.5f};
 	XMFLOAT2 P3 = {2.00f, 1.00f};
+	
 };

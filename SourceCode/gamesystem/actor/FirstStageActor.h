@@ -24,12 +24,22 @@ public:
 	void ImGuiDraw(DirectXCommon* dxCommon);
 	void ColEnemy(std::vector<InterEnemy*> enelist);
 private:
+	float Rads;
 	int textT;
 	unique_ptr<BossText> text_;
 	Spline* spline;
 	vector<XMFLOAT3> pointsList;
 	void SetPoints();
 
+
+	enum class TextScene
+	{
+		NON,
+		TIEYOSHI_EXP,
+		STOPON_SPK,
+		KILL_TIEYOSHI,
+		ENDTEXT
+	}_Tscne;
 
 	//丸影(ボス)
 	float BosscircleShadowDir[3] = { 0,-1,0 };
