@@ -53,7 +53,7 @@ void Ghost::Update() {
 	PlayerCollision();
 	//H‚×•¨‚ğ‚Í‚±‚Ô
 	CarryFood();
-	//Particle();
+	Particle();
 }
 //•`‰æ
 void Ghost::Draw(DirectXCommon* dxCommon) {
