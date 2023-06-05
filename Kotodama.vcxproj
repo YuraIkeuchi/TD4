@@ -211,6 +211,7 @@
     <ClCompile Include="SourceCode\gamesystem\scene\PlaceManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\SceneChanger.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\SceneManager.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\scene\SceneSave.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\SecondStage.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\TitleScene.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\TutorialScene.cpp" />
@@ -336,6 +337,7 @@
     <ClInclude Include="SourceCode\gamesystem\scene\PlaceManager.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\SceneChanger.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\SceneManager.h" />
+    <ClInclude Include="SourceCode\gamesystem\scene\SceneSave.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\SecondStage.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\TitleScene.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\TutorialScene.h" />

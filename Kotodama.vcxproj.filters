@@ -404,6 +404,9 @@
     <ClCompile Include="SourceCode\gamesystem\editor\LoadStageObj.cpp">
       <Filter>gamesystem\stageobj\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\SceneSave.cpp">
+      <Filter>gamesystem\scene\Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
@@ -771,6 +774,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\SecondBoss.h">
       <Filter>gamesystem\charactor\Boss\Second</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\SceneSave.h">
+      <Filter>gamesystem\scene\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
