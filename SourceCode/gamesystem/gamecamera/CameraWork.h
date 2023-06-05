@@ -89,7 +89,10 @@ public:
 	bool Finish;
 	int Timer_first=1;
 	bool StartSpl;
-
+	float RadEffect;
+	bool PlusRad;
+	float SplineSpeed;
+	float GetEffectPower() { return RadEffect; }
 	enum FirstBossCamState
 	{
 		ONE,
@@ -123,6 +126,8 @@ bool FinishAppear() { if (spline->GetIndex() >= static_cast<int>(pointsList.size
 	void SetApproach(const bool Approach) { m_Approach = Approach; }
 
 	void SetCameraSkip(const bool CameraSkip) { m_CameraSkip = CameraSkip; }
+
+	bool CameraStateisNormal() { if (m_CameraState != CAMERA_BOSSAPPEAR)return true; return false; }
 private:
 	//クラス
 	unique_ptr<Shake> shake = nullptr;

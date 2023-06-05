@@ -38,7 +38,7 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	CreateWord(TYUTORIAL_TALK2, L"これは.....メガホン?", L"でも、動いてる?");
 	CreateWord(TYUTORIAL_TALK3, L"う..う.......はっ!?", L"敵!?.......じゃないみたいだな", L" ");
 	CreateWord(TYUTORIAL_TALK4, L"え!?メガホンが喋った!", L" ", L" ");
-	CreateWord(TYUTORIAL_TALK5, L"メガホンじゃない、オレはストポンだ", L"メガホンに取り憑いた亡霊だ!", L"こうしちゃいられない....追手が来ちまう");
+	CreateWord(TYUTORIAL_TALK5, L"メガホンじゃない、オレはストポンだ", L"メガホンに取り憑いた亡霊だ!", L"こうしちゃいられない追手が来ちまう");
 	CreateWord(TYUTORIAL_TALK6, L"追手ってあれのこと?", L" ", L" ");
 	CreateWord(TYUTORIAL_TALK7, L"チッ、もう追ってきやがった",L"おい人間、死にたくないなら",L"今からいうことをしっかり聞くんだ");
 	CreateWord(TYUTORIAL_TALK8, L"う、うん! ", L" ", L" ");
@@ -98,14 +98,12 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	conversation_.FirstFont->SetPos(kFirstRowPos);
 	conversation_.SecondFont->SetPos(kSecondRowPos);
 	conversation_.ThirdFont->SetPos(kThirdRowPos);
-
-
 }
 //描画?
 void TextManager::Draw(DirectXCommon* dxcommon)
 {
 	//コンヴァージョン.フォントドローする
-	conversation_.FirstFont->Draw(dxcommon);
+	conversation_.FirstFont->Draw(dxcommon);	
 	conversation_.SecondFont->Draw(dxcommon);
 	conversation_.ThirdFont->Draw(dxcommon);
 	Font::PostDraw(dxcommon);
@@ -137,6 +135,8 @@ void TextManager::SetConversation(Name name,const XMVECTOR& color)
 {
 	std::map<TextManager::Name, Word>::iterator itr = wordlist_.find(name);
 
+	GetWordSize(itr->second);
+	
 	CreateCon(conversation_, itr->second);
 
 	conversation_.FirstFont->SetColor(color);
@@ -164,6 +164,9 @@ void TextManager::SetSecondConversation(Name_Second name)
 void TextManager::CreateWord(Name name, wchar_t* tex1, wchar_t* tex2, wchar_t* tex3)
 {
 	Word temp = SetWord(tex1, tex2, tex3);
+
+	size_t len = wcslen(tex1);
+
 	wordlist_.insert(std::make_pair(name, temp));
 }
 
@@ -171,6 +174,7 @@ void TextManager::CreateWord(Name name, wchar_t* tex1, wchar_t* tex2, wchar_t* t
 void TextManager::CreateWord(Name_First name, wchar_t* tex1, wchar_t* tex2, wchar_t* tex3)
 {
 	Word temp = SetWord(tex1, tex2, tex3);
+
 	wordlist_first.insert(std::make_pair(name, temp));
 }
 
@@ -178,7 +182,23 @@ void TextManager::CreateWord(Name_First name, wchar_t* tex1, wchar_t* tex2, wcha
 void TextManager::SecondCreateWord(Name_Second name, wchar_t* tex1, wchar_t* tex2, wchar_t* tex3)
 {
 	Word temp = SetWord(tex1, tex2, tex3);
+
 	wordlist_second.insert(std::make_pair(name, temp));
+}
+
+void TextManager::SetRowPosition(float posX)
+{
+	//フォントのあれこれ
+	conversation_.FirstFont->SetPos({ posX,kFirstRowPos.y });
+	conversation_.SecondFont->SetPos({posX, kSecondRowPos.y });
+	conversation_.ThirdFont->SetPos({ posX,kThirdRowPos.y });
+}
+
+void TextManager::GetWordSize( Word word)
+{
+	len[0] = wcslen(word.FirstWord);
+	len[1] = wcslen(word.SecondWord);
+	len[2] = wcslen(word.ThirdWord);
 }
 
 //文字列保存

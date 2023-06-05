@@ -7,6 +7,8 @@ float frame; //水面表現
 float2 P_1;
 float2 P_2;
 float2 P_3;
+float RadPower;
+float2 RadCenter;
 };
 
 //頂点シェーダーからの出力構造体

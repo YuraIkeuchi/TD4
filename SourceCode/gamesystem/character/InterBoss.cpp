@@ -88,10 +88,11 @@ void InterBoss::CollideBul(vector<InterBullet*> bullet,Type type)
 				_bullet->SetAlive(false);
 				
 				//弾の大きさによって与えるダメージが違う
-				if (_bullet->GetScale().x == 1.0f) {
+				if (_bullet->GetScale().x == 1.5f) {
 					m_HP -= 1.0f * m_Magnification;
 				} else {
-					m_HP -= 2.0f * m_Magnification;
+
+					m_HP -= 1.5f * m_Magnification;
 				}
 
 				BirthEffect();

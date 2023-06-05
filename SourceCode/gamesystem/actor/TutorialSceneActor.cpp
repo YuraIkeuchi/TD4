@@ -78,7 +78,7 @@ void TutorialSceneActor::MoveState() {
 void TutorialSceneActor::TextTalkState() {
 
 	messagewindow_->DisplayCharacter(sutopon_color_);
-	if (input->TriggerButton(Input::B)) {
+	if (input->TriggerButton(Input::B) && conversation < 5) {
 		conversation += 1;
 	}
 
@@ -130,7 +130,7 @@ void TutorialSceneActor::SpawnEnemyState() {
 }
 void TutorialSceneActor::TextCatchFollowState() {
 
-	if (input->TriggerButton(Input::B)) {
+	if (input->TriggerButton(Input::B) && conversation < 3) {
 		conversation += 1;
 	}
 	if (conversation == 0) {
@@ -172,7 +172,7 @@ void TutorialSceneActor::CatchFollowState() {
 
 }
 void TutorialSceneActor::TextShotState() {
-	if (input->TriggerButton(Input::B)) {
+	if (input->TriggerButton(Input::B) && conversation < 1) {
 		conversation += 1;
 	}
 
@@ -205,7 +205,7 @@ void TutorialSceneActor::ShotState() {
 	}
 }
 void TutorialSceneActor::TextCatchSeachState() {
-	if (input->TriggerButton(Input::B)) {
+	if (input->TriggerButton(Input::B) && conversation < 6) {
 		conversation += 1;
 	}
 
@@ -259,7 +259,7 @@ void TutorialSceneActor::CatchSeachState() {
 }
 void TutorialSceneActor::TextClearState() {
 
-	if (input->TriggerButton(Input::B)) {
+	if (input->TriggerButton(Input::B) && conversation < 2) {
 		conversation += 1;
 	}
 
@@ -303,10 +303,7 @@ void TutorialSceneActor::TextLastState() {
 	loadobj->TutorialUpdate();
 	enemymanager->TutorialUpdate(2);
 	Player::GetInstance()->Update();
-	if (input->TriggerButton(Input::B)) {
-		conversation += 1;
-	}
-
+	
 	if (conversation == 0) {
 		girl_color_ = kHalfClear;
 		sutopon_color_ = kOriginalSutoponColor;
@@ -316,9 +313,11 @@ void TutorialSceneActor::TextLastState() {
 	else if (conversation == 1) {
 		text_->SetConversation(TextManager::TYUTORIAL_TALK20, kSkyBlue);
 	}
-	
 
 	if (MovingCamera(e_eyepos, s_eyepos, e_targetpos, s_targetpos)) {
+		if (input->TriggerButton(Input::B) && conversation < 2) {
+			conversation += 1;
+		}
 		if ((DebugButton() ||
 			conversation==2)
 			) {
@@ -526,8 +525,8 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
 
-	lightgroup->SetCircleShadowActive(0, true);
-	lightgroup->SetCircleShadowActive(1, true);
+	lightgroup->SetCircleShadowActive(0, false);
+	lightgroup->SetCircleShadowActive(1, false);
 }
 //更新
 void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -538,12 +537,15 @@ void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
 	lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
 
-	//ボス一旦放置
-	if (firstEnemy->GetisAlive()) {
-		lightgroup->SetCircleShadowDir(1, XMVECTOR({ BosscircleShadowDir[0], BosscircleShadowDir[1], BosscircleShadowDir[2], 0 }));
-		lightgroup->SetCircleShadowCasterPos(1, XMFLOAT3({ firstEnemy->GetPosition().x, 	firstEnemy->GetPosition().y, 	firstEnemy->GetPosition().z }));
-		lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
-		lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
+	//スとぽん
+	lightgroup->SetCircleShadowActive(1, true);
+	lightgroup->SetCircleShadowDir(1, XMVECTOR({ BosscircleShadowDir[0], BosscircleShadowDir[1], BosscircleShadowDir[2], 0 }));
+	lightgroup->SetCircleShadowCasterPos(1, XMFLOAT3({ sutepon->GetPosition().x, 	sutepon->GetPosition().y, 	sutepon->GetPosition().z }));
+	lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
+	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
+	if (nowstate_ == state::MOVE) {
+		lightgroup->SetCircleShadowActive(0, true);
+		lightgroup->SetCircleShadowActive(1, true);
 	}
 	else {
 		lightgroup->SetCircleShadowActive(1, false);
@@ -618,7 +620,9 @@ void TutorialSceneActor::BackDraw(DirectXCommon* dxCommon) {
 //ポストエフェクトがかからない
 void TutorialSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 	//パーティクル描画
-	ParticleEmitter::GetInstance()->FlontDrawAll();
+	if (nowstate_!= state::INTORO) {
+		ParticleEmitter::GetInstance()->FlontDrawAll();
+	}
 	//完全に前に書くスプライト
 	if (static_cast<int>(nowstate_) % 2 == 0) {
 		IKESprite::PreDraw();

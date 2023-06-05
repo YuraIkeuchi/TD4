@@ -141,6 +141,8 @@ public: // メンバ関数
 	bool CreateVertices();
 
 
+	void SetRadCenter(XMFLOAT2 pos) { RadCenterPos = pos; }
+	void SetRadPower(float p) { RadPowers = p; }
 protected: // メンバ変数
 	// 頂点バッファ
 	ComPtr<ID3D12Resource> vertBuff;
@@ -171,6 +173,8 @@ protected: // メンバ変数
 	// テクスチャ幅、高さ
 	XMFLOAT2 texSize = {100.0f, 100.0f};
 
+	float RadPowers;
+	XMFLOAT2 RadCenterPos;
 private: // メンバ関数
 	/// 頂点データ転送
 	void TransferVertices();

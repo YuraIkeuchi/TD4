@@ -15,7 +15,8 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/BGM_boss.wav");
 	Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum());
 	//ポストエフェクト
-	PlayPostEffect = false;
+	PlayPostEffect = true;
+
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
 	
@@ -54,16 +55,31 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 //更新
 void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 
-	textT++;
-	if(textT>240)
+	if(_Tscne== TextScene::NON)
+	{
+		text_->SelectText(TextManager::Name_First::VIEWBOSS);
+		if(Input::GetInstance()->TriggerButton(Input::B))
+		{
+			_Tscne = TextScene::TIEYOSHI_EXP;
+		}
+	}
+	else if(_Tscne == TextScene::TIEYOSHI_EXP)
 	{
 		text_->SelectText(TextManager::Name_First::SPEAKPLAYER1);
+		if (Input::GetInstance()->TriggerButton(Input::B))
+		{
+			_Tscne = TextScene::KILL_TIEYOSHI;
+		}
 	}
-	if(textT>480)
+	else if (_Tscne == TextScene::KILL_TIEYOSHI)
 	{
 		text_->SelectText(TextManager::Name_First::SPEALPLAYER2);
+		if (Input::GetInstance()->TriggerButton(Input::B))
+		{
+			_Tscne = TextScene::ENDTEXT;
+		}
 	}
-
+	
 	Input* input = Input::GetInstance();
 
 	//プレイヤー
@@ -88,9 +104,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		Audio::GetInstance()->StopWave(1);
 		SceneSave::GetInstance()->SetClearFlag(kFirstStage, true);
 	}
-	if (Input::GetInstance()->TriggerButton(Input::A)) {
-		camerawork->SetCameraSkip(true);
-	}
+	
 	if (camerawork->GetAppearEndF()) {
 		camerawork->SetCameraState(CAMERA_NORMAL);
 		//enemymanager->SkipInitialize();
@@ -124,9 +138,17 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		//フェード後
 		else
 		{
+			Player::GetInstance()->InitState({ 0.0f,0.0f,-5.0f });
+
 			enemymanager->SetDeadThrow(false);
 			enemymanager->DeadUpdate();
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_FIRST);
+		}
+
+
+		if (camerawork->GetEndDeath()) {
+			sceneChanger_->ChangeStart();
+			sceneChanger_->ChangeScene("SECONDSTAGE", SceneChanger::ReverseType::NonReverse);
 		}
 	}
 	else
@@ -136,6 +158,21 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		//	camerawork->SetCameraState(CAMERA_NORMAL);
 		}
 	}
+	if (PlayerDestroy()) {
+		sceneChanger_->ChangeStart();
+		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::Reverse);
+	}
+	XMFLOAT3 Position = enemymanager->GetBoss()->GetPosition();
+	XMVECTOR tex2DPos = { Position.x, Position.y, Position.z };
+	tex2DPos = Helper::GetInstance()->PosDivi(tex2DPos, camera->GetViewMatrix(), false);
+	tex2DPos = Helper::GetInstance()->PosDivi(tex2DPos,camera->GetProjectionMatrix(), true);
+	tex2DPos = Helper::GetInstance()->WDivision(tex2DPos, false);
+	tex2DPos = Helper::GetInstance()->PosDivi(tex2DPos, camera->GetViewPort(), false);
+	
+	postEffect->SetRadCenter(XMFLOAT2(tex2DPos.m128_f32[0], tex2DPos.m128_f32[1]));
+	postEffect->SetRadPower(camerawork->GetEffectPower());
+
+	if(_Tscne!=TextScene::ENDTEXT)
 	text_->Display();
 	camerawork->Update(camera);
 	lightgroup->Update();
@@ -186,12 +223,14 @@ void FirstStageActor::BackDraw(DirectXCommon* dxCommon) {
 //ポストエフェクトがかからない
 void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	//パーティクル描画
+	if (camerawork->CameraStateisNormal())
 	ParticleEmitter::GetInstance()->FlontDrawAll();
 
 	ui->Draw();;
 	sceneChanger_->Draw();	//完全に前に書くスプライト
 	//if (camerawork->GetAppearType() == APPEAR_SEVEN || camerawork->GetAppearType() == APPEAR_EIGHT) {
-		text_->SpriteDraw(dxCommon);
+	if (_Tscne != TextScene::ENDTEXT)
+	text_->SpriteDraw(dxCommon);
 	//}
 	//IKESprite::PreDraw();
 	//blackwindow->Draw();

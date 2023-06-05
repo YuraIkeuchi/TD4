@@ -1,5 +1,7 @@
 ﻿#include "FirstBoss.h"
 #include <any>
+#include <random>
+
 #include "Collision.h"
 #include "CsvLoader.h"
 #include "ImageManager.h"
@@ -877,7 +879,7 @@ void FirstBoss::AppearAction() {
 }
 //ボス撃破シーン
 void FirstBoss::DeadAction_Throw() {
-	m_Position = { 0,-90,20.f };
+	m_Position = { 0,40,20.f };
 	if (!ResetRota) {
 		m_Rotation.y = 90.f;
 		m_Rotation.x= 0.f;
@@ -886,10 +888,12 @@ void FirstBoss::DeadAction_Throw() {
 	}
 	else
 	{
-		m_Position.y = 0;
+		m_Position.y = 40;
 		m_Rotation.y += 0.02f;
 		m_Rotation.z += 0.09f;
 	}
+
+	DeathEffect();
 	RotFrontSpeed = 3.f;
 	Player::GetInstance()->SetPosition({ 0,0,10 });
 	Obj_SetParam();
@@ -901,7 +905,9 @@ void FirstBoss::DeadAction() {
 
 	if(shake->GetShakeTimer()>=ShakeTimer-5){
 		shake->SetShakeStart(false);
-
+		m_Position.y -= 0.5f;
+		if (m_Position.y <= 5.f)
+			DeathEffectF = true;
 		m_Rotation.y+= 0.06f;
 		DeathSpeed += 0.05f;
 		m_Rotation.z += DeathSpeed;
@@ -929,6 +935,8 @@ void FirstBoss::DeadAction() {
 		}
 		DeathSpeed = 0.f;
 	}
+
+	DeathEffect();
 
 	Obj_SetParam();
 
@@ -991,5 +999,40 @@ void FirstBoss::SelAttack()
 	//ため攻撃
 	if (!SummobnStop && !_cattack.GetAttackF() && !_normal.GetAttackF() &&_attackAction==CHARGE)
 		_cattack.SetAttackF(true);
-	
+}
+
+void FirstBoss::DeathEffect()
+{
+	if (!DeathEffectF)return;
+
+	float l_AddSize = 3.5f;
+	const float RandScale = 3.0f;
+	float s_scale = 0.9f * l_AddSize;
+	float e_scale = (7.0f + (float)rand() / RAND_MAX * RandScale - RandScale / 2.0f) * l_AddSize;
+
+	//色
+	const float RandRed = 0.2f;
+	const float red = 0.2f + (float)rand() / RAND_MAX * RandRed;
+	const XMFLOAT4 s_color = { 0.9f, red, 0.1f, 1.0f }; //濃い赤
+	const XMFLOAT4 e_color = { 0, 0, 0, 1.0f }; //無色
+
+	//乱数指定
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_Randlife(10, 40);
+	int l_Life = int(l_Randlife(mt));
+
+	ParticleEmitter::GetInstance()->Explosion(l_Life, m_Position, l_AddSize, s_scale, e_scale, s_color, e_color);
+	DeathEffectF = false;
+}
+
+//撃破パーティクル
+void FirstBoss::DeathParticle() {
+	const XMFLOAT4 s_color = { 1.0f,1.0f,1.0f,1.0f };
+	const XMFLOAT4 e_color = { 0.0f,0.0f,1.0f,1.0f };
+	float s_scale = 5.0f;
+	float e_scale = 0.0f;
+	float l_velocity = 0.5f;
+	for (int i = 0; i < 3; ++i) {
+		ParticleEmitter::GetInstance()->DeathEffect(50, { m_Position.x,(m_Position.y +1.f),m_Position.z }, s_scale, e_scale, s_color, e_color, l_velocity);
+	}
 }
