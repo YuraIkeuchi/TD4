@@ -251,6 +251,8 @@ void TutorialSceneActor::TextClearState() {
 }
 void TutorialSceneActor::SpawnAllEnemyState() {
 	loadobj->TutorialUpdate();
+	Player::GetInstance()->MoveStop(true);
+	Player::GetInstance()->SetCanShot(false);
 	if (MovingCamera(s_eyepos, e_eyepos, s_targetpos, e_targetpos)) {
 		enemymanager->TutorialUpdate(1);
 	}
@@ -268,8 +270,6 @@ void TutorialSceneActor::TextLastState() {
 	loadobj->TutorialUpdate();
 	enemymanager->TutorialUpdate(2);
 	Player::GetInstance()->Update();
-	Player::GetInstance()->SetCanShot(false);
-
 	if (input->TriggerButton(Input::B)) {
 		conversation += 1;
 	}
@@ -291,6 +291,7 @@ void TutorialSceneActor::TextLastState() {
 			conversation = 0;
 			nowstate_ = state::MAINTUTORIAL;
 			Player::GetInstance()->SetCanShot(true);
+			Player::GetInstance()->MoveStop(false);
 		}
 	}
 
