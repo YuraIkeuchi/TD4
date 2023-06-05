@@ -15,7 +15,7 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	//オーディオ
 	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/Boss.wav");
 	//ポストエフェクト
-	PlayPostEffect = false;
+	PlayPostEffect = true;
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
 
@@ -303,6 +303,16 @@ void SecondStageActor::MainUpdate(DebugCamera* camera) {
 	ParticleEmitter::GetInstance()->Update();
 
 	camerawork->Update(camera);
+
+	XMFLOAT3 Position = enemymanager->GetBoss()->GetPosition();
+	XMVECTOR tex2DPos = { Position.x, Position.y, Position.z };
+	tex2DPos = Helper::GetInstance()->PosDivi(tex2DPos, camera->GetViewMatrix(), false);
+	tex2DPos = Helper::GetInstance()->PosDivi(tex2DPos, camera->GetProjectionMatrix(), true);
+	tex2DPos = Helper::GetInstance()->WDivision(tex2DPos, false);
+	tex2DPos = Helper::GetInstance()->PosDivi(tex2DPos, camera->GetViewPort(), false);
+
+	postEffect->SetRadCenter(XMFLOAT2(tex2DPos.m128_f32[0], tex2DPos.m128_f32[1]));
+	postEffect->SetRadPower(camerawork->GetEffectPower());
 }
 //撃破シーン
 void SecondStageActor::FinishUpdate(DebugCamera* camera) {

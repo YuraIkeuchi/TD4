@@ -161,6 +161,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		sceneChanger_->ChangeStart();
 		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::Reverse);
 	}
+
 	XMFLOAT3 Position = enemymanager->GetBoss()->GetPosition();
 	XMVECTOR tex2DPos = { Position.x, Position.y, Position.z };
 	tex2DPos = Helper::GetInstance()->PosDivi(tex2DPos, camera->GetViewMatrix(), false);
@@ -237,8 +238,9 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void FirstStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	Player::GetInstance()->ImGuiDraw();
+	//Player::GetInstance()->ImGuiDraw();
 	//enemymanager->ImGuiDraw();
+	loadobj->ImGuiDraw();
 }
 
 
