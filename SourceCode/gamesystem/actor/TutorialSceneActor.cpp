@@ -9,6 +9,8 @@ const XMFLOAT2 kFirstRowPos{ 5.f,0.f };
 const XMFLOAT2 kSecondRowPos{ 5.f,-40.f };
 const XMFLOAT2 kThirdRowPos{ 5.f, -80.f };
 const XMFLOAT4 kHalfClear{ 0.5f,0.5f,0.5f,0.5f };
+const XMFLOAT4 kOriginalGirlColor= { 1.5f,1.5f,1.5f,1.f };
+const XMFLOAT4 kOriginalSutoponColor= { 1.f,1.f,1.f,1.f };
 
 bool TutorialSceneActor::isDebug = true;
 TextManager* instance = TextManager::GetInstance();
@@ -84,15 +86,22 @@ void TutorialSceneActor::TextTalkState() {
 		text_->SetConversation(TextManager::TYUTORIAL_TALK2);
 	}
 	else if (conversation == 1) {
+		girl_color_ = kHalfClear;
 		text_->SetConversation(TextManager::TYUTORIAL_TALK3, kSkyBlue);
 	}
 	else if (conversation == 2) {
+		girl_color_ = kOriginalGirlColor;
+		sutopon_color_ = kHalfClear;
 		text_->SetConversation(TextManager::TYUTORIAL_TALK4);
 	}
 	else if (conversation == 3) {
+		girl_color_ = kHalfClear;
+		sutopon_color_ = kOriginalSutoponColor;
 		text_->SetConversation(TextManager::TYUTORIAL_TALK5, kSkyBlue);
 	}
 	else if (conversation == 4) {
+		girl_color_ = kOriginalGirlColor;
+		sutopon_color_ = kHalfClear;
 		text_->SetConversation(TextManager::TYUTORIAL_TALK6);
 	}
 
@@ -103,6 +112,8 @@ void TutorialSceneActor::TextTalkState() {
 		sutepon->SetPosition({ 0,0,15.0f });
 		conversation = 0;
 		nowstate_ = state::SPAWNENEMY;
+		girl_color_ = kHalfClear;
+		sutopon_color_ = kOriginalSutoponColor;
 	}
 }
 void TutorialSceneActor::SpawnEnemyState() {
@@ -127,9 +138,13 @@ void TutorialSceneActor::TextCatchFollowState() {
 		loadobj->TutorialUpdate();
 	}
 	else if (conversation == 1) {
+		girl_color_ = kOriginalGirlColor;
+		sutopon_color_ = kHalfClear;
 		text_->SetConversation(TextManager::TYUTORIAL_TALK8);
 	}
 	else if (conversation == 2) {
+		girl_color_ = kHalfClear;
+		sutopon_color_ = kOriginalSutoponColor;
 		text_->SetConversation(TextManager::TYUTORIAL_TALK9, kSkyBlue);
 	}
 
@@ -162,6 +177,8 @@ void TutorialSceneActor::TextShotState() {
 	}
 
 	if (conversation == 0) {
+		girl_color_ = kHalfClear;
+		sutopon_color_ = kOriginalSutoponColor;
 		text_->SetConversation(TextManager::TYUTORIAL_TALK10, kSkyBlue);
 		loadobj->TutorialUpdate();
 	}
@@ -193,13 +210,19 @@ void TutorialSceneActor::TextCatchSeachState() {
 	}
 
 	if (conversation == 0) {
+		girl_color_ = kHalfClear;
+		sutopon_color_ = kOriginalSutoponColor;
 		text_->SetConversation(TextManager::TYUTORIAL_TALK11, kSkyBlue);
 		loadobj->TutorialUpdate();
 	}
 	else if (conversation == 1) {
+		girl_color_ = kOriginalGirlColor;
+		sutopon_color_ = kHalfClear;
 		text_->SetConversation(TextManager::TYUTORIAL_TALK12);
 	}
 	else if (conversation == 2) {
+		girl_color_ = kHalfClear;
+		sutopon_color_ = kOriginalSutoponColor;
 		text_->SetConversation(TextManager::TYUTORIAL_TALK13, kSkyBlue);
 	}
 	else if (conversation == 3) {
@@ -241,6 +264,8 @@ void TutorialSceneActor::TextClearState() {
 	}
 
 	if (conversation == 0) {
+		girl_color_ = kHalfClear;
+		sutopon_color_ = kOriginalSutoponColor;
 		text_->SetConversation(TextManager::TYUTORIAL_TALK17, kSkyBlue);
 		loadobj->TutorialUpdate();
 	}
@@ -283,6 +308,8 @@ void TutorialSceneActor::TextLastState() {
 	}
 
 	if (conversation == 0) {
+		girl_color_ = kHalfClear;
+		sutopon_color_ = kOriginalSutoponColor;
 		text_->SetConversation(TextManager::TYUTORIAL_TALK19, kSkyBlue);
 		loadobj->TutorialUpdate();
 	}
@@ -318,6 +345,8 @@ void TutorialSceneActor::CompleteState() {
 	}
 
 	if (conversation == 0) {
+		girl_color_ = kHalfClear;
+		sutopon_color_ = kOriginalSutoponColor;
 		text_->SetConversation(TextManager::TYUTORIAL_TALK21, kSkyBlue);
 		loadobj->TutorialUpdate();
 	}
@@ -325,9 +354,13 @@ void TutorialSceneActor::CompleteState() {
 		text_->SetConversation(TextManager::TYUTORIAL_TALK22,kSkyBlue);
 	}
 	else if (conversation == 2) {
+		girl_color_ = kOriginalGirlColor;
+		sutopon_color_ = kHalfClear;
 		text_->SetConversation(TextManager::TYUTORIAL_TALK23);
 	}
 	else if (conversation == 3) {
+		girl_color_ = kHalfClear;
+		sutopon_color_ = kOriginalSutoponColor;
 		text_->SetConversation(TextManager::TYUTORIAL_TALK24, kSkyBlue);
 	}
 	else if (conversation == 4) {
@@ -337,9 +370,13 @@ void TutorialSceneActor::CompleteState() {
 		text_->SetConversation(TextManager::TYUTORIAL_TALK26,kSkyBlue);
 	}
 	else if (conversation == 6) {
+		girl_color_ = kOriginalGirlColor;
+		sutopon_color_ = kHalfClear;
 		text_->SetConversation(TextManager::TYUTORIAL_TALK27);
 	}
 	else if (conversation == 7) {
+		girl_color_ = kHalfClear;
+		sutopon_color_ = kOriginalSutoponColor;
 		text_->SetConversation(TextManager::TYUTORIAL_TALK28,kSkyBlue);
 	}
 	else if (conversation == 8) {
@@ -349,12 +386,18 @@ void TutorialSceneActor::CompleteState() {
 		text_->SetConversation(TextManager::TYUTORIAL_TALK30,kSkyBlue);
 	}
 	else if (conversation == 10) {
+		girl_color_ = kOriginalGirlColor;
+		sutopon_color_ = kHalfClear;
 		text_->SetConversation(TextManager::TYUTORIAL_TALK31);
 	}
 	else if (conversation == 11) {
+		girl_color_ = kHalfClear;
+		sutopon_color_ = kOriginalSutoponColor;
 		text_->SetConversation(TextManager::TYUTORIAL_TALK32,kSkyBlue);
 	}
 	else if (conversation == 12) {
+		girl_color_ = kOriginalGirlColor;
+		sutopon_color_ = kHalfClear;
 		text_->SetConversation(TextManager::TYUTORIAL_TALK33);
 	}
 
