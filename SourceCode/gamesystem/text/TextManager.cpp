@@ -105,7 +105,7 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 void TextManager::Draw(DirectXCommon* dxcommon)
 {
 	//コンヴァージョン.フォントドローする
-	conversation_.FirstFont->Draw(dxcommon);
+	conversation_.FirstFont->Draw(dxcommon);	
 	conversation_.SecondFont->Draw(dxcommon);
 	conversation_.ThirdFont->Draw(dxcommon);
 	Font::PostDraw(dxcommon);
@@ -137,7 +137,10 @@ void TextManager::SetConversation(Name name,const XMVECTOR& color)
 {
 	std::map<TextManager::Name, Word>::iterator itr = wordlist_.find(name);
 
+	GetWordSize(itr->second);
+	
 	CreateCon(conversation_, itr->second);
+
 
 	conversation_.FirstFont->SetColor(color);
 	conversation_.SecondFont->SetColor(color);
@@ -164,6 +167,9 @@ void TextManager::SetSecondConversation(Name_Second name)
 void TextManager::CreateWord(Name name, wchar_t* tex1, wchar_t* tex2, wchar_t* tex3)
 {
 	Word temp = SetWord(tex1, tex2, tex3);
+
+	size_t len = wcslen(tex1);
+
 	wordlist_.insert(std::make_pair(name, temp));
 }
 
@@ -179,6 +185,14 @@ void TextManager::SecondCreateWord(Name_Second name, wchar_t* tex1, wchar_t* tex
 {
 	Word temp = SetWord(tex1, tex2, tex3);
 	wordlist_second.insert(std::make_pair(name, temp));
+}
+
+void TextManager::GetWordSize( Word word)
+{
+	len[0] = wcslen(word.FirstWord);
+	len[1] = wcslen(word.SecondWord);
+	len[2] = wcslen(word.ThirdWord);
+
 }
 
 //文字列保存

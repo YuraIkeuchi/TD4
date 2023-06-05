@@ -100,6 +100,8 @@ public:
 	void SetConversation(Name_First name = VIEWBOSS);
 
 	void SetSecondConversation(Name_Second name = ANGER_TALK);
+
+	void GetWordSize(Word word);
 private:
 	
 	//
@@ -122,5 +124,6 @@ private:
 	Conversation bossconversation_ = {};
 
 	XMVECTOR color_{ 1.f,1.f,1.f,1.f };
+	size_t len[3];
 };
 
