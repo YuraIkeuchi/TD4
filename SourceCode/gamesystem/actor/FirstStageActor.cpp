@@ -86,6 +86,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 
 	if (enemymanager->BossDestroy()) {
 		Audio::GetInstance()->StopWave(1);
+		SceneSave::GetInstance()->SetClearFlag(kFirstStage, true);
 	}
 	if (Input::GetInstance()->TriggerButton(Input::A)) {
 		camerawork->SetCameraSkip(true);

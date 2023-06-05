@@ -27,6 +27,7 @@ public:
 		PLAY,
 		GAMEOVER,
 		GAMECLEAR,
+		MASTERCLEAR,
 		BOX,
 		CUBE,
 		NON,

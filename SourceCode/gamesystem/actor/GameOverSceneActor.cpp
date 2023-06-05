@@ -19,14 +19,27 @@ void GameOverSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 
 	//タイトル
 	ClearSprite = IKESprite::Create(ImageManager::GAMEOVER, { 0.0f,0.0f });
+	ClearSprite->SetSize({1280.0f,720.0f});
 }
 //更新
 void GameOverSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
 	if (input->TriggerButton(input->B)) {
 		sceneChanger_->ChangeStart();
+		if (SceneSave::GetInstance()->GetClearFlag(kFirstStage)) {
+			str = "SECONDSTAGE";
+		} else {
+			str = "FIRSTSTAGE";
+		}
+		//Audio::GetInstance()->StopWave(3);
 	}
-	sceneChanger_->ChangeScene("TITLE", SceneChanger::Reverse);
+	if (input->TriggerButton(input->A)) {
+		sceneChanger_->ChangeStart();
+		str = "TITLE";
+		//Audio::GetInstance()->StopWave(3);
+	}
+
+	sceneChanger_->ChangeScene(str, SceneChanger::Reverse);
 
 	lightgroup->Update();
 	//丸影

@@ -16,6 +16,7 @@ public:
 	void ImGuiDraw(DirectXCommon* dxCommon);
 	void FrontDraw();
 private://メンバ変数
+	string str = "";
 	//スプライト
 	unique_ptr<IKESprite> ClearSprite;
 };
