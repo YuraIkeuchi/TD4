@@ -262,7 +262,7 @@ void LoadStageObj::CommonUpdate() {
 	for (auto i = 0; i < foods.size(); i++)
 	{
 		foods[i]->Update();
-		if (m_SceneName == "FIRSTSTAGE") {
+	/*	if (m_SceneName == "FIRSTSTAGE") {
 			if (foods[i]->GetAlive() && foods[i] != nullptr && !boss->BossDestroy()) {
 				lightgroup->SetCircleShadowDir(i + 2, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
 				lightgroup->SetCircleShadowCasterPos(i + 2, XMFLOAT3({ foods[i]->GetPosition().x, foods[i]->GetPosition().y, foods[i]->GetPosition().z }));
@@ -283,14 +283,14 @@ void LoadStageObj::CommonUpdate() {
 			else {
 				lightgroup->SetCircleShadowActive(i + 2, false);
 			}
-		}
+		}*/
 	}
 
 	//ハート
 	for (auto i = 0; i < hearts.size(); i++)
 	{
 		hearts[i]->Update();
-		if (m_SceneName == "FIRSTSTAGE") {
+		/*if (m_SceneName == "FIRSTSTAGE") {
 			if (hearts[i]->GetAlive() && hearts[i] != nullptr && !boss->BossDestroy()) {
 				lightgroup->SetCircleShadowDir(((int)hearts.size() + 1) + 12, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
 				lightgroup->SetCircleShadowCasterPos(((int)hearts.size() + 1) + 12, XMFLOAT3({ hearts[i]->GetPosition().x, hearts[i]->GetPosition().y, hearts[i]->GetPosition().z }));
@@ -312,7 +312,7 @@ void LoadStageObj::CommonUpdate() {
 			else {
 				lightgroup->SetCircleShadowActive(i + 2, false);
 			}
-		}
+		}*/
 	}
 
 	//食料の削除(このステージのみ)
@@ -349,22 +349,22 @@ void LoadStageObj::BirthHeart() {
 		newHeart->SetPosition({ boss->GetEnemyPosition().x,0.0f,boss->GetEnemyPosition().z });
 		hearts.push_back(newHeart);
 		boss->FinishHeart();
-		for (int i = 0; i < hearts.size(); i++) {
+	/*	for (int i = 0; i < hearts.size(); i++) {
 			if (m_SceneName == "FIRSTSTAGE") {
 				lightgroup->SetCircleShadowActive(((int)hearts.size() + 1) + 12, true);
 			}
 			else if (m_SceneName == "SECONDSTAGE") {
 				lightgroup->SetCircleShadowActive(i + 2, true);
 			}
-		}
+		}*/
 	}
 }
 
 void LoadStageObj::LightReturn() {
-	for (auto i = 0; i < foods.size(); i++) {
+	/*for (auto i = 0; i < foods.size(); i++) {
 		if (foods[i]->GetLightSet()) {
 			lightgroup->SetCircleShadowActive(i + 2, true);
 			foods[i]->SetLightSet(false);
 		}
-	}
+	}*/
 }
