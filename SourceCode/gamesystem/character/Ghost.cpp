@@ -47,8 +47,6 @@ void Ghost::Update() {
 	Obj_SetParam();
 	//食料生成
 	BirthGhost();
-	//パーティクル
-	Particle();
 	//当たり判定(弾)
 	BulletCollision();
 	//当たり判定(プレイヤー)
@@ -65,30 +63,6 @@ void Ghost::ImGuiDraw() {
 	ImGui::Begin("Ghost");
 	ImGui::Text("%d", m_SearchTimer);
 	ImGui::End();
-}
-//パーティクル
-void Ghost::Particle() {
-	XMFLOAT4 s_color = { 1.0f,1.0f,1.0f,1.0f };
-	XMFLOAT4 e_color = { 1.0f,1.0f,1.0f,1.0f };
-	XMFLOAT4 s_color2 = { 1.0f,0.0f,0.0f,1.0f };
-	XMFLOAT4 e_color2 = { 1.0f,0.0f,0.0f,1.0f };
-	XMFLOAT4 s_color3 = { 0.0f,1.0f,0.0f,1.0f };
-	XMFLOAT4 e_color3 = { 0.0f,1.0f,0.0f,1.0f };
-	float s_scale = 3.0f;
-	float e_scale = 0.0f;
-	if (m_Alive) {
-		if (_charaState == CharaState::STATE_NONE) {
-			m_Color = { 1.0f,1.0f,1.0f,0.7f };
-			m_Scale = { 0.5f,0.5f,0.5f };
-			//ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color, e_color);
-		} else if (_charaState == CharaState::STATE_FOLLOW) {
-			m_Color = { 1.0f,1.0f,1.0f,1.0f };
-			m_Scale = { 0.6f,0.6f,0.6f };
-			ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color2, e_color2);
-		} else {
-			//ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color3, e_color3);
-		}
-	}
 }
 //当たり判定(弾)
 bool Ghost::BulletCollision() {
