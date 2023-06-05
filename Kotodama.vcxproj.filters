@@ -404,6 +404,18 @@
     <ClCompile Include="SourceCode\gamesystem\editor\LoadStageObj.cpp">
       <Filter>gamesystem\stageobj\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\limitline\LeftLimit.cpp">
+      <Filter>gamesystem\limitline</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\limitline\RightLimit.cpp">
+      <Filter>gamesystem\limitline</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\limitline\UpLimit.cpp">
+      <Filter>gamesystem\limitline</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\limitline\DownLimit.cpp">
+      <Filter>gamesystem\limitline</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
@@ -772,6 +784,18 @@
     <ClInclude Include="SourceCode\gamesystem\character\SecondBoss.h">
       <Filter>gamesystem\charactor\Boss\Second</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\limitline\DownLimit.h">
+      <Filter>gamesystem\limitline</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\limitline\LeftLimit.h">
+      <Filter>gamesystem\limitline</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\limitline\RightLimit.h">
+      <Filter>gamesystem\limitline</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\limitline\UpLimit.h">
+      <Filter>gamesystem\limitline</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
@@ -871,9 +895,6 @@
     </Filter>
     <Filter Include="gamesystem\editor">
       <UniqueIdentifier>{4dde5216-4bf6-4dd4-8987-1a5af36415c2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gamesystem\gameEditor">
-      <UniqueIdentifier>{318a5c93-6764-4763-9b1c-89305daf7e73}</UniqueIdentifier>
     </Filter>
     <Filter Include="gamesystem\effect">
       <UniqueIdentifier>{aaaadd0a-a4f8-4e4b-9347-9ec53dcea3b2}</UniqueIdentifier>
@@ -1069,6 +1090,9 @@
     </Filter>
     <Filter Include="gamesystem\stageobj\Manager">
       <UniqueIdentifier>{4ea7e426-1892-48d6-9868-3ea119b7ccf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\limitline">
+      <UniqueIdentifier>{36343ce0-74fc-476a-9068-d7d3b241998d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

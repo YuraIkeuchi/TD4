@@ -49,6 +49,19 @@ void ParticleEmitter::FireEffect(const int life, const XMFLOAT3& l_pos, const fl
 	circleParticle->Add(life, { pos.x,pos.y,pos.z }, vel, {}, startscale, endscale, startcolor, endcolor,{});
 }
 
+//移動制御
+void ParticleEmitter::LimitEffect(const int life, const XMFLOAT3& l_pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor)
+{
+	XMFLOAT3 pos = l_pos;
+	const float rnd_vel = 0.05f;
+	XMFLOAT3 vel{};
+	vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 4.0f;
+	vel.y = (float)rand() / RAND_MAX * rnd_vel * 2.0f;// -rnd_vel / 2.0f;
+	vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 4.0f;
+
+	circleParticle->Add(life, { pos.x,pos.y,pos.z }, vel, {}, startscale, endscale, startcolor, endcolor, {});
+}
+
 //爆発
 void ParticleEmitter::Explosion(const int life, const XMFLOAT3& pos, const float size, const float startscale,
 	const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor) {
