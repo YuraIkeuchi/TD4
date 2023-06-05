@@ -63,7 +63,7 @@ private:
 	static const int firstEnemyMax = 3;
 	std::vector<InterEnemy*>bulletenemy;
 	//チュートリアル用
-	static const int tutorialEnemyMax = 6;
+	static const int tutorialEnemyMax = 4;
 	std::array<unique_ptr<InterEnemy>, tutorialEnemyMax>tutorialenemy;
 	//シーンネーム
 	std::string m_SceneName;
