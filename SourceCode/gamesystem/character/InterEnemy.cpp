@@ -56,17 +56,12 @@ void InterEnemy::DeathAction()
 
 void InterEnemy::ColPlayer()
 {
-	const int damage = 1;
 	if (!isAlive) { return; }
 	if (Collision::CircleCollision(Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z, 2.f, m_Position.x, m_Position.z, 1.f))
 	{
 		Player::GetInstance()->PlayerHit(m_Position);
-		if (!isUnrival) {
-			Player::GetInstance()->RecvDamage(damage);
-			isAlive = false;
-		} else {
-			Player::GetInstance()->RecvDamage(0);
-		}
+		Player::GetInstance()->RecvDamage(0);
+
 	}
 
 	if (HP <= 0)

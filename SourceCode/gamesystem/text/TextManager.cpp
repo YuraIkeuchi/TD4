@@ -33,16 +33,46 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 {
 	//ワード追加
 	CreateWord(NONE, L" ", L" ", L" ");
-	CreateWord(TYUTORIAL_TALK1, L"ここはどこだろう!", L"あたりを見回してみよう", L"Lスティックで移動してみよう");
+	CreateWord(TYUTORIAL_TALK1, L"ここはどこだろう?", L"ん?なにか動いてる", L"");
+	CreateWord(SETUMEI1, L"Lスティックで移動してみよう", L"", L"");
 	CreateWord(TYUTORIAL_TALK2, L"これは.....メガホン?", L"でも、動いてる?");
 	CreateWord(TYUTORIAL_TALK3, L"う..う.......はっ!?", L"敵!?.......じゃないみたいだな", L" ");
 	CreateWord(TYUTORIAL_TALK4, L"え!?メガホンが喋った!", L" ", L" ");
 	CreateWord(TYUTORIAL_TALK5, L"メガホンじゃない、オレはストポンだ", L"メガホンに取り憑いた亡霊だ!", L"こうしちゃいられない....追手が来ちまう");
-	CreateWord(TYUTORIAL_TALK6, L"　追手ってあれのこと?", L" ", L" ");
-	CreateWord(TYUTORIAL_TALK7, L"チッ、もう追ってきやがった",L"おい人間、今からいうことをしっかり聞け",L" ");
-	CreateWord(TYUTORIAL_TALK8, L"今からあの追手を倒す", L"その為にそこらへんにいる亡霊を仲間にする", L"亡霊に近づいてRBを押せ");
+	CreateWord(TYUTORIAL_TALK6, L"追手ってあれのこと?", L" ", L" ");
+	CreateWord(TYUTORIAL_TALK7, L"チッ、もう追ってきやがった",L"おい人間、死にたくないなら",L"今からいうことをしっかり聞くんだ");
+	CreateWord(TYUTORIAL_TALK8, L"う、うん! ", L" ", L" ");
+	CreateWord(TYUTORIAL_TALK9, L"今からあの追手を倒す", L"その為に近くにいる亡霊に", L"魂を吹き込んで仲間にしろ");
+	CreateWord(SETUMEI2, L"亡霊に近づいてRBを押せ", L"", L"");
+	CreateWord(TYUTORIAL_TALK10, L"よし、仲間にできたな", L"そしたら亡霊の力を借りて攻撃だ", L"");
+	CreateWord(SETUMEI3, L"敵に向かってAボタンで攻撃", L"", L"");
+	CreateWord(TYUTORIAL_TALK11, L"ひとまずはこれで安心だな", L"", L"");
+	CreateWord(TYUTORIAL_TALK12, L"あれ?", L"仲間にした亡霊が消えそう", L"");
+	CreateWord(TYUTORIAL_TALK13, L"亡霊は魂が吹き込まれたことで", L"飢えを感じる", L"");
+	CreateWord(TYUTORIAL_TALK14, L"飢えてしまうと", L"亡霊は消えていなくなる", L"");
+	CreateWord(TYUTORIAL_TALK15, L"そうならないために別の亡霊に", L"食料を取ってきてもらうしかない", L"");
+	CreateWord(TYUTORIAL_TALK16, L"試しに近くにいる亡霊に", L"食料を取ってこいと命令してみろ", L"");
+	CreateWord(SETUMEI4, L"亡霊に近づいてLBを押せ", L"", L"");
+	CreateWord(TYUTORIAL_TALK17, L"よし、これで亡霊が", L"消える心配は今はないな", L"");
+	CreateWord(TYUTORIAL_TALK18, L"だが、亡霊は魂を吹き込むと", L"常に飢えを感じるから定期的に食料を", L"与えないと直ぐに消えてしまうからな");
+	CreateWord(TYUTORIAL_TALK19, L"また追手が来やがった", L"さっき教えたことをちゃんと覚えているな", L"");
+	CreateWord(TYUTORIAL_TALK20, L"死にたくないなら力をかせ", L"", L"");
+	CreateWord(TYUTORIAL_TALK21, L"お前、なかなかやるじゃないか", L"", L"");
+	CreateWord(TYUTORIAL_TALK22, L"そういえば", L"名前を聞いてなかったな", L"");
+	CreateWord(TYUTORIAL_TALK23, L"私の名前はコトコ", L"", L"");
+	CreateWord(TYUTORIAL_TALK24, L"そうかコトコか", L"", L"");
+	CreateWord(TYUTORIAL_TALK25, L"改めてコトコに頼みがある", L"", L"");
+	CreateWord(TYUTORIAL_TALK26, L"俺の友達を助ける為に力をかしてくれ", L"", L"");
+	CreateWord(TYUTORIAL_TALK27, L"友達?", L"", L"");
+	CreateWord(TYUTORIAL_TALK28, L"あぁ、俺の友達は皆良いやつなんだ", L"しかし、悪霊となってしまったんだ", L"");
+	CreateWord(TYUTORIAL_TALK29, L"俺の呼びかけじゃ", L"皆を元に戻すことは出来なかった", L"");
+	CreateWord(TYUTORIAL_TALK30, L"だから頼む", L"", L"");
+	CreateWord(TYUTORIAL_TALK31, L"いいよその代わり私の友達になって", L"", L"");
+	CreateWord(TYUTORIAL_TALK32, L"ありがとう", L"これからよろしくなコトコ", L"");
+	CreateWord(TYUTORIAL_TALK33, L"うんよろしくねストポン", L"", L"");
 
-	CreateWord(AISATU,L"おはよう",L"こんにちは",L"こんばんは");
+	CreateWord(AISATU, L"おはよう", L"こんにちは", L"こんばんは");
+
 
 	CreateWord(Name_First::VIEWBOSS, L"ちえよしもどってこい!!!",L"そんなにうごきまわったらしんでしまうぞ!!",L"");
 	CreateWord(Name_First::SPEAKPLAYER1, L"すてぽん。。ちえよしはもう。。");
@@ -75,7 +105,7 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 void TextManager::Draw(DirectXCommon* dxcommon)
 {
 	//コンヴァージョン.フォントドローする
-	conversation_.FirstFont->Draw(dxcommon);
+	conversation_.FirstFont->Draw(dxcommon);	
 	conversation_.SecondFont->Draw(dxcommon);
 	conversation_.ThirdFont->Draw(dxcommon);
 	Font::PostDraw(dxcommon);
@@ -107,7 +137,10 @@ void TextManager::SetConversation(Name name,const XMVECTOR& color)
 {
 	std::map<TextManager::Name, Word>::iterator itr = wordlist_.find(name);
 
+	GetWordSize(itr->second);
+	
 	CreateCon(conversation_, itr->second);
+
 
 	conversation_.FirstFont->SetColor(color);
 	conversation_.SecondFont->SetColor(color);
@@ -134,6 +167,9 @@ void TextManager::SetSecondConversation(Name_Second name)
 void TextManager::CreateWord(Name name, wchar_t* tex1, wchar_t* tex2, wchar_t* tex3)
 {
 	Word temp = SetWord(tex1, tex2, tex3);
+
+	size_t len = wcslen(tex1);
+
 	wordlist_.insert(std::make_pair(name, temp));
 }
 
@@ -149,6 +185,14 @@ void TextManager::SecondCreateWord(Name_Second name, wchar_t* tex1, wchar_t* tex
 {
 	Word temp = SetWord(tex1, tex2, tex3);
 	wordlist_second.insert(std::make_pair(name, temp));
+}
+
+void TextManager::GetWordSize( Word word)
+{
+	len[0] = wcslen(word.FirstWord);
+	len[1] = wcslen(word.SecondWord);
+	len[2] = wcslen(word.ThirdWord);
+
 }
 
 //文字列保存

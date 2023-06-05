@@ -26,6 +26,9 @@ void LoadStageObj::FoodLoad(const std::string& sceneName) {
 	else if (sceneName == "SECONDSTAGE") {
 		Size = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/food/food.csv", "Stage2")));
 	}
+	else if (sceneName == "TUTORIAL") {
+		Size = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/food/food.csv", "Stage1")));
+	}
 	else {
 		assert(0);
 	}
@@ -232,6 +235,17 @@ void LoadStageObj::CommonUpdate() {
 		foods[i]->Update();
 		if (m_SceneName == "FIRSTSTAGE") {
 			if (foods[i]->GetAlive() && foods[i] != nullptr && !boss->BossDestroy()) {
+				lightgroup->SetCircleShadowDir(i + 2, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
+				lightgroup->SetCircleShadowCasterPos(i + 2, XMFLOAT3({ foods[i]->GetPosition().x, foods[i]->GetPosition().y, foods[i]->GetPosition().z }));
+				lightgroup->SetCircleShadowAtten(i + 2, XMFLOAT3(circleShadowAtten));
+				lightgroup->SetCircleShadowFactorAngle(i + 2, XMFLOAT2(circleShadowFactorAngle));
+			}
+			else {
+				lightgroup->SetCircleShadowActive(i + 2, false);
+			}
+		}
+		else if (m_SceneName == "TUTORIAL") {
+			if (foods[i]->GetAlive() && foods[i] != nullptr) {
 				lightgroup->SetCircleShadowDir(i + 2, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
 				lightgroup->SetCircleShadowCasterPos(i + 2, XMFLOAT3({ foods[i]->GetPosition().x, foods[i]->GetPosition().y, foods[i]->GetPosition().z }));
 				lightgroup->SetCircleShadowAtten(i + 2, XMFLOAT3(circleShadowAtten));

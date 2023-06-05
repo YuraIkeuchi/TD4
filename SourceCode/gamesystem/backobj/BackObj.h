@@ -33,4 +33,6 @@ private:
 	JsonData* jsonData = nullptr;
 	std::map<std::string, IKEModel*> models;
 	std::vector<IKEObject3d*> objects;
+
+	XMFLOAT3 m_ParticlePos = {};
 };

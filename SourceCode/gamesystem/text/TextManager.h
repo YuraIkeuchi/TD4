@@ -32,9 +32,33 @@ public:
 		TYUTORIAL_TALK9,
 		TYUTORIAL_TALK10,
 		TYUTORIAL_TALK11,
-		AISATU ,
-		KAIWA,
-		BATTLE,
+		TYUTORIAL_TALK12,
+		TYUTORIAL_TALK13,
+		TYUTORIAL_TALK14,
+		TYUTORIAL_TALK15,
+		TYUTORIAL_TALK16,
+		TYUTORIAL_TALK17,
+		TYUTORIAL_TALK18,
+		TYUTORIAL_TALK19,
+		TYUTORIAL_TALK20,
+		TYUTORIAL_TALK21,
+		TYUTORIAL_TALK22,
+		TYUTORIAL_TALK23,
+		TYUTORIAL_TALK24,
+		TYUTORIAL_TALK25,
+		TYUTORIAL_TALK26,
+		TYUTORIAL_TALK27,
+		TYUTORIAL_TALK28,
+		TYUTORIAL_TALK29,
+		TYUTORIAL_TALK30,
+		TYUTORIAL_TALK31,
+		TYUTORIAL_TALK32,
+		TYUTORIAL_TALK33,
+		AISATU,
+		SETUMEI1,
+		SETUMEI2,
+		SETUMEI3,
+		SETUMEI4,
 	};
 
 	enum Name_First
@@ -76,6 +100,8 @@ public:
 	void SetConversation(Name_First name = VIEWBOSS);
 
 	void SetSecondConversation(Name_Second name = ANGER_TALK);
+
+	void GetWordSize(Word word);
 private:
 	
 	//
@@ -98,5 +124,6 @@ private:
 	Conversation bossconversation_ = {};
 
 	XMVECTOR color_{ 1.f,1.f,1.f,1.f };
+	size_t len[3];
 };
 

@@ -120,7 +120,7 @@ void SecondStageActor::BackDraw(DirectXCommon* dxCommon) {
 //ポストエフェクトがかからない
 void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	//パーティクル描画
-	if (!camerawork->GetFeedEnd()) {
+	if (!camerawork->GetFeedEnd() && m_SceneState == SceneState::MainState) {
 		ParticleEmitter::GetInstance()->FlontDrawAll();
 	}
 
@@ -241,7 +241,7 @@ void SecondStageActor::IntroUpdate(DebugCamera* camera) {
 
 	//各クラス更新
 	BackObj::GetInstance()->Update();
-
+	ParticleEmitter::GetInstance()->Update();
 	Player::GetInstance()->AppearUpdate();
 	enemymanager->AppearUpdate();
 
@@ -282,6 +282,7 @@ void SecondStageActor::MainUpdate(DebugCamera* camera) {
 	}
 	
 	if (PlayerDestroy()) {
+		Audio::GetInstance()->StopWave(1);
 		sceneChanger_->ChangeStart();
 		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::Reverse);
 	}
