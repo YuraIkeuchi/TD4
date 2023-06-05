@@ -53,6 +53,7 @@ void Ghost::Update() {
 	PlayerCollision();
 	//食べ物をはこぶ
 	CarryFood();
+	//Particle();
 }
 //描画
 void Ghost::Draw(DirectXCommon* dxCommon) {
@@ -78,22 +79,51 @@ bool Ghost::BulletCollision() {
 			_followState = FollowState::Follow_START;
 			m_Object->SetModel(model_follow);
 			m_Follow = true;
-		} else {
+		}
+		else {
 			_charaState = CharaState::STATE_SEARCH;
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Searcher.wav", VolumManager::GetInstance()->GetSEVolum());
 		}
 		return true;
-	} else {
+	}
+	else {
 		return false;
 	}
 	return true;
+}
+//パーティクル
+void Ghost::Particle() {
+	XMFLOAT4 s_color = { 1.0f,1.0f,1.0f,1.0f };
+	XMFLOAT4 e_color = { 1.0f,1.0f,1.0f,1.0f };
+	XMFLOAT4 s_color2 = { 1.0f,0.0f,0.0f,1.0f };
+	XMFLOAT4 e_color2 = { 1.0f,0.0f,0.0f,1.0f };
+	XMFLOAT4 s_color3 = { 0.0f,1.0f,0.0f,1.0f };
+	XMFLOAT4 e_color3 = { 0.0f,1.0f,0.0f,1.0f };
+	float s_scale = 3.0f;
+	float e_scale = 0.0f;
+	if (m_Alive) {
+		if (_charaState == CharaState::STATE_NONE) {
+			m_Color = { 1.0f,1.0f,1.0f,0.7f };
+			m_Scale = { 0.5f,0.5f,0.5f };
+			//ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color, e_color);
+		}
+		else if (_charaState == CharaState::STATE_FOLLOW) {
+			m_Color = { 1.0f,1.0f,1.0f,1.0f };
+			m_Scale = { 0.6f,0.6f,0.6f };
+			ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color2, e_color2);
+		}
+		else {
+			//ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color3, e_color3);
+		}
+	}
 }
 //当たり判定(プレイヤー)
 bool Ghost::PlayerCollision() {
 	if (Player::GetInstance()->PlayerCollide(m_Position) && (_charaState == CharaState::STATE_FOLLOW)) {
 		m_Position = m_OldPos;
 		return true;
-	} else {
+	}
+	else {
 		return false;
 	}
 
@@ -140,8 +170,8 @@ void Ghost::None() {
 	noneTimer += 0.05f;
 
 	float size = sinf(noneTimer) * 0.05f;
-	m_Position.x += cosf(m_Rotation.y*(PI_180/XM_PI)) * size;
-	m_Position.y = sinf(noneTimer)*1.2f;
+	m_Position.x += cosf(m_Rotation.y * (PI_180 / XM_PI)) * size;
+	m_Position.y = sinf(noneTimer) * 1.2f;
 	m_Position.z += sinf(m_Rotation.y * (PI_180 / XM_PI)) * size;
 
 }
@@ -151,11 +181,11 @@ void Ghost::Spawm() {
 
 	m_Rotation.y = Ease(In, Quad, m_SpawnTimer, -(PI_360 + PI_90), -PI_90);
 
-	float scale = Ease(Out,Elastic,m_SpawnTimer,0.0f,0.5f);
+	float scale = Ease(Out, Elastic, m_SpawnTimer, 0.0f, 0.5f);
 	m_Scale = { scale,scale,scale };
 
-	Helper::GetInstance()->Clamp(m_SpawnTimer,0.0f,1.0f);
-	if (m_SpawnTimer==1.0f) {
+	Helper::GetInstance()->Clamp(m_SpawnTimer, 0.0f, 1.0f);
+	if (m_SpawnTimer == 1.0f) {
 		_charaState = CharaState::STATE_NONE;
 	}
 }
@@ -181,7 +211,8 @@ void Ghost::Search() {
 			m_Scale = { 0.0f,0.0f,0.0f };
 			m_Alive = false;
 		}
-	} else if (_searchState == SearchState::SEARCH_END) {
+	}
+	else if (_searchState == SearchState::SEARCH_END) {
 		Helper::GetInstance()->FollowMove(m_Position, l_playerPos, l_Vel);
 		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, l_playerPos, -PI_90);
 	}

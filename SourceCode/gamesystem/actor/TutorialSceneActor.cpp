@@ -400,7 +400,6 @@ void TutorialSceneActor::CompleteState() {
 		text_->SetConversation(TextManager::TYUTORIAL_TALK33);
 	}
 
-
 	if (DebugButton() ||
 		conversation == 12) {
 		sceneChanger_->ChangeStart();

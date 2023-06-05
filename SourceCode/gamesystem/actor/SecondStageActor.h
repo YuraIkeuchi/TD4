@@ -48,5 +48,5 @@ private:
 	//丸影(ボス)
 	float BosscircleShadowDir[3] = { 0,-1,0 };
 	float BosscircleShadowAtten[3] = { 0.5f,0.6f,0.0f };
-	float BosscircleShadowFactorAngle[2] = { 0.0f, 1.2f };
+	float BosscircleShadowFactorAngle[2] = { 1.8f, 1.8f };
 };
