@@ -102,6 +102,8 @@ public:
 	void SetSecondConversation(Name_Second name = ANGER_TALK);
 
 	void GetWordSize(Word word);
+
+	void SetRowPosition(float posX);
 private:
 	
 	//
