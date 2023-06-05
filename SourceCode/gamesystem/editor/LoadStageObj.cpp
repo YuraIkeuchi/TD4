@@ -139,9 +139,9 @@ void LoadStageObj::Draw(DirectXCommon* dxCommon)
 }
 //ImGui
 void LoadStageObj::ImGuiDraw() {
-	ImGui::Begin("Heart");
-	ImGui::Text("HeartCount:%d", m_HeartCount);
-	ImGui::End();
+	/*ImGui::Begin("Heart");
+	ImGui::Text("m_Division:%f", m_Division);
+	ImGui::End();*/
 	//boss->ImGuiDraw();
 }
 //当たり判定(ゴースト)
@@ -222,11 +222,35 @@ void LoadStageObj::VanishGhost() {
 			break;
 		}
 	}
+
+	//ゴースト薄くする版
+	//int l_TargetCatchCount = HungerGauge::GetInstance()->GetCatchCount() - 1;
+	//float l_Value = HungerGauge::m_Hungervalue;
+	////除算をする
+	//m_Division = HungerGauge::GetInstance()->GetNowHunger() / 5.0f;
+	//m_Alpha = m_Division - ((float)HungerGauge::GetInstance()->GetCatchCount() - 1.0f);
+	//for (auto i = 0; i < ghosts.size(); ++i) {
+	//	if (!ghosts[i]->GetAlive()) { continue; }
+	//	if (!ghosts[i]->GetCatch()) { continue; }
+	//	if (!ghosts[i]->GetFollow()) { continue; }
+
+	//	m_Vanish = true;
+
+	//	//for分抜ける
+	//	if (m_Vanish) {
+	//		ghosts[i]->SetColor({ ghosts[i]->GetColor().x,ghosts[i]->GetColor().y, ghosts[i]->GetColor().z, m_Alpha });
+	//		if (ghosts[i]->GetColor().w <= 0.1f) {
+	//			ghosts[i]->SetAlive(false);
+	//			HungerGauge::GetInstance()->SetCatchCount(HungerGauge::GetInstance()->GetCatchCount() - 1);
+	//			HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() - l_Value);
+	//		}
+	//		m_Vanish = false;
+	//		break;
+	//	}
+	//}
 }
 //共通の更新
 void LoadStageObj::CommonUpdate() {
-
-	m_HeartCount = max(m_HeartCount, 2);
 	//ゴースト
 	for (auto i = 0; i < ghosts.size(); i++)
 	{
@@ -298,7 +322,6 @@ void LoadStageObj::CommonUpdate() {
 		}
 
 		if (!hearts[i]->GetAlive()) {
-			m_HeartCount--;
 			hearts.erase(cbegin(hearts) + i);
 		}
 	}

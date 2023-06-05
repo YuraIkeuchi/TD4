@@ -75,6 +75,6 @@ private:
 
 	string m_SceneName;
 
-	int m_HeartCount = 2;
+	float m_Alpha = {};
 };
 

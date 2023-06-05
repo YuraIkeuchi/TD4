@@ -46,6 +46,7 @@ public:
 	const XMFLOAT3& GetPosition() { return m_Position; }
 	const XMFLOAT3& GetRotation() { return m_Rotation; }
 	const XMFLOAT3& GetScale() { return m_Scale; }
+	const XMFLOAT4& GetColor() { return m_Color; }
 	const XMMATRIX& GetMatRot() { return m_MatRot; }
 
 

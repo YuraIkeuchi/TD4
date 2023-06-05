@@ -60,7 +60,7 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	//プレイヤー
 	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
 		lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-		lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().y, Player::GetInstance()->GetPosition().z }));
+		lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, 0.0f, Player::GetInstance()->GetPosition().z }));
 		lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
 		lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
 	}
@@ -70,7 +70,7 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 
 	//ボス
 	lightgroup->SetCircleShadowDir(1, XMVECTOR({ BosscircleShadowDir[0], BosscircleShadowDir[1], BosscircleShadowDir[2], 0 }));
-	lightgroup->SetCircleShadowCasterPos(1, XMFLOAT3({ enemymanager->GetBoss()->GetPosition().x, 	enemymanager->GetBoss()->GetPosition().y, 	enemymanager->GetBoss()->GetPosition().z }));
+	lightgroup->SetCircleShadowCasterPos(1, XMFLOAT3({ enemymanager->GetBoss()->GetPosition().x, 	0.0f, 	enemymanager->GetBoss()->GetPosition().z }));
 	lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
 	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
 	lightgroup->Update();
