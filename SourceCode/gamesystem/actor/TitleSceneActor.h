@@ -24,5 +24,8 @@ private:
 private://メンバ変数
 	//スプライト
 	unique_ptr<IKESprite> TitleSprite;
-
+	unique_ptr<IKESprite> TitleWordSprite;
+	XMFLOAT2 size = { 708.0f,354.0f };
+	XMFLOAT2 pos = { 50.0f,110.0f };
+	float frame = 0.0f;
 };

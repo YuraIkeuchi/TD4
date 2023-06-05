@@ -21,18 +21,20 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	sceneChanger_->Initialize();
 	//タイトル
 	TitleSprite = IKESprite::Create(ImageManager::TITLE, { 0.0f,0.0f });
+	TitleWordSprite= IKESprite::Create(ImageManager::TITLEWORD, pos);
+	TitleWordSprite->SetSize(size);
 }
 //更新
 void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
-	if ((input->TriggerButton(input->B)||input->Pushkey(DIK_SPACE))&&
+	if ((input->TriggerButton(input->B) || input->Pushkey(DIK_SPACE)) &&
 		!sceneChanger_->GetEasingStart()) {
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Decide.wav", VolumManager::GetInstance()->GetSEVolum());
 		sceneChanger_->ChangeStart();
 		Audio::GetInstance()->StopWave(0);
 	}
-
-
+	frame += 0.01f;
+	TitleWordSprite->SetPosition({pos.x+(sinf(frame*5.0f) * 25.0f), pos.y + (sinf(frame) *50.0f)});
 
 	if (sceneChanger_->GetEasingStart()) {
 		string str = "LOAD";
@@ -71,6 +73,7 @@ void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
 void TitleSceneActor::FrontDraw() {
 	IKESprite::PreDraw();
 	TitleSprite->Draw();
+	TitleWordSprite->Draw();
 	IKESprite::PostDraw();
 	sceneChanger_->Draw();
 }
