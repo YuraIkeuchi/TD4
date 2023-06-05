@@ -525,8 +525,8 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
 
-	lightgroup->SetCircleShadowActive(0, true);
-	lightgroup->SetCircleShadowActive(1, true);
+	lightgroup->SetCircleShadowActive(0, false);
+	lightgroup->SetCircleShadowActive(1, false);
 }
 //更新
 void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -537,12 +537,15 @@ void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
 	lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
 
-	//ボス一旦放置
-	if (firstEnemy->GetisAlive()) {
-		lightgroup->SetCircleShadowDir(1, XMVECTOR({ BosscircleShadowDir[0], BosscircleShadowDir[1], BosscircleShadowDir[2], 0 }));
-		lightgroup->SetCircleShadowCasterPos(1, XMFLOAT3({ firstEnemy->GetPosition().x, 	firstEnemy->GetPosition().y, 	firstEnemy->GetPosition().z }));
-		lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
-		lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
+	//スとぽん
+	lightgroup->SetCircleShadowActive(1, true);
+	lightgroup->SetCircleShadowDir(1, XMVECTOR({ BosscircleShadowDir[0], BosscircleShadowDir[1], BosscircleShadowDir[2], 0 }));
+	lightgroup->SetCircleShadowCasterPos(1, XMFLOAT3({ sutepon->GetPosition().x, 	sutepon->GetPosition().y, 	sutepon->GetPosition().z }));
+	lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
+	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
+	if (nowstate_ == state::MOVE) {
+		lightgroup->SetCircleShadowActive(0, true);
+		lightgroup->SetCircleShadowActive(1, true);
 	}
 	else {
 		lightgroup->SetCircleShadowActive(1, false);
@@ -617,7 +620,9 @@ void TutorialSceneActor::BackDraw(DirectXCommon* dxCommon) {
 //ポストエフェクトがかからない
 void TutorialSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 	//パーティクル描画
-	ParticleEmitter::GetInstance()->FlontDrawAll();
+	if (nowstate_!= state::INTORO) {
+		ParticleEmitter::GetInstance()->FlontDrawAll();
+	}
 	//完全に前に書くスプライト
 	if (static_cast<int>(nowstate_) % 2 == 0) {
 		IKESprite::PreDraw();
