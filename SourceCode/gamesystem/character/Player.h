@@ -137,7 +137,7 @@ private:
 	bool isStop;
 	XMFLOAT3 OldPos;
 public:
-	void MoveStop(bool f) { isStop = f;; }
+	void MoveStop(bool f) { isStop = f; }
 	void isOldPos();
 
 	void RecvDamage(float Damage);

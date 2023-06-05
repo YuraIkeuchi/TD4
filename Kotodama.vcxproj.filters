@@ -416,6 +416,9 @@
     <ClCompile Include="SourceCode\gamesystem\limitline\DownLimit.cpp">
       <Filter>gamesystem\limitline</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\SceneSave.cpp">
+      <Filter>gamesystem\scene\Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
@@ -795,6 +798,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\limitline\UpLimit.h">
       <Filter>gamesystem\limitline</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\SceneSave.h">
+      <Filter>gamesystem\scene\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
