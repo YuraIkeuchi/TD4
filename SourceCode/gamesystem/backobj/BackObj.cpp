@@ -1,6 +1,12 @@
 #include "BackObj.h"
 #include "VariableCommon.h"
 #include "JsonLoader.h"
+#include "ParticleEmitter.h"
+#include "LeftLimit.h"
+#include "RightLimit.h"
+#include "DownLimit.h"
+#include "UpLimit.h"
+#include <random>
 BackObj* BackObj::GetInstance()
 {
 	static BackObj instance;
@@ -67,6 +73,12 @@ void BackObj::Update() {
 	for (auto& object : objects) {
 		object->Update();
 	}
+
+	//移動制御のラインにパーティクル設置
+	DownLimit::GetInstance()->LimitParticle();
+	UpLimit::GetInstance()->LimitParticle();
+	LeftLimit::GetInstance()->LimitParticle();
+	RightLimit::GetInstance()->LimitParticle();
 	//Obj_SetParam();
 }
 

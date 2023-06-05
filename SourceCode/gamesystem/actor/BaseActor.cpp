@@ -25,7 +25,7 @@ void BaseActor::BaseInitialize(DirectXCommon* dxCommon, XMFLOAT3 eye, XMFLOAT3 t
 
 //ƒvƒŒƒCƒ„[‚ªŽ€‚ñ‚¾‚©
 bool BaseActor::PlayerDestroy() {
-	if (Player::GetInstance()->GetHP() < 0.0f) {
+	if (Player::GetInstance()->GetHP() <= 0.0f) {
 		return true;
 	}
 	else {
