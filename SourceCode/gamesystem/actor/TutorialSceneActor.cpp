@@ -43,6 +43,8 @@ void TutorialSceneActor::IntroState() {
 	}
 }
 void TutorialSceneActor::MoveState() {
+	text_->SetConversation(TextManager::SETUMEI1);
+
 	//メガホンobj更新
 	sutepon->Update();
 
@@ -68,6 +70,7 @@ void TutorialSceneActor::MoveState() {
 	}
 	if (input->TriggerKey(DIK_O)) {
 		nowstate_ = state::TEXT_TALK;
+		text_->SetConversation(TextManager::NONE);
 	}
 }
 void TutorialSceneActor::TextTalkState() {
@@ -140,6 +143,7 @@ void TutorialSceneActor::TextCatchFollowState() {
 
 }
 void TutorialSceneActor::CatchFollowState() {
+	text_->SetConversation(TextManager::SETUMEI2);
 	loadobj->TutorialUpdate();
 	firstEnemy->SetIsStop(true);
 	enemymanager->TutorialUpdate(0);
@@ -148,7 +152,7 @@ void TutorialSceneActor::CatchFollowState() {
 		Clear(HungerGauge::GetInstance()->GetCatchCount() >= 1, 50)) {
 		waitTimer = 0;
 		nowstate_ = state::TEXT_SHOT;
-
+		text_->SetConversation(TextManager::NONE);
 	}
 
 }
@@ -172,6 +176,7 @@ void TutorialSceneActor::TextShotState() {
 	}
 }
 void TutorialSceneActor::ShotState() {
+	text_->SetConversation(TextManager::SETUMEI3);
 	loadobj->TutorialUpdate();
 	enemymanager->TutorialUpdate(0);
 
@@ -179,6 +184,7 @@ void TutorialSceneActor::ShotState() {
 		Clear(!firstEnemy->GetisAlive(), 45)) {
 		waitTimer = 0;
 		nowstate_ = state::TEXT_CATCHSEACH;
+		text_->SetConversation(TextManager::NONE);
 	}
 }
 void TutorialSceneActor::TextCatchSeachState() {
@@ -216,6 +222,7 @@ void TutorialSceneActor::TextCatchSeachState() {
 	}
 }
 void TutorialSceneActor::CatchSeachState() {
+	text_->SetConversation(TextManager::SETUMEI4);
 	loadobj->TutorialUpdate();
 	enemymanager->TutorialUpdate(0);
 
@@ -224,6 +231,7 @@ void TutorialSceneActor::CatchSeachState() {
 		Clear(HungerGauge::GetInstance()->GetFirstCarry(), 30)) {
 		waitTimer = 0;
 		nowstate_ = state::TEXT_CLEAR;
+		text_->SetConversation(TextManager::NONE);
 	}
 }
 void TutorialSceneActor::TextClearState() {
@@ -346,7 +354,7 @@ void TutorialSceneActor::CompleteState() {
 		text_->SetConversation(TextManager::TYUTORIAL_TALK32,kSkyBlue);
 	}
 	else if (conversation == 12) {
-		text_->SetConversation(TextManager::TYUTORIAL_TALK33, kSkyBlue);
+		text_->SetConversation(TextManager::TYUTORIAL_TALK33);
 	}
 
 
@@ -463,8 +471,7 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 
 	text_ = make_unique<TextManager>();
 	text_->Initialize(dxCommon);
-	text_->SetConversation(TextManager::TYUTORIAL_TALK1)
-		;
+	text_->SetConversation(TextManager::TYUTORIAL_TALK1);
 	BackObj::GetInstance()->Initialize();
 	loadobj = std::make_unique<LoadStageObj>();
 	loadobj->AllLoad("TUTORIAL");
@@ -572,12 +579,12 @@ void TutorialSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 		IKESprite::PreDraw();
 		messagewindow_->Draw();
 		IKESprite::PostDraw();
-		if (messagewindow_->DisplayCheck()) {
-			text_->Draw(dxCommon);
-		}
 	}
 	else {
 		ui->Draw();
+	}
+	if (messagewindow_->DisplayCheck()) {
+		text_->Draw(dxCommon);
 	}
 	sceneChanger_->Draw();
 }
