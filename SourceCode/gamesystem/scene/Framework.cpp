@@ -1,7 +1,8 @@
 #include "Framework.h"
 #include "IKEFbxLoader.h"
 #include "ParticleEmitter.h"
-#include"Font.h"
+#include "Font.h"
+#include "SceneSave.h"
 
 void Framework::Run()
 {
@@ -72,6 +73,7 @@ void Framework::Initialize(DirectXCommon* dxCommon)
 	//パーティクルエミッター初期化
 	ParticleEmitter::GetInstance()->Initialize();
 	Font::Initialize(dxcommon);
+	SceneSave::GetInstance()->AllReset();
 }
 
 void Framework::Finalize()

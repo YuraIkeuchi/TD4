@@ -11,6 +11,8 @@
 #include "EnemyManager.h"
 #include "LoadStageObj.h"
 #include"Font.h"
+#include<SceneSave.h>
+
 using namespace std;         //  名前空間指定
 //Actorクラスの既定
 class BaseActor

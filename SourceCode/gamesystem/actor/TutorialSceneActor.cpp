@@ -12,7 +12,7 @@ const XMFLOAT4 kHalfClear{ 0.5f,0.5f,0.5f,0.5f };
 const XMFLOAT4 kOriginalGirlColor= { 1.5f,1.5f,1.5f,1.f };
 const XMFLOAT4 kOriginalSutoponColor= { 1.f,1.f,1.f,1.f };
 
-bool TutorialSceneActor::isDebug = true;
+bool TutorialSceneActor::isDebug = false;
 TextManager* instance = TextManager::GetInstance();
 
 //状態遷移
@@ -404,6 +404,7 @@ void TutorialSceneActor::CompleteState() {
 	if (DebugButton() ||
 		conversation == 12) {
 		sceneChanger_->ChangeStart();
+		SceneSave::GetInstance()->SetClearFlag(kTutorialStage,true);
 	}
 	sceneChanger_->ChangeScene("FIRSTSTAGE", SceneChanger::NonReverse);
 
