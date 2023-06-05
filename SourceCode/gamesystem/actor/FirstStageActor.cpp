@@ -103,9 +103,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	if (enemymanager->BossDestroy()) {
 		Audio::GetInstance()->StopWave(1);
 	}
-	if (Input::GetInstance()->TriggerButton(Input::A)) {
-		camerawork->SetCameraSkip(true);
-	}
+	
 	if (camerawork->GetAppearEndF()) {
 		camerawork->SetCameraState(CAMERA_NORMAL);
 		//enemymanager->SkipInitialize();
@@ -172,6 +170,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	
 	postEffect->SetRadCenter(XMFLOAT2(tex2DPos.m128_f32[0], tex2DPos.m128_f32[1]));
 	postEffect->SetRadPower(camerawork->GetEffectPower());
+
 	if(_Tscne!=TextScene::ENDTEXT)
 	text_->Display();
 	camerawork->Update(camera);
@@ -223,6 +222,7 @@ void FirstStageActor::BackDraw(DirectXCommon* dxCommon) {
 //ポストエフェクトがかからない
 void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	//パーティクル描画
+	if (camerawork->CameraStateisNormal())
 	ParticleEmitter::GetInstance()->FlontDrawAll();
 
 	ui->Draw();;

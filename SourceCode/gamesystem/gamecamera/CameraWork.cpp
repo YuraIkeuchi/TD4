@@ -79,6 +79,10 @@ void CameraWork::BossAppear() {
 	else if (SceneName == "SECONDSTAGE") {
 		SecondBossAppear();
 	}
+	if (Input::GetInstance()->TriggerButton(Input::A)) {
+		m_CameraSkip=true;
+	}
+
 
 	if (m_CameraSkip) {
 		if (!FeedF)
