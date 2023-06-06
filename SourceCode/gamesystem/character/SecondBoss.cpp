@@ -48,7 +48,7 @@ bool SecondBoss::Initialize() {
 	m_Scale = { 0.05f,0.05f,0.05f };
 	m_AddPower = 0.8f;
 	m_Radius = 5.0f;
-	_charaState = CharaState::STATE_STAMP;
+	_charaState = CharaState::STATE_ROLL;
 	m_MoveState = MOVE_ALTER;
 	m_RandomType = RANDOM_START;
 	m_RollType = ROLL_ONE;
@@ -238,7 +238,9 @@ void SecondBoss::Move() {
 	}
 	
 	//イージングで設定する
-	m_FollowSpeed = Ease(In, Cubic, m_Frame, m_FollowSpeed, m_AfterFollowSpeed);
+	if (_InterValState == UpState) {
+		m_FollowSpeed = Ease(In, Cubic, m_Frame, m_FollowSpeed, m_AfterFollowSpeed);
+	}
 	m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, m_AfterRot.x);
 	m_Position.y = Ease(In, Cubic, m_Frame, m_Position.y, m_AfterPos.y);
 	//追従
