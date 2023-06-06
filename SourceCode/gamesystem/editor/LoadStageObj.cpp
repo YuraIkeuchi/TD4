@@ -139,6 +139,11 @@ void LoadStageObj::Draw(DirectXCommon* dxCommon)
 }
 //ImGui
 void LoadStageObj::ImGuiDraw() {
+	//ÉSÅ[ÉXÉg
+	for (auto i = 0; i < ghosts.size(); i++)
+	{
+		ghosts[i]->ImGuiDraw();
+	}
 	/*ImGui::Begin("Heart");
 	ImGui::Text("m_Division:%f", m_Division);
 	ImGui::End();*/

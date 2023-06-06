@@ -264,7 +264,7 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 void FirstStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	//Player::GetInstance()->ImGuiDraw();
 	//enemymanager->ImGuiDraw();
-	loadobj->ImGuiDraw();
+	//loadobj->ImGuiDraw();
 }
 
 
