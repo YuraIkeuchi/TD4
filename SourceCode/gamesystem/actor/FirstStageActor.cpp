@@ -26,6 +26,9 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	//各クラス
 	//プレイヤー
 	Player::GetInstance()->InitState({ 0.0f,5.0f,-70.0f });
+
+	Player::GetInstance()->SetCanShot(false);
+	Player::GetInstance()->MoveStop(true);
 	//敵
 	enemymanager = std::make_unique<EnemyManager>("FIRSTSTAGE");
 	//カメラ
@@ -88,18 +91,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		{
 			_Tscne = TextScene::ENDTEXT;
 		}
-
-		Player::GetInstance()->SetCanShot(false);
-		Player::GetInstance()->MoveStop(true);
 	}
-	else
-	{
-		if (camerawork->GetCameraState()) {
-			Player::GetInstance()->SetCanShot(true);
-			Player::GetInstance()->MoveStop(false);
-		}
-	}
-	
 	
 	Input* input = Input::GetInstance();
 
@@ -129,6 +121,8 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	}
 	
 	if (camerawork->GetAppearEndF()) {
+		Player::GetInstance()->MoveStop(false);
+		Player::GetInstance()->SetCanShot(true);
 		camerawork->SetCameraState(CAMERA_NORMAL);
 		//enemymanager->SkipInitialize();
 	}
@@ -247,10 +241,14 @@ void FirstStageActor::BackDraw(DirectXCommon* dxCommon) {
 //ポストエフェクトがかからない
 void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	//パーティクル描画
-	if (camerawork->CameraStateisNormal())
+	if (camerawork->GetCameraState() != CameraState::CAMERA_BOSSAPPEAR)
 	ParticleEmitter::GetInstance()->FlontDrawAll();
 
-	ui->Draw();;
+
+	ParticleEmitter::GetInstance()->DeathDrawAll();
+
+	if(camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_BEFORE &&camerawork->GetCameraState()!=CameraState::CAMERA_BOSSDEAD_AFTER_FIRST)
+	ui->Draw();
 	sceneChanger_->Draw();	//完全に前に書くスプライト
 	//if (camerawork->GetAppearType() == APPEAR_SEVEN || camerawork->GetAppearType() == APPEAR_EIGHT) {
 	if (_Tscne != TextScene::ENDTEXT)

@@ -70,6 +70,7 @@ void InterBoss::CollideBul(vector<InterBullet*> bullet,Type type)
 			if (type == Type::SPHERE)JudgColide=Collision::SphereCollision(_bullet->GetPosition(), m_Radius, m_Position, m_Radius);
 			if (JudgColide)
 			{
+				SearchF = true;
 				//乱数指定
 				mt19937 mt{ std::random_device{}() };
 				uniform_int_distribution<int> l_RandomRange(1, 100);
@@ -91,10 +92,10 @@ void InterBoss::CollideBul(vector<InterBullet*> bullet,Type type)
 
 					m_HP -= 1.5f * m_Magnification;
 				}
-				if (m_HP < 0.1) {
+				if (m_HP <1.f) {
 					if (SceneName == "FIRSTSTAGE")
 					{
-						m_Position = { 0,40,20.f };
+						m_Position = { 0,0,0 };
 					}
 				}
 				BirthEffect();
@@ -109,7 +110,9 @@ void InterBoss::BirthEffect() {
 	neweffect = new BreakEffect();
 	neweffect->Initialize();
 	neweffect->SetPosition(m_Position);
-	if (m_HP < 0.1f) {
+	//if (SceneName == "FIRSTSTAGE")
+	//	neweffect->SetPosition(EffectFirstPos);
+	if (m_HP < 1.f) {
 		neweffect->SetLife(1000);
 		neweffect->SetDiviSpeed(8.0f);
 	} else {
@@ -162,7 +165,7 @@ void InterBoss::SummonEnemyUpda(std::vector<InterEnemy*> boss)
 			matRot[i] = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + (0.f + static_cast<float>(i) * 45.f)));
 			move[i] = XMVector3TransformNormal(move[i], matRot[i]);
 
-			boss[i]->SetPosition({ m_Position.x + move[i].m128_f32[0] * 90.f,m_Position.y,	m_Position.z + move[i].m128_f32[2] * 90.f });
+			boss[i]->SetPosition({ m_Position.x + move[i].m128_f32[0] * 90.f,0.f,	m_Position.z + move[i].m128_f32[2] * 90.f });
 		}
 		
 	}
