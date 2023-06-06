@@ -942,8 +942,8 @@ void FirstBoss::DeadAction() {
 		}
 		DeathSpeed = 0.f;
 	}
-	if(m_Position.y<=10)
-	DeathEffect();
+	if(m_Position.y<=5)
+		DeathEffect();
 
 	Obj_SetParam();
 
@@ -1010,16 +1010,15 @@ void FirstBoss::SelAttack()
 
 void FirstBoss::DeathEffect()
 {
-	if (!DeathEffectF)return;
-
+	
 	float l_AddSize = 3.5f;
 	const float RandScale = 3.0f;
-	float s_scale = 0.9f * l_AddSize;
-	float e_scale = (7.0f + (float)rand() / RAND_MAX * RandScale - RandScale / 2.0f) * l_AddSize;
+	float s_scale = 7.9f * l_AddSize;
+	float e_scale = (1.0f + (float)rand() / RAND_MAX * RandScale - RandScale / 2.0f) * l_AddSize;
 
 	//色
-	const float RandRed = 0.2f;
-	const float red = 0.2f + (float)rand() / RAND_MAX * RandRed;
+	const float RandRed = 2.2f;
+	const float red = 2.2f + (float)rand() / RAND_MAX * RandRed;
 	const XMFLOAT4 s_color = { 0.9f, red, 0.1f, 1.0f }; //濃い赤
 	const XMFLOAT4 e_color = { 0, 0, 0, 1.0f }; //無色
 
@@ -1028,18 +1027,6 @@ void FirstBoss::DeathEffect()
 	uniform_int_distribution<int> l_Randlife(10, 40);
 	int l_Life = int(l_Randlife(mt));
 
-	ParticleEmitter::GetInstance()->Explosion(l_Life, m_Position, l_AddSize, s_scale, e_scale, s_color, e_color);
-	DeathEffectF = false;
-}
-
-//撃破パーティクル
-void FirstBoss::DeathParticle() {
-	const XMFLOAT4 s_color = { 1.0f,1.0f,1.0f,1.0f };
-	const XMFLOAT4 e_color = { 0.0f,0.0f,1.0f,1.0f };
-	float s_scale = 2.0f;
-	float e_scale = 0.0f;
-	float l_velocity = 0.6f;
-	for (int i = 0; i < 3; ++i) {
-		ParticleEmitter::GetInstance()->DeathEffect(50, { m_Position.x,(m_Position.y +5.f),m_Position.z }, s_scale, e_scale, s_color, e_color, l_velocity);
-	}
+	ParticleEmitter::GetInstance()->DeathEffectBoss(l_Life, m_Position, l_AddSize, s_scale, e_scale, s_color, e_color);
+	
 }

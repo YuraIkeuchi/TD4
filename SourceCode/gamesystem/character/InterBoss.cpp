@@ -151,6 +151,7 @@ void InterBoss::isRespawn(std::vector<InterEnemy*> boss)
 
 void InterBoss::SummonEnemyUpda(std::vector<InterEnemy*> boss)
 {
+	if (m_HP < 0.1)return;
 	std::vector<XMVECTOR> move(boss.size());
 	std::vector<XMMATRIX>matRot(boss.size());
 
@@ -220,6 +221,8 @@ void InterBoss::EndSummon(std::vector<InterEnemy*> boss)
 
 void InterBoss::SummonEnemyDraw(std::vector<InterEnemy*> boss, DirectXCommon* dxcomn)
 {
+
+	if (m_HP < 0.1)return;
 	for (auto i = 0; i < boss.size(); i++)
 	{
 		if (boss[i] == nullptr)continue;
