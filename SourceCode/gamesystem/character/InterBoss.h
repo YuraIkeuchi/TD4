@@ -69,6 +69,9 @@ public:
 protected:
 	bool SummonF;
 	bool SummobnStop;
+	bool SearchF;// = Collision::GetLength(m_Position, l_player) < 25.f;
+private:
+	XMFLOAT3 EffectFirstPos;
 public://gettersetter
 	void SetHP(float hp) { m_HP = hp; };
 	float GetHP() { return m_HP; }

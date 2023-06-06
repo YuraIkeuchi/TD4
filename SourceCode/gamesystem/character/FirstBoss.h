@@ -43,6 +43,7 @@ private:
 	};
 	SummonEnemy _sumattack;
 
+	
 private:
 	//ため攻撃
 	struct ChargeAttack
