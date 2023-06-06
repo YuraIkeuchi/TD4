@@ -48,7 +48,7 @@ bool SecondBoss::Initialize() {
 	m_Scale = { 0.05f,0.05f,0.05f };
 	m_AddPower = 0.8f;
 	m_Radius = 5.0f;
-	_charaState = CharaState::STATE_STAMP;
+	_charaState = CharaState::STATE_ROLL;
 	m_MoveState = MOVE_ALTER;
 	m_RandomType = RANDOM_START;
 	m_RollType = ROLL_ONE;
@@ -238,11 +238,15 @@ void SecondBoss::Move() {
 	}
 	
 	//イージングで設定する
-	m_FollowSpeed = Ease(In, Cubic, m_Frame, m_FollowSpeed, m_AfterFollowSpeed);
 	m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, m_AfterRot.x);
-	m_Position.y = Ease(In, Cubic, m_Frame, m_Position.y, m_AfterPos.y);
-	//追従
-	Helper::GetInstance()->FollowMove(m_Position, Player::GetInstance()->GetPosition(), m_FollowSpeed);
+	if (m_MoveState != MOVE_CHOICE) {
+		if (_InterValState == UpState) {
+			m_FollowSpeed = Ease(In, Cubic, m_Frame, m_FollowSpeed, m_AfterFollowSpeed);
+		}
+		m_Position.y = Ease(In, Cubic, m_Frame, m_Position.y, m_AfterPos.y);
+		//追従
+		Helper::GetInstance()->FollowMove(m_Position, Player::GetInstance()->GetPosition(), m_FollowSpeed);
+	}
 }
 //攻撃
 void SecondBoss::Stamp() {
@@ -713,18 +717,19 @@ void SecondBoss::ChoiceMove() {
 				m_MoveState = MOVE_ANGER;
 			}
 		}
-		else if (l_RandState >= 31 && l_RandState <= 37) {	//スタンプ攻撃
-			_charaState = STATE_STAMP;
-			m_PressType = PRESS_START;
-		}
-		else if (l_RandState >= 38 && l_RandState <= 44) {	//ランダム攻撃
-			_charaState = STATE_RANDOM;
-			m_RandomType = RANDOM_START;
-		}
 		else {			//ローリング攻撃
 			_charaState = STATE_ROLL;
 			m_RollType = ROLL_ONE;
 		}
+		//else if (l_RandState >= 31 && l_RandState <= 37) {	//スタンプ攻撃
+		//	_charaState = STATE_STAMP;
+		//	m_PressType = PRESS_START;
+		//}
+		//else if (l_RandState >= 38 && l_RandState <= 44) {	//ランダム攻撃
+		//	_charaState = STATE_RANDOM;
+		//	m_RandomType = RANDOM_START;
+		//}
+		//
 	}
 }
 //移動関係の初期化
