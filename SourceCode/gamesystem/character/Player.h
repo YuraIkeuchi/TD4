@@ -91,6 +91,7 @@ public:
 	//gettersetter
 	const int& GetBulletType() { return m_BulletType; }
 	const int& GetDamageInterVal() { return m_DamageInterVal; }
+	const bool& GetIsShotNow() { return isShotNow; }
 
 
 	void SetHP(float hp) { m_HP = hp; };
@@ -135,6 +136,7 @@ public:
 
 private:
 	bool isStop;
+	bool isShotNow=false;
 	XMFLOAT3 OldPos;
 public:
 	void MoveStop(bool f) { isStop = f; }

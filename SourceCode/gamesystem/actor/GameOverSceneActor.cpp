@@ -27,7 +27,11 @@ void GameOverSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	if (input->TriggerButton(input->B)) {
 		sceneChanger_->ChangeStart();
 		if (SceneSave::GetInstance()->GetClearFlag(kFirstStage)) {
-			str = "SECONDSTAGE";
+			if (SceneSave::GetInstance()->GetClearFlag(kSecondStage)) {
+		
+			} else {
+				str = "SECONDSTAGE";
+			}
 		} else {
 			str = "FIRSTSTAGE";
 		}

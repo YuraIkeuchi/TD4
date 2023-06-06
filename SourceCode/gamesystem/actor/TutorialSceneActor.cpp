@@ -250,8 +250,9 @@ void TutorialSceneActor::CatchSeachState() {
 	enemymanager->TutorialUpdate(0);
 
 
-	if (DebugButton() ||
-		Clear(HungerGauge::GetInstance()->GetFirstCarry(), 30)) {
+	if ((DebugButton() ||
+		Clear(HungerGauge::GetInstance()->GetFirstCarry(), 30))
+		&& !Player::GetInstance()->GetIsShotNow()) {
 		waitTimer = 0;
 		nowstate_ = state::TEXT_CLEAR;
 		text_->SetConversation(TextManager::NONE);
@@ -273,8 +274,8 @@ void TutorialSceneActor::TextClearState() {
 		text_->SetConversation(TextManager::TYUTORIAL_TALK18,kSkyBlue);
 	}	
 
-	if (DebugButton() ||
-		conversation==2) {
+	if ((DebugButton() ||
+		conversation==2)) {
 		nowstate_ = state::SPAWNALLENEMY;
 		s_eyepos = camerawork->GetEye();
 		s_targetpos = camerawork->GetTarget();
@@ -286,10 +287,12 @@ void TutorialSceneActor::SpawnAllEnemyState() {
 	loadobj->TutorialUpdate();
 	Player::GetInstance()->MoveStop(true);
 	Player::GetInstance()->SetCanShot(false);
+	HungerGauge::GetInstance()->SetIsStop(true);
 	if (MovingCamera(s_eyepos, e_eyepos, s_targetpos, e_targetpos)) {
 		enemymanager->TutorialUpdate(1);
 	}
 	if (Clear(cameraframe >= 1.0f, 50)) {
+		HungerGauge::GetInstance()->SetIsStop(false);
 		s_eyepos = { Player::GetInstance()->GetPosition().x,
 		Player::GetInstance()->GetPosition().y + 50.0f,
 		Player::GetInstance()->GetPosition().z - 20.0f };

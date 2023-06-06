@@ -48,6 +48,7 @@ void NormalEnemy::Action() {
 	Particle();
 	
 	DeathEffect();
+	DeathAction();
 }
 //•`‰æ
 void NormalEnemy::Draw(DirectXCommon* dxCommon) {

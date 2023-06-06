@@ -27,6 +27,9 @@ private:
 	void WaitUpdate();
 	void LockOnUpdate();
 	void JumpUpdate();
+
+	bool Death();
+
 private:
 
 	void GetRotation2Player();

@@ -27,9 +27,9 @@ bool TutorialEnemy::Initialize() {
 	//乱数指定
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> r_kWaitTimeMax(100, 150);
-	kWaitTimeMax =(float)r_kWaitTimeMax(mt);
+	kWaitTimeMax = (float)r_kWaitTimeMax(mt);
 	uniform_int_distribution<int> r_kJumpTimeMax(60, 90);
-	kJumpTimeMax= (float)r_kJumpTimeMax(mt);
+	kJumpTimeMax = (float)r_kJumpTimeMax(mt);
 
 	m_Position = {};
 	HP = 1;
@@ -38,10 +38,9 @@ bool TutorialEnemy::Initialize() {
 }
 //行動
 void TutorialEnemy::Action() {
-	//if (!isStop) {
-		//関数ポインタで状態管理
+	if (Death()) { return; }
+	//関数ポインタで状態管理
 	(this->*commandTable[static_cast<size_t>(commandState)])();
-	//}
 	Obj_SetParam();
 	OnCollision();
 	ColPlayer();
@@ -108,15 +107,15 @@ void TutorialEnemy::WaitUpdate() {
 	}
 	float scale = Ease(Out, Quart, moveTimer, 0.3f, 1.0f);
 	m_Scale = { scale ,scale ,scale };
-	
+
 	commandTimer += 1.0f / kWaitTimeMax;
 	Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);
 
-	if (commandTimer==1.0f) {
+	if (commandTimer == 1.0f) {
 		m_Scale = { 1.f,1.f,1.f };
 		rot = m_Rotation.y;
 		s_pos = m_Position;
-		e_pos = { m_Position.x+sinf(RottoPlayer) *-10.0f,0.f, m_Position.z + cosf(RottoPlayer) * -10.0f };
+		e_pos = { m_Position.x + sinf(RottoPlayer) * -10.0f,0.f, m_Position.z + cosf(RottoPlayer) * -10.0f };
 		commandState = CommandState::JumpState;
 		commandTimer = 0.0f;
 	}
@@ -132,7 +131,7 @@ void TutorialEnemy::LockOnUpdate() {
 		commandTimer = 0.0f;
 		rot = m_Rotation.y;
 		s_pos = m_Position;
-		e_pos = { m_Position.x + sinf(RottoPlayer) * -(8.f*(float)jumpCount),0.f, m_Position.z + cosf(RottoPlayer) * -(15.0f * (float)jumpCount) };
+		e_pos = { m_Position.x + sinf(RottoPlayer) * -(8.f * (float)jumpCount),0.f, m_Position.z + cosf(RottoPlayer) * -(15.0f * (float)jumpCount) };
 		//kJumpTimeMax=100
 		commandState = CommandState::JumpState;
 	}
@@ -141,7 +140,7 @@ void TutorialEnemy::LockOnUpdate() {
 void TutorialEnemy::JumpUpdate() {
 
 	commandTimer += 1.0f / kJumpTimeMax;
-	Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);	
+	Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);
 
 
 	float hight = Ease(In, Quad, commandTimer, 1.0f, 0.0f);
@@ -152,7 +151,7 @@ void TutorialEnemy::JumpUpdate() {
 	Ease(Out, Quart, commandTimer, s_pos.z, e_pos.z),
 	};
 	if (commandTimer == 1.0f) {
-		if (jumpCount<kJumpCountMax) {
+		if (jumpCount < kJumpCountMax) {
 			commandState = CommandState::LockOnState;
 		} else {
 			jumpCount = 1;
@@ -160,6 +159,35 @@ void TutorialEnemy::JumpUpdate() {
 		}
 		commandTimer = 0.0f;
 	}
+}
+
+bool TutorialEnemy::Death() {
+	if (isAlive) { return false; }
+	if (deathFrame > 1.0f) { return false; }
+	deathFrame += 1.0f / deathFrameMax;
+
+	m_Color.w = 0.0f;
+	XMFLOAT4 s_color = { 1.0f,0.0f,0.0f,1.0f };
+	XMFLOAT4 e_color = { 1.0f,0.5f,0.0f,0.0f };
+	float s_scale = 5.0f;
+	float e_scale = 0.0f;
+	//乱数指定
+	mt19937 mt{ std::random_device{}() };
+	// 一様実数分布
+	  // [-1.0f, 1.0f)の値の範囲で、等確率に実数を生成する
+	std::uniform_real_distribution<float> dist1(-1.0f, 1.0f);
+
+	for (int i = 0; i < 3;i++) {
+		float margin = dist1(mt);
+		XMFLOAT3 pos = {
+		m_Position.x + margin,
+		m_Position.y,
+		m_Position.z + margin
+		};
+		ParticleEmitter::GetInstance()->FireEffect(40, pos, s_scale, e_scale, s_color, e_color);
+	}
+	Obj_SetParam();
+	return true; 
 }
 
 void TutorialEnemy::GetRotation2Player() {
@@ -172,7 +200,7 @@ void TutorialEnemy::GetRotation2Player() {
 	XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
 
 	RottoPlayer = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
-	m_Rotation.y = RottoPlayer * 60.0f + (PI_90+PI_180);
+	m_Rotation.y = RottoPlayer * 60.0f + (PI_90 + PI_180);
 }
 
 

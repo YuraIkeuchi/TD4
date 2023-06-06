@@ -75,6 +75,8 @@ protected:
 	void DeathAction();
 protected:
 	bool canRot = false;
+	float deathFrame = 0.0f;
+	float deathFrameMax = 40.0f;
 
 	bool Rush = false;
 public:
