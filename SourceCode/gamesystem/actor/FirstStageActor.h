@@ -27,6 +27,8 @@ private:
 	float Rads;
 	int textT;
 	unique_ptr<BossText> text_;
+	unique_ptr<IKESprite> backScreen_ = nullptr;
+
 	Spline* spline;
 	vector<XMFLOAT3> pointsList;
 	void SetPoints();

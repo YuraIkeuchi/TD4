@@ -88,6 +88,7 @@ protected:
 	SceneState m_SceneState = SceneState::IntroState;
 	//クラス
 	unique_ptr<EnemyManager> enemymanager;
+	unique_ptr<IKESprite> backScreen_ = nullptr;
 	unique_ptr<InterBoss> boss;
 	unique_ptr<UI>ui;
 	unique_ptr<LoadStageObj> loadobj;

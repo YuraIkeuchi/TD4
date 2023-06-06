@@ -19,6 +19,10 @@ public:
 	/// </summary>
 	void Initialize();
 	/// <summary>
+	/// 更新
+	/// </summary>
+	void Update();
+	/// <summary>
 	/// 初期k処理
 	/// </summary>
 	void InitializeOver();
@@ -37,9 +41,9 @@ public:
 	/// <param name="sceneName"></param>
 	bool ChangeScene(const std::string& sceneName, const ReverseType _reverse);
 	/// <summary>
-/// シーン切り替え
-/// </summary>
-/// <param name="sceneName"></param>
+	/// シーン切り替え
+	/// </summary>
+	/// <param name="sceneName"></param>
 	bool ChangeSceneExtra(const std::string& sceneName, const ReverseType _reverse);
 
 	/// <summary>
@@ -57,8 +61,10 @@ public:
 	const bool& GetEasingStart() { return easing_start; }
 private:
 	std::vector<std::unique_ptr<IKESprite>> sprites;
-
 	std::list<std::unique_ptr<IKESprite>> over_sprites;
+
+	std::unique_ptr<IKESprite> start_sprites;
+
 
 	const float width = WinApp::window_width;
 	const float height = WinApp::window_height;
@@ -70,6 +76,12 @@ private:
 
 	std::vector<float> frame;
 	std::vector<DirectX::XMFLOAT4> color_;
+
+
+	bool feedin_start = true;
+	float feedin_frame = 0.0f;
+	//何フレームで終わるか
+	float end_feedin = 20.0f;
 
 	bool easing_start = false;
 	float ease_frame = 0.0f;

@@ -40,6 +40,7 @@ void ClearSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		//Audio::GetInstance()->StopWave(3);
 	}
 	sceneChanger_->ChangeScene(str, SceneChanger::Reverse);
+	sceneChanger_->Update();
 
 	lightgroup->Update();
 	//ŠÛ‰e
