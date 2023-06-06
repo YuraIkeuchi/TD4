@@ -45,8 +45,19 @@ void InterBoss::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui謠冗判
 void InterBoss::ImGuiDraw() {
-	if (!this) { return; }
-	//ImGui_Origin();
+	//if (!this) { return; }
+	//エフェクト
+	for (InterEffect* effect : effects) {
+		if (effect != nullptr) {
+			effect->ImGuiDraw();
+		}
+	}
+	ImGui::Begin("Boss");
+	ImGui::Text("POSX:%f", m_Position.x);
+	ImGui::Text("POSY:%f", m_Position.y);
+	ImGui::Text("POSZ:%f", m_Position.z);
+	ImGui::End();
+	ImGui_Origin();
 }
 
 float InterBoss::HpPercent() {

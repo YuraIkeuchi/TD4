@@ -201,16 +201,16 @@ void Ghost::Search() {
 	const int l_LimitTimer = 300;
 	const float l_Vel = 0.3f;
 	XMFLOAT3 l_playerPos = Player::GetInstance()->GetPosition();
+	//サーチ状態から一定時間立つと存在消去
+	m_SearchTimer++;
+	if (m_SearchTimer >= l_LimitTimer) {
+		m_Scale = { 0.0f,0.0f,0.0f };
+		m_Alive = false;
+	}
 	//追従
 	if (_searchState == SearchState::SEARCH_START) {
 		Helper::GetInstance()->FollowMove(m_Position, m_SearchPos, l_Vel);
 		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, m_SearchPos, -PI_90);
-		//サーチ状態から一定時間立つと存在消去
-		m_SearchTimer++;
-		if (m_SearchTimer >= l_LimitTimer) {
-			m_Scale = { 0.0f,0.0f,0.0f };
-			m_Alive = false;
-		}
 	}
 	else if (_searchState == SearchState::SEARCH_END) {
 		Helper::GetInstance()->FollowMove(m_Position, l_playerPos, l_Vel);

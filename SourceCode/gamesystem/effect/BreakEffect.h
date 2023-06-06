@@ -9,5 +9,7 @@ public:
 private:
 	void Action() override;//行動
 
+	void ImGuiOrigin() override;
+
 	void BirthEffect();//エフェクトの発生
 };

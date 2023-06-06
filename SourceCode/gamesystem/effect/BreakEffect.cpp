@@ -31,3 +31,11 @@ void BreakEffect::BirthEffect() {
 		ParticleEmitter::GetInstance()->Break(m_Life, m_Position, s_scale, e_scale, s_color, e_color,0.02f,DiviSpeed);
 	}
 }
+
+void BreakEffect::ImGuiOrigin() {
+	ImGui::Begin("Effect");
+	ImGui::Text("POSX:%f", m_Position.x);
+	ImGui::Text("POSY:%f", m_Position.y);
+	ImGui::Text("POSZ:%f", m_Position.z);
+	ImGui::End();
+}
