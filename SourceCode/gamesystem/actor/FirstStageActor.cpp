@@ -168,7 +168,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 
 		if (camerawork->GetEndDeath()) {
 			sceneChanger_->ChangeStart();
-			sceneChanger_->ChangeScene("SECONDSTAGE", SceneChanger::ReverseType::NonReverse);
+			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::ReverseType::NonReverse);
 		}
 	}
 	else

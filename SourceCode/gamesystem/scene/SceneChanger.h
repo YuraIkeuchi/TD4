@@ -53,6 +53,8 @@ public:
 	void ChangeGameOver();
 
 
+	void  ChangeFeedStart() { feedin_start = false; }
+	//const bool& GetEasingStart() { return feedin_start; }
 
 	/// <summary>
 	/// イージングスタート

@@ -22,7 +22,7 @@ void SceneChanger::Initialize() {
 			newSprite->SetAnchorPoint({ 0.5f,0.5f });
 			newSprite->SetPosition({ (float)(i * base_size) + base_size / 2,(float)(j * base_size) + base_size / 2 });
 			newSprite->SetSize({ 0,0 });
-			DirectX::XMFLOAT4 col = { 0.f,0.f,0.f,1 };
+			DirectX::XMFLOAT4 col = { 0.5f,1.f,1.f,1 };
 			newSprite->SetColor(col);
 
 			sprites.push_back(std::move(newSprite));
@@ -30,8 +30,8 @@ void SceneChanger::Initialize() {
 		}
 	}
 	color_.push_back({ 0.3f,0.3f,0.5f,1 });
-	color_.push_back({ 0.3f,0.3f,0.4f,1 });
-	color_.push_back({ 0.2f,0.2f,0.3f,1 });
+	color_.push_back({ 0.5f,0.7f,0.7f,1 });
+	color_.push_back({ 0.5f,1.f,1.f,1 });
 
 
 	start_sprites = IKESprite::Create(ImageManager::WHITE, { 0,0 });
@@ -43,7 +43,7 @@ void SceneChanger::Update() {
 	if (feedin_start) {
 		feedin_frame += 1.0f / end_feedin;
 		float color = Ease(InOut, Quad, feedin_frame, 1.0, 0.f);
-		start_sprites->SetColor({ color ,color ,color ,color });
+		start_sprites->SetColor({ 0.5f,1.f,1.f,color });
 		Helper::GetInstance()->Clamp(feedin_frame,0.0f,1.0f);
 		if (feedin_frame==1.0f) {
 			feedin_start = false;
@@ -124,7 +124,7 @@ bool SceneChanger::ChangeSceneExtra(const std::string& sceneName, const ReverseT
 		Ease(In, Quad, frame[i], 0.f, 1280.f)
 		};
 		sprites[i]->SetPosition({ width / 2 ,height / 2 });
-		//sprites[i]->SetColor(color_[i]);
+		sprites[i]->SetColor(color_[i]);
 		sprites[i]->SetSize(m_SpritesSize);
 	}
 	return false;
