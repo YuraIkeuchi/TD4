@@ -12,13 +12,13 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	//共通の初期化
 	BaseInitialize(dxCommon);
 	dxCommon->SetFullScreen(true);
-
 	//オーディオ
 	Audio::GetInstance()->LoadSound(0, "Resources/Sound/BGM/BGM_title.wav");
 	Audio::GetInstance()->LoopWave(0, VolumManager::GetInstance()->GetBGMVolum());
 
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
+	sceneChanger_->ChangeFeedStart();
 	//タイトル
 	TitleSprite = IKESprite::Create(ImageManager::TITLE, { 0.0f,0.0f });
 	TitleWordSprite= IKESprite::Create(ImageManager::TITLEWORD, pos);

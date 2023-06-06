@@ -36,7 +36,7 @@ void SceneChanger::Initialize() {
 
 	start_sprites = IKESprite::Create(ImageManager::WHITE, { 0,0 });
 	start_sprites->SetSize({ width, height });
-	start_sprites->SetColor({0,0,0,1});
+	start_sprites->SetColor({1,1,1,1});
 
 }
 void SceneChanger::Update() {
