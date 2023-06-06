@@ -61,26 +61,32 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 //更新
 void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 
+	
+	constexpr int IntervalTextC = 200;
+
 	if(_Tscne== TextScene::NON)
 	{
+		textT++;
 		text_->SelectText(TextManager::Name_First::VIEWBOSS);
-		if(Input::GetInstance()->TriggerButton(Input::B))
+		if(Input::GetInstance()->TriggerButton(Input::B)||textT>1*IntervalTextC)
 		{
 			_Tscne = TextScene::TIEYOSHI_EXP;
 		}
 	}
 	else if(_Tscne == TextScene::TIEYOSHI_EXP)
 	{
+		textT++;
 		text_->SelectText(TextManager::Name_First::SPEAKPLAYER1);
-		if (Input::GetInstance()->TriggerButton(Input::B))
+		if (Input::GetInstance()->TriggerButton(Input::B)|| textT > 2 * IntervalTextC)
 		{
 			_Tscne = TextScene::KILL_TIEYOSHI;
 		}
 	}
 	else if (_Tscne == TextScene::KILL_TIEYOSHI)
 	{
+		textT++;
 		text_->SelectText(TextManager::Name_First::SPEALPLAYER2);
-		if (Input::GetInstance()->TriggerButton(Input::B))
+		if (Input::GetInstance()->TriggerButton(Input::B)|| textT > 3 * IntervalTextC)
 		{
 			_Tscne = TextScene::ENDTEXT;
 		}
@@ -249,7 +255,8 @@ void FirstStageActor::BackDraw(DirectXCommon* dxCommon) {
 //ポストエフェクトがかからない
 void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	//パーティクル描画
-	if (camerawork->GetCameraState() != CameraState::CAMERA_BOSSAPPEAR)
+	if (camerawork->GetCameraState() != CameraState::CAMERA_BOSSAPPEAR&&
+		camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_AFTER_FIRST)
 	ParticleEmitter::GetInstance()->FlontDrawAll();
 
 

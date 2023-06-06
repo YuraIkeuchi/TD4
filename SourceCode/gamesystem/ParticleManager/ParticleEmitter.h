@@ -48,7 +48,8 @@ public: //メンバ関数
 	void HealEffect(const int life, const XMFLOAT3& pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor);
 	//削除
 	void AllDelete();
-
+	//爆発　ボス
+	void DeathEffectBoss(const int life, const XMFLOAT3& pos, const float size, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor);
 private: //メンバ関数
 	/// <summary>
 	/// テクスチャ読み込み
@@ -62,4 +63,6 @@ private: //メンバ変数
 	unique_ptr<ParticleManager> deathParticle;
 	//パーティクルマネージャー(ヒール)
 	unique_ptr<ParticleManager> healParticle;
+	//パーティクルマネージャー(ボスデス)
+	unique_ptr<ParticleManager>BossDeadParticle;
 };

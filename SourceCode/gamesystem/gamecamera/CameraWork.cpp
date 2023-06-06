@@ -251,8 +251,9 @@ void CameraWork::FirstBossAppear() {
 
 	if (spline->GetIndex() >= pointsList.size() - 1)
 	{
-		AppearEndF = true;
+		
 		if (Helper::GetInstance()->FrameCheck(m_Frame, 0.01f)) {
+			AppearEndF = true;
 			m_CameraState = CAMERA_NORMAL;
 			m_Frame = 1.0f;
 		}
