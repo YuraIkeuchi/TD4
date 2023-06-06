@@ -22,6 +22,8 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	//各クラス
 	Player::GetInstance()->InitState({ 0.0f,5.0f,-5.0f });
 	
+	backScreen_ = IKESprite::Create(ImageManager::PLAY, {0,0});
+	backScreen_->SetSize({1280.0f,720.0f});
 	//シーンチェンジャー
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
@@ -56,6 +58,7 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	
 	//関数ポインタで状態管理
 	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+	sceneChanger_->Update();
 
 	//プレイヤー
 	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
@@ -108,6 +111,9 @@ void SecondStageActor::Finalize() {
 }
 //後ろの描画
 void SecondStageActor::BackDraw(DirectXCommon* dxCommon) {
+	IKESprite::PreDraw();
+	backScreen_->Draw();
+	IKESprite::PostDraw();
 	IKEObject3d::PreDraw();
 	BackObj::GetInstance()->Draw(dxCommon);
 	////各クラスの描画

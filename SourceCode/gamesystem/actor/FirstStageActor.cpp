@@ -23,6 +23,9 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
 
+	backScreen_ = IKESprite::Create(ImageManager::PLAY, { 0,0 });
+	backScreen_->SetSize({ 1280.0f,720.0f });
+
 	//各クラス
 	//プレイヤー
 	Player::GetInstance()->InitState({ 0.0f,5.0f,-70.0f });
@@ -171,6 +174,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	
 	postEffect->SetRadCenter(XMFLOAT2(tex2DPos.m128_f32[0], tex2DPos.m128_f32[1]));
 	postEffect->SetRadPower(camerawork->GetEffectPower());
+	sceneChanger_->Update();
 
 	if(_Tscne!=TextScene::ENDTEXT)
 	text_->Display();
@@ -210,6 +214,10 @@ void FirstStageActor::Finalize() {
 }
 //後ろの描画
 void FirstStageActor::BackDraw(DirectXCommon* dxCommon) {
+	IKESprite::PreDraw();
+	backScreen_->Draw();
+	IKESprite::PostDraw();
+
 	IKEObject3d::PreDraw();
 	////各クラスの描画
 	Player::GetInstance()->Draw(dxCommon);

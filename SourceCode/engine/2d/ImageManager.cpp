@@ -22,12 +22,13 @@ void ImageManager::StartLoad2D()
 	IKESprite::LoadTexture(GIRL, L"Resources/2d/objicon/40E32961-2FAD-4C47-B412-6CAD5C0BFEE2.png");
 	IKESprite::LoadTexture(SUTOPON, L"Resources/2d/objicon/sutopon.png");
 	IKESprite::LoadTexture(FEED, L"Resources/2d/sceneback/feedwhite.png");
+	IKESprite::LoadTexture(PLAY, L"Resources/2d/sceneback/game.png");
+
 }
 
 //非同期処理で読み込むスプライト
 void ImageManager::SecondLoad2D()
 {
-	IKESprite::LoadTexture(PLAY, L"Resources/2d/sceneback/game.png");
 	IKESprite::LoadTexture(GAMEOVER, L"Resources/2d/sceneback/over.png");
 	IKESprite::LoadTexture(GAMECLEAR, L"Resources/2d/sceneback/clear.png");
 	IKESprite::LoadTexture(MASTERCLEAR, L"Resources/2d/sceneback/lastclear.png");

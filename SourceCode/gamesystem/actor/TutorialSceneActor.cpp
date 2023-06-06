@@ -524,6 +524,8 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	//シーンチェンジャー
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
+	backScreen_ = IKESprite::Create(ImageManager::PLAY, { 0,0 });
+	backScreen_->SetSize({ 1280.0f,720.0f });
 
 	lightgroup->SetCircleShadowActive(0, false);
 	lightgroup->SetCircleShadowActive(1, false);
@@ -561,6 +563,7 @@ void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	//音楽の音量が変わる
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 	VolumManager::GetInstance()->Update();
+	sceneChanger_->Update();
 	//状態移行(stateに合わせる)
 	(this->*stateTable[static_cast<size_t>(nowstate_)])();
 	//各クラス更新
