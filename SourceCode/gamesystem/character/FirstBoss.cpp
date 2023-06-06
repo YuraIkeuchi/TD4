@@ -44,6 +44,7 @@ void FirstBoss::SkipInitialize() {
 }
 //行動
 void FirstBoss::Action() {
+	
 	if (m_HP > 0) {
 		/*^^^^^^上下運動^^^^^^^*/
 		float OldsMov = 0;
@@ -73,9 +74,7 @@ void FirstBoss::Action() {
 
 		/*^^^^当たり判定^^^^*/
 		//弾とボスの当たり判定
-		vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
-		CollideBul(_playerBulA,Type::CIRCLE);
-
+		
 		//通常時の当たり判定
 		if (!_normal.GetAttackF() && !_cattack.GetAttackF())
 		{
@@ -129,6 +128,8 @@ void FirstBoss::Action() {
 	}
 	//OBJのステータスのセット
 	Obj_SetParam();
+	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
+	CollideBul(_playerBulA, Type::CIRCLE);
 
 
 	//リミット制限
@@ -893,8 +894,6 @@ void FirstBoss::DeadAction_Throw() {
 		m_Rotation.y += 0.02f;
 		m_Rotation.z += 0.09f;
 	}
-
-	DeathParticle();
 	RotFrontSpeed = 3.f;
 	Player::GetInstance()->SetPosition({ 0,0,10 });
 	Obj_SetParam();

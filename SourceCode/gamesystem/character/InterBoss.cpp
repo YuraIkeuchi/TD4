@@ -91,7 +91,12 @@ void InterBoss::CollideBul(vector<InterBullet*> bullet,Type type)
 
 					m_HP -= 1.5f * m_Magnification;
 				}
-
+				if (m_HP < 0.1) {
+					if (SceneName == "FIRSTSTAGE")
+					{
+						m_Position = { 0,40,20.f };
+					}
+				}
 				BirthEffect();
 			}
 		}
