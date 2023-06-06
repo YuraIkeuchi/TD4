@@ -46,7 +46,6 @@ void InterBoss::Draw(DirectXCommon* dxCommon) {
 //ImGui謠冗判
 void InterBoss::ImGuiDraw() {
 	if (!this) { return; }
-	//ImGui_Origin();
 }
 
 float InterBoss::HpPercent() {

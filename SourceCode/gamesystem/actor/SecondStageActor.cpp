@@ -13,7 +13,7 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	//共通の初期化
 	BaseInitialize(dxCommon);
 	//オーディオ
-	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/Boss.wav");
+	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/BGM_boss.wav");
 	//ポストエフェクト
 	PlayPostEffect = true;
 	//パーティクル全削除
@@ -142,10 +142,11 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	Player::GetInstance()->ImGuiDraw();
+	//Player::GetInstance()->ImGuiDraw();
+	////loadobj->ImGuiDraw();
+	//camerawork->ImGuiDraw();
+	//enemymanager->ImGuiDraw();
 	//loadobj->ImGuiDraw();
-	camerawork->ImGuiDraw();
-	enemymanager->ImGuiDraw();
 }
 //登場シーン
 void SecondStageActor::IntroUpdate(DebugCamera* camera) {
@@ -225,6 +226,7 @@ void SecondStageActor::IntroUpdate(DebugCamera* camera) {
 
 	//最後までテキストを見た
 	if (enemymanager->GetEnemyFinishAppear()) {
+		Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum());
 		m_SceneState = SceneState::MainState;
 		camerawork->SetCameraState(CAMERA_NORMAL);
 	}
@@ -235,6 +237,7 @@ void SecondStageActor::IntroUpdate(DebugCamera* camera) {
 	}
 
 	if (camerawork->GetAppearEndF()) {
+		Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum());
 		m_SceneState = SceneState::MainState;
 		camerawork->SetCameraState(CAMERA_NORMAL);
 		enemymanager->SkipInitialize();
@@ -255,6 +258,7 @@ void SecondStageActor::MainUpdate(DebugCamera* camera) {
 	//カメラワークのセット
 	if (enemymanager->BossDestroy())
 	{
+		Audio::GetInstance()->StopWave(1);
 		//フェード前
 		if (!camerawork->GetFeedEnd()) {
 			enemymanager->SetDeadThrow(true);
@@ -264,6 +268,7 @@ void SecondStageActor::MainUpdate(DebugCamera* camera) {
 		//フェード後
 		else
 		{
+			PlayPostEffect = false;
 			Player::GetInstance()->InitState({ 0.0f,0.0f,-5.0f });
 			enemymanager->SetDeadThrow(false);
 			enemymanager->DeadUpdate();
@@ -288,11 +293,7 @@ void SecondStageActor::MainUpdate(DebugCamera* camera) {
 		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::Reverse);
 	}
 
-	if (input->TriggerKey(DIK_X)) {
-		m_SceneState = SceneState::FinishState;
-	}
 	//音楽の音量が変わる
-	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 	VolumManager::GetInstance()->Update();
 
 	//各クラス更新

@@ -30,10 +30,9 @@ SecondBoss::SecondBoss() {
 			pointsList.emplace_back(XMFLOAT3{ -40,40,20 });
 			pointsList.emplace_back(XMFLOAT3{ 20,25,20 });
 			pointsList.emplace_back(XMFLOAT3{ -20,30,20 });
-			pointsList.emplace_back(XMFLOAT3{ 10,35,20 });
-			pointsList.emplace_back(XMFLOAT3{ -10,40,20 });
-			pointsList.emplace_back(XMFLOAT3{ 0,60,20 });
-			pointsList.emplace_back(XMFLOAT3{ 0,60,20 });
+			pointsList.emplace_back(XMFLOAT3{ -40,40,20 });
+			pointsList.emplace_back(XMFLOAT3{ 20,25,20 });
+			pointsList.emplace_back(XMFLOAT3{ -20,30,20 });
 		}
 		spline = new Spline();
 		spline->Init(pointsList, static_cast<int>(pointsList.size()));
@@ -900,6 +899,7 @@ void SecondBoss::AppearAction() {
 }
 //ボス撃破シーン
 void SecondBoss::DeadAction() {
+	XMFLOAT3 l_SplinePos = {};
 	int l_ShakeTimer = 100;
 	if (!m_SplineEnd) {
 		m_DeathTimer++;
@@ -912,8 +912,11 @@ void SecondBoss::DeadAction() {
 		}
 
 		if (m_DeathTimer >= 2) {
-
-			spline->Upda(m_Position, 150.0f);
+			//sin波によって上下に動く
+			m_Angle += 7.f;
+			m_Angle2 = m_Angle * (3.14f / 180.0f);
+			m_Position.x = (sin(m_Angle2) * 15.0f + 15.0f);
+			spline->Upda(l_SplinePos, 150.0f);
 
 			if (spline->GetIndex() >= pointsList.size() - 1)
 			{

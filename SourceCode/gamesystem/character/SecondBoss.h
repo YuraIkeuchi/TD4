@@ -213,6 +213,9 @@ private:
 
 	bool m_SplineEnd = false;
 
+	//棘の的に使う
+	float m_Angle = 0.0f;
+	float m_Angle2 = 0.0f;
 public:
 	void SetAppearEnd(bool end) { if (end) { m_AppearState = APPEAR_END; } }
 };

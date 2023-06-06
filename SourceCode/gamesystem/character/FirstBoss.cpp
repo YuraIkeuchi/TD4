@@ -44,9 +44,15 @@ void FirstBoss::SkipInitialize() {
 }
 //行動
 void FirstBoss::Action() {
-	
 	if (m_HP < 0.1) return;
 	{
+	/*^^^^^^^^^^^^^^^^^^^^^*/
+	/*^^^^当たり判定^^^^*/
+	//弾とボスの当たり判定
+	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
+	CollideBul(_playerBulA, Type::CIRCLE);
+
+	if (m_HP > 0) {
 		/*^^^^^^上下運動^^^^^^^*/
 		float OldsMov = 0;
 		if (!_cattack.GetAttackF() && !_normal.GetAttackF()) {
@@ -883,7 +889,7 @@ void FirstBoss::AppearAction() {
 //ボス撃破シーン
 void FirstBoss::DeadAction_Throw() {
 	m_Scale={1.0f,1.4f,1.0f};
-	m_Position = { 0,40,20.f };
+	//m_Position = { 0,40,20.f };
 	if (!ResetRota) {
 		m_Rotation.y = 90.f;
 		m_Rotation.x= 0.f;
@@ -892,7 +898,7 @@ void FirstBoss::DeadAction_Throw() {
 	}
 	else
 	{
-		m_Position.y = 40;
+		//m_Position.y = 40;
 		m_Rotation.y += 0.02f;
 		m_Rotation.z += 0.09f;
 	}
