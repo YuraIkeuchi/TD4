@@ -879,7 +879,7 @@ void FirstBoss::AppearAction() {
 }
 //ボス撃破シーン
 void FirstBoss::DeadAction_Throw() {
-	m_Scale = { 1.0f,1.4f,1.0f };
+	m_Scale={1.0f,1.4f,1.0f};
 	m_Position = { 0,40,20.f };
 	if (!ResetRota) {
 		m_Rotation.y = 90.f;
@@ -894,7 +894,7 @@ void FirstBoss::DeadAction_Throw() {
 		m_Rotation.z += 0.09f;
 	}
 
-	DeathEffect();
+	DeathParticle();
 	RotFrontSpeed = 3.f;
 	Player::GetInstance()->SetPosition({ 0,0,10 });
 	Obj_SetParam();
@@ -936,7 +936,7 @@ void FirstBoss::DeadAction() {
 		}
 		DeathSpeed = 0.f;
 	}
-
+	if(m_Position.y<=10)
 	DeathEffect();
 
 	Obj_SetParam();
@@ -1030,10 +1030,10 @@ void FirstBoss::DeathEffect()
 void FirstBoss::DeathParticle() {
 	const XMFLOAT4 s_color = { 1.0f,1.0f,1.0f,1.0f };
 	const XMFLOAT4 e_color = { 0.0f,0.0f,1.0f,1.0f };
-	float s_scale = 5.0f;
+	float s_scale = 2.0f;
 	float e_scale = 0.0f;
-	float l_velocity = 0.5f;
+	float l_velocity = 0.6f;
 	for (int i = 0; i < 3; ++i) {
-		ParticleEmitter::GetInstance()->DeathEffect(50, { m_Position.x,(m_Position.y +1.f),m_Position.z }, s_scale, e_scale, s_color, e_color, l_velocity);
+		ParticleEmitter::GetInstance()->DeathEffect(50, { m_Position.x,(m_Position.y +5.f),m_Position.z }, s_scale, e_scale, s_color, e_color, l_velocity);
 	}
 }
