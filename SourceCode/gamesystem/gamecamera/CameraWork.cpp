@@ -139,6 +139,7 @@ void CameraWork::SetBossDead_Before()
 	}
 	RadEffect = 20;
 
+	
 	m_targetPos.x = boss->GetPosition().x;
 	m_targetPos.y = boss->GetPosition().y;
 	m_targetPos.z = boss->GetPosition().z;
@@ -148,9 +149,11 @@ void CameraWork::SetBossDead_Before()
 void CameraWork::SetBossDead_AfterFirst()
 {
 	//RadEffect = 20;
-	m_eyePos.x = Player::GetInstance()->GetPosition().x;
-	m_eyePos.y = Player::GetInstance()->GetPosition().y+5.f;
-	m_eyePos.z = Player::GetInstance()->GetPosition().z +5.0f;
+		m_eyePos = {
+		boss->GetPosition().x,
+		Player::GetInstance()->GetPosition().y+5.f ,
+		boss->GetPosition().z - 25.f
+		};
 	m_targetPos.x = boss->GetPosition().x;
 	m_targetPos.z = boss->GetPosition().z;
 

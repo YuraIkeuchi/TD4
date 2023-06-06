@@ -45,14 +45,13 @@ void FirstBoss::SkipInitialize() {
 //行動
 void FirstBoss::Action() {
 	if (m_HP < 0.1) return;
-	{
+	
 	/*^^^^^^^^^^^^^^^^^^^^^*/
 	/*^^^^当たり判定^^^^*/
 	//弾とボスの当たり判定
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
 	CollideBul(_playerBulA, Type::CIRCLE);
-
-	if (m_HP > 0) {
+	{
 		/*^^^^^^上下運動^^^^^^^*/
 		float OldsMov = 0;
 		if (!_cattack.GetAttackF() && !_normal.GetAttackF()) {
