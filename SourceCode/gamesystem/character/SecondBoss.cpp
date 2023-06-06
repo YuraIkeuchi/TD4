@@ -913,7 +913,7 @@ void SecondBoss::DeadAction() {
 
 		if (m_DeathTimer >= 2) {
 			//sin波によって上下に動く
-			m_Angle += 10.f;
+			m_Angle += 7.f;
 			m_Angle2 = m_Angle * (3.14f / 180.0f);
 			m_Position.x = (sin(m_Angle2) * 15.0f + 15.0f);
 			spline->Upda(l_SplinePos, 150.0f);

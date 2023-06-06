@@ -145,7 +145,7 @@ void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	//Player::GetInstance()->ImGuiDraw();
 	////loadobj->ImGuiDraw();
 	//camerawork->ImGuiDraw();
-	enemymanager->ImGuiDraw();
+	//enemymanager->ImGuiDraw();
 	//loadobj->ImGuiDraw();
 }
 //登場シーン
