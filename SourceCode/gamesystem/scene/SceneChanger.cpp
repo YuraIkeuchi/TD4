@@ -22,7 +22,7 @@ void SceneChanger::Initialize() {
 			newSprite->SetAnchorPoint({ 0.5f,0.5f });
 			newSprite->SetPosition({ (float)(i * base_size) + base_size / 2,(float)(j * base_size) + base_size / 2 });
 			newSprite->SetSize({ 0,0 });
-			DirectX::XMFLOAT4 col = { 0.1f * i,1,1,1 };
+			DirectX::XMFLOAT4 col = { 0.f,0.f,0.f,1 };
 			newSprite->SetColor(col);
 
 			sprites.push_back(std::move(newSprite));
@@ -32,6 +32,24 @@ void SceneChanger::Initialize() {
 	color_.push_back({ 0.3f,0.3f,0.5f,1 });
 	color_.push_back({ 0.3f,0.3f,0.4f,1 });
 	color_.push_back({ 0.2f,0.2f,0.3f,1 });
+
+
+	start_sprites = IKESprite::Create(ImageManager::WHITE, { 0,0 });
+	start_sprites->SetSize({ width, height });
+	start_sprites->SetColor({0,0,0,1});
+
+}
+void SceneChanger::Update() {
+	if (feedin_start) {
+		feedin_frame += 1.0f / end_feedin;
+		float color = Ease(InOut, Quad, feedin_frame, 1.0, 0.f);
+		start_sprites->SetColor({ color ,color ,color ,color });
+		Helper::GetInstance()->Clamp(feedin_frame,0.0f,1.0f);
+		if (feedin_frame==1.0f) {
+			feedin_start = false;
+		}
+	}
+
 }
 void SceneChanger::InitializeOver() {
 	for (int i = 0; i < width_num; i++) {
@@ -51,6 +69,10 @@ void SceneChanger::InitializeOver() {
 }
 
 void SceneChanger::Draw() {
+	if (feedin_start) {
+		IKESprite::PreDraw();
+		start_sprites->Draw();
+	}
 	if (!easing_start) { return; }
 	IKESprite::PreDraw();
 	for (std::unique_ptr<IKESprite>& sprite : sprites) {
@@ -85,10 +107,10 @@ bool SceneChanger::ChangeSceneExtra(const std::string& sceneName, const ReverseT
 	if (!easing_start) { return false; }
 	//if (ease_frame > 1.0f) {
 	size_t squea = 3;
-	if (frame[squea-1] >= 1.0f) {
+	if (frame[squea - 1] >= 1.0f) {
 		SceneManager::GetInstance()->ChangeScene(sceneName);
 		return true;
-	} 
+	}
 	//
 	frame[0] += 1.0f / 25.f;
 	for (auto i = 0; i < squea; i++) {
@@ -101,8 +123,8 @@ bool SceneChanger::ChangeSceneExtra(const std::string& sceneName, const ReverseT
 		Ease(In, Quad, frame[i], 0.f, 1280.f),
 		Ease(In, Quad, frame[i], 0.f, 1280.f)
 		};
-		sprites[i]->SetPosition({ width /2 ,height /2});
-		sprites[i]->SetColor(color_[i]);
+		sprites[i]->SetPosition({ width / 2 ,height / 2 });
+		//sprites[i]->SetColor(color_[i]);
 		sprites[i]->SetSize(m_SpritesSize);
 	}
 	return false;

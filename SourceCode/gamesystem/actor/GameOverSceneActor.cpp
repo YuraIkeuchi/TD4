@@ -40,6 +40,7 @@ void GameOverSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	}
 
 	sceneChanger_->ChangeScene(str, SceneChanger::Reverse);
+	sceneChanger_->Update();
 
 	lightgroup->Update();
 	//ŠÛ‰e
