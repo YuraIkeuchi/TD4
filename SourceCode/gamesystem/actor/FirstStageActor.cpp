@@ -80,9 +80,15 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		}
 	}
 
+	
 	if( _Tscne == TextScene::TIEYOSHI_EXP||
 		_Tscne == TextScene::NON)
 	{
+		if(Input::GetInstance()->TriggerButton(Input::A))
+		{
+			_Tscne = TextScene::ENDTEXT;
+		}
+
 		Player::GetInstance()->SetCanShot(false);
 		Player::GetInstance()->MoveStop(true);
 	}

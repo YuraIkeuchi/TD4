@@ -147,7 +147,7 @@ void CameraWork::SetBossDead_Before()
 //フェード後の撃破アクション(1ボス)
 void CameraWork::SetBossDead_AfterFirst()
 {
-	RadEffect = 20;
+	//RadEffect = 20;
 	m_eyePos.x = Player::GetInstance()->GetPosition().x;
 	m_eyePos.y = Player::GetInstance()->GetPosition().y+5.f;
 	m_eyePos.z = Player::GetInstance()->GetPosition().z +5.0f;

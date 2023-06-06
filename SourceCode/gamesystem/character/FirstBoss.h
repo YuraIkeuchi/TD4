@@ -281,6 +281,6 @@ private:
 
 	void DeathEffect();
 	bool DeathEffectF;
-
+	int Timer;
 	void DeathParticle();
 };
