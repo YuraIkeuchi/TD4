@@ -18,7 +18,10 @@ void ParticleEmitter::Initialize()
 	circleParticle.reset(ParticleManager::Create(ImageManager::Normal));
 	healParticle.reset(ParticleManager::Create(ImageManager::Heal));
 	deathParticle.reset(ParticleManager::Create(ImageManager::Normal));
+	BossDeadParticle.reset(ParticleManager::Create(ImageManager::Normal));
+
 }
+
 
 void ParticleEmitter::Update()
 {
@@ -26,6 +29,7 @@ void ParticleEmitter::Update()
 	circleParticle->Update();
 	healParticle->Update();
 	deathParticle->Update();
+	BossDeadParticle->Update();
 }
 
 void ParticleEmitter::FlontDrawAll() {
@@ -34,6 +38,7 @@ void ParticleEmitter::FlontDrawAll() {
 }
 
 void ParticleEmitter::DeathDrawAll() {
+	BossDeadParticle->Draw(AddBlendType);
 	deathParticle->Draw(AddBlendType);
 }
 
@@ -151,4 +156,35 @@ void ParticleEmitter::AllDelete()
 
 void ParticleEmitter::LoadTexture() {
 	ImageManager::GetInstance()->LoadParticle();
+}
+
+void ParticleEmitter::DeathEffectBoss(const int life, const XMFLOAT3& pos, const float size, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor)
+{
+		for (int j = 0; j < 3; j++) {
+			//X,Y,Z全て[-2.0f, +2.0f]でランダムに分布
+			const float RandPos = 2.0f;
+			XMFLOAT3 l_pos = pos;
+			l_pos.x += ((float)rand() / RAND_MAX * RandPos - RandPos / 2.0f) * size;
+			l_pos.y += ((float)rand() / RAND_MAX * RandPos - RandPos / 2.0f) * size;
+			l_pos.z += ((float)rand() / RAND_MAX * RandPos - RandPos / 2.0f) * size;
+
+			for (int i = 0; i < 10; i++) {
+				//X,Y,Z全て[-0.8f, +0.8f]でランダムに分布
+				const float RandPos2 = 0.8f;
+				l_pos.x += ((float)rand() / RAND_MAX * RandPos2 - RandPos2 / 2.0f) * size;
+				l_pos.y += ((float)rand() / RAND_MAX * RandPos2 - RandPos2 / 2.0f) * size;
+				l_pos.z += ((float)rand() / RAND_MAX * RandPos2 - RandPos2 / 2.0f) * size;
+
+				//X,Y,Z全て[-0.05f, +0.05f]でランダムに分布
+				const float RandVel = 0.05f;
+				XMFLOAT3 vel{};
+				vel.x = ((float)rand() / RAND_MAX * RandVel - RandVel / 2.0f) * size;
+				vel.y = ((float)rand() / RAND_MAX * RandVel - RandVel / 2.0f) * size;
+				vel.z = ((float)rand() / RAND_MAX * RandVel - RandVel / 2.0f) * size;
+
+
+				//追加
+				BossDeadParticle->Add(life, l_pos, vel, {}, startscale, endscale, startcolor, endcolor, {});
+			}
+		}
 }
