@@ -47,14 +47,13 @@ void Ghost::Update() {
 	Obj_SetParam();
 	//食料生成
 	BirthGhost();
-	//パーティクル
-	Particle();
 	//当たり判定(弾)
 	BulletCollision();
 	//当たり判定(プレイヤー)
 	PlayerCollision();
 	//食べ物をはこぶ
 	CarryFood();
+	Particle();
 }
 //描画
 void Ghost::Draw(DirectXCommon* dxCommon) {
@@ -65,6 +64,32 @@ void Ghost::ImGuiDraw() {
 	ImGui::Begin("Ghost");
 	ImGui::Text("%d", m_SearchTimer);
 	ImGui::End();
+}
+//当たり判定(弾)
+bool Ghost::BulletCollision() {
+	float l_AddHungerMax = HungerGauge::m_Hungervalue;//加算される最大飢餓ゲージ
+	if (Player::GetInstance()->BulletCollide({ m_Position.x,0.0f,m_Position.z }, m_Object->GetMatrot(), m_OBBScale, m_Catch) && (m_Alive)) {
+		m_Catch = true;
+		if (Player::GetInstance()->GetBulletType() == BULLET_FORROW) {
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Follower.wav", VolumManager::GetInstance()->GetSEVolum());
+			HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() + l_AddHungerMax);
+			HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() + l_AddHungerMax);
+			HungerGauge::GetInstance()->SetCatchCount(HungerGauge::GetInstance()->GetCatchCount() + 1);
+			_charaState = CharaState::STATE_FOLLOW;
+			_followState = FollowState::Follow_START;
+			m_Object->SetModel(model_follow);
+			m_Follow = true;
+		}
+		else {
+			_charaState = CharaState::STATE_SEARCH;
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Searcher.wav", VolumManager::GetInstance()->GetSEVolum());
+		}
+		return true;
+	}
+	else {
+		return false;
+	}
+	return true;
 }
 //パーティクル
 void Ghost::Particle() {
@@ -81,45 +106,24 @@ void Ghost::Particle() {
 			m_Color = { 1.0f,1.0f,1.0f,0.7f };
 			m_Scale = { 0.5f,0.5f,0.5f };
 			//ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color, e_color);
-		} else if (_charaState == CharaState::STATE_FOLLOW) {
+		}
+		else if (_charaState == CharaState::STATE_FOLLOW) {
 			m_Color = { 1.0f,1.0f,1.0f,1.0f };
 			m_Scale = { 0.6f,0.6f,0.6f };
 			ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color2, e_color2);
-		} else {
+		}
+		else {
 			//ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color3, e_color3);
 		}
 	}
-}
-//当たり判定(弾)
-bool Ghost::BulletCollision() {
-	float l_AddHungerMax = HungerGauge::m_Hungervalue;//加算される最大飢餓ゲージ
-	if (Player::GetInstance()->BulletCollide({ m_Position.x,0.0f,m_Position.z }, m_Object->GetMatrot(), m_OBBScale, m_Catch) && (m_Alive)) {
-		m_Catch = true;
-		if (Player::GetInstance()->GetBulletType() == BULLET_FORROW) {
-			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Follower.wav", VolumManager::GetInstance()->GetSEVolum());
-			HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() + l_AddHungerMax);
-			HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() + l_AddHungerMax);
-			HungerGauge::GetInstance()->SetCatchCount(HungerGauge::GetInstance()->GetCatchCount() + 1);
-			_charaState = CharaState::STATE_FOLLOW;
-			_followState = FollowState::Follow_START;
-			m_Object->SetModel(model_follow);
-			m_Follow = true;
-		} else {
-			_charaState = CharaState::STATE_SEARCH;
-			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Searcher.wav", VolumManager::GetInstance()->GetSEVolum());
-		}
-		return true;
-	} else {
-		return false;
-	}
-	return true;
 }
 //当たり判定(プレイヤー)
 bool Ghost::PlayerCollision() {
 	if (Player::GetInstance()->PlayerCollide(m_Position) && (_charaState == CharaState::STATE_FOLLOW)) {
 		m_Position = m_OldPos;
 		return true;
-	} else {
+	}
+	else {
 		return false;
 	}
 
@@ -166,8 +170,8 @@ void Ghost::None() {
 	noneTimer += 0.05f;
 
 	float size = sinf(noneTimer) * 0.05f;
-	m_Position.x += cosf(m_Rotation.y*(PI_180/XM_PI)) * size;
-	m_Position.y = sinf(noneTimer)*1.2f;
+	m_Position.x += cosf(m_Rotation.y * (PI_180 / XM_PI)) * size;
+	m_Position.y = sinf(noneTimer) * 1.2f;
 	m_Position.z += sinf(m_Rotation.y * (PI_180 / XM_PI)) * size;
 
 }
@@ -177,11 +181,11 @@ void Ghost::Spawm() {
 
 	m_Rotation.y = Ease(In, Quad, m_SpawnTimer, -(PI_360 + PI_90), -PI_90);
 
-	float scale = Ease(Out,Elastic,m_SpawnTimer,0.0f,0.5f);
+	float scale = Ease(Out, Elastic, m_SpawnTimer, 0.0f, 0.5f);
 	m_Scale = { scale,scale,scale };
 
-	Helper::GetInstance()->Clamp(m_SpawnTimer,0.0f,1.0f);
-	if (m_SpawnTimer==1.0f) {
+	Helper::GetInstance()->Clamp(m_SpawnTimer, 0.0f, 1.0f);
+	if (m_SpawnTimer == 1.0f) {
 		_charaState = CharaState::STATE_NONE;
 	}
 }
@@ -197,17 +201,18 @@ void Ghost::Search() {
 	const int l_LimitTimer = 300;
 	const float l_Vel = 0.3f;
 	XMFLOAT3 l_playerPos = Player::GetInstance()->GetPosition();
+	//サーチ状態から一定時間立つと存在消去
+	m_SearchTimer++;
+	if (m_SearchTimer >= l_LimitTimer) {
+		m_Scale = { 0.0f,0.0f,0.0f };
+		m_Alive = false;
+	}
 	//追従
 	if (_searchState == SearchState::SEARCH_START) {
 		Helper::GetInstance()->FollowMove(m_Position, m_SearchPos, l_Vel);
 		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, m_SearchPos, -PI_90);
-		//サーチ状態から一定時間立つと存在消去
-		m_SearchTimer++;
-		if (m_SearchTimer >= l_LimitTimer) {
-			m_Scale = { 0.0f,0.0f,0.0f };
-			m_Alive = false;
-		}
-	} else if (_searchState == SearchState::SEARCH_END) {
+	}
+	else if (_searchState == SearchState::SEARCH_END) {
 		Helper::GetInstance()->FollowMove(m_Position, l_playerPos, l_Vel);
 		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, l_playerPos, -PI_90);
 	}

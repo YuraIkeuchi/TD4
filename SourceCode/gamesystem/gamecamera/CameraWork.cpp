@@ -147,7 +147,7 @@ void CameraWork::SetBossDead_Before()
 //フェード後の撃破アクション(1ボス)
 void CameraWork::SetBossDead_AfterFirst()
 {
-	RadEffect = 20;
+	//RadEffect = 20;
 	m_eyePos.x = Player::GetInstance()->GetPosition().x;
 	m_eyePos.y = Player::GetInstance()->GetPosition().y+5.f;
 	m_eyePos.z = Player::GetInstance()->GetPosition().z +5.0f;
@@ -211,8 +211,8 @@ void CameraWork::feedDraw()
 void CameraWork::FirstBossAppear() {
 
 	XMVECTOR move = { 0.f,0.f, 0.1f, 0.0f };
-		XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(boss->GetRotation().y + 60));
-		move = XMVector3TransformNormal(move, matRot);
+	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(boss->GetRotation().y + 60));
+	move = XMVector3TransformNormal(move, matRot);
 
 	/*ほりゅう*/
 	//if (_firstState == ONE) {
@@ -228,29 +228,29 @@ void CameraWork::FirstBossAppear() {
 	//	else Timer_first++;
 	//}
 
-	
-	if(spline->GetIndex() >= pointsList.size() - 2)
+
+	if (spline->GetIndex() >= pointsList.size() - 2)
 	{
-			RadEffect -= 0.2f;
-	}
-	else if (spline->GetIndex() >= pointsList.size() )
+		RadEffect -= 0.2f;
+	} else if (spline->GetIndex() >= pointsList.size())
 	{
 		RadEffect += 0.2f;
 		SplineSpeed = 400.f;
-	}
-		else
-		{
-			SplineSpeed = 300.f;
-		}
-		if (!Finish)
-			spline->Upda(m_eyePos, SplineSpeed);
-
-		Helper::GetInstance()->Clamp(RadEffect, 0.f, 15.f);
-
-	if (spline->GetIndex() >=pointsList.size()-1)
+	} else
 	{
-		Finish = true;
-		if (Helper::GetInstance()->FrameCheck(m_Frame,0.01f)) {
+		SplineSpeed = 300.f;
+	}
+	if (!Finish) {
+
+		spline->Upda(m_eyePos, SplineSpeed);
+	}
+	Helper::GetInstance()->Clamp(RadEffect, 0.f, 15.f);
+
+	if (spline->GetIndex() >= pointsList.size() - 1)
+	{
+		AppearEndF = true;
+		if (Helper::GetInstance()->FrameCheck(m_Frame, 0.01f)) {
+			m_CameraState = CAMERA_NORMAL;
 			m_Frame = 1.0f;
 		}
 		m_AfterEye = { Player::GetInstance()->GetPosition().x,45.0f,Player::GetInstance()->GetPosition().z - 20.0f };
@@ -266,10 +266,14 @@ Ease(In,Cubic,m_Frame,m_eyePos.x,m_AfterEye.x),
 Ease(In,Cubic,m_Frame,m_eyePos.y,m_AfterEye.y),
 Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
 		};
+
+		Finish = true;
+	} else {
+		m_targetPos = { boss->GetPosition() };
 	}
-	else
-	  m_targetPos = { boss->GetPosition() };
 }
+
+
 
 
 void CameraWork::FirstBossDead_AfterFeed()

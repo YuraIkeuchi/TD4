@@ -43,6 +43,7 @@ private:
 	};
 	SummonEnemy _sumattack;
 
+	
 private:
 	//ため攻撃
 	struct ChargeAttack
@@ -281,6 +282,6 @@ private:
 
 	void DeathEffect();
 	bool DeathEffectF;
-
+	int Timer;
 	void DeathParticle();
 };

@@ -44,6 +44,14 @@ void FirstBoss::SkipInitialize() {
 }
 //行動
 void FirstBoss::Action() {
+	if (m_HP < 0.1) return;
+	{
+	/*^^^^^^^^^^^^^^^^^^^^^*/
+	/*^^^^当たり判定^^^^*/
+	//弾とボスの当たり判定
+	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
+	CollideBul(_playerBulA, Type::CIRCLE);
+
 	if (m_HP > 0) {
 		/*^^^^^^上下運動^^^^^^^*/
 		float OldsMov = 0;
@@ -73,9 +81,7 @@ void FirstBoss::Action() {
 
 		/*^^^^当たり判定^^^^*/
 		//弾とボスの当たり判定
-		vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
-		CollideBul(_playerBulA,Type::CIRCLE);
-
+		
 		//通常時の当たり判定
 		if (!_normal.GetAttackF() && !_cattack.GetAttackF())
 		{
@@ -126,10 +132,14 @@ void FirstBoss::Action() {
 		_normal.ColPlayer(m_Position);
 
 		_normal.SetreposAngle();
+
+		vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
+		CollideBul(_playerBulA, Type::CIRCLE);
+
+
 	}
 	//OBJのステータスのセット
 	Obj_SetParam();
-
 
 	//リミット制限
 	Helper::GetInstance()->Clamp(m_Position.x, -55.0f, 65.0f);
@@ -540,14 +550,14 @@ void FirstBoss::RemovePos()
 		OldPos_Remove = m_Position;
 	}
 
-	m_Scale.x = Easing::EaseOut(SPosMoveEaseT, 2.5f, 0.f);
-	m_Scale.y = Easing::EaseOut(SPosMoveEaseT, 2.5f, 0.f);
-	m_Scale.z = Easing::EaseOut(SPosMoveEaseT, 2.5f, 0.f);
+	m_Scale.x = Easing::EaseOut(SPosMoveEaseT, 1.5f, 0.f);
+	m_Scale.y = Easing::EaseOut(SPosMoveEaseT, 1.5f, 0.f);
+	m_Scale.z = Easing::EaseOut(SPosMoveEaseT, 1.5f, 0.f);
 
 	Helper::GetInstance()->Clamp(SPosMoveEaseT, 0.f, 1.f);
-	Helper::GetInstance()->Clamp(m_Scale.x, 0.f, 2.5f);
-	Helper::GetInstance()->Clamp(m_Scale.y, 0.f, 2.5f);
-	Helper::GetInstance()->Clamp(m_Scale.z, 0.f, 2.5f);
+	Helper::GetInstance()->Clamp(m_Scale.x, 0.f, 1.5f);
+	Helper::GetInstance()->Clamp(m_Scale.y, 0.f, 1.5f);
+	Helper::GetInstance()->Clamp(m_Scale.z, 0.f, 1.5f);
 }
 
 void FirstBoss::NoBattleMove()
@@ -564,8 +574,7 @@ void FirstBoss::NoBattleMove()
 
 	constexpr float EaseAddVal = 0.04f;
 
-	bool SearchF = Collision::GetLength(m_Position, l_player) < 25.f;
-
+	
 	//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
 	XMVECTOR PositionA = { l_player.x + sinf(1 * (PI / 180.0f)) * 20.0f,l_player.y, l_player.z + cosf(1 * (PI / 180.0f)) * 20.0f };
 	XMVECTOR PositionB = { m_Position.x,m_Position.y,m_Position.z };
@@ -879,7 +888,8 @@ void FirstBoss::AppearAction() {
 }
 //ボス撃破シーン
 void FirstBoss::DeadAction_Throw() {
-	m_Position = { 0,40,20.f };
+	m_Scale={1.0f,1.4f,1.0f};
+	//m_Position = { 0,40,20.f };
 	if (!ResetRota) {
 		m_Rotation.y = 90.f;
 		m_Rotation.x= 0.f;
@@ -888,19 +898,17 @@ void FirstBoss::DeadAction_Throw() {
 	}
 	else
 	{
-		m_Position.y = 40;
+		//m_Position.y = 40;
 		m_Rotation.y += 0.02f;
 		m_Rotation.z += 0.09f;
 	}
-
-	DeathEffect();
 	RotFrontSpeed = 3.f;
 	Player::GetInstance()->SetPosition({ 0,0,10 });
 	Obj_SetParam();
 }
 //ボス撃破シーン
 void FirstBoss::DeadAction() {
-
+	
 	constexpr int ShakeTimer = 250;
 
 	if(shake->GetShakeTimer()>=ShakeTimer-5){
@@ -935,7 +943,7 @@ void FirstBoss::DeadAction() {
 		}
 		DeathSpeed = 0.f;
 	}
-
+	if(m_Position.y<=10)
 	DeathEffect();
 
 	Obj_SetParam();
@@ -1029,10 +1037,10 @@ void FirstBoss::DeathEffect()
 void FirstBoss::DeathParticle() {
 	const XMFLOAT4 s_color = { 1.0f,1.0f,1.0f,1.0f };
 	const XMFLOAT4 e_color = { 0.0f,0.0f,1.0f,1.0f };
-	float s_scale = 5.0f;
+	float s_scale = 2.0f;
 	float e_scale = 0.0f;
-	float l_velocity = 0.5f;
+	float l_velocity = 0.6f;
 	for (int i = 0; i < 3; ++i) {
-		ParticleEmitter::GetInstance()->DeathEffect(50, { m_Position.x,(m_Position.y +1.f),m_Position.z }, s_scale, e_scale, s_color, e_color, l_velocity);
+		ParticleEmitter::GetInstance()->DeathEffect(50, { m_Position.x,(m_Position.y +5.f),m_Position.z }, s_scale, e_scale, s_color, e_color, l_velocity);
 	}
 }

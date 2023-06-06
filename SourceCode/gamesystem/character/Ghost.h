@@ -36,7 +36,6 @@ public:
 private://ステート
 	static void (Ghost::* stateTable[])();
 private:
-	//パーティクル
 	void Particle();
 	//当たり判定(弾)
 	bool BulletCollision();

@@ -128,6 +128,8 @@ bool FinishAppear() { if (spline->GetIndex() >= static_cast<int>(pointsList.size
 	void SetCameraSkip(const bool CameraSkip) { m_CameraSkip = CameraSkip; }
 
 	bool CameraStateisNormal() { if (m_CameraState != CAMERA_BOSSAPPEAR)return true; return false; }
+
+	int GetCameraState() { return m_CameraState; }
 private:
 	//クラス
 	unique_ptr<Shake> shake = nullptr;

@@ -26,8 +26,11 @@ public:
 	virtual bool Initialize() = 0;
 	//更新
 	void Update();
+
+	void ImGuiDraw();
 	
 	virtual void Action() = 0;//エフェクト特有の処理
+	virtual void ImGuiOrigin() = 0;
 protected:
 	float DiviSpeed;
 	XMFLOAT3 m_Position = { 0.0f,0.0f,0.0f };
