@@ -33,8 +33,6 @@ private:
 
 	Spline* spline;
 	vector<XMFLOAT3> pointsList;
-	void SetPoints();
-
 
 	enum class TextScene
 	{

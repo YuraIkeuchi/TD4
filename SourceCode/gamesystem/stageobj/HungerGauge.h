@@ -24,6 +24,7 @@ public:
 
 	void RecoveryNowHunger(float m_NowHunger);
 
+	void SetIsStop(bool isStop) { this->isStop= isStop; }
 	void SetNowHunger(float m_NowHunger) { this->m_NowHunger = m_NowHunger; }
 	void SetHungerMax(float m_HungerMax) { this->m_HungerMax = m_HungerMax; }
 	void SetCatchCount(int m_CatchCount) { this->m_CatchCount = m_CatchCount; }
@@ -39,4 +40,5 @@ private:
 	float m_SubVelocity = 1.0f;//減る飢餓ゲージ(チャージ中のみ減る）
 	std::array<float,SUB_MAX> m_SubHunger;//減る量
 	bool carriedFood = false;
+	bool isStop = false;
 };

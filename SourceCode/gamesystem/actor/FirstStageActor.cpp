@@ -13,7 +13,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	BaseInitialize(dxCommon);
 	//オーディオ
 	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/BGM_boss.wav");
-	Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum());
+	Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum()+0.5f);
 	//ポストエフェクト
 	PlayPostEffect = false;
 
@@ -130,13 +130,6 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
 	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
 
-	if (input->TriggerKey(DIK_X)) {
-		Audio::GetInstance()->StopWave(1);
-		SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
-		Player::GetInstance()->SetCanShot(true);
-		Player::GetInstance()->MoveStop(false);
-
-	}
 
 	if (enemymanager->BossDestroy()) {
 		Audio::GetInstance()->StopWave(1);

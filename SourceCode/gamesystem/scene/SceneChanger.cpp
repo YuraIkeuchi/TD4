@@ -60,12 +60,9 @@ void SceneChanger::InitializeOver() {
 			newSprite->SetSize({ 0,0 });
 			DirectX::XMFLOAT4 col = { 0,0,0,1 };
 			newSprite->SetColor(col);
-
 			over_sprites.push_back(std::move(newSprite));
 		}
 	}
-
-
 }
 
 void SceneChanger::Draw() {

@@ -11,7 +11,6 @@ bool InterEnemy::Initialize() {
 void InterEnemy::Update() {
 	//�s��
 	Action();
-	DeathAction();
 }
 //�`��
 void InterEnemy::Draw(DirectXCommon* dxCommon) {

@@ -48,7 +48,7 @@ bool SecondBoss::Initialize() {
 	m_Scale = { 0.05f,0.05f,0.05f };
 	m_AddPower = 0.8f;
 	m_Radius = 5.0f;
-	_charaState = CharaState::STATE_ROLL;
+	_charaState = CharaState::STATE_STAMP;
 	m_MoveState = MOVE_ALTER;
 	m_RandomType = RANDOM_START;
 	m_RollType = ROLL_ONE;
@@ -717,19 +717,18 @@ void SecondBoss::ChoiceMove() {
 				m_MoveState = MOVE_ANGER;
 			}
 		}
+		else if (l_RandState >= 31 && l_RandState <= 37) {	//スタンプ攻撃
+			_charaState = STATE_STAMP;
+			m_PressType = PRESS_START;
+		}
+		else if (l_RandState >= 38 && l_RandState <= 44) {	//ランダム攻撃
+			_charaState = STATE_RANDOM;
+			m_RandomType = RANDOM_START;
+		}
 		else {			//ローリング攻撃
 			_charaState = STATE_ROLL;
 			m_RollType = ROLL_ONE;
 		}
-		//else if (l_RandState >= 31 && l_RandState <= 37) {	//スタンプ攻撃
-		//	_charaState = STATE_STAMP;
-		//	m_PressType = PRESS_START;
-		//}
-		//else if (l_RandState >= 38 && l_RandState <= 44) {	//ランダム攻撃
-		//	_charaState = STATE_RANDOM;
-		//	m_RandomType = RANDOM_START;
-		//}
-		//
 	}
 }
 //移動関係の初期化

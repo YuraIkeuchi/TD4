@@ -14,7 +14,7 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	dxCommon->SetFullScreen(true);
 	//オーディオ
 	Audio::GetInstance()->LoadSound(0, "Resources/Sound/BGM/BGM_title.wav");
-	Audio::GetInstance()->LoopWave(0, VolumManager::GetInstance()->GetBGMVolum());
+	Audio::GetInstance()->LoopWave(0, VolumManager::GetInstance()->GetBGMVolum()+2.0f);
 
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();

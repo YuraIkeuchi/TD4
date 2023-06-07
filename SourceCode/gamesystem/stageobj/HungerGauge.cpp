@@ -27,6 +27,7 @@ bool HungerGauge::Initialize() {
 
 //更新
 void HungerGauge::Update() {
+	if (isStop) { return; }
 	float l_Limit = 50.0f;
 	//一定ずつで減少していく
 	if (m_CatchCount <= 5 && m_CatchCount > 0) {
