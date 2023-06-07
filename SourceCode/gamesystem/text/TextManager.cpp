@@ -145,12 +145,15 @@ void TextManager::SetConversation(Name name,const XMVECTOR& color)
 	conversation_.ThirdFont->SetColor(color);
 }
 //名前から文字列を呼び出しセットする
-void TextManager::SetConversation(Name_First name)
+void TextManager::SetConversation(Name_First name, const XMVECTOR& color)
 {
 	std::map<TextManager::Name_First, Word>::iterator itr = wordlist_first.find(name);
 
 	CreateCon(conversation_, itr->second);
-	//conversation_ = CreateConversation(itr->second);
+	
+	conversation_.FirstFont->SetColor(color);
+	conversation_.SecondFont->SetColor(color);
+	conversation_.ThirdFont->SetColor(color);
 }
 
 //名前から文字列を呼び出しセットする

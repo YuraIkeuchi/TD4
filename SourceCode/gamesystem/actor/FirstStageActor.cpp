@@ -5,8 +5,11 @@
 #include "ParticleEmitter.h"
 #include <HungerGauge.h>
 #include "BackObj.h"
-//初期化
 
+const XMVECTOR kSkyBlue{ 0.f,1.f,1.f,1.f };
+const XMVECTOR kPink{ 0.9f,0.6f,0.8f,1.f };
+
+//初期化
 void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	dxCommon->SetFullScreen(true);
 	//共通の初期化
@@ -75,7 +78,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		sutopon_color_ = { 1.0f,1.0f,1.0f,1.0f };
 		girl_color_ = { 0.5f,0.5f,0.5f,0.5f };
 		textT++;
-		text_->SelectText(TextManager::Name_First::VIEWBOSS);
+		text_->SelectText(TextManager::Name_First::VIEWBOSS,kSkyBlue);
 		if(Input::GetInstance()->TriggerButton(Input::B)||textT>1*IntervalTextC)
 		{
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
@@ -88,7 +91,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		girl_color_ = { 1.2f,1.2f,1.2f,1.f };
 
 		textT++;
-		text_->SelectText(TextManager::Name_First::SPEAKPLAYER1);
+		text_->SelectText(TextManager::Name_First::SPEAKPLAYER1,kPink);
 		if (Input::GetInstance()->TriggerButton(Input::B)|| textT > 2 * IntervalTextC)
 		{
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
@@ -101,7 +104,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		sutopon_color_  = { 1.f,1.f,1.f,1.f };
 
 		textT++;
-		text_->SelectText(TextManager::Name_First::SPEALPLAYER2);
+		text_->SelectText(TextManager::Name_First::SPEALPLAYER2,kSkyBlue);
 		if (Input::GetInstance()->TriggerButton(Input::B) || textT > 3 * IntervalTextC)
 		{
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
@@ -114,7 +117,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		sutopon_color_ = { 0.50f,0.50f,0.50f,0.50f };
 		girl_color_ = { 1.2f,1.2f,1.2f,1.f };
 		textT++;
-		text_->SelectText(TextManager::Name_First::SPEALPLAYER3);
+		text_->SelectText(TextManager::Name_First::SPEALPLAYER3,kPink);
 		if (Input::GetInstance()->TriggerButton(Input::B)|| textT > 4 * IntervalTextC)
 		{
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
