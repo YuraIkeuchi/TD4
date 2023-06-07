@@ -62,7 +62,10 @@ void Ghost::Draw(DirectXCommon* dxCommon) {
 //ImGui•`‰æ
 void Ghost::ImGuiDraw() {
 	ImGui::Begin("Ghost");
-	ImGui::Text("%d", m_SearchTimer);
+	ImGui::Text("ColorR:%f",m_Color.x);
+	ImGui::Text("ColorG:%f", m_Color.y);
+	ImGui::Text("ColorB:%f", m_Color.z);
+	ImGui::Text("ColorW:%f", m_Color.w);
 	ImGui::End();
 }
 //“–‚½‚è”»’è(’e)

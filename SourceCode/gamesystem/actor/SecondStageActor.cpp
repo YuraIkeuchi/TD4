@@ -116,6 +116,12 @@ void SecondStageActor::BackDraw(DirectXCommon* dxCommon) {
 	IKESprite::PostDraw();
 	IKEObject3d::PreDraw();
 	BackObj::GetInstance()->Draw(dxCommon);
+	//パーティクル描画
+	if (!camerawork->GetFeedEnd() && m_SceneState == SceneState::MainState) {
+		if (!enemymanager->BossDestroy()) {
+			ParticleEmitter::GetInstance()->WallDrawAll();
+		}
+	}
 	////各クラスの描画
 	if (!camerawork->GetFeedEnd()) {
 		Player::GetInstance()->Draw(dxCommon);
@@ -129,9 +135,6 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	//パーティクル描画
 	if (!camerawork->GetFeedEnd() && m_SceneState == SceneState::MainState) {
 		ParticleEmitter::GetInstance()->FlontDrawAll();
-		if (!enemymanager->BossDestroy()) {
-			ParticleEmitter::GetInstance()->WallDrawAll();
-		}
 	}
 
 	ParticleEmitter::GetInstance()->DeathDrawAll();
@@ -152,7 +155,7 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 //IMGuiの描画
 void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	//Player::GetInstance()->ImGuiDraw();
-	////loadobj->ImGuiDraw();
+	//loadobj->ImGuiDraw();
 	//camerawork->ImGuiDraw();
 	//enemymanager->ImGuiDraw();
 	//loadobj->ImGuiDraw();
