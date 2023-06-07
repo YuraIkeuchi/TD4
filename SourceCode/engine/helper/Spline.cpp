@@ -13,7 +13,7 @@ void Spline::Init(std::vector<XMFLOAT3>point, int pointssize)
 	points.push_back({ point[quantity_end].x,  point[quantity_end].y, point[quantity_end].z });
 	points.push_back({ point[quantity_end].x,  point[quantity_end].y,  point[quantity_end].z });
 
-	startCount = static_cast<float>(GetTickCount64());
+	startCount = static_cast<float>(GetTickCount());
 
 }
 
@@ -46,7 +46,7 @@ XMVECTOR Spline::SplinePosition(const std::vector<XMVECTOR>& points, size_t star
 
 void Spline::Upda(XMFLOAT3& Epos, float DiviSpeed)
 {
-	nowCount = static_cast<float>(GetTickCount64());
+	nowCount = static_cast<float>(GetTickCount());
 	elapsedCount = nowCount - startCount;
 	elapsedTime = elapsedCount / DiviSpeed;
 
@@ -58,7 +58,7 @@ void Spline::Upda(XMFLOAT3& Epos, float DiviSpeed)
 			startindex++;
 			timerate -= 1;
 
-			startCount = static_cast<float>(GetTickCount64());
+			startCount = static_cast<float>(GetTickCount());
 		} else
 		{
 			timerate = 1;

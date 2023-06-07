@@ -127,8 +127,9 @@ void FirstBoss::Action() {
 		}
 		/*^^^^^^^^^^^^^^^^^^^*/
 
-
-		_normal.ColPlayer(m_Position);
+		if (!SummonF) {
+			_normal.ColPlayer(m_Position);
+		}
 
 		_normal.SetreposAngle();
 
@@ -915,7 +916,7 @@ void FirstBoss::DeadAction() {
 		if (m_Position.y <= 5.f)
 			DeathEffectF = true;
 		m_Rotation.y+= 0.06f;
-		DeathSpeed += 0.05f;
+		DeathSpeed += 0.14f;
 		m_Rotation.z += DeathSpeed;
 		if(DeathSpeed>=3.f)
 		{
@@ -941,7 +942,7 @@ void FirstBoss::DeadAction() {
 		}
 		DeathSpeed = 0.f;
 	}
-	if(m_Position.y<=5)
+	if(m_Position.y<=0)
 		DeathEffect();
 
 	Obj_SetParam();
@@ -964,7 +965,7 @@ void FirstBoss::AttackDecision()
 		RandActionCount = rand() % 4;
 
 		//比重は通常攻撃多め
-		if (RandActionCount == 0)_attackAction = SUMMON;
+		if (RandActionCount ==0)_attackAction = SUMMON;
 		else if (RandActionCount == 1)_attackAction = CHARGE;
 		else  _attackAction = NORMAL;
 
@@ -1017,7 +1018,7 @@ void FirstBoss::DeathEffect()
 
 	//色
 	const float RandRed = 2.2f;
-	const float red = 2.2f + (float)rand() / RAND_MAX * RandRed;
+	const float red = 0.2f + (float)rand() / RAND_MAX * RandRed;
 	const XMFLOAT4 s_color = { 0.9f, red, 0.1f, 1.0f }; //濃い赤
 	const XMFLOAT4 e_color = { 0, 0, 0, 1.0f }; //無色
 
@@ -1026,6 +1027,6 @@ void FirstBoss::DeathEffect()
 	uniform_int_distribution<int> l_Randlife(10, 40);
 	int l_Life = int(l_Randlife(mt));
 
-	ParticleEmitter::GetInstance()->DeathEffectBoss(l_Life, m_Position, l_AddSize, s_scale, e_scale, s_color, e_color);
+	ParticleEmitter::GetInstance()->DeathEffectBoss(l_Life, { m_Position.x,m_Position.y-3.f,m_Position.z }, l_AddSize, s_scale, e_scale, s_color, e_color);
 	
 }

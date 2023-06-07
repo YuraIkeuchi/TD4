@@ -5,6 +5,7 @@
 #include "LoadStageObj.h"
 #include"Font.h"
 #include"Feed.h"
+#include "MessageWindow.h"
 #include"Spline.h"
 
 /// タイトルシーン
@@ -26,6 +27,7 @@ public:
 private:
 	float Rads;
 	int textT;
+	unique_ptr<MessageWindow> messagewindow_;
 	unique_ptr<BossText> text_;
 	unique_ptr<IKESprite> backScreen_ = nullptr;
 
