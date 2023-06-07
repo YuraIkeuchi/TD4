@@ -299,9 +299,10 @@ void FirstStageActor::BackDraw(DirectXCommon* dxCommon) {
 
 	ParticleEmitter::GetInstance()->DeathDrawAll();
 	////各クラスの描画
-	Player::GetInstance()->Draw(dxCommon);
-	loadobj->Draw(dxCommon);
-	
+	if (!camerawork->GetFeedEnd()) {
+		Player::GetInstance()->Draw(dxCommon);
+		loadobj->Draw(dxCommon);
+	}
 	enemymanager->Draw(dxCommon);
 	
 	IKEObject3d::PostDraw();
