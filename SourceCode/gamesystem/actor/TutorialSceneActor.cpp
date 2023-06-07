@@ -40,6 +40,7 @@ void TutorialSceneActor::IntroState() {
 
 	if (DebugButton() ||
 		input->TriggerButton(Input::B)) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
 		text_->NoneText();
 		nowstate_ = state::MOVE;
 	}

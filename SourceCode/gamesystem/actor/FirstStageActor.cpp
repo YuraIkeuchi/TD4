@@ -70,6 +70,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		text_->SelectText(TextManager::Name_First::VIEWBOSS);
 		if(Input::GetInstance()->TriggerButton(Input::B)||textT>1*IntervalTextC)
 		{
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
 			_Tscne = TextScene::TIEYOSHI_EXP;
 		}
 	}
@@ -79,6 +80,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		text_->SelectText(TextManager::Name_First::SPEAKPLAYER1);
 		if (Input::GetInstance()->TriggerButton(Input::B)|| textT > 2 * IntervalTextC)
 		{
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
 			_Tscne = TextScene::KILL_TIEYOSHI;
 		}
 	}
@@ -86,8 +88,20 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	{
 		textT++;
 		text_->SelectText(TextManager::Name_First::SPEALPLAYER2);
-		if (Input::GetInstance()->TriggerButton(Input::B)|| textT > 3 * IntervalTextC)
+		if (Input::GetInstance()->TriggerButton(Input::B) || textT > 3 * IntervalTextC)
 		{
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
+			_Tscne = TextScene::LET_GO;
+		}
+	}
+
+	else if (_Tscne == TextScene::LET_GO)
+	{
+		textT++;
+		text_->SelectText(TextManager::Name_First::SPEALPLAYER3);
+		if (Input::GetInstance()->TriggerButton(Input::B)|| textT > 4 * IntervalTextC)
+		{
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
 			_Tscne = TextScene::ENDTEXT;
 		}
 	}
