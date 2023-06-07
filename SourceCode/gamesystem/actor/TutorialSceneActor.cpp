@@ -79,6 +79,7 @@ void TutorialSceneActor::TextTalkState() {
 
 	messagewindow_->DisplayCharacter(sutopon_color_);
 	if (input->TriggerButton(Input::B) && conversation < 5) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
 		conversation += 1;
 	}
 
@@ -131,6 +132,7 @@ void TutorialSceneActor::SpawnEnemyState() {
 void TutorialSceneActor::TextCatchFollowState() {
 
 	if (input->TriggerButton(Input::B) && conversation < 3) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
 		conversation += 1;
 	}
 	if (conversation == 0) {
@@ -173,6 +175,7 @@ void TutorialSceneActor::CatchFollowState() {
 }
 void TutorialSceneActor::TextShotState() {
 	if (input->TriggerButton(Input::B) && conversation < 1) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
 		conversation += 1;
 	}
 
@@ -206,6 +209,7 @@ void TutorialSceneActor::ShotState() {
 }
 void TutorialSceneActor::TextCatchSeachState() {
 	if (input->TriggerButton(Input::B) && conversation < 6) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
 		conversation += 1;
 	}
 
@@ -261,6 +265,7 @@ void TutorialSceneActor::CatchSeachState() {
 void TutorialSceneActor::TextClearState() {
 
 	if (input->TriggerButton(Input::B) && conversation < 2) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
 		conversation += 1;
 	}
 
@@ -319,6 +324,7 @@ void TutorialSceneActor::TextLastState() {
 
 	if (MovingCamera(e_eyepos, s_eyepos, e_targetpos, s_targetpos)) {
 		if (input->TriggerButton(Input::B) && conversation < 2) {
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
 			conversation += 1;
 		}
 		if ((DebugButton() ||
@@ -342,7 +348,8 @@ void TutorialSceneActor::MainTutorialState() {
 	}
 }
 void TutorialSceneActor::CompleteState() {
-	if (input->TriggerButton(Input::B)) {
+	if (input->TriggerButton(Input::B)&&conversation < 12) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
 		conversation += 1;
 	}
 
