@@ -14,15 +14,15 @@ bool AttackBullet::Initialize() {
 	m_Scale = { 1.0f,1.0f,1.0f };
 	m_Color = { 1.0f,0.0f,0.0f,1.0f };
 	//CSVÇ©ÇÁì«Ç›çûÇ›
-	m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet/bullet.csv", "speed2")));
-	m_TargetTimer = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet/bullet.csv", "Timer")));
+	m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet/bullet.csv", "AttackSpeed")));
+	m_TargetTimer = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet/bullet.csv", "AttackLimit")));
 	return true;
 }
 //ImGuiï`âÊ
 void AttackBullet::ImGui_Origin() {
-	ImGui::Begin("Bullet");
+	/*ImGui::Begin("Bullet");
 	ImGui::Text("ScaleX:%f", m_Scale.x);
-	ImGui::End();
+	ImGui::End();*/
 }
 //íeÇÃì¡óLèàóù
 void AttackBullet::Action() {
