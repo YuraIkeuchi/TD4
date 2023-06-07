@@ -221,6 +221,7 @@ void FirstBoss::NormalAttak::Update(XMFLOAT3& Pos, XMFLOAT3& Rot, bool& Enf)
 
 void FirstBoss::EffecttexDraw(DirectXCommon* dxCommon)
 {
+	if (m_HP < 0.1f)return;
 
 	IKETexture::PreDraw2(dxCommon, AlphaBlendType);
 	_cattack.Draw();
@@ -966,8 +967,8 @@ void FirstBoss::AttackDecision()
 		RandActionCount = rand() % 4;
 
 		//比重は通常攻撃多め
-		if (RandActionCount ==0)_attackAction = SUMMON;
-		else if (RandActionCount == 1)_attackAction = CHARGE;
+		if (RandActionCount ==1)_attackAction = SUMMON;
+		else if (RandActionCount == 2)_attackAction = CHARGE;
 		else  _attackAction = NORMAL;
 
 		//核攻撃のフラグオン
@@ -1018,7 +1019,7 @@ void FirstBoss::DeathEffect()
 	float e_scale = (8.0f + (float)rand() / RAND_MAX * RandScale - RandScale / 2.0f) * l_AddSize;
 
 	//色
-	const float RandRed = 2.2f;
+	const float RandRed = 0.02f;
 	const float red = 0.2f + (float)rand() / RAND_MAX * RandRed;
 	const XMFLOAT4 s_color = { 0.9f, red, 0.1f, 1.0f }; //濃い赤
 	const XMFLOAT4 e_color = { 0, 0, 0, 1.0f }; //無色
@@ -1028,6 +1029,16 @@ void FirstBoss::DeathEffect()
 	uniform_int_distribution<int> l_Randlife(10, 40);
 	int l_Life = int(l_Randlife(mt));
 
-	ParticleEmitter::GetInstance()->DeathEffectBoss(l_Life, { m_Position.x,m_Position.y-3.f,m_Position.z }, l_AddSize, s_scale, e_scale, s_color, e_color);
+	const XMFLOAT4 s_color2 = { 1.0f,1.0f,1.0f,1.0f };
+	const XMFLOAT4 e_color2 = { 0.8f,0.1f,0.1f,1.0f };
+	float s_scale2 = 8.0f;
+	float e_scale2 = 3.0f;
+	float l_velocity2 = 0.5f;
+	for (int i = 0; i < 3; ++i) {
+		ParticleEmitter::GetInstance()->DeathEffect(50, { m_Position.x,(m_Position.y - 1.0f),m_Position.z }, s_scale2, e_scale2, s_color2, e_color2, l_velocity2);
+	}
+
+
+	ParticleEmitter::GetInstance()->DeathEffectBoss(l_Life, { m_Position.x,m_Position.y-4.f,m_Position.z }, l_AddSize, s_scale, e_scale, s_color, e_color);
 	
 }

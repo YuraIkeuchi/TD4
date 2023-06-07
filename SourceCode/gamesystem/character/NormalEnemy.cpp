@@ -194,7 +194,7 @@ void NormalEnemy::RushAction()
 		old = RotY;
 		MoveTimer++;
 
-		if (JudgRet) {
+		if ((JudgRet)||MoveTimer>200) {
 			OldPos_BefRot = m_Position;
 			canRot = true;
 			randMove = rand() % 100;
