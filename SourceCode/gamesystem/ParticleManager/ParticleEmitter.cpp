@@ -19,7 +19,7 @@ void ParticleEmitter::Initialize()
 	healParticle.reset(ParticleManager::Create(ImageManager::Heal));
 	deathParticle.reset(ParticleManager::Create(ImageManager::Normal));
 	BossDeadParticle.reset(ParticleManager::Create(ImageManager::Normal));
-
+	wallParticle.reset(ParticleManager::Create(ImageManager::Normal));
 }
 
 
@@ -30,6 +30,7 @@ void ParticleEmitter::Update()
 	healParticle->Update();
 	deathParticle->Update();
 	BossDeadParticle->Update();
+	wallParticle->Update();
 }
 
 void ParticleEmitter::FlontDrawAll() {
@@ -40,6 +41,9 @@ void ParticleEmitter::FlontDrawAll() {
 void ParticleEmitter::DeathDrawAll() {
 	BossDeadParticle->Draw(AddBlendType);
 	deathParticle->Draw(AddBlendType);
+}
+void ParticleEmitter::WallDrawAll() {
+	wallParticle->Draw(AddBlendType);
 }
 
 void ParticleEmitter::FireEffect(const int life, const XMFLOAT3& l_pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor)
@@ -64,7 +68,7 @@ void ParticleEmitter::LimitEffect(const int life, const XMFLOAT3& l_pos, const f
 	vel.y = (float)rand() / RAND_MAX * rnd_vel * 2.0f;// -rnd_vel / 2.0f;
 	vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 4.0f;
 
-	circleParticle->Add(life, { pos.x,pos.y,pos.z }, vel, {}, startscale, endscale, startcolor, endcolor, {});
+	wallParticle->Add(life, { pos.x,pos.y,pos.z }, vel, {}, startscale, endscale, startcolor, endcolor, {});
 }
 
 //爆発
@@ -152,6 +156,8 @@ void ParticleEmitter::AllDelete()
 	circleParticle->AllDelete();
 	healParticle->AllDelete();
 	deathParticle->AllDelete();
+	wallParticle->AllDelete();
+	BossDeadParticle->AllDelete();
 }
 
 void ParticleEmitter::LoadTexture() {

@@ -142,8 +142,9 @@ void LoadStageObj::ImGuiDraw() {
 	//ÉSÅ[ÉXÉg
 	for (auto i = 0; i < ghosts.size(); i++)
 	{
-		ghosts[i]->ImGuiDraw();
+		
 	}
+	ghosts[0]->ImGuiDraw();
 	/*ImGui::Begin("Heart");
 	ImGui::Text("m_Division:%f", m_Division);
 	ImGui::End();*/

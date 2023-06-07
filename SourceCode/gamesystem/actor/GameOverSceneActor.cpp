@@ -94,6 +94,7 @@ void GameOverSceneActor::BackDraw(DirectXCommon* dxCommon)
 }
 //ImGui•`‰æ
 void GameOverSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
+	//SceneSave::GetInstance()->ImGuiDraw();
 }
 //‰ð•ú
 void GameOverSceneActor::Finalize() {

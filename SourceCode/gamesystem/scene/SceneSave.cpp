@@ -1,5 +1,6 @@
 #include "SceneSave.h"
 #include <cassert>
+#include "imgui.h"
 bool SceneSave::m_FirstStageClear = false;
 bool SceneSave::m_SecondStageClear = false;
 bool SceneSave::m_TutorialStageClear = false;
@@ -48,4 +49,11 @@ bool SceneSave::GetClearFlag(SeceneCategory sceneCategory) {
 		return false;
 		break;
 	}
+}
+
+void SceneSave::ImGuiDraw() {
+	ImGui::Begin("Save");
+	ImGui::Text("Tutorial:%d", m_TutorialStageClear);
+	ImGui::Text("FIrst:%d", m_FirstStageClear);
+	ImGui::Text("Second:%d", m_SecondStageClear);
 }

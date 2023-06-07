@@ -111,7 +111,7 @@ void InterBoss::BirthEffect() {
 	neweffect->SetPosition(m_Position);
 	//if (SceneName == "FIRSTSTAGE")
 	//	neweffect->SetPosition(EffectFirstPos);
-	if (m_HP < 1.f) {
+	if (m_HP < 0.1f) {
 		neweffect->SetLife(1000);
 		neweffect->SetDiviSpeed(8.0f);
 	} else {
