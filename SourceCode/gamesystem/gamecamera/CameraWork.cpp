@@ -137,7 +137,7 @@ void CameraWork::SetBossDead_Before()
 			DeathTimer = 0;
 		}
 	}
-	RadEffect = 20;
+	RadEffect = 10;
 
 	
 	m_targetPos.x = boss->GetPosition().x;
@@ -166,7 +166,7 @@ void CameraWork::SetBossDead_AfterFirst()
 //フェード後の撃破アクション(2ボス)
 void CameraWork::SetBossDead_AfterSecond()
 {
-	RadEffect -= 0.1f;
+	RadEffect = 0.f;
 	if (FeedF) {
 		feed->FeedIn(Feed::FeedType::WHITE, 0.01f, FeedF);
 	}
