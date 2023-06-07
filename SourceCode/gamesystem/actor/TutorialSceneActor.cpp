@@ -79,6 +79,7 @@ void TutorialSceneActor::TextTalkState() {
 
 	messagewindow_->DisplayCharacter(sutopon_color_);
 	if (input->TriggerButton(Input::B) && conversation < 5) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
 		conversation += 1;
 	}
 
@@ -131,6 +132,7 @@ void TutorialSceneActor::SpawnEnemyState() {
 void TutorialSceneActor::TextCatchFollowState() {
 
 	if (input->TriggerButton(Input::B) && conversation < 3) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
 		conversation += 1;
 	}
 	if (conversation == 0) {
@@ -173,6 +175,7 @@ void TutorialSceneActor::CatchFollowState() {
 }
 void TutorialSceneActor::TextShotState() {
 	if (input->TriggerButton(Input::B) && conversation < 1) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
 		conversation += 1;
 	}
 
@@ -206,6 +209,7 @@ void TutorialSceneActor::ShotState() {
 }
 void TutorialSceneActor::TextCatchSeachState() {
 	if (input->TriggerButton(Input::B) && conversation < 6) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
 		conversation += 1;
 	}
 
@@ -261,6 +265,7 @@ void TutorialSceneActor::CatchSeachState() {
 void TutorialSceneActor::TextClearState() {
 
 	if (input->TriggerButton(Input::B) && conversation < 2) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
 		conversation += 1;
 	}
 
@@ -276,6 +281,7 @@ void TutorialSceneActor::TextClearState() {
 
 	if ((DebugButton() ||
 		conversation==2)) {
+		Player::GetInstance()->SetCanShot(false);
 		nowstate_ = state::SPAWNALLENEMY;
 		s_eyepos = camerawork->GetEye();
 		s_targetpos = camerawork->GetTarget();
@@ -287,12 +293,12 @@ void TutorialSceneActor::SpawnAllEnemyState() {
 	loadobj->TutorialUpdate();
 	Player::GetInstance()->MoveStop(true);
 	Player::GetInstance()->SetCanShot(false);
+	Player::GetInstance()->Update();
 	HungerGauge::GetInstance()->SetIsStop(true);
 	if (MovingCamera(s_eyepos, e_eyepos, s_targetpos, e_targetpos)) {
 		enemymanager->TutorialUpdate(1);
 	}
 	if (Clear(cameraframe >= 1.0f, 50)) {
-		HungerGauge::GetInstance()->SetIsStop(false);
 		s_eyepos = { Player::GetInstance()->GetPosition().x,
 		Player::GetInstance()->GetPosition().y + 50.0f,
 		Player::GetInstance()->GetPosition().z - 20.0f };
@@ -319,11 +325,13 @@ void TutorialSceneActor::TextLastState() {
 
 	if (MovingCamera(e_eyepos, s_eyepos, e_targetpos, s_targetpos)) {
 		if (input->TriggerButton(Input::B) && conversation < 2) {
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
 			conversation += 1;
 		}
 		if ((DebugButton() ||
 			conversation==2)
 			) {
+			HungerGauge::GetInstance()->SetIsStop(false);
 			text_->SetConversation(TextManager::NONE);
 			conversation = 0;
 			nowstate_ = state::MAINTUTORIAL;
@@ -342,7 +350,8 @@ void TutorialSceneActor::MainTutorialState() {
 	}
 }
 void TutorialSceneActor::CompleteState() {
-	if (input->TriggerButton(Input::B)) {
+	if (input->TriggerButton(Input::B)&&conversation < 12) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
 		conversation += 1;
 	}
 
@@ -606,6 +615,10 @@ void TutorialSceneActor::Finalize() {
 //後ろの描画
 void TutorialSceneActor::BackDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
+	BackObj::GetInstance()->Draw(dxCommon);
+	if (nowstate_ != state::INTORO) {
+		ParticleEmitter::GetInstance()->WallDrawAll();
+	}
 	////各クラスの描画
 	Player::GetInstance()->Draw(dxCommon);
 	if (nowstate_ <= state::TEXT_TALK) {
@@ -614,16 +627,14 @@ void TutorialSceneActor::BackDraw(DirectXCommon* dxCommon) {
 	else {
 		loadobj->Draw(dxCommon);
 	}
-	BackObj::GetInstance()->Draw(dxCommon);
+
 	enemymanager->TutorialDraw(dxCommon);
 	IKEObject3d::PostDraw();
 }
 //ポストエフェクトがかからない
 void TutorialSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 	//パーティクル描画
-	if (nowstate_!= state::INTORO) {
-		ParticleEmitter::GetInstance()->FlontDrawAll();
-	}
+	ParticleEmitter::GetInstance()->FlontDrawAll();
 	//完全に前に書くスプライト
 	if (static_cast<int>(nowstate_) % 2 == 0) {
 		IKESprite::PreDraw();

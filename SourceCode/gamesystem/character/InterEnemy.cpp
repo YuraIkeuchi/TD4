@@ -56,7 +56,8 @@ void InterEnemy::DeathAction()
 void InterEnemy::ColPlayer()
 {
 	if (!isAlive) { return; }
-	if (Collision::CircleCollision(Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z, 2.f, m_Position.x, m_Position.z, 1.f))
+	if (Collision::CircleCollision(Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z, 2.f, m_Position.x, m_Position.z, 1.f)
+		&&Player::GetInstance()->GetDamageInterVal()==0)
 	{
 		Player::GetInstance()->PlayerHit(m_Position);
 		Player::GetInstance()->RecvDamage(0);
