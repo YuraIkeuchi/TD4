@@ -30,6 +30,7 @@ public:
 	//メッセージ選択
 	void SelectText(TextManager::Name_Second name);
 	void SelectText(TextManager::Name_First name);
+	void ChangeColor(int row, const XMVECTOR& color);
 public:
 	void SetTextState(const int TextState) { m_TextState = TextState; }
 private:

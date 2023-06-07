@@ -13,7 +13,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	BaseInitialize(dxCommon);
 	//オーディオ
 	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/BGM_boss.wav");
-	Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum());
+	Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum()+0.5f);
 	//ポストエフェクト
 	PlayPostEffect = true;
 
@@ -55,6 +55,10 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	text_->Initialize(dxCommon);
 	text_->SelectText(TextManager::Name_First::VIEWBOSS);
 
+	messagewindow_ = make_unique<MessageWindow>();
+	messagewindow_->Initialize();
+	messagewindow_->Display();
+
 	lightgroup->SetCircleShadowActive(0, true);
 	lightgroup->SetCircleShadowActive(1, true);
 }
@@ -64,30 +68,56 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	
 	constexpr int IntervalTextC = 200;
 
+
+	messagewindow_->DisplayCharacter(sutopon_color_);
 	if(_Tscne== TextScene::NON)
 	{
+		sutopon_color_ = { 1.0f,1.0f,1.0f,1.0f };
+		girl_color_ = { 0.5f,0.5f,0.5f,0.5f };
 		textT++;
 		text_->SelectText(TextManager::Name_First::VIEWBOSS);
 		if(Input::GetInstance()->TriggerButton(Input::B)||textT>1*IntervalTextC)
 		{
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
 			_Tscne = TextScene::TIEYOSHI_EXP;
 		}
 	}
 	else if(_Tscne == TextScene::TIEYOSHI_EXP)
 	{
+		sutopon_color_ = { 0.50f,0.50f,0.50f,0.50f };
+		girl_color_ = { 1.2f,1.2f,1.2f,1.f };
+
 		textT++;
 		text_->SelectText(TextManager::Name_First::SPEAKPLAYER1);
 		if (Input::GetInstance()->TriggerButton(Input::B)|| textT > 2 * IntervalTextC)
 		{
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
 			_Tscne = TextScene::KILL_TIEYOSHI;
 		}
 	}
 	else if (_Tscne == TextScene::KILL_TIEYOSHI)
 	{
+		girl_color_ = { 0.50f,0.50f,0.50f,0.50f };
+		sutopon_color_  = { 1.f,1.f,1.f,1.f };
+
 		textT++;
 		text_->SelectText(TextManager::Name_First::SPEALPLAYER2);
-		if (Input::GetInstance()->TriggerButton(Input::B)|| textT > 3 * IntervalTextC)
+		if (Input::GetInstance()->TriggerButton(Input::B) || textT > 3 * IntervalTextC)
 		{
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
+			_Tscne = TextScene::LET_GO;
+		}
+	}
+
+	else if (_Tscne == TextScene::LET_GO)
+	{
+		sutopon_color_ = { 0.50f,0.50f,0.50f,0.50f };
+		girl_color_ = { 1.2f,1.2f,1.2f,1.f };
+		textT++;
+		text_->SelectText(TextManager::Name_First::SPEALPLAYER3);
+		if (Input::GetInstance()->TriggerButton(Input::B)|| textT > 4 * IntervalTextC)
+		{
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
 			_Tscne = TextScene::ENDTEXT;
 		}
 	}
@@ -116,17 +146,14 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
 	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
 
-	if (input->TriggerKey(DIK_X)) {
-		Audio::GetInstance()->StopWave(1);
-		SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
-		Player::GetInstance()->SetCanShot(true);
-		Player::GetInstance()->MoveStop(false);
-
-	}
 
 	if (enemymanager->BossDestroy()) {
 		Audio::GetInstance()->StopWave(1);
 		SceneSave::GetInstance()->SetClearFlag(kFirstStage, true);
+		if(camerawork->GetCameraState()==CameraState::CAMERA_BOSSDEAD_AFTER_FIRST)
+		{
+			PlayPostEffect = false;
+		}
 	}
 	
 	if (camerawork->GetAppearEndF()) {
@@ -147,7 +174,17 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	ui->Update();
 	//各クラス更新
 	BackObj::GetInstance()->Update();
-	Player::GetInstance()->Update();
+
+
+	if (enemymanager->BossDestroy())
+	{
+		Player::GetInstance()->DeathUpdate();
+	}
+	else
+	{
+		Player::GetInstance()->Update();
+	}
+
 	enemymanager->BattleUpdate();
 	ColEnemy(enemymanager->GetBulEnemy());
 	loadobj->FirstUpdate();
@@ -174,7 +211,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 
 		if (camerawork->GetEndDeath()) {
 			sceneChanger_->ChangeStart();
-			sceneChanger_->ChangeScene("SECONDSTAGE", SceneChanger::ReverseType::NonReverse);
+			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::ReverseType::NonReverse);
 		}
 	}
 	else
@@ -185,8 +222,10 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		}
 	}
 	if (PlayerDestroy()) {
+		std::string str = "GAMEOVER";
+		Audio::GetInstance()->StopWave(1);
 		sceneChanger_->ChangeStart();
-		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::Reverse);
+		sceneChanger_->ChangeScene(str, SceneChanger::Reverse);
 	}
 
 	XMFLOAT3 Position = enemymanager->GetBoss()->GetPosition();
@@ -201,7 +240,10 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	sceneChanger_->Update();
 
 	if(_Tscne!=TextScene::ENDTEXT)
-	text_->Display();
+	//text_->Display();
+
+	messagewindow_->Update(girl_color_, sutopon_color_);
+
 	camerawork->Update(camera);
 	lightgroup->Update();
 }
@@ -243,10 +285,19 @@ void FirstStageActor::BackDraw(DirectXCommon* dxCommon) {
 	IKESprite::PostDraw();
 
 	IKEObject3d::PreDraw();
+	BackObj::GetInstance()->Draw(dxCommon);
+
+	if (camerawork->GetCameraState() != CameraState::CAMERA_BOSSAPPEAR &&
+		camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_AFTER_FIRST) {
+		if (camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_BEFORE && camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_AFTER_FIRST) {
+			ParticleEmitter::GetInstance()->WallDrawAll();
+		}
+	}
+
+	ParticleEmitter::GetInstance()->DeathDrawAll();
 	////各クラスの描画
 	Player::GetInstance()->Draw(dxCommon);
 	loadobj->Draw(dxCommon);
-	BackObj::GetInstance()->Draw(dxCommon);
 	
 	enemymanager->Draw(dxCommon);
 	
@@ -254,30 +305,53 @@ void FirstStageActor::BackDraw(DirectXCommon* dxCommon) {
 }
 //ポストエフェクトがかからない
 void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
+
+	
 	//パーティクル描画
 	if (camerawork->GetCameraState() != CameraState::CAMERA_BOSSAPPEAR&&
 		camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_AFTER_FIRST)
-	ParticleEmitter::GetInstance()->FlontDrawAll();
+	//ParticleEmitter::GetInstance()->FlontDrawAll();
+	if (camerawork->GetCameraState() != CameraState::CAMERA_BOSSAPPEAR &&
+		camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_AFTER_FIRST) {
+
+		ParticleEmitter::GetInstance()->FlontDrawAll();
+	}
 
 
-	ParticleEmitter::GetInstance()->DeathDrawAll();
+	
+	//ParticleEmitter::GetInstance()->DeathDrawAll();
 
 	if(camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_BEFORE &&camerawork->GetCameraState()!=CameraState::CAMERA_BOSSDEAD_AFTER_FIRST)
 	ui->Draw();
+
+	//完全に前に書くスプライト
+	if (_Tscne != TextScene::ENDTEXT){
+		IKESprite::PreDraw();
+		messagewindow_->Draw();
+		IKESprite::PostDraw();
+
+		if (messagewindow_->DisplayCheck()) {
+				text_->SpriteDraw(dxCommon);
+			}
+	}
+
+
 	sceneChanger_->Draw();	//完全に前に書くスプライト
 	//if (camerawork->GetAppearType() == APPEAR_SEVEN || camerawork->GetAppearType() == APPEAR_EIGHT) {
 	if (_Tscne != TextScene::ENDTEXT)
-	text_->SpriteDraw(dxCommon);
+	
 	//}
-	//IKESprite::PreDraw();
+	IKESprite::PreDraw();
 	//blackwindow->Draw();
 	camerawork->feedDraw();
+	IKESprite::PostDraw();
 }
 //IMGuiの描画
 void FirstStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	//Player::GetInstance()->ImGuiDraw();
 	//enemymanager->ImGuiDraw();
 	//loadobj->ImGuiDraw();
+	//SceneSave::GetInstance()->ImGuiDraw();
 }
 
 

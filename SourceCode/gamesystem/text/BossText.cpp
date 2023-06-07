@@ -38,3 +38,7 @@ void BossText::Display()
 	window_->SetPosition(window_pos);
 	window_->SetSize(window_size);
 }
+
+void BossText::ChangeColor(int row, const XMVECTOR& color) {
+	text_->SetOnceColor(row, color);
+}

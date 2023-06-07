@@ -15,8 +15,8 @@ bool GhostBullet::Initialize() {
 	m_Scale = { 1.0f,1.0f,1.0f };
 	m_Color = { 0.0f,0.0f,0.0f,1.0f };
 	//CSVÇ©ÇÁì«Ç›çûÇ›
-	m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet/bullet.csv", "speed2")));
-	m_TargetTimer = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet/bullet.csv", "Timer")));
+	m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet/bullet.csv", "GhostSpeed")));
+	m_TargetTimer = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet/bullet.csv", "GhostLimit")));
 	return true;
 }
 //ImGuiï`âÊ
@@ -55,11 +55,15 @@ void GhostBullet::VanishBullet() {
 			m_Frame += l_AddFrame;
 		}
 		else {
-			m_Frame = {};
-			m_Alive = false;
+			m_Frame = 1.0f;
+			//àÍíËéûä‘óßÇ¬Ç∆è¡Ç¶ÇÈ
+			if (Helper::GetInstance()->CheckMin(m_Timer, m_TargetTimer, 1)) {
+				m_Timer = 0;
+				m_Alive = false;
+				m_Frame = {};
+			}
 		}
 
-		m_Color.w = Ease(In, Cubic, m_Frame, 1.0f, 0.0f);
 		m_Scale = {
 			Ease(In, Cubic, m_Frame, 1.0f, 2.0f),
 			Ease(In, Cubic, m_Frame, 1.0f, 2.0f),

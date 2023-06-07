@@ -74,12 +74,13 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	CreateWord(AISATU, L"おはよう", L"こんにちは", L"こんばんは");
 
 
-	CreateWord(Name_First::VIEWBOSS, L"ちえよしもどってこい!!!",L"そんなにうごきまわったらしんでしまうぞ!!",L"");
-	CreateWord(Name_First::SPEAKPLAYER1, L"すてぽん。。ちえよしはもう。。");
-	CreateWord(Name_First::SPEALPLAYER2, L"ちえよしは、とっしんすることしかあたまにないんじゃろう。。。",L"くっ。。。にんげんときにはあきらめもたいせつか。。。",L"ちえよし。。しんでくれ!!!");
-	CreateWord(Name_First::VIEWBOSS, L"ちちうえ!ほんがうごきまわってるでござる!",L"どうするでござるか!?",L"しめるでござるか!?");
-	CreateWord(Name_First::SPEAKPLAYER1, L"。。。。。。。");
-	CreateWord(Name_First::SPEALPLAYER2, L"あれはわしらにはすくえぬものじゃ",L"ぜんりょくでころすのじゃ");
+	CreateWord(Name_First::VIEWBOSS, L"あれは..！",L"ちえよしなのか？",L"");
+	CreateWord(Name_First::SPEAKPLAYER1, L"あれがストポンの友達なの？");
+	CreateWord(Name_First::SPEALPLAYER2, L"そうだ..悪霊になって",L"本に憑りついちまったみたいだ",L"コトコ!ちえよしを倒してもとに戻してくれ！");
+	CreateWord(Name_First::SPEALPLAYER3, L"わかった！ちえよしくんを倒して",L"私の友達になってもらう！");
+	//CreateWord(Name_First::VIEWBOSS, L"ちちうえ!ほんがうごきまわってるでござる!",L"どうするでござるか!?",L"しめるでござるか!?");
+	//CreateWord(Name_First::SPEAKPLAYER1, L"。。。。。。。");
+	//CreateWord(Name_First::SPEALPLAYER2, L"あれはわしらにはすくえぬものじゃ",L"ぜんりょくでころすのじゃ");
 
 	SecondCreateWord(ANGER_TALK, L"うぉおおおおい!!!", L"いったいオマエは!!!!!!", L"ナニしにキタ!?!?!?!?!?!?");
 	SecondCreateWord(ANGER_TALK2, L"もしかして", L"おれにたいして", L"ケンカをうりにきたのか!?");

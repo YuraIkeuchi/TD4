@@ -17,6 +17,7 @@ public:
 
 	bool GetClearFlag(SeceneCategory sceneCategory);
 
+	void ImGuiDraw();
 private:
 	static bool m_TutorialStageClear;
 	static bool m_FirstStageClear;

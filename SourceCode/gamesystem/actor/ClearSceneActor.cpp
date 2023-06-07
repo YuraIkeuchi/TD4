@@ -22,14 +22,14 @@ void ClearSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	} else {
 		ClearSprite = IKESprite::Create(ImageManager::MASTERCLEAR, { 0.0f,0.0f });
 	}
-	
+	ClearSprite->SetColor({1.2f,1.2f,1.2f,1.0f});
 	ClearSprite->SetSize({ 1280.0f,720.0f });
 
 }
 //XV
 void ClearSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
-	if (input->TriggerButton(input->B)) {
+	if (input->TriggerButton(input->B)&&!sceneChanger_->GetEasingStart()) {
 		sceneChanger_->ChangeStart();
 		if (!SceneSave::GetInstance()->GetClearFlag(kSecondStage)) {
 			str = "SECONDSTAGE";
@@ -37,7 +37,7 @@ void ClearSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 			SceneSave::GetInstance()->AllReset();
 			str = "TITLE";
 		}
-		//Audio::GetInstance()->StopWave(3);
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Clear.wav", VolumManager::GetInstance()->GetSEVolum()+3.0f);
 	}
 	sceneChanger_->ChangeScene(str, SceneChanger::Reverse);
 	sceneChanger_->Update();

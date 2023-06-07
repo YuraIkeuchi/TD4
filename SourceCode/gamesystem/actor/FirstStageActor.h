@@ -5,6 +5,7 @@
 #include "LoadStageObj.h"
 #include"Font.h"
 #include"Feed.h"
+#include "MessageWindow.h"
 #include"Spline.h"
 
 /// タイトルシーン
@@ -26,13 +27,12 @@ public:
 private:
 	float Rads;
 	int textT;
+	unique_ptr<MessageWindow> messagewindow_;
 	unique_ptr<BossText> text_;
 	unique_ptr<IKESprite> backScreen_ = nullptr;
 
 	Spline* spline;
 	vector<XMFLOAT3> pointsList;
-	void SetPoints();
-
 
 	enum class TextScene
 	{
@@ -40,6 +40,7 @@ private:
 		TIEYOSHI_EXP,
 		STOPON_SPK,
 		KILL_TIEYOSHI,
+		LET_GO,
 		ENDTEXT
 	}_Tscne;
 

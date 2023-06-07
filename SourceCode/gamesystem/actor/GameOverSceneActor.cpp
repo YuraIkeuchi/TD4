@@ -24,18 +24,25 @@ void GameOverSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 //XV
 void GameOverSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
-	if (input->TriggerButton(input->B)) {
+	if (input->TriggerButton(input->B) && !sceneChanger_->GetEasingStart()) {
 		sceneChanger_->ChangeStart();
 		if (SceneSave::GetInstance()->GetClearFlag(kFirstStage)) {
-			str = "SECONDSTAGE";
+			if (SceneSave::GetInstance()->GetClearFlag(kSecondStage)) {
+				
+			} else {
+				str = "SECONDSTAGE";
+				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Retry.wav", VolumManager::GetInstance()->GetSEVolum());
+			}
 		} else {
 			str = "FIRSTSTAGE";
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Retry.wav", VolumManager::GetInstance()->GetSEVolum());
 		}
 		//Audio::GetInstance()->StopWave(3);
 	}
-	if (input->TriggerButton(input->A)) {
+	if (input->TriggerButton(input->A) && !sceneChanger_->GetEasingStart()) {
 		sceneChanger_->ChangeStart();
 		str = "TITLE";
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Over.wav", VolumManager::GetInstance()->GetSEVolum());
 		//Audio::GetInstance()->StopWave(3);
 	}
 
@@ -87,6 +94,7 @@ void GameOverSceneActor::BackDraw(DirectXCommon* dxCommon)
 }
 //ImGui•`‰æ
 void GameOverSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
+	//SceneSave::GetInstance()->ImGuiDraw();
 }
 //‰ð•ú
 void GameOverSceneActor::Finalize() {

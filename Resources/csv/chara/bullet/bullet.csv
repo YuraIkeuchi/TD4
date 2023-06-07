@@ -1,6 +1,15 @@
-speed1,10
-speed2,7
-speed3,20
-speed4,40
-Timer,35
+///攻撃の弾
+//攻撃弾のスピード
+AttackSpeed,7
+//攻撃弾の生存時間
+AttackLimit,35
 
+///言魂
+//スピード
+GhostSpeed,7
+//生存時間
+GhostLimit,10
+
+//これは気にしないで
+Stopon,40
+ViewSpeed,20,

@@ -31,7 +31,7 @@ private:
 		TEXT_LAST,
 		MAINTUTORIAL,
 		COMPLETE,
-	}nowstate_;
+	}nowstate_=state::INTORO;
 
 	static void (TutorialSceneActor::* stateTable[])();
 	void IntroState();
@@ -107,7 +107,7 @@ private:
 	XMFLOAT3 s_targetpos = {};
 	XMFLOAT3 e_targetpos = { 0,0,50.0f };
 
-	XMFLOAT4 girl_color_ = { 1.5f,1.5f,1.5f,1.f };
+	XMFLOAT4 girl_color_ = { 1.2f,1.2f,1.2f,1.f };
 	XMFLOAT4 sutopon_color_ = { 1.f,1.f,1.f,0.f };
 
 	//丸影(ボス)

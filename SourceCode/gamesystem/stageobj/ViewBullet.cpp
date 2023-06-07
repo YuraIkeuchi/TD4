@@ -12,7 +12,7 @@ ViewBullet::ViewBullet() {
 bool ViewBullet::Initialize() {
 	m_Position = { 0.0f,0.0f,0.0f };
 	m_Scale = { 1.0f,1.0f,1.0f };
-	m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet/bullet.csv", "speed3")));
+	m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet/bullet.csv", "ViewSpeed")));
 	m_Alive = false;
 	return true;
 }
