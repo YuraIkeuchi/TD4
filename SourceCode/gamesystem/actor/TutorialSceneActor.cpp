@@ -276,6 +276,7 @@ void TutorialSceneActor::TextClearState() {
 
 	if ((DebugButton() ||
 		conversation==2)) {
+		Player::GetInstance()->SetCanShot(false);
 		nowstate_ = state::SPAWNALLENEMY;
 		s_eyepos = camerawork->GetEye();
 		s_targetpos = camerawork->GetTarget();
@@ -287,12 +288,12 @@ void TutorialSceneActor::SpawnAllEnemyState() {
 	loadobj->TutorialUpdate();
 	Player::GetInstance()->MoveStop(true);
 	Player::GetInstance()->SetCanShot(false);
+	Player::GetInstance()->Update();
 	HungerGauge::GetInstance()->SetIsStop(true);
 	if (MovingCamera(s_eyepos, e_eyepos, s_targetpos, e_targetpos)) {
 		enemymanager->TutorialUpdate(1);
 	}
 	if (Clear(cameraframe >= 1.0f, 50)) {
-		HungerGauge::GetInstance()->SetIsStop(false);
 		s_eyepos = { Player::GetInstance()->GetPosition().x,
 		Player::GetInstance()->GetPosition().y + 50.0f,
 		Player::GetInstance()->GetPosition().z - 20.0f };
@@ -324,6 +325,7 @@ void TutorialSceneActor::TextLastState() {
 		if ((DebugButton() ||
 			conversation==2)
 			) {
+			HungerGauge::GetInstance()->SetIsStop(false);
 			text_->SetConversation(TextManager::NONE);
 			conversation = 0;
 			nowstate_ = state::MAINTUTORIAL;
