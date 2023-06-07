@@ -2,7 +2,7 @@
 //攻撃弾のスピード
 AttackSpeed,7
 //攻撃弾の生存時間
-AttackLimit,35
+AttackLimit,50
 
 ///言魂
 //スピード
