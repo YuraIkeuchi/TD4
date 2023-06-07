@@ -254,19 +254,16 @@ void SecondStageActor::IntroUpdate(DebugCamera* camera) {
 
 	//最後までテキストを見た
 	if (enemymanager->GetEnemyFinishAppear()) {
-		Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum());
 		m_SceneState = SceneState::MainState;
 		camerawork->SetCameraState(CAMERA_NORMAL);
 	}
 
 	//演出スキップ
 	if (Input::GetInstance()->TriggerButton(Input::A)) {
-		Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum());
 		camerawork->SetCameraSkip(true);
 	}
 
 	if (camerawork->GetAppearEndF()) {
-		Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum());
 		m_SceneState = SceneState::MainState;
 		camerawork->SetCameraState(CAMERA_NORMAL);
 		enemymanager->SkipInitialize();
