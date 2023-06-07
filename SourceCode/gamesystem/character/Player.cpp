@@ -253,12 +253,11 @@ XMFLOAT3 Player::MoveVECTOR(XMVECTOR v, float angle)
 }
 //弾の更新
 void Player::Bullet_Management() {
-	if (!m_canShot) { return; }
 	const int l_TargetCount = 1;
 	const int l_Limit = 20;//ショットのチャージ時間
 	/*-----------------------------*/
 	//RB||LBが押されたら弾を撃つ(言霊)
-	if (((Input::GetInstance()->TriggerButton(Input::RB)) || (Input::GetInstance()->TriggerButton(Input::LB))) && (m_InterVal == 0))
+	if (((Input::GetInstance()->TriggerButton(Input::RB)) || (Input::GetInstance()->TriggerButton(Input::LB))) && (m_InterVal == 0)&& m_canShot)
 	{
 		isShotNow = true;
 		if (Input::GetInstance()->TriggerButton(Input::RB)) {
@@ -276,7 +275,7 @@ void Player::Bullet_Management() {
 
 	//攻撃
 	//Bが押されたら弾のチャージ
-	if (Input::GetInstance()->PushButton(Input::B) && m_InterVal == 0 && HungerGauge::GetInstance()->GetCatchCount() >= l_TargetCount)
+	if (Input::GetInstance()->PushButton(Input::B) && m_InterVal == 0 && HungerGauge::GetInstance()->GetCatchCount() >= l_TargetCount && m_canShot)
 	{
 		isShotNow = true;
 		m_ShotTimer++;
@@ -322,10 +321,6 @@ void Player::Bullet_Management() {
 		}
 	}
 
-	if (attackbullets.size()<=0 && ghostbullets.size() <= 0) {
-		isShotNow = false;
-	}
-
 	//弾の削除(言霊)
 	for (int i = 0; i < attackbullets.size(); i++) {
 		if (attackbullets[i] == nullptr) {
@@ -336,6 +331,11 @@ void Player::Bullet_Management() {
 			attackbullets.erase(cbegin(attackbullets) + i);
 		}
 	}
+
+	if (attackbullets.size() <= 0 && ghostbullets.size() <= 0) {
+		isShotNow = false;
+	}
+
 	//弾の更新
 	BulletUpdate(ghostbullets);
 	BulletUpdate(attackbullets);
