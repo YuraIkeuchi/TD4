@@ -16,8 +16,8 @@ void BossText::Initialize(DirectXCommon* dxCommon) {
 void BossText::SelectText(TextManager::Name_Second name) {
 	text_->SetSecondConversation(name);
 }
-void BossText::SelectText(TextManager::Name_First name) {
-	text_->SetConversation(name);
+void BossText::SelectText(TextManager::Name_First name, const XMVECTOR& color) {
+	text_->SetConversation(name,color);
 }
 void BossText::SpriteDraw(DirectXCommon* dxCommon) {
 	IKESprite::PreDraw();
