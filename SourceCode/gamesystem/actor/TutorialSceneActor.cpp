@@ -614,6 +614,10 @@ void TutorialSceneActor::Finalize() {
 //後ろの描画
 void TutorialSceneActor::BackDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
+	BackObj::GetInstance()->Draw(dxCommon);
+	if (nowstate_ != state::INTORO) {
+		ParticleEmitter::GetInstance()->WallDrawAll();
+	}
 	////各クラスの描画
 	Player::GetInstance()->Draw(dxCommon);
 	if (nowstate_ <= state::TEXT_TALK) {
@@ -622,16 +626,14 @@ void TutorialSceneActor::BackDraw(DirectXCommon* dxCommon) {
 	else {
 		loadobj->Draw(dxCommon);
 	}
-	BackObj::GetInstance()->Draw(dxCommon);
+
 	enemymanager->TutorialDraw(dxCommon);
 	IKEObject3d::PostDraw();
 }
 //ポストエフェクトがかからない
 void TutorialSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 	//パーティクル描画
-	if (nowstate_!= state::INTORO) {
-		ParticleEmitter::GetInstance()->FlontDrawAll();
-	}
+	ParticleEmitter::GetInstance()->FlontDrawAll();
 	//完全に前に書くスプライト
 	if (static_cast<int>(nowstate_) % 2 == 0) {
 		IKESprite::PreDraw();
