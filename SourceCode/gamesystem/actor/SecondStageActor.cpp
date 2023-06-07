@@ -129,6 +129,9 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	//パーティクル描画
 	if (!camerawork->GetFeedEnd() && m_SceneState == SceneState::MainState) {
 		ParticleEmitter::GetInstance()->FlontDrawAll();
+		if (!enemymanager->BossDestroy()) {
+			ParticleEmitter::GetInstance()->WallDrawAll();
+		}
 	}
 
 	ParticleEmitter::GetInstance()->DeathDrawAll();
@@ -153,6 +156,7 @@ void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	//camerawork->ImGuiDraw();
 	//enemymanager->ImGuiDraw();
 	//loadobj->ImGuiDraw();
+	//SceneSave::GetInstance()->ImGuiDraw();
 }
 //登場シーン
 void SecondStageActor::IntroUpdate(DebugCamera* camera) {
@@ -196,6 +200,8 @@ void SecondStageActor::IntroUpdate(DebugCamera* camera) {
 		}
 		//選択肢
 		else if (m_AppState == AppState::SELECT_EMO) {
+			text_->ChangeColor(1, { 1.0f,0.0f,0.0f,1.0f });
+			text_->ChangeColor(2, { 0.5f,1.0f,0.1f,1.0f });
 			text_->SelectText(TextManager::SELECT_TALK);
 			if (Input::GetInstance()->TriggerButton(Input::Y)) {
 				enemymanager->DirSet(DIR_ANGER);
@@ -208,6 +214,9 @@ void SecondStageActor::IntroUpdate(DebugCamera* camera) {
 		}
 		//イカリを選んだ場合
 		else if (m_AppState == AppState::EMO_ANGER) {
+			for (int i = 0; i < 3; i++) {
+				text_->ChangeColor(i, { 1.0f,1.0f,1.0f,1.0f });
+			}
 			text_->SelectText(TextManager::SELECT_ANGER);
 			if (Input::GetInstance()->TriggerButton(Input::B)) {
 				m_AppState = AppState::EMO_ANGER2;
@@ -215,10 +224,16 @@ void SecondStageActor::IntroUpdate(DebugCamera* camera) {
 			}
 		}
 		else if (m_AppState == AppState::EMO_ANGER2) {
+			for (int i = 0; i < 3; i++) {
+				text_->ChangeColor(i, { 1.0f,0.0f,0.0f,1.0f });
+			}
 			text_->SelectText(TextManager::SELECT_ANGER2);
 		}
 		//よろこびを選んだ場合
 		else if (m_AppState == AppState::EMO_JOY) {
+			for (int i = 0; i < 3; i++) {
+				text_->ChangeColor(i, { 1.0f,1.0f,1.0f,1.0f });
+			}
 			text_->SelectText(TextManager::SELECT_JOY);
 			if (Input::GetInstance()->TriggerButton(Input::B)) {
 				m_AppState = AppState::EMO_JOY2;
@@ -226,6 +241,9 @@ void SecondStageActor::IntroUpdate(DebugCamera* camera) {
 			}
 		}
 		else if (m_AppState == AppState::EMO_JOY2) {
+			for (int i = 0; i < 3; i++) {
+				text_->ChangeColor(i, { 1.0f,0.0f,0.0f,1.0f });
+			}
 			text_->SelectText(TextManager::SELECT_JOY2);
 		}
 	}

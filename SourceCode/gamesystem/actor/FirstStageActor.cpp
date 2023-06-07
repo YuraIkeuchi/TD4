@@ -254,10 +254,17 @@ void FirstStageActor::BackDraw(DirectXCommon* dxCommon) {
 }
 //ポストエフェクトがかからない
 void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
+
+	
 	//パーティクル描画
-	if (camerawork->GetCameraState() != CameraState::CAMERA_BOSSAPPEAR&&
-		camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_AFTER_FIRST)
-	ParticleEmitter::GetInstance()->FlontDrawAll();
+	if (camerawork->GetCameraState() != CameraState::CAMERA_BOSSAPPEAR &&
+		camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_AFTER_FIRST) {
+
+		ParticleEmitter::GetInstance()->FlontDrawAll();
+		if (camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_BEFORE && camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_AFTER_FIRST) {
+			ParticleEmitter::GetInstance()->WallDrawAll();
+		}
+	}
 
 
 	ParticleEmitter::GetInstance()->DeathDrawAll();
@@ -278,6 +285,7 @@ void FirstStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	//Player::GetInstance()->ImGuiDraw();
 	//enemymanager->ImGuiDraw();
 	//loadobj->ImGuiDraw();
+	//SceneSave::GetInstance()->ImGuiDraw();
 }
 
 

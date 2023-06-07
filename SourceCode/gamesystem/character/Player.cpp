@@ -461,6 +461,7 @@ void Player::isOldPos()
 }
 //プレイヤーのダメージ判定
 void Player::RecvDamage(float Damage) {
+	Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Damage.wav", VolumManager::GetInstance()->GetSEVolum());
 	m_HP -= Damage;
 	m_DamageInterVal = 100;
 	m_Damage = true;

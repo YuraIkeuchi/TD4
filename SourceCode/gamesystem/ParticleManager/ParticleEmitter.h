@@ -34,6 +34,8 @@ public: //メンバ関数
 	void FlontDrawAll();
 
 	void DeathDrawAll();
+	//壁のパーティクルの描画
+	void WallDrawAll();
 	//エフェクト
 	void FireEffect(const int life,const XMFLOAT3& pos,const float startscale, const float endscale,const XMFLOAT4& startcolor,const XMFLOAT4& endcolor);
 	//制御点のエフェクト
@@ -59,6 +61,8 @@ private: //メンバ関数
 private: //メンバ変数
 	//パーティクルマネージャー(丸)
 	unique_ptr<ParticleManager> circleParticle;
+	//パーティクルマネージャー(丸)
+	unique_ptr<ParticleManager> wallParticle;
 	//パーティクルマネージャー(丸)
 	unique_ptr<ParticleManager> deathParticle;
 	//パーティクルマネージャー(ヒール)
