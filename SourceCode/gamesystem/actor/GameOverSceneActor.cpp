@@ -28,12 +28,14 @@ void GameOverSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 		sceneChanger_->ChangeStart();
 		if (SceneSave::GetInstance()->GetClearFlag(kFirstStage)) {
 			if (SceneSave::GetInstance()->GetClearFlag(kSecondStage)) {
-		
+				
 			} else {
 				str = "SECONDSTAGE";
+				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Retry.wav", VolumManager::GetInstance()->GetSEVolum());
 			}
 		} else {
 			str = "FIRSTSTAGE";
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Retry.wav", VolumManager::GetInstance()->GetSEVolum());
 		}
 		//Audio::GetInstance()->StopWave(3);
 	}
