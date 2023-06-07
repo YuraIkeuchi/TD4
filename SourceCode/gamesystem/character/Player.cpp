@@ -33,7 +33,6 @@ bool Player::Initialize()
 	m_TargetInterVal = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player/player.csv", "InterVal")));
 	m_TargetRigidityTime = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player/player.csv", "Rigidity")));
 
-	m_BoundPower = { 0.0f,0.0f };
 	//飢餓ゲージはプレイヤーで管理する
 	HungerGauge::GetInstance()->Initialize();
 
@@ -50,6 +49,9 @@ void Player::InitState(const XMFLOAT3& pos) {
 	m_Rotation = { 0.0f,0.0f,0.0f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_InterVal = 0;
+	m_DamageInterVal = 0;
+
+	m_BoundPower = { 0.0f,0.0f };
 	//初期化ぶち込み
 	Initialize();
 	//移動処理用

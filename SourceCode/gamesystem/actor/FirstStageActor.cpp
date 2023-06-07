@@ -263,7 +263,7 @@ void FirstStageActor::Finalize() {
 //後ろの描画
 void FirstStageActor::BackDraw(DirectXCommon* dxCommon) {
 	IKESprite::PreDraw();
-	//backScreen_->Draw();
+	backScreen_->Draw();
 	IKESprite::PostDraw();
 
 	IKEObject3d::PreDraw();

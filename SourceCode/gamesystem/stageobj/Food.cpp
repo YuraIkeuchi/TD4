@@ -20,7 +20,7 @@ bool Food::Initialize() {
 	m_Position = { float(l_distX(mt)), float(l_distY(mt)),float(l_distZ(mt)) };
 	uniform_int_distribution<int> l_degree(0, 360);
 	m_Degree = float(l_degree(mt));
-	m_Scale = { 0.5f,0.5f,0.5f };
+	m_Scale = { 0.7f,0.7f,0.7f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_LockOn = false;
 	m_Alive = true;
