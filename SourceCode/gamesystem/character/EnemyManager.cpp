@@ -30,7 +30,7 @@ EnemyManager::EnemyManager(const std::string& SceneName) {
 		tutorialenemy[0]->SetUnrival(true);
 		//カメラ追従しつつスポーン
 		for (auto i = 1; i < tutorialenemy.size(); i++) {
-			float posX = -20.0f + (i * 20.f);
+			float posX = -40.0f + (i * 20.f);
 			tutorialenemy[i]->SetPosition({ posX ,5.0f ,50.0f });
 		}
 	} else {
