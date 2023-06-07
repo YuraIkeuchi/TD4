@@ -888,6 +888,7 @@ void FirstBoss::AppearAction() {
 //ボス撃破シーン
 void FirstBoss::DeadAction_Throw() {
 	m_Scale={1.0f,1.4f,1.0f};
+	m_Color = { 1,1,1,1 };
 	//m_Position = { 0,40,20.f };
 	if (!ResetRota) {
 		m_Rotation.y = 90.f;
@@ -1012,9 +1013,9 @@ void FirstBoss::DeathEffect()
 {
 	
 	float l_AddSize = 3.5f;
-	const float RandScale = 3.0f;
-	float s_scale = 7.9f * l_AddSize;
-	float e_scale = (1.0f + (float)rand() / RAND_MAX * RandScale - RandScale / 2.0f) * l_AddSize;
+	const float RandScale = 5.0f;
+	float s_scale = 13.9f * l_AddSize;
+	float e_scale = (8.0f + (float)rand() / RAND_MAX * RandScale - RandScale / 2.0f) * l_AddSize;
 
 	//色
 	const float RandRed = 2.2f;
