@@ -119,7 +119,9 @@ void TutorialEnemy::WaitUpdate() {
 		rot = m_Rotation.y;
 		s_pos = m_Position;
 		e_pos = { m_Position.x + sinf(RottoPlayer) * -10.0f,0.f, m_Position.z + cosf(RottoPlayer) * -10.0f };
-		commandState = CommandState::JumpState;
+		if (!isWeak) {
+			commandState = CommandState::JumpState;
+		}
 		commandTimer = 0.0f;
 	}
 }

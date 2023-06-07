@@ -62,6 +62,7 @@ void EnemyManager::DeadUpdate() {
 void EnemyManager::TutorialUpdate(int pattern) {
 	if (pattern == 0) {
 		tutorialenemy[0]->Update();
+		tutorialenemy[0]->SetIsWeak(true);
 	} else if (pattern == 1) {
 		for (auto i = 0; i < tutorialEnemyMax; i++) {
 			tutorialenemy[i]->Update();

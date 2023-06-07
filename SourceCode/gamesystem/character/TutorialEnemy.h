@@ -30,6 +30,7 @@ private:
 
 	bool Death();
 
+
 private:
 
 	void GetRotation2Player();
@@ -48,7 +49,6 @@ private:
 	float waitTimer = 0.0f;
 	float commandTimer = 0.0f;
 	float rot = 0.0f;
-
 	int jumpCount = 1;
 	const int kJumpCountMax = 3;
 
