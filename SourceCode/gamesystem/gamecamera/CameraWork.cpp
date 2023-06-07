@@ -104,6 +104,8 @@ void CameraWork::SetBossDead_Before()
 {
 	DeathTimer++;
 	if (DeathTimer == 1) {
+
+		RadEffect = 20;
 		m_eyePos.x = boss->GetPosition().x - 10.0f;
 		m_eyePos.z = boss->GetPosition().z - 20.f;
 		m_eyePos.y = 20.f;
@@ -137,7 +139,6 @@ void CameraWork::SetBossDead_Before()
 			DeathTimer = 0;
 		}
 	}
-	RadEffect = 10;
 
 	
 	m_targetPos.x = boss->GetPosition().x;
@@ -148,7 +149,7 @@ void CameraWork::SetBossDead_Before()
 //フェード後の撃破アクション(1ボス)
 void CameraWork::SetBossDead_AfterFirst()
 {
-	//RadEffect = 20;
+	RadEffect = 0;
 		m_eyePos = {
 		boss->GetPosition().x,
 		Player::GetInstance()->GetPosition().y+5.f ,

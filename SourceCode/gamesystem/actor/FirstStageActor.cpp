@@ -15,7 +15,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/BGM_boss.wav");
 	Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum()+0.5f);
 	//ポストエフェクト
-	PlayPostEffect = false;
+	PlayPostEffect = true;
 
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
@@ -134,6 +134,10 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	if (enemymanager->BossDestroy()) {
 		Audio::GetInstance()->StopWave(1);
 		SceneSave::GetInstance()->SetClearFlag(kFirstStage, true);
+		if(camerawork->GetCameraState()==CameraState::CAMERA_BOSSDEAD_AFTER_FIRST)
+		{
+			PlayPostEffect = false;
+		}
 	}
 	
 	if (camerawork->GetAppearEndF()) {
@@ -272,6 +276,7 @@ void FirstStageActor::BackDraw(DirectXCommon* dxCommon) {
 		}
 	}
 
+	ParticleEmitter::GetInstance()->DeathDrawAll();
 	////各クラスの描画
 	Player::GetInstance()->Draw(dxCommon);
 	loadobj->Draw(dxCommon);
@@ -318,9 +323,10 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	if (_Tscne != TextScene::ENDTEXT)
 	
 	//}
-	//IKESprite::PreDraw();
+	IKESprite::PreDraw();
 	//blackwindow->Draw();
 	camerawork->feedDraw();
+	IKESprite::PostDraw();
 }
 //IMGuiの描画
 void FirstStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
