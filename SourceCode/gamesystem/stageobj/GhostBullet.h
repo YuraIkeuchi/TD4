@@ -26,4 +26,5 @@ private:
 
 private:
 	float m_Frame = 0.0f;
+	float m_AddFrame = {};
 };
