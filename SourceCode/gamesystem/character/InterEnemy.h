@@ -50,9 +50,13 @@ protected: //Ã“Iƒƒ“ƒo•Ï”
 	bool ShotF = false;
 	int ShotCount = 0;
 	bool DeathEffectF = false;
+	bool isWeak = false;
+
 public:
 	void SetShotF(bool f) { ShotF = f; }
 	void SetIsStop(bool isStop) { this->isStop = isStop; }
+	void SetisWeak(bool f) { isWeak = f; }
+	void SetIsWeak(bool isStop) { this->isWeak = isStop; }
 
 	bool GetShotF() { return ShotF; }
 	int GetShotCount() { return ShotCount; }
