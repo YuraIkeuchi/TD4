@@ -45,6 +45,9 @@ void TutorialEnemy::Action() {
 	OnCollision();
 	ColPlayer();
 	Particle();
+	//リミット制限
+	Helper::GetInstance()->Clamp(m_Position.x, -55.0f, 65.0f);
+	Helper::GetInstance()->Clamp(m_Position.z, -60.0f, 60.0f);
 }
 //描画
 void TutorialEnemy::Draw(DirectXCommon* dxCommon) {
