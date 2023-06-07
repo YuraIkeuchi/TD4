@@ -13,7 +13,6 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	//共通の初期化
 	BaseInitialize(dxCommon);
 	//オーディオ
-	Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum());
 	Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum() + 0.5f);
 
 	//ポストエフェクト
@@ -262,6 +261,7 @@ void SecondStageActor::IntroUpdate(DebugCamera* camera) {
 
 	//演出スキップ
 	if (Input::GetInstance()->TriggerButton(Input::A)) {
+		Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum());
 		camerawork->SetCameraSkip(true);
 	}
 
