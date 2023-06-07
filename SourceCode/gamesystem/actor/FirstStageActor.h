@@ -40,6 +40,7 @@ private:
 		TIEYOSHI_EXP,
 		STOPON_SPK,
 		KILL_TIEYOSHI,
+		LET_GO,
 		ENDTEXT
 	}_Tscne;
 

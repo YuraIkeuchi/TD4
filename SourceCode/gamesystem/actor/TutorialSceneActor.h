@@ -31,7 +31,7 @@ private:
 		TEXT_LAST,
 		MAINTUTORIAL,
 		COMPLETE,
-	}nowstate_;
+	}nowstate_=state::INTORO;
 
 	static void (TutorialSceneActor::* stateTable[])();
 	void IntroState();
