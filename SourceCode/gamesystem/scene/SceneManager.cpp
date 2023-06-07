@@ -56,7 +56,6 @@ void SceneManager::Draw(DirectXCommon* dxCommon) {
 
 void SceneManager::ChangeScene(const std::string& sceneName) {
 	assert(sceneFactory_);
-	assert(nextScene_ == nullptr);
 	//次のシーン生成
 	nextScene_ = sceneFactory_->CreateScene(sceneName);
 }
