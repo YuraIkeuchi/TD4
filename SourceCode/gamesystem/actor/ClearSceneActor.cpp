@@ -37,7 +37,7 @@ void ClearSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 			SceneSave::GetInstance()->AllReset();
 			str = "TITLE";
 		}
-		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Clear.wav", VolumManager::GetInstance()->GetSEVolum()+3.0f);
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Clear.wav", VolumManager::GetInstance()->GetSEVolum()+1.5f);
 	}
 	sceneChanger_->ChangeScene(str, SceneChanger::Reverse);
 	sceneChanger_->Update();
