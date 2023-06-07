@@ -254,7 +254,7 @@ void SecondBoss::Stamp() {
 	//int l_RandAct;
 	if (m_PressType == PRESS_START) {			//上に行く
 		l_AddFrame = 0.01f;
-		m_AfterPos = { m_Position.x,60.0f,m_Position.z };	//真上に飛ぶ
+		m_AfterPos = { m_Position.x,75.0f,m_Position.z };	//真上に飛ぶ
 		if (m_Frame < m_FrameMax) {
 			m_Frame += 0.01f;
 		}
@@ -361,7 +361,7 @@ void SecondBoss::RandomStamp() {
 	const int l_RandMin = -20;
 	if (m_RandomType == RANDOM_START) {			//スタート
 		l_AddFrame = 0.01f;
-		m_AfterPos = { m_Position.x,60.0f,m_Position.z };	//真上に飛ぶ
+		m_AfterPos = { m_Position.x,75.0f,m_Position.z };	//真上に飛ぶ
 		if (m_Frame < m_FrameMax) {
 			m_Frame += 0.01f;
 		}
