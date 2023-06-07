@@ -71,7 +71,7 @@ bool Ghost::BulletCollision() {
 	if (Player::GetInstance()->BulletCollide({ m_Position.x,0.0f,m_Position.z }, m_Object->GetMatrot(), m_OBBScale, m_Catch) && (m_Alive)) {
 		m_Catch = true;
 		if (Player::GetInstance()->GetBulletType() == BULLET_FORROW) {
-			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Follower.wav", VolumManager::GetInstance()->GetSEVolum());
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Follower.wav", VolumManager::GetInstance()->GetSEVolum()/2.5f);
 			HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() + l_AddHungerMax);
 			HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() + l_AddHungerMax);
 			HungerGauge::GetInstance()->SetCatchCount(HungerGauge::GetInstance()->GetCatchCount() + 1);
@@ -82,7 +82,7 @@ bool Ghost::BulletCollision() {
 		}
 		else {
 			_charaState = CharaState::STATE_SEARCH;
-			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Searcher.wav", VolumManager::GetInstance()->GetSEVolum());
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Searcher.wav", VolumManager::GetInstance()->GetSEVolum() / 2.5f);
 		}
 		return true;
 	}

@@ -24,7 +24,7 @@ void GameOverSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 //XV
 void GameOverSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
-	if (input->TriggerButton(input->B)) {
+	if (input->TriggerButton(input->B) && !sceneChanger_->GetEasingStart()) {
 		sceneChanger_->ChangeStart();
 		if (SceneSave::GetInstance()->GetClearFlag(kFirstStage)) {
 			if (SceneSave::GetInstance()->GetClearFlag(kSecondStage)) {
@@ -39,9 +39,10 @@ void GameOverSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 		}
 		//Audio::GetInstance()->StopWave(3);
 	}
-	if (input->TriggerButton(input->A)) {
+	if (input->TriggerButton(input->A) && !sceneChanger_->GetEasingStart()) {
 		sceneChanger_->ChangeStart();
 		str = "TITLE";
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Over.wav", VolumManager::GetInstance()->GetSEVolum());
 		//Audio::GetInstance()->StopWave(3);
 	}
 

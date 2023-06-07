@@ -407,6 +407,7 @@ void TutorialSceneActor::CompleteState() {
 		conversation == 12) {
 		sceneChanger_->ChangeStart();
 		SceneSave::GetInstance()->SetClearFlag(kTutorialStage,true);
+		Audio::GetInstance()->StopWave(3);
 	}
 	sceneChanger_->ChangeScene("FIRSTSTAGE", SceneChanger::NonReverse);
 
@@ -483,7 +484,8 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	//共通の初期化
 	BaseInitialize(dxCommon);
 	//オーディオ
-	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/BGM_boss.wav");
+	Audio::GetInstance()->LoadSound(2, "Resources/Sound/BGM/BGM_tutorial.wav");
+	//Audio::GetInstance()->LoopWave(2, VolumManager::GetInstance()->GetBGMVolum() + 0.5f);
 	//ポストエフェクト
 	PlayPostEffect = false;
 	//パーティクル全削除
@@ -554,11 +556,6 @@ void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	else {
 		lightgroup->SetCircleShadowActive(1, false);
 	}
-
-	if (PlayerDestroy()) {
-		SceneManager::GetInstance()->ChangeScene("TITLE");
-	}
-
 	XMFLOAT2 pos[3] = { kFirstRowPos,kSecondRowPos,kThirdRowPos };
 	XMFLOAT3 color[3] = { {1,1,1},{1,1,1},{1,1,1} };
 
