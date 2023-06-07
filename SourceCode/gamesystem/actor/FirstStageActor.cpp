@@ -85,7 +85,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	else if(_Tscne == TextScene::TIEYOSHI_EXP)
 	{
 		sutopon_color_ = { 0.50f,0.50f,0.50f,0.50f };
-		girl_color_ = { 1.f,1.f,1.f,1.f };
+		girl_color_ = { 1.2f,1.2f,1.2f,1.f };
 
 		textT++;
 		text_->SelectText(TextManager::Name_First::SPEAKPLAYER1);
@@ -111,6 +111,8 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 
 	else if (_Tscne == TextScene::LET_GO)
 	{
+		sutopon_color_ = { 0.50f,0.50f,0.50f,0.50f };
+		girl_color_ = { 1.2f,1.2f,1.2f,1.f };
 		textT++;
 		text_->SelectText(TextManager::Name_First::SPEALPLAYER3);
 		if (Input::GetInstance()->TriggerButton(Input::B)|| textT > 4 * IntervalTextC)
