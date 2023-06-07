@@ -188,7 +188,6 @@ void ParticleEmitter::DeathEffectBoss(const int life, const XMFLOAT3& pos, const
 				vel.y = ((float)rand() / RAND_MAX * RandVel - RandVel / 2.0f) * size;
 				vel.z = ((float)rand() / RAND_MAX * RandVel - RandVel / 2.0f) * size;
 
-
 				//追加
 				BossDeadParticle->Add(life, l_pos, vel, {}, startscale, endscale, startcolor, endcolor, {});
 			}

@@ -98,7 +98,7 @@ public:
 
 	void NoneText();
 
-	void SetConversation(Name_First name = VIEWBOSS);
+	void SetConversation(Name_First name = VIEWBOSS, const XMVECTOR& color = { 1.f,1.f,1.f,1.f });
 
 	void SetSecondConversation(Name_Second name = ANGER_TALK);
 

@@ -29,7 +29,7 @@ public:
 	void Display();
 	//メッセージ選択
 	void SelectText(TextManager::Name_Second name);
-	void SelectText(TextManager::Name_First name);
+	void SelectText(TextManager::Name_First name,const XMVECTOR& color={1.f,1.f,1.f,1.f});
 	void ChangeColor(int row, const XMVECTOR& color);
 public:
 	void SetTextState(const int TextState) { m_TextState = TextState; }
