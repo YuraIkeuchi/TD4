@@ -9,7 +9,7 @@ const XMFLOAT2 kFirstRowPos{ 5.f,0.f };
 const XMFLOAT2 kSecondRowPos{ 5.f,-40.f };
 const XMFLOAT2 kThirdRowPos{ 5.f, -80.f };
 const XMFLOAT4 kHalfClear{ 0.5f,0.5f,0.5f,0.5f };
-const XMFLOAT4 kOriginalGirlColor= { 1.5f,1.5f,1.5f,1.f };
+const XMFLOAT4 kOriginalGirlColor= { 1.2f,1.2f,1.2f,1.f };
 const XMFLOAT4 kOriginalSutoponColor= { 1.f,1.f,1.f,1.f };
 
 bool TutorialSceneActor::isDebug = false;

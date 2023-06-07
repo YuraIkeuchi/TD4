@@ -29,6 +29,7 @@ void InterEnemy::OnCollision()
 		if (_bullet->GetAlive()) {
 			if (Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, 1.f, m_Position.x, m_Position.z, radius))
 			{
+				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Attack_Normal.wav", VolumManager::GetInstance()->GetSEVolum());
 				//�̗�
 				HP--;
 				if (HP <= 0)
