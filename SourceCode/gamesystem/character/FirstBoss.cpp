@@ -127,7 +127,7 @@ void FirstBoss::Action() {
 		}
 		/*^^^^^^^^^^^^^^^^^^^*/
 
-		if (!SummonF) {
+		if (!SummobnStop) {
 			_normal.ColPlayer(m_Position);
 		}
 

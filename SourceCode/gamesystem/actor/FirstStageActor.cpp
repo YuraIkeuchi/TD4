@@ -206,8 +206,10 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		}
 	}
 	if (PlayerDestroy()) {
+		std::string str = "GAMEOVER";
+		Audio::GetInstance()->StopWave(1);
 		sceneChanger_->ChangeStart();
-		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::Reverse);
+		sceneChanger_->ChangeScene(str, SceneChanger::Reverse);
 	}
 
 	XMFLOAT3 Position = enemymanager->GetBoss()->GetPosition();
