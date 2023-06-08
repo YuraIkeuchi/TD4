@@ -15,7 +15,7 @@
 class TutorialSceneActor : public BaseActor {
 private:
 
-	enum class state {
+	enum states {
 		INTORO = 0,
 		MOVE,
 		TEXT_TALK,
@@ -31,7 +31,7 @@ private:
 		TEXT_LAST,
 		MAINTUTORIAL,
 		COMPLETE,
-	}nowstate_=state::INTORO;
+	}nowstate_=states::INTORO;
 
 	static void (TutorialSceneActor::* stateTable[])();
 	void IntroState();

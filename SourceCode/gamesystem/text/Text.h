@@ -9,7 +9,7 @@ using namespace std;
 class Text
 {
 private:
-	enum class state {
+	enum class states {
 		kStartTalk=0,
 		kStart
 	};

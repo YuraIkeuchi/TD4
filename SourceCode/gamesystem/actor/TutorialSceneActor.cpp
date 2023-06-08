@@ -16,7 +16,7 @@ bool TutorialSceneActor::isDebug = false;
 TextManager* instance = TextManager::GetInstance();
 
 //状態遷移
-/*stateの並び順に合わせる*/
+/*statesの並び順に合わせる*/
 void (TutorialSceneActor::* TutorialSceneActor::stateTable[])() = {
 	&TutorialSceneActor::IntroState,//
 	&TutorialSceneActor::MoveState,//
@@ -42,7 +42,7 @@ void TutorialSceneActor::IntroState() {
 		input->TriggerButton(Input::B)) {
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
 		text_->NoneText();
-		nowstate_ = state::MOVE;
+		nowstate_ = states::MOVE;
 	}
 }
 void TutorialSceneActor::MoveState() {
@@ -69,10 +69,10 @@ void TutorialSceneActor::MoveState() {
 	XMFLOAT3 pos = Player::GetInstance()->GetPosition();
 	XMFLOAT3 Spos = sutepon->GetPosition();
 	if (Collision::CircleCollision(Spos.x, Spos.z, 5.f, pos.x, pos.z, 1.f)) {
-		nowstate_ = state::TEXT_TALK;
+		nowstate_ = states::TEXT_TALK;
 	}
 	if (input->TriggerKey(DIK_O)) {
-		nowstate_ = state::TEXT_TALK;
+		nowstate_ = states::TEXT_TALK;
 		text_->SetConversation(TextManager::NONE);
 	}
 }
@@ -113,7 +113,7 @@ void TutorialSceneActor::TextTalkState() {
 		text_->SetConversation(TextManager::NONE);
 		sutepon->SetPosition({ 0,0,15.0f });
 		conversation = 0;
-		nowstate_ = state::SPAWNENEMY;
+		nowstate_ = states::SPAWNENEMY;
 		girl_color_ = kHalfClear;
 		sutopon_color_ = kOriginalSutoponColor;
 	}
@@ -126,7 +126,7 @@ void TutorialSceneActor::SpawnEnemyState() {
 	if (DebugButton() ||
 		Clear(Collision::CircleCollision(plaPos.x, plaPos.z, 20.0f, enePos.x, enePos.z, 1.0f), 0)) {
 		waitTimer = 0;
-		nowstate_ = state::TEXT_CATCHFOLLOW;
+		nowstate_ = states::TEXT_CATCHFOLLOW;
 	}
 
 }
@@ -154,7 +154,7 @@ void TutorialSceneActor::TextCatchFollowState() {
 	if (DebugButton() ||
 		conversation == 3) {
 		Player::GetInstance()->SetCanShot(true);
-		nowstate_ = state::CATCHFOLLOW;
+		nowstate_ = states::CATCHFOLLOW;
 		text_->SetConversation(TextManager::NONE);
 		conversation = 0;
 	}
@@ -169,7 +169,7 @@ void TutorialSceneActor::CatchFollowState() {
 	if (DebugButton() ||
 		Clear(HungerGauge::GetInstance()->GetCatchCount() >= 1, 50)) {
 		waitTimer = 0;
-		nowstate_ = state::TEXT_SHOT;
+		nowstate_ = states::TEXT_SHOT;
 		text_->SetConversation(TextManager::NONE);
 	}
 
@@ -191,7 +191,7 @@ void TutorialSceneActor::TextShotState() {
 
 	if (DebugButton() ||
 		conversation == 1) {
-		nowstate_ = state::SHOT;
+		nowstate_ = states::SHOT;
 		text_->SetConversation(TextManager::NONE);
 		conversation = 0;
 	}
@@ -204,7 +204,7 @@ void TutorialSceneActor::ShotState() {
 	if (DebugButton() ||
 		Clear(!firstEnemy->GetisAlive(), 45)) {
 		waitTimer = 0;
-		nowstate_ = state::TEXT_CATCHSEACH;
+		nowstate_ = states::TEXT_CATCHSEACH;
 		text_->SetConversation(TextManager::NONE);
 	}
 }
@@ -244,7 +244,7 @@ void TutorialSceneActor::TextCatchSeachState() {
 	if (DebugButton() ||
 		conversation == 6) {
 		HungerGauge::GetInstance()->ResetFirstCarry();
-		nowstate_ = state::CATCHSEACH;
+		nowstate_ = states::CATCHSEACH;
 		text_->SetConversation(TextManager::NONE);
 		conversation = 0;
 	}
@@ -259,7 +259,7 @@ void TutorialSceneActor::CatchSeachState() {
 		Clear(HungerGauge::GetInstance()->GetFirstCarry(), 30))
 		&& !Player::GetInstance()->GetIsShotNow()) {
 		waitTimer = 0;
-		nowstate_ = state::TEXT_CLEAR;
+		nowstate_ = states::TEXT_CLEAR;
 		text_->SetConversation(TextManager::NONE);
 	}
 }
@@ -283,7 +283,7 @@ void TutorialSceneActor::TextClearState() {
 	if ((DebugButton() ||
 		conversation==2)) {
 		Player::GetInstance()->SetCanShot(false);
-		nowstate_ = state::SPAWNALLENEMY;
+		nowstate_ = states::SPAWNALLENEMY;
 		s_eyepos = camerawork->GetEye();
 		s_targetpos = camerawork->GetTarget();
 		text_->SetConversation(TextManager::NONE);
@@ -305,7 +305,7 @@ void TutorialSceneActor::SpawnAllEnemyState() {
 		Player::GetInstance()->GetPosition().z - 20.0f };
 		s_targetpos.x = Player::GetInstance()->GetPosition().x;
 		s_targetpos.z = Player::GetInstance()->GetPosition().z;
-		nowstate_ = state::TEXT_LAST;
+		nowstate_ = states::TEXT_LAST;
 		cameraframe = 0.0f;
 	}
 }
@@ -335,7 +335,7 @@ void TutorialSceneActor::TextLastState() {
 			HungerGauge::GetInstance()->SetIsStop(false);
 			text_->SetConversation(TextManager::NONE);
 			conversation = 0;
-			nowstate_ = state::MAINTUTORIAL;
+			nowstate_ = states::MAINTUTORIAL;
 			Player::GetInstance()->SetCanShot(true);
 			Player::GetInstance()->MoveStop(false);
 		}
@@ -347,7 +347,7 @@ void TutorialSceneActor::MainTutorialState() {
 	enemymanager->TutorialUpdate(1);
 	if (DebugButton() ||
 		Clear(enemymanager->AllDeadEnemy(), 60)) {
-		nowstate_ = state::COMPLETE;
+		nowstate_ = states::COMPLETE;
 	}
 }
 void TutorialSceneActor::CompleteState() {
@@ -468,7 +468,7 @@ bool TutorialSceneActor::MovingCamera(const XMFLOAT3& s_eye, const XMFLOAT3& e_e
 	}
 }
 void TutorialSceneActor::CameraUpdate(DebugCamera* camera) {
-	if (!(nowstate_ == state::SPAWNALLENEMY || nowstate_ == state::TEXT_LAST)) {
+	if (!(nowstate_ == states::SPAWNALLENEMY || nowstate_ == states::TEXT_LAST)) {
 		camerawork->SetCameraState(CAMERA_NORMAL);
 	}
 	else {
@@ -558,7 +558,7 @@ void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	lightgroup->SetCircleShadowCasterPos(1, XMFLOAT3({ sutepon->GetPosition().x, 	sutepon->GetPosition().y, 	sutepon->GetPosition().z }));
 	lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
 	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
-	if (nowstate_ == state::MOVE) {
+	if (nowstate_ == states::MOVE) {
 		lightgroup->SetCircleShadowActive(0, true);
 		lightgroup->SetCircleShadowActive(1, true);
 	}
@@ -572,13 +572,15 @@ void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 	VolumManager::GetInstance()->Update();
 	sceneChanger_->Update();
-	//状態移行(stateに合わせる)
-	(this->*stateTable[static_cast<size_t>(nowstate_)])();
+	//状態移行(statesに合わせる)
+	(this->*stateTable[static_cast<int>(nowstate_)])();
+
 	//各クラス更新
 	if (static_cast<int>(nowstate_) % 2 == 1) {
 		ui->Update();
 		Player::GetInstance()->Update();
 	}
+
 	ParticleEmitter::GetInstance()->Update();
 	BackObj::GetInstance()->Update();
 	CameraUpdate(camera);
@@ -617,12 +619,12 @@ void TutorialSceneActor::Finalize() {
 void TutorialSceneActor::BackDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
 	BackObj::GetInstance()->Draw(dxCommon);
-	if (nowstate_ != state::INTORO) {
+	if (nowstate_ != states::INTORO) {
 		ParticleEmitter::GetInstance()->WallDrawAll();
 	}
 	////各クラスの描画
 	Player::GetInstance()->Draw(dxCommon);
-	if (nowstate_ <= state::TEXT_TALK) {
+	if (nowstate_ <= states::TEXT_TALK) {
 		sutepon->Draw();
 	}
 	else {
