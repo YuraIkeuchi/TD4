@@ -93,9 +93,9 @@ void EnemyManager::TutorialDraw(DirectXCommon* dxCommon) {
 //ImGui
 void EnemyManager::ImGuiDraw() {
 	boss->ImGuiDraw();
-	if (m_SceneName == "TUTORIAL") {
+	/*if (m_SceneName == "TUTORIAL") {
 		tutorialenemy[0]->ImGuiDraw();
-	}
+	}*/
 }
 
 //敵の死亡処置

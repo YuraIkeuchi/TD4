@@ -35,7 +35,7 @@ public: //メンバ関数
 
 	void DeathDrawAll();
 	//壁のパーティクルの描画
-	void WallDrawAll();
+	void BackDrawAll();
 	//エフェクト
 	void FireEffect(const int life,const XMFLOAT3& pos,const float startscale, const float endscale,const XMFLOAT4& startcolor,const XMFLOAT4& endcolor);
 	//制御点のエフェクト
