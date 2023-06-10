@@ -166,7 +166,7 @@ private: // 静的メンバ関数
 	static bool SubInitializeGraphicsPipeline();
 	/// モデル作成
 	static void CreateModel();
-
+	void TransferVertices();
 	/// ビュー行列を更新
 	static void UpdateViewMatrix();
 

@@ -1036,3 +1036,8 @@ void IKETexture::UpdateWorldMatrix()
 		matWorld *= matTrans; // ワールド行列に平行移動を反映
 	}
 }
+
+void IKETexture::TransferVertices()
+{
+	
+}
