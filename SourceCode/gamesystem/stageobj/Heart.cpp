@@ -14,7 +14,7 @@ Heart::Heart() {
 bool Heart::Initialize() {
 	const int l_Division = 80;
 	//乱数指定
-	m_Scale = { 0.8f,0.8f,0.8f };
+	m_Scale = { 1.2f,1.2f,1.2f };
 	m_Rotation = { 0.0f,0.0f,0.0f };
 	m_Alive = true;
 	m_AliveTimer = 0;
@@ -70,7 +70,7 @@ void Heart::Particle() {
 	float s_scale = 3.0f;
 	float e_scale = 0.0f;
 	if (m_Alive) {
-		ParticleEmitter::GetInstance()->HealEffect(40, m_Position, s_scale, e_scale, s_color, e_color);
+		ParticleEmitter::GetInstance()->HealEffect(40, { m_Position.x,m_Position.y + 3.0f,m_Position.z - 3.0f }, s_scale, e_scale, s_color, e_color);
 	}
 }
 //当たり判定(プレイヤー)

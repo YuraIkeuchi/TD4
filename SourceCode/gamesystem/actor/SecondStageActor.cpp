@@ -13,7 +13,7 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	//共通の初期化
 	BaseInitialize(dxCommon);
 	//オーディオ
-	Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum() + 0.5f);
+	Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum() + 1.0f);
 
 	//ポストエフェクト
 	PlayPostEffect = true;
@@ -120,7 +120,7 @@ void SecondStageActor::BackDraw(DirectXCommon* dxCommon) {
 	//パーティクル描画
 	if (!camerawork->GetFeedEnd() && m_SceneState == SceneState::MainState) {
 		if (!enemymanager->BossDestroy()) {
-			ParticleEmitter::GetInstance()->WallDrawAll();
+			ParticleEmitter::GetInstance()->BackDrawAll();
 		}
 	}
 	////各クラスの描画
@@ -155,10 +155,10 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	//Player::GetInstance()->ImGuiDraw();
+	Player::GetInstance()->ImGuiDraw();
 	//loadobj->ImGuiDraw();
 	//camerawork->ImGuiDraw();
-	//enemymanager->ImGuiDraw();
+	enemymanager->ImGuiDraw();
 	//loadobj->ImGuiDraw();
 	//SceneSave::GetInstance()->ImGuiDraw();
 }
@@ -254,19 +254,16 @@ void SecondStageActor::IntroUpdate(DebugCamera* camera) {
 
 	//最後までテキストを見た
 	if (enemymanager->GetEnemyFinishAppear()) {
-		Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum());
 		m_SceneState = SceneState::MainState;
 		camerawork->SetCameraState(CAMERA_NORMAL);
 	}
 
 	//演出スキップ
 	if (Input::GetInstance()->TriggerButton(Input::A)) {
-		Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum());
 		camerawork->SetCameraSkip(true);
 	}
 
 	if (camerawork->GetAppearEndF()) {
-		Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum());
 		m_SceneState = SceneState::MainState;
 		camerawork->SetCameraState(CAMERA_NORMAL);
 		enemymanager->SkipInitialize();

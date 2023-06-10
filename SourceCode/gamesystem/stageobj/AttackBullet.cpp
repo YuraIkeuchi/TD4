@@ -20,9 +20,9 @@ bool AttackBullet::Initialize() {
 }
 //ImGui•`‰æ
 void AttackBullet::ImGui_Origin() {
-	/*ImGui::Begin("Bullet");
-	ImGui::Text("ScaleX:%f", m_Scale.x);
-	ImGui::End();*/
+	ImGui::Begin("Bullet");
+	ImGui::Text("ScaleX:%f", m_Angle.x);
+	ImGui::End();
 }
 //’e‚Ì“Á—Lˆ—
 void AttackBullet::Action() {

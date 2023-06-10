@@ -14,6 +14,7 @@ public:
 	//gettersetter
 	float GetNowHunger() { return   m_NowHunger; }
 	float GetHungerMax() { return   m_HungerMax; }
+	float GetAdditional() { return   m_Additional; }
 	int GetCatchCount() { return   m_CatchCount; }
 	bool GetFirstCarry() { return   carriedFood; }
 	void ResetFirstCarry() { carriedFood = false; }
@@ -29,6 +30,7 @@ public:
 	void SetHungerMax(float m_HungerMax) { this->m_HungerMax = m_HungerMax; }
 	void SetCatchCount(int m_CatchCount) { this->m_CatchCount = m_CatchCount; }
 	void SetSubVelocity(float m_SubVelocity) { this->m_SubVelocity = m_SubVelocity; }
+	void SetAdditional(float m_Additional) { this->m_Additional = m_Additional; }
 public:
 	static float m_Hungervalue;//‰ÁZ‚â—]Z‚Ì’l
 private:
@@ -41,4 +43,7 @@ private:
 	std::array<float,SUB_MAX> m_SubHunger;//Œ¸‚é—Ê
 	bool carriedFood = false;
 	bool isStop = false;
+
+	//’´‰ß‚·‚é‹Q‰ìƒQ[ƒW(‚±‚ê‚ª–S‚­‚È‚ç‚È‚¢‚Æ‹Q‰ìƒQ[ƒW‚ÍŒ¸‚ç‚È‚¢)
+	float m_Additional = 0.0f;
 };

@@ -5,6 +5,7 @@
 
 const XMVECTOR kWhite{ 1.f,1.f,1.f,1.f };
 const XMVECTOR kSkyBlue{ 0.f,1.f,1.f,1.f };
+const XMVECTOR kPink{ 0.9f,0.6f,0.8f,1.f };
 const XMFLOAT2 kFirstRowPos{ 5.f,0.f };
 const XMFLOAT2 kSecondRowPos{ 5.f,-40.f };
 const XMFLOAT2 kThirdRowPos{ 5.f, -80.f };
@@ -85,7 +86,7 @@ void TutorialSceneActor::TextTalkState() {
 	}
 
 	if (conversation == 0) {
-		text_->SetConversation(TextManager::TYUTORIAL_TALK2);
+		text_->SetConversation(TextManager::TYUTORIAL_TALK2,kPink);
 	}
 	else if (conversation == 1) {
 		girl_color_ = kHalfClear;
@@ -94,7 +95,7 @@ void TutorialSceneActor::TextTalkState() {
 	else if (conversation == 2) {
 		girl_color_ = kOriginalGirlColor;
 		sutopon_color_ = kHalfClear;
-		text_->SetConversation(TextManager::TYUTORIAL_TALK4);
+		text_->SetConversation(TextManager::TYUTORIAL_TALK4,kPink);
 	}
 	else if (conversation == 3) {
 		girl_color_ = kHalfClear;
@@ -104,7 +105,7 @@ void TutorialSceneActor::TextTalkState() {
 	else if (conversation == 4) {
 		girl_color_ = kOriginalGirlColor;
 		sutopon_color_ = kHalfClear;
-		text_->SetConversation(TextManager::TYUTORIAL_TALK6);
+		text_->SetConversation(TextManager::TYUTORIAL_TALK6,kPink);
 	}
 
 
@@ -143,7 +144,7 @@ void TutorialSceneActor::TextCatchFollowState() {
 	else if (conversation == 1) {
 		girl_color_ = kOriginalGirlColor;
 		sutopon_color_ = kHalfClear;
-		text_->SetConversation(TextManager::TYUTORIAL_TALK8);
+		text_->SetConversation(TextManager::TYUTORIAL_TALK8,kPink);
 	}
 	else if (conversation == 2) {
 		girl_color_ = kHalfClear;
@@ -223,7 +224,7 @@ void TutorialSceneActor::TextCatchSeachState() {
 	else if (conversation == 1) {
 		girl_color_ = kOriginalGirlColor;
 		sutopon_color_ = kHalfClear;
-		text_->SetConversation(TextManager::TYUTORIAL_TALK12);
+		text_->SetConversation(TextManager::TYUTORIAL_TALK12,kPink);
 	}
 	else if (conversation == 2) {
 		girl_color_ = kHalfClear;
@@ -368,7 +369,7 @@ void TutorialSceneActor::CompleteState() {
 	else if (conversation == 2) {
 		girl_color_ = kOriginalGirlColor;
 		sutopon_color_ = kHalfClear;
-		text_->SetConversation(TextManager::TYUTORIAL_TALK23);
+		text_->SetConversation(TextManager::TYUTORIAL_TALK23,kPink);
 	}
 	else if (conversation == 3) {
 		girl_color_ = kHalfClear;
@@ -384,7 +385,7 @@ void TutorialSceneActor::CompleteState() {
 	else if (conversation == 6) {
 		girl_color_ = kOriginalGirlColor;
 		sutopon_color_ = kHalfClear;
-		text_->SetConversation(TextManager::TYUTORIAL_TALK27);
+		text_->SetConversation(TextManager::TYUTORIAL_TALK27,kPink);
 	}
 	else if (conversation == 7) {
 		girl_color_ = kHalfClear;
@@ -400,7 +401,7 @@ void TutorialSceneActor::CompleteState() {
 	else if (conversation == 10) {
 		girl_color_ = kOriginalGirlColor;
 		sutopon_color_ = kHalfClear;
-		text_->SetConversation(TextManager::TYUTORIAL_TALK31);
+		text_->SetConversation(TextManager::TYUTORIAL_TALK31,kPink);
 	}
 	else if (conversation == 11) {
 		girl_color_ = kHalfClear;
@@ -410,7 +411,7 @@ void TutorialSceneActor::CompleteState() {
 	else if (conversation == 12) {
 		girl_color_ = kOriginalGirlColor;
 		sutopon_color_ = kHalfClear;
-		text_->SetConversation(TextManager::TYUTORIAL_TALK33);
+		text_->SetConversation(TextManager::TYUTORIAL_TALK33,kPink);
 	}
 
 	if (DebugButton() ||
@@ -529,7 +530,7 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 
 	text_ = make_unique<TextManager>();
 	text_->Initialize(dxCommon);
-	text_->SetConversation(TextManager::TYUTORIAL_TALK1);
+	text_->SetConversation(TextManager::TYUTORIAL_TALK1,kPink);
 	BackObj::GetInstance()->Initialize();
 	loadobj = std::make_unique<LoadStageObj>();
 	loadobj->AllLoad("TUTORIAL");
@@ -621,6 +622,8 @@ void TutorialSceneActor::BackDraw(DirectXCommon* dxCommon) {
 	BackObj::GetInstance()->Draw(dxCommon);
 	if (nowstate_ != states::INTORO) {
 		ParticleEmitter::GetInstance()->WallDrawAll();
+	if (nowstate_ != state::INTORO) {
+		ParticleEmitter::GetInstance()->BackDrawAll();
 	}
 	////各クラスの描画
 	Player::GetInstance()->Draw(dxCommon);
