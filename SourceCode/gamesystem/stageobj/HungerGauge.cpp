@@ -29,11 +29,14 @@ bool HungerGauge::Initialize() {
 void HungerGauge::Update() {
 	if (isStop) { return; }
 	float l_Limit = 50.0f;
-	//一定ずつで減少していく
-	if (m_CatchCount <= 5 && m_CatchCount > 0) {
-		m_NowHunger -= m_SubHunger[m_CatchCount - 1];
-	} else {
-		m_NowHunger -= m_SubHunger[SUB_MAX - 1];
+	//一定ずつで減少していく(超過分がなくなった場合)
+	if (Helper::GetInstance()->CheckMax(m_Additional, 0.0f, -0.01f)) {
+		if (m_CatchCount <= 5 && m_CatchCount > 0) {
+			m_NowHunger -= m_SubHunger[m_CatchCount - 1];
+		}
+		else {
+			m_NowHunger -= m_SubHunger[SUB_MAX - 1];
+		}
 	}
 	//飢餓ゲージの最大数が決まっている
 	Helper::GetInstance()->Clamp(m_NowHunger, 0.0f, m_HungerMax);
@@ -43,7 +46,10 @@ void HungerGauge::Update() {
 
 //ImGui
 void HungerGauge::ImGuiDraw() {
-
+	ImGui::Begin("Hunger");
+	ImGui::Text("NowHunger:%f", m_NowHunger);
+	ImGui::Text("Additional:%f", m_Additional);
+	ImGui::End();
 }
 
 float HungerGauge::GetPercentage() {

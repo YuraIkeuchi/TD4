@@ -177,7 +177,7 @@ void Player::ImGuiDraw() {
 		attackbullets[i]->ImGuiDraw();
 	}
 
-
+	HungerGauge::GetInstance()->ImGuiDraw();
 	ImGui::Begin("Player");
 	ImGui::Text("Num:%d", m_BulletNum);
 	ImGui::End();

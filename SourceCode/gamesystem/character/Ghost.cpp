@@ -203,6 +203,7 @@ void Ghost::Follow() {
 void Ghost::Search() {
 	const int l_LimitTimer = 300;
 	const float l_Vel = 0.3f;
+	const float l_Vel2 = 0.5f;
 	XMFLOAT3 l_playerPos = Player::GetInstance()->GetPosition();
 	//ƒT[ƒ`ó‘Ô‚©‚çˆê’èŽžŠÔ—§‚Â‚Æ‘¶ÝÁ‹Ž
 	m_SearchTimer++;
@@ -212,7 +213,7 @@ void Ghost::Search() {
 	}
 	//’Ç]
 	if (_searchState == SearchState::SEARCH_START) {
-		Helper::GetInstance()->FollowMove(m_Position, m_SearchPos, l_Vel);
+		Helper::GetInstance()->FollowMove(m_Position, m_SearchPos, l_Vel2);
 		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, m_SearchPos, -PI_90);
 	}
 	else if (_searchState == SearchState::SEARCH_END) {
@@ -243,6 +244,7 @@ void Ghost::CarryFood() {
 			m_Catch = false;
 			m_Limit = {};
 			HungerGauge::GetInstance()->RecoveryNowHunger(HungerGauge::GetInstance()->GetNowHunger() + l_AddHunger);
+			HungerGauge::GetInstance()->SetAdditional(HungerGauge::GetInstance()->GetAdditional() + l_AddHunger);
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Food.wav", VolumManager::GetInstance()->GetSEVolum());
 		}
 	}
