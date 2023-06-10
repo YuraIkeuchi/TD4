@@ -1,14 +1,14 @@
 ///攻撃の弾
 //攻撃弾のスピード
-AttackSpeed,7
+AttackSpeed,10
 //攻撃弾の生存時間
-AttackLimit,50
+AttackLimit,40
 
 ///言魂
 //スピード
-GhostSpeed,7
+GhostSpeed,10
 //生存時間
-GhostLimit,10
+GhostLimit,8
 
 //これは気にしないで
 Stopon,40

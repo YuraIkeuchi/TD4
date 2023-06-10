@@ -619,7 +619,7 @@ void TutorialSceneActor::BackDraw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
 	BackObj::GetInstance()->Draw(dxCommon);
 	if (nowstate_ != state::INTORO) {
-		ParticleEmitter::GetInstance()->WallDrawAll();
+		ParticleEmitter::GetInstance()->BackDrawAll();
 	}
 	////各クラスの描画
 	Player::GetInstance()->Draw(dxCommon);

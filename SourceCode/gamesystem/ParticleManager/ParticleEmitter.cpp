@@ -35,15 +35,15 @@ void ParticleEmitter::Update()
 
 void ParticleEmitter::FlontDrawAll() {
 	circleParticle->Draw(AddBlendType);
-	healParticle->Draw(AddBlendType);
 }
 
 void ParticleEmitter::DeathDrawAll() {
 	BossDeadParticle->Draw(AddBlendType);
 	deathParticle->Draw(AddBlendType);
 }
-void ParticleEmitter::WallDrawAll() {
+void ParticleEmitter::BackDrawAll() {
 	wallParticle->Draw(AddBlendType);
+	healParticle->Draw(AddBlendType);
 }
 
 void ParticleEmitter::FireEffect(const int life, const XMFLOAT3& l_pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor)

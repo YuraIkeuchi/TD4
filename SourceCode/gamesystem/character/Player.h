@@ -130,6 +130,9 @@ private://ŠeƒNƒ‰ƒX
 	OBB m_OBB1 = {};
 	OBB m_OBB2 = {};
 
+	//’e‚Ì”
+	int m_BulletNum = 0;
+
 public:
 	vector<InterBullet*>GetBulllet_ghost() { return ghostbullets; }
 	vector<InterBullet*>GetBulllet_attack() { return attackbullets; }

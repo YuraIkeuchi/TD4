@@ -192,6 +192,11 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	ColEnemy(enemymanager->GetBulEnemy());
 	loadobj->FirstUpdate();
 	ParticleEmitter::GetInstance()->Update();
+	if (input->TriggerKey(DIK_X)) {
+		Audio::GetInstance()->StopWave(1);
+		SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
+
+	}
 	//カメラワークのセット
 	if (enemymanager->BossDestroy())
 	{
@@ -293,7 +298,7 @@ void FirstStageActor::BackDraw(DirectXCommon* dxCommon) {
 	if (camerawork->GetCameraState() != CameraState::CAMERA_BOSSAPPEAR &&
 		camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_AFTER_FIRST) {
 		if (camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_BEFORE && camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_AFTER_FIRST) {
-			ParticleEmitter::GetInstance()->WallDrawAll();
+			ParticleEmitter::GetInstance()->BackDrawAll();
 		}
 	}
 
@@ -352,8 +357,8 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void FirstStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	//Player::GetInstance()->ImGuiDraw();
-	//enemymanager->ImGuiDraw();
+	Player::GetInstance()->ImGuiDraw();
+	enemymanager->ImGuiDraw();
 	//loadobj->ImGuiDraw();
 	//SceneSave::GetInstance()->ImGuiDraw();
 }

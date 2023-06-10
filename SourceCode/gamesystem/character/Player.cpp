@@ -173,6 +173,14 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 }
 //ImGui
 void Player::ImGuiDraw() {
+	for (int i = 0; i < attackbullets.size(); i++) {
+		attackbullets[i]->ImGuiDraw();
+	}
+
+
+	ImGui::Begin("Player");
+	ImGui::Text("Num:%d", m_BulletNum);
+	ImGui::End();
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
@@ -338,6 +346,17 @@ void Player::Bullet_Management() {
 		isShotNow = false;
 	}
 
+	//弾の数指定
+	if (HungerGauge::GetInstance()->GetCatchCount() < 2) {
+		m_BulletNum = 1;
+	}
+	else if (HungerGauge::GetInstance()->GetCatchCount() >= 2 && HungerGauge::GetInstance()->GetCatchCount() < 4) {
+		m_BulletNum = 2;
+	}
+	else {
+		m_BulletNum = 3;
+	}
+
 	//弾の更新
 	BulletUpdate(ghostbullets);
 	BulletUpdate(attackbullets);
@@ -368,27 +387,62 @@ void Player::BulletUpdate(std::vector<InterBullet*> bullets) {
 }
 //弾の生成
 void Player::BirthShot(const std::string& bulletName, bool Super) {
-	XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
-	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
-	move = XMVector3TransformNormal(move, matRot);
-	XMFLOAT2 l_Angle;
-	l_Angle.x = move.m128_f32[0];
-	l_Angle.y = move.m128_f32[2];
+
+	const int l_BulletNum = m_BulletNum;
+	XMVECTOR move2 = { 0.0f, 0.0f, 0.1f, 0.0f };
+	XMMATRIX matRot2 = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
+	move2 = XMVector3TransformNormal(move2, matRot2);
+	XMFLOAT2 l_Angle2;
+	l_Angle2.x = move2.m128_f32[0];
+	l_Angle2.y = move2.m128_f32[2];
 	//攻撃の弾
 	if (bulletName == "Attack") {
-		InterBullet* newbullet;
-		newbullet = new AttackBullet();
-		newbullet->Initialize();
-		newbullet->SetPosition(viewbullet->GetPosition());
-		//チャージショットかどうか
-		if (Super) {
-			newbullet->SetScale(viewbullet->GetScale());
+		for (int i = 0; i < m_BulletNum; i++) {
+			XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
+
+			XMMATRIX matRot;
+			//弾の状況によって数と角度を決めている
+			if (l_BulletNum == 1) {
+				matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
+			}
+			else if(l_BulletNum == 2) {
+				if (i == 0) {
+					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 20.0f));
+				}
+				else {
+					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y - 20.0f));
+				}
+			}
+			else {
+				if (i == 0) {
+					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y - 20.0f));
+				}
+				else if (i == 1) {
+					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 20.0f));
+				}
+				else {
+					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
+				}
+			}
+			move = XMVector3TransformNormal(move, matRot);
+			XMFLOAT2 l_Angle;
+			l_Angle.x = move.m128_f32[0];
+			l_Angle.y = move.m128_f32[2];
+
+			InterBullet* newbullet;
+			newbullet = new AttackBullet();
+			newbullet->Initialize();
+			newbullet->SetPosition(viewbullet->GetPosition());
+			//チャージショットかどうか
+			if (Super) {
+				newbullet->SetScale(viewbullet->GetScale());
+			}
+			else {
+				newbullet->SetScale({ 1.5f,1.5f,1.5f });
+			}
+			newbullet->SetAngle(l_Angle);
+			attackbullets.push_back(newbullet);
 		}
-		else {
-			newbullet->SetScale({ 1.5f,1.5f,1.5f });
-		}
-		newbullet->SetAngle(l_Angle);
-		attackbullets.push_back(newbullet);
 	}
 	//言霊
 	else if(bulletName == "Ghost") {
@@ -399,7 +453,7 @@ void Player::BirthShot(const std::string& bulletName, bool Super) {
 		newbullet->SetPosition(viewbullet->GetPosition());
 		newbullet->SetRotation({m_Rotation.x,m_Rotation.y + 90.0f,m_Rotation.z});
 		newbullet->SetBulletType(m_BulletType);
-		newbullet->SetAngle(l_Angle);
+		newbullet->SetAngle(l_Angle2);
 		ghostbullets.push_back(newbullet);
 	}
 	else {
