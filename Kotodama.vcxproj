@@ -169,6 +169,7 @@
     <ClCompile Include="SourceCode\gamesystem\actor\IntroductionSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\LoadSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\SecondStageActor.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\actor\ThirdStageActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\TitleSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\TutorialSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\backobj\BackObj.cpp" />
@@ -186,6 +187,7 @@
     <ClCompile Include="SourceCode\gamesystem\character\Player.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\PlayerAttach.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\SecondBoss.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\character\ThirdBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\TutorialEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\Conversation\Conversation.cpp" />
     <ClCompile Include="SourceCode\gamesystem\editor\Editor.cpp" />
@@ -217,6 +219,7 @@
     <ClCompile Include="SourceCode\gamesystem\scene\SceneManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\SceneSave.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\SecondStage.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\scene\ThirdStage.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\TitleScene.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\TutorialScene.cpp" />
     <ClCompile Include="SourceCode\gamesystem\stageobj\AttackBullet.cpp" />
@@ -299,6 +302,7 @@
     <ClInclude Include="SourceCode\gamesystem\actor\IntroductionSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\LoadSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\SecondStageActor.h" />
+    <ClInclude Include="SourceCode\gamesystem\actor\ThirdStageActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\TitleSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\TutorialSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\backobj\BackObj.h" />
@@ -316,6 +320,7 @@
     <ClInclude Include="SourceCode\gamesystem\character\Player.h" />
     <ClInclude Include="SourceCode\gamesystem\character\PlayerAttach.h" />
     <ClInclude Include="SourceCode\gamesystem\character\SecondBoss.h" />
+    <ClInclude Include="SourceCode\gamesystem\character\ThirdBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\TutorialEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\Conversation\Conversation.h" />
     <ClInclude Include="SourceCode\gamesystem\editor\Editor.h" />
@@ -347,6 +352,7 @@
     <ClInclude Include="SourceCode\gamesystem\scene\SceneManager.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\SceneSave.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\SecondStage.h" />
+    <ClInclude Include="SourceCode\gamesystem\scene\ThirdStage.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\TitleScene.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\TutorialScene.h" />
     <ClInclude Include="SourceCode\gamesystem\stageobj\AttackBullet.h" />

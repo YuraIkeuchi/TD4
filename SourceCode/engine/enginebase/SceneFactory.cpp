@@ -1,6 +1,7 @@
 #include "SceneFactory.h"
 #include "FirstStage.h"
 #include "SecondStage.h"
+#include "ThirdStage.h"
 #include "TitleScene.h"
 #include "IntroductionScene.h"
 #include "ClearScene.h"
@@ -28,6 +29,9 @@ BaseScene* SceneFactory::CreateScene(const std::string& sceneName) {
 	}
 	else if (sceneName == "SECONDSTAGE") {
 		newScene = new SecondStage();
+	}
+	else if (sceneName == "THIRDSTAGE") {
+		newScene = new ThirdStage();
 	}
 	else if (sceneName == "EDITORSCENE") {
 		newScene = new EditorScene();
