@@ -56,6 +56,8 @@ void ImageManager::SecondLoadTex2D()
 	IKETexture::LoadTexture(ANGER, L"Resources/2d/objicon/AngerStamp.png");
 	IKETexture::LoadTexture(JOY, L"Resources/2d/objicon/JoyStamp.png");
 	IKETexture::LoadTexture(MARK, L"Resources/2d/objicon/box.png");
+	IKETexture::LoadTexture(DAMAGEAREA, L"Resources/2d/effect/DArea.png");
+
 }
 
 void ImageManager::LoadParticle()

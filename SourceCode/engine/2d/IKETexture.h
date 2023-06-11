@@ -43,6 +43,8 @@ public: // サブクラス
 	{
 		XMFLOAT4 color; // 色 (RGBA)
 		XMMATRIX mat; // ３Ｄ変換行列
+		bool clips;
+		float Cinter;
 	};
 
 private: // 定数
@@ -150,7 +152,8 @@ private: // 静的メンバ変数
 	static ComPtr<ID3DBlob> errorBlob; // エラーオブジェクト
 private:
 	UINT texNumber = 0;
-
+	bool ClipF;
+	float CenterPos;
 private: // 静的メンバ関数
 	/// デスクリプタヒープの初期化
 	static bool InitializeDescriptorHeap();
@@ -235,7 +238,8 @@ public: // メンバ関数
 		l_mat.r[2].m128_f32[2] *= l_scale.z;
 		return l_mat;
 	}
-
+	void SetCinter(float center) { CenterPos = center; }
+	void SetClipF(bool f) { ClipF = f; }
 private: // メンバ変数
 
 

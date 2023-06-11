@@ -35,6 +35,8 @@ bool FirstBoss::Initialize() {
 	
 	ActionTimer = 1;
 
+	damageara.reset(IKETexture::Create(ImageManager::DAMAGEAREA, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 }));
+	damageara->TextureCreate();
 	m_Radius = 5.0f;
 	return true;
 }
@@ -45,7 +47,7 @@ void FirstBoss::SkipInitialize() {
 //行動
 void FirstBoss::Action() {
 	if (m_HP < 0.1) return;
-	
+
 	/*^^^^^^^^^^^^^^^^^^^^^*/
 	/*^^^^当たり判定^^^^*/
 	//弾とボスの当たり判定
@@ -80,7 +82,7 @@ void FirstBoss::Action() {
 
 		/*^^^^当たり判定^^^^*/
 		//弾とボスの当たり判定
-		
+
 		//通常時の当たり判定
 		if (!_normal.GetAttackF() && !_cattack.GetAttackF())
 		{
@@ -113,10 +115,10 @@ void FirstBoss::Action() {
 			EaseT_BatStart = 0.f;
 			//タイマーカウンタ
 			AttackDecision();
-			if (!SummobnStop){
+			if (!SummobnStop) {
 				//通常移動（円運動）
 				Move();
-		}
+			}
 			//通常攻撃
 			_normal.Update(m_Position, m_Rotation, EncF);
 			//ため攻撃
@@ -141,6 +143,30 @@ void FirstBoss::Action() {
 	//OBJのステータスのセット
 	Obj_SetParam();
 
+	if (_normal.GetViewDAreaF()){
+		texAlpha += 0.05f;
+	damageara->SetPosition(texpos);
+}
+	else {
+		texAlpha -= 0.05f;
+	}
+
+
+	Helper::GetInstance()->Clamp(texAlpha, 0.f, 1.f);
+
+	constexpr float AnchorY = 0.3f;
+
+	texpos = { m_Position.x,2.f,m_Position.z };
+	cinter += 0.01f;
+	if (cinter > 1.2f)cinter = AnchorY;
+	damageara->SetCinter(cinter);
+	damageara->SetRotation({90,m_Rotation.y-90,0
+});
+	damageara->SetScale({1.f,6.f,1.f});
+	damageara->SetColor({1,1,1,texAlpha});
+	damageara->SetClipF(true);
+damageara->Update();
+	
 	//リミット制限
 	Helper::GetInstance()->Clamp(m_Position.x, -55.0f, 65.0f);
 	Helper::GetInstance()->Clamp(m_Position.z, -60.0f, 60.0f);
@@ -229,8 +255,15 @@ void FirstBoss::EffecttexDraw(DirectXCommon* dxCommon)
 }
 //描画
 void FirstBoss::Draw(DirectXCommon* dxCommon) {
+	
 	Obj_Draw();
 	EffecttexDraw(dxCommon);
+		IKETexture::PreDraw2(dxCommon, AlphaBlendType);
+		//if (m_Alive) {
+		damageara->Draw();
+		///
+		IKETexture::PostDraw();
+	
 }
 
 void FirstBoss::Rot()
@@ -291,6 +324,7 @@ void FirstBoss::Move_Away()
 
 void FirstBoss::NormalAttak::Idle(XMFLOAT3& Pos, XMFLOAT3 Rot, bool& Enf)
 {
+	
 	StayCount++;
 	if (StayCount >= 50)
 	{
@@ -322,7 +356,7 @@ void FirstBoss::NormalAttak::Attack(XMFLOAT3& Pos, XMFLOAT3& Rot)
 	shakeend = false;
 	RotEaseTime = 0.f;
 
-
+	ViewDAreaF = false;
 	m_move = { 0.f,0.f, 0.1f, 0.0f };
 	m_matRot = XMMatrixRotationY(XMConvertToRadians(Rot.y + 90.f));
 	m_move = XMVector3TransformNormal(m_move, m_matRot);
@@ -350,6 +384,7 @@ void FirstBoss::NormalAttak::Attack(XMFLOAT3& Pos, XMFLOAT3& Rot)
 
 void FirstBoss::NormalAttak::ShakeAction(XMFLOAT3& Pos, XMFLOAT3& Rot)
 {
+	ViewDAreaF = true;
 	//初期化部
 	{
 		//RotSpeed = 0.f;

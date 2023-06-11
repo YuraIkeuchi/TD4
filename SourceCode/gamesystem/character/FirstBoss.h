@@ -146,8 +146,9 @@ private:
 		void Rot(XMFLOAT3& Pos, XMFLOAT3& Rot);
 		void Attack();
 		void Attack(XMFLOAT3& Pos, XMFLOAT3& Rot);
-
+		bool ViewDAreaF;
 	public:
+		bool GetViewDAreaF() { return ViewDAreaF; };
 		void Initialize();
 		void Update(XMFLOAT3& Pos, XMFLOAT3& Rot, bool& Enf);
 		void SetNormalAttackF(bool f) { NormalAttackF = f; }
@@ -284,4 +285,11 @@ private:
 	bool DeathEffectF;
 	int Timer;
 	void DeathParticle();
+
+private:
+	unique_ptr<IKETexture>damageara;
+	XMFLOAT3 texpos,texscl,texrot;
+	float texAlpha;
+	float cinter;
+
 };
