@@ -81,7 +81,6 @@ private:
 	void AnimationControl(AnimeName name, const bool& loop, int speed);
 public:
 	//当たり判定系
-	bool BulletCollide(const XMFLOAT3& pos, const XMMATRIX& matrot, const XMFLOAT3& scale, const bool Catch);//弾との当たり判定
 	bool PlayerCollide(const XMFLOAT3& pos);//プレイヤーとの当たり判定
 	//プレイヤーの当たった瞬間
 	void PlayerHit(const XMFLOAT3& pos);
@@ -126,10 +125,7 @@ private://各クラス
 	int m_DamageInterVal = {};
 
 	XMFLOAT2 m_BoundPower = {};
-	//OBBの当たり判定
-	OBB m_OBB1 = {};
-	OBB m_OBB2 = {};
-
+	
 	//弾の数
 	int m_BulletNum = 0;
 

@@ -154,7 +154,6 @@ void TutorialSceneActor::TextCatchFollowState() {
 
 	if (DebugButton() ||
 		conversation == 3) {
-		Player::GetInstance()->SetCanShot(true);
 		nowstate_ = state::CATCHFOLLOW;
 		text_->SetConversation(TextManager::NONE);
 		conversation = 0;
@@ -166,7 +165,7 @@ void TutorialSceneActor::CatchFollowState() {
 	loadobj->TutorialUpdate();
 	firstEnemy->SetIsStop(true);
 	enemymanager->TutorialUpdate(0);
-
+	Player::GetInstance()->SetCanShot(true);
 	if (DebugButton() ||
 		Clear(HungerGauge::GetInstance()->GetCatchCount() >= 1, 50)) {
 		waitTimer = 0;
@@ -176,6 +175,7 @@ void TutorialSceneActor::CatchFollowState() {
 
 }
 void TutorialSceneActor::TextShotState() {
+	Player::GetInstance()->SetCanShot(false);
 	if (input->TriggerButton(Input::B) && conversation < 1) {
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
 		conversation += 1;
@@ -201,7 +201,7 @@ void TutorialSceneActor::ShotState() {
 	text_->SetConversation(TextManager::SETUMEI3);
 	loadobj->TutorialUpdate();
 	enemymanager->TutorialUpdate(0);
-
+	Player::GetInstance()->SetCanShot(true);
 	if (DebugButton() ||
 		Clear(!firstEnemy->GetisAlive(), 45)) {
 		waitTimer = 0;
@@ -210,6 +210,7 @@ void TutorialSceneActor::ShotState() {
 	}
 }
 void TutorialSceneActor::TextCatchSeachState() {
+	Player::GetInstance()->SetCanShot(false);
 	if (input->TriggerButton(Input::B) && conversation < 6) {
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
 		conversation += 1;
@@ -251,6 +252,7 @@ void TutorialSceneActor::TextCatchSeachState() {
 	}
 }
 void TutorialSceneActor::CatchSeachState() {
+	Player::GetInstance()->SetCanShot(true);
 	text_->SetConversation(TextManager::SETUMEI4);
 	loadobj->TutorialUpdate();
 	enemymanager->TutorialUpdate(0);
@@ -337,7 +339,6 @@ void TutorialSceneActor::TextLastState() {
 			text_->SetConversation(TextManager::NONE);
 			conversation = 0;
 			nowstate_ = state::MAINTUTORIAL;
-			Player::GetInstance()->SetCanShot(true);
 			Player::GetInstance()->MoveStop(false);
 		}
 	}
@@ -346,6 +347,7 @@ void TutorialSceneActor::TextLastState() {
 void TutorialSceneActor::MainTutorialState() {
 	loadobj->TutorialUpdate();
 	enemymanager->TutorialUpdate(1);
+	Player::GetInstance()->SetCanShot(true);
 	if (DebugButton() ||
 		Clear(enemymanager->AllDeadEnemy(), 60)) {
 		nowstate_ = state::COMPLETE;
@@ -608,6 +610,7 @@ void TutorialSceneActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
+		ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 }
@@ -653,7 +656,7 @@ void TutorialSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void TutorialSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	//Player::GetInstance()->ImGuiDraw();
+	Player::GetInstance()->ImGuiDraw();
 	//loadobj->ImGuiDraw();
 	//enemymanager->ImGuiDraw();
 	//camerawork->ImGuiDraw();

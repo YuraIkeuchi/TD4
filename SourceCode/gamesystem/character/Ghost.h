@@ -1,5 +1,8 @@
 #pragma once
 #include "ObjCommon.h"
+#include "InterBullet.h"
+#include "Collision.h"
+#include "CollisionPrimitive.h"
 //ゴーストクラス
 class Ghost :
 	public ObjCommon {
@@ -37,8 +40,6 @@ private://ステート
 	static void (Ghost::* stateTable[])();
 private:
 	void Particle();
-	//当たり判定(弾)
-	bool BulletCollision();
 	//当たり判定(プレイヤー)
 	bool PlayerCollision();
 	//食料生産
@@ -53,6 +54,7 @@ private:
 	void Search();
 	//食べ物を運ぶ
 	void CarryFood();
+	bool CollideBullet(vector<InterBullet*>bullet);
 public:
 	//ゴースト同士の当たり判定
 	void GhostCollision(const XMFLOAT3& pos);
@@ -118,4 +120,7 @@ private:
 	float m_Limit = {};
 
 	bool m_Hit = false;
+
+	OBB m_OBB1 = {};
+	OBB m_OBB2 = {};
 };

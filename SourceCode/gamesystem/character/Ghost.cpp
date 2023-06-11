@@ -47,13 +47,15 @@ void Ghost::Update() {
 	Obj_SetParam();
 	//食料生成
 	BirthGhost();
-	//当たり判定(弾)
-	BulletCollision();
 	//当たり判定(プレイヤー)
 	PlayerCollision();
 	//食べ物をはこぶ
 	CarryFood();
 	Particle();
+
+	//当たり判定（弾）
+	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_ghost();
+	CollideBullet(_playerBulA);
 }
 //描画
 void Ghost::Draw(DirectXCommon* dxCommon) {
@@ -68,32 +70,7 @@ void Ghost::ImGuiDraw() {
 	ImGui::Text("ColorW:%f", m_Color.w);
 	ImGui::End();
 }
-//当たり判定(弾)
-bool Ghost::BulletCollision() {
-	float l_AddHungerMax = HungerGauge::m_Hungervalue;//加算される最大飢餓ゲージ
-	if (Player::GetInstance()->BulletCollide({ m_Position.x,0.0f,m_Position.z }, m_Object->GetMatrot(), m_OBBScale, m_Catch) && (m_Alive)) {
-		m_Catch = true;
-		if (Player::GetInstance()->GetBulletType() == BULLET_FORROW) {
-			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Follower.wav", VolumManager::GetInstance()->GetSEVolum()/2.5f);
-			HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() + l_AddHungerMax);
-			HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() + l_AddHungerMax);
-			HungerGauge::GetInstance()->SetCatchCount(HungerGauge::GetInstance()->GetCatchCount() + 1);
-			_charaState = CharaState::STATE_FOLLOW;
-			_followState = FollowState::Follow_START;
-			m_Object->SetModel(model_follow);
-			m_Follow = true;
-		}
-		else {
-			_charaState = CharaState::STATE_SEARCH;
-			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Searcher.wav", VolumManager::GetInstance()->GetSEVolum() / 2.5f);
-		}
-		return true;
-	}
-	else {
-		return false;
-	}
-	return true;
-}
+
 //パーティクル
 void Ghost::Particle() {
 	XMFLOAT4 s_color = { 1.0f,1.0f,1.0f,1.0f };
@@ -248,4 +225,43 @@ void Ghost::CarryFood() {
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Food.wav", VolumManager::GetInstance()->GetSEVolum());
 		}
 	}
+}
+//当たり判定
+bool Ghost::CollideBullet(vector<InterBullet*>bullet) {
+	float l_AddHungerMax = HungerGauge::m_Hungervalue;//加算される最大飢餓ゲージ
+	m_OBB1.SetParam_Pos(m_Position);
+	m_OBB1.SetParam_Rot(m_Object->GetMatrot());
+	m_OBB1.SetParam_Scl(m_OBBScale);
+	//弾の更新
+	for (InterBullet* _bullet : bullet) {
+		if (_bullet != nullptr && _bullet->GetAlive()) {
+			m_OBB2.SetParam_Pos(_bullet->GetPosition());
+			m_OBB2.SetParam_Rot(_bullet->GetMatRot());
+			m_OBB2.SetParam_Scl(_bullet->GetScale());
+
+			if ((Collision::OBBCollision(m_OBB1, m_OBB2)) && (_bullet->GetAlive()) && (!m_Catch) && (m_Alive)) {
+				m_Catch = true;
+				if (Player::GetInstance()->GetBulletType() == BULLET_FORROW) {
+					Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Follower.wav", VolumManager::GetInstance()->GetSEVolum() / 2.5f);
+					HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() + l_AddHungerMax);
+					HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() + l_AddHungerMax);
+					HungerGauge::GetInstance()->SetCatchCount(HungerGauge::GetInstance()->GetCatchCount() + 1);
+					_charaState = CharaState::STATE_FOLLOW;
+					_followState = FollowState::Follow_START;
+					m_Object->SetModel(model_follow);
+					m_Follow = true;
+				}
+				else {
+					_charaState = CharaState::STATE_SEARCH;
+					Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Searcher.wav", VolumManager::GetInstance()->GetSEVolum() / 2.5f);
+				}
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+	}
+
+	return false;
 }
