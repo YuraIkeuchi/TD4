@@ -1,10 +1,6 @@
 #pragma once
 #include "InterBullet.h"
 
-enum Bullettype {
-	BULLET_FORROW,//’Ç]
-	BULLET_SEARCH,//’Tõ
-};
 //Œ¾—ìƒNƒ‰ƒX
 class GhostBullet :
 	public InterBullet {

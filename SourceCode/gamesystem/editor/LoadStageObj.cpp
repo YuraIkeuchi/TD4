@@ -182,7 +182,7 @@ void LoadStageObj::SearchFood() {
 					foods[j]->SetLockOn(true);
 				}
 				else {
-					ghosts[i]->SetLimit(ghosts[i]->GetLimit() + 1.0f);
+					ghosts[i]->SetLimit(ghosts[i]->GetLimit() + 3.0f);
 				}
 			}
 		}

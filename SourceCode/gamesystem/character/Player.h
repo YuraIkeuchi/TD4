@@ -125,10 +125,7 @@ private://ŠeƒNƒ‰ƒX
 	int m_DamageInterVal = {};
 
 	XMFLOAT2 m_BoundPower = {};
-	//OBB‚Ì“–‚½‚è”»’è
-	OBB m_OBB1 = {};
-	OBB m_OBB2 = {};
-
+	
 	//’e‚Ì”
 	int m_BulletNum = 0;
 

@@ -2,6 +2,11 @@
 #include "ObjCommon.h"
 using namespace std;         //  名前空間指定
 
+enum Bullettype {
+	BULLET_FORROW,//追従
+	BULLET_SEARCH,//探索
+	BULLET_ATTACK,//攻撃
+};
 //弾の基底クラス
 class InterBullet :
 	public ObjCommon {

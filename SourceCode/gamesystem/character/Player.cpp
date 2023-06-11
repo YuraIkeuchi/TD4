@@ -51,6 +51,8 @@ void Player::InitState(const XMFLOAT3& pos) {
 	m_InterVal = 0;
 	m_DamageInterVal = 0;
 
+	m_BulletType = BULLET_FORROW;
+
 	m_BoundPower = { 0.0f,0.0f };
 	//初期化ぶち込み
 	Initialize();
@@ -180,6 +182,17 @@ void Player::ImGuiDraw() {
 	HungerGauge::GetInstance()->ImGuiDraw();
 	ImGui::Begin("Player");
 	ImGui::Text("Num:%d", m_BulletNum);
+	ImGui::Text("InterVal:%d", m_InterVal);
+	ImGui::Text("Can:%d", m_canShot);
+	if (m_BulletType == BULLET_FORROW) {
+		ImGui::Text("FOLLOW");
+	}
+	else if (m_BulletType == BULLET_SEARCH) {
+		ImGui::Text("SEARCH");
+	}
+	else {
+		ImGui::Text("ATTACK");
+	}
 	ImGui::End();
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
@@ -266,60 +279,83 @@ void Player::Bullet_Management() {
 	const int l_TargetCount = 1;
 	const int l_Limit = 20;//ショットのチャージ時間
 	/*-----------------------------*/
-	//RB||LBが押されたら弾を撃つ(言霊)
-	if (((Input::GetInstance()->TriggerButton(Input::RB)) || (Input::GetInstance()->TriggerButton(Input::LB))) && (m_InterVal == 0)&& m_canShot)
+	//RB||LBが押されたら弾を切り替える
+	if (((Input::GetInstance()->TriggerButton(Input::RB)) || (Input::GetInstance()->TriggerButton(Input::LB))) && (m_canShot) && (m_ShotTimer == 0))
 	{
 		isShotNow = true;
 		if (Input::GetInstance()->TriggerButton(Input::RB)) {
-			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Follow.wav", VolumManager::GetInstance()->GetSEVolum());
-			m_BulletType = BULLET_FORROW;
+			if (m_BulletType != BULLET_ATTACK) {
+				m_BulletType++;
+			}
+			else {
+				m_BulletType = BULLET_FORROW;
+			}
 		}
 		else if (Input::GetInstance()->TriggerButton(Input::LB)) {
-			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Seach.wav", VolumManager::GetInstance()->GetSEVolum());
-			m_BulletType = BULLET_SEARCH;
+			if (m_BulletType != BULLET_FORROW) {
+				m_BulletType--;
+			}
+			else {
+				m_BulletType = BULLET_ATTACK;
+			}
 		}
-		ResetBullet();
-		playerattach->SetAlive(true);
-		BirthShot("Ghost", false);
 	}
 
 	//攻撃
 	//Bが押されたら弾のチャージ
-	if (Input::GetInstance()->PushButton(Input::B) && m_InterVal == 0 && HungerGauge::GetInstance()->GetCatchCount() >= l_TargetCount && m_canShot)
-	{
-		isShotNow = true;
-		m_ShotTimer++;
-		viewbullet->SetAlive(true);
-	}
+	if (m_BulletType == BULLET_ATTACK) {
+		if (Input::GetInstance()->PushButton(Input::B) && (m_InterVal == 0) && (HungerGauge::GetInstance()->GetCatchCount() >= l_TargetCount)
+			&& (m_canShot)) {
+			isShotNow = true;
+			m_ShotTimer++;
+			viewbullet->SetAlive(true);
+		}
 
-	//チャージ時間が一定を超えたら飢餓ゲージの減る速度が上がる
-	if (m_ShotTimer > l_Limit) {
-		viewbullet->SetCharge(true);
-		HungerGauge::GetInstance()->SetSubVelocity(2.0f);
-		//チャージ中に飢餓ゲージが切れた場合弾が自動で放たれる
-		if (HungerGauge::GetInstance()->GetNowHunger() == 0.0f) {
-			BirthShot("Attack", true);
-			playerattach->SetAlive(true);
-			HungerGauge::GetInstance()->SetSubVelocity(1.0f);
+		//チャージ時間が一定を超えたら飢餓ゲージの減る速度が上がる
+		if (m_ShotTimer > l_Limit) {
+			viewbullet->SetCharge(true);
+			HungerGauge::GetInstance()->SetSubVelocity(2.0f);
+			//チャージ中に飢餓ゲージが切れた場合弾が自動で放たれる
+			if (HungerGauge::GetInstance()->GetNowHunger() == 0.0f) {
+				BirthShot("Attack", true);
+				playerattach->SetAlive(true);
+				HungerGauge::GetInstance()->SetSubVelocity(1.0f);
+				ResetBullet();
+			}
+		}
+
+		if (!Input::GetInstance()->PushButton(Input::B) && m_ShotTimer != 0) {
+			if (m_ShotTimer < l_Limit) {
+				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
+				BirthShot("Attack", false);
+				playerattach->SetAlive(true);
+			}
+			else {
+				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Charge.wav", VolumManager::GetInstance()->GetSEVolum());
+				BirthShot("Attack", true);
+				playerattach->SetAlive(true);
+				HungerGauge::GetInstance()->SetSubVelocity(1.0f);
+			}
 			ResetBullet();
 		}
 	}
+	else {			//言魂
+		if (Input::GetInstance()->TriggerButton(Input::B) && (m_InterVal == 0) && (m_canShot)) {
+			if (m_BulletType == BULLET_FORROW) {
+				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Follow.wav", VolumManager::GetInstance()->GetSEVolum());
+			}
+			else if (m_BulletType == BULLET_SEARCH) {
+				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Seach.wav", VolumManager::GetInstance()->GetSEVolum());
+			}
 
-	if (!Input::GetInstance()->PushButton(Input::B) && m_ShotTimer != 0) {
-		if (m_ShotTimer < l_Limit) {
-			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
-			BirthShot("Attack", false);
+			isShotNow = true;
+			ResetBullet();
 			playerattach->SetAlive(true);
+			BirthShot("Ghost", false);
 		}
-		else {
-			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Charge.wav", VolumManager::GetInstance()->GetSEVolum());
-			BirthShot("Attack", true);
-			playerattach->SetAlive(true);
-			HungerGauge::GetInstance()->SetSubVelocity(1.0f);
-		}
-		ResetBullet();
 	}
 
+	
 	//弾の削除(言霊)
 	for (int i = 0; i < ghostbullets.size(); i++) {
 		if (ghostbullets[i] == nullptr) {
