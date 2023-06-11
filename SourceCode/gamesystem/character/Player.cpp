@@ -407,18 +407,18 @@ void Player::BirthShot(const std::string& bulletName, bool Super) {
 			}
 			else if(l_BulletNum == 2) {
 				if (i == 0) {
-					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 20.0f));
+					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 10.0f));
 				}
 				else {
-					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y - 20.0f));
+					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y - 10.0f));
 				}
 			}
 			else {
 				if (i == 0) {
-					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y - 20.0f));
+					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y - 10.0f));
 				}
 				else if (i == 1) {
-					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 20.0f));
+					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 10.0f));
 				}
 				else {
 					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
@@ -471,31 +471,6 @@ void Player::Idle()
 void Player::InterVal() {
 	Helper::GetInstance()->CheckMax(m_InterVal, 0, -1);
 	Helper::GetInstance()->CheckMax(m_RigidityTime, 0, -1);
-}
-//弾との当たり判定
-bool Player::BulletCollide(const XMFLOAT3& pos, const XMMATRIX& matrot, const XMFLOAT3& scale, const bool Catch) {
-	float l_Radius = 1.3f;//当たり範囲
-	m_OBB1.SetParam_Pos(pos);
-	m_OBB1.SetParam_Rot(matrot);
-	m_OBB1.SetParam_Scl(scale);
-	//弾の更新
-	for (InterBullet* bullet : ghostbullets) {
-		if (bullet != nullptr) {
-			m_OBB2.SetParam_Pos(bullet->GetPosition());
-			m_OBB2.SetParam_Rot(bullet->GetMatRot());
-			m_OBB2.SetParam_Scl(bullet->GetScale());
-		
-			if ((Collision::OBBCollision(m_OBB1, m_OBB2)) && (bullet->GetAlive()) && (!Catch)) {
-				//bullet->SetAlive(false);
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
-	}
-
-	return false;
 }
 //プレイヤーとの当たり判定
 bool Player::PlayerCollide(const XMFLOAT3& pos) {

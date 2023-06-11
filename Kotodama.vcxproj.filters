@@ -619,9 +619,6 @@
     <ClInclude Include="SourceCode\gamesystem\character\FirstBoss.h">
       <Filter>gamesystem\charactor\Boss\First</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\InterBoss.h">
-      <Filter>gamesystem\charactor\Boss\Base</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\EnemyManager.h">
       <Filter>gamesystem\charactor\Manager</Filter>
     </ClInclude>
@@ -801,6 +798,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\SceneSave.h">
       <Filter>gamesystem\scene\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\InterBoss.h">
+      <Filter>gamesystem\charactor\Boss\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
