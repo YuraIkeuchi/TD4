@@ -419,6 +419,15 @@
     <ClCompile Include="SourceCode\gamesystem\scene\SceneSave.cpp">
       <Filter>gamesystem\scene\Base</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\ThirdStageActor.cpp">
+      <Filter>gamesystem\actor\Third</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\ThirdStage.cpp">
+      <Filter>gamesystem\scene\Play\Third</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\ThirdBoss.cpp">
+      <Filter>gamesystem\charactor\Boss\Third</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
@@ -619,6 +628,9 @@
     <ClInclude Include="SourceCode\gamesystem\character\FirstBoss.h">
       <Filter>gamesystem\charactor\Boss\First</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\InterBoss.h">
+      <Filter>gamesystem\charactor\Boss\Base</Filter>
+    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\EnemyManager.h">
       <Filter>gamesystem\charactor\Manager</Filter>
     </ClInclude>
@@ -799,8 +811,14 @@
     <ClInclude Include="SourceCode\gamesystem\scene\SceneSave.h">
       <Filter>gamesystem\scene\Base</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\InterBoss.h">
-      <Filter>gamesystem\charactor\Boss\Base</Filter>
+    <ClInclude Include="SourceCode\gamesystem\actor\ThirdStageActor.h">
+      <Filter>gamesystem\actor\Third</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\ThirdStage.h">
+      <Filter>gamesystem\scene\Play\Third</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\ThirdBoss.h">
+      <Filter>gamesystem\charactor\Boss\Third</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1099,6 +1117,15 @@
     </Filter>
     <Filter Include="gamesystem\backobj">
       <UniqueIdentifier>{56fe8aaf-0619-47c2-af9f-d42c818a3122}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\actor\Third">
+      <UniqueIdentifier>{b1928847-a667-4f38-ba4f-2fecc6acc321}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Play\Third">
+      <UniqueIdentifier>{e80c8f10-0750-4b60-97f2-7559ec2e7bac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\charactor\Boss\Third">
+      <UniqueIdentifier>{5764d420-c4d4-4607-b827-3307dd9ddd13}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

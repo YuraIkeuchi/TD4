@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "FirstBoss.h"
 #include "SecondBoss.h"
+#include "ThirdBoss.h"
 #include "NormalEnemy.h"
 #include "TutorialEnemy.h"
 #include<vector>
