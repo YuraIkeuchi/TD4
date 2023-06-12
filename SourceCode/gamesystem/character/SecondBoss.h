@@ -216,6 +216,8 @@ private:
 	//棘の的に使う
 	float m_Angle = 0.0f;
 	float m_Angle2 = 0.0f;
+
+	bool m_BirthWave = false;
 public:
 	void SetAppearEnd(bool end) { if (end) { m_AppearState = APPEAR_END; } }
 };

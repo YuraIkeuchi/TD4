@@ -43,6 +43,7 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	for (std::unique_ptr<IKEObject3d>& obj : grounds) {
 		obj->Update();
 	}
+	
 	if (Input::GetInstance()->TriggerKey(DIK_3)) {
 		Audio::GetInstance()->StopWave(3);
 		str="THIRDSTAGE";
