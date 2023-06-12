@@ -3,6 +3,7 @@
 #include "FirstBoss.h"
 #include "SecondBoss.h"
 #include "ThirdBoss.h"
+#include "FourthBoss.h"
 #include "NormalEnemy.h"
 #include "TutorialEnemy.h"
 #include<vector>

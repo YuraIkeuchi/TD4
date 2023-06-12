@@ -428,6 +428,15 @@
     <ClCompile Include="SourceCode\gamesystem\character\ThirdBoss.cpp">
       <Filter>gamesystem\charactor\Boss\Third</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\FourthBoss.cpp">
+      <Filter>gamesystem\charactor\Boss\Fourth</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\FourthStageActor.cpp">
+      <Filter>gamesystem\actor\Fourth</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\FourthStage.cpp">
+      <Filter>gamesystem\scene\Play\Fourth</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
@@ -820,6 +829,15 @@
     <ClInclude Include="SourceCode\gamesystem\character\ThirdBoss.h">
       <Filter>gamesystem\charactor\Boss\Third</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\FourthBoss.h">
+      <Filter>gamesystem\charactor\Boss\Fourth</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\FourthStageActor.h">
+      <Filter>gamesystem\actor\Fourth</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\FourthStage.h">
+      <Filter>gamesystem\scene\Play\Fourth</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
@@ -1126,6 +1144,15 @@
     </Filter>
     <Filter Include="gamesystem\charactor\Boss\Third">
       <UniqueIdentifier>{5764d420-c4d4-4607-b827-3307dd9ddd13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\charactor\Boss\Fourth">
+      <UniqueIdentifier>{949da15c-e9fb-4fbb-820d-721dacfaa7f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\actor\Fourth">
+      <UniqueIdentifier>{10017404-cd0d-494a-b74c-734e0f92aeee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Play\Fourth">
+      <UniqueIdentifier>{4c5715b8-6156-4a65-aae3-d7ed88ac153e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

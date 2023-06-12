@@ -44,11 +44,17 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 		obj->Update();
 	}
 	
+	//3ステージ
 	if (Input::GetInstance()->TriggerKey(DIK_3)) {
 		Audio::GetInstance()->StopWave(3);
 		str="THIRDSTAGE";
 	}
 
+	//4ステージ
+	if (Input::GetInstance()->TriggerKey(DIK_4)) {
+		Audio::GetInstance()->StopWave(3);
+		str = "FOURTHSTAGE";
+	}
 	//一定時間でシーンが変わる
 	if (m_LoadTimer >= 200 && !SceneManager::GetInstance()->GetLoad()) {
 		SceneManager::GetInstance()->ChangeScene(str);
