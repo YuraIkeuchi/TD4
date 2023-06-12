@@ -90,6 +90,10 @@ public:
 
 	void Draw(DirectXCommon* dxcommon);
 
+	void TestDraw(DirectXCommon* dxcommon);
+
+	void Test();
+
 	void SetAllColor(const XMVECTOR& color={1.f,1.f,1.f,1.f});
 
 	void SetOnceColor(int row, const XMVECTOR& color = { 1.f,1.f,1.f,1.f });
@@ -123,10 +127,19 @@ private:
 	std::map<TextManager::Name_First, Word> wordlist_first;
 	std::map<TextManager::Name_Second, Word> wordlist_second;
 	Conversation conversation_ = {};
+	Conversation old_conversation_ = {};
 
 	Conversation bossconversation_ = {};
 
 	XMVECTOR color_{ 1.f,1.f,1.f,1.f };
 	size_t len[3];
+
+	bool testF = false;
+	float time_ = 0.f;
+	int length = 0;
+	wchar_t* test;
+	wchar_t* test1;
+	wchar_t* test2;
+
 };
 
