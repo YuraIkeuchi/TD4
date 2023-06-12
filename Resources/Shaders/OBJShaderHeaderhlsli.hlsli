@@ -2,6 +2,8 @@ cbuffer cbuff0:register(b0)
 {
 float4 color;
 matrix mat;
+bool clips;
+float Cinter;
 };
 
 struct Output

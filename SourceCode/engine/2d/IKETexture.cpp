@@ -910,6 +910,8 @@ void IKETexture::Update()
 	result = constBuff->Map(0, nullptr, (void**)&constMap);
 	constMap->color = color;
 	constMap->mat = matWorld * matViewProjection; // s—ñ‚Ì‡¬
+	constMap->clips = ClipF;
+	constMap->Cinter = CenterPos;
 	constBuff->Unmap(0, nullptr);
 }
 
@@ -928,6 +930,8 @@ void IKETexture::AffineUpdate()
 	result = constBuff->Map(0, nullptr, (void**)&constMap);
 	constMap->color = color;
 	constMap->mat = matWorld * matViewProjection; // s—ñ‚Ì‡¬
+	constMap->clips = ClipF;
+	constMap->Cinter = CenterPos;
 	constBuff->Unmap(0, nullptr);
 }
 
