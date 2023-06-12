@@ -32,6 +32,9 @@ public:
 	void Draw(DirectXCommon* dxcommon);
 	static void PostDraw(DirectXCommon* dxcommon);
 	void SetString(wchar_t* ward);
+	void TestSet(wchar_t* ward, size_t len);
+	wchar_t* GetString() { return ward_; }
+
 	void SetNum(UINT num) { TexNumver = num; }
 	
 protected:
@@ -46,5 +49,8 @@ private:
 	XMFLOAT2 shadow_position_ = {};
 	XMFLOAT2 disply_place_{ 300.f,370.f };
 	wchar_t* ward_=L"w";
+	wchar_t* testward_;
+	float time_ = 0.f;
+	int len_ = 0;
 };
 
