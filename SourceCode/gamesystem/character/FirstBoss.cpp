@@ -157,12 +157,12 @@ void FirstBoss::Action() {
 	constexpr float AnchorY = 0.3f;
 
 	texpos = { m_Position.x,2.f,m_Position.z };
-	cinter += 0.01f;
+	cinter += 0.018f;
 	if (cinter > 1.2f)cinter = AnchorY;
 	damageara->SetCinter(cinter);
 	damageara->SetRotation({90,m_Rotation.y-90,0
 });
-	damageara->SetScale({1.f,6.f,1.f});
+	damageara->SetScale({2.f,12.f,1.f});
 	damageara->SetColor({1,1,1,texAlpha});
 	damageara->SetClipF(true);
 damageara->Update();
@@ -384,7 +384,6 @@ void FirstBoss::NormalAttak::Attack(XMFLOAT3& Pos, XMFLOAT3& Rot)
 
 void FirstBoss::NormalAttak::ShakeAction(XMFLOAT3& Pos, XMFLOAT3& Rot)
 {
-	ViewDAreaF = true;
 	//初期化部
 	{
 		//RotSpeed = 0.f;
@@ -397,7 +396,7 @@ void FirstBoss::NormalAttak::ShakeAction(XMFLOAT3& Pos, XMFLOAT3& Rot)
 	move = XMVector3TransformNormal(move, matRot);
 
 	const int MaxShakeTime = 60;
-
+	if(RotSpeed>2.f)ViewDAreaF = true;
 	if (RotEaseTime >= 1.f) {
 
 		RotSpeed += 0.1f;
@@ -418,12 +417,13 @@ void FirstBoss::NormalAttak::ShakeAction(XMFLOAT3& Pos, XMFLOAT3& Rot)
 			Pos.z = Pos.z + move.m128_f32[2] * BackSpeed;
 		} else
 		{
+
 			XMVECTOR PositionA = { Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().y, Player::GetInstance()->GetPosition().z };
 			XMVECTOR PositionB = { Pos.x,Pos.y,Pos.z };
 			//プレイヤーと敵のベクトルの長さ(差)を求める
 			XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA);
 			float RotY = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
-
+			if(RotSpeed<7.f)
 			Rot.y = RotY * 60.f + 90.f;
 		}
 

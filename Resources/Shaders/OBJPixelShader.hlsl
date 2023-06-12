@@ -63,9 +63,15 @@ float4 main(Output input) : SV_TARGET
 			: -1;
 		clip(v);
 
-	texcolor.rgb += bloom(smp, input.uv);
-	//奥行けば色濃くなるよ
-	texcolor.w = abs(Cinter - input.uv.y)+0.1f;
+
+		float CorrVal = 1.0f;
+		texcolor.rgb += bloom(smp, input.uv);
+		float SubAlpha = smoothstep(0, 1, input.uv.y);
+
+		//奥行けば色濃くなるよ
+	texcolor.w = abs(Cinter - input.uv.y)+(CorrVal-SubAlpha);
+	//x補正込み 単色だと地味なんで
+		texcolor.w *= abs(0.5f- input.uv.x)+0.7f;
 
 	return float4(texcolor.rgb, texcolor.a) *color;
 	}
