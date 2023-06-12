@@ -63,7 +63,7 @@ private:
 	void AngerMove();//怒り
 	void JoyMove();//喜び
 	void ChoiceMove();//動きのチョイス
-	void BirthWave();//衝撃波の生成
+	void BirthWave(const float scale);//衝撃波の生成
 	void BirthPredict();//予測テクスチャの生成
 	//転がるやつ
 	void Rolling();

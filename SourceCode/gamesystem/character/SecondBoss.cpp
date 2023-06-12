@@ -296,7 +296,7 @@ void SecondBoss::Stamp() {
 
 			if (m_Frame > 0.05f) {
 				if (!m_BirthWave) {
-					BirthWave();//ウェーブの生成
+					BirthWave(6.0f);//ウェーブの生成
 					m_BirthWave = true;
 				}
 			}
@@ -420,7 +420,7 @@ void SecondBoss::RandomStamp() {
 
 			if (m_Frame > 0.05f) {
 				if (!m_BirthWave) {
-					BirthWave();//ウェーブの生成
+					BirthWave(3.0f);//ウェーブの生成
 					m_BirthWave = true;
 				}
 			}
@@ -806,11 +806,12 @@ bool SecondBoss::Collide() {
 	return false;
 }
 //衝撃波の発生
-void SecondBoss::BirthWave() {
+void SecondBoss::BirthWave(const float scale) {
 	//衝撃波の発生
 	ShockWave* newwave;
 	newwave = new ShockWave();
 	newwave->Initialize({ m_Position.x,0.0f,m_Position.z });
+	newwave->SetAfterScale(scale);
 	shockwaves.push_back(newwave);
 }
 //テクスチャの更新
