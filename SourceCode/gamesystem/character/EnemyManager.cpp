@@ -16,18 +16,14 @@ EnemyManager::EnemyManager(const std::string& SceneName) {
 	} else if (m_SceneName == "SECONDSTAGE") {
 		boss.reset(new SecondBoss());
 		boss->Initialize();
-		for (auto i = 0; i < bulletenemy.size(); i++) {
-			bulletenemy[i] = new NormalEnemy();
-			bulletenemy[i]->Initialize();
-		}
 	} else if (m_SceneName == "THIRDSTAGE") {
 		boss.reset(new ThirdBoss());
 		boss->Initialize();
-		//for (auto i = 0; i < bulletenemy.size(); i++) {
-		//	bulletenemy[i] = new NormalEnemy();
-		//	bulletenemy[i]->Initialize();
-		//}
-	} else if (m_SceneName == "TUTORIAL") {
+	}
+	else if (m_SceneName == "FOURTHSTAGE") {
+		boss.reset(new FourthBoss());
+		boss->Initialize();
+	}else if (m_SceneName == "TUTORIAL") {
 		for (auto i = 0; i < tutorialenemy.size(); i++) {
 			tutorialenemy[i] = make_unique<TutorialEnemy>();
 			tutorialenemy[i]->Initialize();

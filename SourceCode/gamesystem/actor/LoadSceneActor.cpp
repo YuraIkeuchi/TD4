@@ -46,7 +46,7 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	
 	if (Input::GetInstance()->TriggerKey(DIK_3)) {
 		Audio::GetInstance()->StopWave(3);
-		str="THIRDSTAGE";
+		str="FOURTHSTAGE";
 	}
 
 	//一定時間でシーンが変わる
