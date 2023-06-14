@@ -2,7 +2,7 @@
 #include "InterBoss.h"
 #include "Shake.h"
 #include "Note.h"
-
+#include "AttackNote.h"
 class FourthBoss :
 	public InterBoss {
 public:
@@ -38,9 +38,12 @@ private:
 	void Confusion();
 	//CSV読み込み系
 	void CSVLoad();
+	//ノーツの生成
+	void BirthNote(const int NoteType);
 private:
 	//各クラス
 	unique_ptr<Note> note;
+	vector<AttackNote*> attacknotes;//怒りのスタンプ
 	//キャラの状態
 	enum CharaState
 	{
@@ -61,4 +64,28 @@ private:
 
 	//CSV系
 	int m_ChoiceInterval = {};
+
+	//イージング後の位置
+	XMFLOAT3 m_AfterPos = {};
+	//X方向の回転
+	XMFLOAT3 m_AfterRot = { 0.0f,0.0f,0.0f };
+	float m_Frame = {};
+
+	enum FollowState {
+		FOLLOW_SET,
+		FOLLOW_BIRTH,
+		FOLLOW_END,
+	};
+	int m_FollowState = {};
+
+	enum DiffusionState {
+		DIFFU_SET,
+		DIFFU_BIRTH,
+		DIFFU_END,
+	};
+
+	int m_DiffuState = {};
+
+	int m_RotCount = 0;
+	int m_RotTimer = 0;
 };
