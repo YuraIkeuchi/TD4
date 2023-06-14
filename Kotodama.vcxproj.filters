@@ -438,7 +438,10 @@
       <Filter>gamesystem\scene\Play\Fourth</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\bossattach\Note.cpp">
-      <Filter>gamesystem\bossattach\Note</Filter>
+      <Filter>gamesystem\bossattach\Note\View</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\bossattach\AttackNote.cpp">
+      <Filter>gamesystem\bossattach\Note\Attack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -842,7 +845,10 @@
       <Filter>gamesystem\scene\Play\Fourth</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\bossattach\Note.h">
-      <Filter>gamesystem\bossattach\Note</Filter>
+      <Filter>gamesystem\bossattach\Note\View</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\AttackNote.h">
+      <Filter>gamesystem\bossattach\Note\Attack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1159,6 +1165,12 @@
     </Filter>
     <Filter Include="gamesystem\bossattach\Note">
       <UniqueIdentifier>{f5d5fe81-1118-4806-88e1-69b872a67f61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\bossattach\Note\View">
+      <UniqueIdentifier>{9b0dfcc2-b20a-402c-a328-b463299a7835}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\bossattach\Note\Attack">
+      <UniqueIdentifier>{6150f44b-5ea3-46c7-8e6e-e7a5b4f3acbf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
