@@ -39,9 +39,10 @@ void TextManager::Create(DirectXCommon* dxcomon)
 //初期化
 void TextManager::Initialize(DirectXCommon* dxcomon)
 {
+
 	//ワード追加
 	CreateWord(NONE, L" ", L" ", L" ");
-	CreateWord(TYUTORIAL_TALK1, L"ここはどこだろう?", L"ん?なにか動いてる", L"");
+	CreateWord(TYUTORIAL_TALK1, L"ここはどこだろう?", L"ん?何か動いてる?", L"");
 	CreateWord(SETUMEI1, L"Lスティックで移動してみよう", L"", L"");
 	CreateWord(TYUTORIAL_TALK2, L"これは.....メガホン?", L"でも、動いてる?");
 	CreateWord(TYUTORIAL_TALK3, L"う..う.......はっ!?", L"敵!?.......じゃないみたいだな", L" ");
@@ -131,26 +132,18 @@ void TextManager::TestDraw(DirectXCommon* dxcommon)
 	len[1] = wcslen(test1);
 	len[2] = wcslen(test2);
 
-	time_ += 0.1f;
-
-	if (time_ >= 1) {
-		length += 1;
-		time_ = 0.f;
-		if (len[0] > length) {
-			test[length];
-			for (int i = 0; i < len[0]; i++) {
-			}
-		}
-	}
 	
-	conversation_.FirstFont->TestSet(test,len[0]);
-	conversation_.SecondFont->TestSet(test1, len[1]);
-	conversation_.ThirdFont->TestSet(test2, len[2]);
-
-
+	conversation_.FirstFont->TestSet(test,len[0],flag[0],next_f[0]);
 	conversation_.FirstFont->Draw(dxcommon);
-	conversation_.SecondFont->Draw(dxcommon);
-	conversation_.ThirdFont->Draw(dxcommon);
+	if (next_f[0] == true) {
+		conversation_.SecondFont->TestSet(test1, len[1], flag[1],next_f[1]);
+		conversation_.SecondFont->Draw(dxcommon);
+	}
+	if (next_f[1] == true) {
+		conversation_.ThirdFont->TestSet(test2, len[2], flag[2],next_f[2]);
+		conversation_.ThirdFont->Draw(dxcommon);
+	}
+
 	Font::PostDraw(dxcommon);
 }
 
@@ -191,6 +184,15 @@ void TextManager::SetConversation(Name name,const XMVECTOR& color)
 {
 	std::map<TextManager::Name, Word>::iterator itr = wordlist_.find(name);
 
+	if (old != itr->first) {
+		for (int i = 0; i < 3; i++) {
+			flag[i] = true;
+			next_f[i] = false;
+		}
+	}
+
+	old = itr->first;
+
 	GetWordSize(itr->second);
 	
 	CreateCon(conversation_, itr->second);
@@ -198,7 +200,7 @@ void TextManager::SetConversation(Name name,const XMVECTOR& color)
 	conversation_.FirstFont->SetColor(color);
 	conversation_.SecondFont->SetColor(color);
 	conversation_.ThirdFont->SetColor(color);
-	testF = true;
+	
 }
 //名前から文字列を呼び出しセットする
 void TextManager::SetConversation(Name_First name, const XMVECTOR& color)
