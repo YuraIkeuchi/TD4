@@ -932,9 +932,6 @@
     <Filter Include="engine\helper">
       <UniqueIdentifier>{31e76bf3-e3c6-4626-a245-2e7e6077980f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="engine\imgui">
-      <UniqueIdentifier>{32013d26-86f9-44ef-a932-c1ddc79b1919}</UniqueIdentifier>
-    </Filter>
     <Filter Include="gamesystem\bossattach">
       <UniqueIdentifier>{c5b6abd9-4249-47a2-8449-64ba75b27c63}</UniqueIdentifier>
     </Filter>
