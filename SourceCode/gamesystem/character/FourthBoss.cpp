@@ -1,17 +1,16 @@
 #include "FourthBoss.h"
 #include <any>
 #include <random>
-
 #include "Collision.h"
 #include "CsvLoader.h"
-#include "ImageManager.h"
 #include "Shake.h"
 #include "Player.h"
 
 void (FourthBoss::* FourthBoss::stateTable[])() = {
-	&FourthBoss::WaitUpdate,//óvëf0
-	&FourthBoss::MoveUpdate, //óvëf1
-	&FourthBoss::ControlUpdate,
+	&FourthBoss::Choice,//ëIë
+	&FourthBoss::Follow, //í«è]
+	&FourthBoss::Diffusion,//ägéU
+	&FourthBoss::Confusion//ç¨óê
 };
 
 
@@ -31,10 +30,7 @@ bool FourthBoss::Initialize() {
 	m_Scale = { 1.0f,1.4f,1.0f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Rotation.y = -90.f;
-	m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "pos")));
-	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "Magnification")));
-	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "hp1")));
-	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "HeartTarget")));
+	
 	m_MaxHp = m_HP;
 
 	ActionTimer = 1;
@@ -42,17 +38,32 @@ bool FourthBoss::Initialize() {
 	m_Radius = 5.0f;
 
 	note->Initialize();
+
+	_charaState = STATE_CHOICE;
+
+	//CSVÉçÅ[Éh
+	CSVLoad();
 	return true;
 }
 
 void FourthBoss::SkipInitialize() {
+	m_Position = { 0.0f,0.0f,30.0f };
+	m_Scale = { 1.0f,1.4f,1.0f };
+	m_Color = { 1.0f,1.0f,1.0f,1.0f };
+}
 
+void FourthBoss::CSVLoad() {
+	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "Magnification")));
+	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "hp1")));
+	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "HeartTarget")));
+	m_ChoiceInterval = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "ChoiceInterVal")));
 }
 //çsìÆ
 void FourthBoss::Action() {
-	if (m_HP < 0.1) return;
-
-
+	//èÛë‘à⁄çs(charastateÇ…çáÇÌÇπÇÈ)
+	if (m_HP > 0.0f) {
+		(this->*stateTable[_charaState])();
+	}
 
 	/*^^^^ìñÇΩÇËîªíË^^^^*/
 	//íeÇ∆É{ÉXÇÃìñÇΩÇËîªíË
@@ -83,11 +94,36 @@ void FourthBoss::Draw(DirectXCommon* dxCommon) {
 	EffecttexDraw(dxCommon);
 }
 
-void FourthBoss::WaitUpdate() {
+//ImGui
+void FourthBoss::ImGui_Origin() {
+	ImGui::Begin("Fourth");
+	ImGui::Text("Stop:%d", m_StopTimer);
+	ImGui::Text("Choice:%d", m_ChoiceInterval);
+	ImGui::End();
+}
+//ìÆÇ´ÇÃëIë
+void FourthBoss::Choice() {
+	m_StopTimer++;
+	if (m_StopTimer > m_ChoiceInterval) {
+
+	}
 }
 
-void FourthBoss::MoveUpdate() {
+//í«è]
+void FourthBoss::Follow() {
+
+}
+//ägéU
+void FourthBoss::Diffusion() {
+
 }
 
-void FourthBoss::ControlUpdate() {
+//ç¨óê
+void FourthBoss::Confusion() {
+
+}
+
+//ìoèÍÉVÅ[Éì
+void FourthBoss::AppearAction() {
+	Obj_SetParam();
 }

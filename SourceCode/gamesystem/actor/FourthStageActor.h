@@ -22,7 +22,13 @@ public:
 	void FrontDraw(DirectXCommon* dxCommon);
 	void BackDraw(DirectXCommon* dxCommon);
 	void ImGuiDraw(DirectXCommon* dxCommon);
-	void ColEnemy(std::vector<InterEnemy*> enelist);
+
+private:
+
+	void IntroUpdate(DebugCamera* camera)override;		//登場シーン
+	void MainUpdate(DebugCamera* camera)override;		//バトルシーン
+	void FinishUpdate(DebugCamera* camera)override;		//撃破シーン
+
 private:
 	float Rads;
 	int textT;
