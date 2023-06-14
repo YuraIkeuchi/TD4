@@ -1,8 +1,9 @@
 #pragma once
-#include "IKESprite.h"
+#include "Note.h"
 #include "InterBoss.h"
 #include "Shake.h"
 #include "Player.h"
+
 class FourthBoss :
 	public InterBoss {
 public:
@@ -40,4 +41,6 @@ private:
 	void WaitUpdate();
 	void MoveUpdate();
 	void ControlUpdate();
+
+	unique_ptr<Note> note;
 };
