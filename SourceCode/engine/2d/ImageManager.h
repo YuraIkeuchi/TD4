@@ -41,7 +41,9 @@ public:
 		TopGauge,
 		GIRL,
 		SUTOPON,
-		FEED
+		FEED,
+		PHOTO_IN,
+		PHOTO_OUT,
 	};
 	//テクスチャの名前
 	enum tex2dName
@@ -51,7 +53,8 @@ public:
 		ANGER,
 		JOY,
 		MARK,
-	DAMAGEAREA
+		DAMAGEAREA,
+		PHOTOSPOT,
 	};
 	enum particleName
 	{
