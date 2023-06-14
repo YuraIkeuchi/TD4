@@ -51,7 +51,8 @@ public:
 		ANGER,
 		JOY,
 		MARK,
-	DAMAGEAREA
+		DAMAGEAREA,
+		PHOTOSPOT,
 	};
 	enum particleName
 	{
