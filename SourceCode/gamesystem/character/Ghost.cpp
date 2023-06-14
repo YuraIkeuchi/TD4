@@ -59,6 +59,7 @@ void Ghost::Update() {
 }
 //描画
 void Ghost::Draw(DirectXCommon* dxCommon) {
+	//if (!m_Alive) { return; }
 	Obj_Draw();
 }
 //ImGui描画
@@ -116,7 +117,8 @@ void Ghost::GhostCollision(const XMFLOAT3& pos) {
 }
 //食料生成
 void Ghost::BirthGhost() {
-	if (!m_Alive) {
+	if (!isVerse) { return; }
+	if (m_Alive) { return; }
 		m_ResPornTimer++;
 		//描画バグ起きるから先に座標セット
 		if (m_ResPornTimer == 20) {
@@ -143,12 +145,11 @@ void Ghost::BirthGhost() {
 			m_ResPornTimer = 0;
 			m_Scale = { 0.5f,0.5f,0.5f };
 		}
-	}
 }
 //何もない状態
 void Ghost::None() {
+	//浮遊状態
 	noneTimer += 0.05f;
-
 	float size = sinf(noneTimer) * 0.05f;
 	m_Position.x += cosf(m_Rotation.y * (PI_180 / XM_PI)) * size;
 	m_Position.y = sinf(noneTimer) * 1.2f;

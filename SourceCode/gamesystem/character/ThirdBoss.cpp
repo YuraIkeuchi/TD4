@@ -25,7 +25,7 @@ ThirdBoss::ThirdBoss() {
 	//
 	for (int i = 0; i < kPhotoSpotMax; i++) {
 		IKETexture* photoSpot_ = IKETexture::Create(ImageManager::PHOTOSPOT, spotPos[i], { 1.5f,1.5f,1.5f }, { 1,1,1,1 });
-		photoSpot_->SetRotation(rot);
+		photoSpot_->SetRotation({ 90.0f,0.0f,0.0f });
 		photoSpot_->TextureCreate();
 		photoSpot[i].reset(photoSpot_);
 	}
@@ -127,7 +127,7 @@ void ThirdBoss::Draw(DirectXCommon* dxCommon) {
 void ThirdBoss::WaitUpdate() {
 	ActionTimer++;
 	if (ActionTimer >= ActionTimerMax[(size_t)commandState::WaitCommand]) {
-		mt19937 mt{ std::random_device{}() };
+		/*mt19937 mt{ std::random_device{}() };
 		uniform_int_distribution<int> l_Rand(0, 4);
 		moveSpawn = l_Rand(mt);
 		if (moveSpawn == nowSpawn) {
@@ -138,7 +138,10 @@ void ThirdBoss::WaitUpdate() {
 		}
 		nowSpawn = moveSpawn;
 		phase = commandState::MoveCommand;
+		*/
 		ActionTimer = 0;
+		isSearch = true;
+		phase = commandState::ControlCommand;
 	}
 }
 
@@ -183,4 +186,22 @@ void ThirdBoss::MoveUpdate() {
 }
 
 void ThirdBoss::ControlUpdate() {
+	ActionTimer++;
+	if (ActionTimer >= ActionTimerMax[(size_t)commandState::ControlCommand]) {
+		if (!isSearch) {
+			if (isInstruction == ThirdBossInst::None) {
+				isInstruction = ThirdBossInst::StopGhost;
+			}
+		}
+	}
+
+
+
+
+	//if (ActionTimer >= ActionTimerMax[(size_t)commandState::ControlCommand]) {
+
+	//
+	//
+	//}
+
 }

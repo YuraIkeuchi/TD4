@@ -58,8 +58,6 @@ private:
 public:
 	//ゴースト同士の当たり判定
 	void GhostCollision(const XMFLOAT3& pos);
-	//ゴースト同士の当たり判定
-	void NotGhostCollision(const XMFLOAT3& pos);
 public://getter setter
 public:
 	//gettersetter
@@ -67,20 +65,22 @@ public:
 	const bool& GetCatch() { return m_Catch; }
 	const bool& GetFollow() { return m_Follow; }
 	const bool& GetSearch() { return m_Search; }
+	const bool& GetIsVerse() { return isVerse; }
 	const float& GetLimit() { return m_Limit; }
+	void SetIsVerse(const bool isVerse) { this->isVerse = isVerse; }
 	void SetCatch(const bool Catch) { m_Catch = Catch; }
 	void SetAlive(const bool Alive) { m_Alive = Alive; }
 	void SetLimit(const float Limit) { m_Limit = Limit; }
 private:
 	bool m_Alive = true;//生存フラグ
-	bool m_Catch =false;//捕獲フラグ
+	bool m_Catch = false;//捕獲フラグ
+	bool isVerse = true;//リスポーンフラグ
 	int m_ResPornTimer = 0;//復活の時間
 	XMFLOAT3 m_FollowPos = {};//追従先
 	XMFLOAT3 m_OBBScale = {};//OBB用の大きさ
 private:
 	//キャラの状態
-	enum CharaState
-	{
+	enum CharaState {
 		STATE_NONE,
 		STATE_SPAWN,
 		STATE_FOLLOW,
@@ -88,7 +88,7 @@ private:
 	}_charaState = CharaState::STATE_NONE;
 
 private:
-	IKEModel* model_follow=nullptr;
+	IKEModel* model_follow = nullptr;
 	IKEModel* model_seach = nullptr;
 
 	XMFLOAT3 m_OldPos = {};
@@ -107,12 +107,13 @@ private://探索
 
 	float m_SpawnTimer = 0.f;
 	float kSpawnTimerMax = 60.f;
+
 	//探索状態
 	enum SearchState {
 		SEARCH_NO,
 		SEARCH_START,
 		SEARCH_END,
-	}_searchState=SearchState::SEARCH_NO;
+	}_searchState = SearchState::SEARCH_NO;
 
 	int m_SearchTimer = 0;
 private:
@@ -121,6 +122,5 @@ private:
 
 	bool m_Hit = false;
 
-	OBB m_OBB1 = {};
-	OBB m_OBB2 = {};
+	OBB m_OBB1 = {}, m_OBB2 = {};
 };

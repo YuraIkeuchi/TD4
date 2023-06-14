@@ -188,7 +188,7 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 
 	enemymanager->BattleUpdate();
 	ColEnemy(enemymanager->GetBulEnemy());
-	loadobj->FirstUpdate();
+	loadobj->ThirdUpdate();
 	ParticleEmitter::GetInstance()->Update();
 	if (input->TriggerKey(DIK_X)) {
 		Audio::GetInstance()->StopWave(1);

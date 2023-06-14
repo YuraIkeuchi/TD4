@@ -149,6 +149,10 @@ void InterBoss::isRespawn(std::vector<InterEnemy*> boss)
 	}
 }
 
+void InterBoss::SpawnSetEnemy(vector<unique_ptr<InterEnemy>> enemys) {
+
+}
+
 
 void InterBoss::SummonEnemyUpda(std::vector<InterEnemy*> boss)
 {

@@ -18,10 +18,12 @@ protected:
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
-	bool GetIsAlive() { return isAlive; }
-	//gettersetter
+	enum ThirdBossInst{
+		None=0,
+		StopGhost,
+		SpawnEnemy,
+	};
 public:
-
 	//初期化
 	virtual bool Initialize() = 0;
 	//更新
@@ -59,13 +61,13 @@ private:
 	void BirthEffect();
 public:
 	void SummonEnemyInit(InterEnemy* boss);
-
 	void SummonEnemyUpda(std::vector<InterEnemy*> boss);
-
 	void SummonEnemyDraw(std::vector<InterEnemy*> boss, DirectXCommon* dxcomn);
-
 	void EndSummon(std::vector<InterEnemy*> boss);
 	void isRespawn(std::vector<InterEnemy*> boss);
+
+	void SpawnSetEnemy(vector<unique_ptr<InterEnemy>> enemys);
+
 protected:
 	bool SummonF;
 	bool SummobnStop;
@@ -73,8 +75,23 @@ protected:
 private:
 	XMFLOAT3 EffectFirstPos;
 public://gettersetter
+	bool GetIsAlive() { return isAlive; }
+
 	void SetHP(float hp) { m_HP = hp; };
 	float GetHP() { return m_HP; }
+
+	void SetLimit(float limit) { m_Limit = limit; };
+	float GetLimit() { return m_Limit; }
+
+	void SetStrong(bool strong) { isStrong = strong; };
+	bool GetStrong() { return isStrong; }
+
+	void SetSearch(bool isSearch) { this->isSearch = isSearch; };
+	bool GetSearch() { return isSearch; }
+
+	void SetInstruction(int isInstruction) { this->isInstruction = isInstruction; };
+	int GetInstruction() { return isInstruction; }
+
 	float HpPercent();
 
 	void SetCheck(bool Check) { m_Check = Check; };
@@ -104,6 +121,12 @@ protected:
 	bool isAlive;
 	float m_HP = {};
 	float m_MaxHp = {};
+	float m_Limit = 20.0f;
+	bool isStrong = false;
+	//ゴーストを5たいサーチ
+	bool isSearch = false;
+	//ゴーストを削除しスポーンを止めます。
+	int isInstruction = 0;
 
 	bool m_Check = false;
 	XMFLOAT3 m_OBBScale = {};

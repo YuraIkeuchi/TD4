@@ -60,9 +60,13 @@ void InterEnemy::ColPlayer()
 	if (Collision::CircleCollision(Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z, 2.f, m_Position.x, m_Position.z, 1.f)
 		&&Player::GetInstance()->GetDamageInterVal()==0)
 	{
-		Player::GetInstance()->PlayerHit(m_Position);
-		Player::GetInstance()->RecvDamage(0);
 
+		Player::GetInstance()->PlayerHit(m_Position);
+		if (isUnrival) {
+			Player::GetInstance()->RecvDamage(0);
+		} else {
+			Player::GetInstance()->RecvDamage(1.0f);
+		}
 	}
 
 	if (HP <= 0)
