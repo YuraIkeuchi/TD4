@@ -39,6 +39,9 @@ void ImageManager::SecondLoad2D()
 	IKESprite::LoadTexture(UnderGauge, L"Resources/2d/objicon/UnderGauge.png");
 	IKESprite::LoadTexture(Gauge, L"Resources/2d/objicon/Gauge.png");
 	IKESprite::LoadTexture(TopGauge, L"Resources/2d/objicon/TopGauge.png");
+	IKESprite::LoadTexture(PHOTO_IN, L"Resources/2d/effect/camera_soto.png");
+	IKESprite::LoadTexture(PHOTO_OUT, L"Resources/2d/effect/camera_naka.png");
+
 }
 
 //テクスチャの読み込み
