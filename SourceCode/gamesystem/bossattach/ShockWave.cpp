@@ -42,10 +42,10 @@ void ShockWave::ImGuiDraw() {
 //ボスによって衝撃波が走る
 void ShockWave::WideWave() {
 	//イージング語の各ステータス
-	const float l_AfterScale = 4.0f;
-	const float l_AfterDamage = 9.0f;
+	const float l_AfterScale = m_AfterScale;
+	const float l_AfterDamage = m_AfterScale + 2.0f;
 	const float l_AfterColor = 0.0f;
-	const float l_AddFrame = 0.01f;
+	const float l_AddFrame = 0.015f;
 	if (m_Alive) {
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;

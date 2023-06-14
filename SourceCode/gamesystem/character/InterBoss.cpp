@@ -48,8 +48,9 @@ void InterBoss::ImGuiDraw() {
 	if (!this) { return; }
 	ImGui::Begin("Boss");
 	ImGui::Text("HP:%f", m_HP);
+	ImGui::Text("POSY:%f", m_Position.y);
 	ImGui::End();
-	this->ImGui_Origin();
+	ImGui_Origin();
 }
 
 float InterBoss::HpPercent() {

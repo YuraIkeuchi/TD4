@@ -220,6 +220,14 @@ void SecondBoss::DamAction()
 }
 //ImGui
 void SecondBoss::ImGui_Origin() {
+	for (ShockWave* wave : shockwaves) {
+		if (wave != nullptr) {
+			wave->ImGuiDraw();
+		}
+	}
+	ImGui::Begin("SECOND");
+	ImGui::Text("Timer:%d", m_StopTimer);
+	ImGui::End();
 }
 //移動
 void SecondBoss::Move() {
@@ -285,12 +293,18 @@ void SecondBoss::Stamp() {
 		m_AfterPos = { m_Position.x,6.0f,m_Position.z };
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
+
+			if (m_Frame > 0.05f) {
+				if (!m_BirthWave) {
+					BirthWave(6.0f);//ウェーブの生成
+					m_BirthWave = true;
+				}
+			}
 		}
 		else {
+			m_BirthWave = false;
 			m_Frame = 1.0f;
-			if (m_StopTimer == 1) {
-				BirthWave();//ウェーブの生成
-			}
+			
 			if (Helper::GetInstance()->CheckMin(m_StopTimer, m_StampInterval[PRESS_ATTACK], 1)){			//シェイクが始まる
 				StampInit(PRESS_SHAKE, false);
 				shake->SetShakeStart(true);
@@ -403,13 +417,20 @@ void SecondBoss::RandomStamp() {
 		const int l_MoveMax = 10;
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
+
+			if (m_Frame > 0.05f) {
+				if (!m_BirthWave) {
+					BirthWave(3.0f);//ウェーブの生成
+					m_BirthWave = true;
+				}
+			}
 		}
 		else {
+			m_BirthWave = false;
 			m_Frame = 1.0f;
 			if (m_StopTimer == 1) {
 				//スタンプと衝撃波の生成
 				BirthStamp("Anger");
-				BirthWave();
 			}
 			if (Helper::GetInstance()->CheckMin(m_StopTimer, m_RandomInterval[RANDOM_ATTACK], 1)) {
 				if (m_MoveCount < l_MoveMax) {		//何回スタンプを押したかで最初に戻るか別の行動をするか決まる
@@ -785,11 +806,12 @@ bool SecondBoss::Collide() {
 	return false;
 }
 //衝撃波の発生
-void SecondBoss::BirthWave() {
+void SecondBoss::BirthWave(const float scale) {
 	//衝撃波の発生
 	ShockWave* newwave;
 	newwave = new ShockWave();
 	newwave->Initialize({ m_Position.x,0.0f,m_Position.z });
+	newwave->SetAfterScale(scale);
 	shockwaves.push_back(newwave);
 }
 //テクスチャの更新

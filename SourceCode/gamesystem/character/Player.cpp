@@ -443,10 +443,10 @@ void Player::BirthShot(const std::string& bulletName, bool Super) {
 			}
 			else if(l_BulletNum == 2) {
 				if (i == 0) {
-					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 10.0f));
+					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 5.0f));
 				}
 				else {
-					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y - 10.0f));
+					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y - 5.0f));
 				}
 			}
 			else {

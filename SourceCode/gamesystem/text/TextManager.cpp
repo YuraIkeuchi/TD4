@@ -16,14 +16,22 @@ void TextManager::Create(DirectXCommon* dxcomon)
 	conversation_.FirstFont = new Font();
 	conversation_.SecondFont = new Font();
 	conversation_.ThirdFont = new Font();
-
 	conversation_.FirstFont->LoadFont(dxcomon);
 	conversation_.SecondFont->LoadFont(dxcomon);
 	conversation_.ThirdFont->LoadFont(dxcomon);
-
 	conversation_.FirstFont->SetColor(color_);
 	conversation_.SecondFont->SetColor(color_);
 	conversation_.ThirdFont->SetColor(color_);
+
+	old_conversation_.FirstFont = new Font();
+	old_conversation_.SecondFont = new Font();
+	old_conversation_.ThirdFont = new Font();
+	old_conversation_.FirstFont->LoadFont(dxcomon);
+	old_conversation_.SecondFont->LoadFont(dxcomon);
+	old_conversation_.ThirdFont->LoadFont(dxcomon);
+	old_conversation_.FirstFont->SetColor(color_);
+	old_conversation_.SecondFont->SetColor(color_);
+	old_conversation_.ThirdFont->SetColor(color_);
 
 }
 
@@ -110,6 +118,53 @@ void TextManager::Draw(DirectXCommon* dxcommon)
 	Font::PostDraw(dxcommon);
 }
 
+void TextManager::TestDraw(DirectXCommon* dxcommon)
+{
+
+	length = 0;
+	test = conversation_.FirstFont->GetString();
+	test1 = conversation_.SecondFont->GetString();
+	test2 = conversation_.ThirdFont->GetString();
+
+
+	len[0] = wcslen(test);
+	len[1] = wcslen(test1);
+	len[2] = wcslen(test2);
+
+	time_ += 0.1f;
+
+	if (time_ >= 1) {
+		length += 1;
+		time_ = 0.f;
+		if (len[0] > length) {
+			test[length];
+			for (int i = 0; i < len[0]; i++) {
+			}
+		}
+	}
+	
+	conversation_.FirstFont->TestSet(test,len[0]);
+	conversation_.SecondFont->TestSet(test1, len[1]);
+	conversation_.ThirdFont->TestSet(test2, len[2]);
+
+
+	conversation_.FirstFont->Draw(dxcommon);
+	conversation_.SecondFont->Draw(dxcommon);
+	conversation_.ThirdFont->Draw(dxcommon);
+	Font::PostDraw(dxcommon);
+}
+
+void TextManager::Test()
+{
+	wchar_t* test = conversation_.FirstFont->GetString();
+	wchar_t* test1 = conversation_.SecondFont->GetString();
+	wchar_t* test2 = conversation_.ThirdFont->GetString();
+
+	conversation_.FirstFont->SetString(test);
+	conversation_.SecondFont->SetString(test1);
+	conversation_.ThirdFont->SetString(test2);
+}
+
 void TextManager::SetAllColor(const XMVECTOR& color)
 {
 	conversation_.FirstFont->SetColor(color);
@@ -143,6 +198,7 @@ void TextManager::SetConversation(Name name,const XMVECTOR& color)
 	conversation_.FirstFont->SetColor(color);
 	conversation_.SecondFont->SetColor(color);
 	conversation_.ThirdFont->SetColor(color);
+	testF = true;
 }
 //名前から文字列を呼び出しセットする
 void TextManager::SetConversation(Name_First name, const XMVECTOR& color)

@@ -63,7 +63,7 @@ private:
 	void AngerMove();//怒り
 	void JoyMove();//喜び
 	void ChoiceMove();//動きのチョイス
-	void BirthWave();//衝撃波の生成
+	void BirthWave(const float scale);//衝撃波の生成
 	void BirthPredict();//予測テクスチャの生成
 	//転がるやつ
 	void Rolling();
@@ -216,6 +216,8 @@ private:
 	//棘の的に使う
 	float m_Angle = 0.0f;
 	float m_Angle2 = 0.0f;
+
+	bool m_BirthWave = false;
 public:
 	void SetAppearEnd(bool end) { if (end) { m_AppearState = APPEAR_END; } }
 };
