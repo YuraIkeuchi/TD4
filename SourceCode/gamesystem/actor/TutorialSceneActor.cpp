@@ -650,7 +650,7 @@ void TutorialSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 		ui->Draw();
 	}
 	if (messagewindow_->DisplayCheck()) {
-		text_->Draw(dxCommon);
+		text_->TestDraw(dxCommon);
 	}
 	sceneChanger_->Draw();
 }
