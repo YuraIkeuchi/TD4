@@ -22,6 +22,8 @@ FourthBoss::FourthBoss() {
 	m_Object.reset(new IKEObject3d());
 	m_Object->Initialize();
 	m_Object->SetModel(m_Model);
+
+	note.reset(new Note);
 }
 
 bool FourthBoss::Initialize() {
@@ -38,6 +40,8 @@ bool FourthBoss::Initialize() {
 	ActionTimer = 1;
 
 	m_Radius = 5.0f;
+
+	note->Initialize();
 	return true;
 }
 
@@ -59,6 +63,8 @@ void FourthBoss::Action() {
 	//リミット制限
 	Helper::GetInstance()->Clamp(m_Position.x, -55.0f, 65.0f);
 	Helper::GetInstance()->Clamp(m_Position.z, -60.0f, 60.0f);
+
+	note->Update();
 }
 //ポーズ
 void FourthBoss::Pause() {
@@ -73,6 +79,7 @@ void FourthBoss::EffecttexDraw(DirectXCommon* dxCommon)
 //描画
 void FourthBoss::Draw(DirectXCommon* dxCommon) {
 	Obj_Draw();
+	note->Draw(dxCommon);
 	EffecttexDraw(dxCommon);
 }
 
