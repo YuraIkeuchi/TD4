@@ -39,8 +39,6 @@ void ImageManager::SecondLoad2D()
 	IKESprite::LoadTexture(UnderGauge, L"Resources/2d/objicon/UnderGauge.png");
 	IKESprite::LoadTexture(Gauge, L"Resources/2d/objicon/Gauge.png");
 	IKESprite::LoadTexture(TopGauge, L"Resources/2d/objicon/TopGauge.png");
-
-
 }
 
 //テクスチャの読み込み

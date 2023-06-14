@@ -437,6 +437,9 @@
     <ClCompile Include="SourceCode\gamesystem\scene\FourthStage.cpp">
       <Filter>gamesystem\scene\Play\Fourth</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\bossattach\Note.cpp">
+      <Filter>gamesystem\bossattach\Note</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
@@ -838,6 +841,9 @@
     <ClInclude Include="SourceCode\gamesystem\scene\FourthStage.h">
       <Filter>gamesystem\scene\Play\Fourth</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\Note.h">
+      <Filter>gamesystem\bossattach\Note</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
@@ -1153,6 +1159,9 @@
     </Filter>
     <Filter Include="gamesystem\scene\Play\Fourth">
       <UniqueIdentifier>{4c5715b8-6156-4a65-aae3-d7ed88ac153e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\bossattach\Note">
+      <UniqueIdentifier>{f5d5fe81-1118-4806-88e1-69b872a67f61}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
