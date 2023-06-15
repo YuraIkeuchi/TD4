@@ -30,16 +30,19 @@ public:
 private:
 	//“®‚«‚Ì‘I‘ğ
 	void Choice();
-	//’Ç]‚Ì‰¹•„
-	void Follow();
-	//ŠgU‚Ì’e
-	void Diffusion();
-	//¬—‚Ìó‘Ô
-	void Confusion();
+	//‚Ó‚Â‚¤‚Ì’e–‹
+	void NormalBarrage();
+	//ŒğŒİ‚Ì’e
+	void AlterBarrage();
+	//ƒ‰ƒ“ƒ_ƒ€‚Ìó‘Ô
+	void RandomBarrage();
 	//CSV“Ç‚İ‚İŒn
 	void CSVLoad();
 	//ƒm[ƒc‚Ì¶¬
-	void BirthNote(const int NoteType);
+	void BirthNote(const std::string& BarrageName);
+
+private:
+	static const int BULLET_NUM = 4;
 private:
 	//ŠeƒNƒ‰ƒX
 	unique_ptr<Note> note;
@@ -48,9 +51,9 @@ private:
 	enum CharaState
 	{
 		STATE_CHOICE,
-		STATE_FOLLOW,
-		STATE_DIFF,
-		STATE_CONFU,
+		STATE_NORMAL,
+		STATE_ALTER,
+		STATE_RANDOM,
 	}_charaState;
 
 	//’â~ŠÔ
@@ -71,20 +74,13 @@ private:
 	XMFLOAT3 m_AfterRot = { 0.0f,0.0f,0.0f };
 	float m_Frame = {};
 
-	enum FollowState {
-		FOLLOW_SET,
-		FOLLOW_BIRTH,
-		FOLLOW_END,
-	};
-	int m_FollowState = {};
-
-	enum DiffusionState {
-		DIFFU_SET,
-		DIFFU_BIRTH,
-		DIFFU_END,
+	enum BarrageState {
+		BARRA_SET,
+		BARRA_BIRTH,
+		BARRA_END,
 	};
 
-	int m_DiffuState = {};
+	int m_BarraState = {};
 
 	int m_RotCount = 0;
 	int m_RotTimer = 0;
