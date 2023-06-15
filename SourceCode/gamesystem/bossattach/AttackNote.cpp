@@ -29,12 +29,7 @@ void (AttackNote::* AttackNote::stateTable[])() = {
 void AttackNote::Update() {
 	//状態移行(charastateに合わせる)
 	(this->*stateTable[_charaState])();
-	if (m_SetType == SET_FOLLOW) {
-		_charaState = STATE_FOLLOW;
-	}
-	else {
-		_charaState = STATE_DIFF;
-	}
+	_charaState = STATE_DIFF;
 	//タイプによって色を一旦変えてる
 	Obj_SetParam();
 
@@ -76,7 +71,7 @@ void AttackNote::Diffusion() {
 	m_Position.x += m_Angle.x * m_AddSpeed;
 	m_Position.z += m_Angle.y * m_AddSpeed;
 
-	if (Helper::GetInstance()->CheckNotValueRange(m_Position.x, -55.0f, 65.0f) || Helper::GetInstance()->CheckNotValueRange(m_Position.z, -60.0f, 60.0f)) {
+	if (Helper::GetInstance()->CheckNotValueRange(m_Position.x, -60.0f, 70.0f) || Helper::GetInstance()->CheckNotValueRange(m_Position.z, -65.0f, 65.0f)) {
 		m_Alive = false;
 	}
 }
@@ -89,6 +84,7 @@ bool AttackNote::Collide() {
 	if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, l_PlayerPos.x, l_PlayerPos.z, l_Radius) && (Player::GetInstance()->GetDamageInterVal() == 0)) {
 		Player::GetInstance()->RecvDamage(0.5f);
 		Player::GetInstance()->PlayerHit(m_Position);
+		m_Alive = false;
 		return true;
 	}
 	else {
