@@ -133,6 +133,8 @@ private:
 
 	XMVECTOR color_{ 1.f,1.f,1.f,1.f };
 	size_t len[3];
+	bool flag[3] = { true,true,true };
+	bool next_f[3] = { false,false,false};
 
 	bool testF = false;
 	float time_ = 0.f;
@@ -140,6 +142,8 @@ private:
 	wchar_t* test;
 	wchar_t* test1;
 	wchar_t* test2;
+
+	Name old=NONE;
 
 };
 

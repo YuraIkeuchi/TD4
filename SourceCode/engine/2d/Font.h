@@ -32,7 +32,7 @@ public:
 	void Draw(DirectXCommon* dxcommon);
 	static void PostDraw(DirectXCommon* dxcommon);
 	void SetString(wchar_t* ward);
-	void TestSet(wchar_t* ward, size_t len);
+	void TestSet(wchar_t* ward, size_t len,bool& flag,bool& nextflag);
 	wchar_t* GetString() { return ward_; }
 
 	void SetNum(UINT num) { TexNumver = num; }
@@ -51,6 +51,8 @@ private:
 	wchar_t* ward_=L"w";
 	wchar_t* testward_;
 	float time_ = 0.f;
-	int len_ = 0;
+	size_t len_ = 0;
+	size_t oldlen_ = 0;
+	bool first_f = true;
 };
 

@@ -2,7 +2,7 @@
 #include "InterBoss.h"
 #include "Shake.h"
 #include "Note.h"
-
+#include "AttackNote.h"
 class FourthBoss :
 	public InterBoss {
 public:
@@ -30,24 +30,30 @@ public:
 private:
 	//動きの選択
 	void Choice();
-	//追従の音符
-	void Follow();
-	//拡散の弾
-	void Diffusion();
-	//混乱の状態
-	void Confusion();
+	//ふつうの弾幕
+	void NormalBarrage();
+	//交互の弾
+	void AlterBarrage();
+	//ランダムの状態
+	void RandomBarrage();
 	//CSV読み込み系
 	void CSVLoad();
+	//ノーツの生成
+	void BirthNote(const std::string& BarrageName);
+
+private:
+	static const int BULLET_NUM = 4;
 private:
 	//各クラス
 	unique_ptr<Note> note;
+	vector<AttackNote*> attacknotes;//怒りのスタンプ
 	//キャラの状態
 	enum CharaState
 	{
 		STATE_CHOICE,
-		STATE_FOLLOW,
-		STATE_DIFF,
-		STATE_CONFU,
+		STATE_NORMAL,
+		STATE_ALTER,
+		STATE_RANDOM,
 	}_charaState;
 
 	//停止時間
@@ -61,4 +67,21 @@ private:
 
 	//CSV系
 	int m_ChoiceInterval = {};
+
+	//イージング後の位置
+	XMFLOAT3 m_AfterPos = {};
+	//X方向の回転
+	XMFLOAT3 m_AfterRot = { 0.0f,0.0f,0.0f };
+	float m_Frame = {};
+
+	enum BarrageState {
+		BARRA_SET,
+		BARRA_BIRTH,
+		BARRA_END,
+	};
+
+	int m_BarraState = {};
+
+	int m_RotCount = 0;
+	int m_RotTimer = 0;
 };

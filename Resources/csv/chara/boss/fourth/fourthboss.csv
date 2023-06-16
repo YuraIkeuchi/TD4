@@ -1,5 +1,5 @@
 pos,5
-hp1,240
+hp1,40
 //ダメージ倍率(値が小さければ小さいほど食らうダメージが少ない)
 Magnification,1.0
 //ハートが生成される確率
@@ -7,3 +7,7 @@ Magnification,1.0
 HeartTarget,50
 //動きを選択する時のインターバル
 ChoiceInterVal,40
+//弾のスピード,
+Speed,1.0
+//弾の生存時間
+Timer,300
