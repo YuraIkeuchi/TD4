@@ -111,8 +111,7 @@ void LoadStageObj::SecondUpdate() {
 void LoadStageObj::ThirdUpdate() {
 	//更新
 	CommonUpdate();
-	LockVerseGhost();
-	NonVerseGhost();
+	ThirdBossAction();
 }
 //描画
 void LoadStageObj::Draw(DirectXCommon* dxCommon) {
@@ -362,51 +361,73 @@ void LoadStageObj::LightReturn() {
 	}*/
 }
 
+void LoadStageObj::ThirdBossAction() {
+	LockVerseGhost();
+	NonVerseGhost();
+	CheckReferGhost();
+}
+
 void LoadStageObj::LockVerseGhost() {
 	InterBoss* boss = m_EnemyManager->GetBoss();
 	if (!boss->GetSearch()) { return; }
-	for (auto i = 0; i < ghosts.size(); i++) {
-		XMFLOAT3 difPos = ghosts[i]->GetPosition();
-		float dif;
-		dif = Helper::GetInstance()->ChechLength(difPos, boss->GetPosition());
-		if (boss->GetLimit() > dif) {
-			if (nowStopGhorst < 5 && nowStopGhorst >= 0) {
-				stopGhosts[nowStopGhorst] = ghosts[i];
-			}
-			nowStopGhorst++;
-			if (boss->GetStrong()) {
-				if (nowStopGhorst >= 5) {
-					boss->SetSearch(false);
-				}
-			} else {
-				if (nowStopGhorst >= 3) {
-					boss->SetSearch(false);
-				}
-			}
-		} else {
-			boss->SetLimit(boss->GetLimit() + 5.0f);
-		}
+	if (boss->GetStrong()) {
+		kStopGhorstMax = 5;
+	} else {
+		kStopGhorstMax = 3;
 	}
+	int  nowStopGhorst = 0;
+	while (nowStopGhorst < kStopGhorstMax) {
+		for (auto i = 0; i < ghosts.size(); i++) {
+			if (ghosts[i]->GetIsRefer()) { continue; }
+			//キャラステート変える際に気をつけてください
+			if (ghosts[i]->GetStateInst() == 2) { continue; }
+			XMFLOAT3 difPos = ghosts[i]->GetPosition();
+			float dif = Helper::GetInstance()->ChechLength(difPos, boss->GetPosition());
+			if (boss->GetLimit() > dif) {
+				stopGhosts[nowStopGhorst] = ghosts[i];
+				ghosts[i]->SetIsRefer(true);
+				nowStopGhorst++;
+				if (nowStopGhorst >= kStopGhorstMax) {
+					break;
+				}
+			}
+		}
+		boss->SetLimit(boss->GetLimit() + 5.0f);
+	}
+	boss->SetSearch(false);
 }
+
 
 void LoadStageObj::NonVerseGhost() {
 	InterBoss* boss = m_EnemyManager->GetBoss();
-	if (boss->GetInstruction()!= InterBoss::ThirdBossInst::StopGhost) { return; }
+	if (boss->GetInstruction() != InterBoss::ThirdBossInst::StopGhost) { return; }
+	int m_GhostPos = 0;
 	for (Ghost*& ghost : stopGhosts) {
 		if (!ghost) { continue; }
-		ghost->SetColor({0,0,1,1});
+		ghost->SetColor({ 1,0,1,1 });
+		//ghost->SetScale({ 0.0f,0.0f,0.0f });
+		ghost->SetIsPostionCheck(true);
 		ghost->SetIsVerse(false);
 		ghost->SetAlive(false);
+		boss->SetJackPos(m_GhostPos, ghost->GetPosition());
+		m_GhostPos++;
 	}
 	boss->SetInstruction(InterBoss::ThirdBossInst::SpawnEnemy);
 }
 
-void LoadStageObj::SpawnThirdEnemy() {
+bool LoadStageObj::CheckReferGhost() {
 	InterBoss* boss = m_EnemyManager->GetBoss();
-	if (boss->GetInstruction() != InterBoss::ThirdBossInst::SpawnEnemy) { return; }
-
-
-
-
-
+	int checkNum = 0;
+	for (int i = 0; i < kStopGhorstMax; i++) {
+		if (!stopGhosts[i]) { continue; }
+		if (!stopGhosts[i]->GetIsRefer()) { continue; }
+		checkNum++;
+	}
+	if (checkNum == 0) {
+		boss->SetIsReferCheck(true);
+		return false;
+	} else {
+		boss->SetIsReferCheck(false);
+		return true;
+	}
 }

@@ -19,11 +19,7 @@ EnemyManager::EnemyManager(const std::string& SceneName) {
 	} else if (m_SceneName == "THIRDSTAGE") {
 		boss = make_unique<ThirdBoss>();
 		boss->Initialize();
-		Thirdenemys.resize(ThirdEnemyMax);
-		for (unique_ptr<InterEnemy>& enemy : Thirdenemys) {
-			enemy = make_unique<TutorialEnemy>();
-			enemy->Initialize();
-		}
+
 	} else if (m_SceneName == "FOURTHSTAGE") {
 		boss = make_unique <FourthBoss>();
 		boss->Initialize();
@@ -56,9 +52,7 @@ void EnemyManager::BattleUpdate() {
 	if (m_SceneName == "FIRSTSTAGE") {
 		boss->isRespawn(bulletenemy);
 		boss->SummonEnemyUpda(bulletenemy);
-	} else if (m_SceneName == "THIRDSTAGE") {
-		boss->SpawnSetEnemy(std::move(Thirdenemys));
-	}
+	} 
 }
 //登場シーン
 void EnemyManager::AppearUpdate() {

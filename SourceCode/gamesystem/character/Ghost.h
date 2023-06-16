@@ -36,14 +36,15 @@ public:
 	//探索の終わり
 	void EndSearch();
 
-private://ステート
-	static void (Ghost::* stateTable[])();
 private:
 	void Particle();
 	//当たり判定(プレイヤー)
 	bool PlayerCollision();
 	//食料生産
 	void BirthGhost();
+
+private://ステート
+	static void (Ghost::* stateTable[])();
 	//何もない状態
 	void None();
 	//生まれる状態
@@ -52,24 +53,30 @@ private:
 	void Follow();
 	//探索
 	void Search();
+	//洗脳
+	void Jack();
 	//食べ物を運ぶ
 	void CarryFood();
+	//
 	bool CollideBullet(vector<InterBullet*>bullet);
 public:
 	//ゴースト同士の当たり判定
 	void GhostCollision(const XMFLOAT3& pos);
 public://getter setter
-public:
-	//gettersetter
 	const bool& GetAlive() { return m_Alive; }
+	const bool& GetIsRefer() { return m_IsRefer; }
 	const bool& GetCatch() { return m_Catch; }
 	const bool& GetFollow() { return m_Follow; }
 	const bool& GetSearch() { return m_Search; }
 	const bool& GetIsVerse() { return isVerse; }
+	const bool& GetIsPostionCheck() { return m_IsPostionCheck; }
 	const float& GetLimit() { return m_Limit; }
+	const int GetStateInst() { return (int)_charaState; }
+	void SetIsRefer(const bool isRefer) { this->m_IsRefer = isRefer; }
 	void SetIsVerse(const bool isVerse) { this->isVerse = isVerse; }
 	void SetCatch(const bool Catch) { m_Catch = Catch; }
 	void SetAlive(const bool Alive) { m_Alive = Alive; }
+	void SetIsPostionCheck(const bool m_IsPostionCheck) { this->m_IsPostionCheck = m_IsPostionCheck; }
 	void SetLimit(const float Limit) { m_Limit = Limit; }
 private:
 	bool m_Alive = true;//生存フラグ
@@ -85,11 +92,12 @@ private:
 		STATE_SPAWN,
 		STATE_FOLLOW,
 		STATE_SEARCH,
+		STATE_JACK,
 	}_charaState = CharaState::STATE_NONE;
 
 private:
-	IKEModel* model_follow = nullptr;
-	IKEModel* model_seach = nullptr;
+	unique_ptr<IKEModel> model_follow = nullptr;
+	unique_ptr<IKEModel> model_seach = nullptr;
 
 	XMFLOAT3 m_OldPos = {};
 	bool m_Follow = false;
@@ -99,6 +107,14 @@ private:
 		Follow_START,
 		Follow_END,
 	}_followState = FollowState::Follow_NO;
+	//探索状態
+	enum SearchState {
+		SEARCH_NO,
+		SEARCH_START,
+		SEARCH_END,
+	}_searchState = SearchState::SEARCH_NO;
+
+	int m_SearchTimer = 0;
 private://探索
 	bool m_Search = false;
 	XMFLOAT3 m_SearchPos = {};
@@ -108,14 +124,17 @@ private://探索
 	float m_SpawnTimer = 0.f;
 	float kSpawnTimerMax = 60.f;
 
-	//探索状態
-	enum SearchState {
-		SEARCH_NO,
-		SEARCH_START,
-		SEARCH_END,
-	}_searchState = SearchState::SEARCH_NO;
+	bool m_IsRefer = false;
 
-	int m_SearchTimer = 0;
+	bool m_IsPostionCheck = false;
+	XMFLOAT3 f_pos = {};
+	float m_radius = 0.0f;
+	enum {
+		addDir = 1,
+		subDir = -1,
+	};
+	float m_dir = 1.0f;
+	float m_angle = 0.0f;
 private:
 	//探索するものの範囲
 	float m_Limit = {};

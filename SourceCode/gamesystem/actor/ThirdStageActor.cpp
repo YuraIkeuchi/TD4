@@ -71,7 +71,6 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	
 	const int IntervalTextC = 200;
 
-
 	messagewindow_->DisplayCharacter(sutopon_color_);
 	if(_Tscne== TextScene::NON)
 	{
@@ -123,7 +122,6 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 			_Tscne = TextScene::ENDTEXT;
 		}
 	}
-
 	if( _Tscne == TextScene::TIEYOSHI_EXP||
 		_Tscne == TextScene::NON)
 	{

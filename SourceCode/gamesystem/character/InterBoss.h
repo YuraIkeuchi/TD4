@@ -18,10 +18,12 @@ protected:
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
-	enum ThirdBossInst{
-		None=0,
+	enum ThirdBossInst {
+		None = 0,
 		StopGhost,
 		SpawnEnemy,
+		FinishMove,
+
 	};
 public:
 	//初期化
@@ -104,6 +106,12 @@ public://gettersetter
 	void SetBirthHeart(bool HeartBirth) { m_BirthHeart = HeartBirth; };
 
 	void SetDirEmo(int DirEmo) { m_DirEmo = DirEmo; };
+
+	void SetJackPos(const int num, XMFLOAT3 pos) { jackPos[num] = pos; };
+
+	void SetIsReferCheck(bool isReferCheck) { this->isReferCheck = isReferCheck; };
+	bool GetIsReferCheck() { return isReferCheck; }
+
 private:
 	std::string SceneName;
 	vector<InterEffect*> effects;
@@ -117,7 +125,7 @@ protected:
 	int ActionDamage;
 	int ActionCool;
 
-	bool isAlive;
+	bool isAlive = true;
 	float m_HP = {};
 	float m_MaxHp = {};
 	float m_Limit = 20.0f;
@@ -126,7 +134,8 @@ protected:
 	bool isSearch = false;
 	//ゴーストを削除しスポーンを止めます。
 	int isInstruction = 0;
-
+	//ゴーストの状態がSearch状態かしれます
+	bool isReferCheck = false;
 	bool m_Check = false;
 	XMFLOAT3 m_OBBScale = {};
 
@@ -146,10 +155,12 @@ protected:
 
 	//ダメージ倍率
 	float m_Magnification = {};
+
+	//
+	array<XMFLOAT3, 5> jackPos = {};
 private:
 
-	enum class ActionList
-	{
+	enum class ActionList {
 		NON,
 		NORMAL,
 		MOB_A,
@@ -157,8 +168,7 @@ private:
 		FRONT
 	}_action;
 
-	struct DefaultParam
-	{
+	struct DefaultParam {
 		float Cool;
 		int Damage;
 		std::vector<float>ParSize;
@@ -166,12 +176,11 @@ private:
 	};
 protected:
 	//弾との当たり判定
-	enum class Type
-	{
+	enum class Type {
 		CIRCLE,
 		SPHERE
 	};
-	void CollideBul(vector<InterBullet*>bullet,Type type=Type::SPHERE);
+	void CollideBul(vector<InterBullet*>bullet, Type type = Type::SPHERE);
 	bool EndSummonRepos;
 	bool ResF;
 public:
@@ -189,7 +198,7 @@ protected:
 public:
 	bool GetDeathAction() { return DeathSceneF; }
 	void SetThrowUpdateF(bool f) { ThrowUpdateF = f; }
-	
+
 	int m_BirthTarget = {};
 };
 

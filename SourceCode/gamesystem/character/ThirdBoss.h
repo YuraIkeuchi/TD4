@@ -4,6 +4,7 @@
 #include "Shake.h"
 #include "Player.h"
 #include "IKETexture.h"
+#include "TutorialEnemy.h"
 
 class ThirdBoss :
 	public InterBoss {
@@ -47,9 +48,18 @@ private:
 	void ControlUpdate();
 
 
+	bool ShutterEffect();
+	bool ShutterFeed();
+	void ShutterReset();
+
+	bool IsPinch();
 private:
 	static const int kPhotoSpotMax = 5;
 	array<unique_ptr<IKETexture>, kPhotoSpotMax> photoSpot = {};
+
+	static const int ThirdEnemyMax = 5;
+	array<unique_ptr<TutorialEnemy>, ThirdEnemyMax>Thirdenemys = {};
+
 	array<XMFLOAT3, kPhotoSpotMax> spotPos = {
 		XMFLOAT3({-48,0,-55}),
 		XMFLOAT3({58,0,-55}),
@@ -65,7 +75,7 @@ private:
 	};
 	array<unique_ptr<IKESprite>, SpriteMax> photo = {};
 private:
-	array<int, (size_t)commandState::COMMANDMAX> ActionTimerMax = {60,120,60};
+	array<int, (size_t)commandState::COMMANDMAX> ActionTimerMax = {60,120,90};
 	int moveSpawn = 0;
 	int nowSpawn = 0;
 	commandState phase = commandState::WaitCommand;

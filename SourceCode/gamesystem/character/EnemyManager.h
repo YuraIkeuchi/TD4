@@ -64,9 +64,6 @@ private:
 	//ファーストステージ用
 	static const int firstEnemyMax = 3;
 	std::vector<InterEnemy*>bulletenemy;
-	//サードステージ用
-	static const int ThirdEnemyMax = 5;
-	std::vector<unique_ptr<InterEnemy>>Thirdenemys;
 	//チュートリアル用
 	static const int tutorialEnemyMax = 4;
 	std::array<unique_ptr<InterEnemy>, tutorialEnemyMax>tutorialenemy;
