@@ -1,15 +1,17 @@
-#include "Note.h"
+#include "CD.h"
 #include "ModelManager.h"
-Note::Note() {
+#include "ImageManager.h"
+CD::CD() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Bullet);
 	for (size_t i = 0; i < m_Object.size(); i++) {
 		m_Object[i].reset(new IKEObject3d());
 		m_Object[i]->Initialize();
 		m_Object[i]->SetModel(m_Model);
 	}
+
 }
 
-bool Note::Initialize() {
+bool CD::Initialize() {
 	for (size_t i = 0; i < m_Object.size(); i++) {
 		m_Scale[i] = {2.0f,2.0f,2.0f};
 		m_Rotation[i] = { 1.0f,1.0f,1.0f };
@@ -23,7 +25,7 @@ bool Note::Initialize() {
 	return true;
 }
 
-void Note::Update() {
+void CD::Update() {
 	for (size_t i = 0; i < m_Object.size(); i++) {
 		m_Object[i]->Update();
 		m_Object[i]->SetPosition(m_Position[i]);
@@ -31,9 +33,10 @@ void Note::Update() {
 		m_Object[i]->SetRotation(m_Rotation[i]);
 		m_Object[i]->SetColor(m_Color[i]);
 	}
+
 }
 
-void Note::Draw(DirectXCommon* dxCommon) {
+void CD::Draw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
 	for (size_t i = 0; i < m_Object.size(); i++) {
 		m_Object[i]->Draw();
@@ -41,6 +44,6 @@ void Note::Draw(DirectXCommon* dxCommon) {
 	IKEObject3d::PostDraw();
 }
 
-void Note::ImGuiDraw() {
-
+void CD::ImGuiDraw() {
+	
 }

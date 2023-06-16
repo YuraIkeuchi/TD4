@@ -41,10 +41,10 @@ void AttackNote::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui描画
 void AttackNote::ImGuiDraw() {
-	ImGui::Begin("Note");
+	/*ImGui::Begin("Note");
 	ImGui::Text("Timer:%d", m_Timer);
 	ImGui::Text("m_TargetTimer:%d", m_TargetTimer);
-	ImGui::End();
+	ImGui::End();*/
 }
 
 //パーティクル

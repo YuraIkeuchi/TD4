@@ -1,10 +1,10 @@
 #pragma once
 #include "ObjCommon.h"
 #include <array>
+#include "IKETexture.h"
 using namespace std;         //  名前空間指定
-
 //音符クラス
-class Note {
+class CD {
 protected:
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -13,7 +13,7 @@ protected:
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
-	Note();
+	CD();
 	//初期化
 	bool Initialize();
 	//更新
@@ -43,4 +43,5 @@ private:
 		DIFF_NOTE,
 		CONFU_NOTE,
 	};
+
 };

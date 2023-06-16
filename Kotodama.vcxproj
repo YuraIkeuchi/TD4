@@ -176,9 +176,10 @@
     <ClCompile Include="SourceCode\gamesystem\backobj\BackObj.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\AngerStamp.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\AttackNote.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\bossattach\DamageArea.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\InterStamp.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\JoyStamp.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\bossattach\Note.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\bossattach\CD.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\Predict.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\ShockWave.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\EnemyManager.cpp" />
@@ -314,9 +315,10 @@
     <ClInclude Include="SourceCode\gamesystem\backobj\BackObj.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\AngerStamp.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\AttackNote.h" />
+    <ClInclude Include="SourceCode\gamesystem\bossattach\DamageArea.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\InterStamp.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\JoyStamp.h" />
-    <ClInclude Include="SourceCode\gamesystem\bossattach\Note.h" />
+    <ClInclude Include="SourceCode\gamesystem\bossattach\CD.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\Predict.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\ShockWave.h" />
     <ClInclude Include="SourceCode\gamesystem\character\EnemyManager.h" />

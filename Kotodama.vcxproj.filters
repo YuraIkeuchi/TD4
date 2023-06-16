@@ -437,11 +437,14 @@
     <ClCompile Include="SourceCode\gamesystem\scene\FourthStage.cpp">
       <Filter>gamesystem\scene\Play\Fourth</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\bossattach\Note.cpp">
+    <ClCompile Include="SourceCode\gamesystem\bossattach\CD.cpp">
       <Filter>gamesystem\bossattach\Note\View</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\bossattach\AttackNote.cpp">
       <Filter>gamesystem\bossattach\Note\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\bossattach\DamageArea.cpp">
+      <Filter>gamesystem\bossattach\DamageArea</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -844,11 +847,14 @@
     <ClInclude Include="SourceCode\gamesystem\scene\FourthStage.h">
       <Filter>gamesystem\scene\Play\Fourth</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\bossattach\Note.h">
+    <ClInclude Include="SourceCode\gamesystem\bossattach\CD.h">
       <Filter>gamesystem\bossattach\Note\View</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\bossattach\AttackNote.h">
       <Filter>gamesystem\bossattach\Note\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\DamageArea.h">
+      <Filter>gamesystem\bossattach\DamageArea</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1171,6 +1177,9 @@
     </Filter>
     <Filter Include="gamesystem\bossattach\Note\Attack">
       <UniqueIdentifier>{6150f44b-5ea3-46c7-8e6e-e7a5b4f3acbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\bossattach\DamageArea">
+      <UniqueIdentifier>{12183991-69e0-44e1-ae14-66fa89670d1d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
