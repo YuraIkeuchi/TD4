@@ -1,8 +1,12 @@
 #pragma once
 #include "InterBoss.h"
 #include "Shake.h"
-#include "Note.h"
+#include "BarrangeCD.h"
+#include "ConfuCD.h"
+#include "LineCD.h"
+#include "DebuffCD.h"
 #include "AttackNote.h"
+#include "DamageArea.h"
 class FourthBoss :
 	public InterBoss {
 public:
@@ -36,6 +40,8 @@ private:
 	void AlterBarrage();
 	//ランダムの状態
 	void RandomBarrage();
+	//ダメージエリアのセット
+	void DamageAeraSet();
 	//CSV読み込み系
 	void CSVLoad();
 	//ノーツの生成
@@ -45,8 +51,12 @@ private:
 	static const int BULLET_NUM = 4;
 private:
 	//各クラス
-	unique_ptr<Note> note;
+	unique_ptr<InterCD> barracd;
+	unique_ptr<InterCD> confucd;
+	unique_ptr<InterCD> debuffcd;
+	unique_ptr<InterCD> linecd;
 	vector<AttackNote*> attacknotes;//怒りのスタンプ
+	unique_ptr<DamageArea> damagearea;//ダメージエリア
 	//キャラの状態
 	enum CharaState
 	{
@@ -54,6 +64,7 @@ private:
 		STATE_NORMAL,
 		STATE_ALTER,
 		STATE_RANDOM,
+		STATE_AREA
 	}_charaState;
 
 	//停止時間
@@ -84,4 +95,13 @@ private:
 
 	int m_RotCount = 0;
 	int m_RotTimer = 0;
+
+	enum AreaState {
+		AREA_SET,
+		AREA_STOP,
+		AREA_END,
+	};
+
+	int m_AreaState = AREA_SET;
+	float SplineSpeed = false;
 };

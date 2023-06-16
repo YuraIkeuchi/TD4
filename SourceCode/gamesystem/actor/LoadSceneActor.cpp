@@ -43,6 +43,12 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	for (std::unique_ptr<IKEObject3d>& obj : grounds) {
 		obj->Update();
 	}
+
+	//2ステージ
+	if (Input::GetInstance()->TriggerKey(DIK_2)) {
+		Audio::GetInstance()->StopWave(3);
+		str = "SECONDSTAGE";
+	}
 	
 	//3ステージ
 	if (Input::GetInstance()->TriggerKey(DIK_3)) {

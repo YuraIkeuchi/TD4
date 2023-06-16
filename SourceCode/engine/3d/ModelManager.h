@@ -26,6 +26,7 @@ public:
 		Buddy,
 		MobUsa,
 		Heart,
+		DJ
 	};
 	//FBX‚Ì–¼‘O
 	enum FBXName {

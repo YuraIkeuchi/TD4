@@ -10,24 +10,36 @@ void (FourthBoss::* FourthBoss::stateTable[])() = {
 	&FourthBoss::Choice,//選択
 	&FourthBoss::NormalBarrage, //ふつう
 	&FourthBoss::AlterBarrage,//交互
-	&FourthBoss::RandomBarrage//ランダム
+	&FourthBoss::RandomBarrage,//ランダム
+	&FourthBoss::DamageAeraSet//ダメージエリアのセット
 };
 
 
 //生成
 FourthBoss::FourthBoss() {
-	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Tyuta);
+	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::DJ);
 
 	m_Object.reset(new IKEObject3d());
 	m_Object->Initialize();
 	m_Object->SetModel(m_Model);
 
-	note.reset(new Note);
+	//CDの初期化
+	barracd.reset(new BarrangeCD);
+	barracd->Initialize();
+
+	linecd.reset(new LineCD);
+	linecd->Initialize();
+
+	confucd.reset(new ConfuCD);
+	confucd->Initialize();
+
+	debuffcd.reset(new DebuffCD);
+	debuffcd->Initialize();
 }
 
 bool FourthBoss::Initialize() {
 	m_Position = { 0.0f,0.0f,30.0f };
-	m_Scale = { 1.0f,1.4f,1.0f };
+	m_Scale = { 0.3f,0.3f,0.3f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	//m_Rotation.y = -90.f;
 
@@ -35,10 +47,9 @@ bool FourthBoss::Initialize() {
 
 	m_Radius = 5.0f;
 
-	note->Initialize();
-
 	_charaState = STATE_CHOICE;
 	m_BarraState = BARRA_SET;
+	m_AreaState = AREA_SET;
 	//CSVロード
 	CSVLoad();
 	return true;
@@ -46,7 +57,7 @@ bool FourthBoss::Initialize() {
 
 void FourthBoss::SkipInitialize() {
 	m_Position = { 0.0f,20.0f,30.0f };
-	m_Scale = { 1.0f,1.4f,1.0f };
+	m_Scale = { 0.3f,0.3f,0.3f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 }
 
@@ -76,7 +87,10 @@ void FourthBoss::Action() {
 	Helper::GetInstance()->Clamp(m_Position.x, -55.0f, 65.0f);
 	Helper::GetInstance()->Clamp(m_Position.z, -60.0f, 60.0f);
 
-	note->Update();
+	barracd->Update();
+	linecd->Update();
+	confucd->Update();
+	debuffcd->Update();
 
 	//攻撃の音符
 	for (AttackNote* newnote : attacknotes) {
@@ -95,6 +109,10 @@ void FourthBoss::Action() {
 			attacknotes.erase(cbegin(attacknotes) + i);
 		}
 	}
+
+	if (damagearea != nullptr) {
+		damagearea->Update();
+	}
 }
 //ポーズ
 void FourthBoss::Pause() {
@@ -109,12 +127,18 @@ void FourthBoss::EffecttexDraw(DirectXCommon* dxCommon)
 //描画
 void FourthBoss::Draw(DirectXCommon* dxCommon) {
 	Obj_Draw();
-	note->Draw(dxCommon);
+	barracd->Draw(dxCommon);
+	linecd->Draw(dxCommon);
+	confucd->Draw(dxCommon);
+	debuffcd->Draw(dxCommon);
 	//攻撃の音符
 	for (AttackNote* newnote : attacknotes) {
 		if (newnote != nullptr) {
 			newnote->Draw(dxCommon);
 		}
+	}
+	if (damagearea != nullptr) {
+		damagearea->Draw(dxCommon);
 	}
 	EffecttexDraw(dxCommon);
 }
@@ -135,6 +159,9 @@ void FourthBoss::ImGui_Origin() {
 			newnote->ImGuiDraw();
 		}
 	}
+	if (damagearea != nullptr) {
+		damagearea->ImGuiDraw();
+	}
 }
 //動きの選択
 void FourthBoss::Choice() {
@@ -142,29 +169,31 @@ void FourthBoss::Choice() {
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> l_RandomMove(0, 2);
 	int l_RandState = 0;
-	if (m_StopTimer > m_ChoiceInterval) {
-		m_Frame = 0.0f;
-		l_RandState = int(l_RandomMove(mt));
-		m_StopTimer = 0;
-		m_BarraState = BARRA_SET;
+	
 
-		//ランダムで攻撃を選ぶ
-		if (l_RandState == 0) {
-			_charaState = STATE_NORMAL;
-		}
-		else if (l_RandState == 1) {
-			_charaState = STATE_ALTER;
-		}
-		else {
-			_charaState = STATE_RANDOM;
-		}
-	}
+	//if (m_StopTimer > m_ChoiceInterval) {
+	//	m_Frame = 0.0f;
+	//	l_RandState = int(l_RandomMove(mt));
+	//	m_StopTimer = 0;
+	//	m_BarraState = BARRA_SET;
+	//	m_AreaState = AREA_SET;
+	//	_charaState = STATE_AREA;
+	//	//ランダムで攻撃を選ぶ
+	///*	if (l_RandState == 0) {
+	//		_charaState = STATE_NORMAL;
+	//	}
+	//	else if (l_RandState == 1) {
+	//		_charaState = STATE_ALTER;
+	//	}
+	//	else {
+	//		_charaState = STATE_RANDOM;
+	//	}*/
+	//}
 }
 
 //拡散(ふつう)
 void FourthBoss::NormalBarrage() {
 	float l_AddFrame = 0.01f;
-	m_Scale = { 0.5f,0.5f,0.5f };
 
 	if (m_BarraState == BARRA_SET) {
 		m_AfterPos = { 40.0f,0.0f,40.0f };
@@ -219,8 +248,7 @@ void FourthBoss::NormalBarrage() {
 //拡散
 void FourthBoss::AlterBarrage() {
 	float l_AddFrame = 0.01f;
-	m_Scale = { 0.5f,0.5f,0.5f };
-
+	
 	if (m_BarraState == BARRA_SET) {
 		m_AfterPos = { -40.0f,0.0f,40.0f };
 		if (m_Frame < m_FrameMax) {
@@ -275,8 +303,7 @@ void FourthBoss::AlterBarrage() {
 //混乱
 void FourthBoss::RandomBarrage() {
 	float l_AddFrame = 0.01f;
-	m_Scale = { 0.5f,0.5f,0.5f };
-
+	
 	if (m_BarraState == BARRA_SET) {
 		m_AfterPos = { 0.0f,0.0f,-40.0f };
 		if (m_Frame < m_FrameMax) {
@@ -326,7 +353,20 @@ void FourthBoss::RandomBarrage() {
 		};
 	}
 }
+//ダメージエリアのセット
+void FourthBoss::DamageAeraSet() {
+	if (m_AreaState == AREA_SET) {
+		damagearea.reset(new DamageArea(4));
+		damagearea->Initialize();
+		m_AreaState = AREA_STOP;
+	}
+	else if (m_AreaState == AREA_STOP) {
 
+	}
+	else {
+
+	}
+}
 //ノーツの生成
 void FourthBoss::BirthNote(const std::string& BarrageName) {
 	//ヒトツずつ生成されるパターン
