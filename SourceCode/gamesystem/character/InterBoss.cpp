@@ -124,12 +124,6 @@ void InterBoss::BirthEffect() {
 }
 
 
-void InterBoss::SummonEnemyInit(InterEnemy* boss)
-{
-	
-}
-
-
 void InterBoss::isRespawn(std::vector<InterEnemy*> boss)
 {
 	if(ResF)
@@ -147,6 +141,10 @@ void InterBoss::isRespawn(std::vector<InterEnemy*> boss)
 		}
 		ResF = false;
 	}
+}
+
+void InterBoss::SpawnSetEnemy(vector<unique_ptr<InterEnemy>> enemys) {
+
 }
 
 

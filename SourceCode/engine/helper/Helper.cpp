@@ -146,7 +146,7 @@ void Helper::FollowMove(XMFLOAT3& pos, const XMFLOAT3& pos2, const float vel) {
 	//return l_Result;
 }
 float Helper::ChechLength(const XMFLOAT3& pos, const XMFLOAT3& pos2) {
-	float result;
+	float result=0.0f;
 	result = sqrtf(powf((pos2.x - pos.x), 2) + powf((pos2.y - pos.y), 2) + powf((pos2.z - pos.z), 2));
 
 	return result;

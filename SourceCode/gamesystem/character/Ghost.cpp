@@ -6,8 +6,8 @@
 #include "Player.h"
 Ghost::Ghost() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Ghost);
-	model_follow = ModelManager::GetInstance()->GetModel(ModelManager::Buddy);
-	m_Object.reset(new IKEObject3d());
+	model_follow.reset(ModelManager::GetInstance()->GetModel(ModelManager::Buddy));
+	m_Object = make_unique<IKEObject3d>();
 	m_Object->Initialize();
 	m_Object->SetModel(m_Model);
 }
@@ -35,12 +35,14 @@ void (Ghost::* Ghost::stateTable[])() = {
 	&Ghost::Spawm,
 	&Ghost::Follow,//移動
 	&Ghost::Search,//攻撃
+	&Ghost::Jack
 };
 //更新
 void Ghost::Update() {
 	float l_AddScale = 1.5f;//OBB用に少し大きめのスケールを取る
 	m_OldPos = m_Position;
 	m_OBBScale = { m_Scale.x + l_AddScale,m_Scale.y + l_AddScale, m_Scale.z + l_AddScale };
+	if (m_IsPostionCheck) { _charaState = CharaState::STATE_JACK; }
 	//状態移行(charastateに合わせる)
 	(this->*stateTable[_charaState])();
 	//タイプによって色を一旦変えてる
@@ -52,19 +54,19 @@ void Ghost::Update() {
 	//食べ物をはこぶ
 	CarryFood();
 	Particle();
-
 	//当たり判定（弾）
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_ghost();
 	CollideBullet(_playerBulA);
 }
 //描画
 void Ghost::Draw(DirectXCommon* dxCommon) {
+	//if (!m_Alive) { return; }
 	Obj_Draw();
 }
 //ImGui描画
 void Ghost::ImGuiDraw() {
 	ImGui::Begin("Ghost");
-	ImGui::Text("ColorR:%f",m_Color.x);
+	ImGui::Text("ColorR:%f", m_Color.x);
 	ImGui::Text("ColorG:%f", m_Color.y);
 	ImGui::Text("ColorB:%f", m_Color.z);
 	ImGui::Text("ColorW:%f", m_Color.w);
@@ -86,13 +88,15 @@ void Ghost::Particle() {
 			m_Color = { 1.0f,1.0f,1.0f,0.7f };
 			m_Scale = { 0.5f,0.5f,0.5f };
 			//ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color, e_color);
-		}
-		else if (_charaState == CharaState::STATE_FOLLOW) {
+		} else if (_charaState == CharaState::STATE_FOLLOW) {
 			m_Color = { 1.0f,1.0f,1.0f,1.0f };
 			m_Scale = { 0.6f,0.6f,0.6f };
 			ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color2, e_color2);
-		}
-		else {
+		} else if (_charaState == CharaState::STATE_JACK) {
+			m_Color = { 1.0f,0.0f,1.0f,1.0f };
+			m_Scale = { 0.6f,0.6f,0.6f };
+			//ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color2, e_color2);
+		} else {
 			//ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color3, e_color3);
 		}
 	}
@@ -102,8 +106,7 @@ bool Ghost::PlayerCollision() {
 	if (Player::GetInstance()->PlayerCollide(m_Position) && (_charaState == CharaState::STATE_FOLLOW)) {
 		m_Position = m_OldPos;
 		return true;
-	}
-	else {
+	} else {
 		return false;
 	}
 
@@ -116,39 +119,39 @@ void Ghost::GhostCollision(const XMFLOAT3& pos) {
 }
 //食料生成
 void Ghost::BirthGhost() {
-	if (!m_Alive) {
-		m_ResPornTimer++;
-		//描画バグ起きるから先に座標セット
-		if (m_ResPornTimer == 20) {
-			_charaState = CharaState::STATE_SPAWN;
-			_searchState = SearchState::SEARCH_NO;
-			//乱数指定
-			mt19937 mt{ std::random_device{}() };
-			uniform_int_distribution<int> l_distX(-50, 60);
-			uniform_int_distribution<int> l_distZ(-55, 55);
-			m_Object->SetModel(m_Model);
-			m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
-			uniform_int_distribution<int> spawn(30, 45);
-			kSpawnTimerMax = float(spawn(mt));
-			m_Color = { 1.0f,1.0f,1.0f,0.7f };
-			m_Catch = false;
-			m_Search = false;
-			m_Follow = false;
-			m_SearchTimer = 0;
-			m_SpawnTimer = 0;
-		}
-		//一定時間で生成される
-		if (m_ResPornTimer == 100) {
-			m_Alive = true;
-			m_ResPornTimer = 0;
-			m_Scale = { 0.5f,0.5f,0.5f };
-		}
+	if (!isVerse) { return; }
+	if (m_Alive) { return; }
+	m_ResPornTimer++;
+	//描画バグ起きるから先に座標セット
+	if (m_ResPornTimer == 20) {
+		_charaState = CharaState::STATE_SPAWN;
+		_searchState = SearchState::SEARCH_NO;
+		//乱数指定
+		mt19937 mt{ std::random_device{}() };
+		uniform_int_distribution<int> l_distX(-50, 60);
+		uniform_int_distribution<int> l_distZ(-55, 55);
+		m_Object->SetModel(m_Model);
+		m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
+		uniform_int_distribution<int> spawn(30, 45);
+		kSpawnTimerMax = float(spawn(mt));
+		m_Color = { 1.0f,1.0f,1.0f,0.7f };
+		m_Catch = false;
+		m_Search = false;
+		m_Follow = false;
+		m_SearchTimer = 0;
+		m_SpawnTimer = 0;
+	}
+	//一定時間で生成される
+	if (m_ResPornTimer == 100) {
+		m_Alive = true;
+		m_ResPornTimer = 0;
+		m_Scale = { 0.5f,0.5f,0.5f };
 	}
 }
 //何もない状態
 void Ghost::None() {
+	//浮遊状態
 	noneTimer += 0.05f;
-
 	float size = sinf(noneTimer) * 0.05f;
 	m_Position.x += cosf(m_Rotation.y * (PI_180 / XM_PI)) * size;
 	m_Position.y = sinf(noneTimer) * 1.2f;
@@ -192,10 +195,46 @@ void Ghost::Search() {
 	if (_searchState == SearchState::SEARCH_START) {
 		Helper::GetInstance()->FollowMove(m_Position, m_SearchPos, l_Vel2);
 		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, m_SearchPos, -PI_90);
-	}
-	else if (_searchState == SearchState::SEARCH_END) {
+	} else if (_searchState == SearchState::SEARCH_END) {
 		Helper::GetInstance()->FollowMove(m_Position, l_playerPos, l_Vel);
 		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, l_playerPos, -PI_90);
+	}
+}
+void Ghost::Jack() {
+	if (m_IsPostionCheck) {
+		//m_radius = Helper::GetInstance()->ChechLength(m_Position, {0,0,0});
+		f_pos = m_Position;
+		m_angle = 0;
+		m_radius = 0;
+		mt19937 mt{ std::random_device{}() };
+		// 0以上9以下の値を等確率で発生させる
+		std::uniform_int_distribution<> dist(0, 1);
+		if (dist(mt) > 0) {
+			m_dir = addDir;
+		} else {
+			m_dir = subDir;
+		}
+		m_IsPostionCheck = false;
+	}
+	m_angle += 0.04f;
+	m_radius += 0.08f * m_dir;
+	XMFLOAT3 e_pos = { f_pos.x + sinf(m_angle) * m_radius ,0,f_pos.z + cosf(m_angle) * m_radius };
+	m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, e_pos,-PI_90);
+	m_Position.x = e_pos.x;
+	m_Position.z = e_pos.z;
+	if (Player::GetInstance()->PlayerCollide(m_Position)&&
+		Player::GetInstance()->GetDamageInterVal()==0) {
+		Player::GetInstance()->PlayerHit(m_Position);
+		Player::GetInstance()->RecvDamage(0.5f);
+	}
+
+	if (m_Position.x < -55.0f || m_Position.x>65.0f ||
+		m_Position.z < -60.0f || m_Position.z>60.0f) {
+		m_Alive = false;
+		m_Scale = { 0.0f,0.0f,0.0f };
+		m_IsRefer = false;
+		isVerse = true;
+		_charaState = CharaState::STATE_NONE;
 	}
 }
 //探索スタート
@@ -248,16 +287,14 @@ bool Ghost::CollideBullet(vector<InterBullet*>bullet) {
 					HungerGauge::GetInstance()->SetCatchCount(HungerGauge::GetInstance()->GetCatchCount() + 1);
 					_charaState = CharaState::STATE_FOLLOW;
 					_followState = FollowState::Follow_START;
-					m_Object->SetModel(model_follow);
+					m_Object->SetModel(model_follow.get());
 					m_Follow = true;
-				}
-				else {
+				} else {
 					_charaState = CharaState::STATE_SEARCH;
 					Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Searcher.wav", VolumManager::GetInstance()->GetSEVolum() / 2.5f);
 				}
 				return true;
-			}
-			else {
+			} else {
 				return false;
 			}
 		}

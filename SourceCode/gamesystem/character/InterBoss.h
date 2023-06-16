@@ -18,10 +18,14 @@ protected:
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
-	bool GetIsAlive() { return isAlive; }
-	//gettersetter
-public:
+	enum ThirdBossInst {
+		None = 0,
+		StopGhost,
+		SpawnEnemy,
+		FinishMove,
 
+	};
+public:
 	//初期化
 	virtual bool Initialize() = 0;
 	//更新
@@ -58,14 +62,13 @@ protected:
 private:
 	void BirthEffect();
 public:
-	void SummonEnemyInit(InterEnemy* boss);
-
 	void SummonEnemyUpda(std::vector<InterEnemy*> boss);
-
 	void SummonEnemyDraw(std::vector<InterEnemy*> boss, DirectXCommon* dxcomn);
-
 	void EndSummon(std::vector<InterEnemy*> boss);
 	void isRespawn(std::vector<InterEnemy*> boss);
+
+	void SpawnSetEnemy(vector<unique_ptr<InterEnemy>> enemys);
+
 protected:
 	bool SummonF;
 	bool SummobnStop;
@@ -73,8 +76,23 @@ protected:
 private:
 	XMFLOAT3 EffectFirstPos;
 public://gettersetter
+	bool GetIsAlive() { return isAlive; }
+
 	void SetHP(float hp) { m_HP = hp; };
 	float GetHP() { return m_HP; }
+
+	void SetLimit(float limit) { m_Limit = limit; };
+	float GetLimit() { return m_Limit; }
+
+	void SetStrong(bool strong) { isStrong = strong; };
+	bool GetStrong() { return isStrong; }
+
+	void SetSearch(bool isSearch) { this->isSearch = isSearch; };
+	bool GetSearch() { return isSearch; }
+
+	void SetInstruction(int isInstruction) { this->isInstruction = isInstruction; };
+	int GetInstruction() { return isInstruction; }
+
 	float HpPercent();
 
 	void SetCheck(bool Check) { m_Check = Check; };
@@ -88,6 +106,12 @@ public://gettersetter
 	void SetBirthHeart(bool HeartBirth) { m_BirthHeart = HeartBirth; };
 
 	void SetDirEmo(int DirEmo) { m_DirEmo = DirEmo; };
+
+	void SetJackPos(const int num, XMFLOAT3 pos) { jackPos[num] = pos; };
+
+	void SetIsReferCheck(bool isReferCheck) { this->isReferCheck = isReferCheck; };
+	bool GetIsReferCheck() { return isReferCheck; }
+
 private:
 	std::string SceneName;
 	vector<InterEffect*> effects;
@@ -101,10 +125,17 @@ protected:
 	int ActionDamage;
 	int ActionCool;
 
-	bool isAlive;
+	bool isAlive = true;
 	float m_HP = {};
 	float m_MaxHp = {};
-
+	float m_Limit = 20.0f;
+	bool isStrong = false;
+	//ゴーストを5たいサーチ
+	bool isSearch = false;
+	//ゴーストを削除しスポーンを止めます。
+	int isInstruction = 0;
+	//ゴーストの状態がSearch状態かしれます
+	bool isReferCheck = false;
 	bool m_Check = false;
 	XMFLOAT3 m_OBBScale = {};
 
@@ -124,10 +155,12 @@ protected:
 
 	//ダメージ倍率
 	float m_Magnification = {};
+
+	//
+	array<XMFLOAT3, 5> jackPos = {};
 private:
 
-	enum class ActionList
-	{
+	enum class ActionList {
 		NON,
 		NORMAL,
 		MOB_A,
@@ -135,8 +168,7 @@ private:
 		FRONT
 	}_action;
 
-	struct DefaultParam
-	{
+	struct DefaultParam {
 		float Cool;
 		int Damage;
 		std::vector<float>ParSize;
@@ -144,12 +176,11 @@ private:
 	};
 protected:
 	//弾との当たり判定
-	enum class Type
-	{
+	enum class Type {
 		CIRCLE,
 		SPHERE
 	};
-	void CollideBul(vector<InterBullet*>bullet,Type type=Type::SPHERE);
+	void CollideBul(vector<InterBullet*>bullet, Type type = Type::SPHERE);
 	bool EndSummonRepos;
 	bool ResF;
 public:
@@ -167,7 +198,7 @@ protected:
 public:
 	bool GetDeathAction() { return DeathSceneF; }
 	void SetThrowUpdateF(bool f) { ThrowUpdateF = f; }
-	
+
 	int m_BirthTarget = {};
 };
 

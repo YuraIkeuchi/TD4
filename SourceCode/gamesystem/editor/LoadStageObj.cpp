@@ -4,7 +4,7 @@
 #include "Collision.h"
 #include "Helper.h"
 #include "Player.h"
-EnemyManager* LoadStageObj::boss = nullptr;
+EnemyManager* LoadStageObj::m_EnemyManager = nullptr;
 //ゴーストのロード
 void LoadStageObj::GhostLoad() {
 	auto Size = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/ghost/ghost.csv", "Quantity")));
@@ -22,14 +22,11 @@ void LoadStageObj::FoodLoad(const std::string& sceneName) {
 	size_t Size;
 	if (sceneName == "FIRSTSTAGE") {
 		Size = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/food/food.csv", "Stage1")));
-	}
-	else if (sceneName == "SECONDSTAGE") {
+	} else if (sceneName == "SECONDSTAGE") {
 		Size = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/food/food.csv", "Stage2")));
-	}
-	else if (sceneName == "TUTORIAL") {
+	} else if (sceneName == "TUTORIAL") {
 		Size = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/food/food.csv", "Stage1")));
-	}
-	else {
+	} else {
 		assert(0);
 	}
 
@@ -41,8 +38,7 @@ void LoadStageObj::FoodLoad(const std::string& sceneName) {
 	Scl.resize(Size);
 }
 //すべてロード
-void LoadStageObj::AllLoad(const std::string& sceneName)
-{
+void LoadStageObj::AllLoad(const std::string& sceneName) {
 	m_SceneName = sceneName;
 	//ゴースト関係
 	GhostLoad();
@@ -68,8 +64,7 @@ void LoadStageObj::LightSet(LightGroup* light) {
 	}
 }
 //初期化
-void LoadStageObj::Initialize()
-{
+void LoadStageObj::Initialize() {
 	//Load();
 }
 void LoadStageObj::TutorialUpdate() {
@@ -77,15 +72,13 @@ void LoadStageObj::TutorialUpdate() {
 	CommonUpdate();
 }
 //更新(ステージ1)
-void LoadStageObj::FirstUpdate()
-{
+void LoadStageObj::FirstUpdate() {
 	//更新
 	CommonUpdate();
 }
 
 //更新
-void LoadStageObj::SecondUpdate()
-{
+void LoadStageObj::SecondUpdate() {
 	//更新
 	CommonUpdate();
 	//こっから特有の処理
@@ -101,38 +94,39 @@ void LoadStageObj::SecondUpdate()
 	}
 
 	//食料生成
-	if (boss->GetEnemyCheck()) {
+	if (m_EnemyManager->GetEnemyCheck()) {
 		Food* newFood;
 		newFood = new Food();
 		newFood->Initialize();
-		newFood->SetPosition({ boss->GetEnemyPosition().x,0.0f,boss->GetEnemyPosition().z});
+		newFood->SetPosition({ m_EnemyManager->GetEnemyPosition().x,0.0f,m_EnemyManager->GetEnemyPosition().z });
 		newFood->SetLimit(true);
 		foods.push_back(newFood);
-		boss->FinishCheck();
+		m_EnemyManager->FinishCheck();
 
 		for (int i = 0; i < foods.size(); i++) {
 			foods[i]->SetLightSet(true);
 		}
 	}
 }
+void LoadStageObj::ThirdUpdate() {
+	//更新
+	CommonUpdate();
+	ThirdBossAction();
+}
 //描画
-void LoadStageObj::Draw(DirectXCommon* dxCommon)
-{	
+void LoadStageObj::Draw(DirectXCommon* dxCommon) {
 	//ゴースト
-	for (auto i = 0; i < ghosts.size(); i++)
-	{
+	for (auto i = 0; i < ghosts.size(); i++) {
 		ghosts[i]->Draw(dxCommon);
 	}
 	//
 	//食べ物
-	for (auto i = 0; i < foods.size(); i++)
-	{
+	for (auto i = 0; i < foods.size(); i++) {
 		foods[i]->Draw(dxCommon);
 	}
 
 	//ハート
-	for (auto i = 0; i < hearts.size(); i++)
-	{
+	for (auto i = 0; i < hearts.size(); i++) {
 		hearts[i]->Draw(dxCommon);
 	}
 	//
@@ -140,15 +134,11 @@ void LoadStageObj::Draw(DirectXCommon* dxCommon)
 //ImGui
 void LoadStageObj::ImGuiDraw() {
 	//ゴースト
-	for (auto i = 0; i < ghosts.size(); i++)
-	{
-		
-	}
-	ghosts[0]->ImGuiDraw();
+	//ghosts[0]->ImGuiDraw();
 	/*ImGui::Begin("Heart");
 	ImGui::Text("m_Division:%f", m_Division);
 	ImGui::End();*/
-	//boss->ImGuiDraw();
+	//m_EnemyManager->ImGuiDraw();
 }
 //当たり判定(ゴースト)
 void LoadStageObj::Collide() {
@@ -157,9 +147,9 @@ void LoadStageObj::Collide() {
 			XMFLOAT3 ghostpos = ghosts[i]->GetPosition();
 			XMFLOAT3 ghostpos2 = ghosts[j]->GetPosition();
 			if ((i == j)) { continue; }
-			if((!ghosts[i]->GetAlive()) || (!ghosts[j]->GetAlive())) { continue; }
+			if ((!ghosts[i]->GetAlive()) || (!ghosts[j]->GetAlive())) { continue; }
 			if ((!ghosts[i]->GetFollow()) || (!ghosts[j]->GetFollow())) { continue; }
-			if (Collision::SphereCollision(ghostpos,1.5f,ghostpos2,1.5f)) {
+			if (Collision::SphereCollision(ghostpos, 1.5f, ghostpos2, 1.5f)) {
 				ghosts[i]->GhostCollision(ghostpos2);
 				ghosts[j]->GhostCollision(ghostpos);
 			}
@@ -176,12 +166,11 @@ void LoadStageObj::SearchFood() {
 			if (ghosts[i]->GetFollow()) { continue; }
 			XMFLOAT3 l_foodpos = foods[j]->GetPosition();
 			float l_dir = Helper::GetInstance()->ChechLength(l_ghostpos, l_foodpos);
-			if ((!ghosts[i]->GetSearch()) && (foods[j]->GetAlive()) && (!foods[j]->GetLockOn())&&(!foods[j]->GetIsCarried())) {
+			if ((!ghosts[i]->GetSearch()) && (foods[j]->GetAlive()) && (!foods[j]->GetLockOn()) && (!foods[j]->GetIsCarried())) {
 				if (l_dir < ghosts[i]->GetLimit()) {
 					ghosts[i]->StartSearch(l_foodpos);
 					foods[j]->SetLockOn(true);
-				}
-				else {
+				} else {
 					ghosts[i]->SetLimit(ghosts[i]->GetLimit() + 3.0f);
 				}
 			}
@@ -218,7 +207,7 @@ void LoadStageObj::VanishGhost() {
 		if (m_Division <= l_TargetCatchCount) {
 			m_Vanish = true;
 		}
-		
+
 		//for分抜ける
 		if (m_Vanish) {
 			ghosts[i]->SetAlive(false);
@@ -258,46 +247,43 @@ void LoadStageObj::VanishGhost() {
 //共通の更新
 void LoadStageObj::CommonUpdate() {
 	//ゴースト
-	for (auto i = 0; i < ghosts.size(); i++)
-	{
+	for (auto i = 0; i < ghosts.size(); i++) {
 		ghosts[i]->Update();
 	}
 
 	//
 	//食べ物
-	for (auto i = 0; i < foods.size(); i++)
-	{
+	for (auto i = 0; i < foods.size(); i++) {
 		foods[i]->Update();
-	/*	if (m_SceneName == "FIRSTSTAGE") {
-			if (foods[i]->GetAlive() && foods[i] != nullptr && !boss->BossDestroy()) {
-				lightgroup->SetCircleShadowDir(i + 2, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-				lightgroup->SetCircleShadowCasterPos(i + 2, XMFLOAT3({ foods[i]->GetPosition().x, foods[i]->GetPosition().y, foods[i]->GetPosition().z }));
-				lightgroup->SetCircleShadowAtten(i + 2, XMFLOAT3(circleShadowAtten));
-				lightgroup->SetCircleShadowFactorAngle(i + 2, XMFLOAT2(circleShadowFactorAngle));
+		/*	if (m_SceneName == "FIRSTSTAGE") {
+				if (foods[i]->GetAlive() && foods[i] != nullptr && !m_EnemyManager->BossDestroy()) {
+					lightgroup->SetCircleShadowDir(i + 2, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
+					lightgroup->SetCircleShadowCasterPos(i + 2, XMFLOAT3({ foods[i]->GetPosition().x, foods[i]->GetPosition().y, foods[i]->GetPosition().z }));
+					lightgroup->SetCircleShadowAtten(i + 2, XMFLOAT3(circleShadowAtten));
+					lightgroup->SetCircleShadowFactorAngle(i + 2, XMFLOAT2(circleShadowFactorAngle));
+				}
+				else {
+					lightgroup->SetCircleShadowActive(i + 2, false);
+				}
 			}
-			else {
-				lightgroup->SetCircleShadowActive(i + 2, false);
-			}
-		}
-		else if (m_SceneName == "TUTORIAL") {
-			if (foods[i]->GetAlive() && foods[i] != nullptr) {
-				lightgroup->SetCircleShadowDir(i + 2, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-				lightgroup->SetCircleShadowCasterPos(i + 2, XMFLOAT3({ foods[i]->GetPosition().x, foods[i]->GetPosition().y, foods[i]->GetPosition().z }));
-				lightgroup->SetCircleShadowAtten(i + 2, XMFLOAT3(circleShadowAtten));
-				lightgroup->SetCircleShadowFactorAngle(i + 2, XMFLOAT2(circleShadowFactorAngle));
-			}
-			else {
-				lightgroup->SetCircleShadowActive(i + 2, false);
-			}
-		}*/
+			else if (m_SceneName == "TUTORIAL") {
+				if (foods[i]->GetAlive() && foods[i] != nullptr) {
+					lightgroup->SetCircleShadowDir(i + 2, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
+					lightgroup->SetCircleShadowCasterPos(i + 2, XMFLOAT3({ foods[i]->GetPosition().x, foods[i]->GetPosition().y, foods[i]->GetPosition().z }));
+					lightgroup->SetCircleShadowAtten(i + 2, XMFLOAT3(circleShadowAtten));
+					lightgroup->SetCircleShadowFactorAngle(i + 2, XMFLOAT2(circleShadowFactorAngle));
+				}
+				else {
+					lightgroup->SetCircleShadowActive(i + 2, false);
+				}
+			}*/
 	}
 
 	//ハート
-	for (auto i = 0; i < hearts.size(); i++)
-	{
+	for (auto i = 0; i < hearts.size(); i++) {
 		hearts[i]->Update();
 		/*if (m_SceneName == "FIRSTSTAGE") {
-			if (hearts[i]->GetAlive() && hearts[i] != nullptr && !boss->BossDestroy()) {
+			if (hearts[i]->GetAlive() && hearts[i] != nullptr && !m_EnemyManager->BossDestroy()) {
 				lightgroup->SetCircleShadowDir(((int)hearts.size() + 1) + 12, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
 				lightgroup->SetCircleShadowCasterPos(((int)hearts.size() + 1) + 12, XMFLOAT3({ hearts[i]->GetPosition().x, hearts[i]->GetPosition().y, hearts[i]->GetPosition().z }));
 				lightgroup->SetCircleShadowAtten(((int)hearts.size() + 1) + 12, XMFLOAT3(circleShadowAtten));
@@ -309,7 +295,7 @@ void LoadStageObj::CommonUpdate() {
 			}
 		}
 		else if(m_SceneName == "SECONDSTAGE") {
-			if (hearts[i]->GetAlive() && hearts[i] != nullptr && !boss->BossDestroy()) {
+			if (hearts[i]->GetAlive() && hearts[i] != nullptr && !m_EnemyManager->BossDestroy()) {
 				lightgroup->SetCircleShadowDir(i + 2, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
 				lightgroup->SetCircleShadowCasterPos(i + 2, XMFLOAT3({ hearts[i]->GetPosition().x, hearts[i]->GetPosition().y, hearts[i]->GetPosition().z }));
 				lightgroup->SetCircleShadowAtten(i + 2, XMFLOAT3(circleShadowAtten));
@@ -347,15 +333,15 @@ void LoadStageObj::CommonUpdate() {
 }
 //ハートの生成
 void LoadStageObj::BirthHeart() {
-	if (!boss->GetBoss()) { return; }
-	if (boss->GetBirthHeart()) {
+	if (!m_EnemyManager->GetBoss()) { return; }
+	if (m_EnemyManager->GetBirthHeart()) {
 		Heart* newHeart;
 		newHeart = new Heart();
 		newHeart->Initialize();
-		newHeart->SetPosition({ boss->GetEnemyPosition().x,0.0f,boss->GetEnemyPosition().z });
+		newHeart->SetPosition({ m_EnemyManager->GetEnemyPosition().x,0.0f,m_EnemyManager->GetEnemyPosition().z });
 		hearts.push_back(newHeart);
-		boss->FinishHeart();
-	/*	for (int i = 0; i < hearts.size(); i++) {
+		m_EnemyManager->FinishHeart();
+		/*for (int i = 0; i < hearts.size(); i++) {
 			if (m_SceneName == "FIRSTSTAGE") {
 				lightgroup->SetCircleShadowActive(((int)hearts.size() + 1) + 12, true);
 			}
@@ -373,4 +359,75 @@ void LoadStageObj::LightReturn() {
 			foods[i]->SetLightSet(false);
 		}
 	}*/
+}
+
+void LoadStageObj::ThirdBossAction() {
+	LockVerseGhost();
+	NonVerseGhost();
+	CheckReferGhost();
+}
+
+void LoadStageObj::LockVerseGhost() {
+	InterBoss* boss = m_EnemyManager->GetBoss();
+	if (!boss->GetSearch()) { return; }
+	if (boss->GetStrong()) {
+		kStopGhorstMax = 5;
+	} else {
+		kStopGhorstMax = 3;
+	}
+	int  nowStopGhorst = 0;
+	while (nowStopGhorst < kStopGhorstMax) {
+		for (auto i = 0; i < ghosts.size(); i++) {
+			if (ghosts[i]->GetIsRefer()) { continue; }
+			//キャラステート変える際に気をつけてください
+			if (ghosts[i]->GetStateInst() == 2) { continue; }
+			XMFLOAT3 difPos = ghosts[i]->GetPosition();
+			float dif = Helper::GetInstance()->ChechLength(difPos, boss->GetPosition());
+			if (boss->GetLimit() > dif) {
+				stopGhosts[nowStopGhorst] = ghosts[i];
+				ghosts[i]->SetIsRefer(true);
+				nowStopGhorst++;
+				if (nowStopGhorst >= kStopGhorstMax) {
+					break;
+				}
+			}
+		}
+		boss->SetLimit(boss->GetLimit() + 5.0f);
+	}
+	boss->SetSearch(false);
+}
+
+
+void LoadStageObj::NonVerseGhost() {
+	InterBoss* boss = m_EnemyManager->GetBoss();
+	if (boss->GetInstruction() != InterBoss::ThirdBossInst::StopGhost) { return; }
+	int m_GhostPos = 0;
+	for (Ghost*& ghost : stopGhosts) {
+		if (!ghost) { continue; }
+		ghost->SetColor({ 1,0,1,1 });
+		//ghost->SetScale({ 0.0f,0.0f,0.0f });
+		ghost->SetIsPostionCheck(true);
+		ghost->SetIsVerse(false);
+		ghost->SetAlive(false);
+		boss->SetJackPos(m_GhostPos, ghost->GetPosition());
+		m_GhostPos++;
+	}
+	boss->SetInstruction(InterBoss::ThirdBossInst::SpawnEnemy);
+}
+
+bool LoadStageObj::CheckReferGhost() {
+	InterBoss* boss = m_EnemyManager->GetBoss();
+	int checkNum = 0;
+	for (int i = 0; i < kStopGhorstMax; i++) {
+		if (!stopGhosts[i]) { continue; }
+		if (!stopGhosts[i]->GetIsRefer()) { continue; }
+		checkNum++;
+	}
+	if (checkNum == 0) {
+		boss->SetIsReferCheck(true);
+		return false;
+	} else {
+		boss->SetIsReferCheck(false);
+		return true;
+	}
 }

@@ -55,8 +55,7 @@ protected: //Ã“Iƒƒ“ƒo•Ï”
 public:
 	void SetShotF(bool f) { ShotF = f; }
 	void SetIsStop(bool isStop) { this->isStop = isStop; }
-	void SetisWeak(bool f) { isWeak = f; }
-	void SetIsWeak(bool isStop) { this->isWeak = isStop; }
+	void SetIsWeak(bool isWeak) { this->isWeak = isWeak; }
 
 	bool GetShotF() { return ShotF; }
 	int GetShotCount() { return ShotCount; }
