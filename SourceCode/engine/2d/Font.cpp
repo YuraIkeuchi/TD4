@@ -84,7 +84,7 @@ void Font::TestSet(wchar_t* ward, size_t len, bool& flag,bool& nextflag)
 	}
 
 	size_t origsize = wcslen(wa)+1;
-	time_ += 0.5f;
+	time_ += 1.f;
 	
 	
 	if (time_ > 1) {
