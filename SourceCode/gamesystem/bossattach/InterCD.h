@@ -1,5 +1,6 @@
 #pragma once
 #include "ObjCommon.h"
+#include "InterBullet.h"
 enum CDState {
 	CD_BIRTH,
 	CD_STAY,
@@ -39,6 +40,7 @@ protected:
 
 	virtual void ImGui_Origin() = 0;//É{ÉXÇªÇÍÇºÇÍÇÃImGui
 
+	void CollideBul(vector<InterBullet*>bullet);
 protected:
 	//ÉÅÉìÉoä÷êî
 	virtual void BirthCD() {};

@@ -4,7 +4,7 @@
 #include "Font.h"
 #include "SceneSave.h"
 
-#include"Menu/Menu.h"
+#include"Menu.h"
 void Framework::Run()
 {
 	Initialize(dxcommon);

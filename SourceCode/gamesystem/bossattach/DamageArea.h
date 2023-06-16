@@ -32,6 +32,7 @@ private:
 	void PointUpdate();	//点の更新
 	void LineUpdate();	//線の更新
 	void StateManager();//状態を管理する
+	bool Collide();//当たり判定
 private:
 	IKEModel* model = nullptr;
 	vector<IKEObject3d*> obj;//モデル

@@ -5,6 +5,7 @@
 #include <Easing.h>
 #include "VariableCommon.h"
 #include <random>
+#include "Collision.h"
 DamageArea::DamageArea(const int Num) {
 	obj.resize(Num);
 	m_Position.resize(Num);
@@ -61,7 +62,7 @@ void DamageArea::Update() {
 	StateManager();
 	LineUpdate();
 	PointUpdate();
-
+	Collide();
 	for (int i = 0; i < obj.size(); i++) {
 		if (obj[i] == nullptr) {
 			continue;
@@ -194,4 +195,27 @@ void DamageArea::StateManager() {
 		m_CommonScale = Ease(In, Cubic, m_Frame, m_CommonScale, m_AfterScale);
 		m_Alpha = Ease(In, Cubic, m_Frame, m_Alpha, m_AfterAlpha);
 	}
+}
+
+bool DamageArea::Collide() {
+	Line2D lines;
+	Point points;
+	points = { Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z };
+	for (size_t i = 0; i < obj.size(); i++) {
+		//////////////
+		lines.start = { m_Position[i].x,m_Position[i].z };
+		lines.end = { m_Position[i + 1].x,m_Position[i + 1].z };
+		//”»’è•”
+		if (Collision::IsCollidingLineAndCircle(lines, points, 10.0f) && Player::GetInstance()->GetDamageInterVal() == 0 && m_CommonScale == 1.0f)
+		{
+			Player::GetInstance()->PlayerHit(m_Position[i]);
+			Player::GetInstance()->RecvDamage(0.5f);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	return false;
 }

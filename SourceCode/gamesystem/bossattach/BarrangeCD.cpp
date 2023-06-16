@@ -27,6 +27,8 @@ bool BarrangeCD::Initialize() {
 //“Á—L‚Ìˆ—
 void BarrangeCD::Action() {
 	(this->*stateTable[static_cast<size_t>(m_CDState)])();
+	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
+	CollideBul(_playerBulA);
 	Obj_SetParam();
 }
 
