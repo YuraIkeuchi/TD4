@@ -44,6 +44,8 @@ public:
 		FEED,
 		PHOTO_IN,
 		PHOTO_OUT,
+		CIRCLE,
+		CIRCLECOVER,
 	};
 	//テクスチャの名前
 	enum tex2dName
