@@ -14,7 +14,7 @@ EnemyManager::EnemyManager(const std::string& SceneName) {
 			bulletenemy[i]->Initialize();
 		}
 	} else if (m_SceneName == "SECONDSTAGE") {
-		boss.reset(new SecondBoss());
+		boss = make_unique < SecondBoss>();
 		boss->Initialize();
 	} else if (m_SceneName == "THIRDSTAGE") {
 		boss = make_unique<ThirdBoss>();
@@ -25,7 +25,7 @@ EnemyManager::EnemyManager(const std::string& SceneName) {
 			enemy->Initialize();
 		}
 	} else if (m_SceneName == "FOURTHSTAGE") {
-		boss.reset(new FourthBoss());
+		boss = make_unique <FourthBoss>();
 		boss->Initialize();
 	} else if (m_SceneName == "TUTORIAL") {
 		for (auto i = 0; i < tutorialenemy.size(); i++) {
@@ -40,7 +40,6 @@ EnemyManager::EnemyManager(const std::string& SceneName) {
 			float posX = -40.0f + (i * 20.f);
 			tutorialenemy[i]->SetPosition({ posX ,5.0f ,50.0f });
 			tutorialenemy[i]->SetUnrival(true);
-
 		}
 	} else {
 		assert(0);
@@ -58,7 +57,7 @@ void EnemyManager::BattleUpdate() {
 		boss->isRespawn(bulletenemy);
 		boss->SummonEnemyUpda(bulletenemy);
 	} else if (m_SceneName == "THIRDSTAGE") {
-		//boss->SpawnSetEnemy(Thirdenemys);
+		boss->SpawnSetEnemy(std::move(Thirdenemys));
 	}
 }
 //登場シーン

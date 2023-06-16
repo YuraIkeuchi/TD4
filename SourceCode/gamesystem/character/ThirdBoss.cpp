@@ -194,10 +194,6 @@ void ThirdBoss::ControlUpdate() {
 			}
 		}
 	}
-
-
-
-
 	//if (ActionTimer >= ActionTimerMax[(size_t)commandState::ControlCommand]) {
 
 	//

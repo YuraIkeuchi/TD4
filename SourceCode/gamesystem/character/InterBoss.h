@@ -60,7 +60,6 @@ protected:
 private:
 	void BirthEffect();
 public:
-	void SummonEnemyInit(InterEnemy* boss);
 	void SummonEnemyUpda(std::vector<InterEnemy*> boss);
 	void SummonEnemyDraw(std::vector<InterEnemy*> boss, DirectXCommon* dxcomn);
 	void EndSummon(std::vector<InterEnemy*> boss);
