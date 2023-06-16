@@ -32,6 +32,7 @@ void ModelManager::SecondInitialize()
 	LoadModel(Heart, "heart");
 	LoadModel(Pedestal, "dodai");
 	LoadFBXModel(PLAYER, "kotoko");
+	LoadModel(DJ, "DJ");
 	LoadFBXModel(SIORI, "siori_idol");
 	LoadFBXModel(KIDO, "kidokun_idol");
 	LoadFBXModel(TIEYOSHI, "tieyosi_anime");

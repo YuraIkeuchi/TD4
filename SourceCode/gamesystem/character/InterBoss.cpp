@@ -46,10 +46,6 @@ void InterBoss::Draw(DirectXCommon* dxCommon) {
 //ImGui謠冗判
 void InterBoss::ImGuiDraw() {
 	if (!this) { return; }
-	ImGui::Begin("Boss");
-	ImGui::Text("HP:%f", m_HP);
-	ImGui::Text("POSY:%f", m_Position.y);
-	ImGui::End();
 	ImGui_Origin();
 }
 
@@ -116,7 +112,7 @@ void InterBoss::BirthEffect() {
 	neweffect->SetPosition(m_Position);
 	//if (SceneName == "FIRSTSTAGE")
 	//	neweffect->SetPosition(EffectFirstPos);
-	if (m_HP < 0.001f) {
+	if (m_HP < 0.0f) {
 		neweffect->SetLife(1000);
 		neweffect->SetDiviSpeed(8.0f);
 	} else {
@@ -125,12 +121,6 @@ void InterBoss::BirthEffect() {
 	}
 
 	effects.push_back(neweffect);
-}
-
-
-void InterBoss::SummonEnemyInit(InterEnemy* boss)
-{
-	
 }
 
 
@@ -151,6 +141,10 @@ void InterBoss::isRespawn(std::vector<InterEnemy*> boss)
 		}
 		ResF = false;
 	}
+}
+
+void InterBoss::SpawnSetEnemy(vector<unique_ptr<InterEnemy>> enemys) {
+
 }
 
 

@@ -1,6 +1,6 @@
 ﻿#include "EnemyManager.h"
 #include "Helper.h"
-#define EnemySize 3
+
 EnemyManager::EnemyManager(const std::string& SceneName) {
 
 	m_SceneName = SceneName;
@@ -8,25 +8,21 @@ EnemyManager::EnemyManager(const std::string& SceneName) {
 	if (m_SceneName == "FIRSTSTAGE") {
 		boss.reset(new FirstBoss());
 		boss->Initialize();
-		bulletenemy.resize(EnemySize);
+		bulletenemy.resize(firstEnemyMax);
 		for (auto i = 0; i < bulletenemy.size(); i++) {
 			bulletenemy[i] = new NormalEnemy();
 			bulletenemy[i]->Initialize();
 		}
 	} else if (m_SceneName == "SECONDSTAGE") {
-		boss.reset(new SecondBoss());
+		boss = make_unique < SecondBoss>();
 		boss->Initialize();
-		for (auto i = 0; i < bulletenemy.size(); i++) {
-			bulletenemy[i] = new NormalEnemy();
-			bulletenemy[i]->Initialize();
-		}
 	} else if (m_SceneName == "THIRDSTAGE") {
-		boss.reset(new ThirdBoss());
+		boss = make_unique<ThirdBoss>();
 		boss->Initialize();
-		//for (auto i = 0; i < bulletenemy.size(); i++) {
-		//	bulletenemy[i] = new NormalEnemy();
-		//	bulletenemy[i]->Initialize();
-		//}
+
+	} else if (m_SceneName == "FOURTHSTAGE") {
+		boss = make_unique <FourthBoss>();
+		boss->Initialize();
 	} else if (m_SceneName == "TUTORIAL") {
 		for (auto i = 0; i < tutorialenemy.size(); i++) {
 			tutorialenemy[i] = make_unique<TutorialEnemy>();
@@ -39,6 +35,7 @@ EnemyManager::EnemyManager(const std::string& SceneName) {
 		for (auto i = 1; i < tutorialenemy.size(); i++) {
 			float posX = -40.0f + (i * 20.f);
 			tutorialenemy[i]->SetPosition({ posX ,5.0f ,50.0f });
+			tutorialenemy[i]->SetUnrival(true);
 		}
 	} else {
 		assert(0);
@@ -53,10 +50,9 @@ void EnemyManager::SkipInitialize() {
 void EnemyManager::BattleUpdate() {
 	boss->Update();
 	if (m_SceneName == "FIRSTSTAGE") {
-
 		boss->isRespawn(bulletenemy);
 		boss->SummonEnemyUpda(bulletenemy);
-	}
+	} 
 }
 //登場シーン
 void EnemyManager::AppearUpdate() {

@@ -27,6 +27,7 @@ public:
 		MobUsa,
 		Heart,
 		Pedestal
+		DJ
 	};
 	//FBX‚Ì–¼‘O
 	enum FBXName {

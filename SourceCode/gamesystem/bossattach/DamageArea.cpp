@@ -1,0 +1,197 @@
+#include "DamageArea.h"
+#include "ModelManager.h"
+#include "ImageManager.h"
+#include "Helper.h"
+#include <Easing.h>
+#include "VariableCommon.h"
+#include <random>
+DamageArea::DamageArea(const int Num) {
+	obj.resize(Num);
+	m_Position.resize(Num);
+	m_Rotation.resize(Num);
+	m_Scale.resize(Num);
+	m_Color.resize(Num);
+	m_Alive.resize(Num);
+
+	tex.resize(Num - 1);
+	m_TexPosition.resize(Num - 1);
+	m_TexRotation.resize(Num - 1);
+	m_TexScale.resize(Num - 1);
+	m_TexColor.resize(Num - 1);
+	m_TexAlive.resize(Num - 1);
+
+	model = ModelManager::GetInstance()->GetModel(ModelManager::Bullet);
+	for (size_t i = 0; i < obj.size(); i++) {
+		obj[i] = new IKEObject3d();
+		obj[i]->Initialize();
+		obj[i]->SetModel(model);
+		obj[i]->SetPosition({ 0.0f,-500.0f,0.0f });
+	}
+
+	for (size_t i = 0; i < tex.size(); i++) {
+		tex[i] = IKETexture::Create(ImageManager::DAMAGEAREA, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
+		tex[i]->TextureCreate();
+		tex[i]->SetPosition({ 0.0f,-500.0f,0.0f });
+	}
+}
+
+void DamageArea::Initialize() {
+
+	for (size_t i = 0; i < obj.size(); i++) {
+		//—”Žw’è
+		mt19937 mt{ std::random_device{}() };
+		uniform_int_distribution<int> l_distX(-60, 65);
+		uniform_int_distribution<int> l_distZ(-60, 60);
+		m_Position[i] = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
+		m_Scale[i] = { 0.0f,0.0f,0.0f };
+		m_Color[i] = { 0.0f,1.0f,0.0f,1.0f };
+		m_Rotation[i] = { 0.0f,0.0f,0.0f };
+		m_Alive[i] = true;
+	}
+
+	for (size_t i = 0; i < tex.size(); i++) {
+		m_TexColor[i] = { 1.0f,0.0f,0.0f,0.0f };
+		m_TexRotation[i] = { 90.0f,0.0f,0.0f };
+		m_TexScale[i] = { 0.2f,3.0f,1.0f };
+		m_TexAlive[i] = true;
+	}
+}
+
+void DamageArea::Update() {
+	StateManager();
+	LineUpdate();
+	PointUpdate();
+
+	for (int i = 0; i < obj.size(); i++) {
+		if (obj[i] == nullptr) {
+			continue;
+		}
+
+		if (!m_Alive[i]) {
+			obj.erase(cbegin(obj) + i);
+		}
+	}
+
+	for (int i = 0; i < tex.size(); i++) {
+		if (tex[i] == nullptr) {
+			continue;
+		}
+
+		if (!m_TexAlive[i]) {
+			tex.erase(cbegin(tex) + i);
+		}
+	}
+}
+
+void DamageArea::Draw(DirectXCommon* dxCommon) {
+	IKEObject3d::PreDraw();
+	for (size_t i = 0; i < obj.size(); i++) {
+		if (obj[i] != nullptr && m_Alive[i]) {
+			obj[i]->Draw();
+		}
+	}
+	IKEObject3d::PostDraw();
+
+	IKETexture::PreDraw2(dxCommon, AlphaBlendType);
+	for (size_t i = 0; i < tex.size(); i++) {
+		if (tex[i] != nullptr) {
+			tex[i]->Draw();
+		}
+	}
+	IKETexture::PostDraw();
+}
+
+void DamageArea::ImGuiDraw() {
+	ImGui::Begin("AREA");
+	ImGui::Text("State:%d", m_AreaState);
+	ImGui::Text("Alpha2:%f", m_Alpha);
+	ImGui::Text("Scale:%f", m_CommonScale);
+	for (size_t i = 0; i < tex.size(); i++) {
+		ImGui::Text("Alpha[%d]:%f",i,m_TexColor[i].w);
+	}
+	ImGui::End();
+}
+
+void DamageArea::LineUpdate() {
+	for (size_t i = 0; i < tex.size(); i++) {
+		m_TexPosition[i] = {
+		m_TexPosition[i].x = (m_Position[i].x + m_Position[i + 1].x) / 2,
+		0.0f,
+		m_TexPosition[i].z = (m_Position[i].z + m_Position[i + 1].z) / 2,
+		};
+
+		m_TexRotation[i].y = Helper::GetInstance()->DirRotation(m_TexPosition[i], m_Position[i], -PI_180);
+
+		m_TexScale[i].y = Helper::GetInstance()->ChechLength(m_Position[i], m_Position[i + 1]) * 0.1f;
+		if (tex[i] != nullptr) {
+			tex[i]->Update();
+			tex[i]->SetPosition(m_TexPosition[i]);
+			tex[i]->SetRotation(m_TexRotation[i]);
+			tex[i]->SetScale(m_TexScale[i]);
+			tex[i]->SetColor({ m_TexColor[i].x,m_TexColor[i].y,m_TexColor[i].z,m_Alpha});
+		}
+	}
+}
+
+void DamageArea::PointUpdate() {
+	
+	for (size_t i = 0; i < obj.size(); i++) {
+		
+		if (obj[i] != nullptr) {
+			obj[i]->Update();
+			obj[i]->SetPosition(m_Position[i]);
+			obj[i]->SetRotation(m_Rotation[i]);
+			obj[i]->SetScale({ m_CommonScale, m_CommonScale, m_CommonScale });
+			obj[i]->SetColor(m_Color[i]);
+		}
+	}
+}
+
+void DamageArea::StateManager() {
+	const float l_AddFrame = 0.01f;
+	if (m_AreaState == POINT_BIRTH) {
+		if (m_Frame < m_FrameMax) {
+			m_Frame += l_AddFrame;
+		}
+		else {
+			m_Frame = {};
+			m_AreaState = LINE_BIRTH;
+		}
+		m_CommonScale = Ease(In, Cubic, m_Frame, m_CommonScale, m_AfterScale);
+	}
+	else if (m_AreaState == LINE_BIRTH) {
+		if (m_Frame < m_FrameMax) {
+			m_Frame += l_AddFrame;
+		}
+		else {
+			m_Frame = {};
+			m_AreaState = STAY;
+		}
+		m_Alpha = Ease(In, Cubic, m_Frame, m_Alpha, m_AfterAlpha);
+	}
+	else if (m_AreaState == STAY) {
+		m_StayTimer++;
+		if (m_StayTimer > 200) {
+			m_AreaState = VANISH_AREA;
+			m_AfterAlpha = 0.0f;
+			m_AfterScale = 0.0f;
+		}
+	}
+	else {
+		if (m_Frame < m_FrameMax) {
+			m_Frame += l_AddFrame;
+		}
+		else {
+			m_Frame = {};
+			m_AreaState = POINT_BIRTH;
+			for (size_t i = 0; i < tex.size(); i++) {
+				m_TexAlive[i] = false;
+			}
+			for (size_t i = 0; i < obj.size(); i++) {
+				m_Alive[i] = false;
+			}
+		}
+		m_CommonScale = Ease(In, Cubic, m_Frame, m_CommonScale, m_AfterScale);
+		m_Alpha = Ease(In, Cubic, m_Frame, m_Alpha, m_AfterAlpha);
+	}
+}

@@ -6,6 +6,9 @@
 #include"InterBoss.h"
 
 using namespace DirectX;
+
+class InterBullet;
+
 class UI {
 public:
 	UI() {};
@@ -33,7 +36,9 @@ private:
 		StatusGauge,
 		UnderBossGauge,
 		BossGauge,
-		UiMax
+		PlayerCircle,
+		CircleCover,
+		UiMax,
 	};
 
 	//スプライト
@@ -55,6 +60,12 @@ private:
 	XMFLOAT2 m_PlayerHpPos = { 15.f, 680.f };
 	XMFLOAT2 m_PlayerHpSize = { 300.f, 30.f };
 
+	XMFLOAT2 m_PlayerCireclePos = { WinApp::window_width-200 ,WinApp::window_height };
+	XMFLOAT2 m_PlayerCircleSize = { 240.f,240.f };
+	float m_PlayerCircleRot = 0.f;
+	float m_limit = 0.f;
+	int bullet_type_ = 0;
+	int oldbullet_type_ = 0;
 
 	std::vector<SpriteData>TexList;
 public:

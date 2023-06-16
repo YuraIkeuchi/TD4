@@ -439,6 +439,36 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\ui\SelectScene.cpp">
       <Filter>gamesystem</Filter>
+	</ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\FourthBoss.cpp">
+      <Filter>gamesystem\charactor\Boss\Fourth</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\FourthStageActor.cpp">
+      <Filter>gamesystem\actor\Fourth</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\FourthStage.cpp">
+      <Filter>gamesystem\scene\Play\Fourth</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\bossattach\AttackNote.cpp">
+      <Filter>gamesystem\bossattach\Note\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\bossattach\DamageArea.cpp">
+      <Filter>gamesystem\bossattach\DamageArea</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\bossattach\InterCD.cpp">
+      <Filter>gamesystem\bossattach\CD\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\bossattach\DebuffCD.cpp">
+      <Filter>gamesystem\bossattach\CD\Various</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\bossattach\LineCD.cpp">
+      <Filter>gamesystem\bossattach\CD\Various</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\bossattach\BarrangeCD.cpp">
+      <Filter>gamesystem\bossattach\CD\Various</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\bossattach\ConfuCD.cpp">
+      <Filter>gamesystem\bossattach\CD\Various</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -843,6 +873,36 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\ui\SelectScene.h">
       <Filter>gamesystem</Filter>
+	</ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\FourthBoss.h">
+      <Filter>gamesystem\charactor\Boss\Fourth</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\FourthStageActor.h">
+      <Filter>gamesystem\actor\Fourth</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\FourthStage.h">
+      <Filter>gamesystem\scene\Play\Fourth</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\AttackNote.h">
+      <Filter>gamesystem\bossattach\Note\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\DamageArea.h">
+      <Filter>gamesystem\bossattach\DamageArea</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\InterCD.h">
+      <Filter>gamesystem\bossattach\CD\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\ConfuCD.h">
+      <Filter>gamesystem\bossattach\CD\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\DebuffCD.h">
+      <Filter>gamesystem\bossattach\CD\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\LineCD.h">
+      <Filter>gamesystem\bossattach\CD\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\BarrangeCD.h">
+      <Filter>gamesystem\bossattach\CD\Various</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -932,9 +992,6 @@
     <Filter Include="engine\helper">
       <UniqueIdentifier>{31e76bf3-e3c6-4626-a245-2e7e6077980f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="engine\imgui">
-      <UniqueIdentifier>{32013d26-86f9-44ef-a932-c1ddc79b1919}</UniqueIdentifier>
-    </Filter>
     <Filter Include="gamesystem\bossattach">
       <UniqueIdentifier>{c5b6abd9-4249-47a2-8449-64ba75b27c63}</UniqueIdentifier>
     </Filter>
@@ -1018,9 +1075,6 @@
     </Filter>
     <Filter Include="gamesystem\charactor\Boss\Second">
       <UniqueIdentifier>{ec828ebd-733d-473a-a83d-515c2af901f1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gamesystem\charactor\Boss\Base">
-      <UniqueIdentifier>{cddcc7b5-f579-4ffb-bf7a-fc05ad2ee680}</UniqueIdentifier>
     </Filter>
     <Filter Include="gamesystem\charactor\Manager">
       <UniqueIdentifier>{86b3a7ac-7219-4fdc-89a1-6415863d0c42}</UniqueIdentifier>
@@ -1153,6 +1207,36 @@
     </Filter>
     <Filter Include="gamesystem\Menu">
       <UniqueIdentifier>{99344b64-4c4f-4a5c-a439-fce455159b0b}</UniqueIdentifier>
+    </Filter>
+	<Filter Include="gamesystem\charactor\Boss\Fourth">
+      <UniqueIdentifier>{949da15c-e9fb-4fbb-820d-721dacfaa7f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\actor\Fourth">
+      <UniqueIdentifier>{10017404-cd0d-494a-b74c-734e0f92aeee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Play\Fourth">
+      <UniqueIdentifier>{4c5715b8-6156-4a65-aae3-d7ed88ac153e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\bossattach\Note">
+      <UniqueIdentifier>{f5d5fe81-1118-4806-88e1-69b872a67f61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\bossattach\Note\Attack">
+      <UniqueIdentifier>{6150f44b-5ea3-46c7-8e6e-e7a5b4f3acbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\bossattach\DamageArea">
+      <UniqueIdentifier>{12183991-69e0-44e1-ae14-66fa89670d1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\bossattach\CD">
+      <UniqueIdentifier>{ce88a1cc-e2b6-4e7a-a0d8-f7b45c3f7f7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\bossattach\CD\Common">
+      <UniqueIdentifier>{5aef5a33-9472-4c01-bdaa-403224d5abf6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\bossattach\CD\Various">
+      <UniqueIdentifier>{f31b46da-5fd4-4840-aeba-a79526420ff3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\charactor\Boss\Base">
+      <UniqueIdentifier>{cddcc7b5-f579-4ffb-bf7a-fc05ad2ee680}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -49,6 +49,10 @@ public:
 		MENU_FRAME,
 		EXPLANATION,
 		CLOSESYTOPON
+		PHOTO_IN,
+		PHOTO_OUT,
+		CIRCLE,
+		CIRCLECOVER,
 	};
 	//テクスチャの名前
 	enum tex2dName
@@ -60,6 +64,8 @@ public:
 		MARK,
 	DAMAGEAREA,
 		GROUND
+		DAMAGEAREA,
+		PHOTOSPOT,
 	};
 	enum particleName
 	{

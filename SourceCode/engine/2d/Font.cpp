@@ -1,4 +1,5 @@
 #include "Font.h"
+#include<wchar.h>
 
 DirectX::GraphicsMemory* Font::_gmemory = nullptr;
 
@@ -63,5 +64,40 @@ void Font::PostDraw(DirectXCommon* dxcommon)
 
 void Font::SetString(wchar_t* ward)
 {
-	ward_ = ward;	
+	ward_ = ward;
+}
+
+void Font::TestSet(wchar_t* ward, size_t len, bool& flag,bool& nextflag)
+{
+	if (flag == true) {
+		testward_ = ward;
+		first_f = true;
+		flag = false;
+	}
+	const wchar_t* wa{};
+	size_t newsiz{};
+	wa = testward_;
+	newsiz = wcslen(wa) + 1;
+	if (first_f == true) {
+		len_ = newsiz - 1;
+		first_f = false;
+	}
+
+	size_t origsize = wcslen(wa)+1;
+	time_ += 1.f;
+	
+	
+	if (time_ > 1) {
+		len_ -= 1;
+		time_ = 0.f;
+	}
+	wchar_t* wcstr = new wchar_t[newsiz];
+
+	if (0 < len_) {
+		wcsncpy_s(wcstr, origsize, testward_, newsiz - len_);
+		ward_ = wcstr;
+	}
+	else {
+		nextflag = true;
+	}
 }

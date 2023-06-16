@@ -384,10 +384,10 @@ void Player::Bullet_Management() {
 	}
 
 	//弾の数指定
-	if (HungerGauge::GetInstance()->GetCatchCount() < 2) {
+	if (HungerGauge::GetInstance()->GetCatchCount() < 3) {
 		m_BulletNum = 1;
 	}
-	else if (HungerGauge::GetInstance()->GetCatchCount() >= 2 && HungerGauge::GetInstance()->GetCatchCount() < 4) {
+	else if (HungerGauge::GetInstance()->GetCatchCount() >= 3 && HungerGauge::GetInstance()->GetCatchCount() < 6) {
 		m_BulletNum = 2;
 	}
 	else {
@@ -537,7 +537,7 @@ void Player::isOldPos()
 void Player::RecvDamage(float Damage) {
 	Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Damage.wav", VolumManager::GetInstance()->GetSEVolum());
 	m_HP -= Damage;
-	m_DamageInterVal = 100;
+	m_DamageInterVal = 50;
 	m_Damage = true;
 	BirthParticle();
 }

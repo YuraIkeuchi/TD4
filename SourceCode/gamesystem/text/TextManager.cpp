@@ -16,14 +16,22 @@ void TextManager::Create(DirectXCommon* dxcomon)
 	conversation_.FirstFont = new Font();
 	conversation_.SecondFont = new Font();
 	conversation_.ThirdFont = new Font();
-
 	conversation_.FirstFont->LoadFont(dxcomon);
 	conversation_.SecondFont->LoadFont(dxcomon);
 	conversation_.ThirdFont->LoadFont(dxcomon);
-
 	conversation_.FirstFont->SetColor(color_);
 	conversation_.SecondFont->SetColor(color_);
 	conversation_.ThirdFont->SetColor(color_);
+
+	old_conversation_.FirstFont = new Font();
+	old_conversation_.SecondFont = new Font();
+	old_conversation_.ThirdFont = new Font();
+	old_conversation_.FirstFont->LoadFont(dxcomon);
+	old_conversation_.SecondFont->LoadFont(dxcomon);
+	old_conversation_.ThirdFont->LoadFont(dxcomon);
+	old_conversation_.FirstFont->SetColor(color_);
+	old_conversation_.SecondFont->SetColor(color_);
+	old_conversation_.ThirdFont->SetColor(color_);
 
 }
 
@@ -31,9 +39,10 @@ void TextManager::Create(DirectXCommon* dxcomon)
 //初期化
 void TextManager::Initialize(DirectXCommon* dxcomon)
 {
+
 	//ワード追加
 	CreateWord(NONE, L" ", L" ", L" ");
-	CreateWord(TYUTORIAL_TALK1, L"ここはどこだろう?", L"ん?なにか動いてる", L"");
+	CreateWord(TYUTORIAL_TALK1, L"ここはどこだろう?", L"ん?何か動いてる?", L"");
 	CreateWord(SETUMEI1, L"Lスティックで移動してみよう", L"", L"");
 	CreateWord(TYUTORIAL_TALK2, L"これは.....メガホン?", L"でも、動いてる?");
 	CreateWord(TYUTORIAL_TALK3, L"う..う.......はっ!?", L"敵!?.......じゃないみたいだな", L" ");
@@ -110,6 +119,45 @@ void TextManager::Draw(DirectXCommon* dxcommon)
 	Font::PostDraw(dxcommon);
 }
 
+void TextManager::TestDraw(DirectXCommon* dxcommon)
+{
+
+	length = 0;
+	test = conversation_.FirstFont->GetString();
+	test1 = conversation_.SecondFont->GetString();
+	test2 = conversation_.ThirdFont->GetString();
+
+
+	len[0] = wcslen(test);
+	len[1] = wcslen(test1);
+	len[2] = wcslen(test2);
+
+	
+	conversation_.FirstFont->TestSet(test,len[0],flag[0],next_f[0]);
+	conversation_.FirstFont->Draw(dxcommon);
+	if (next_f[0] == true) {
+		conversation_.SecondFont->TestSet(test1, len[1], flag[1],next_f[1]);
+		conversation_.SecondFont->Draw(dxcommon);
+	}
+	if (next_f[1] == true) {
+		conversation_.ThirdFont->TestSet(test2, len[2], flag[2],next_f[2]);
+		conversation_.ThirdFont->Draw(dxcommon);
+	}
+
+	Font::PostDraw(dxcommon);
+}
+
+void TextManager::Test()
+{
+	wchar_t* test = conversation_.FirstFont->GetString();
+	wchar_t* test1 = conversation_.SecondFont->GetString();
+	wchar_t* test2 = conversation_.ThirdFont->GetString();
+
+	conversation_.FirstFont->SetString(test);
+	conversation_.SecondFont->SetString(test1);
+	conversation_.ThirdFont->SetString(test2);
+}
+
 void TextManager::SetAllColor(const XMVECTOR& color)
 {
 	conversation_.FirstFont->SetColor(color);
@@ -136,6 +184,15 @@ void TextManager::SetConversation(Name name,const XMVECTOR& color)
 {
 	std::map<TextManager::Name, Word>::iterator itr = wordlist_.find(name);
 
+	if (old != itr->first) {
+		for (int i = 0; i < 3; i++) {
+			flag[i] = true;
+			next_f[i] = false;
+		}
+	}
+
+	old = itr->first;
+
 	GetWordSize(itr->second);
 	
 	CreateCon(conversation_, itr->second);
@@ -143,6 +200,7 @@ void TextManager::SetConversation(Name name,const XMVECTOR& color)
 	conversation_.FirstFont->SetColor(color);
 	conversation_.SecondFont->SetColor(color);
 	conversation_.ThirdFont->SetColor(color);
+	
 }
 //名前から文字列を呼び出しセットする
 void TextManager::SetConversation(Name_First name, const XMVECTOR& color)

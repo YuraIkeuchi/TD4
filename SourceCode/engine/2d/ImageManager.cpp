@@ -48,6 +48,10 @@ void ImageManager::SecondLoad2D()
 	IKESprite::LoadTexture(EXPLANATION, L"Resources/2d/sceneback/Explanation.png");
 	IKESprite::LoadTexture(CLOSESYTOPON, L"Resources/2d/objicon/closeSutopon.png");
 
+	IKESprite::LoadTexture(PHOTO_IN, L"Resources/2d/effect/camera_soto.png");
+	IKESprite::LoadTexture(PHOTO_OUT, L"Resources/2d/effect/camera_naka.png");
+	IKESprite::LoadTexture(CIRCLE, L"Resources/2d/objicon/circle.png");
+	IKESprite::LoadTexture(CIRCLECOVER, L"Resources/2d/objicon/circlecover.png");
 }
 
 //テクスチャの読み込み
@@ -65,6 +69,7 @@ void ImageManager::SecondLoadTex2D()
 	IKETexture::LoadTexture(MARK, L"Resources/2d/objicon/box.png");
 	IKETexture::LoadTexture(DAMAGEAREA, L"Resources/2d/effect/DArea.png");
 	IKETexture::LoadTexture(GROUND, L"Resources/2d/SceneBack/Ground.png");
+	IKETexture::LoadTexture(PHOTOSPOT, L"Resources/2d/effect/PhotoSpot.png");
 }
 
 void ImageManager::LoadParticle()

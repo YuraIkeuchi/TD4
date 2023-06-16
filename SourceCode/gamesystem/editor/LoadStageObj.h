@@ -27,6 +27,9 @@ public:
 	void FirstUpdate()override;
 	//更新
 	void SecondUpdate()override;
+	//更新
+	void ThirdUpdate();
+
 	//描画
 	void Draw(DirectXCommon* dxCommon)override;
 	//ImGui
@@ -48,17 +51,27 @@ private:
 	void BirthHeart();
 	//ライトのサイド生成
 	void LightReturn();
+	//サードボスに関する関数をまとめています
+	void ThirdBossAction();
+	//近場のゴーストをロックします
+	void LockVerseGhost();
+	//ゴーストを削除します。
+	void NonVerseGhost();
+	//参照されているゴーストが存在するかチェックします。
+	bool CheckReferGhost();
 public:
-	static void SetEnemyManager(EnemyManager* boss) { LoadStageObj::boss = boss; }
+	static void SetEnemyManager(EnemyManager* m_EnemyManager) { LoadStageObj::m_EnemyManager = m_EnemyManager; }
 protected:
-	static EnemyManager* boss;
-
+	static EnemyManager* m_EnemyManager;
 private:
 	//当たり判定
 	void Collide();
 private:
 	LightGroup* lightgroup = nullptr;
 	std::vector<Ghost*> ghosts;
+	//
+	static const int kStopGhostMax = 5;
+	array<Ghost*, kStopGhostMax> stopGhosts;
 	std::vector<Food*> foods;
 	std::vector<Heart*> hearts;
 	//ゴーストを消す処理
@@ -66,6 +79,8 @@ private:
 	bool m_Vanish = false;
 
 	float m_Division = 0.0f;
+
+	int kStopGhorstMax = 3;
 
 	//丸影
 	float circleShadowDir[3] = { 0,-1,0 };
