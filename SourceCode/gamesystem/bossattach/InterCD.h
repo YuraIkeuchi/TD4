@@ -6,7 +6,8 @@ enum CDState {
 	CD_THROUGH,
 	CD_CATCH,
 	CD_THROW,
-	CD_DEATH
+	CD_DEATH,
+	CD_RESPORN,
 };
 using namespace std;         //  名前空間指定
 //音符クラス
@@ -46,6 +47,7 @@ protected:
 	virtual void CatchCD() {};
 	virtual void ThrowCD() {};
 	virtual void DeathCD() {};
+	virtual void ResPornCD() {};
 public:
 	//gettersetter
 	const int& GetCDState() { return m_CDState; }
@@ -57,15 +59,20 @@ protected:
 	static void (InterCD::* stateTable[])();
 private:
 protected:
+	//CDの状態
 	int m_CDState = CD_BIRTH;
 
 	//上昇度
 	float m_AddPower = 0.0f;
 	//重力加速度
 	float m_Gravity = 0.02f;
-
+	//キャッチした後のポジション
 	XMFLOAT3 m_CatchPos = {};
+	//投げる間の時間
 	int m_ThrowTimer = {};
 	double m_SpeedX = 0.0f;
 	double m_SpeedZ = 0.0f;
+
+	//リスポーン時間
+	int m_ResPornTimer = {};
 };

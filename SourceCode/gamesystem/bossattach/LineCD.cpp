@@ -2,6 +2,7 @@
 #include "ModelManager.h"
 #include "Helper.h"
 #include "Player.h"
+#include <random>
 LineCD::LineCD() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Bullet);
 	m_Object.reset(new IKEObject3d());
@@ -10,6 +11,11 @@ LineCD::LineCD() {
 }
 //‰Šú‰»
 bool LineCD::Initialize() {
+	//—”w’è
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_distX(20, 50);
+	uniform_int_distribution<int> l_distZ(20, 50);
+	//m_Position = { float(l_distX(mt)),60.0f,float(l_distZ(mt)) };
 	m_Position = { 40.0f,60.0f,40.0f };
 	m_Scale = { 1.0f,1.0f,1.0f };
 	m_Color = { 1.0f,0.0f,0.0f,1.0f };
@@ -76,6 +82,7 @@ void LineCD::ThrowCD() {
 
 		if (Helper::GetInstance()->CheckNotValueRange(m_Position.x, -60.0f, 70.0f) || Helper::GetInstance()->CheckNotValueRange(m_Position.z, -65.0f, 65.0f)) {
 			m_CDState = CD_DEATH;
+			m_ThrowTimer = 0;
 		}
 	}
 }
@@ -83,4 +90,21 @@ void LineCD::ThrowCD() {
 //Á‚¦‚½
 void LineCD::DeathCD() {
 
+}
+
+//•œŠˆ
+void LineCD::ResPornCD() {
+	m_ResPornTimer++;
+	const int LimitTimer = 10;
+
+	if (m_ResPornTimer == LimitTimer) {
+		//—”w’è
+		mt19937 mt{ std::random_device{}() };
+		uniform_int_distribution<int> l_distX(20, 50);
+		uniform_int_distribution<int> l_distZ(20, 50);
+		//m_Position = { float(l_distX(mt)),60.0f,float(l_distZ(mt)) };
+		m_Position = { 40.0f,60.0f,40.0f };
+		m_AddPower = {};
+		m_CDState = CD_BIRTH;
+	}
 }

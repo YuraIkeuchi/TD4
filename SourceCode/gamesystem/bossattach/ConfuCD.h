@@ -15,6 +15,7 @@ public:
 	void CatchCD() override;
 	void ThrowCD() override;
 	void DeathCD() override;
+	void ResPornCD() override;
 public:
 
 private:

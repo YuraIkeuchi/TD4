@@ -7,6 +7,7 @@ void (InterCD::* InterCD::stateTable[])() = {
 	&InterCD::CatchCD,//Š
 	&InterCD::ThrowCD,//“Š‚°‚é
 	&InterCD::DeathCD,//‚È‚­‚È‚Á‚½
+	&InterCD::ResPornCD,//‚è‚·‚Û[‚ñ
 };
 
 void InterCD::Update() {

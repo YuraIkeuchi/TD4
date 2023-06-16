@@ -38,7 +38,7 @@ FourthBoss::FourthBoss() {
 	cd[CD_DEBUFF].reset(new DebuffCD);
 	cd[CD_DEBUFF]->Initialize();
 }
-
+//初期化
 bool FourthBoss::Initialize() {
 	m_Position = { 0.0f,0.0f,30.0f };
 	m_Scale = { 0.3f,0.3f,0.3f };
@@ -55,7 +55,7 @@ bool FourthBoss::Initialize() {
 	CSVLoad();
 	return true;
 }
-
+//スキップ時の初期化
 void FourthBoss::SkipInitialize() {
 	m_Position = { 0.0f,20.0f,30.0f };
 	m_Scale = { 0.3f,0.3f,0.3f };
@@ -145,10 +145,10 @@ void FourthBoss::Draw(DirectXCommon* dxCommon) {
 //ImGui
 void FourthBoss::ImGui_Origin() {
 	ImGui::Begin("Fourth");
-	/*ImGui::Text("Frame:%f", m_Frame);
-	ImGui::Text("STATE:%d", (int)_charaState);*/
-	ImGui::Text("THROW:%d", m_ThrowTimer);
+	ImGui::Text("m_MoveInterVal:%d", m_MoveInterVal);
 	ImGui::Text("THROWSTATE:%d", m_ThrowState);
+	ImGui::Text("EndCount:%d", m_EndCount);
+	ImGui::Text("STATE:%d", (int)_charaState);
 	ImGui::End();
 
 	//CDの更新
@@ -170,6 +170,16 @@ void FourthBoss::InterValMove() {
 	m_MoveInterVal++;
 	m_AreaState = AREA_SET;
 	m_ThrowState = THROW_SET;
+	//すべてが消えていたら復活させる
+	if ((cd[CD_LINE]->GetCDState() == CD_DEATH) && (cd[CD_DEBUFF]->GetCDState() == CD_DEATH) &&
+		(cd[CD_CONFU]->GetCDState() == CD_DEATH) && (cd[CD_BARRA]->GetCDState() == CD_DEATH)) {
+		for (int i = 0; i < cd.size(); i++) {
+			cd[i]->SetCDState(CD_RESPORN);
+		}
+		m_EndCount = 0;
+		_charaState = STATE_END;
+		m_AfterPos = { 0.0f,20.0f,30.0f };
+	}
 	//
 	if (m_MoveInterVal == 100) {
 		//上から順にCDを回る
@@ -212,13 +222,15 @@ void FourthBoss::Choice() {
 				}
 				else {
 					//攻撃をするかスルーか行動をするかCDを取るか決める
-					if (l_SelectRand < 1) {
+					if (l_SelectRand < 41) {
 						_charaState = i + 2;
 						cd[i]->SetCDState(CD_DEATH);
+						m_EndCount++;
 					}
 					else{
+						m_EndCount++;
 						cd[i]->SetCDState(CD_CATCH);
-						if (l_SelectRand >= 2 && l_SelectRand < 61) {
+						if ((l_SelectRand >= 42 && l_SelectRand < 71) && (m_EndCount < 4) ) {
 							_charaState = STATE_INTER;
 						}
 						else {
@@ -307,16 +319,18 @@ void FourthBoss::Barrage() {
 		m_Rotation.y = 0.0f;
 	}
 }
+//投げる
 void FourthBoss::Throw() {
+	int l_LimitTimer = {};
 	if (m_ThrowState == THROW_SET) {
 		m_ThrowTimer++;
-		if (m_ThrowTimer == 20) {
+		if (m_ThrowTimer == 50) {
 			m_ThrowState = THROW_NOW;
 			m_ThrowTimer = {};
 		}
 	}
 	else if (m_ThrowState == THROW_NOW) {
-		//上から順にCDを回る
+		//上から順にCDを投げる
 		for (int i = 0; i < cd.size(); i++) {
 			if (cd[i]->GetCDState() != CD_CATCH) {
 				continue;
@@ -327,6 +341,7 @@ void FourthBoss::Throw() {
 			}
 		}
 
+		//CDを持っているか検索してなかった場合は次に移動
 		for (int i = 0; i < cd.size(); i++) {
 			if (cd[i]->GetCDState() == CD_CATCH) {
 				m_ThrowState = THROW_SET;
@@ -338,12 +353,38 @@ void FourthBoss::Throw() {
 		}
 	}
 	else {
-		_charaState = STATE_INTER;
+		//投げ終わった後のインターバル
+		m_ThrowTimer++;
+		if (m_EndCount < 4) {
+			l_LimitTimer = 50;
+		}
+		else {
+			l_LimitTimer = 150;
+		}
+
+
+		if (m_ThrowTimer == l_LimitTimer) {
+			m_ThrowTimer = 0;
+			_charaState = STATE_INTER;
+		}
 	}
 }
 //行動の終わり
 void FourthBoss::EndMove() {
+	const float l_AddFrame = 0.01f;
+	if (m_Frame < m_FrameMax) {
+		m_Frame += l_AddFrame;
+	}
+	else {
+		m_Frame = {};
+		_charaState = STATE_INTER;
+	}
 
+	m_Position = {
+Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
+Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
+	Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z)
+	};
 }
 //ノーツの生成
 void FourthBoss::BirthNote(const std::string& BarrageName) {
