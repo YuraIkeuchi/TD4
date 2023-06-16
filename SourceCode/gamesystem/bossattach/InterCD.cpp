@@ -1,5 +1,5 @@
 #include "InterCD.h"
-
+#include "Collision.h"
 void (InterCD::* InterCD::stateTable[])() = {
 	&InterCD::BirthCD,//¶¬
 	&InterCD::StayCD, //•ú’u
@@ -20,4 +20,19 @@ void InterCD::Draw(DirectXCommon* dxCommon) {
 void InterCD::ImGuiDraw() {
 	
 	ImGui_Origin();
+}
+
+//’e‚Æ‚Ì“–‚½‚è”»’è
+void InterCD::CollideBul(vector<InterBullet*> bullet)
+{
+	if (m_CDState != CD_STAY)return;
+	const float l_Radius = 1.0f;
+	for (InterBullet* _bullet : bullet) {
+		if (_bullet != nullptr && _bullet->GetAlive()) {
+			if (Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, l_Radius, m_Position.x, m_Position.z, l_Radius)) {
+				m_CDState = CD_DEATH;
+				_bullet->SetAlive(false);
+			}
+		}
+	}	
 }

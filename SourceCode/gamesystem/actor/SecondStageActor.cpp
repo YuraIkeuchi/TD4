@@ -7,6 +7,7 @@
 #include "ImageManager.h"
 #include <algorithm>
 #include "BackObj.h"
+#include "Menu.h"
 //初期化
 void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	dxCommon->SetFullScreen(true);
@@ -54,6 +55,8 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 
 	lightgroup->SetCircleShadowActive(0, true);
 	lightgroup->SetCircleShadowActive(1, true);
+
+	Menu::GetIns()->Init();
 }
 //更新
 void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -80,6 +83,9 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
 	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
 	lightgroup->Update();
+
+	Menu::GetIns()->Upda();
+	postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
 }
 //描画
 void SecondStageActor::Draw(DirectXCommon* dxCommon) {
@@ -152,6 +158,7 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	}
 	IKESprite::PostDraw();
 	sceneChanger_->Draw();
+	Menu::GetIns()->Draw();
 	camerawork->feedDraw();
 }
 //IMGuiの描画

@@ -151,19 +151,19 @@ void FourthBoss::ImGui_Origin() {
 	ImGui::Text("STATE:%d", (int)_charaState);
 	ImGui::End();
 
-	//CDの更新
-	for (size_t i = 0; i < cd.size(); i++) {
-		cd[i]->ImGuiDraw();
-	}
-	//攻撃の音符
-	for (AttackNote* newnote : attacknotes) {
-		if (newnote != nullptr) {
-			newnote->ImGuiDraw();
-		}
-	}
-	if (damagearea != nullptr) {
-		damagearea->ImGuiDraw();
-	}
+	////CDの更新
+	//for (size_t i = 0; i < cd.size(); i++) {
+	//	cd[i]->ImGuiDraw();
+	//}
+	////攻撃の音符
+	//for (AttackNote* newnote : attacknotes) {
+	//	if (newnote != nullptr) {
+	//		newnote->ImGuiDraw();
+	//	}
+	//}
+	//if (damagearea != nullptr) {
+	//	damagearea->ImGuiDraw();
+	//}
 }
 //インターバル
 void FourthBoss::InterValMove() {

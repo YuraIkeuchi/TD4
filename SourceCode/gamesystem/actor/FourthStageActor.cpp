@@ -7,6 +7,7 @@
 #include "ImageManager.h"
 #include <algorithm>
 #include "BackObj.h"
+#include "Menu.h"
 //‰Šú‰»
 void FourthStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	dxCommon->SetFullScreen(true);
@@ -42,6 +43,7 @@ void FourthStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	ui = std::make_unique<UI>();
 	ui->Initialize();
 
+	Menu::GetIns()->Init();
 	ui->SetBoss(enemymanager->GetBoss());
 	BackObj::GetInstance()->Initialize();
 
@@ -80,6 +82,9 @@ void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
 	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
 	lightgroup->Update();
+
+	Menu::GetIns()->Upda();
+	postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
 }
 //•`‰æ
 void FourthStageActor::Draw(DirectXCommon* dxCommon) {
@@ -152,6 +157,7 @@ void FourthStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	}
 	IKESprite::PostDraw();
 	sceneChanger_->Draw();
+	Menu::GetIns()->Draw();
 	camerawork->feedDraw();
 }
 //IMGui‚Ì•`‰æ
