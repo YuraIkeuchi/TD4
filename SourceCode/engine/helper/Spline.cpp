@@ -22,7 +22,7 @@ XMVECTOR Spline::SplinePosition(const std::vector<XMVECTOR>& points, size_t star
 	size_t n = points.size() - 2;
 	if (startindex > n)
 	{
-		//return points[n];
+		return points[n];
 	}
 	if (startindex < 1)
 	{

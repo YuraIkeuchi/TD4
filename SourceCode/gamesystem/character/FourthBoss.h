@@ -1,10 +1,12 @@
 #pragma once
 #include "InterBoss.h"
 #include "Shake.h"
-#include "CD.h"
+#include "BarrangeCD.h"
+#include "ConfuCD.h"
+#include "LineCD.h"
+#include "DebuffCD.h"
 #include "AttackNote.h"
 #include "DamageArea.h"
-#include "Spline.h"
 class FourthBoss :
 	public InterBoss {
 public:
@@ -49,11 +51,12 @@ private:
 	static const int BULLET_NUM = 4;
 private:
 	//各クラス
-	unique_ptr<CD> cd;
+	unique_ptr<InterCD> barracd;
+	unique_ptr<InterCD> confucd;
+	unique_ptr<InterCD> debuffcd;
+	unique_ptr<InterCD> linecd;
 	vector<AttackNote*> attacknotes;//怒りのスタンプ
 	unique_ptr<DamageArea> damagearea;//ダメージエリア
-	vector<XMFLOAT3>pointsList;
-	Spline* spline;//スプライン
 	//キャラの状態
 	enum CharaState
 	{

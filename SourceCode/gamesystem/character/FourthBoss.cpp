@@ -23,23 +23,18 @@ FourthBoss::FourthBoss() {
 	m_Object->Initialize();
 	m_Object->SetModel(m_Model);
 
-	cd.reset(new CD);
+	//CDÇÃèâä˙âª
+	barracd.reset(new BarrangeCD);
+	barracd->Initialize();
 
-	{
-		if (pointsList.size() == 0) {
-			pointsList.emplace_back(XMFLOAT3{ 0,5,0 });
-			pointsList.emplace_back(XMFLOAT3{ 30,0,-20 });
-			pointsList.emplace_back(XMFLOAT3{ 50,0,0 });
-			pointsList.emplace_back(XMFLOAT3{ 30,0,20 });
-			pointsList.emplace_back(XMFLOAT3{ 0,0,40 });
-			pointsList.emplace_back(XMFLOAT3{ -30,0,20 });
-			pointsList.emplace_back(XMFLOAT3{ -50,0,0 });
-			pointsList.emplace_back(XMFLOAT3{ -30,0,-20 });
+	linecd.reset(new LineCD);
+	linecd->Initialize();
 
-		}
-		spline = new Spline();
-		spline->Init(pointsList, static_cast<int>(pointsList.size()));
-	}
+	confucd.reset(new ConfuCD);
+	confucd->Initialize();
+
+	debuffcd.reset(new DebuffCD);
+	debuffcd->Initialize();
 }
 
 bool FourthBoss::Initialize() {
@@ -51,8 +46,6 @@ bool FourthBoss::Initialize() {
 	ActionTimer = 1;
 
 	m_Radius = 5.0f;
-
-	cd->Initialize();
 
 	_charaState = STATE_CHOICE;
 	m_BarraState = BARRA_SET;
@@ -94,7 +87,10 @@ void FourthBoss::Action() {
 	Helper::GetInstance()->Clamp(m_Position.x, -55.0f, 65.0f);
 	Helper::GetInstance()->Clamp(m_Position.z, -60.0f, 60.0f);
 
-	cd->Update();
+	barracd->Update();
+	linecd->Update();
+	confucd->Update();
+	debuffcd->Update();
 
 	//çUåÇÇÃâπïÑ
 	for (AttackNote* newnote : attacknotes) {
@@ -131,7 +127,10 @@ void FourthBoss::EffecttexDraw(DirectXCommon* dxCommon)
 //ï`âÊ
 void FourthBoss::Draw(DirectXCommon* dxCommon) {
 	Obj_Draw();
-	cd->Draw(dxCommon);
+	barracd->Draw(dxCommon);
+	linecd->Draw(dxCommon);
+	confucd->Draw(dxCommon);
+	debuffcd->Draw(dxCommon);
 	//çUåÇÇÃâπïÑ
 	for (AttackNote* newnote : attacknotes) {
 		if (newnote != nullptr) {
@@ -154,7 +153,6 @@ void FourthBoss::ImGui_Origin() {
 	}
 	ImGui::End();
 
-	cd->ImGuiDraw();
 	//çUåÇÇÃâπïÑ
 	for (AttackNote* newnote : attacknotes) {
 		if (newnote != nullptr) {
@@ -172,8 +170,7 @@ void FourthBoss::Choice() {
 	uniform_int_distribution<int> l_RandomMove(0, 2);
 	int l_RandState = 0;
 	
-	SplineSpeed = 300.f;
-	spline->Upda(m_Position, SplineSpeed);
+
 	//if (m_StopTimer > m_ChoiceInterval) {
 	//	m_Frame = 0.0f;
 	//	l_RandState = int(l_RandomMove(mt));

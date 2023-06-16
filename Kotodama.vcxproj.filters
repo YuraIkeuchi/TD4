@@ -437,14 +437,26 @@
     <ClCompile Include="SourceCode\gamesystem\scene\FourthStage.cpp">
       <Filter>gamesystem\scene\Play\Fourth</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\bossattach\CD.cpp">
-      <Filter>gamesystem\bossattach\Note\View</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\bossattach\AttackNote.cpp">
       <Filter>gamesystem\bossattach\Note\Attack</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\bossattach\DamageArea.cpp">
       <Filter>gamesystem\bossattach\DamageArea</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\bossattach\InterCD.cpp">
+      <Filter>gamesystem\bossattach\CD\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\bossattach\DebuffCD.cpp">
+      <Filter>gamesystem\bossattach\CD\Various</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\bossattach\LineCD.cpp">
+      <Filter>gamesystem\bossattach\CD\Various</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\bossattach\BarrangeCD.cpp">
+      <Filter>gamesystem\bossattach\CD\Various</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\bossattach\ConfuCD.cpp">
+      <Filter>gamesystem\bossattach\CD\Various</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -847,14 +859,26 @@
     <ClInclude Include="SourceCode\gamesystem\scene\FourthStage.h">
       <Filter>gamesystem\scene\Play\Fourth</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\bossattach\CD.h">
-      <Filter>gamesystem\bossattach\Note\View</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\bossattach\AttackNote.h">
       <Filter>gamesystem\bossattach\Note\Attack</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\bossattach\DamageArea.h">
       <Filter>gamesystem\bossattach\DamageArea</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\InterCD.h">
+      <Filter>gamesystem\bossattach\CD\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\ConfuCD.h">
+      <Filter>gamesystem\bossattach\CD\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\DebuffCD.h">
+      <Filter>gamesystem\bossattach\CD\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\LineCD.h">
+      <Filter>gamesystem\bossattach\CD\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\BarrangeCD.h">
+      <Filter>gamesystem\bossattach\CD\Various</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1028,9 +1052,6 @@
     <Filter Include="gamesystem\charactor\Boss\Second">
       <UniqueIdentifier>{ec828ebd-733d-473a-a83d-515c2af901f1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="gamesystem\charactor\Boss\Base">
-      <UniqueIdentifier>{cddcc7b5-f579-4ffb-bf7a-fc05ad2ee680}</UniqueIdentifier>
-    </Filter>
     <Filter Include="gamesystem\charactor\Manager">
       <UniqueIdentifier>{86b3a7ac-7219-4fdc-89a1-6415863d0c42}</UniqueIdentifier>
     </Filter>
@@ -1172,14 +1193,23 @@
     <Filter Include="gamesystem\bossattach\Note">
       <UniqueIdentifier>{f5d5fe81-1118-4806-88e1-69b872a67f61}</UniqueIdentifier>
     </Filter>
-    <Filter Include="gamesystem\bossattach\Note\View">
-      <UniqueIdentifier>{9b0dfcc2-b20a-402c-a328-b463299a7835}</UniqueIdentifier>
-    </Filter>
     <Filter Include="gamesystem\bossattach\Note\Attack">
       <UniqueIdentifier>{6150f44b-5ea3-46c7-8e6e-e7a5b4f3acbf}</UniqueIdentifier>
     </Filter>
     <Filter Include="gamesystem\bossattach\DamageArea">
       <UniqueIdentifier>{12183991-69e0-44e1-ae14-66fa89670d1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\bossattach\CD">
+      <UniqueIdentifier>{ce88a1cc-e2b6-4e7a-a0d8-f7b45c3f7f7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\bossattach\CD\Common">
+      <UniqueIdentifier>{5aef5a33-9472-4c01-bdaa-403224d5abf6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\bossattach\CD\Various">
+      <UniqueIdentifier>{f31b46da-5fd4-4840-aeba-a79526420ff3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\charactor\Boss\Base">
+      <UniqueIdentifier>{cddcc7b5-f579-4ffb-bf7a-fc05ad2ee680}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
