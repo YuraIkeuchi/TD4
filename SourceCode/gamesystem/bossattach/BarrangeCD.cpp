@@ -1,6 +1,7 @@
 #include "BarrangeCD.h"
 #include "ModelManager.h"
 #include "Helper.h"
+#include "Player.h"
 BarrangeCD::BarrangeCD() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Bullet);
 	m_Object.reset(new IKEObject3d());
@@ -60,7 +61,24 @@ void BarrangeCD::CatchCD() {
 
 //ボスが投げる
 void BarrangeCD::ThrowCD() {
+	m_ThrowTimer++;
+	if (m_ThrowTimer == 1) {
+		double sb, sbx, sbz;
+		sbx = Player::GetInstance()->GetPosition().x - m_Position.x;
+		sbz = Player::GetInstance()->GetPosition().z - m_Position.z;
+		sb = sqrt(sbx * sbx + sbz * sbz);
+		m_SpeedX = sbx / sb * 0.8;
+		m_SpeedZ = sbz / sb * 0.8;
+	}
+	else if (m_ThrowTimer > 1) {
+		//プレイヤーにスピード加算
+		m_Position.x += (float)m_SpeedX;
+		m_Position.z += (float)m_SpeedZ;
 
+		if (Helper::GetInstance()->CheckNotValueRange(m_Position.x, -60.0f, 70.0f) || Helper::GetInstance()->CheckNotValueRange(m_Position.z, -65.0f, 65.0f)) {
+			m_CDState = CD_DEATH;
+		}
+	}
 }
 //消えた
 void BarrangeCD::DeathCD() {

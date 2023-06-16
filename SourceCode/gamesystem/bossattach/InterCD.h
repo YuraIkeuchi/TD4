@@ -65,4 +65,7 @@ protected:
 	float m_Gravity = 0.02f;
 
 	XMFLOAT3 m_CatchPos = {};
+	int m_ThrowTimer = {};
+	double m_SpeedX = 0.0f;
+	double m_SpeedZ = 0.0f;
 };

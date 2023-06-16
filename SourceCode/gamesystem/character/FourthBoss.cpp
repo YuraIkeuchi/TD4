@@ -13,9 +13,9 @@ void (FourthBoss::* FourthBoss::stateTable[])() = {
 	&FourthBoss::Debuff,//デバフ
 	&FourthBoss::Confu,//混乱
 	&FourthBoss::Barrage,//弾幕
+	&FourthBoss::Throw,//投げる
 	&FourthBoss::EndMove,//行動の終わり
 };
-
 
 //生成
 FourthBoss::FourthBoss() {
@@ -142,15 +142,13 @@ void FourthBoss::Draw(DirectXCommon* dxCommon) {
 	}
 	EffecttexDraw(dxCommon);
 }
-
 //ImGui
 void FourthBoss::ImGui_Origin() {
 	ImGui::Begin("Fourth");
-	ImGui::Text("m_EndCount:%d", m_EndCount);
-	ImGui::Text("Frame:%f", m_Frame);
-	ImGui::Text("STATE:%d", (int)_charaState);
-	ImGui::Text("POSX:%f", m_AfterPos.x);
-	ImGui::Text("POSZ:%f", m_AfterPos.z);
+	/*ImGui::Text("Frame:%f", m_Frame);
+	ImGui::Text("STATE:%d", (int)_charaState);*/
+	ImGui::Text("THROW:%d", m_ThrowTimer);
+	ImGui::Text("THROWSTATE:%d", m_ThrowState);
 	ImGui::End();
 
 	//CDの更新
@@ -171,7 +169,7 @@ void FourthBoss::ImGui_Origin() {
 void FourthBoss::InterValMove() {
 	m_MoveInterVal++;
 	m_AreaState = AREA_SET;
-
+	m_ThrowState = THROW_SET;
 	//
 	if (m_MoveInterVal == 100) {
 		//上から順にCDを回る
@@ -214,17 +212,19 @@ void FourthBoss::Choice() {
 				}
 				else {
 					//攻撃をするかスルーか行動をするかCDを取るか決める
-					if (l_SelectRand < 51) {
+					if (l_SelectRand < 1) {
 						_charaState = i + 2;
 						cd[i]->SetCDState(CD_DEATH);
 					}
-					else if (l_SelectRand >= 51 && l_SelectRand < 91) {
+					else{
 						cd[i]->SetCDState(CD_CATCH);
-						_charaState = STATE_INTER;
+						if (l_SelectRand >= 2 && l_SelectRand < 61) {
+							_charaState = STATE_INTER;
+						}
+						else {
+							_charaState = STATE_THROW;
+						}
 					}
-					/*else {
-						_charaState = STATE_THROW;
-					}*/
 					m_StopTimer = 0;
 					m_Frame = {};
 					break;
@@ -305,6 +305,40 @@ void FourthBoss::Barrage() {
 
 	if (m_Rotation.y > 360.0f) {
 		m_Rotation.y = 0.0f;
+	}
+}
+void FourthBoss::Throw() {
+	if (m_ThrowState == THROW_SET) {
+		m_ThrowTimer++;
+		if (m_ThrowTimer == 20) {
+			m_ThrowState = THROW_NOW;
+			m_ThrowTimer = {};
+		}
+	}
+	else if (m_ThrowState == THROW_NOW) {
+		//上から順にCDを回る
+		for (int i = 0; i < cd.size(); i++) {
+			if (cd[i]->GetCDState() != CD_CATCH) {
+				continue;
+			}
+			else {
+				cd[i]->SetCDState(CD_THROW);
+				break;
+			}
+		}
+
+		for (int i = 0; i < cd.size(); i++) {
+			if (cd[i]->GetCDState() == CD_CATCH) {
+				m_ThrowState = THROW_SET;
+				break;
+			}
+			else {
+				m_ThrowState = THROW_END;
+			}
+		}
+	}
+	else {
+		_charaState = STATE_INTER;
 	}
 }
 //行動の終わり

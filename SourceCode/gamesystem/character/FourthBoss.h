@@ -44,6 +44,8 @@ private:
 	void Confu();
 	//íeñã
 	void Barrage();
+	//ìäÇ∞ÇÈ
+	void Throw();
 	//çsìÆèIÇÌÇË
 	void EndMove();
 	//CSVì«Ç›çûÇ›ån
@@ -112,5 +114,13 @@ private:
 
 	int m_MoveInterVal = {};
 
-	int m_EndCount = {};
+	int m_ThrowTimer = {};
+
+	enum ThrowState {
+		THROW_SET,
+		THROW_NOW,
+		THROW_END
+	};
+
+	int m_ThrowState = THROW_SET;
 };
