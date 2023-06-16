@@ -26,6 +26,7 @@ public:
 		Buddy,
 		MobUsa,
 		Heart,
+		Pedestal,
 		DJ
 	};
 	//FBX‚Ì–¼‘O

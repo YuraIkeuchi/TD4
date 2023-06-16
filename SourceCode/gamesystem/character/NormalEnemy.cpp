@@ -15,7 +15,7 @@ bool NormalEnemy::Initialize() {
 	m_fbxObject->SetModel(m_fbxModel);
 	m_fbxObject->LoadAnimation();
 
-	m_Scale = { 0.0f,0.0f,0.0f };
+	m_Scale = { 1.10f,1.10f,1.10f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Position.y = 0.0f;
 	ret = true;
@@ -119,15 +119,15 @@ void NormalEnemy::Appearance()
 	//プレイヤーと敵のベクトルの長さ(差)を求める
 	SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
 
-	constexpr float AddScaling = 0.001f;
+	constexpr float AddScaling = 0.101f;
 
 	m_Scale.x += AddScaling;
 	m_Scale.y += AddScaling;
 	m_Scale.z += AddScaling;
 
-	Helper::GetInstance()->Clamp(m_Scale.x, 0.f, 0.010f);
-	Helper::GetInstance()->Clamp(m_Scale.y, 0.f, 0.015f);
-	Helper::GetInstance()->Clamp(m_Scale.z, 0.f, 0.006f);
+	Helper::GetInstance()->Clamp(m_Scale.x, 0.f, 1.1010f);
+	Helper::GetInstance()->Clamp(m_Scale.y, 0.f, 1.0910f);
+	Helper::GetInstance()->Clamp(m_Scale.z, 0.f, 1.1006f);
 
 	float RottoPlayer;
 	RottoPlayer = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);

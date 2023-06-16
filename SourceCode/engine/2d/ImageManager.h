@@ -42,6 +42,13 @@ public:
 		GIRL,
 		SUTOPON,
 		FEED,
+		MENU_HOME,
+		MENU_RESET,
+		MENU_RULE,
+		MENU_SCENECHANGE,
+		MENU_FRAME,
+		EXPLANATION,
+		CLOSESYTOPON,
 		PHOTO_IN,
 		PHOTO_OUT,
 		CIRCLE,
@@ -55,7 +62,8 @@ public:
 		ANGER,
 		JOY,
 		MARK,
-		DAMAGEAREA,
+	DAMAGEAREA,
+		GROUND,
 		PHOTOSPOT,
 	};
 	enum particleName

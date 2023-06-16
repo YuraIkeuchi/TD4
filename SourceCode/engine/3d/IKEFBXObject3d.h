@@ -172,7 +172,7 @@ public: //’è”
 	XMMATRIX WorldMat;
 	FbxTime SetCurrent() { return currentTime = startTime; }
 	//ƒ{[ƒ“‚ÌÅ‘å”
-	static const int MAX_BONES = 70;
+	static const int MAX_BONES = 90;
 	int BoneNumber = 0;
 	int m_FBXTimer = 0;
 

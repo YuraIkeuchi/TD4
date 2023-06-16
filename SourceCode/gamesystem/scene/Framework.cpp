@@ -4,6 +4,7 @@
 #include "Font.h"
 #include "SceneSave.h"
 
+#include"Menu/Menu.h"
 void Framework::Run()
 {
 	Initialize(dxcommon);
@@ -73,6 +74,7 @@ void Framework::Initialize(DirectXCommon* dxCommon)
 	//パーティクルエミッター初期化
 	ParticleEmitter::GetInstance()->Initialize();
 	Font::Initialize(dxcommon);
+	
 	SceneSave::GetInstance()->AllReset();
 }
 

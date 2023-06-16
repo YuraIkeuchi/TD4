@@ -170,6 +170,7 @@
     <ClCompile Include="SourceCode\gamesystem\actor\IntroductionSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\LoadSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\SecondStageActor.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\actor\SelectSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\ThirdStageActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\TitleSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\TutorialSceneActor.cpp" />
@@ -210,6 +211,7 @@
     <ClCompile Include="SourceCode\gamesystem\limitline\LeftLimit.cpp" />
     <ClCompile Include="SourceCode\gamesystem\limitline\RightLimit.cpp" />
     <ClCompile Include="SourceCode\gamesystem\limitline\UpLimit.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\Menu\Menu.cpp" />
     <ClCompile Include="SourceCode\gamesystem\MessageWindow\MessageWindow.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleEmitter.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ParticleManager\ParticleManager.cpp" />
@@ -229,6 +231,7 @@
     <ClCompile Include="SourceCode\gamesystem\scene\SceneManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\SceneSave.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\SecondStage.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\scene\SelectStageScene.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\ThirdStage.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\TitleScene.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\TutorialScene.cpp" />
@@ -242,6 +245,7 @@
     <ClCompile Include="SourceCode\gamesystem\text\BossText.cpp" />
     <ClCompile Include="SourceCode\gamesystem\text\Text.cpp" />
     <ClCompile Include="SourceCode\gamesystem\text\TextManager.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\ui\SelectScene.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ui\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -313,6 +317,7 @@
     <ClInclude Include="SourceCode\gamesystem\actor\IntroductionSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\LoadSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\SecondStageActor.h" />
+    <ClInclude Include="SourceCode\gamesystem\actor\SelectSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\ThirdStageActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\TitleSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\TutorialSceneActor.h" />
@@ -353,6 +358,7 @@
     <ClInclude Include="SourceCode\gamesystem\limitline\LeftLimit.h" />
     <ClInclude Include="SourceCode\gamesystem\limitline\RightLimit.h" />
     <ClInclude Include="SourceCode\gamesystem\limitline\UpLimit.h" />
+    <ClInclude Include="SourceCode\gamesystem\Menu\Menu.h" />
     <ClInclude Include="SourceCode\gamesystem\MessageWindow\MessageWindow.h" />
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleEmitter.h" />
     <ClInclude Include="SourceCode\gamesystem\ParticleManager\ParticleManager.h" />
@@ -372,6 +378,7 @@
     <ClInclude Include="SourceCode\gamesystem\scene\SceneManager.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\SceneSave.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\SecondStage.h" />
+    <ClInclude Include="SourceCode\gamesystem\scene\SelectStageScene.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\ThirdStage.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\TitleScene.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\TutorialScene.h" />
@@ -385,6 +392,7 @@
     <ClInclude Include="SourceCode\gamesystem\text\BossText.h" />
     <ClInclude Include="SourceCode\gamesystem\text\Text.h" />
     <ClInclude Include="SourceCode\gamesystem\text\TextManager.h" />
+    <ClInclude Include="SourceCode\gamesystem\ui\SelectScene.h" />
     <ClInclude Include="SourceCode\gamesystem\ui\UI.h" />
   </ItemGroup>
   <ItemGroup>
