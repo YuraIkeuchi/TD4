@@ -3,6 +3,7 @@
 enum CDState {
 	CD_BIRTH,
 	CD_STAY,
+	CD_THROUGH,
 	CD_CATCH,
 	CD_THROW,
 	CD_DEATH
@@ -41,6 +42,7 @@ protected:
 	//ÉÅÉìÉoä÷êî
 	virtual void BirthCD() {};
 	virtual void StayCD() {};
+	virtual void ThroughCD() {};
 	virtual void CatchCD() {};
 	virtual void ThrowCD() {};
 	virtual void DeathCD() {};
@@ -49,6 +51,8 @@ public:
 	const int& GetCDState() { return m_CDState; }
 
 	void SetCDState(const int CDState) { m_CDState = CDState; }
+
+	void SetCatchPos(const XMFLOAT3 CatchPos) { m_CatchPos = CatchPos; }
 protected:
 	static void (InterCD::* stateTable[])();
 private:
@@ -59,4 +63,6 @@ protected:
 	float m_AddPower = 0.0f;
 	//èdóÕâ¡ë¨ìx
 	float m_Gravity = 0.02f;
+
+	XMFLOAT3 m_CatchPos = {};
 };

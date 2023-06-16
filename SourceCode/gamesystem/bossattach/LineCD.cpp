@@ -26,7 +26,9 @@ void LineCD::Origin_Draw(DirectXCommon* dxCommon) {
 }
 //ImGui
 void LineCD::ImGui_Origin() {
-
+	ImGui::Begin("LINECD");
+	ImGui::Text("CDSTATE:%d", m_CDState);
+	ImGui::End();
 }
 
 //生成
@@ -36,7 +38,7 @@ void LineCD::BirthCD() {
 	Helper::GetInstance()->CheckMax(m_Position.y, 0.0f, m_AddPower);
 
 	if (m_Position.y == 0.0f) {
-		m_CDState = CD_THROW;
+		m_CDState = CD_STAY;
 	}
 }
 
@@ -45,9 +47,14 @@ void LineCD::StayCD() {
 
 }
 
+//スルーされたやつ
+void LineCD::ThroughCD() {
+
+}
+
 //ボスが手に入れた状態
 void LineCD::CatchCD() {
-
+	m_Position = m_CatchPos;
 }
 
 //ボスが投げる

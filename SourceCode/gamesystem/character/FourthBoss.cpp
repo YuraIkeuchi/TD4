@@ -50,7 +50,6 @@ bool FourthBoss::Initialize() {
 	m_Radius = 5.0f;
 
 	_charaState = STATE_INTER;
-	m_BarraState = BARRA_SET;
 	m_AreaState = AREA_SET;
 	//CSVロード
 	CSVLoad();
@@ -90,6 +89,7 @@ void FourthBoss::Action() {
 		
 	//CDの更新
 	for (size_t i = 0; i < cd.size(); i++) {
+		cd[i]->SetCatchPos({ m_Position.x,m_Position.y + 3.0f,m_Position.z });
 		cd[i]->Update();
 	}
 
@@ -146,11 +146,11 @@ void FourthBoss::Draw(DirectXCommon* dxCommon) {
 //ImGui
 void FourthBoss::ImGui_Origin() {
 	ImGui::Begin("Fourth");
+	ImGui::Text("m_EndCount:%d", m_EndCount);
 	ImGui::Text("Frame:%f", m_Frame);
-	ImGui::Text("ROTY:%f", m_Rotation.y);
 	ImGui::Text("STATE:%d", (int)_charaState);
-	ImGui::Text("POSX:%f", m_Position.x);
-	ImGui::Text("POSZ:%f", m_Position.z);
+	ImGui::Text("POSX:%f", m_AfterPos.x);
+	ImGui::Text("POSZ:%f", m_AfterPos.z);
 	ImGui::End();
 
 	//CDの更新
@@ -170,17 +170,19 @@ void FourthBoss::ImGui_Origin() {
 //インターバル
 void FourthBoss::InterValMove() {
 	m_MoveInterVal++;
+	m_AreaState = AREA_SET;
 
-	if (m_MoveInterVal == 200) {
-
-		for (size_t i = 0; i < cd.size(); i++) {
+	//
+	if (m_MoveInterVal == 100) {
+		//上から順にCDを回る
+		for (int i = 0; i < cd.size(); i++) {
 			if (cd[i]->GetCDState() != CD_STAY) {
 				continue;
 			}
 			else {
 				m_AfterPos = cd[i]->GetPosition();
 				break;
-			}	
+			}
 		}
 
 		m_MoveInterVal = 0;
@@ -190,15 +192,45 @@ void FourthBoss::InterValMove() {
 //動きの選択
 void FourthBoss::Choice() {
 	float l_AddFrame = 0.01f;
-	m_StopTimer++;	//乱数指定
 	mt19937 mt{ std::random_device{}() };
-	uniform_int_distribution<int> l_RandomMove(0, 2);
-	int l_RandState = 0;
+	uniform_int_distribution<int> l_RandomMove(0, 90);
+	int l_SelectRand = 0;
+
+	m_StopTimer++;	//乱数指定
 	if (m_Frame < m_FrameMax) {
 		m_Frame += l_AddFrame;
 	}
 	else {
 		m_Frame = 1.0f;
+		m_StopTimer++;
+
+		if (m_StopTimer > 100) {
+			for (int i = 0; i < cd.size(); i++) {
+				if (m_Position.x == cd[i]->GetPosition().x) {
+					l_SelectRand = int(l_RandomMove(mt));
+				}
+				if (cd[i]->GetCDState() != CD_STAY) {
+					continue;
+				}
+				else {
+					//攻撃をするかスルーか行動をするかCDを取るか決める
+					if (l_SelectRand < 51) {
+						_charaState = i + 2;
+						cd[i]->SetCDState(CD_DEATH);
+					}
+					else if (l_SelectRand >= 51 && l_SelectRand < 91) {
+						cd[i]->SetCDState(CD_CATCH);
+						_charaState = STATE_INTER;
+					}
+					/*else {
+						_charaState = STATE_THROW;
+					}*/
+					m_StopTimer = 0;
+					m_Frame = {};
+					break;
+				}
+			}
+		}
 	}
 
 	m_Position = {
@@ -206,25 +238,6 @@ Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
 Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
 	Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z)
 	};
-
-	//if (m_StopTimer > m_ChoiceInterval) {
-	//	m_Frame = 0.0f;
-	//	l_RandState = int(l_RandomMove(mt));
-	//	m_StopTimer = 0;
-	//	m_BarraState = BARRA_SET;
-	//	m_AreaState = AREA_SET;
-	//	_charaState = STATE_AREA;
-	//	//ランダムで攻撃を選ぶ
-	///*	if (l_RandState == 0) {
-	//		_charaState = STATE_NORMAL;
-	//	}
-	//	else if (l_RandState == 1) {
-	//		_charaState = STATE_ALTER;
-	//	}
-	//	else {
-	//		_charaState = STATE_RANDOM;
-	//	}*/
-	//}
 }
 //ダメージエリアのセット
 void FourthBoss::LineSet() {
@@ -234,7 +247,7 @@ void FourthBoss::LineSet() {
 		m_AreaState = AREA_STOP;
 	}
 	else if (m_AreaState == AREA_STOP) {
-
+		_charaState = STATE_INTER;
 	}
 	else {
 
@@ -242,63 +255,57 @@ void FourthBoss::LineSet() {
 }
 //プレイヤーのデバフ
 void FourthBoss::Debuff() {
+	m_Rotation.y += 2.0f;
+	m_RotTimer++;
+	if (m_RotTimer % 20 == 0) {
+		BirthNote("ALTER");
+	}
+
+	//一定フレームで終了
+	if (m_RotTimer == 600) {
+		m_RotTimer = 0;
+		_charaState = STATE_INTER;
+	}
+
+	if (m_Rotation.y > 360.0f) {
+		m_Rotation.y = 0.0f;
+	}
 }
 //プレイヤー混乱
 void FourthBoss::Confu() {
+	m_Rotation.y += 2.0f;
+	m_RotTimer++;
+	if (m_RotTimer % 5 == 0) {
+		BirthNote("RANDOM");
+	}
+
+	//一定フレームで終了
+	if (m_RotTimer == 600) {
+		m_RotTimer = 0;
+		_charaState = STATE_INTER;
+	}
+
+	if (m_Rotation.y > 360.0f) {
+		m_Rotation.y = 0.0f;
+	}
 }
 //拡散(ふつう)
 void FourthBoss::Barrage() {
-	float l_AddFrame = 0.01f;
-
-	if (m_BarraState == BARRA_SET) {
-		m_AfterPos = { 40.0f,0.0f,40.0f };
-		if (m_Frame < m_FrameMax) {
-			m_Frame += l_AddFrame;
-		}
-		else {
-			m_Frame = {};
-			m_BarraState = BARRA_BIRTH;
-		}
-
-		m_Position = {
-	Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
-	Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
-		Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z)
-		};
-	}
-	else if (m_BarraState == BARRA_BIRTH) {
-		m_Rotation.y += 2.0f;
-		m_RotTimer++;
-		if (m_RotTimer % 5 == 0) {
-			BirthNote("NORMAL");
-		}
-
-		if (m_RotTimer == 600) {
-			m_RotTimer = 0;
-			m_BarraState = BARRA_END;
-		}
-
-		if (m_Rotation.y > 360.0f) {
-			m_Rotation.y = 0.0f;
-		}
-	}
-	else {
-		m_AfterPos = { 0.0f,20.0f,30.0f };
-		if (m_Frame < m_FrameMax) {
-			m_Frame += l_AddFrame;
-		}
-		else {
-			m_Frame = {};
-			_charaState = STATE_CHOICE;
-		}
-
-		m_Position = {
-	Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
-	Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
-		Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z)
-		};
+	m_Rotation.y += 2.0f;
+	m_RotTimer++;
+	if (m_RotTimer % 5 == 0) {
+		BirthNote("NORMAL");
 	}
 
+	//一定フレームで終了
+	if (m_RotTimer == 600) {
+		m_RotTimer = 0;
+		_charaState = STATE_INTER;
+	}
+
+	if (m_Rotation.y > 360.0f) {
+		m_Rotation.y = 0.0f;
+	}
 }
 //行動の終わり
 void FourthBoss::EndMove() {

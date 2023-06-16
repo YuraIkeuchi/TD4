@@ -68,8 +68,9 @@ private:
 		STATE_DEBUFF,
 		STATE_CONFU,
 		STATE_BARRA,
+		STATE_THROW,
 		STATE_END
-	}_charaState;
+	};
 
 	//í‚é~éûä‘
 	int m_StopTimer = 0;
@@ -79,6 +80,7 @@ private:
 	//ä÷êîÉ|ÉCÉìÉ^
 	static void(FourthBoss::* stateTable[])();
 	
+	int _charaState = STATE_INTER;
 
 	//CSVån
 	int m_ChoiceInterval = {};
@@ -88,14 +90,6 @@ private:
 	//Xï˚å¸ÇÃâÒì]
 	XMFLOAT3 m_AfterRot = { 0.0f,0.0f,0.0f };
 	float m_Frame = {};
-
-	enum BarrageState {
-		BARRA_SET,
-		BARRA_BIRTH,
-		BARRA_END,
-	};
-
-	int m_BarraState = {};
 
 	int m_RotCount = 0;
 	int m_RotTimer = 0;
@@ -116,5 +110,7 @@ private:
 		CD_BARRA,
 	};
 
-	int m_MoveInterVal = 0;
+	int m_MoveInterVal = {};
+
+	int m_EndCount = {};
 };

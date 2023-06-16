@@ -29,7 +29,9 @@ void BarrangeCD::Origin_Draw(DirectXCommon* dxCommon) {
 }
 //IMGUI
 void BarrangeCD::ImGui_Origin() {
-
+	ImGui::Begin("BARRACD");
+	ImGui::Text("CDSTATE:%d", m_CDState);
+	ImGui::End();
 }
 //生成
 void BarrangeCD::BirthCD() {
@@ -47,9 +49,13 @@ void BarrangeCD::StayCD() {
 
 }
 
+//スルーされたやつ
+void BarrangeCD::ThroughCD() {
+
+}
 //ボスが手に入れた状態
 void BarrangeCD::CatchCD() {
-
+	m_Position = m_CatchPos;
 }
 
 //ボスが投げる

@@ -26,7 +26,9 @@ void ConfuCD::Origin_Draw(DirectXCommon* dxCommon) {
 }
 //ImGui
 void ConfuCD::ImGui_Origin() {
-
+	ImGui::Begin("CONFUCD");
+	ImGui::Text("CDSTATE:%d", m_CDState);
+	ImGui::End();
 }
 
 //生成
@@ -45,9 +47,14 @@ void ConfuCD::StayCD() {
 
 }
 
+//スルーされたやつ
+void ConfuCD::ThroughCD() {
+
+}
+
 //ボスが手に入れた状態
 void ConfuCD::CatchCD() {
-
+	m_Position = m_CatchPos;
 }
 
 //ボスが投げる

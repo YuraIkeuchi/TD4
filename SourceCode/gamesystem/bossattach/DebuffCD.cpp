@@ -26,7 +26,9 @@ void DebuffCD::Origin_Draw(DirectXCommon* dxCommon) {
 }
 //ImGui
 void DebuffCD::ImGui_Origin() {
-
+	ImGui::Begin("DEBUFFCD");
+	ImGui::Text("CDSTATE:%d", m_CDState);
+	ImGui::End();
 }
 
 //生成
@@ -45,9 +47,14 @@ void DebuffCD::StayCD() {
 
 }
 
+//スルーされたやつ
+void DebuffCD::ThroughCD() {
+
+}
+
 //ボスが手に入れた状態
 void DebuffCD::CatchCD() {
-
+	m_Position = m_CatchPos;
 }
 
 //ボスが投げる
