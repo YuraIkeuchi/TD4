@@ -18,7 +18,10 @@ public:
 	//XV
 	void Update();
 	//•`‰æ
-	virtual void Draw(DirectXCommon* dxCommon)override;
+	void Draw(DirectXCommon* dxCommon);
+
+	//•`‰æ(ŒÅ—L‚Ì)
+	virtual void Origin_Draw(DirectXCommon* dxCommon) = 0;
 
 	void ImGuiDraw();//ImGui‚Ì•`‰æ
 

@@ -7,7 +7,7 @@ public:
 	BarrangeCD();
 	bool Initialize() override;//‰Šú‰»
 	
-	void Draw(DirectXCommon* dxCommon) override;//•`‰æ
+	void Origin_Draw(DirectXCommon* dxCommon) override;//•`‰æ
 public:
 
 private:
