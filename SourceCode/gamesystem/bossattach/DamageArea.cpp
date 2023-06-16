@@ -30,7 +30,7 @@ DamageArea::DamageArea(const int Num) {
 
 void DamageArea::Initialize() {
 	m_Position[0] = { 40.0f,0.0f,0.0f };
-	m_Position[1] = { 20.0f,0.0f,-30.0f };
+	m_Position[1] = { 50.0f,0.0f,-30.0f };
 	m_Position[2] = { 0.0f,0.0f,0.0f };
 	m_Position[3] = { -20.0f,0.0f,30.0f };
 
@@ -57,7 +57,7 @@ void DamageArea::Update() {
 
 		m_TexRotation[i].y = Helper::GetInstance()->DirRotation(m_TexPosition[i], m_Position[i], -PI_180);
 
-		m_TexScale[i].y = Helper::GetInstance()->ChechLength(m_TexPosition[i], m_TexPosition[i + 1]) * 0.1f;
+		m_TexScale[i].y = Helper::GetInstance()->ChechLength(m_Position[i], m_Position[i + 1]) * 0.1f;
 		if (tex[i] != nullptr) {
 			tex[i]->Update();
 			tex[i]->SetPosition(m_TexPosition[i]);
@@ -97,5 +97,11 @@ void DamageArea::Draw(DirectXCommon* dxCommon) {
 }
 
 void DamageArea::ImGuiDraw() {
-
+	ImGui::Begin("DamageArea");
+	for (size_t i = 0; i < tex.size(); i++) {
+		ImGui::Text("Scale[%d]:%f", i, m_TexScale[i].y);
+	}
+	ImGui::SliderFloat("PosX", &m_Position[0].x, -50, 50);
+	ImGui::SliderFloat("PosZ", &m_Position[0].z, -50, 50);
+	ImGui::End();
 }

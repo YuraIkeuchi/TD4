@@ -145,6 +145,9 @@ void FourthBoss::ImGui_Origin() {
 			newnote->ImGuiDraw();
 		}
 	}
+	if (damagearea != nullptr) {
+		damagearea->ImGuiDraw();
+	}
 }
 //“®‚«‚Ì‘I‘ð
 void FourthBoss::Choice() {
