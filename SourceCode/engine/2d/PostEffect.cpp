@@ -346,12 +346,13 @@ void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList)
 		constMap->Color = {1.0f, 1.0f, 1.0f};
 		constMap->sepia = this->addsepia;
 		constMap->isTone = true;
+		constMap->P2 = this->P2;
 		constMap->frame = 0.0f;
 		constMap->P1 = this->P1;
-		constMap->P2 = this->P2;
 		constMap->P3 = this->P3;
 		constMap->RadPower = RadPowers;
 		constMap->CenterPos = RadCenterPos;
+		constMap->closeRad = closeRad;
 		constBuff->Unmap(0, nullptr);
 	}
 	// パイプラインステートの設定

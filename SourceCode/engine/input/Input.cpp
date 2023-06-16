@@ -265,22 +265,22 @@ bool Input::TiltStick(STICK Stick)
 bool Input::LeftTriggerStick(int stick)
 {
 	//ç∂
-	if (gamePadState.lX < -unresponsive_range && !(oldGamePadState.lX < -unresponsive_range) && stick == Left)
+	if (xinputState.Gamepad.sThumbLX < -unresponsive_range && !(oldXinputState.Gamepad.sThumbLX < -unresponsive_range) && stick == Left)
 	{
 		return true;
 	}
 	//âE
-	if (gamePadState.lX > unresponsive_range && !(oldGamePadState.lX > unresponsive_range) && stick == Right)
+	if (xinputState.Gamepad.sThumbLX > unresponsive_range && !(xinputState.Gamepad.sThumbLX > unresponsive_range) && stick == Right)
 	{
 		return true;
 	}
 	//å„ÇÎ
-	if (gamePadState.lY > unresponsive_range && !(oldGamePadState.lY > unresponsive_range) && stick == Down)
+	if (xinputState.Gamepad.sThumbLY> unresponsive_range && !(xinputState.Gamepad.sThumbLY> unresponsive_range) && stick == Down)
 	{
 		return true;
 	}
 	//ëO
-	if (gamePadState.lY < -unresponsive_range && !(oldGamePadState.lY < -unresponsive_range) && stick == Up)
+	if (xinputState.Gamepad.sThumbLY< -unresponsive_range && !(xinputState.Gamepad.sThumbLY< -unresponsive_range) && stick == Up)
 	{
 		return true;
 	}

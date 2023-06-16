@@ -5,3 +5,7 @@ Magnification,1.0
 //ハートが生成される確率
 //0～100で大きければ大きいほど生成されにくいです。(0の場合は100%)
 HeartTarget,50
+//
+CPriority,30
+//
+SPriority,30

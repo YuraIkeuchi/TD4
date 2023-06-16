@@ -7,6 +7,72 @@
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
+
+
+void Collision::ConvertToNomalizeVector(XMFLOAT2& out, XMFLOAT2 in)
+{
+	float distance = sqrtf((in.x * in.x) + (in.y * in.y));
+	if (distance > 0.0f)
+	{
+		out.x = in.x / distance;
+		out.y = in.y / distance;
+	} else
+	{
+		out = XMFLOAT2(0.0f, 0.0f);
+	}
+}
+
+float Collision::CalculationVectorLength(const XMFLOAT2& vec01)
+{
+	return sqrtf((vec01.x * vec01.x) + (vec01.y * vec01.y));
+}
+
+
+bool Collision::IsCollidingLineAndCircle(Line2D line, Point circle, float dis)
+{
+	// ベクトルの作成
+	auto start_to_center = XMFLOAT2(circle.x - line.start.x, circle.y - line.start.y);
+	auto end_to_center = XMFLOAT2(circle.x - line.end.x, circle.y - line.end.y);
+	auto start_to_end = XMFLOAT2(line.end.x - line.start.x, line.end.y - line.start.y);
+	XMFLOAT2 normal_start_to_end;
+
+	// 単位ベクトル化する
+	ConvertToNomalizeVector(normal_start_to_end, start_to_end);
+
+	/*
+		射影した線分の長さ
+			始点と円の中心で外積を行う
+			※始点 => 終点のベクトルは単位化しておく
+	*/
+	float distance_projection = start_to_center.x * normal_start_to_end.y - normal_start_to_end.x * start_to_center.y;
+
+	// 射影の長さが半径よりも小さい
+	if (fabs(distance_projection) < dis)
+	{
+		// 始点 => 終点と始点 => 円の中心の内積を計算する
+		float dot01 = start_to_center.x * start_to_end.x + start_to_center.y * start_to_end.y;
+		// 始点 => 終点と終点 => 円の中心の内積を計算する
+		float dot02 = end_to_center.x * start_to_end.x + end_to_center.y * start_to_end.y;
+
+		// 二つの内積の掛け算結果が0以下なら当たり
+		if (dot01 * dot02 <= 0.0f)
+		{
+			return true;
+		}
+		/*
+			上の条件から漏れた場合、円は線分上にはないので、
+			始点 => 円の中心の長さか、終点 => 円の中心の長さが
+			円の半径よりも短かったら当たり
+		*/
+		if (CalculationVectorLength(start_to_center) < dis ||
+			CalculationVectorLength(end_to_center) < dis)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
 float Collision::GetLength(XMFLOAT3 position, XMFLOAT3 position2)
 {
 	float len;

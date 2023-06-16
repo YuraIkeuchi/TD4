@@ -1,24 +1,16 @@
-ï»¿
 #pragma once
 #include "BaseActor.h"
-#include "BossText.h"
-#include "LoadStageObj.h"
-#include"Font.h"
-#include"Feed.h"
-#include "MessageWindow.h"
-#include"Spline.h"
-
-/// ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³
-class FirstStageActor : public BaseActor {
-
+class SelectSceneActor :
+    public BaseActor
+{
 public:
-	/// åˆæœŸåŒ–
+	/// ‰Šú‰»
 	void Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) override;
-	/// çµ‚äº†
+	/// I—¹
 	void Finalize() override;
-	/// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°
+	/// –ˆƒtƒŒ[ƒ€XV
 	void Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) override;
-	/// æç”»
+	/// •`‰æ
 	void Draw(DirectXCommon* dxCommon) override;
 	void FrontDraw(DirectXCommon* dxCommon);
 	void BackDraw(DirectXCommon* dxCommon);
@@ -27,8 +19,6 @@ public:
 private:
 	float Rads;
 	int textT;
-	unique_ptr<MessageWindow> messagewindow_;
-	unique_ptr<BossText> text_;
 	unique_ptr<IKESprite> backScreen_ = nullptr;
 
 	Spline* spline;
@@ -42,13 +32,11 @@ private:
 		KILL_TIEYOSHI,
 		LET_GO,
 		ENDTEXT
-	}_Tscne;
+	}_Tscne = TextScene::ENDTEXT;
 
-	//ä¸¸å½±(ãƒœã‚¹)
+	//ŠÛ‰e(ƒ{ƒX)
 	float BosscircleShadowDir[3] = { 0,-1,0 };
 	float BosscircleShadowAtten[3] = { 0.5f,0.6f,0.0f };
 	float BosscircleShadowFactorAngle[2] = { 0.0f, 2.0f };
-
-private:
-	unique_ptr<IKETexture>groundTex;
 };
+

@@ -9,6 +9,7 @@ float2 P_2;
 float2 P_3;
 float RadPower;
 float2 RadCenter;
+float CloseIconRad;
 };
 
 //頂点シェーダーからの出力構造体

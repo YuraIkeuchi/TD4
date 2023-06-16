@@ -5,6 +5,7 @@
 #include "ParticleEmitter.h"
 #include <HungerGauge.h>
 #include "BackObj.h"
+#include "Menu/Menu.h"
 
 const XMVECTOR kSkyBlue{ 0.f,1.f,1.f,1.f };
 const XMVECTOR kPink{ 0.9f,0.6f,0.8f,1.f };
@@ -28,6 +29,11 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 
 	backScreen_ = IKESprite::Create(ImageManager::PLAY, { 0,0 });
 	backScreen_->SetSize({ 1280.0f,720.0f });
+
+	groundTex.reset(IKETexture::Create(ImageManager::GROUND, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 }));
+	groundTex->TextureCreate();
+
+	Menu::GetIns()->Init();
 
 	//各クラス
 	//プレイヤー
@@ -155,7 +161,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		SceneSave::GetInstance()->SetClearFlag(kFirstStage, true);
 		if(camerawork->GetCameraState()==CameraState::CAMERA_BOSSDEAD_AFTER_FIRST)
 		{
-			PlayPostEffect = false;
+		//	PlayPostEffect = false;
 		}
 	}
 	
@@ -178,6 +184,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	//各クラス更新
 	BackObj::GetInstance()->Update();
 
+	Menu::GetIns()->Upda();
 
 	if (enemymanager->BossDestroy())
 	{
@@ -197,6 +204,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
 
 	}
+
 	//カメラワークのセット
 	if (enemymanager->BossDestroy())
 	{
@@ -245,6 +253,9 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	
 	postEffect->SetRadCenter(XMFLOAT2(tex2DPos.m128_f32[0], tex2DPos.m128_f32[1]));
 	postEffect->SetRadPower(camerawork->GetEffectPower());
+	postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
+
+
 	sceneChanger_->Update();
 
 	if(_Tscne!=TextScene::ENDTEXT)
@@ -254,6 +265,13 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 
 	camerawork->Update(camera);
 	lightgroup->Update();
+
+	groundTex->SetRotation({ 90,0,0
+		});
+	groundTex->SetScale({ 28.f,28.f,1.f });
+	groundTex->SetColor({ 1,1,1,0.5f });
+	groundTex->Update();
+
 }
 //描画
 void FirstStageActor::Draw(DirectXCommon* dxCommon) {
@@ -262,13 +280,15 @@ void FirstStageActor::Draw(DirectXCommon* dxCommon) {
 	if (PlayPostEffect) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
+		FrontDraw(dxCommon);
+		
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 
 		dxCommon->PreDraw();
-		postEffect->Draw(dxCommon->GetCmdList());
-		FrontDraw(dxCommon);
-		ImGuiDraw(dxCommon);
 		
+		
+		postEffect->Draw(dxCommon->GetCmdList());
+		ImGuiDraw(dxCommon);
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	} else {
@@ -311,6 +331,11 @@ void FirstStageActor::BackDraw(DirectXCommon* dxCommon) {
 	enemymanager->Draw(dxCommon);
 	
 	IKEObject3d::PostDraw();
+	IKETexture::PreDraw2(dxCommon, AlphaBlendType);
+	//if (m_Alive) {
+	groundTex->Draw();
+	///
+	IKETexture::PostDraw();
 }
 //ポストエフェクトがかからない
 void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
@@ -352,6 +377,7 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	//}
 	IKESprite::PreDraw();
 	//blackwindow->Draw();
+	Menu::GetIns()->Draw();
 	camerawork->feedDraw();
 	IKESprite::PostDraw();
 }

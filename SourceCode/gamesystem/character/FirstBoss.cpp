@@ -38,6 +38,10 @@ bool FirstBoss::Initialize() {
 	damageara.reset(IKETexture::Create(ImageManager::DAMAGEAREA, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 }));
 	damageara->TextureCreate();
 	m_Radius = 5.0f;
+	CirclePriority = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/firstboss.csv", "SPriority")));
+	SummonPriority = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/firstboss.csv", "CPriority")));
+
+	
 	return true;
 }
 
@@ -46,6 +50,11 @@ void FirstBoss::SkipInitialize() {
 }
 //行動
 void FirstBoss::Action() {
+	//InterAction = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/firstboss.csv", "inter")));
+
+	//DamageNormal= static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/firstboss.csv", "NormalDamage")));
+//	Damage_Circle= static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/firstboss.csv", "impactDamage")));
+
 	if (m_HP < 0.1) return;
 
 	/*^^^^^^^^^^^^^^^^^^^^^*/
@@ -178,7 +187,6 @@ void FirstBoss::Pause() {
 }
 void FirstBoss::NormalAttak::Update(XMFLOAT3& Pos, XMFLOAT3& Rot, bool& Enf)
 {
-
 	switch (_phaseN)
 	{
 	case Phase_Normal::ROTPLAYER_0:
@@ -999,12 +1007,12 @@ void FirstBoss::AttackDecision()
 
 	if (Active) {
 		//攻撃の種類はランダム
-		RandActionCount = rand() % 4;
+		RandActionCount = rand() % 100;
 
 		//比重は通常攻撃多め
-		if (RandActionCount ==1)_attackAction = SUMMON;
-		else if (RandActionCount == 2)_attackAction = CHARGE;
-		else  _attackAction = NORMAL;
+	//	if (RandActionCount >=100-SummonPriority)_attackAction = SUMMON;
+//		else if (RandActionCount >= 100 - SummonPriority-CirclePriority)_attackAction = CHARGE;
+		_attackAction = SUMMON;
 
 		//核攻撃のフラグオン
 		SelAttack();

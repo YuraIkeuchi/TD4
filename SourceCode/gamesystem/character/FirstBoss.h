@@ -292,4 +292,6 @@ private:
 	float texAlpha;
 	float cinter;
 
+	bool SummonPriority,CirclePriority;
+
 };

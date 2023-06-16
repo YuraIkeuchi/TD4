@@ -9,6 +9,7 @@
 #include "LoadScene.h"
 #include "EditorScene.h"
 #include "TutorialScene.h"
+#include"SelectStageScene.h"
 BaseScene* SceneFactory::CreateScene(const std::string& sceneName) {
 	//éüÇÃÉVÅ[ÉìÇÃçÏê¨
 	BaseScene* newScene = nullptr;
@@ -41,6 +42,9 @@ BaseScene* SceneFactory::CreateScene(const std::string& sceneName) {
 	}
 	else if (sceneName == "GAMECLEAR") {
 		newScene = new ClearScene();
+	}
+	else if (sceneName == "SELECT") {
+		newScene = new SelectStageScene();
 	}
 	return newScene;
 }

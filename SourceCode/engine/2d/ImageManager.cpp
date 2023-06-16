@@ -40,6 +40,13 @@ void ImageManager::SecondLoad2D()
 	IKESprite::LoadTexture(Gauge, L"Resources/2d/objicon/Gauge.png");
 	IKESprite::LoadTexture(TopGauge, L"Resources/2d/objicon/TopGauge.png");
 
+	IKESprite::LoadTexture(MENU_HOME, L"Resources/2d/sceneback/MenuH.png");
+	IKESprite::LoadTexture(MENU_RESET, L"Resources/2d/sceneback/MenuT.png");
+	IKESprite::LoadTexture(MENU_RULE, L"Resources/2d/sceneback/MenuR.png");
+	IKESprite::LoadTexture(MENU_SCENECHANGE, L"Resources/2d/sceneback/MenuS.png");
+	IKESprite::LoadTexture(MENU_FRAME, L"Resources/2d/sceneback/TaskFrame.png");
+	IKESprite::LoadTexture(EXPLANATION, L"Resources/2d/sceneback/Explanation.png");
+	IKESprite::LoadTexture(CLOSESYTOPON, L"Resources/2d/objicon/closeSutopon.png");
 
 }
 
@@ -57,7 +64,7 @@ void ImageManager::SecondLoadTex2D()
 	IKETexture::LoadTexture(JOY, L"Resources/2d/objicon/JoyStamp.png");
 	IKETexture::LoadTexture(MARK, L"Resources/2d/objicon/box.png");
 	IKETexture::LoadTexture(DAMAGEAREA, L"Resources/2d/effect/DArea.png");
-
+	IKETexture::LoadTexture(GROUND, L"Resources/2d/SceneBack/Ground.png");
 }
 
 void ImageManager::LoadParticle()

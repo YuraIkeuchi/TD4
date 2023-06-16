@@ -30,7 +30,8 @@ void ModelManager::SecondInitialize()
 	LoadModel(Buddy,"buddy");
 	LoadModel(MobUsa, "mobusa");
 	LoadModel(Heart, "heart");
-	LoadFBXModel(PLAYER, "PlayerFBXNew");
+	LoadModel(Pedestal, "dodai");
+	LoadFBXModel(PLAYER, "kotoko");
 	LoadFBXModel(SIORI, "siori_idol");
 	LoadFBXModel(KIDO, "kidokun_idol");
 	LoadFBXModel(TIEYOSHI, "tieyosi_anime");

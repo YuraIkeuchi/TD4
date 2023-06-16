@@ -19,6 +19,12 @@ public:
 	//‰~‚Æ‰~
 	static bool CircleCollision(float X1, float Y1, float R1, float X2, float Y2, float R2);
 
+	static void ConvertToNomalizeVector(XMFLOAT2& out, XMFLOAT2 in);
+
+	static float CalculationVectorLength(const XMFLOAT2& vec01);
+
+	static bool IsCollidingLineAndCircle(Line2D line, Point circle, float dis);
+
 	static float GetLength(XMFLOAT3 position, XMFLOAT3 position2);
 
 	static float GetLength(XMFLOAT2 position, XMFLOAT2 position2);

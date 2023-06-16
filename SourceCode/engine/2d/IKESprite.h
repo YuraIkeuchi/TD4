@@ -77,6 +77,8 @@ protected: // 静的メンバ変数
 	// テクスチャバッファ
 	static ComPtr<ID3D12Resource> texBuff[srvCount];
 
+	float closeRad;
+
 public: // メンバ関数
 
 	/// コンストラクタ
@@ -143,6 +145,9 @@ public: // メンバ関数
 
 	void SetRadCenter(XMFLOAT2 pos) { RadCenterPos = pos; }
 	void SetRadPower(float p) { RadPowers = p; }
+
+	void SetCloseRad(float r) { closeRad = r; }
+
 protected: // メンバ変数
 	// 頂点バッファ
 	ComPtr<ID3D12Resource> vertBuff;

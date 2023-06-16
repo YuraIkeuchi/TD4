@@ -1,6 +1,7 @@
 #include "BaseActor.h"
 #include "VariableCommon.h"
 #include "Player.h"
+#include"Menu/Menu.h"
 bool BaseActor::s_GameLoop = false;
 
 void (BaseActor::* BaseActor::stateTable[])(DebugCamera* camera) = {

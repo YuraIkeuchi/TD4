@@ -20,7 +20,7 @@ bool Player::Initialize()
 	m_fbxObject->Initialize();
 	m_fbxObject->SetModel(ModelManager::GetInstance()->GetFBXModel(ModelManager::PLAYER));
 	m_fbxObject->LoadAnimation();
-
+	m_fbxObject->PlayAnimation(0);
 	/*CSV読み込み(CSVファイル名,読み込むパラメータの名前,受け取る値)　今は単一の方のみ対応(int float double charとか)*/
 
 	//spから間接的にアクセスする方法 (Update()内で専用の変数に代入する必要あり)
@@ -59,7 +59,7 @@ void Player::InitState(const XMFLOAT3& pos) {
 	//移動処理用
 	velocity /= 5.0f;
 	//大きさ
-	m_Scale = { 2.5f,2.5f,2.5f };
+	m_Scale = { 1.0f,0.030f,1.0f };
 }
 //状態遷移
 /*CharaStateのState並び順に合わせる*/
@@ -131,7 +131,8 @@ void Player::Update()
 
 	//基礎パラメータ設定
 	Fbx_SetParam();
-
+	m_LoopFlag = true;
+	m_AnimationSpeed = 1;
 	//どっち使えばいいか分からなかったから保留
 	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 
@@ -263,7 +264,7 @@ void Player::Walk()
 			m_Position.x += move.m128_f32[0] * m_AddSpeed;
 			m_Position.z += move.m128_f32[2] * m_AddSpeed;
 		}
-		AnimationControl(AnimeName::WALK, true, 1);
+		//AnimationControl(AnimeName::WALK, true, 0);
 }
 //VECTOR
 XMFLOAT3 Player::MoveVECTOR(XMVECTOR v, float angle)
@@ -501,7 +502,7 @@ void Player::Idle()
 {
 	//条件少しおかしいので後で修正
 	if (_animeName == AnimeName::IDLE)return;
-	AnimationControl(AnimeName::IDLE, true, 1);
+//	AnimationControl(AnimeName::IDLE, true, 1);
 }
 //インターバル
 void Player::InterVal() {

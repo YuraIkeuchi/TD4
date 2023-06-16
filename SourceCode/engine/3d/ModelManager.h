@@ -26,6 +26,7 @@ public:
 		Buddy,
 		MobUsa,
 		Heart,
+		Pedestal
 	};
 	//FBX‚Ì–¼‘O
 	enum FBXName {

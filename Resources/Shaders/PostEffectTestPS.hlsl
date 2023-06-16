@@ -87,8 +87,30 @@ float4 main(VSOutput input) : SV_TARGET
 	offset *= (RadPower * len);
 
 
-	
+	const int winH = 720, winW = 1280;
+	float CenterX = input.svpos.x - winW/2;
+	float CenterY = input.svpos.y -winH/2;
 
+	float2 LeftUp = { CenterX - CloseIconRad / 2,CenterY-CloseIconRad/2 };
+	float2 LeftDown = { CenterX - CloseIconRad / 2, CenterY + CloseIconRad / 2 };
+
+	float2 RightUp= { CenterX + CloseIconRad / 2, CenterY - CloseIconRad / 2 };
+	float2 RightDown= { CenterX + CloseIconRad / 2, CenterY + CloseIconRad / 2 };
+
+
+
+	float v[4];
+	v[0] = (CenterX+(winW - winH) > CloseIconRad) ? -1 : 1;
+	v[1] = (CenterX - (winW - winH) <-CloseIconRad) ? -1 : 1;
+	v[2] = (CenterY > CloseIconRad-(winW-winH)) ? -1 : 1;
+	v[3] = (CenterY <-(CloseIconRad - (winW - winH))) ? -1 : 1;
+
+
+	//for(int i=0;i<4;i++)
+	clip(v[0]);
+	clip(v[1]);
+	clip(v[2]);
+	clip(v[3]);
 	//F”½“]
 	float4 color =RadBlur(retPos, offset);
 	

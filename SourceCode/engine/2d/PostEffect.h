@@ -19,6 +19,7 @@ public:
 		XMFLOAT2 P3;
 		float RadPower;
 		XMFLOAT2 CenterPos;
+		float closeRad;
 	};
 
 public:

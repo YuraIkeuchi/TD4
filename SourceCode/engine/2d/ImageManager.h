@@ -41,7 +41,14 @@ public:
 		TopGauge,
 		GIRL,
 		SUTOPON,
-		FEED
+		FEED,
+		MENU_HOME,
+		MENU_RESET,
+		MENU_RULE,
+		MENU_SCENECHANGE,
+		MENU_FRAME,
+		EXPLANATION,
+		CLOSESYTOPON
 	};
 	//テクスチャの名前
 	enum tex2dName
@@ -51,7 +58,8 @@ public:
 		ANGER,
 		JOY,
 		MARK,
-	DAMAGEAREA
+	DAMAGEAREA,
+		GROUND
 	};
 	enum particleName
 	{
