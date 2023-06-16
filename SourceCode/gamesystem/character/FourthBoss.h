@@ -4,6 +4,7 @@
 #include "CD.h"
 #include "AttackNote.h"
 #include "DamageArea.h"
+#include "Spline.h"
 class FourthBoss :
 	public InterBoss {
 public:
@@ -50,7 +51,9 @@ private:
 	//各クラス
 	unique_ptr<CD> cd;
 	vector<AttackNote*> attacknotes;//怒りのスタンプ
-	unique_ptr<DamageArea> damagearea;
+	unique_ptr<DamageArea> damagearea;//ダメージエリア
+	vector<XMFLOAT3>pointsList;
+	Spline* spline;//スプライン
 	//キャラの状態
 	enum CharaState
 	{
@@ -97,4 +100,5 @@ private:
 	};
 
 	int m_AreaState = AREA_SET;
+	float SplineSpeed = false;
 };

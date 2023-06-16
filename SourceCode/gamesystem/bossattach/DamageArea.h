@@ -19,27 +19,52 @@ private:
 
 public:
 	DamageArea(const int Num);
-
+	//初期化
 	void Initialize();
-
+	//更新
 	void Update();
-
+	//描画
 	void Draw(DirectXCommon* dxCommon);
-
+	//IMGUI
 	void ImGuiDraw();
 
+private:
+	void PointUpdate();	//点の更新
+	void LineUpdate();	//線の更新
+	void StateManager();//状態を管理する
 private:
 	IKEModel* model = nullptr;
 	vector<IKEObject3d*> obj;//モデル
 	vector<IKETexture*> tex;//エリア
 
+	//点に必要な変数
 	vector<XMFLOAT3> m_Position;
 	vector<XMFLOAT3> m_Rotation;
 	vector<XMFLOAT3> m_Scale;
 	vector<XMFLOAT4> m_Color;
+	vector<bool> m_Alive;
 
+	//エリアに必要な変数
 	vector<XMFLOAT3> m_TexPosition;
 	vector<XMFLOAT3> m_TexRotation;
 	vector<XMFLOAT3> m_TexScale;
 	vector<XMFLOAT4> m_TexColor;
+	vector<bool> m_TexAlive;
+
+	enum AreaState {
+		POINT_BIRTH,
+		LINE_BIRTH,
+		STAY,
+		VANISH_AREA,
+	};
+
+	int m_AreaState = POINT_BIRTH;
+
+	float m_Frame = {};
+	float m_Alpha = {};
+	float m_CommonScale = {};
+	float m_AfterAlpha = 1.0f;
+	float m_AfterScale = 1.0f;
+
+	int m_StayTimer = 0;
 };

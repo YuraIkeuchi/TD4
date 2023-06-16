@@ -17,18 +17,34 @@ void (FourthBoss::* FourthBoss::stateTable[])() = {
 
 //ê∂ê¨
 FourthBoss::FourthBoss() {
-	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Tyuta);
+	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::DJ);
 
 	m_Object.reset(new IKEObject3d());
 	m_Object->Initialize();
 	m_Object->SetModel(m_Model);
 
 	cd.reset(new CD);
+
+	{
+		if (pointsList.size() == 0) {
+			pointsList.emplace_back(XMFLOAT3{ 0,5,0 });
+			pointsList.emplace_back(XMFLOAT3{ 30,0,-20 });
+			pointsList.emplace_back(XMFLOAT3{ 50,0,0 });
+			pointsList.emplace_back(XMFLOAT3{ 30,0,20 });
+			pointsList.emplace_back(XMFLOAT3{ 0,0,40 });
+			pointsList.emplace_back(XMFLOAT3{ -30,0,20 });
+			pointsList.emplace_back(XMFLOAT3{ -50,0,0 });
+			pointsList.emplace_back(XMFLOAT3{ -30,0,-20 });
+
+		}
+		spline = new Spline();
+		spline->Init(pointsList, static_cast<int>(pointsList.size()));
+	}
 }
 
 bool FourthBoss::Initialize() {
 	m_Position = { 0.0f,0.0f,30.0f };
-	m_Scale = { 1.0f,1.4f,1.0f };
+	m_Scale = { 0.3f,0.3f,0.3f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	//m_Rotation.y = -90.f;
 
@@ -48,7 +64,7 @@ bool FourthBoss::Initialize() {
 
 void FourthBoss::SkipInitialize() {
 	m_Position = { 0.0f,20.0f,30.0f };
-	m_Scale = { 1.0f,1.4f,1.0f };
+	m_Scale = { 0.3f,0.3f,0.3f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 }
 
@@ -155,30 +171,32 @@ void FourthBoss::Choice() {
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> l_RandomMove(0, 2);
 	int l_RandState = 0;
-	if (m_StopTimer > m_ChoiceInterval) {
-		m_Frame = 0.0f;
-		l_RandState = int(l_RandomMove(mt));
-		m_StopTimer = 0;
-		m_BarraState = BARRA_SET;
-		m_AreaState = AREA_SET;
-		_charaState = STATE_AREA;
-		//ÉâÉìÉ_ÉÄÇ≈çUåÇÇëIÇ‘
-	/*	if (l_RandState == 0) {
-			_charaState = STATE_NORMAL;
-		}
-		else if (l_RandState == 1) {
-			_charaState = STATE_ALTER;
-		}
-		else {
-			_charaState = STATE_RANDOM;
-		}*/
-	}
+	
+	SplineSpeed = 300.f;
+	spline->Upda(m_Position, SplineSpeed);
+	//if (m_StopTimer > m_ChoiceInterval) {
+	//	m_Frame = 0.0f;
+	//	l_RandState = int(l_RandomMove(mt));
+	//	m_StopTimer = 0;
+	//	m_BarraState = BARRA_SET;
+	//	m_AreaState = AREA_SET;
+	//	_charaState = STATE_AREA;
+	//	//ÉâÉìÉ_ÉÄÇ≈çUåÇÇëIÇ‘
+	///*	if (l_RandState == 0) {
+	//		_charaState = STATE_NORMAL;
+	//	}
+	//	else if (l_RandState == 1) {
+	//		_charaState = STATE_ALTER;
+	//	}
+	//	else {
+	//		_charaState = STATE_RANDOM;
+	//	}*/
+	//}
 }
 
 //ägéU(Ç”Ç¬Ç§)
 void FourthBoss::NormalBarrage() {
 	float l_AddFrame = 0.01f;
-	m_Scale = { 0.5f,0.5f,0.5f };
 
 	if (m_BarraState == BARRA_SET) {
 		m_AfterPos = { 40.0f,0.0f,40.0f };
@@ -233,8 +251,7 @@ void FourthBoss::NormalBarrage() {
 //ägéU
 void FourthBoss::AlterBarrage() {
 	float l_AddFrame = 0.01f;
-	m_Scale = { 0.5f,0.5f,0.5f };
-
+	
 	if (m_BarraState == BARRA_SET) {
 		m_AfterPos = { -40.0f,0.0f,40.0f };
 		if (m_Frame < m_FrameMax) {
@@ -289,8 +306,7 @@ void FourthBoss::AlterBarrage() {
 //ç¨óê
 void FourthBoss::RandomBarrage() {
 	float l_AddFrame = 0.01f;
-	m_Scale = { 0.5f,0.5f,0.5f };
-
+	
 	if (m_BarraState == BARRA_SET) {
 		m_AfterPos = { 0.0f,0.0f,-40.0f };
 		if (m_Frame < m_FrameMax) {
