@@ -14,9 +14,9 @@ bool DebuffCD::Initialize() {
 	//óêêîéwíË
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> l_distX(20, 50);
-	uniform_int_distribution<int> l_distZ(-20, -50);
-	//m_Position = { float(l_distX(mt)),60.0f,float(l_distZ(mt)) };
-	m_Position = { 40.0f,60.0f,-40.0f };
+	uniform_int_distribution<int> l_distZ(-50, -20);
+	m_Position = { float(l_distX(mt)),60.0f,float(l_distZ(mt)) };
+	//m_Position = { 40.0f,60.0f,-40.0f };
 	m_Scale = { 1.0f,1.0f,1.0f };
 	m_Color = { 0.0f,1.0f,0.0f,1.0f };
 	m_CDState = CD_BIRTH;
@@ -101,9 +101,9 @@ void DebuffCD::ResPornCD() {
 		//óêêîéwíË
 		mt19937 mt{ std::random_device{}() };
 		uniform_int_distribution<int> l_distX(20, 50);
-		uniform_int_distribution<int> l_distZ(-20, -50);
-		//m_Position = { float(l_distX(mt)),60.0f,float(l_distZ(mt)) };
-		m_Position = { 40.0f,60.0f,-40.0f };
+		uniform_int_distribution<int> l_distZ(-50, -20);
+		m_Position = { float(l_distX(mt)),60.0f,float(l_distZ(mt)) };
+		//m_Position = { 40.0f,60.0f,-40.0f };
 		m_AddPower = {};
 		m_CDState = CD_BIRTH;
 	}
