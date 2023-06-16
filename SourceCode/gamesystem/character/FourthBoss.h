@@ -32,16 +32,20 @@ public:
 
 	void Draw(DirectXCommon* dxCommon) override;//描画
 private:
+	//インターバル
+	void InterValMove();
 	//動きの選択
 	void Choice();
-	//ふつうの弾幕
-	void NormalBarrage();
-	//交互の弾
-	void AlterBarrage();
-	//ランダムの状態
-	void RandomBarrage();
 	//ダメージエリアのセット
-	void DamageAeraSet();
+	void LineSet();
+	//プレイヤーのデバフ
+	void Debuff();
+	//混乱
+	void Confu();
+	//弾幕
+	void Barrage();
+	//行動終わり
+	void EndMove();
 	//CSV読み込み系
 	void CSVLoad();
 	//ノーツの生成
@@ -49,22 +53,22 @@ private:
 
 private:
 	static const int BULLET_NUM = 4;
+	static const int CD_NUM = 4;
 private:
 	//各クラス
-	unique_ptr<InterCD> barracd;
-	unique_ptr<InterCD> confucd;
-	unique_ptr<InterCD> debuffcd;
-	unique_ptr<InterCD> linecd;
+	array<unique_ptr<InterCD>, CD_NUM> cd;
 	vector<AttackNote*> attacknotes;//怒りのスタンプ
 	unique_ptr<DamageArea> damagearea;//ダメージエリア
 	//キャラの状態
 	enum CharaState
 	{
+		STATE_INTER,
 		STATE_CHOICE,
-		STATE_NORMAL,
-		STATE_ALTER,
-		STATE_RANDOM,
-		STATE_AREA
+		STATE_LINE,
+		STATE_DEBUFF,
+		STATE_CONFU,
+		STATE_BARRA,
+		STATE_END
 	}_charaState;
 
 	//停止時間
@@ -104,4 +108,13 @@ private:
 
 	int m_AreaState = AREA_SET;
 	float SplineSpeed = false;
+
+	enum CDType {
+		CD_LINE,
+		CD_DEBUFF,
+		CD_CONFU,
+		CD_BARRA,
+	};
+
+	int m_MoveInterVal = 0;
 };
