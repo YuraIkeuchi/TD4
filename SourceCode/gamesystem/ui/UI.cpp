@@ -1,6 +1,7 @@
 ﻿#include "UI.h"
 #include"ImageManager.h"
 #include <Player.h>
+#include "InterBullet.h"
 #include <HungerGauge.h>
 #include "EnemyManager.h"
 #include <Easing.h>
@@ -27,11 +28,11 @@ void UI::Initialize() {
 	}
 	{//ゲージ
 		sprites[StatusGauge] = CreateUi(ImageManager::Gauge, m_GaugePos, m_GaugeSizeMini, { 1.5f, 1.5f, 1.5f,1 });
-		sprites[StatusGauge].Tex->SetAnchorPoint({0,0.5f});
+		sprites[StatusGauge].Tex->SetAnchorPoint({ 0,0.5f });
 		TexList.emplace_back(std::move(sprites[StatusGauge]));
 	}
 	{//ゲージ
-		sprites[UnderBossGauge] = CreateUi(ImageManager::WHITE, {880,0}, {400,40}, { 1.5f, 1.5f, 1.5f,1 });
+		sprites[UnderBossGauge] = CreateUi(ImageManager::WHITE, { 880,0 }, { 400,40 }, { 1.5f, 1.5f, 1.5f,1 });
 		sprites[UnderBossGauge].Tex->SetAnchorPoint({ 0,0.f });
 		TexList.emplace_back(std::move(sprites[UnderBossGauge]));
 	}
@@ -39,6 +40,16 @@ void UI::Initialize() {
 		sprites[BossGauge] = CreateUi(ImageManager::WHITE, { 880,0 }, { 400,40 }, { 0.f, 1.f, 0.f,1 });
 		sprites[BossGauge].Tex->SetAnchorPoint({ 0,0.f });
 		TexList.emplace_back(std::move(sprites[BossGauge]));
+	}
+	{
+		sprites[PlayerCircle] = CreateUi(ImageManager::CIRCLE, { m_PlayerCireclePos }, { m_PlayerCircleSize }, { 1.f,1.f,1.f,1.f });
+		sprites[PlayerCircle].Tex->SetAnchorPoint({ 0.5,0.5f });
+		TexList.emplace_back(std::move(sprites[PlayerCircle]));
+	}
+	{
+		sprites[CircleCover] = CreateUi(ImageManager::CIRCLECOVER, { m_PlayerCireclePos }, { m_PlayerCircleSize }, { 1.f,1.f,1.f,1.f });
+		sprites[CircleCover].Tex->SetAnchorPoint({ 0.5,0.5f });
+		TexList.emplace_back(std::move(sprites[CircleCover]));
 	}
 
 }
@@ -49,24 +60,56 @@ void UI::Update() {
 	if (HungerGauge::GetInstance()->GetCatchCount() == 0) {
 		TexList[UnderStatusGauge].IsVisible = false;
 		TexList[StatusGauge].IsVisible = false;
-	} else {
+	}
+	else {
 		TexList[StatusGauge].Size = { HungerGauge::GetInstance()->GetPercentage() * m_GaugeSizeMini.x,m_GaugeSizeMini.y };
-		TexList[UnderStatusGauge].Size = { (HungerGauge::GetInstance()->GetHungerMax()/5.f) * m_GaugeSize.x/10.f,m_GaugeSize.y };
+		TexList[UnderStatusGauge].Size = { (HungerGauge::GetInstance()->GetHungerMax() / 5.f) * m_GaugeSize.x / 10.f,m_GaugeSize.y };
 		TexList[UnderStatusGauge].IsVisible = true;
 		TexList[StatusGauge].IsVisible = true;
 	}
 	//ライフ処理
-	TexList[HeartThree].Size = { (Player::GetInstance()->GetHP()/ Player::GetInstance()->GetMaxHP()) * m_PlayerHpSize.x,m_PlayerHpSize.y };
-	TexList[HeartThree].Color = {0,1,0,1};
-	TexList[HeartTwo].Size = { 
+	TexList[HeartThree].Size = { (Player::GetInstance()->GetHP() / Player::GetInstance()->GetMaxHP()) * m_PlayerHpSize.x,m_PlayerHpSize.y };
+	TexList[HeartThree].Color = { 0,1,0,1 };
+	TexList[HeartTwo].Size = {
 		Ease(In,Quad,0.3f,TexList[HeartTwo].Size.x,TexList[HeartThree].Size.x),
 		Ease(In,Quad,0.3f,TexList[HeartTwo].Size.y,TexList[HeartThree].Size.y),
 	};
 	TexList[HeartTwo].Color = { 1,0,0,1 };
+	TexList[PlayerCircle].Rotation = m_PlayerCircleRot;
+	bullet_type_ = Player::GetInstance()->GetBulletType();
+	if (bullet_type_ == Bullettype::BULLET_FORROW) {
+		m_limit = 0.f;
+	}
+	else if (bullet_type_ == Bullettype::BULLET_SEARCH) {
+		m_limit = 120.f;
+	}
+	else if (bullet_type_ == Bullettype::BULLET_ATTACK) {
+		m_limit = 240.f;
+	}
+	int ans = bullet_type_ - oldbullet_type_;
+	if (m_PlayerCircleRot != m_limit) {
+		if(ans == 1 || ans == -2) {
+			m_PlayerCircleRot += 30.f;
+			if (m_PlayerCircleRot > 360.f) {
+				m_PlayerCircleRot = 0.f;
+			}
+		}
+		else if(ans == -1 || ans == 2) {
+			m_PlayerCircleRot -= 30.f;
+			if (m_PlayerCircleRot <0.f) {
+				m_PlayerCircleRot = 360;
+			}
+		}
+	}
+	else {
+		oldbullet_type_ = bullet_type_;
+	}
+
 
 	if (boss) {
 		TexList[BossGauge].Size = { boss->HpPercent() * 400.f,40.f };
-	} else {
+	}
+	else {
 		TexList[UnderBossGauge].IsVisible = false;
 		TexList[BossGauge].IsVisible = false;
 
