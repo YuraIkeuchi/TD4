@@ -14,7 +14,6 @@ void (ThirdBoss::* ThirdBoss::stateTable[])() = {
 	&ThirdBoss::WaitUpdate,//要素0
 	&ThirdBoss::MoveUpdate, //要素1
 	&ThirdBoss::ControlUpdate,
-	& ThirdBoss::EnemySpawnUpdate,
 };
 
 
@@ -106,9 +105,9 @@ void ThirdBoss::Pause() {
 void ThirdBoss::ImGui_Origin() {
 	ImGui::Begin("BOSS");
 	ImGui::SliderInt("Action", &ActionTimer, 0, 100);
-	ImGui::SliderFloat("m_Position.x", &m_Position.x, 0.0f, 360.0f);
-	ImGui::SliderFloat("m_Position.y", &m_Position.y, 0.0f, 360.0f);
-	ImGui::SliderFloat("m_Position.z", &m_Position.z, 0.0f, 360.0f);
+	ImGui::SliderFloat("m_Position.x",&m_Position.x,0.0f,360.0f);
+	ImGui::SliderFloat("m_Position.y",&m_Position.y,0.0f,360.0f);
+	ImGui::SliderFloat("m_Position.z",&m_Position.z,0.0f,360.0f);
 	ImGui::End();
 }
 
@@ -154,9 +153,6 @@ void ThirdBoss::WaitUpdate() {
 			//nowSpawn = moveSpawn;
 			//isInstruction = ThirdBossInst::None;
 			//phase = commandState::MoveCommand;
-			//isInstruction = ThirdBossInst::SpawnEnemy;
-			isSearch = true;
-			phase = commandState::EnemySpawnCommand;
 		} else {
 			isSearch = true;
 			phase = commandState::ControlCommand;
@@ -195,27 +191,18 @@ void ThirdBoss::ControlUpdate() {
 			ShutterReset();
 			ActionTimer = 0;
 			m_Limit = 20.0f;
-			phase = commandState:
-			:WaitCommand;
-		}
-	}
-}
-
-void ThirdBoss::EnemySpawnUpdate() {
-	if (isSearch) { return; }
-	ActionTimer++;
-	if (ActionTimer >= ActionTimerMax[(size_t)commandState::ControlCommand]) {
-		isShutter = true;
-	}
-	if (ShutterEffect()) {
-		isInstruction = ThirdBossInst::SpawnEnemy;
-		if (ShutterFeed()) {
-			ShutterReset();
-			ActionTimer = 0;
-			m_Limit = 20.0f;
 			phase = commandState::WaitCommand;
 		}
 	}
+	//if (isInstruction == ThirdBossInst::SpawnEnemy) {
+	//	for (int i = 0; i < 3;i++) {
+	//		Thirdenemys[i]->SetPosition(jackPos[i]);
+	//	}
+	//	isInstruction = ThirdBossInst::FinishMove;
+	//}
+	//if (isInstruction == ThirdBossInst::FinishMove) {
+	//	//phase = commandState::WaitCommand;
+	//}
 }
 
 bool ThirdBoss::ShutterEffect() {

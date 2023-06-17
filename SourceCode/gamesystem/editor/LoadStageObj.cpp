@@ -4,6 +4,8 @@
 #include "Collision.h"
 #include "Helper.h"
 #include "Player.h"
+#include "VariableCommon.h"
+#include <Easing.h>
 EnemyManager* LoadStageObj::m_EnemyManager = nullptr;
 //ゴーストのロード
 void LoadStageObj::GhostLoad() {
@@ -94,12 +96,12 @@ void LoadStageObj::SecondUpdate() {
 	}
 
 	//食料生成
-	if (m_EnemyManager->GetEnemyCheck()) {
+	if (m_EnemyManager->GetEnemyCheck() && (foods.size() < 5)) {
 		Food* newFood;
 		newFood = new Food();
 		newFood->Initialize();
 		newFood->SetPosition({ m_EnemyManager->GetEnemyPosition().x,0.0f,m_EnemyManager->GetEnemyPosition().z });
-		newFood->SetLimit(true);
+		//newFood->SetLimit(true);
 		foods.push_back(newFood);
 		m_EnemyManager->FinishCheck();
 
@@ -112,6 +114,11 @@ void LoadStageObj::ThirdUpdate() {
 	//更新
 	CommonUpdate();
 	ThirdBossAction();
+}
+void LoadStageObj::FourthUpdate() {
+	//更新
+	CommonUpdate();
+	SubHunger();
 }
 //描画
 void LoadStageObj::Draw(DirectXCommon* dxCommon) {
@@ -210,39 +217,13 @@ void LoadStageObj::VanishGhost() {
 
 		//for分抜ける
 		if (m_Vanish) {
-			ghosts[i]->SetAlive(false);
+			ghosts[i]->SetVanish(true);
 			HungerGauge::GetInstance()->SetCatchCount(HungerGauge::GetInstance()->GetCatchCount() - 1);
 			HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() - l_Value);
 			m_Vanish = false;
 			break;
 		}
 	}
-
-	//ゴースト薄くする版
-	//int l_TargetCatchCount = HungerGauge::GetInstance()->GetCatchCount() - 1;
-	//float l_Value = HungerGauge::m_Hungervalue;
-	////除算をする
-	//m_Division = HungerGauge::GetInstance()->GetNowHunger() / 5.0f;
-	//m_Alpha = m_Division - ((float)HungerGauge::GetInstance()->GetCatchCount() - 1.0f);
-	//for (auto i = 0; i < ghosts.size(); ++i) {
-	//	if (!ghosts[i]->GetAlive()) { continue; }
-	//	if (!ghosts[i]->GetCatch()) { continue; }
-	//	if (!ghosts[i]->GetFollow()) { continue; }
-
-	//	m_Vanish = true;
-
-	//	//for分抜ける
-	//	if (m_Vanish) {
-	//		ghosts[i]->SetColor({ ghosts[i]->GetColor().x,ghosts[i]->GetColor().y, ghosts[i]->GetColor().z, m_Alpha });
-	//		if (ghosts[i]->GetColor().w <= 0.1f) {
-	//			ghosts[i]->SetAlive(false);
-	//			HungerGauge::GetInstance()->SetCatchCount(HungerGauge::GetInstance()->GetCatchCount() - 1);
-	//			HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() - l_Value);
-	//		}
-	//		m_Vanish = false;
-	//		break;
-	//	}
-	//}
 }
 //共通の更新
 void LoadStageObj::CommonUpdate() {
@@ -255,56 +236,11 @@ void LoadStageObj::CommonUpdate() {
 	//食べ物
 	for (auto i = 0; i < foods.size(); i++) {
 		foods[i]->Update();
-		/*	if (m_SceneName == "FIRSTSTAGE") {
-				if (foods[i]->GetAlive() && foods[i] != nullptr && !m_EnemyManager->BossDestroy()) {
-					lightgroup->SetCircleShadowDir(i + 2, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-					lightgroup->SetCircleShadowCasterPos(i + 2, XMFLOAT3({ foods[i]->GetPosition().x, foods[i]->GetPosition().y, foods[i]->GetPosition().z }));
-					lightgroup->SetCircleShadowAtten(i + 2, XMFLOAT3(circleShadowAtten));
-					lightgroup->SetCircleShadowFactorAngle(i + 2, XMFLOAT2(circleShadowFactorAngle));
-				}
-				else {
-					lightgroup->SetCircleShadowActive(i + 2, false);
-				}
-			}
-			else if (m_SceneName == "TUTORIAL") {
-				if (foods[i]->GetAlive() && foods[i] != nullptr) {
-					lightgroup->SetCircleShadowDir(i + 2, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-					lightgroup->SetCircleShadowCasterPos(i + 2, XMFLOAT3({ foods[i]->GetPosition().x, foods[i]->GetPosition().y, foods[i]->GetPosition().z }));
-					lightgroup->SetCircleShadowAtten(i + 2, XMFLOAT3(circleShadowAtten));
-					lightgroup->SetCircleShadowFactorAngle(i + 2, XMFLOAT2(circleShadowFactorAngle));
-				}
-				else {
-					lightgroup->SetCircleShadowActive(i + 2, false);
-				}
-			}*/
 	}
 
 	//ハート
 	for (auto i = 0; i < hearts.size(); i++) {
 		hearts[i]->Update();
-		/*if (m_SceneName == "FIRSTSTAGE") {
-			if (hearts[i]->GetAlive() && hearts[i] != nullptr && !m_EnemyManager->BossDestroy()) {
-				lightgroup->SetCircleShadowDir(((int)hearts.size() + 1) + 12, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-				lightgroup->SetCircleShadowCasterPos(((int)hearts.size() + 1) + 12, XMFLOAT3({ hearts[i]->GetPosition().x, hearts[i]->GetPosition().y, hearts[i]->GetPosition().z }));
-				lightgroup->SetCircleShadowAtten(((int)hearts.size() + 1) + 12, XMFLOAT3(circleShadowAtten));
-				lightgroup->SetCircleShadowFactorAngle(((int)hearts.size() + 1) + 12, XMFLOAT2(circleShadowFactorAngle));
-			}
-			else {
-				lightgroup->SetCircleShadowActive(((int)hearts.size() + 1) + 12, false);
-				lightgroup->SetCircleShadowCasterPos(((int)hearts.size() + 1) + 12, XMFLOAT3({1000.0f,0.0f,1000.0f}));
-			}
-		}
-		else if(m_SceneName == "SECONDSTAGE") {
-			if (hearts[i]->GetAlive() && hearts[i] != nullptr && !m_EnemyManager->BossDestroy()) {
-				lightgroup->SetCircleShadowDir(i + 2, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-				lightgroup->SetCircleShadowCasterPos(i + 2, XMFLOAT3({ hearts[i]->GetPosition().x, hearts[i]->GetPosition().y, hearts[i]->GetPosition().z }));
-				lightgroup->SetCircleShadowAtten(i + 2, XMFLOAT3(circleShadowAtten));
-				lightgroup->SetCircleShadowFactorAngle(i + 2, XMFLOAT2(circleShadowFactorAngle));
-			}
-			else {
-				lightgroup->SetCircleShadowActive(i + 2, false);
-			}
-		}*/
 	}
 
 	//食料の削除(このステージのみ)
@@ -353,12 +289,6 @@ void LoadStageObj::BirthHeart() {
 }
 
 void LoadStageObj::LightReturn() {
-	/*for (auto i = 0; i < foods.size(); i++) {
-		if (foods[i]->GetLightSet()) {
-			lightgroup->SetCircleShadowActive(i + 2, true);
-			foods[i]->SetLightSet(false);
-		}
-	}*/
 }
 
 void LoadStageObj::ThirdBossAction() {
@@ -397,7 +327,6 @@ void LoadStageObj::LockVerseGhost() {
 	boss->SetSearch(false);
 }
 
-
 void LoadStageObj::NonVerseGhost() {
 	InterBoss* boss = m_EnemyManager->GetBoss();
 	if (boss->GetInstruction() != InterBoss::ThirdBossInst::StopGhost) { return; }
@@ -432,19 +361,24 @@ bool LoadStageObj::CheckReferGhost() {
 	}
 }
 
-bool LoadStageObj::StopGhost() {
-	InterBoss* boss = m_EnemyManager->GetBoss();
-	if (boss->GetInstruction() != InterBoss::ThirdBossInst::StopGhost) { return; }
-	int m_GhostPos = 0;
-	for (Ghost*& ghost : stopGhosts) {
-		if (!ghost) { continue; }
-		ghost->SetColor({ 1,0,1,1 });
-		//ghost->SetScale({ 0.0f,0.0f,0.0f });
-		ghost->SetIsPostionCheck(true);
-		ghost->SetIsVerse(false);
-		ghost->SetAlive(false);
-		boss->SetJackPos(m_GhostPos, ghost->GetPosition());
-		m_GhostPos++;
+//飢餓ゲージをゴースト三体分減らす
+void LoadStageObj::SubHunger() {
+	const float l_AddFrame = 0.1f;
+	float l_LimitHunger = {};
+	if (m_EnemyManager->GetEnemyCheck()) {
+		l_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - 10.0f;
+		m_SubHunger = true;
+		m_EnemyManager->FinishCheck();
 	}
-	boss->SetInstruction(InterBoss::ThirdBossInst::None);
+
+	if (m_SubHunger) {
+		if (m_Frame < m_FrameMax) {
+			m_Frame += l_AddFrame;
+		}
+		else {
+			m_Frame = {};
+			m_SubHunger = false;
+		}
+		HungerGauge::GetInstance()->SetNowHunger(Ease(In, Cubic, 0.5f, HungerGauge::GetInstance()->GetNowHunger(), l_LimitHunger));
+	}
 }
