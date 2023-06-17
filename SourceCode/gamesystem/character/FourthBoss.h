@@ -124,5 +124,7 @@ private:
 
 	int m_ThrowState = THROW_SET;
 
-	int m_EndCount = 0;
+	int m_EndCount = {};
+
+	int m_CatchCount = {};
 };

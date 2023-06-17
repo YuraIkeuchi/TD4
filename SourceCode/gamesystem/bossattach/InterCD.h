@@ -41,6 +41,8 @@ protected:
 	virtual void ImGui_Origin() = 0;//ボスそれぞれのImGui
 
 	void CollideBul(vector<InterBullet*>bullet);
+
+	bool PlayerCollide();
 protected:
 	//メンバ関数
 	virtual void BirthCD() {};
@@ -53,8 +55,11 @@ protected:
 public:
 	//gettersetter
 	const int& GetCDState() { return m_CDState; }
+	const bool& GetBreakCD() { return m_BreakCD; }
 
 	void SetCDState(const int CDState) { m_CDState = CDState; }
+
+	void SetBreakCD(const bool BreakCD) { m_BreakCD = BreakCD; }
 
 	void SetCatchPos(const XMFLOAT3 CatchPos) { m_CatchPos = CatchPos; }
 protected:
@@ -77,4 +82,7 @@ protected:
 
 	//リスポーン時間
 	int m_ResPornTimer = {};
+
+	//壊れたかドウか
+	bool m_BreakCD = false;
 };

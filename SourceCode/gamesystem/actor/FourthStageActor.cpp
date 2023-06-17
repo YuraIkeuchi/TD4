@@ -248,7 +248,7 @@ void FourthStageActor::MainUpdate(DebugCamera* camera) {
 
 
 	enemymanager->BattleUpdate();
-	loadobj->FirstUpdate();
+	loadobj->FourthUpdate();
 	ParticleEmitter::GetInstance()->Update();
 
 	camerawork->Update(camera);
