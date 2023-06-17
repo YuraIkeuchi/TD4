@@ -96,12 +96,12 @@ void LoadStageObj::SecondUpdate() {
 	}
 
 	//H—¿¶¬
-	if (m_EnemyManager->GetEnemyCheck()) {
+	if (m_EnemyManager->GetEnemyCheck() && (foods.size() < 5)) {
 		Food* newFood;
 		newFood = new Food();
 		newFood->Initialize();
 		newFood->SetPosition({ m_EnemyManager->GetEnemyPosition().x,0.0f,m_EnemyManager->GetEnemyPosition().z });
-		newFood->SetLimit(true);
+		//newFood->SetLimit(true);
 		foods.push_back(newFood);
 		m_EnemyManager->FinishCheck();
 
@@ -217,7 +217,7 @@ void LoadStageObj::VanishGhost() {
 
 		//for•ª”²‚¯‚é
 		if (m_Vanish) {
-			ghosts[i]->SetAlive(false);
+			ghosts[i]->SetVanish(true);
 			HungerGauge::GetInstance()->SetCatchCount(HungerGauge::GetInstance()->GetCatchCount() - 1);
 			HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() - l_Value);
 			m_Vanish = false;

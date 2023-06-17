@@ -54,6 +54,9 @@ void Player::InitState(const XMFLOAT3& pos) {
 	m_BulletType = BULLET_FORROW;
 
 	m_BoundPower = { 0.0f,0.0f };
+
+	m_Confu = false;
+	m_ConfuTimer = 0;
 	//初期化ぶち込み
 	Initialize();
 	//移動処理用
