@@ -103,14 +103,7 @@ void DamageArea::Draw(DirectXCommon* dxCommon) {
 }
 
 void DamageArea::ImGuiDraw() {
-	ImGui::Begin("AREA");
-	ImGui::Text("State:%d", m_AreaState);
-	ImGui::Text("Alpha2:%f", m_Alpha);
-	ImGui::Text("Scale:%f", m_CommonScale);
-	for (size_t i = 0; i < tex.size(); i++) {
-		ImGui::Text("Alpha[%d]:%f",i,m_TexColor[i].w);
-	}
-	ImGui::End();
+	
 }
 
 void DamageArea::LineUpdate() {
@@ -206,16 +199,15 @@ bool DamageArea::Collide() {
 		lines.start = { m_Position[i].x,m_Position[i].z };
 		lines.end = { m_Position[i + 1].x,m_Position[i + 1].z };
 		//”»’è•”
-		if (Collision::IsCollidingLineAndCircle(lines, points, 10.0f) && Player::GetInstance()->GetDamageInterVal() == 0 && m_CommonScale == 1.0f)
+		if (Collision::IsCollidingLineAndCircle(lines, points, 3.0f) && Player::GetInstance()->GetDamageInterVal() == 0 && m_CommonScale == 1.0f)
 		{
 			Player::GetInstance()->PlayerHit(m_Position[i]);
 			Player::GetInstance()->RecvDamage(0.5f);
-			return true;
+			break;
 		}
 		else {
-			return false;
 		}
 	}
 
-	return false;
+	return true;
 }

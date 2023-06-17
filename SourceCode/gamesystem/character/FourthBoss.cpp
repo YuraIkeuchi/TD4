@@ -91,6 +91,11 @@ void FourthBoss::Action() {
 	for (size_t i = 0; i < cd.size(); i++) {
 		cd[i]->SetCatchPos({ m_Position.x,m_Position.y + 3.0f,m_Position.z });
 		cd[i]->Update();
+
+		if (cd[i]->GetBreakCD()) {
+			m_EndCount++;
+			cd[i]->SetBreakCD(false);
+		}
 	}
 
 	//攻撃の音符
@@ -161,9 +166,9 @@ void FourthBoss::ImGui_Origin() {
 	//		newnote->ImGuiDraw();
 	//	}
 	//}
-	//if (damagearea != nullptr) {
-	//	damagearea->ImGuiDraw();
-	//}
+	if (damagearea != nullptr) {
+		damagearea->ImGuiDraw();
+	}
 }
 //インターバル
 void FourthBoss::InterValMove() {
@@ -222,7 +227,7 @@ void FourthBoss::Choice() {
 				}
 				else {
 					//攻撃をするかスルーか行動をするかCDを取るか決める
-					if (l_SelectRand < 41) {
+					if (l_SelectRand < 91) {
 						_charaState = i + 2;
 						cd[i]->SetCDState(CD_DEATH);
 						m_EndCount++;
@@ -254,7 +259,7 @@ Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
 //ダメージエリアのセット
 void FourthBoss::LineSet() {
 	if (m_AreaState == AREA_SET) {
-		damagearea.reset(new DamageArea(4));
+		damagearea.reset(new DamageArea(3));
 		damagearea->Initialize();
 		m_AreaState = AREA_STOP;
 	}
