@@ -279,7 +279,7 @@ void Ghost::CarryFood() {
 	XMFLOAT3 l_playerPos = Player::GetInstance()->GetPosition();
 	if ((_searchState == SearchState::SEARCH_END) && (!m_Vanish)) {
 		if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, l_playerPos.x, l_playerPos.z, l_Radius)) {
-			m_Scale = { 0.0f,0.0f,0.0f };
+			//m_Scale = { 0.0f,0.0f,0.0f };
 			m_Vanish = true;
 			m_Search = false;
 			m_Catch = false;
