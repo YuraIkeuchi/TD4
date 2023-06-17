@@ -22,15 +22,13 @@ public:
 	//初期化
 	void Initialize()override;
 	//更新
-	void TutorialUpdate();
+	void TutorialUpdate()override;
 	//更新
-	void FirstUpdate();
+	void FirstUpdate()override;
 	//更新
-	void SecondUpdate();
+	void SecondUpdate()override;
 	//更新
 	void ThirdUpdate();
-	//更新
-	void FourthUpdate();
 
 	//描画
 	void Draw(DirectXCommon* dxCommon)override;
@@ -61,8 +59,9 @@ private:
 	void NonVerseGhost();
 	//参照されているゴーストが存在するかチェックします。
 	bool CheckReferGhost();
-	//手に入れているゴーストを三体ほど消します
-	void SubHunger();
+	//参照されているゴーストが存在するかチェックします。
+	bool StopGhost();
+
 public:
 	static void SetEnemyManager(EnemyManager* m_EnemyManager) { LoadStageObj::m_EnemyManager = m_EnemyManager; }
 protected:
@@ -95,9 +94,5 @@ private:
 	string m_SceneName;
 
 	float m_Alpha = {};
-
-	//飢餓ゲージを減らす
-	bool m_SubHunger = false;
-	float m_Frame = 0.0f;
 };
 

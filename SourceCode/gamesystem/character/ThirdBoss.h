@@ -37,6 +37,7 @@ private:
 		WaitCommand = 0,
 		MoveCommand,
 		ControlCommand,
+		EnemySpawnCommand,
 		COMMANDMAX
 	};
 
@@ -46,6 +47,7 @@ private:
 	void WaitUpdate();
 	void MoveUpdate();
 	void ControlUpdate();
+	void EnemySpawnUpdate();
 
 
 	bool ShutterEffect();
@@ -84,7 +86,6 @@ private:
 	float shutterTime = 0.0f;
 	float feedTimer = 0.0f;
 	float shutterHight[2] = { 0,0 };
-
 
 	float shutterTimeMax = 30.0f;
 	float feedTimeMax = 15.0f;

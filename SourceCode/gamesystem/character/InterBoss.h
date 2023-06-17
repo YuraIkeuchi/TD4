@@ -21,6 +21,7 @@ public:
 	enum ThirdBossInst {
 		None = 0,
 		StopGhost,
+		//
 		SpawnEnemy,
 		FinishMove,
 
