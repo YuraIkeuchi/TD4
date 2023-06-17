@@ -7,7 +7,15 @@ public:
 	LineCD();
 	bool Initialize() override;//‰Šú‰»
 
-	void Draw(DirectXCommon* dxCommon) override;//•`‰æ
+	void Origin_Draw(DirectXCommon* dxCommon) override;//•`‰æ
+
+	void BirthCD() override;
+	void StayCD() override;
+	void ThroughCD() override;
+	void CatchCD() override;
+	void ThrowCD() override;
+	void DeathCD() override;
+	void ResPornCD() override;
 public:
 
 private:

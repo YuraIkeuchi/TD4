@@ -32,6 +32,7 @@ private:
 	void PointUpdate();	//点の更新
 	void LineUpdate();	//線の更新
 	void StateManager();//状態を管理する
+	bool Collide();//当たり判定
 private:
 	IKEModel* model = nullptr;
 	vector<IKEObject3d*> obj;//モデル
@@ -50,7 +51,7 @@ private:
 	vector<XMFLOAT3> m_TexScale;
 	vector<XMFLOAT4> m_TexColor;
 	vector<bool> m_TexAlive;
-
+	vector<int> m_Hit;
 	enum AreaState {
 		POINT_BIRTH,
 		LINE_BIRTH,

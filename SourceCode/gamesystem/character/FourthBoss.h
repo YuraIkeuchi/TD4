@@ -32,16 +32,22 @@ public:
 
 	void Draw(DirectXCommon* dxCommon) override;//描画
 private:
+	//インターバル
+	void InterValMove();
 	//動きの選択
 	void Choice();
-	//ふつうの弾幕
-	void NormalBarrage();
-	//交互の弾
-	void AlterBarrage();
-	//ランダムの状態
-	void RandomBarrage();
 	//ダメージエリアのセット
-	void DamageAeraSet();
+	void LineSet();
+	//プレイヤーのデバフ
+	void Debuff();
+	//混乱
+	void Confu();
+	//弾幕
+	void Barrage();
+	//投げる
+	void Throw();
+	//行動終わり
+	void EndMove();
 	//CSV読み込み系
 	void CSVLoad();
 	//ノーツの生成
@@ -49,23 +55,24 @@ private:
 
 private:
 	static const int BULLET_NUM = 4;
+	static const int CD_NUM = 4;
 private:
 	//各クラス
-	unique_ptr<InterCD> barracd;
-	unique_ptr<InterCD> confucd;
-	unique_ptr<InterCD> debuffcd;
-	unique_ptr<InterCD> linecd;
+	array<unique_ptr<InterCD>, CD_NUM> cd;
 	vector<AttackNote*> attacknotes;//怒りのスタンプ
 	unique_ptr<DamageArea> damagearea;//ダメージエリア
 	//キャラの状態
 	enum CharaState
 	{
+		STATE_INTER,
 		STATE_CHOICE,
-		STATE_NORMAL,
-		STATE_ALTER,
-		STATE_RANDOM,
-		STATE_AREA
-	}_charaState;
+		STATE_LINE,
+		STATE_DEBUFF,
+		STATE_CONFU,
+		STATE_BARRA,
+		STATE_THROW,
+		STATE_END
+	};
 
 	//停止時間
 	int m_StopTimer = 0;
@@ -75,6 +82,7 @@ private:
 	//関数ポインタ
 	static void(FourthBoss::* stateTable[])();
 	
+	int _charaState = STATE_INTER;
 
 	//CSV系
 	int m_ChoiceInterval = {};
@@ -84,14 +92,6 @@ private:
 	//X方向の回転
 	XMFLOAT3 m_AfterRot = { 0.0f,0.0f,0.0f };
 	float m_Frame = {};
-
-	enum BarrageState {
-		BARRA_SET,
-		BARRA_BIRTH,
-		BARRA_END,
-	};
-
-	int m_BarraState = {};
 
 	int m_RotCount = 0;
 	int m_RotTimer = 0;
@@ -104,4 +104,27 @@ private:
 
 	int m_AreaState = AREA_SET;
 	float SplineSpeed = false;
+
+	enum CDType {
+		CD_LINE,
+		CD_DEBUFF,
+		CD_CONFU,
+		CD_BARRA,
+	};
+
+	int m_MoveInterVal = {};
+
+	int m_ThrowTimer = {};
+
+	enum ThrowState {
+		THROW_SET,
+		THROW_NOW,
+		THROW_END
+	};
+
+	int m_ThrowState = THROW_SET;
+
+	int m_EndCount = {};
+
+	int m_CatchCount = {};
 };

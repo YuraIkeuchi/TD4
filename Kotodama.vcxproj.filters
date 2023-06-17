@@ -428,9 +428,6 @@
     <ClCompile Include="SourceCode\gamesystem\character\ThirdBoss.cpp">
       <Filter>gamesystem\charactor\Boss\Third</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\Menu\Menu.cpp">
-      <Filter>gamesystem\Menu</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\scene\SelectStageScene.cpp">
       <Filter>gamesystem</Filter>
     </ClCompile>
@@ -439,7 +436,7 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\ui\SelectScene.cpp">
       <Filter>gamesystem</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\FourthBoss.cpp">
       <Filter>gamesystem\charactor\Boss\Fourth</Filter>
     </ClCompile>
@@ -469,6 +466,9 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\bossattach\ConfuCD.cpp">
       <Filter>gamesystem\bossattach\CD\Various</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\Menu\Menu.cpp">
+      <Filter>gamesystem\Menu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -862,9 +862,6 @@
     <ClInclude Include="SourceCode\gamesystem\character\ThirdBoss.h">
       <Filter>gamesystem\charactor\Boss\Third</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\Menu\Menu.h">
-      <Filter>gamesystem\Menu</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\SelectStageScene.h">
       <Filter>gamesystem</Filter>
     </ClInclude>
@@ -873,7 +870,7 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\ui\SelectScene.h">
       <Filter>gamesystem</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\FourthBoss.h">
       <Filter>gamesystem\charactor\Boss\Fourth</Filter>
     </ClInclude>
@@ -903,6 +900,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\bossattach\BarrangeCD.h">
       <Filter>gamesystem\bossattach\CD\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\Menu\Menu.h">
+      <Filter>gamesystem\Menu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1208,7 +1208,7 @@
     <Filter Include="gamesystem\Menu">
       <UniqueIdentifier>{99344b64-4c4f-4a5c-a439-fce455159b0b}</UniqueIdentifier>
     </Filter>
-	<Filter Include="gamesystem\charactor\Boss\Fourth">
+    <Filter Include="gamesystem\charactor\Boss\Fourth">
       <UniqueIdentifier>{949da15c-e9fb-4fbb-820d-721dacfaa7f6}</UniqueIdentifier>
     </Filter>
     <Filter Include="gamesystem\actor\Fourth">

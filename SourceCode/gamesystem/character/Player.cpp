@@ -20,7 +20,7 @@ bool Player::Initialize()
 	m_fbxObject->Initialize();
 	m_fbxObject->SetModel(ModelManager::GetInstance()->GetFBXModel(ModelManager::PLAYER));
 	m_fbxObject->LoadAnimation();
-	m_fbxObject->PlayAnimation(0);
+
 	/*CSV読み込み(CSVファイル名,読み込むパラメータの名前,受け取る値)　今は単一の方のみ対応(int float double charとか)*/
 
 	//spから間接的にアクセスする方法 (Update()内で専用の変数に代入する必要あり)
@@ -59,7 +59,7 @@ void Player::InitState(const XMFLOAT3& pos) {
 	//移動処理用
 	velocity /= 5.0f;
 	//大きさ
-	m_Scale = { 1.0f,0.030f,1.0f };
+	m_Scale = { 2.5f,2.5f,2.5f };
 }
 //状態遷移
 /*CharaStateのState並び順に合わせる*/
@@ -73,7 +73,7 @@ void Player::Update()
 	//any_castはdouble型なのでそれをstatic_castでfloatに
 	//doubleがatof()関数の戻り値なので変更できない<any_cast<float>で処理通らなかった>
 	//つまるところstd::any_cast<double>(〇〇)は固定(static_castで変換)
-	/*①*/m_AddSpeed= static_cast<float>(std::any_cast<double>(sp));
+	/*①*/m_AddSpeed = static_cast<float>(std::any_cast<double>(sp));
 
 	Input* input = Input::GetInstance();
 	/*FBXのカウンタdoubleにしたほうが調整ききやすそう*/
@@ -96,9 +96,9 @@ void Player::Update()
 			_charaState = CharaState::STATE_IDLE;
 		}
 	}
-		if (isStop) {
-			_charaState = CharaState::STATE_IDLE;
-		}
+	if (isStop) {
+		_charaState = CharaState::STATE_IDLE;
+	}
 	//弾の管理
 	Bullet_Management();
 
@@ -131,8 +131,7 @@ void Player::Update()
 
 	//基礎パラメータ設定
 	Fbx_SetParam();
-	m_LoopFlag = true;
-	m_AnimationSpeed = 1;
+
 	//どっち使えばいいか分からなかったから保留
 	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 
@@ -207,64 +206,64 @@ void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
 
 	//各種パラメータ反映
 	_animeName = name;
-	m_LoopFlag =loop;
+	m_LoopFlag = loop;
 	m_AnimationSpeed = speed;
-	
+
 }
 //歩き(コントローラー)
 void Player::Walk()
 {
 	XMFLOAT3 rot = m_Rotation;
 
-	float AddSpeed=2.f;
+	float AddSpeed = 2.f;
 	Input* input = Input::GetInstance();
 
 	float StickX = input->GetLeftControllerX();
 	float StickY = input->GetLeftControllerY();
 	const float STICK_MAX = 32768.0f;
-	
-		//上入力
-		if (input->TiltPushStick(Input::L_UP, 0.0f))
-			XMFLOAT3 vecvel = MoveVECTOR(XMVECTOR{ 0, 0, velocity, 0 }, angle);
 
-		//下入力
-		if (input->TiltPushStick(Input::L_DOWN, 0.0f))
-			XMFLOAT3 vecvel = MoveVECTOR(XMVECTOR{ 0, 0, -velocity, 0 }, angle);
+	//上入力
+	if (input->TiltPushStick(Input::L_UP, 0.0f))
+		XMFLOAT3 vecvel = MoveVECTOR(XMVECTOR{ 0, 0, velocity, 0 }, angle);
 
-		//右入力
-		if (input->TiltPushStick(Input::L_RIGHT, 0.0f))
-			XMFLOAT3 vecvel = MoveVECTOR(XMVECTOR{ velocity, 0, 0, 0 }, angle);
+	//下入力
+	if (input->TiltPushStick(Input::L_DOWN, 0.0f))
+		XMFLOAT3 vecvel = MoveVECTOR(XMVECTOR{ 0, 0, -velocity, 0 }, angle);
 
-		//左入力
-		if (input->TiltPushStick(Input::L_LEFT, 0.0f))
-			XMFLOAT3 vecvel = MoveVECTOR(XMVECTOR{ -velocity, 0, 0, 0 }, angle);
-		
+	//右入力
+	if (input->TiltPushStick(Input::L_RIGHT, 0.0f))
+		XMFLOAT3 vecvel = MoveVECTOR(XMVECTOR{ velocity, 0, 0, 0 }, angle);
 
-		const float rnd_vel = 0.1f;
+	//左入力
+	if (input->TiltPushStick(Input::L_LEFT, 0.0f))
+		XMFLOAT3 vecvel = MoveVECTOR(XMVECTOR{ -velocity, 0, 0, 0 }, angle);
 
-		XMFLOAT3 vel{};
 
-		vel.x = static_cast<float>(rand()) / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-		vel.y = static_cast<float>(rand()) / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-		vel.z = static_cast<float>(rand()) / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-		rot.y = angle + atan2f(StickX, StickY) * (PI_180 / PI);
+	const float rnd_vel = 0.1f;
 
-		//プレイヤーの回転角を取る
-		m_Rotation = { rot.x, rot.y, rot.z };
+	XMFLOAT3 vel{};
 
-		if (m_Rotation.y <= 0.0f) {
-			m_Rotation.y = m_Rotation.y + 360.0f;
-		}
+	vel.x = static_cast<float>(rand()) / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+	vel.y = static_cast<float>(rand()) / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+	vel.z = static_cast<float>(rand()) / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+	rot.y = angle + atan2f(StickX, StickY) * (PI_180 / PI);
 
-		XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
-		XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
-		move = XMVector3TransformNormal(move, matRot);
-		//向いた方向に進む
-		if (m_RigidityTime == m_ResetNumber) {
-			m_Position.x += move.m128_f32[0] * m_AddSpeed;
-			m_Position.z += move.m128_f32[2] * m_AddSpeed;
-		}
-		//AnimationControl(AnimeName::WALK, true, 0);
+	//プレイヤーの回転角を取る
+	m_Rotation = { rot.x, rot.y, rot.z };
+
+	if (m_Rotation.y <= 0.0f) {
+		m_Rotation.y = m_Rotation.y + 360.0f;
+	}
+
+	XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
+	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
+	move = XMVector3TransformNormal(move, matRot);
+	//向いた方向に進む
+	if (m_RigidityTime == m_ResetNumber) {
+		m_Position.x += move.m128_f32[0] * m_AddSpeed;
+		m_Position.z += move.m128_f32[2] * m_AddSpeed;
+	}
+	AnimationControl(AnimeName::WALK, true, 1);
 }
 //VECTOR
 XMFLOAT3 Player::MoveVECTOR(XMVECTOR v, float angle)
@@ -356,7 +355,7 @@ void Player::Bullet_Management() {
 		}
 	}
 
-	
+
 	//弾の削除(言霊)
 	for (int i = 0; i < ghostbullets.size(); i++) {
 		if (ghostbullets[i] == nullptr) {
@@ -420,7 +419,7 @@ void Player::BulletUpdate(std::vector<InterBullet*> bullets) {
 			bullet->Update();
 		}
 	}
-	
+
 }
 //弾の生成
 void Player::BirthShot(const std::string& bulletName, bool Super) {
@@ -442,7 +441,7 @@ void Player::BirthShot(const std::string& bulletName, bool Super) {
 			if (l_BulletNum == 1) {
 				matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
 			}
-			else if(l_BulletNum == 2) {
+			else if (l_BulletNum == 2) {
 				if (i == 0) {
 					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 5.0f));
 				}
@@ -482,13 +481,13 @@ void Player::BirthShot(const std::string& bulletName, bool Super) {
 		}
 	}
 	//言霊
-	else if(bulletName == "Ghost") {
+	else if (bulletName == "Ghost") {
 		//弾の生成
 		GhostBullet* newbullet;
 		newbullet = new GhostBullet();
 		newbullet->Initialize();
 		newbullet->SetPosition(viewbullet->GetPosition());
-		newbullet->SetRotation({m_Rotation.x,m_Rotation.y + 90.0f,m_Rotation.z});
+		newbullet->SetRotation({ m_Rotation.x,m_Rotation.y + 90.0f,m_Rotation.z });
 		newbullet->SetBulletType(m_BulletType);
 		newbullet->SetAngle(l_Angle2);
 		ghostbullets.push_back(newbullet);
@@ -502,7 +501,7 @@ void Player::Idle()
 {
 	//条件少しおかしいので後で修正
 	if (_animeName == AnimeName::IDLE)return;
-//	AnimationControl(AnimeName::IDLE, true, 1);
+	AnimationControl(AnimeName::IDLE, true, 1);
 }
 //インターバル
 void Player::InterVal() {
@@ -549,7 +548,7 @@ void Player::BulletDelete() {
 //プレイヤーが敵にあたった瞬間の判定
 void Player::PlayerHit(const XMFLOAT3& pos) {
 	XMFLOAT2 l_Distance;
-	l_Distance.x = m_Position.x - pos.x+0.1f;
+	l_Distance.x = m_Position.x - pos.x + 0.1f;
 	l_Distance.y = m_Position.z - pos.z;
 	m_BoundPower.x = (sin(atan2f(l_Distance.x, l_Distance.y)) * 3.0f);
 	m_BoundPower.y = (cos(atan2f(l_Distance.x, l_Distance.y)) * 3.0f);
@@ -571,7 +570,7 @@ void Player::ReBound() {
 	}
 }
 //銃の処理
-void Player::SutoponUpdate(){
+void Player::SutoponUpdate() {
 	XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
 	XMMATRIX matRot;
 	matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));

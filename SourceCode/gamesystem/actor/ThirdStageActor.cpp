@@ -5,7 +5,7 @@
 #include "ParticleEmitter.h"
 #include <HungerGauge.h>
 #include "BackObj.h"
-
+#include "Menu.h"
 const XMVECTOR kSkyBlue{ 0.f,1.f,1.f,1.f };
 const XMVECTOR kPink{ 0.9f,0.6f,0.8f,1.f };
 
@@ -64,6 +64,8 @@ void ThirdStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 
 	lightgroup->SetCircleShadowActive(0, true);
 	lightgroup->SetCircleShadowActive(1, true);
+
+	Menu::GetIns()->Init();
 }
 //更新
 void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -250,6 +252,9 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 
 	camerawork->Update(camera);
 	lightgroup->Update();
+
+	Menu::GetIns()->Upda();
+	postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
 }
 //描画
 void ThirdStageActor::Draw(DirectXCommon* dxCommon) {
@@ -348,6 +353,7 @@ void ThirdStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	//}
 	IKESprite::PreDraw();
 	//blackwindow->Draw();
+	Menu::GetIns()->Draw();
 	camerawork->feedDraw();
 	IKESprite::PostDraw();
 }
