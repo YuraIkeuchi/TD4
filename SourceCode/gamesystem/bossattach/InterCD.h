@@ -85,4 +85,13 @@ protected:
 
 	//壊れたかドウか
 	bool m_BreakCD = false;
+
+	//CDをキャッチした
+	enum CatchState {
+		CATCH_SET,
+		CATCH_MOVE,
+		CATCH_END,
+	};
+
+	int m_CatchState = CATCH_SET;
 };
