@@ -222,8 +222,13 @@ void FourthBoss::Choice() {
 
 		if (m_StopTimer > 100) {
 			for (int i = 0; i < cd.size(); i++) {
-				if (m_Position.x == cd[i]->GetPosition().x) {
+				if (m_Position.x == cd[i]->GetPosition().x && cd[i]->GetCDState() == CD_STAY) {
 					l_SelectRand = int(l_RandomMove(mt));
+				}
+				else {
+					_charaState = STATE_INTER;
+					m_StopTimer = 0;
+					m_Frame = {};
 				}
 				if (cd[i]->GetCDState() != CD_STAY) {
 					continue;
@@ -239,7 +244,7 @@ void FourthBoss::Choice() {
 						m_CatchCount++;
 						m_EndCount++;
 						cd[i]->SetCDState(CD_CATCH);
-						if ((l_SelectRand >= 41 && l_SelectRand < 71)) {
+						if ((l_SelectRand >= 41 && l_SelectRand < 71) && m_EndCount < 4) {
 							_charaState = STATE_INTER;
 						}
 						else {
@@ -292,25 +297,20 @@ void FourthBoss::Debuff() {
 }
 //プレイヤー混乱
 void FourthBoss::Confu() {
-	m_Rotation.y += 2.0f;
-	m_RotTimer++;
-	if (m_RotTimer % 5 == 0) {
-		BirthNote("RANDOM");
+	m_ConfuTimer++;
+	const int l_LimitConfu = 20;
+	const int l_EndConfu = 50;
+	if (m_ConfuTimer == l_LimitConfu) {
+		Player::GetInstance()->SetConfu(true);
+		Player::GetInstance()->SetConfuTimer(200);
 	}
-
-	//一定フレームで終了
-	if (m_RotTimer == 600) {
-		m_RotTimer = 0;
+	else if (m_ConfuTimer == l_EndConfu) {
 		if ((cd[CD_BARRA]->GetCDState() == CD_DEATH) && m_CatchCount != 0) {
 			_charaState = STATE_THROW;
 		}
 		else {
 			_charaState = STATE_INTER;
 		}
-	}
-
-	if (m_Rotation.y > 360.0f) {
-		m_Rotation.y = 0.0f;
 	}
 }
 //拡散(ふつう)
@@ -387,22 +387,32 @@ void FourthBoss::Throw() {
 		}
 	}
 }
-//行動の終わり
+//行動の終わり(プレイヤーから逃げる)
 void FourthBoss::EndMove() {
-	const float l_AddFrame = 0.01f;
-	if (m_Frame < m_FrameMax) {
+	const float l_FolloSpeed = 0.0f;
+	const int l_EndLimit = 300;
+	const float l_AddFrame = 0.05f;
+	const float l_AfterSpeed = 0.0f;
+	m_EndTimer++;
+
+	/*if (m_Frame < m_FrameMax) {
 		m_Frame += l_AddFrame;
 	}
 	else {
 		m_Frame = {};
+		m_FollowSpeed = -0.3f;
+	}*/
+	
+	m_FollowSpeed = Ease(In, Cubic, m_Frame, m_FollowSpeed, l_FolloSpeed);
+	//追従
+	Helper::GetInstance()->FollowMove(m_Position, Player::GetInstance()->GetPosition(), l_FolloSpeed);
+	if (m_EndTimer == l_EndLimit) {
 		_charaState = STATE_INTER;
+		m_FollowSpeed = {};
+		m_EndTimer = {};
+		m_Frame = {};
 	}
 
-	m_Position = {
-Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
-Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
-	Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z)
-	};
 }
 //ノーツの生成
 void FourthBoss::BirthNote(const std::string& BarrageName) {

@@ -64,7 +64,17 @@ void ConfuCD::ThroughCD() {
 
 //ボスが手に入れた状態
 void ConfuCD::CatchCD() {
-	m_Position = m_CatchPos;
+	if (m_CatchState == CATCH_SET) {
+		m_AddPower = 0.5f;
+		m_CatchState = CATCH_MOVE;
+	}
+	else if (m_CatchState == CATCH_MOVE) {
+		m_AddPower -= m_Gravity;
+		if (Helper::GetInstance()->CheckMax(m_Position.y, m_CatchPos.y, m_AddPower) && m_AddPower < -1.0f) {
+			m_CatchState = CATCH_END;
+		}
+	}
+	m_Position = { m_CatchPos.x,m_Position.y,m_CatchPos.z };
 }
 
 //ボスが投げる
@@ -109,6 +119,7 @@ void ConfuCD::ResPornCD() {
 	}
 	else if (m_ResPornTimer == l_LimitTimer) {
 		m_CDState = CD_BIRTH;
+		m_CatchState = CATCH_SET;
 		m_ResPornTimer = {};
 	}
 }

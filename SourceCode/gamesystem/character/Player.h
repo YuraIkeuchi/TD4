@@ -98,7 +98,8 @@ public:
 	float GetMaxHP() { return m_MaxHP; }
 
 	void SetCanShot(const bool m_canShot) {this->m_canShot = m_canShot;}
-
+	void SetConfu(const bool Confu) { this->m_Confu = Confu; }
+	void SetConfuTimer(const int ConfuTimer) { this->m_ConfuTimer = ConfuTimer; }
 
 private://各クラス
 	vector<InterBullet*> ghostbullets;//言霊
@@ -128,6 +129,9 @@ private://各クラス
 	
 	//弾の数
 	int m_BulletNum = 0;
+
+	bool m_Confu = false;
+	int m_ConfuTimer = 0;
 
 public:
 	vector<InterBullet*>GetBulllet_ghost() { return ghostbullets; }

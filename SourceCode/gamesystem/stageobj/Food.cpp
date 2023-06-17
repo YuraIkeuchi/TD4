@@ -125,7 +125,7 @@ bool Food::CarriedGhost() {
 	m_Object->SetPosition(m_Position);
 	m_Object->Update();
 
-	if (!m_ghost->GetAlive()) {
+	if (m_ghost->GetVanish()) {
 		m_Alive = false;
 		m_IsCarried = false;
 		m_ghost = false;

@@ -724,32 +724,33 @@ void SecondBoss::ChoiceMove() {
 		m_MoveCount = 0;
 		_InterValState = UpState;
 		_charaState = STATE_MOVE;
+		m_MoveState = MOVE_JOY;
 		m_FollowSpeed = 1.0f;
 		m_AfterPos.y = 30.0f;
-		////RandStateが30以下ならそれに応じた移動にする、
-		if (l_RandState <= 30) {
-			if (l_RandState <= 10) {
-				m_MoveState = MOVE_ALTER;
-			}
-			else if (l_RandState >= 11 && l_RandState <= 20) {
-				m_MoveState = MOVE_JOY;
-			}
-			else {
-				m_MoveState = MOVE_ANGER;
-			}
-		}
-		else if (l_RandState >= 31 && l_RandState <= 37) {	//スタンプ攻撃
-			_charaState = STATE_STAMP;
-			m_PressType = PRESS_START;
-		}
-		else if (l_RandState >= 38 && l_RandState <= 44) {	//ランダム攻撃
-			_charaState = STATE_RANDOM;
-			m_RandomType = RANDOM_START;
-		}
-		else {			//ローリング攻撃
-			_charaState = STATE_ROLL;
-			m_RollType = ROLL_ONE;
-		}
+		//////RandStateが30以下ならそれに応じた移動にする、
+		//if (l_RandState <= 30) {
+		//	if (l_RandState <= 10) {
+		//		m_MoveState = MOVE_ALTER;
+		//	}
+		//	else if (l_RandState >= 11 && l_RandState <= 20) {
+		//		m_MoveState = MOVE_JOY;
+		//	}
+		//	else {
+		//		m_MoveState = MOVE_ANGER;
+		//	}
+		//}
+		//else if (l_RandState >= 31 && l_RandState <= 37) {	//スタンプ攻撃
+		//	_charaState = STATE_STAMP;
+		//	m_PressType = PRESS_START;
+		//}
+		//else if (l_RandState >= 38 && l_RandState <= 44) {	//ランダム攻撃
+		//	_charaState = STATE_RANDOM;
+		//	m_RandomType = RANDOM_START;
+		//}
+		//else {			//ローリング攻撃
+		//	_charaState = STATE_ROLL;
+		//	m_RollType = ROLL_ONE;
+		//}
 	}
 }
 //移動関係の初期化

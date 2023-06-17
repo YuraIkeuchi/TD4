@@ -111,11 +111,12 @@ private:
 		CD_CONFU,
 		CD_BARRA,
 	};
-
+	//動きのインターバル
 	int m_MoveInterVal = {};
-
+	//CDを投げる際のタイマー
 	int m_ThrowTimer = {};
 
+	//投げる状態
 	enum ThrowState {
 		THROW_SET,
 		THROW_NOW,
@@ -124,7 +125,15 @@ private:
 
 	int m_ThrowState = THROW_SET;
 
+	//行動終了の数
 	int m_EndCount = {};
-
+	//キャッチしたCDの数
 	int m_CatchCount = {};
+	//ボスがプレイヤーから逃げる時間
+	int m_EndTimer = {};
+	//プレイヤーに混乱を与える時間
+	int m_ConfuTimer = {};
+	
+	//逃げる速さ
+	float m_FollowSpeed = -0.2f;
 };

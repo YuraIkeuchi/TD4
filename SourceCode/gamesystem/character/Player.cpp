@@ -54,6 +54,9 @@ void Player::InitState(const XMFLOAT3& pos) {
 	m_BulletType = BULLET_FORROW;
 
 	m_BoundPower = { 0.0f,0.0f };
+
+	m_Confu = false;
+	m_ConfuTimer = 0;
 	//初期化ぶち込み
 	Initialize();
 	//移動処理用
@@ -113,6 +116,12 @@ void Player::Update()
 
 	Helper::GetInstance()->CheckMax(m_DamageInterVal, 0, -1);
 
+	//混乱状態
+	if (m_Confu) {
+		if (Helper::GetInstance()->CheckMax(m_ConfuTimer, 0, -1)) {
+			m_Confu = false;
+		}
+	}
 	//反発
 	ReBound();
 
@@ -181,18 +190,8 @@ void Player::ImGuiDraw() {
 
 	HungerGauge::GetInstance()->ImGuiDraw();
 	ImGui::Begin("Player");
-	ImGui::Text("Num:%d", m_BulletNum);
-	ImGui::Text("InterVal:%d", m_InterVal);
-	ImGui::Text("Can:%d", m_canShot);
-	if (m_BulletType == BULLET_FORROW) {
-		ImGui::Text("FOLLOW");
-	}
-	else if (m_BulletType == BULLET_SEARCH) {
-		ImGui::Text("SEARCH");
-	}
-	else {
-		ImGui::Text("ATTACK");
-	}
+	ImGui::Text("Confu:%d", m_Confu);
+	ImGui::Text("ConfuTImer:%d", m_ConfuTimer);
 	ImGui::End();
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
@@ -260,8 +259,15 @@ void Player::Walk()
 	move = XMVector3TransformNormal(move, matRot);
 	//向いた方向に進む
 	if (m_RigidityTime == m_ResetNumber) {
-		m_Position.x += move.m128_f32[0] * m_AddSpeed;
-		m_Position.z += move.m128_f32[2] * m_AddSpeed;
+		//混乱していると逆状態になる
+		if (!m_Confu) {
+			m_Position.x += move.m128_f32[0] * m_AddSpeed;
+			m_Position.z += move.m128_f32[2] * m_AddSpeed;
+		}
+		else {
+			m_Position.x -= move.m128_f32[0] * m_AddSpeed;
+			m_Position.z -= move.m128_f32[2] * m_AddSpeed;
+		}
 	}
 	AnimationControl(AnimeName::WALK, true, 1);
 }
