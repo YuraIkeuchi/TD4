@@ -39,15 +39,36 @@ DamageArea::DamageArea(const int Num) {
 void DamageArea::Initialize() {
 
 	for (size_t i = 0; i < obj.size(); i++) {
-		//乱数指定
-		mt19937 mt{ std::random_device{}() };
-		uniform_int_distribution<int> l_distX(-60, 65);
-		uniform_int_distribution<int> l_distZ(-60, 60);
-		m_Position[i] = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
 		m_Scale[i] = { 0.0f,0.0f,0.0f };
 		m_Color[i] = { 0.0f,1.0f,0.0f,1.0f };
 		m_Rotation[i] = { 0.0f,0.0f,0.0f };
 		m_Alive[i] = true;
+	}
+
+	//サイズによってラインの場所が違う
+	if (obj.size() == 2) {
+		//乱数指定
+		for (size_t i = 0; i < obj.size(); i++) {
+			mt19937 mt{ std::random_device{}() };
+			uniform_int_distribution<int> l_distX(-60, 65);
+			uniform_int_distribution<int> l_distZ(-60, 60);
+			m_Position[i] = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
+		}
+	}
+	else if (obj.size() == 4) {
+		mt19937 mt{ std::random_device{}() };
+		uniform_int_distribution<int> l_distX(-50, -20);
+		uniform_int_distribution<int> l_distZ(20, 50);
+		m_Position[0] = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
+		uniform_int_distribution<int> l_distX2(-50, -20);
+		uniform_int_distribution<int> l_distZ2(-50, -20);
+		m_Position[1] = { float(l_distX2(mt)),0.0f,float(l_distZ2(mt)) };
+		uniform_int_distribution<int> l_distX3(20, 50);
+		uniform_int_distribution<int> l_distZ3(-50, -20);
+		m_Position[2] = { float(l_distX3(mt)),0.0f,float(l_distZ3(mt)) };
+		uniform_int_distribution<int> l_distX4(20, 50);
+		uniform_int_distribution<int> l_distZ4(20, 50);
+		m_Position[3] = { float(l_distX4(mt)),0.0f,float(l_distZ4(mt)) };
 	}
 
 	for (size_t i = 0; i < tex.size(); i++) {
@@ -103,7 +124,6 @@ void DamageArea::Draw(DirectXCommon* dxCommon) {
 }
 
 void DamageArea::ImGuiDraw() {
-	
 }
 
 void DamageArea::LineUpdate() {
@@ -194,14 +214,14 @@ bool DamageArea::Collide() {
 	Line2D lines;
 	Point points;
 	points = { Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z };
-	for (size_t i = 0; i < obj.size(); i++) {
+	for (size_t i = 0; i < tex.size(); i++) {
 		//////////////
 		lines.start = { m_Position[i].x,m_Position[i].z };
 		lines.end = { m_Position[i + 1].x,m_Position[i + 1].z };
 		//判定部
-		if (Collision::IsCollidingLineAndCircle(lines, points, 3.0f) && Player::GetInstance()->GetDamageInterVal() == 0 && m_CommonScale == 1.0f)
+		if (Collision::IsCollidingLineAndCircle(lines, points, 2.0f) && (Player::GetInstance()->GetDamageInterVal() == 0) && (m_Alpha == 1.0f))
 		{
-			Player::GetInstance()->PlayerHit(m_Position[i]);
+			Player::GetInstance()->PlayerHit(m_TexPosition[i]);
 			Player::GetInstance()->RecvDamage(0.5f);
 			break;
 		}

@@ -15,7 +15,7 @@ void InterCD::Update() {
 	Action();
 }
 void InterCD::Draw(DirectXCommon* dxCommon) {
-	if(m_CDState != CD_DEATH)
+	if(m_CDState != CD_DEATH && m_CDState != CD_RESPORN)
 	Obj_Draw();
 }
 void InterCD::ImGuiDraw() {

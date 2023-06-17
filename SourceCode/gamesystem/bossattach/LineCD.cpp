@@ -98,16 +98,19 @@ void LineCD::DeathCD() {
 //ïúäà
 void LineCD::ResPornCD() {
 	m_ResPornTimer++;
-	const int LimitTimer = 10;
+	const int l_SetTimer = 5;
+	const int l_LimitTimer = 10;
 
-	if (m_ResPornTimer == LimitTimer) {
+	if (m_ResPornTimer == l_SetTimer) {
 		//óêêîéwíË
 		mt19937 mt{ std::random_device{}() };
 		uniform_int_distribution<int> l_distX(20, 50);
 		uniform_int_distribution<int> l_distZ(20, 50);
 		m_Position = { float(l_distX(mt)),60.0f,float(l_distZ(mt)) };
-		//m_Position = { 40.0f,60.0f,40.0f };
 		m_AddPower = {};
+	}
+	else if (m_ResPornTimer == l_LimitTimer) {
 		m_CDState = CD_BIRTH;
+		m_ResPornTimer = {};
 	}
 }

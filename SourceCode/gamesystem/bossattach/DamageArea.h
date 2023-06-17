@@ -51,7 +51,7 @@ private:
 	vector<XMFLOAT3> m_TexScale;
 	vector<XMFLOAT4> m_TexColor;
 	vector<bool> m_TexAlive;
-
+	vector<int> m_Hit;
 	enum AreaState {
 		POINT_BIRTH,
 		LINE_BIRTH,
