@@ -47,7 +47,16 @@ private:
 	array<XMFLOAT3, ObjNum>StageObjPos;
 	array<float, ObjNum>StageObjRotAngle;
 	array<float, ObjNum>StageObjEaseT;
+	array<float, ObjNum>IconColor;
+	float IconRotAngle_EaseT;
+	array<float,ObjNum> NowRotAngle;
 
+	enum Select
+	{
+		NON,
+		RB,LB
+	}TrigerSelect=NON;
+	
 	enum Stage
 	{
 		FIRST,
@@ -57,8 +66,9 @@ private:
 		FIVE,
 		SIX,
 		SEVEN
-	}_stages;
+	}_stages=FIRST;
 
+	int SelIndex=0;
 	unique_ptr<IKEObject3d>BackSkyDome;
 private:
 	array<unique_ptr<IKESprite>, 2>ButtonNav_RBLB;

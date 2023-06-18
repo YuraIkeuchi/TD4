@@ -20,7 +20,7 @@ bool Player::Initialize()
 	m_fbxObject->Initialize();
 	m_fbxObject->SetModel(ModelManager::GetInstance()->GetFBXModel(ModelManager::PLAYER));
 	m_fbxObject->LoadAnimation();
-
+	m_fbxObject->PlayAnimation(0);
 	/*CSV読み込み(CSVファイル名,読み込むパラメータの名前,受け取る値)　今は単一の方のみ対応(int float double charとか)*/
 
 	//spから間接的にアクセスする方法 (Update()内で専用の変数に代入する必要あり)
@@ -59,7 +59,7 @@ void Player::InitState(const XMFLOAT3& pos) {
 	//移動処理用
 	velocity /= 5.0f;
 	//大きさ
-	m_Scale = { 2.5f,2.5f,2.5f };
+	m_Scale = { 1.f,0.5f,1.f };
 }
 //状態遷移
 /*CharaStateのState並び順に合わせる*/
@@ -201,7 +201,7 @@ void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
 	//アニメーションを引数に合わせる
 	if (_animeName != name)
 	{
-		m_fbxObject->PlayAnimation(static_cast<int>(name));
+		m_fbxObject->PlayAnimation(0);
 	}
 
 	//各種パラメータ反映

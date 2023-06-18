@@ -20,7 +20,7 @@ void SelectSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/BGM_boss.wav");
 	Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum() + 1.0f);
 	//ポストエフェクト
-	PlayPostEffect = true;
+	PlayPostEffect = false;
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
 
@@ -96,7 +96,8 @@ void SelectSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 		});
 	camerawork->SetTarget(SelectScene::GetIns()->GetPedestalPos());
 
-	camerawork->Update(camera);
+	camerawork->DefUpda(camera);
+
 	lightgroup->Update();
 }
 //描画

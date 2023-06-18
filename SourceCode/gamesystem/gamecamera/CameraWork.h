@@ -130,6 +130,8 @@ bool FinishAppear() { if (spline->GetIndex() >= static_cast<int>(pointsList.size
 	bool CameraStateisNormal() { if (m_CameraState != CAMERA_BOSSAPPEAR)return true; return false; }
 
 	int GetCameraState() { return m_CameraState; }
+
+	void DefUpda(DebugCamera* camera);
 private:
 	//クラス
 	unique_ptr<Shake> shake = nullptr;

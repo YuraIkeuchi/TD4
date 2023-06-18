@@ -44,7 +44,7 @@ void SelectScene::Init()
 	BossIcon[SIX] = IKESprite::Create(ImageManager::BOX, { 0,0 });
 	BossIcon[SEVEN] = IKESprite::Create(ImageManager::BOX, { 0,0 });
 
-	constexpr float PosRad = 40.f;
+	constexpr float PosRad = 20.f;
 	for (auto i = 0; i < ObjNum; i++)
 	{
 		StageObj[i]->TextureCreate();
@@ -52,20 +52,58 @@ void SelectScene::Init()
 		//ˆÊ’u‚Ì‰Šú‰»
 		StageObjPos[i].x = Pedestal->GetPosition().x + sinf(StageObjRotAngle[i] * (PI / PI_180)) * PosRad;
 		StageObjPos[i].z = Pedestal->GetPosition().z + cosf(StageObjRotAngle[i] * (PI / PI_180)) * PosRad;
-
+		StageObjPos[i].y = Pedestal->GetPosition().y + 8.f;
 		//BossIcon.
 	}
 }
 
 void SelectScene::Upda()
 {
+	constexpr float PosRad = 20.f;
+
+
 	BackSkyDome->Update();
+	Pedestal->SetScale({ 15.f,15.f,15.f });
 	Pedestal->Update();
+
+	if (TrigerSelect == NON) {
+		if (Input::GetInstance()->TriggerButton(Input::RB)) {
+			SelIndex++;
+			TrigerSelect = RB;
+		}
+
+		if (Input::GetInstance()->TriggerButton(Input::LB)) {
+			SelIndex--;
+			TrigerSelect = LB;
+		}
+	}
+
+	RotPedestal();
+
+
+	XMFLOAT3 nowSelpos = { Pedestal->GetPosition().x + sinf(0.f * (PI / PI_180)) * PosRad,
+		8.f,Pedestal->GetPosition().z + cosf(0 * (PI / PI_180)) * PosRad };
+
+	for (auto i= 0; i < ObjNum; i++) {
+		if(Collision::GetLength(nowSelpos,StageObjPos[i])<5)
+			IconColor[i] += 0.05f;
+		else
+			IconColor[i] -= 0.05f;
+
+
+		Helper::GetInstance()->Clamp(IconColor[i], 0.3f, 1.f);
+	}
 	
 	for (auto i = 0; i < ObjNum; i++)
 	{
-		StageObj[i]->SetScale({ 5.f,5.f,5.f });
+		StageObjPos[i].x = Pedestal->GetPosition().x + sinf(StageObjRotAngle[i] * (PI / PI_180)) * PosRad;
+		StageObjPos[i].z = Pedestal->GetPosition().z + cosf(StageObjRotAngle[i] * (PI / PI_180)) * PosRad;
+		//if (StageObjRotAngle[i] >= 360)
+		//	StageObjRotAngle[i] = 0;
+
+		StageObj[i]->SetScale({ 1.f,1.f,5.f });
 		StageObj[i]->SetPosition(StageObjPos[i]);
+		StageObj[i]->SetColor({ 1,1,1,IconColor[i] });
 		StageObj[i]->Update();
 	}
 }
@@ -76,14 +114,10 @@ void SelectScene::Draw_Obj(DirectXCommon*dxcomn)
 
 	IKEObject3d::PreDraw();
 	BackSkyDome->Draw();
-	for(auto i=0;i<ObjNum;i++)
-	{
-		
-	}
 	Pedestal->Draw();
 	IKEObject3d::PostDraw();
 
-	IKETexture::PreDraw2(dxcomn,1);
+	IKETexture::PreDraw2(dxcomn,0);
 	for(auto i=0;i<ObjNum;i++)
 	StageObj[i]->Draw();
 }
@@ -91,13 +125,13 @@ void SelectScene::Draw_Obj(DirectXCommon*dxcomn)
 void SelectScene::Draw_Sprite()
 {
 
-	ButtonNav_RBLB[0]->Draw();
-	ButtonNav_RBLB[1]->Draw();
+//	ButtonNav_RBLB[0]->Draw();
+	//ButtonNav_RBLB[1]->Draw();
 
 	size_t t = ObjNum;
 	for(auto i=0;i<t;i++)
 	{
-		BossIcon[i]->Draw();
+		//BossIcon[i]->Draw();
 	}
 }
 
@@ -115,11 +149,31 @@ void SelectScene::SetStage(bool judg, string sceneName)
 
 void SelectScene::RotPedestal()
 {
-	if(Input::GetInstance()->TriggerButton(Input::RB))
+	if (TrigerSelect==RB) {
+		for (auto i = 0; i < ObjNum; i++) {
+			StageObjRotAngle[i] = Ease(In, Linear, IconRotAngle_EaseT, StageObjRotAngle[i], NowRotAngle[i] + static_cast<float>(PI_360 / ObjNum));
+		}
+	}
+	else if(TrigerSelect == LB)
 	{
-		
+		for (auto i = 0; i < ObjNum; i++) {
+			StageObjRotAngle[i] = Ease(In, Linear, IconRotAngle_EaseT, StageObjRotAngle[i], NowRotAngle[i] - static_cast<float>(PI_360 / ObjNum));
+		}
 	}
 
+	if(TrigerSelect==NON)
+	{
+		IconRotAngle_EaseT = 0.f;
+		for (auto i = 0; i < ObjNum; i++)
+			NowRotAngle[i] = StageObjRotAngle[i];
+	}
+	else
+	{
+		if (Helper::GetInstance()->FrameCheck(IconRotAngle_EaseT, 0.02f))
+		{
+			TrigerSelect = NON;
+		}
+	}
 	if(Input::GetInstance()->TriggerButton(Input::LB))
 	{
 		
