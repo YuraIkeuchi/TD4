@@ -91,6 +91,7 @@ public:
 	const int& GetBulletType() { return m_BulletType; }
 	const int& GetDamageInterVal() { return m_DamageInterVal; }
 	const bool& GetIsShotNow() { return isShotNow; }
+	const bool& GetConfu() { return m_Confu; }
 
 
 	void SetHP(float hp) { m_HP = hp; };

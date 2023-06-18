@@ -7,6 +7,7 @@
 #include "DebuffCD.h"
 #include "AttackNote.h"
 #include "DamageArea.h"
+#include "ConfuEffect.h"
 class FourthBoss :
 	public InterBoss {
 public:
@@ -61,6 +62,7 @@ private:
 	array<unique_ptr<InterCD>, CD_NUM> cd;
 	vector<AttackNote*> attacknotes;//怒りのスタンプ
 	unique_ptr<DamageArea> damagearea;//ダメージエリア
+	unique_ptr<ConfuEffect> confueffect;
 	//キャラの状態
 	enum CharaState
 	{

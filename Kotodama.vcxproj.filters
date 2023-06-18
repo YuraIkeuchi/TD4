@@ -470,6 +470,9 @@
     <ClCompile Include="SourceCode\gamesystem\Menu\Menu.cpp">
       <Filter>gamesystem\Menu</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\ConfuEffect.cpp">
+      <Filter>gamesystem\effect\Confu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
@@ -904,6 +907,9 @@
     <ClInclude Include="SourceCode\gamesystem\Menu\Menu.h">
       <Filter>gamesystem\Menu</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\ConfuEffect.h">
+      <Filter>gamesystem\effect\Confu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
@@ -1237,6 +1243,9 @@
     </Filter>
     <Filter Include="gamesystem\charactor\Boss\Base">
       <UniqueIdentifier>{cddcc7b5-f579-4ffb-bf7a-fc05ad2ee680}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\effect\Confu">
+      <UniqueIdentifier>{c229ff53-c832-4466-b342-3ec9a8cb8a47}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

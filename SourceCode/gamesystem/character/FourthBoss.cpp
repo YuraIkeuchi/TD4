@@ -16,7 +16,6 @@ void (FourthBoss::* FourthBoss::stateTable[])() = {
 	&FourthBoss::Throw,//投げる
 	&FourthBoss::EndMove,//行動の終わり
 };
-
 //生成
 FourthBoss::FourthBoss() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::DJ);
@@ -37,6 +36,9 @@ FourthBoss::FourthBoss() {
 
 	cd[CD_DEBUFF].reset(new DebuffCD);
 	cd[CD_DEBUFF]->Initialize();
+
+	confueffect.reset(new ConfuEffect());
+	confueffect->Initialize();
 }
 //初期化
 bool FourthBoss::Initialize() {
@@ -61,7 +63,7 @@ void FourthBoss::SkipInitialize() {
 	m_Scale = { 0.3f,0.3f,0.3f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 }
-
+//CSV
 void FourthBoss::CSVLoad() {
 	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "Magnification")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "hp1")));
@@ -119,15 +121,19 @@ void FourthBoss::Action() {
 	if (damagearea != nullptr) {
 		damagearea->Update();
 	}
+
+	confueffect->Update();
 }
 //ポーズ
 void FourthBoss::Pause() {
 	
 }
-
+//エフェクト描画
 void FourthBoss::EffecttexDraw(DirectXCommon* dxCommon)
 {
 	if (m_HP < 0.1f)return;
+
+	confueffect->Draw(dxCommon);
 }
 //描画
 void FourthBoss::Draw(DirectXCommon* dxCommon) {
@@ -150,27 +156,12 @@ void FourthBoss::Draw(DirectXCommon* dxCommon) {
 //ImGui
 void FourthBoss::ImGui_Origin() {
 	ImGui::Begin("Fourth");
-	ImGui::Text("m_MoveInterVal:%d", m_MoveInterVal);
-	ImGui::Text("AfterPosX:%f", m_AfterPos.x);
-	ImGui::Text("Frame:%f", m_Frame);
 	ImGui::Text("EndCount:%d", m_EndCount);
 	ImGui::Text("CatchCount:%d", m_CatchCount);
 	ImGui::Text("STATE:%d", (int)_charaState);
 	ImGui::End();
-
-	//CDの更新
-	for (size_t i = 0; i < cd.size(); i++) {
-		cd[i]->ImGuiDraw();
-	}
-	////攻撃の音符
-	//for (AttackNote* newnote : attacknotes) {
-	//	if (newnote != nullptr) {
-	//		newnote->ImGuiDraw();
-	//	}
-	//}
-	if (damagearea != nullptr) {
-		damagearea->ImGuiDraw();
-	}
+	
+	//confueffect->ImGuiDraw();
 }
 //インターバル
 void FourthBoss::InterValMove() {
@@ -189,7 +180,7 @@ void FourthBoss::InterValMove() {
 	}
 
 	//
-	if (m_MoveInterVal == 100) {
+	if (m_MoveInterVal == 50) {
 		//上から順にCDを回る
 		for (int i = 0; i < cd.size(); i++) {
 			if (cd[i]->GetCDState() != CD_STAY) {
@@ -197,6 +188,7 @@ void FourthBoss::InterValMove() {
 			}
 			else {
 				m_AfterPos = cd[i]->GetPosition();
+				m_AfterRot.y = Helper::GetInstance()->DirRotation(m_Position, cd[i]->GetPosition(), -PI_180);
 				break;
 			}
 		}
@@ -264,6 +256,12 @@ Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
 Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
 	Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z)
 	};
+
+	m_Rotation = {
+Ease(In,Cubic,m_Frame,m_Rotation.x,m_AfterRot.x),
+Ease(In,Cubic,m_Frame,m_Rotation.y,m_AfterRot.y),
+	Ease(In,Cubic,m_Frame,m_Rotation.z,m_AfterRot.z)
+	};
 }
 //ダメージエリアのセット
 void FourthBoss::LineSet() {
@@ -301,6 +299,7 @@ void FourthBoss::Confu() {
 	const int l_LimitConfu = 20;
 	const int l_EndConfu = 50;
 	if (m_ConfuTimer == l_LimitConfu) {
+		confueffect->SetAlive(true);
 		Player::GetInstance()->SetConfu(true);
 		Player::GetInstance()->SetConfuTimer(200);
 	}
@@ -389,23 +388,11 @@ void FourthBoss::Throw() {
 }
 //行動の終わり(プレイヤーから逃げる)
 void FourthBoss::EndMove() {
-	const float l_FolloSpeed = 0.0f;
 	const int l_EndLimit = 300;
-	const float l_AddFrame = 0.05f;
-	const float l_AfterSpeed = 0.0f;
 	m_EndTimer++;
 
-	/*if (m_Frame < m_FrameMax) {
-		m_Frame += l_AddFrame;
-	}
-	else {
-		m_Frame = {};
-		m_FollowSpeed = -0.3f;
-	}*/
-	
-	m_FollowSpeed = Ease(In, Cubic, m_Frame, m_FollowSpeed, l_FolloSpeed);
 	//追従
-	Helper::GetInstance()->FollowMove(m_Position, Player::GetInstance()->GetPosition(), l_FolloSpeed);
+	Helper::GetInstance()->FollowMove(m_Position, Player::GetInstance()->GetPosition(), m_FollowSpeed);
 	if (m_EndTimer == l_EndLimit) {
 		_charaState = STATE_INTER;
 		m_FollowSpeed = {};

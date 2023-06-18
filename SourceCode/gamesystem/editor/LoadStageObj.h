@@ -99,5 +99,7 @@ private:
 	//‹Q‰ìƒQ[ƒW‚ğŒ¸‚ç‚·
 	bool m_SubHunger = false;
 	float m_Frame = 0.0f;
+
+	float m_LimitHunger = {};
 };
 

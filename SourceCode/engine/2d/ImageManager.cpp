@@ -70,6 +70,7 @@ void ImageManager::SecondLoadTex2D()
 	IKETexture::LoadTexture(DAMAGEAREA, L"Resources/2d/effect/DArea.png");
 	IKETexture::LoadTexture(GROUND, L"Resources/2d/SceneBack/Ground.png");
 	IKETexture::LoadTexture(PHOTOSPOT, L"Resources/2d/effect/PhotoSpot.png");
+	IKETexture::LoadTexture(STUN, L"Resources/2d/effect/stun.png");
 }
 
 void ImageManager::LoadParticle()
