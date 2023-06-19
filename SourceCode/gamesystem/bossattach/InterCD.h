@@ -72,7 +72,7 @@ protected:
 	//上昇度
 	float m_AddPower = 0.0f;
 	//重力加速度
-	float m_Gravity = 0.02f;
+	float m_Gravity = 0.03f;
 	//キャッチした後のポジション
 	XMFLOAT3 m_CatchPos = {};
 	//投げる間の時間

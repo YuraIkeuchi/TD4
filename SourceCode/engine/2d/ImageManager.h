@@ -62,9 +62,10 @@ public:
 		ANGER,
 		JOY,
 		MARK,
-	DAMAGEAREA,
+		DAMAGEAREA,
 		GROUND,
 		PHOTOSPOT,
+		STUN,
 	};
 	enum particleName
 	{
