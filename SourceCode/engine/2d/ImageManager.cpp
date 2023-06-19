@@ -70,6 +70,16 @@ void ImageManager::SecondLoadTex2D()
 	IKETexture::LoadTexture(DAMAGEAREA, L"Resources/2d/effect/DArea.png");
 	IKETexture::LoadTexture(GROUND, L"Resources/2d/SceneBack/Ground.png");
 	IKETexture::LoadTexture(PHOTOSPOT, L"Resources/2d/effect/PhotoSpot.png");
+
+	IKETexture::LoadTexture(SELECT_FIRST, L"Resources/2d/objicon/firstboss.png");
+	IKETexture::LoadTexture(SELECT_SECOND, L"Resources/2d/objicon/secondboss.png");
+	IKETexture::LoadTexture(SELECT_THIRD, L"Resources/2d/objicon/thirdboss.png");
+	IKETexture::LoadTexture(SELECT_FOUR, L"Resources/2d/objicon/fourboss.png");
+	IKETexture::LoadTexture(SELECT_FIVE, L"Resources/2d/objicon/fiveboss.png");
+	IKETexture::LoadTexture(SELECT_SIX, L"Resources/2d/objicon/sixboss.png");
+	IKETexture::LoadTexture(SELECT_SEVEN, L"Resources/2d/objicon/sevenboss.png");
+//	IKETexture::LoadTexture(PHOTOSPOT, L"Resources/2d/objicon/sixboss.png");
+
 }
 
 void ImageManager::LoadParticle()

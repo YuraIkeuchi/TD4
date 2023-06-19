@@ -6,6 +6,7 @@
 #include<DirectXMath.h>
 #include"IKEObject3d.h"
 #include "IKETexture.h"
+#include "SceneManager.h"
 
 using namespace DirectX;
 using namespace std;
@@ -15,6 +16,17 @@ public:
 	static SelectScene* GetIns();
 	SelectScene(){};
 	~SelectScene(){};
+
+	enum Stage
+	{
+		FIRST,
+		SECOND,
+		THIRD,
+		FOUR,
+		FIVE,
+		SIX,
+		SEVEN
+	}_stages = FIRST;
 public:
 	/**
 	 * \brief 初期化
@@ -35,6 +47,8 @@ public:
 	 * \brief 諸々リセット
 	 */
 	void ResetParam();
+	//
+	void SceneChange( SceneChanger* schange);
 private:
 	//土台
 	unique_ptr<IKEObject3d>Pedestal=nullptr;
@@ -56,20 +70,11 @@ private:
 		NON,
 		RB,LB
 	}TrigerSelect=NON;
-	
-	enum Stage
-	{
-		FIRST,
-		SECOND,
-		THIRD,
-		FOUR,
-		FIVE,
-		SIX,
-		SEVEN
-	}_stages=FIRST;
 
 	int SelIndex=0;
+
 	unique_ptr<IKEObject3d>BackSkyDome;
+	float SkydomeRotY = 0;
 private:
 	array<unique_ptr<IKESprite>, 2>ButtonNav_RBLB;
 	array<unique_ptr<IKESprite>, ObjNum>StageName;
@@ -82,9 +87,11 @@ private:
 	//決定用
 	bool YESorNOflag;
 
+	bool ChangeF = false;
 	void SetStage(bool judg,string sceneName);
 
 	void RotPedestal();
+
 
 public:
 	XMFLOAT3 GetPedestalPos() { return Pedestal->GetPosition(); }

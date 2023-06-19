@@ -19,21 +19,21 @@ void SelectScene::Init()
 
 	BackSkyDome.reset(new IKEObject3d());
 	BackSkyDome->Initialize();
-	BackSkyDome->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Pedestal));
-	BackSkyDome->SetScale({ 100.f,100.f,100.f });
+	BackSkyDome->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Skydome));
+	BackSkyDome->SetScale({ 7.f,7.f,7.f });
 
 
 	ButtonNav_RBLB[0]= IKESprite::Create(ImageManager::BOX, { 0,0 });
 	ButtonNav_RBLB[1]=IKESprite::Create(ImageManager::BOX, { 0,0 });
 
 	//今はいたポリ
-	StageObj[FIRST].reset(IKETexture::Create(ImageManager::ANGER, { 0,0,0 }, { 5,5,5 }, { 1,1,1,1 }));
-	StageObj[SECOND].reset(IKETexture::Create(ImageManager::ANGER, { 0,0,0 }, { 5,5,5 }, { 1,1,1,1 }));
-	StageObj[THIRD].reset(IKETexture::Create(ImageManager::ANGER, { 0,0,0 }, { 5,5,5 }, { 1,1,1,1 }));
-	StageObj[FOUR].reset(IKETexture::Create(ImageManager::ANGER, { 0,0,0 }, { 5,5,5 }, { 1,1,1,1 }));
-	StageObj[FIVE].reset(IKETexture::Create(ImageManager::ANGER, { 0,0,0 }, { 5,5,5 }, { 1,1,1,1 }));
-	StageObj[SIX].reset(IKETexture::Create(ImageManager::ANGER, { 0,0,0 }, { 5,5,5 }, { 1,1,1,1 }));
-	StageObj[SEVEN].reset(IKETexture::Create(ImageManager::ANGER, { 0,0,0 }, { 5,5,5 }, { 1,1,1,1 }));
+	StageObj[FIRST].reset(IKETexture::Create(ImageManager::SELECT_FIRST, { 0,0,0 }, { 5,5,5 }, { 1,1,1,1 }));
+	StageObj[SECOND].reset(IKETexture::Create(ImageManager::SELECT_SECOND, { 0,0,0 }, { 5,5,5 }, { 1,1,1,1 }));
+	StageObj[THIRD].reset(IKETexture::Create(ImageManager::SELECT_THIRD, { 0,0,0 }, { 5,5,5 }, { 1,1,1,1 }));
+	StageObj[FOUR].reset(IKETexture::Create(ImageManager::SELECT_FOUR, { 0,0,0 }, { 5,5,5 }, { 1,1,1,1 }));
+	StageObj[FIVE].reset(IKETexture::Create(ImageManager::SELECT_FIVE, { 0,0,0 }, { 5,5,5 }, { 1,1,1,1 }));
+	StageObj[SIX].reset(IKETexture::Create(ImageManager::SELECT_SIX, { 0,0,0 }, { 5,5,5 }, { 1,1,1,1 }));
+	StageObj[SEVEN].reset(IKETexture::Create(ImageManager::SELECT_SEVEN, { 0,0,0 }, { 5,5,5 }, { 1,1,1,1 }));
 
 	//ポストエフェクト用
 	BossIcon[FIRST]=IKESprite::Create(ImageManager::BOX, { 0,0 });
@@ -48,7 +48,7 @@ void SelectScene::Init()
 	for (auto i = 0; i < ObjNum; i++)
 	{
 		StageObj[i]->TextureCreate();
-		StageObjRotAngle[i] = static_cast<float>(i) * (360.f / static_cast<float>(ObjNum));
+		StageObjRotAngle[i] = static_cast<float>(i) * (360.f / static_cast<float>(ObjNum))+180.f;
 		//位置の初期化
 		StageObjPos[i].x = Pedestal->GetPosition().x + sinf(StageObjRotAngle[i] * (PI / PI_180)) * PosRad;
 		StageObjPos[i].z = Pedestal->GetPosition().z + cosf(StageObjRotAngle[i] * (PI / PI_180)) * PosRad;
@@ -61,8 +61,10 @@ void SelectScene::Upda()
 {
 	constexpr float PosRad = 20.f;
 
-
+	SkydomeRotY += 2.f;
+	BackSkyDome->SetRotation({ 0,SkydomeRotY,0 });
 	BackSkyDome->Update();
+
 	Pedestal->SetScale({ 15.f,15.f,15.f });
 	Pedestal->Update();
 
@@ -80,9 +82,16 @@ void SelectScene::Upda()
 
 	RotPedestal();
 
+	if(IconColor[0]>=1.f|| IconColor[1] >= 1.f||IconColor[2]>=1.f|| IconColor[3] >= 1.f
+		|| IconColor[4] >= 1.f|| IconColor[5] >= 1.f|| IconColor[6] >= 1.f)
+	{
+		if (Input::GetInstance()->TriggerButton(Input::B))
+			ChangeF = true;
+	}
 
-	XMFLOAT3 nowSelpos = { Pedestal->GetPosition().x + sinf(0.f * (PI / PI_180)) * PosRad,
-		8.f,Pedestal->GetPosition().z + cosf(0 * (PI / PI_180)) * PosRad };
+
+	XMFLOAT3 nowSelpos = { Pedestal->GetPosition().x + sinf(180.f * (PI / PI_180)) * PosRad,
+		8.f,Pedestal->GetPosition().z + cosf(180 * (PI / PI_180)) * PosRad };
 
 	for (auto i= 0; i < ObjNum; i++) {
 		if(Collision::GetLength(nowSelpos,StageObjPos[i])<5)
@@ -180,3 +189,11 @@ void SelectScene::RotPedestal()
 	}
 }
 
+void SelectScene::SceneChange( SceneChanger* schange)
+{
+	if (ChangeF) {
+		if (IconColor[FIRST] >= 1.f)schange->ChangeScene("FIRSTSTAGE", SceneChanger::NonReverse);
+		else if (IconColor[SECOND] >= 1.f)schange->ChangeScene("SECONDSTAGE", SceneChanger::NonReverse);
+		ChangeF = false;
+	}
+}

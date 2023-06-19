@@ -53,6 +53,15 @@ public:
 		PHOTO_OUT,
 		CIRCLE,
 		CIRCLECOVER,
+		SELECT_FIRST,
+		SELECT_SECOND,
+		SELECT_THIRD,
+		SELECT_FOUR,
+		SELECT_FIVE,
+		SELECT_SIX,
+		SELECT_SEVEN,
+
+
 	};
 	//テクスチャの名前
 	enum tex2dName
