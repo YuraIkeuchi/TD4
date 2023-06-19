@@ -4,7 +4,7 @@
 #include "Player.h"
 #include <random>
 BarrangeCD::BarrangeCD() {
-	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Bullet);
+	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::CD);
 	m_Object.reset(new IKEObject3d());
 	m_Object->Initialize();
 	m_Object->SetModel(m_Model);
@@ -17,8 +17,7 @@ bool BarrangeCD::Initialize() {
 	uniform_int_distribution<int> l_distX(-50, -20);
 	uniform_int_distribution<int> l_distZ(20, 50);
 	m_Position = { float(l_distX(mt)),30.0f,float(l_distZ(mt)) };
-	//m_Position = { -40.0f,60.0f,40.0f };
-	m_Scale = { 1.0f,1.0f,1.0f };
+	m_Scale = { 0.8f,0.8f,0.8f };
 	m_Color = { 0.5f,0.0f,0.5f,1.0f };
 	m_CDState = CD_BIRTH;
 	return true;
@@ -76,7 +75,10 @@ void BarrangeCD::CatchCD() {
 			m_CatchState = CATCH_END;
 		}
 	}
-	m_Position = { m_CatchPos.x,m_Position.y,m_CatchPos.z };
+	else {
+		m_Rotation.y += 3.0f;
+		m_Position = { m_CatchPos.x,m_CatchPos.y,m_CatchPos.z };
+	}
 }
 
 //É{ÉXÇ™ìäÇ∞ÇÈ
@@ -99,6 +101,7 @@ void BarrangeCD::ThrowCD() {
 			m_CDState = CD_DEATH;
 			m_ThrowTimer = 0;
 		}
+		m_Rotation.y += 3.0f;
 	}
 }
 //è¡Ç¶ÇΩ
@@ -117,7 +120,6 @@ void BarrangeCD::ResPornCD() {
 		uniform_int_distribution<int> l_distX(-50, -20);
 		uniform_int_distribution<int> l_distZ(20, 50);
 		m_Position = { float(l_distX(mt)),30.0f,float(l_distZ(mt)) };
-		//m_Position = { -40.0f,60.0f,40.0f };
 		m_AddPower = {};
 	}
 	else if (m_ResPornTimer == l_LimitTimer) {

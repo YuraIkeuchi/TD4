@@ -205,26 +205,24 @@ void FourthBoss::InterValMove() {
 void FourthBoss::Choice() {
 	const float l_AddAngle = 5.0f;
 	float l_AddFrame = 0.001f;
-	const float l_FollowSpeed = 0.3f;
+	const float l_FollowSpeed = 0.4f;
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> l_RandomMove(0, 90);
 	int l_SelectRand = 0;
 
-	m_StopTimer++;	//乱数指定
 	//二点間の距離計算
 	m_Length = Helper::GetInstance()->ChechLength({ m_Position.x,0.0f,m_Position.z }, { m_AfterPos.x,0.0f,m_AfterPos.z });
 	//次のCDを狙う
-	if (m_Length > 0.1f) {
+	if (m_Length > 0.2f) {
 		Helper::GetInstance()->FollowMove(m_Position, m_AfterPos, l_FollowSpeed);
 	}
 	else {
+		//行動を決めて次の行動に移る
+		l_SelectRand = int(l_RandomMove(mt));
 		m_StopTimer++;
 		if (m_StopTimer > 100) {
 			for (int i = 0; i < cd.size(); i++) {
-				if (m_Position.x == cd[i]->GetPosition().x && cd[i]->GetCDState() == CD_STAY) {
-					l_SelectRand = int(l_RandomMove(mt));
-				}
-				else {
+				if (cd[i]->GetCDState() != CD_STAY) {
 					_charaState = STATE_INTER;
 					m_StopTimer = 0;
 					m_Frame = {};
@@ -234,7 +232,7 @@ void FourthBoss::Choice() {
 				}
 				else {
 					//攻撃をするかスルーか行動をするかCDを取るか決める
-					if (l_SelectRand < 91) {
+					if (l_SelectRand < 41) {
 						_charaState = i + 2;
 						cd[i]->SetCDState(CD_DEATH);
 						m_EndCount++;

@@ -53,6 +53,7 @@ public:
 		PHOTO_OUT,
 		CIRCLE,
 		CIRCLECOVER,
+		BOSS_ARROW
 	};
 	//テクスチャの名前
 	enum tex2dName
