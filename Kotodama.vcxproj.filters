@@ -473,6 +473,9 @@
     <ClCompile Include="SourceCode\gamesystem\effect\ConfuEffect.cpp">
       <Filter>gamesystem\effect\Confu</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\NoteEffect.cpp">
+      <Filter>gamesystem\effect\Note</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
@@ -910,6 +913,9 @@
     <ClInclude Include="SourceCode\gamesystem\effect\ConfuEffect.h">
       <Filter>gamesystem\effect\Confu</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\NoteEffect.h">
+      <Filter>gamesystem\effect\Note</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
@@ -1246,6 +1252,9 @@
     </Filter>
     <Filter Include="gamesystem\effect\Confu">
       <UniqueIdentifier>{c229ff53-c832-4466-b342-3ec9a8cb8a47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\effect\Note">
+      <UniqueIdentifier>{831220a2-a861-49a8-a290-74336ac5398d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

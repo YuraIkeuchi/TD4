@@ -39,6 +39,9 @@ FourthBoss::FourthBoss() {
 
 	confueffect.reset(new ConfuEffect());
 	confueffect->Initialize();
+
+	noteeffect.reset(new NoteEffect());
+	noteeffect->Initialize();
 }
 //初期化
 bool FourthBoss::Initialize() {
@@ -123,6 +126,10 @@ void FourthBoss::Action() {
 	}
 
 	confueffect->Update();
+	noteeffect->Update();
+	if (m_HP < 20.0f) {
+		isStrong = true;
+	}
 }
 //ポーズ
 void FourthBoss::Pause() {
@@ -134,6 +141,7 @@ void FourthBoss::EffecttexDraw(DirectXCommon* dxCommon)
 	if (m_HP < 0.1f)return;
 
 	confueffect->Draw(dxCommon);
+	noteeffect->Draw(dxCommon);
 }
 //描画
 void FourthBoss::Draw(DirectXCommon* dxCommon) {
@@ -157,10 +165,12 @@ void FourthBoss::Draw(DirectXCommon* dxCommon) {
 void FourthBoss::ImGui_Origin() {
 	ImGui::Begin("Fourth");
 	ImGui::Text("EndCount:%d", m_EndCount);
-	ImGui::Text("CatchCount:%d", m_CatchCount);
-	ImGui::Text("STATE:%d", (int)_charaState);
+	ImGui::Text("HP:%f", m_HP);
 	ImGui::End();
-	
+	/*for (size_t i = 0; i < cd.size(); i++) {
+		cd[i]->ImGuiDraw();
+	}*/
+	noteeffect->ImGuiDraw();
 	//confueffect->ImGuiDraw();
 }
 //インターバル
@@ -227,7 +237,7 @@ void FourthBoss::Choice() {
 				}
 				else {
 					//攻撃をするかスルーか行動をするかCDを取るか決める
-					if (l_SelectRand < 41) {
+					if (l_SelectRand < 91) {
 						_charaState = i + 2;
 						cd[i]->SetCDState(CD_DEATH);
 						m_EndCount++;
@@ -265,8 +275,15 @@ Ease(In,Cubic,m_Frame,m_Rotation.y,m_AfterRot.y),
 }
 //ダメージエリアのセット
 void FourthBoss::LineSet() {
+	int l_BirthNum = {};
+	if (isStrong) {
+		l_BirthNum = 4;
+	}
+	else {
+		l_BirthNum = 2;
+	}
 	if (m_AreaState == AREA_SET) {
-		damagearea.reset(new DamageArea(4));
+		damagearea.reset(new DamageArea(l_BirthNum));
 		damagearea->Initialize();
 		m_AreaState = AREA_STOP;
 	}
@@ -281,9 +298,12 @@ void FourthBoss::LineSet() {
 void FourthBoss::Debuff() {
 	m_CheckTimer++;
 	if (m_CheckTimer == 1) {
+		noteeffect->SetAlive(true);
+	}
+	else if (m_CheckTimer == 40) {
 		m_Check = true;
 	}
-	else if (m_CheckTimer == 50) {
+	else if (m_CheckTimer == 70) {
 		if ((cd[CD_CONFU]->GetCDState() == CD_DEATH) && (cd[CD_BARRA]->GetCDState() == CD_DEATH) && m_CatchCount != 0) {
 			_charaState = STATE_THROW;
 		}
@@ -298,10 +318,17 @@ void FourthBoss::Confu() {
 	m_ConfuTimer++;
 	const int l_LimitConfu = 20;
 	const int l_EndConfu = 50;
+	int l_ConfuTimer = {};
 	if (m_ConfuTimer == l_LimitConfu) {
 		confueffect->SetAlive(true);
 		Player::GetInstance()->SetConfu(true);
-		Player::GetInstance()->SetConfuTimer(200);
+		if (isStrong) {
+			l_ConfuTimer = 500;
+		}
+		else {
+			l_ConfuTimer = 200;
+		}
+		Player::GetInstance()->SetConfuTimer(l_ConfuTimer);
 	}
 	else if (m_ConfuTimer == l_EndConfu) {
 		if ((cd[CD_BARRA]->GetCDState() == CD_DEATH) && m_CatchCount != 0) {
@@ -395,7 +422,6 @@ void FourthBoss::EndMove() {
 	Helper::GetInstance()->FollowMove(m_Position, Player::GetInstance()->GetPosition(), m_FollowSpeed);
 	if (m_EndTimer == l_EndLimit) {
 		_charaState = STATE_INTER;
-		m_FollowSpeed = {};
 		m_EndTimer = {};
 		m_Frame = {};
 	}

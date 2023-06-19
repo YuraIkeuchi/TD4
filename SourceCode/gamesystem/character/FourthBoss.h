@@ -8,6 +8,7 @@
 #include "AttackNote.h"
 #include "DamageArea.h"
 #include "ConfuEffect.h"
+#include "NoteEffect.h"
 class FourthBoss :
 	public InterBoss {
 public:
@@ -63,6 +64,7 @@ private:
 	vector<AttackNote*> attacknotes;//怒りのスタンプ
 	unique_ptr<DamageArea> damagearea;//ダメージエリア
 	unique_ptr<ConfuEffect> confueffect;
+	unique_ptr<NoteEffect> noteeffect;
 	//キャラの状態
 	enum CharaState
 	{

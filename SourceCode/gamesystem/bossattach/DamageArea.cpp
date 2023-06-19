@@ -162,7 +162,7 @@ void DamageArea::PointUpdate() {
 }
 
 void DamageArea::StateManager() {
-	const float l_AddFrame = 0.01f;
+	const float l_AddFrame = 0.03f;
 	if (m_AreaState == POINT_BIRTH) {
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
