@@ -237,7 +237,7 @@ void FourthBoss::Choice() {
 				}
 				else {
 					//UŒ‚‚ğ‚·‚é‚©ƒXƒ‹[‚©s“®‚ğ‚·‚é‚©CD‚ğæ‚é‚©Œˆ‚ß‚é
-					if (l_SelectRand < 91) {
+					if (l_SelectRand < 41) {
 						_charaState = i + 2;
 						cd[i]->SetCDState(CD_DEATH);
 						m_EndCount++;
