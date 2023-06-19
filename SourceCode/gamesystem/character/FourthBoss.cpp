@@ -168,9 +168,6 @@ void FourthBoss::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui
 void FourthBoss::ImGui_Origin() {
-	for (size_t i = 0; i < cd.size(); i++) {
-		cd[i]->ImGuiDraw();
-	}
 }
 //インターバル
 void FourthBoss::InterValMove() {
@@ -238,7 +235,7 @@ void FourthBoss::Choice() {
 				else {
 					cd[i]->SetAttackSetCD(true);
 					//攻撃をするかスルーか行動をするかCDを取るか決める
-					if (l_SelectRand < 91) {
+					if (l_SelectRand < 41) {
 						_charaState = i + 2;
 						cd[i]->SetCDState(CD_CATCH);
 						m_EndCount++;
