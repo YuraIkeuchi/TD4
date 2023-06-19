@@ -36,7 +36,7 @@ void SelectScene::Init()
 	StageObj[SEVEN].reset(IKETexture::Create(ImageManager::SELECT_SEVEN, { 0,0,0 }, { 5,5,5 }, { 1,1,1,1 }));
 
 	//ポストエフェクト用
-	BossIcon[FIRST]=IKESprite::Create(ImageManager::BOX, { 0,0 });
+	BossIcon[FIRST]=IKESprite::Create(ImageManager::CLOSESYTOPON, { 0,0 });
 	BossIcon[SECOND] = IKESprite::Create(ImageManager::BOX, { 0,0 });
 	BossIcon[THIRD] = IKESprite::Create(ImageManager::BOX, { 0,0 });
 	BossIcon[FOUR] = IKESprite::Create(ImageManager::BOX, { 0,0 });
@@ -79,6 +79,29 @@ void SelectScene::Upda()
 			TrigerSelect = LB;
 		}
 	}
+
+
+	if (!sin && ChangeF)
+	{
+		CloseF = true;
+		if (closeScl <= 0.f) {
+			sin = true;
+			SceneManager::GetInstance()->ChangeScene("FiRST");
+			ChangeF = false;
+		}
+	}
+	if (closeScl >= 10000.f) {
+		CloseF = false;
+		sin = false;
+	}
+
+	CloseIconView(CloseF);
+	Helper::GetInstance()->Clamp(closeScl, 0.f, 12500.f);
+	Helper::GetInstance()->Clamp(closeRad, 0.f, 1500.f);
+
+	BossIcon[FIRST]->SetAnchorPoint({0.5f,0.5f});
+	BossIcon[FIRST]->SetSize({ closeScl,closeScl });
+	BossIcon[FIRST]->SetPosition({ 1280/ 2,720 / 2 });
 
 	RotPedestal();
 
@@ -138,9 +161,9 @@ void SelectScene::Draw_Sprite()
 	//ButtonNav_RBLB[1]->Draw();
 
 	size_t t = ObjNum;
-	for(auto i=0;i<t;i++)
+//	for(auto i=0;i<t;i++)
 	{
-		//BossIcon[i]->Draw();
+		BossIcon[0]->Draw();
 	}
 }
 
@@ -192,8 +215,38 @@ void SelectScene::RotPedestal()
 void SelectScene::SceneChange( SceneChanger* schange)
 {
 	if (ChangeF) {
-		if (IconColor[FIRST] >= 1.f)schange->ChangeScene("FIRSTSTAGE", SceneChanger::NonReverse);
-		else if (IconColor[SECOND] >= 1.f)schange->ChangeScene("SECONDSTAGE", SceneChanger::NonReverse);
-		ChangeF = false;
+	//	if (IconColor[FIRST] >= 1.f)SceneManager::GetInstance()->ChangeScene("FIRSTSTAGE");
+		//else if (IconColor[SECOND] >= 1.f)SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
+		//ChangeF = false;
 	}
+}
+
+void SelectScene::CloseIconView(bool closeF)
+{
+	//定数わっしょい　良い方法模索中。。。
+	constexpr float texScl = 6500.f;
+	constexpr float MinScl = 2000.f;
+	constexpr float SubRad = 0.48f;
+
+
+	if (closeF && !sin) {
+		closeScl -= SclingSpeed;
+		if (closeScl <= MinScl) {
+			SclingSpeed = 55.f;
+			closeRad -= SclingSpeed * SubRad;
+		} else
+			SclingSpeed = 100.f;
+	}
+	if (sin)
+	{
+		if (closeScl >= MinScl)
+			SclingSpeed = 180.f;
+		else
+			SclingSpeed = 100.f;
+
+		closeScl += SclingSpeed;
+		closeRad += SclingSpeed * SubRad;
+	}
+
+
 }

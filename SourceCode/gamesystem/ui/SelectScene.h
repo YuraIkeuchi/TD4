@@ -49,6 +49,8 @@ public:
 	void ResetParam();
 	//
 	void SceneChange( SceneChanger* schange);
+
+	void CloseIconView(bool closeF);
 private:
 	//“y‘ä
 	unique_ptr<IKEObject3d>Pedestal=nullptr;
@@ -88,12 +90,20 @@ private:
 	bool YESorNOflag;
 
 	bool ChangeF = false;
+
+	float closeScl = 6500.f;
+	float closeRad = 1500.f;
+	bool k;
+	bool sin = false;;
+	float SclingSpeed = 55.f, CorrSpeed = 0.48f;
+	bool CloseF;
 	void SetStage(bool judg,string sceneName);
 
 	void RotPedestal();
 
 
 public:
+	float GetCloseIconRad() { return closeRad; }
 	XMFLOAT3 GetPedestalPos() { return Pedestal->GetPosition(); }
 	int GetNowIndex() { return index; }
 };

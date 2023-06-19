@@ -88,11 +88,13 @@ void Player::Update()
 			input->TiltPushStick(Input::L_RIGHT, 0.0f) ||
 			input->TiltPushStick(Input::L_LEFT, 0.0f))
 		{
+			m_fbxObject->PlayAnimation(1);
 			_charaState = CharaState::STATE_RUN;
 		}
 		//何もアクションがなかったらアイドル状態
 		else
 		{
+			m_fbxObject->PlayAnimation(0);
 			_charaState = CharaState::STATE_IDLE;
 		}
 	}
@@ -116,6 +118,8 @@ void Player::Update()
 	//反発
 	ReBound();
 
+	m_LoopFlag = true;
+	m_AnimationSpeed = 1;
 	//適当にダメージ食らってるときは赤色
 	if (m_DamageInterVal == 0) {
 		m_Color = { 1.0f,1.0f,1.0f,1.0f };
@@ -201,13 +205,12 @@ void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
 	//アニメーションを引数に合わせる
 	if (_animeName != name)
 	{
-		m_fbxObject->PlayAnimation(0);
+		
 	}
 
 	//各種パラメータ反映
-	_animeName = name;
-	m_LoopFlag = loop;
-	m_AnimationSpeed = speed;
+	//_animeName = ;
+	
 
 }
 //歩き(コントローラー)
