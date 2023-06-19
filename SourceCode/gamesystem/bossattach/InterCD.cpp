@@ -55,3 +55,19 @@ bool InterCD::PlayerCollide() {
 
 	return false;
 }
+
+void InterCD::SetCD() {
+	if (m_AttackSetCD) {
+		if (m_CatchState == CATCH_SET) {
+			m_AddPower = 0.5f;
+			m_CatchState = CATCH_MOVE;
+		}
+		else if (m_CatchState == CATCH_MOVE) {
+			m_AddPower -= m_Gravity;
+			if (Helper::GetInstance()->CheckMax(m_Position.y, m_CatchPos.y, m_AddPower) && m_AddPower < -1.0f) {
+				m_CatchState = CATCH_END;
+				m_AttackSetCD = false;
+			}
+		}
+	}
+}

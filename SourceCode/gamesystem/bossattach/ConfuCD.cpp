@@ -28,6 +28,7 @@ void ConfuCD::Action() {
 	CollideBul(_playerBulA);
 	PlayerCollide();
 	Obj_SetParam();
+	SetCD();
 }
 //描画
 void ConfuCD::Origin_Draw(DirectXCommon* dxCommon) {
@@ -36,7 +37,7 @@ void ConfuCD::Origin_Draw(DirectXCommon* dxCommon) {
 //ImGui
 void ConfuCD::ImGui_Origin() {
 	ImGui::Begin("CONFUCD");
-	ImGui::Text("CDSTATE:%d", m_CDState);
+	ImGui::Text("POSY:%f", m_Position.y);
 	ImGui::End();
 }
 
@@ -63,17 +64,7 @@ void ConfuCD::ThroughCD() {
 
 //ボスが手に入れた状態
 void ConfuCD::CatchCD() {
-	if (m_CatchState == CATCH_SET) {
-		m_AddPower = 0.5f;
-		m_CatchState = CATCH_MOVE;
-	}
-	else if (m_CatchState == CATCH_MOVE) {
-		m_AddPower -= m_Gravity;
-		if (Helper::GetInstance()->CheckMax(m_Position.y, m_CatchPos.y, m_AddPower) && m_AddPower < -1.0f) {
-			m_CatchState = CATCH_END;
-		}
-	}
-	else {
+	if (m_CatchState == CATCH_END) {
 		m_Rotation.y += 3.0f;
 		m_Position = { m_CatchPos.x,m_CatchPos.y,m_CatchPos.z };
 	}
@@ -94,7 +85,7 @@ void ConfuCD::ThrowCD() {
 		//プレイヤーにスピード加算
 		m_Position.x += (float)m_SpeedX;
 		m_Position.z += (float)m_SpeedZ;
-
+		m_Position.y = m_CatchPos.y;
 		if (Helper::GetInstance()->CheckNotValueRange(m_Position.x, -60.0f, 70.0f) || Helper::GetInstance()->CheckNotValueRange(m_Position.z, -65.0f, 65.0f)) {
 			m_CDState = CD_DEATH;
 			m_ThrowTimer = 0;

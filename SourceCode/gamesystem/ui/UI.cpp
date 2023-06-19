@@ -158,7 +158,7 @@ UI::SpriteData UI::CreateUi(UINT texNumber, XMFLOAT2 pos, XMFLOAT2 size, XMFLOAT
 
 //ボスの探索
 void UI::SeachBoss() {
-	const float l_LookLength = 60.0f;
+	const float l_LookLength = 55.0f;
 	XMFLOAT3 l_PlaPos = Player::GetInstance()->GetPosition();
 	XMFLOAT3 l_bossPos = boss->GetPosition();
 	XMFLOAT3 l_Position{};

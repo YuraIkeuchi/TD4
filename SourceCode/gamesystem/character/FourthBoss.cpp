@@ -94,7 +94,7 @@ void FourthBoss::Action() {
 		
 	//CDの更新
 	for (size_t i = 0; i < cd.size(); i++) {
-		cd[i]->SetCatchPos({ m_Position.x,m_Position.y + 3.0f,m_Position.z });
+		cd[i]->SetCatchPos({ m_Position.x,((m_Position.y + 2.0f) + (0.5f * i)),m_Position.z });
 		cd[i]->Update();
 
 		if (cd[i]->GetBreakCD()) {
@@ -164,8 +164,7 @@ void FourthBoss::Draw(DirectXCommon* dxCommon) {
 //ImGui
 void FourthBoss::ImGui_Origin() {
 	ImGui::Begin("Fourth");
-	ImGui::Text("EndCount:%d", m_EndCount);
-	ImGui::Text("Length:%f", m_Length);
+	ImGui::Text("Attack:%d", m_CheckTimer);
 	ImGui::End();
 }
 //インターバル
@@ -213,28 +212,29 @@ void FourthBoss::Choice() {
 	//二点間の距離計算
 	m_Length = Helper::GetInstance()->ChechLength({ m_Position.x,0.0f,m_Position.z }, { m_AfterPos.x,0.0f,m_AfterPos.z });
 	//次のCDを狙う
-	if (m_Length > 0.2f) {
+	if (m_Length > 0.5f) {
 		Helper::GetInstance()->FollowMove(m_Position, m_AfterPos, l_FollowSpeed);
 	}
 	else {
 		//行動を決めて次の行動に移る
 		l_SelectRand = int(l_RandomMove(mt));
 		m_StopTimer++;
-		if (m_StopTimer > 100) {
+		if (m_StopTimer > 50) {
 			for (int i = 0; i < cd.size(); i++) {
 				if (cd[i]->GetCDState() != CD_STAY) {
 					_charaState = STATE_INTER;
-					m_StopTimer = 0;
+					m_StopTimer = {};
 					m_Frame = {};
 				}
 				if (cd[i]->GetCDState() != CD_STAY) {
 					continue;
 				}
 				else {
+					cd[i]->SetAttackSetCD(true);
 					//攻撃をするかスルーか行動をするかCDを取るか決める
-					if (l_SelectRand < 41) {
+					if (l_SelectRand < 91) {
 						_charaState = i + 2;
-						cd[i]->SetCDState(CD_DEATH);
+						cd[i]->SetCDState(CD_CATCH);
 						m_EndCount++;
 					}
 					else{
@@ -268,34 +268,51 @@ void FourthBoss::Choice() {
 //ダメージエリアのセット
 void FourthBoss::LineSet() {
 	int l_BirthNum = {};
+	const int l_StartLimit = 120;
+
+	//HPの削り具合によって出す線の数を変える
 	if (isStrong) {
 		l_BirthNum = 4;
 	}
 	else {
 		l_BirthNum = 2;
 	}
-	if (m_AreaState == AREA_SET) {
-		damagearea.reset(new DamageArea(l_BirthNum));
-		damagearea->Initialize();
-		m_AreaState = AREA_STOP;
-	}
-	else if (m_AreaState == AREA_STOP) {
-		_charaState = STATE_INTER;
-	}
-	else {
 
+	m_CheckTimer++;
+
+	//最初にSE鳴らす
+	if (m_CheckTimer == 50) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
+	}
+
+	if (m_CheckTimer > l_StartLimit) {
+		if (m_AreaState == AREA_SET) {
+			damagearea.reset(new DamageArea(l_BirthNum));
+			damagearea->Initialize();
+			m_AreaState = AREA_STOP;
+		}
+		else if (m_AreaState == AREA_STOP) {
+			cd[CD_LINE]->SetCDState(CD_DEATH);
+			_charaState = STATE_INTER;
+			m_CheckTimer = {};
+		}
 	}
 }
 //プレイヤーのデバフ
 void FourthBoss::Debuff() {
+	const int l_StartLimit = 150;
 	m_CheckTimer++;
-	if (m_CheckTimer == 1) {
+	if (m_CheckTimer == 50) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
+	}
+	else if (m_CheckTimer == 80) {
 		noteeffect->SetAlive(true);
 	}
-	else if (m_CheckTimer == 40) {
+	else if (m_CheckTimer == 110) {
 		m_Check = true;
 	}
-	else if (m_CheckTimer == 70) {
+	else if (m_CheckTimer == l_StartLimit) {
+		cd[CD_DEBUFF]->SetCDState(CD_DEATH);
 		if ((cd[CD_CONFU]->GetCDState() == CD_DEATH) && (cd[CD_BARRA]->GetCDState() == CD_DEATH) && m_CatchCount != 0) {
 			_charaState = STATE_THROW;
 		}
@@ -307,11 +324,15 @@ void FourthBoss::Debuff() {
 }
 //プレイヤー混乱
 void FourthBoss::Confu() {
-	m_ConfuTimer++;
-	const int l_LimitConfu = 20;
-	const int l_EndConfu = 50;
+	m_CheckTimer++;
+	const int l_LimitConfu = 80;
+	const int l_EndConfu = 120;
 	int l_ConfuTimer = {};
-	if (m_ConfuTimer == l_LimitConfu) {
+	if (m_CheckTimer == 50) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
+	}
+
+	if (m_CheckTimer == l_LimitConfu) {
 		confueffect->SetAlive(true);
 		Player::GetInstance()->SetConfu(true);
 		if (isStrong) {
@@ -322,37 +343,47 @@ void FourthBoss::Confu() {
 		}
 		Player::GetInstance()->SetConfuTimer(l_ConfuTimer);
 	}
-	else if (m_ConfuTimer == l_EndConfu) {
+	else if (m_CheckTimer == l_EndConfu) {
+		cd[CD_CONFU]->SetCDState(CD_DEATH);
 		if ((cd[CD_BARRA]->GetCDState() == CD_DEATH) && m_CatchCount != 0) {
 			_charaState = STATE_THROW;
 		}
 		else {
 			_charaState = STATE_INTER;
 		}
-		m_ConfuTimer = 0;
+		m_CheckTimer = {};
 	}
 }
 //拡散(ふつう)
 void FourthBoss::Barrage() {
-	m_Rotation.y += 2.0f;
-	m_RotTimer++;
-	if (m_RotTimer % 5 == 0) {
-		BirthNote("NORMAL");
+	const int l_StartLimit = 100;
+	m_CheckTimer++;
+	if (m_CheckTimer == 50) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
 	}
-
-	//一定フレームで終了
-	if (m_RotTimer == 600) {
-		m_RotTimer = 0;
-		if (m_CatchCount != 0) {
-			_charaState = STATE_THROW;
+	else if (m_CheckTimer > l_StartLimit) {
+		m_Rotation.y += 2.0f;
+		m_RotTimer++;
+		if (m_RotTimer % 5 == 0) {
+			BirthNote("NORMAL");
 		}
-		else {
-			_charaState = STATE_INTER;
-		}
-	}
 
-	if (m_Rotation.y > 360.0f) {
-		m_Rotation.y = 0.0f;
+		//一定フレームで終了
+		if (m_RotTimer == 600) {
+			cd[CD_BARRA]->SetCDState(CD_DEATH);
+			m_RotTimer = {};
+			m_CheckTimer = {};
+			if (m_CatchCount != 0) {
+				_charaState = STATE_THROW;
+			}
+			else {
+				_charaState = STATE_INTER;
+			}
+		}
+
+		if (m_Rotation.y > 360.0f) {
+			m_Rotation.y = 0.0f;
+		}
 	}
 }
 //投げる

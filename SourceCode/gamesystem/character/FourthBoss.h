@@ -135,15 +135,12 @@ private:
 	int m_CatchCount = {};
 	//ボスがプレイヤーから逃げる時間
 	int m_EndTimer = {};
-	//プレイヤーに混乱を与える時間
-	int m_ConfuTimer = {};
-	
 	//逃げる速さ
 	float m_FollowSpeed = -0.2f;
 
 	//棘の的に使う
 	float m_Angle = 0.0f;
 	float m_Angle2 = 0.0f;
-
+	//二点の距離
 	float m_Length = {};
 };

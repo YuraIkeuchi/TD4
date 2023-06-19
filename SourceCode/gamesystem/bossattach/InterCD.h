@@ -43,6 +43,9 @@ protected:
 	void CollideBul(vector<InterBullet*>bullet);
 
 	bool PlayerCollide();
+	
+	//攻撃前のCDのセット
+	void SetCD();
 protected:
 	//メンバ関数
 	virtual void BirthCD() {};
@@ -60,6 +63,8 @@ public:
 	void SetCDState(const int CDState) { m_CDState = CDState; }
 
 	void SetBreakCD(const bool BreakCD) { m_BreakCD = BreakCD; }
+
+	void SetAttackSetCD(const bool AttackSetCD) { m_AttackSetCD = AttackSetCD; }
 
 	void SetCatchPos(const XMFLOAT3 CatchPos) { m_CatchPos = CatchPos; }
 protected:
@@ -93,5 +98,6 @@ protected:
 		CATCH_END,
 	};
 
+	bool m_AttackSetCD = false;
 	int m_CatchState = CATCH_SET;
 };
