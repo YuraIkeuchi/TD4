@@ -54,7 +54,6 @@ private:
 	void CSVLoad();
 	//ƒm[ƒc‚Ì¶¬
 	void BirthNote(const std::string& BarrageName);
-
 private:
 	static const int BULLET_NUM = 4;
 	static const int CD_NUM = 4;
@@ -143,4 +142,8 @@ private:
 	float m_Angle2 = 0.0f;
 	//“ñ“_‚Ì‹——£
 	float m_Length = {};
+
+	//‰~‰^“®
+	float m_CircleScale = 30.0f;
+	float m_CircleSpeed = {};
 };

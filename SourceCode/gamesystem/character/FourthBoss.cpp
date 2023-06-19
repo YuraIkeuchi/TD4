@@ -52,7 +52,7 @@ bool FourthBoss::Initialize() {
 
 	ActionTimer = 1;
 
-	m_Radius = 5.0f;
+	m_Radius = 5.2f;
 
 	_charaState = STATE_INTER;
 	m_AreaState = AREA_SET;
@@ -86,6 +86,8 @@ void FourthBoss::Action() {
 	//弾とボスの当たり判定
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
 	CollideBul(_playerBulA, Type::CIRCLE);
+	//プレイヤーの当たり判定
+	ColPlayer();
 	//OBJのステータスのセット
 	Obj_SetParam();
 	//リミット制限
@@ -127,7 +129,8 @@ void FourthBoss::Action() {
 
 	confueffect->Update();
 	noteeffect->Update();
-	if (m_HP < 20.0f) {
+	//HPが半分切ったら強化
+	if (m_HP < m_MaxHp / 2) {
 		isStrong = true;
 	}
 }
@@ -165,6 +168,8 @@ void FourthBoss::Draw(DirectXCommon* dxCommon) {
 void FourthBoss::ImGui_Origin() {
 	ImGui::Begin("Fourth");
 	ImGui::Text("Attack:%d", m_CheckTimer);
+	ImGui::Text("CircleSpeed:%f", m_CircleSpeed);
+	ImGui::Text("CircleScale:%f", m_CircleScale);
 	ImGui::End();
 }
 //インターバル
@@ -225,6 +230,7 @@ void FourthBoss::Choice() {
 					_charaState = STATE_INTER;
 					m_StopTimer = {};
 					m_Frame = {};
+					m_Angle = {};
 				}
 				if (cd[i]->GetCDState() != CD_STAY) {
 					continue;
@@ -250,6 +256,7 @@ void FourthBoss::Choice() {
 					}
 					m_StopTimer = 0;
 					m_Frame = {};
+					m_Angle = {};
 					break;
 				}
 			}
@@ -373,6 +380,8 @@ void FourthBoss::Barrage() {
 			cd[CD_BARRA]->SetCDState(CD_DEATH);
 			m_RotTimer = {};
 			m_CheckTimer = {};
+			m_CircleScale = 30.0f;
+			m_CircleSpeed = {};
 			if (m_CatchCount != 0) {
 				_charaState = STATE_THROW;
 			}
@@ -384,6 +393,23 @@ void FourthBoss::Barrage() {
 		if (m_Rotation.y > 360.0f) {
 			m_Rotation.y = 0.0f;
 		}
+
+		//強さによって回転が変わる
+		if (isStrong) {
+			m_CircleSpeed += 2.0f;
+			m_CircleScale += 1.0f;
+		}
+		else {
+			m_CircleSpeed += 1.0f;
+			m_CircleScale += 0.2f;
+		}
+		m_AfterPos = Helper::GetInstance()->CircleMove({}, m_CircleScale, m_CircleSpeed);
+
+		m_Position = {
+			Ease(In,Cubic,0.2f,m_Position.x,m_AfterPos.x),
+			m_Position.y,
+			Ease(In,Cubic,0.2f,m_Position.z,m_AfterPos.z),
+		};
 	}
 }
 //投げる
@@ -440,14 +466,31 @@ void FourthBoss::Throw() {
 //行動の終わり(プレイヤーから逃げる)
 void FourthBoss::EndMove() {
 	const int l_EndLimit = 300;
+	const float l_AddAngle = 5.0f;
+	float l_AddSpeed = {};
 	m_EndTimer++;
 
+	m_Angle += l_AddAngle;
+	m_Angle2 = m_Angle * (3.14f / 180.0f);
+	m_CircleScale = (sin(m_Angle2) * 200.0f + 50.0f);
+	l_AddSpeed = (sin(m_Angle2) * 1.0f + 2.0f);
+	m_CircleSpeed += l_AddSpeed;
+	
 	//追従
-	Helper::GetInstance()->FollowMove(m_Position, Player::GetInstance()->GetPosition(), m_FollowSpeed);
+	m_AfterPos = Helper::GetInstance()->CircleMove({}, m_CircleScale, m_CircleSpeed);
+
+	m_Position = {
+		Ease(In,Cubic,0.2f,m_Position.x,m_AfterPos.x),
+		m_Position.y,
+		Ease(In,Cubic,0.2f,m_Position.z,m_AfterPos.z),
+	};
 	if (m_EndTimer == l_EndLimit) {
 		_charaState = STATE_INTER;
 		m_EndTimer = {};
 		m_Frame = {};
+		m_Angle = {};
+		m_CircleScale = 30.0f;
+		m_CircleSpeed = {};
 	}
 
 }

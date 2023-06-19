@@ -139,7 +139,7 @@ void FirstBoss::Action() {
 		/*^^^^^^^^^^^^^^^^^^^*/
 
 		if (!SummobnStop) {
-			_normal.ColPlayer(m_Position);
+			ColPlayer();
 		}
 
 		_normal.SetreposAngle();
@@ -685,19 +685,6 @@ void FirstBoss::NoBattleMove()
 
 	Helper::GetInstance()->Clamp(RotEaseTime_noBat, 0.f, 1.f);
 	Helper::GetInstance()->Clamp(EaseT_BatStart, 0.f, 1.f);
-}
-
-void FirstBoss::NormalAttak::ColPlayer(XMFLOAT3& Pos)
-{
-	//ラッシュ中判定あり
-	if (Collision::CircleCollision(Pos.x, Pos.z, 5.f, Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z, 1.f) &&
-		(Player::GetInstance()->GetDamageInterVal() == 0))
-	{
-
-		ColPos = Pos;
-		Player::GetInstance()->RecvDamage(1.0f);
-		Player::GetInstance()->PlayerHit(Pos);
-	}
 }
 
 void FirstBoss::ColPlayer_Def()

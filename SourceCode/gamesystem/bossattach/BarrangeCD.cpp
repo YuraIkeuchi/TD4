@@ -20,6 +20,7 @@ bool BarrangeCD::Initialize() {
 	m_Scale = { 0.8f,0.8f,0.8f };
 	m_Color = { 0.5f,0.0f,0.5f,1.0f };
 	m_CDState = CD_BIRTH;
+	CsvLoad();
 	return true;
 }
 

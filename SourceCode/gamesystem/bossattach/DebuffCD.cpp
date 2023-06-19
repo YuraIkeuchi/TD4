@@ -19,6 +19,7 @@ bool DebuffCD::Initialize() {
 	m_Scale = { 0.8f,0.8f,0.8f };
 	m_Color = { 0.3f,1.0f,0.4f,1.0f };
 	m_CDState = CD_BIRTH;
+	CsvLoad();
 	return true;
 }
 //“Á—L‚Ì“®‚«

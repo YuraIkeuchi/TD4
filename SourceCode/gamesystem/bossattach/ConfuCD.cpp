@@ -19,6 +19,7 @@ bool ConfuCD::Initialize() {
 	m_Scale = { 0.8f,0.8f,0.8f };
 	m_Color = { 0.3f,0.8f,1.0f,1.0f };
 	m_CDState = CD_BIRTH;
+	CsvLoad();
 	return true;
 }
 //çsìÆ
