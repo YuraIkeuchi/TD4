@@ -218,7 +218,7 @@ void FourthStageActor::MainUpdate(DebugCamera* camera) {
 			Player::GetInstance()->InitState({ 0.0f,0.0f,-5.0f });
 			enemymanager->SetDeadThrow(false);
 			enemymanager->DeadUpdate();
-			//camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_Fourth);
+			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_FOURTH);
 		}
 
 		if (camerawork->GetEndDeath()) {

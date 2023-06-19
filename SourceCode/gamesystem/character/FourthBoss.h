@@ -24,9 +24,9 @@ public:
 
 	void AppearAction() override;//ボス登場の固有の処理
 
-	void DeadAction() {};//ボス撃破の固有の処理
+	void DeadAction() override;//ボス撃破の固有の処理
 
-	void DeadAction_Throw() {};//ボス撃破の固有の処理 スロー
+	void DeadAction_Throw() override;//ボス撃破の固有の処理 スロー
 
 	void ImGui_Origin() override;//ボスそれぞれのImGui
 
@@ -54,6 +54,8 @@ private:
 	void CSVLoad();
 	//ノーツの生成
 	void BirthNote(const std::string& BarrageName);
+	//死んだときのパーティクル
+	void DeathParticle();
 private:
 	static const int BULLET_NUM = 4;
 	static const int CD_NUM = 4;
@@ -146,4 +148,7 @@ private:
 	//円運動
 	float m_CircleScale = 30.0f;
 	float m_CircleSpeed = {};
+
+	//弾幕の種類
+	int m_BarraRand = {};
 };

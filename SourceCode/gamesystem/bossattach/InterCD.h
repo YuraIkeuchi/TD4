@@ -37,6 +37,7 @@ public:
 
 	void ImGuiDraw();//ImGui‚Ì•`‰æ
 
+	void DeathMove(const int Timer,const int TargetTimer);
 protected:
 
 	virtual void Action() = 0;//ƒ{ƒX“Á—L‚Ìˆ—
@@ -108,4 +109,7 @@ protected:
 	int m_CatchState = CATCH_SET;
 
 	float m_HP = {};
+
+	bool m_DeathMove = false;
+	XMFLOAT3 m_BoundPower = {};
 };

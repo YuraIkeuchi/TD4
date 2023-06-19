@@ -111,6 +111,7 @@ void ConfuCD::ResPornCD() {
 		uniform_int_distribution<int> l_distZ(-50, -20);
 		m_Position = { float(l_distX(mt)),30.0f,float(l_distZ(mt)) };
 		m_AddPower = {};
+		CsvLoad();
 	}
 	else if (m_ResPornTimer == l_LimitTimer) {
 		m_CDState = CD_BIRTH;

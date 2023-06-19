@@ -2,6 +2,7 @@
 #include "Collision.h"
 #include "Player.h"
 #include "CsvLoader.h"
+#include <random>
 void (InterCD::* InterCD::stateTable[])() = {
 	&InterCD::BirthCD,//¶¬
 	&InterCD::StayCD, //•ú’u
@@ -109,4 +110,37 @@ void InterCD::BirthEffect() {
 	neweffect->SetDiviSpeed(1.0f);
 	neweffect->SetLife(50);
 	effects.push_back(neweffect);
+}
+
+//Ž€‚ñ‚¾‚Æ‚«‚Ì“®‚«
+void InterCD::DeathMove(const int Timer, const int TargetTimer) {
+	m_CDState = CD_STAY;
+	const int l_Division = 50;
+	if (!m_DeathMove) {
+		if (Timer < TargetTimer) {
+			m_Position = m_CatchPos;
+		}
+		else{
+			//—”¶¬(‰ÁŽZ—Í‚Æ‘å‚«‚³)
+			mt19937 mt{ std::random_device{}() };
+			uniform_int_distribution<int> l_bounddist(-80, 80);
+			uniform_int_distribution<int> l_bounddist2(30, 60);
+			m_BoundPower = {
+		(float)(l_bounddist(mt)) / l_Division,
+		(float)(l_bounddist2(mt)) / l_Division,
+		(float)(l_bounddist(mt)) / l_Division,
+			};
+			m_DeathMove = true;
+		}
+	}
+	else {
+		//”ò‚Ô‚æ‚¤‚ÈŠ´‚¶‚É‚·‚é‚½‚ßd—Í‚ð“ü‚ê‚é
+		m_BoundPower.y -= m_Gravity;
+		Helper::GetInstance()->Float3AddFloat3(m_Position, m_BoundPower);
+		if (Helper::GetInstance()->CheckMax(m_Position.y, 0.0f, m_BoundPower.y)) {
+			m_BoundPower = {};
+		}
+	}
+
+	Obj_SetParam();
 }
