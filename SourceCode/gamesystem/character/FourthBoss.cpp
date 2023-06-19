@@ -45,7 +45,7 @@ FourthBoss::FourthBoss() {
 }
 //初期化
 bool FourthBoss::Initialize() {
-	m_Position = { 0.0f,0.0f,30.0f };
+	m_Position = { 0.0f,3.0f,30.0f };
 	m_Scale = { 0.3f,0.3f,0.3f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	//m_Rotation.y = -90.f;
@@ -62,7 +62,7 @@ bool FourthBoss::Initialize() {
 }
 //スキップ時の初期化
 void FourthBoss::SkipInitialize() {
-	m_Position = { 0.0f,20.0f,30.0f };
+	m_Position = { 0.0f,3.0f,30.0f };
 	m_Scale = { 0.3f,0.3f,0.3f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 }
@@ -165,13 +165,8 @@ void FourthBoss::Draw(DirectXCommon* dxCommon) {
 void FourthBoss::ImGui_Origin() {
 	ImGui::Begin("Fourth");
 	ImGui::Text("EndCount:%d", m_EndCount);
-	ImGui::Text("HP:%f", m_HP);
+	ImGui::Text("Length:%f", m_Length);
 	ImGui::End();
-	/*for (size_t i = 0; i < cd.size(); i++) {
-		cd[i]->ImGuiDraw();
-	}*/
-	noteeffect->ImGuiDraw();
-	//confueffect->ImGuiDraw();
 }
 //インターバル
 void FourthBoss::InterValMove() {
@@ -186,7 +181,6 @@ void FourthBoss::InterValMove() {
 		}
 		m_EndCount = 0;
 		_charaState = STATE_END;
-		m_AfterPos = { 0.0f,20.0f,30.0f };
 	}
 
 	//
@@ -202,26 +196,29 @@ void FourthBoss::InterValMove() {
 				break;
 			}
 		}
-
+		m_Frame = {};
 		m_MoveInterVal = 0;
 		_charaState = STATE_CHOICE;
 	}
 }
 //動きの選択
 void FourthBoss::Choice() {
-	float l_AddFrame = 0.01f;
+	const float l_AddAngle = 5.0f;
+	float l_AddFrame = 0.001f;
+	const float l_FollowSpeed = 0.3f;
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> l_RandomMove(0, 90);
 	int l_SelectRand = 0;
 
 	m_StopTimer++;	//乱数指定
-	if (m_Frame < m_FrameMax) {
-		m_Frame += l_AddFrame;
+	//二点間の距離計算
+	m_Length = Helper::GetInstance()->ChechLength({ m_Position.x,0.0f,m_Position.z }, { m_AfterPos.x,0.0f,m_AfterPos.z });
+	//次のCDを狙う
+	if (m_Length > 0.1f) {
+		Helper::GetInstance()->FollowMove(m_Position, m_AfterPos, l_FollowSpeed);
 	}
 	else {
-		m_Frame = 1.0f;
 		m_StopTimer++;
-
 		if (m_StopTimer > 100) {
 			for (int i = 0; i < cd.size(); i++) {
 				if (m_Position.x == cd[i]->GetPosition().x && cd[i]->GetCDState() == CD_STAY) {
@@ -237,7 +234,7 @@ void FourthBoss::Choice() {
 				}
 				else {
 					//攻撃をするかスルーか行動をするかCDを取るか決める
-					if (l_SelectRand < 41) {
+					if (l_SelectRand < 91) {
 						_charaState = i + 2;
 						cd[i]->SetCDState(CD_DEATH);
 						m_EndCount++;
@@ -261,17 +258,14 @@ void FourthBoss::Choice() {
 		}
 	}
 
-	m_Position = {
-Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
-Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
-	Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z)
-	};
+	//sin波によって上下に動く
+	m_Angle += l_AddAngle;
+	m_Angle2 = m_Angle * (3.14f / 180.0f);
+	m_Position.y = (sin(m_Angle2) * 2.0f + 2.0f);
 
-	m_Rotation = {
-Ease(In,Cubic,m_Frame,m_Rotation.x,m_AfterRot.x),
-Ease(In,Cubic,m_Frame,m_Rotation.y,m_AfterRot.y),
-	Ease(In,Cubic,m_Frame,m_Rotation.z,m_AfterRot.z)
-	};
+	m_AfterRot.y = Helper::GetInstance()->DirRotation(m_Position, m_AfterPos, PI_90);
+
+	m_Rotation.y = Ease(In, Cubic, 0.5f, m_Rotation.y, m_AfterRot.y);
 }
 //ダメージエリアのセット
 void FourthBoss::LineSet() {
@@ -337,6 +331,7 @@ void FourthBoss::Confu() {
 		else {
 			_charaState = STATE_INTER;
 		}
+		m_ConfuTimer = 0;
 	}
 }
 //拡散(ふつう)

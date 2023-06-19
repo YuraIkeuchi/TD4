@@ -245,8 +245,11 @@ void Player::Walk()
 	vel.x = static_cast<float>(rand()) / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 	vel.y = static_cast<float>(rand()) / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 	vel.z = static_cast<float>(rand()) / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+	if(!m_Confu)
 	rot.y = angle + atan2f(StickX, StickY) * (PI_180 / PI);
-
+	else {
+		rot.y = angle + atan2f(StickX, StickY) * (PI_360 / PI);
+	}
 	//プレイヤーの回転角を取る
 	m_Rotation = { rot.x, rot.y, rot.z };
 
@@ -556,8 +559,8 @@ void Player::PlayerHit(const XMFLOAT3& pos) {
 	XMFLOAT2 l_Distance;
 	l_Distance.x = m_Position.x - pos.x + 0.1f;
 	l_Distance.y = m_Position.z - pos.z;
-	m_BoundPower.x = (sin(atan2f(l_Distance.x, l_Distance.y)) * 3.0f);
-	m_BoundPower.y = (cos(atan2f(l_Distance.x, l_Distance.y)) * 3.0f);
+	m_BoundPower.x = (sin(atan2f(l_Distance.x, l_Distance.y)) * 2.0f);
+	m_BoundPower.y = (cos(atan2f(l_Distance.x, l_Distance.y)) * 2.0f);
 }
 //弾かれる処理
 void Player::ReBound() {

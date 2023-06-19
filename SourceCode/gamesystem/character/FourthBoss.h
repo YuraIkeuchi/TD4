@@ -140,4 +140,10 @@ private:
 	
 	//“¦‚°‚é‘¬‚³
 	float m_FollowSpeed = -0.2f;
+
+	//ž™‚Ì“I‚ÉŽg‚¤
+	float m_Angle = 0.0f;
+	float m_Angle2 = 0.0f;
+
+	float m_Length = {};
 };
