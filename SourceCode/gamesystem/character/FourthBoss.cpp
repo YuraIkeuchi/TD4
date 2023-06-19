@@ -141,7 +141,7 @@ void FourthBoss::Pause() {
 //エフェクト描画
 void FourthBoss::EffecttexDraw(DirectXCommon* dxCommon)
 {
-	if (m_HP < 0.1f)return;
+	if (m_HP < 0.0f)return;
 
 	confueffect->Draw(dxCommon);
 	noteeffect->Draw(dxCommon);
@@ -153,24 +153,21 @@ void FourthBoss::Draw(DirectXCommon* dxCommon) {
 	for (size_t i = 0; i < cd.size(); i++) {
 		cd[i]->Draw(dxCommon);
 	}
-	//攻撃の音符
-	for (AttackNote* newnote : attacknotes) {
-		if (newnote != nullptr) {
-			newnote->Draw(dxCommon);
+	if (m_HP > 0.0f) {
+		//攻撃の音符
+		for (AttackNote* newnote : attacknotes) {
+			if (newnote != nullptr) {
+				newnote->Draw(dxCommon);
+			}
 		}
+		if (damagearea != nullptr) {
+			damagearea->Draw(dxCommon);
+		}
+		EffecttexDraw(dxCommon);
 	}
-	if (damagearea != nullptr) {
-		damagearea->Draw(dxCommon);
-	}
-	EffecttexDraw(dxCommon);
 }
 //ImGui
 void FourthBoss::ImGui_Origin() {
-	ImGui::Begin("Fourth");
-	ImGui::Text("Attack:%d", m_CheckTimer);
-	ImGui::Text("CircleSpeed:%f", m_CircleSpeed);
-	ImGui::Text("CircleScale:%f", m_CircleScale);
-	ImGui::End();
 }
 //インターバル
 void FourthBoss::InterValMove() {
@@ -238,7 +235,7 @@ void FourthBoss::Choice() {
 				else {
 					cd[i]->SetAttackSetCD(true);
 					//攻撃をするかスルーか行動をするかCDを取るか決める
-					if (l_SelectRand < 91) {
+					if (l_SelectRand < 41) {
 						_charaState = i + 2;
 						cd[i]->SetCDState(CD_CATCH);
 						m_EndCount++;
@@ -364,15 +361,31 @@ void FourthBoss::Confu() {
 //拡散(ふつう)
 void FourthBoss::Barrage() {
 	const int l_StartLimit = 100;
+
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_RandomMove(0, 1);
+
 	m_CheckTimer++;
 	if (m_CheckTimer == 50) {
+		m_BarraRand = int(l_RandomMove(mt));
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
 	}
 	else if (m_CheckTimer > l_StartLimit) {
 		m_Rotation.y += 2.0f;
 		m_RotTimer++;
 		if (m_RotTimer % 5 == 0) {
-			BirthNote("NORMAL");
+			//乱数によって弾幕の種類が変わる
+			if (m_BarraRand == 0) {
+				if (!isStrong) {
+					BirthNote("NORMAL");
+				}
+				else {
+					BirthNote("ALTER");
+				}
+			}
+			else if (m_BarraRand == 1) {
+				BirthNote("RANDOM");
+			}
 		}
 
 		//一定フレームで終了
@@ -382,6 +395,7 @@ void FourthBoss::Barrage() {
 			m_CheckTimer = {};
 			m_CircleScale = 30.0f;
 			m_CircleSpeed = {};
+			m_BarraRand = {};
 			if (m_CatchCount != 0) {
 				_charaState = STATE_THROW;
 			}
@@ -396,11 +410,11 @@ void FourthBoss::Barrage() {
 
 		//強さによって回転が変わる
 		if (isStrong) {
-			m_CircleSpeed += 2.0f;
-			m_CircleScale += 1.0f;
+			m_CircleSpeed += 1.0f;
+			m_CircleScale += 0.3f;
 		}
 		else {
-			m_CircleSpeed += 1.0f;
+			m_CircleSpeed += 0.5f;
 			m_CircleScale += 0.2f;
 		}
 		m_AfterPos = Helper::GetInstance()->CircleMove({}, m_CircleScale, m_CircleSpeed);
@@ -472,11 +486,13 @@ void FourthBoss::EndMove() {
 
 	m_Angle += l_AddAngle;
 	m_Angle2 = m_Angle * (3.14f / 180.0f);
+
+	//sin波で半径を変更している
 	m_CircleScale = (sin(m_Angle2) * 200.0f + 50.0f);
 	l_AddSpeed = (sin(m_Angle2) * 1.0f + 2.0f);
 	m_CircleSpeed += l_AddSpeed;
 	
-	//追従
+	//追従(円運動で)
 	m_AfterPos = Helper::GetInstance()->CircleMove({}, m_CircleScale, m_CircleSpeed);
 
 	m_Position = {
@@ -556,4 +572,47 @@ void FourthBoss::BirthNote(const std::string& BarrageName) {
 //登場シーン
 void FourthBoss::AppearAction() {
 	Obj_SetParam();
+}
+//ボス撃破シーン
+void FourthBoss::DeadAction() {
+	const float l_AddAngle = 5.0f;
+	m_DeathTimer++;
+	const int l_BaseTarget = 50;
+	if (m_DeathTimer == 1) {
+		m_Position = { 0.0f,30.0f,20.0f };
+		m_Rotation = { 0.0f,0.0f,0.0f };
+	}
+	else if (m_DeathTimer >= 2 && m_DeathTimer < 300) {
+		//sin波によって上下に動く
+		m_Angle += l_AddAngle;
+		m_Angle2 = m_Angle * (3.14f / 180.0f);
+		m_Position.x = (sin(m_Angle2) * 15.0f + 15.0f);
+		DeathParticle();
+		for (int i = 0; i < cd.size(); i++) {
+			cd[i]->DeathMove(m_DeathTimer, (i * l_BaseTarget) + l_BaseTarget);
+		}
+	}
+	else {
+		m_Gravity = 0.05f;
+		//飛ぶような感じにするため重力を入れる
+		m_AddPower -= m_Gravity;
+		Helper::GetInstance()->CheckMax(m_Position.y, 6.0f, m_AddPower);
+	}
+
+	Obj_SetParam();
+}
+//ボス撃破シーン(スロー)
+void FourthBoss::DeadAction_Throw() {
+	Obj_SetParam();
+}
+//撃破パーティクル
+void FourthBoss::DeathParticle() {
+	const XMFLOAT4 s_color = { 1.0f,1.0f,1.0f,1.0f };
+	const XMFLOAT4 e_color = { 0.0f,0.0f,1.0f,1.0f };
+	float s_scale = 5.0f;
+	float e_scale = 0.0f;
+	float l_velocity = 0.5f;
+	for (int i = 0; i < 3; ++i) {
+		ParticleEmitter::GetInstance()->DeathEffect(50, { m_Position.x,(m_Position.y - 1.0f),m_Position.z }, s_scale, e_scale, s_color, e_color, l_velocity);
+	}
 }
