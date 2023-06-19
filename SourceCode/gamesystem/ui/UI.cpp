@@ -5,7 +5,7 @@
 #include <HungerGauge.h>
 #include "EnemyManager.h"
 #include <Easing.h>
-
+#include <Helper.h>
 UI::~UI() {
 	TexList.clear();
 }
@@ -51,7 +51,12 @@ void UI::Initialize() {
 		sprites[CircleCover].Tex->SetAnchorPoint({ 0.5,0.5f });
 		TexList.emplace_back(std::move(sprites[CircleCover]));
 	}
-
+	//ボスの位置
+	{
+		sprites[ArrowBoss] = CreateUi(ImageManager::BOSS_ARROW,{}, {62.0f,62.0f}, {1.f,1.f,1.f,1.f});
+		sprites[ArrowBoss].Tex->SetAnchorPoint({ 0.5,0.5f });
+		TexList.emplace_back(std::move(sprites[ArrowBoss]));
+	}
 }
 
 //更新
@@ -115,6 +120,9 @@ void UI::Update() {
 
 	}
 
+	//ボスの探索
+	SeachBoss();
+
 	for (auto i = 0; i < TexList.size(); i++) {
 		if (TexList[i].Tex == nullptr)continue;
 		TexList[i].Tex->SetPosition(TexList[i].Position);
@@ -122,6 +130,8 @@ void UI::Update() {
 		TexList[i].Tex->SetRotation(TexList[i].Rotation);
 		TexList[i].Tex->SetColor(TexList[i].Color);
 	}
+
+
 }
 
 //描画
@@ -146,3 +156,27 @@ UI::SpriteData UI::CreateUi(UINT texNumber, XMFLOAT2 pos, XMFLOAT2 size, XMFLOAT
 	return itr;
 }
 
+//ボスの探索
+void UI::SeachBoss() {
+	const float l_LookLength = 55.0f;
+	XMFLOAT3 l_PlaPos = Player::GetInstance()->GetPosition();
+	XMFLOAT3 l_bossPos = boss->GetPosition();
+	XMFLOAT3 l_Position{};
+	float l_Radius = 0;
+	XMFLOAT2 rot{};
+	l_Position.x = (l_PlaPos.x - l_bossPos.x);
+	l_Position.z = (l_PlaPos.z - l_bossPos.z);
+
+	l_Radius = atan2f(l_Position.x, l_Position.z);// *PI / 180.0f;
+	m_Circle.x = (sin(-l_Radius) * 150.0f) + WinApp::window_width / 2; //*0.2251f;
+	m_Circle.y = (cos(-l_Radius) * 150.0f) + WinApp::window_height / 2; //*0.2251f;
+	if (l_LookLength < Helper::GetInstance()->ChechLength({ l_PlaPos.x,0.0f,l_PlaPos.z }, { l_bossPos.x,0.0f,l_bossPos.z })) {
+		TexList[ArrowBoss].IsVisible = true;
+	}
+	else {
+		TexList[ArrowBoss].IsVisible = false;
+	}
+	TexList[ArrowBoss].Rotation = (l_Radius * (PI_180 / XM_PI)) + PI_180;//-radius * PI / 180.0f);
+	TexList[ArrowBoss].Position = m_Circle;
+	//TexList[ArrowBoss].Size = { 62.0f,62.0f };
+}

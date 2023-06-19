@@ -1,6 +1,7 @@
 #include "InterCD.h"
 #include "Collision.h"
 #include "Player.h"
+#include "CsvLoader.h"
 void (InterCD::* InterCD::stateTable[])() = {
 	&InterCD::BirthCD,//生成
 	&InterCD::StayCD, //放置
@@ -11,8 +12,31 @@ void (InterCD::* InterCD::stateTable[])() = {
 	&InterCD::ResPornCD,//りすぽーん
 };
 
+//CDV読み込み
+void InterCD::CsvLoad() {
+	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/CD.csv", "hp")));
+}
+
 void InterCD::Update() {
 	Action();
+
+	//エフェクト
+	for (InterEffect* effect : effects) {
+		if (effect != nullptr) {
+			effect->Update();
+		}
+	}
+
+	//マークの削除
+	for (int i = 0; i < effects.size(); i++) {
+		if (effects[i] == nullptr) {
+			continue;
+		}
+
+		if (!effects[i]->GetAlive()) {
+			effects.erase(cbegin(effects) += i);
+		}
+	}
 }
 void InterCD::Draw(DirectXCommon* dxCommon) {
 	if(m_CDState != CD_DEATH && m_CDState != CD_RESPORN)
@@ -31,9 +55,13 @@ void InterCD::CollideBul(vector<InterBullet*> bullet)
 	for (InterBullet* _bullet : bullet) {
 		if (_bullet != nullptr && _bullet->GetAlive()) {
 			if (Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, l_Radius, m_Position.x, m_Position.z, l_Radius)) {
-				m_CDState = CD_DEATH;
-				m_BreakCD = true;
+				BirthEffect();
 				_bullet->SetAlive(false);
+				m_HP -= 1.0f;
+				if (m_HP <= 0.0f) {
+					m_CDState = CD_DEATH;
+					m_BreakCD = true;
+				}
 			}
 		}
 	}	
@@ -54,4 +82,31 @@ bool InterCD::PlayerCollide() {
 	}
 
 	return false;
+}
+
+void InterCD::SetCD() {
+	if (m_AttackSetCD) {
+		if (m_CatchState == CATCH_SET) {
+			m_AddPower = 0.5f;
+			m_CatchState = CATCH_MOVE;
+		}
+		else if (m_CatchState == CATCH_MOVE) {
+			m_AddPower -= m_Gravity;
+			if (Helper::GetInstance()->CheckMax(m_Position.y, m_CatchPos.y, m_AddPower) && m_AddPower < -1.0f) {
+				m_CatchState = CATCH_END;
+				m_AttackSetCD = false;
+			}
+		}
+	}
+}
+
+//エフェクトの発生
+void InterCD::BirthEffect() {
+	InterEffect* neweffect;
+	neweffect = new BreakEffect();
+	neweffect->Initialize();
+	neweffect->SetPosition(m_Position);
+	neweffect->SetDiviSpeed(1.0f);
+	neweffect->SetLife(50);
+	effects.push_back(neweffect);
 }

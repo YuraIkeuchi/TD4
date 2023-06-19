@@ -181,6 +181,8 @@ protected:
 		SPHERE
 	};
 	void CollideBul(vector<InterBullet*>bullet, Type type = Type::SPHERE);
+	//当たり判定(プレイヤー)
+	void ColPlayer();
 	bool EndSummonRepos;
 	bool ResF;
 public:

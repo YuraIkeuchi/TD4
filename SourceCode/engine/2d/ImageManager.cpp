@@ -52,6 +52,8 @@ void ImageManager::SecondLoad2D()
 	IKESprite::LoadTexture(PHOTO_OUT, L"Resources/2d/effect/camera_naka.png");
 	IKESprite::LoadTexture(CIRCLE, L"Resources/2d/objicon/circle.png");
 	IKESprite::LoadTexture(CIRCLECOVER, L"Resources/2d/objicon/circlecover.png");
+
+	IKESprite::LoadTexture(BOSS_ARROW, L"Resources/2d/objicon/Arrow.png");
 }
 
 //テクスチャの読み込み

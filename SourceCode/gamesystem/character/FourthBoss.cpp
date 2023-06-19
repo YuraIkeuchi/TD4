@@ -45,14 +45,14 @@ FourthBoss::FourthBoss() {
 }
 //初期化
 bool FourthBoss::Initialize() {
-	m_Position = { 0.0f,0.0f,30.0f };
+	m_Position = { 0.0f,3.0f,30.0f };
 	m_Scale = { 0.3f,0.3f,0.3f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	//m_Rotation.y = -90.f;
 
 	ActionTimer = 1;
 
-	m_Radius = 5.0f;
+	m_Radius = 5.2f;
 
 	_charaState = STATE_INTER;
 	m_AreaState = AREA_SET;
@@ -62,7 +62,7 @@ bool FourthBoss::Initialize() {
 }
 //スキップ時の初期化
 void FourthBoss::SkipInitialize() {
-	m_Position = { 0.0f,20.0f,30.0f };
+	m_Position = { 0.0f,3.0f,30.0f };
 	m_Scale = { 0.3f,0.3f,0.3f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 }
@@ -86,6 +86,8 @@ void FourthBoss::Action() {
 	//弾とボスの当たり判定
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
 	CollideBul(_playerBulA, Type::CIRCLE);
+	//プレイヤーの当たり判定
+	ColPlayer();
 	//OBJのステータスのセット
 	Obj_SetParam();
 	//リミット制限
@@ -94,7 +96,7 @@ void FourthBoss::Action() {
 		
 	//CDの更新
 	for (size_t i = 0; i < cd.size(); i++) {
-		cd[i]->SetCatchPos({ m_Position.x,m_Position.y + 3.0f,m_Position.z });
+		cd[i]->SetCatchPos({ m_Position.x,((m_Position.y + 2.0f) + (0.5f * i)),m_Position.z });
 		cd[i]->Update();
 
 		if (cd[i]->GetBreakCD()) {
@@ -127,7 +129,8 @@ void FourthBoss::Action() {
 
 	confueffect->Update();
 	noteeffect->Update();
-	if (m_HP < 20.0f) {
+	//HPが半分切ったら強化
+	if (m_HP < m_MaxHp / 2) {
 		isStrong = true;
 	}
 }
@@ -164,14 +167,10 @@ void FourthBoss::Draw(DirectXCommon* dxCommon) {
 //ImGui
 void FourthBoss::ImGui_Origin() {
 	ImGui::Begin("Fourth");
-	ImGui::Text("EndCount:%d", m_EndCount);
-	ImGui::Text("HP:%f", m_HP);
+	ImGui::Text("Attack:%d", m_CheckTimer);
+	ImGui::Text("CircleSpeed:%f", m_CircleSpeed);
+	ImGui::Text("CircleScale:%f", m_CircleScale);
 	ImGui::End();
-	/*for (size_t i = 0; i < cd.size(); i++) {
-		cd[i]->ImGuiDraw();
-	}*/
-	noteeffect->ImGuiDraw();
-	//confueffect->ImGuiDraw();
 }
 //インターバル
 void FourthBoss::InterValMove() {
@@ -186,7 +185,6 @@ void FourthBoss::InterValMove() {
 		}
 		m_EndCount = 0;
 		_charaState = STATE_END;
-		m_AfterPos = { 0.0f,20.0f,30.0f };
 	}
 
 	//
@@ -202,44 +200,47 @@ void FourthBoss::InterValMove() {
 				break;
 			}
 		}
-
+		m_Frame = {};
 		m_MoveInterVal = 0;
 		_charaState = STATE_CHOICE;
 	}
 }
 //動きの選択
 void FourthBoss::Choice() {
-	float l_AddFrame = 0.01f;
+	const float l_AddAngle = 5.0f;
+	float l_AddFrame = 0.001f;
+	const float l_FollowSpeed = 0.4f;
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> l_RandomMove(0, 90);
 	int l_SelectRand = 0;
 
-	m_StopTimer++;	//乱数指定
-	if (m_Frame < m_FrameMax) {
-		m_Frame += l_AddFrame;
+	//二点間の距離計算
+	m_Length = Helper::GetInstance()->ChechLength({ m_Position.x,0.0f,m_Position.z }, { m_AfterPos.x,0.0f,m_AfterPos.z });
+	//次のCDを狙う
+	if (m_Length > 0.5f) {
+		Helper::GetInstance()->FollowMove(m_Position, m_AfterPos, l_FollowSpeed);
 	}
 	else {
-		m_Frame = 1.0f;
+		//行動を決めて次の行動に移る
+		l_SelectRand = int(l_RandomMove(mt));
 		m_StopTimer++;
-
-		if (m_StopTimer > 100) {
+		if (m_StopTimer > 50) {
 			for (int i = 0; i < cd.size(); i++) {
-				if (m_Position.x == cd[i]->GetPosition().x && cd[i]->GetCDState() == CD_STAY) {
-					l_SelectRand = int(l_RandomMove(mt));
-				}
-				else {
+				if (cd[i]->GetCDState() != CD_STAY) {
 					_charaState = STATE_INTER;
-					m_StopTimer = 0;
+					m_StopTimer = {};
 					m_Frame = {};
+					m_Angle = {};
 				}
 				if (cd[i]->GetCDState() != CD_STAY) {
 					continue;
 				}
 				else {
+					cd[i]->SetAttackSetCD(true);
 					//攻撃をするかスルーか行動をするかCDを取るか決める
-					if (l_SelectRand < 41) {
+					if (l_SelectRand < 91) {
 						_charaState = i + 2;
-						cd[i]->SetCDState(CD_DEATH);
+						cd[i]->SetCDState(CD_CATCH);
 						m_EndCount++;
 					}
 					else{
@@ -255,55 +256,70 @@ void FourthBoss::Choice() {
 					}
 					m_StopTimer = 0;
 					m_Frame = {};
+					m_Angle = {};
 					break;
 				}
 			}
 		}
 	}
 
-	m_Position = {
-Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
-Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
-	Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z)
-	};
+	//sin波によって上下に動く
+	m_Angle += l_AddAngle;
+	m_Angle2 = m_Angle * (3.14f / 180.0f);
+	m_Position.y = (sin(m_Angle2) * 2.0f + 2.0f);
 
-	m_Rotation = {
-Ease(In,Cubic,m_Frame,m_Rotation.x,m_AfterRot.x),
-Ease(In,Cubic,m_Frame,m_Rotation.y,m_AfterRot.y),
-	Ease(In,Cubic,m_Frame,m_Rotation.z,m_AfterRot.z)
-	};
+	m_AfterRot.y = Helper::GetInstance()->DirRotation(m_Position, m_AfterPos, PI_90);
+
+	m_Rotation.y = Ease(In, Cubic, 0.5f, m_Rotation.y, m_AfterRot.y);
 }
 //ダメージエリアのセット
 void FourthBoss::LineSet() {
 	int l_BirthNum = {};
+	const int l_StartLimit = 120;
+
+	//HPの削り具合によって出す線の数を変える
 	if (isStrong) {
 		l_BirthNum = 4;
 	}
 	else {
 		l_BirthNum = 2;
 	}
-	if (m_AreaState == AREA_SET) {
-		damagearea.reset(new DamageArea(l_BirthNum));
-		damagearea->Initialize();
-		m_AreaState = AREA_STOP;
-	}
-	else if (m_AreaState == AREA_STOP) {
-		_charaState = STATE_INTER;
-	}
-	else {
 
+	m_CheckTimer++;
+
+	//最初にSE鳴らす
+	if (m_CheckTimer == 50) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
+	}
+
+	if (m_CheckTimer > l_StartLimit) {
+		if (m_AreaState == AREA_SET) {
+			damagearea.reset(new DamageArea(l_BirthNum));
+			damagearea->Initialize();
+			m_AreaState = AREA_STOP;
+		}
+		else if (m_AreaState == AREA_STOP) {
+			cd[CD_LINE]->SetCDState(CD_DEATH);
+			_charaState = STATE_INTER;
+			m_CheckTimer = {};
+		}
 	}
 }
 //プレイヤーのデバフ
 void FourthBoss::Debuff() {
+	const int l_StartLimit = 150;
 	m_CheckTimer++;
-	if (m_CheckTimer == 1) {
+	if (m_CheckTimer == 50) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
+	}
+	else if (m_CheckTimer == 80) {
 		noteeffect->SetAlive(true);
 	}
-	else if (m_CheckTimer == 40) {
+	else if (m_CheckTimer == 110) {
 		m_Check = true;
 	}
-	else if (m_CheckTimer == 70) {
+	else if (m_CheckTimer == l_StartLimit) {
+		cd[CD_DEBUFF]->SetCDState(CD_DEATH);
 		if ((cd[CD_CONFU]->GetCDState() == CD_DEATH) && (cd[CD_BARRA]->GetCDState() == CD_DEATH) && m_CatchCount != 0) {
 			_charaState = STATE_THROW;
 		}
@@ -315,11 +331,15 @@ void FourthBoss::Debuff() {
 }
 //プレイヤー混乱
 void FourthBoss::Confu() {
-	m_ConfuTimer++;
-	const int l_LimitConfu = 20;
-	const int l_EndConfu = 50;
+	m_CheckTimer++;
+	const int l_LimitConfu = 80;
+	const int l_EndConfu = 120;
 	int l_ConfuTimer = {};
-	if (m_ConfuTimer == l_LimitConfu) {
+	if (m_CheckTimer == 50) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
+	}
+
+	if (m_CheckTimer == l_LimitConfu) {
 		confueffect->SetAlive(true);
 		Player::GetInstance()->SetConfu(true);
 		if (isStrong) {
@@ -330,36 +350,66 @@ void FourthBoss::Confu() {
 		}
 		Player::GetInstance()->SetConfuTimer(l_ConfuTimer);
 	}
-	else if (m_ConfuTimer == l_EndConfu) {
+	else if (m_CheckTimer == l_EndConfu) {
+		cd[CD_CONFU]->SetCDState(CD_DEATH);
 		if ((cd[CD_BARRA]->GetCDState() == CD_DEATH) && m_CatchCount != 0) {
 			_charaState = STATE_THROW;
 		}
 		else {
 			_charaState = STATE_INTER;
 		}
+		m_CheckTimer = {};
 	}
 }
 //拡散(ふつう)
 void FourthBoss::Barrage() {
-	m_Rotation.y += 2.0f;
-	m_RotTimer++;
-	if (m_RotTimer % 5 == 0) {
-		BirthNote("NORMAL");
+	const int l_StartLimit = 100;
+	m_CheckTimer++;
+	if (m_CheckTimer == 50) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
 	}
+	else if (m_CheckTimer > l_StartLimit) {
+		m_Rotation.y += 2.0f;
+		m_RotTimer++;
+		if (m_RotTimer % 5 == 0) {
+			BirthNote("NORMAL");
+		}
 
-	//一定フレームで終了
-	if (m_RotTimer == 600) {
-		m_RotTimer = 0;
-		if (m_CatchCount != 0) {
-			_charaState = STATE_THROW;
+		//一定フレームで終了
+		if (m_RotTimer == 600) {
+			cd[CD_BARRA]->SetCDState(CD_DEATH);
+			m_RotTimer = {};
+			m_CheckTimer = {};
+			m_CircleScale = 30.0f;
+			m_CircleSpeed = {};
+			if (m_CatchCount != 0) {
+				_charaState = STATE_THROW;
+			}
+			else {
+				_charaState = STATE_INTER;
+			}
+		}
+
+		if (m_Rotation.y > 360.0f) {
+			m_Rotation.y = 0.0f;
+		}
+
+		//強さによって回転が変わる
+		if (isStrong) {
+			m_CircleSpeed += 2.0f;
+			m_CircleScale += 1.0f;
 		}
 		else {
-			_charaState = STATE_INTER;
+			m_CircleSpeed += 1.0f;
+			m_CircleScale += 0.2f;
 		}
-	}
+		m_AfterPos = Helper::GetInstance()->CircleMove({}, m_CircleScale, m_CircleSpeed);
 
-	if (m_Rotation.y > 360.0f) {
-		m_Rotation.y = 0.0f;
+		m_Position = {
+			Ease(In,Cubic,0.2f,m_Position.x,m_AfterPos.x),
+			m_Position.y,
+			Ease(In,Cubic,0.2f,m_Position.z,m_AfterPos.z),
+		};
 	}
 }
 //投げる
@@ -416,14 +466,31 @@ void FourthBoss::Throw() {
 //行動の終わり(プレイヤーから逃げる)
 void FourthBoss::EndMove() {
 	const int l_EndLimit = 300;
+	const float l_AddAngle = 5.0f;
+	float l_AddSpeed = {};
 	m_EndTimer++;
 
+	m_Angle += l_AddAngle;
+	m_Angle2 = m_Angle * (3.14f / 180.0f);
+	m_CircleScale = (sin(m_Angle2) * 200.0f + 50.0f);
+	l_AddSpeed = (sin(m_Angle2) * 1.0f + 2.0f);
+	m_CircleSpeed += l_AddSpeed;
+	
 	//追従
-	Helper::GetInstance()->FollowMove(m_Position, Player::GetInstance()->GetPosition(), m_FollowSpeed);
+	m_AfterPos = Helper::GetInstance()->CircleMove({}, m_CircleScale, m_CircleSpeed);
+
+	m_Position = {
+		Ease(In,Cubic,0.2f,m_Position.x,m_AfterPos.x),
+		m_Position.y,
+		Ease(In,Cubic,0.2f,m_Position.z,m_AfterPos.z),
+	};
 	if (m_EndTimer == l_EndLimit) {
 		_charaState = STATE_INTER;
 		m_EndTimer = {};
 		m_Frame = {};
+		m_Angle = {};
+		m_CircleScale = 30.0f;
+		m_CircleSpeed = {};
 	}
 
 }

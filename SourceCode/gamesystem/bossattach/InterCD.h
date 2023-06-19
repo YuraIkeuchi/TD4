@@ -1,6 +1,7 @@
 #pragma once
 #include "ObjCommon.h"
 #include "InterBullet.h"
+#include "BreakEffect.h"
 enum CDState {
 	CD_BIRTH,
 	CD_STAY,
@@ -22,6 +23,8 @@ protected:
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
+	//CDVロード
+	void CsvLoad();
 	//初期化
 	virtual bool Initialize() = 0;
 	//更新
@@ -43,6 +46,11 @@ protected:
 	void CollideBul(vector<InterBullet*>bullet);
 
 	bool PlayerCollide();
+	
+	//攻撃前のCDのセット
+	void SetCD();
+	//エフェクト発生
+	void BirthEffect();
 protected:
 	//メンバ関数
 	virtual void BirthCD() {};
@@ -61,11 +69,14 @@ public:
 
 	void SetBreakCD(const bool BreakCD) { m_BreakCD = BreakCD; }
 
+	void SetAttackSetCD(const bool AttackSetCD) { m_AttackSetCD = AttackSetCD; }
+
 	void SetCatchPos(const XMFLOAT3 CatchPos) { m_CatchPos = CatchPos; }
 protected:
 	static void (InterCD::* stateTable[])();
 private:
 protected:
+	vector<InterEffect*> effects;
 	//CDの状態
 	int m_CDState = CD_BIRTH;
 
@@ -93,5 +104,8 @@ protected:
 		CATCH_END,
 	};
 
+	bool m_AttackSetCD = false;
 	int m_CatchState = CATCH_SET;
+
+	float m_HP = {};
 };

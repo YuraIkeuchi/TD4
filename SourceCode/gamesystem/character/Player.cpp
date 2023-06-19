@@ -556,8 +556,8 @@ void Player::PlayerHit(const XMFLOAT3& pos) {
 	XMFLOAT2 l_Distance;
 	l_Distance.x = m_Position.x - pos.x + 0.1f;
 	l_Distance.y = m_Position.z - pos.z;
-	m_BoundPower.x = (sin(atan2f(l_Distance.x, l_Distance.y)) * 3.0f);
-	m_BoundPower.y = (cos(atan2f(l_Distance.x, l_Distance.y)) * 3.0f);
+	m_BoundPower.x = (sin(atan2f(l_Distance.x, l_Distance.y)) * 2.0f);
+	m_BoundPower.y = (cos(atan2f(l_Distance.x, l_Distance.y)) * 2.0f);
 }
 //弾かれる処理
 void Player::ReBound() {

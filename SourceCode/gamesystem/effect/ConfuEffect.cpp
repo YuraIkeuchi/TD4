@@ -80,7 +80,7 @@ void ConfuEffect::Emission() {
 			}
 			else {
 				m_Frame = {};
-				m_AfterAlpha = {};
+				m_AfterAlpha = 1.0f;
 				m_EmiState = EMI_SET;
 				m_Alive = false;
 			}

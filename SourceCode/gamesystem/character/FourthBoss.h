@@ -54,7 +54,6 @@ private:
 	void CSVLoad();
 	//ノーツの生成
 	void BirthNote(const std::string& BarrageName);
-
 private:
 	static const int BULLET_NUM = 4;
 	static const int CD_NUM = 4;
@@ -135,9 +134,16 @@ private:
 	int m_CatchCount = {};
 	//ボスがプレイヤーから逃げる時間
 	int m_EndTimer = {};
-	//プレイヤーに混乱を与える時間
-	int m_ConfuTimer = {};
-	
 	//逃げる速さ
 	float m_FollowSpeed = -0.2f;
+
+	//棘の的に使う
+	float m_Angle = 0.0f;
+	float m_Angle2 = 0.0f;
+	//二点の距離
+	float m_Length = {};
+
+	//円運動
+	float m_CircleScale = 30.0f;
+	float m_CircleSpeed = {};
 };
