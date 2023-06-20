@@ -20,7 +20,7 @@ void SelectSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/BGM_boss.wav");
 	Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum() + 1.0f);
 	//ポストエフェクト
-	PlayPostEffect = false;
+	PlayPostEffect = true;
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
 
@@ -87,6 +87,8 @@ void SelectSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 
 	postEffect->SetRadCenter(XMFLOAT2(tex2DPos.m128_f32[0], tex2DPos.m128_f32[1]));
 	postEffect->SetRadPower(camerawork->GetEffectPower());
+	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
+
 	sceneChanger_->Update();
 
 	SelectScene::GetIns()->SceneChange(sceneChanger_.get());
@@ -139,13 +141,6 @@ void SelectSceneActor::BackDraw(DirectXCommon* dxCommon) {
 }
 //ポストエフェクトがかからない
 void SelectSceneActor::FrontDraw(DirectXCommon* dxCommon) {
-
-
-	//ParticleEmitter::GetInstance()->DeathDrawAll();
-
-	if (camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_BEFORE && camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_AFTER_FIRST)
-		ui->Draw();
-
 	sceneChanger_->Draw();	//完全に前に書くスプライト
 	//if (camerawork->GetAppearType() == APPEAR_SEVEN || camerawork->GetAppearType() == APPEAR_EIGHT) {
 	IKESprite::PreDraw();

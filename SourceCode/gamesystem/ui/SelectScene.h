@@ -19,14 +19,16 @@ public:
 
 	enum Stage
 	{
+		
 		FIRST,
 		SECOND,
 		THIRD,
 		FOUR,
 		FIVE,
 		SIX,
-		SEVEN
-	}_stages = FIRST;
+		SEVEN,
+		NON,
+	}_stages = NON;
 public:
 	/**
 	 * \brief 初期化
@@ -59,8 +61,10 @@ private:
 	//オブジェクト数（ステージ数）
 	static constexpr int ObjNum = 7;
 
+	array<unique_ptr<IKEObject3d>, ObjNum>StageObjs = { nullptr };
 	array<unique_ptr<IKETexture>, ObjNum>StageObj={nullptr};
 	array<XMFLOAT3, ObjNum>StageObjPos;
+	array<XMFLOAT3, ObjNum>StageObjRot;
 	array<float, ObjNum>StageObjRotAngle;
 	array<float, ObjNum>StageObjEaseT;
 	array<float, ObjNum>IconColor;
@@ -69,9 +73,9 @@ private:
 
 	enum Select
 	{
-		NON,
+		NOINP,
 		RB,LB
-	}TrigerSelect=NON;
+	}TrigerSelect=NOINP;
 
 	int SelIndex=0;
 
@@ -94,14 +98,14 @@ private:
 	float closeScl = 6500.f;
 	float closeRad = 1500.f;
 	bool k;
-	bool sin = false;;
+	bool sin = false;
 	float SclingSpeed = 55.f, CorrSpeed = 0.48f;
 	bool CloseF;
 	void SetStage(bool judg,string sceneName);
 
 	void RotPedestal();
 
-
+	void ChangeEffect(std::string name,Stage stage,UINT iconnum);
 public:
 	float GetCloseIconRad() { return closeRad; }
 	XMFLOAT3 GetPedestalPos() { return Pedestal->GetPosition(); }

@@ -6,6 +6,7 @@
 #include <HungerGauge.h>
 #include "BackObj.h"
 #include "Menu.h"
+#include "SelectScene.h"
 
 const XMVECTOR kSkyBlue{ 0.f,1.f,1.f,1.f };
 const XMVECTOR kPink{ 0.9f,0.6f,0.8f,1.f };
@@ -34,7 +35,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	groundTex->TextureCreate();
 
 	Menu::GetIns()->Init();
-
+	SelectScene::GetIns()->Init();
 	//各クラス
 	//プレイヤー
 	Player::GetInstance()->InitState({ 0.0f,5.0f,-70.0f });
@@ -184,6 +185,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	//各クラス更新
 	BackObj::GetInstance()->Update();
 
+	SelectScene::GetIns()->Upda();
 	Menu::GetIns()->Upda();
 
 	if (enemymanager->BossDestroy())
@@ -253,7 +255,8 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	
 	postEffect->SetRadCenter(XMFLOAT2(tex2DPos.m128_f32[0], tex2DPos.m128_f32[1]));
 	postEffect->SetRadPower(camerawork->GetEffectPower());
-	postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
+	//postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
+	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 
 
 	sceneChanger_->Update();
@@ -379,6 +382,7 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	//blackwindow->Draw();
 	Menu::GetIns()->Draw();
 	camerawork->feedDraw();
+	SelectScene::GetIns()->Draw_Sprite();
 	IKESprite::PostDraw();
 }
 //IMGuiの描画

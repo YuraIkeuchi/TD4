@@ -17,14 +17,34 @@ void SelectScene::Init()
 	Pedestal->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Pedestal));
 	Pedestal->SetScale({ 300,20,300 });
 
+	for (auto i = 0; i < ObjNum; i++) {
+		StageObjs[i].reset(new IKEObject3d());
+		StageObjs[i]->Initialize();
+	}
+	StageObjs[FIRST]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
+	StageObjs[SECOND]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
+	StageObjs[THIRD]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
+	StageObjs[FOUR]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
+	StageObjs[FIVE]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
+	StageObjs[SIX]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
+	StageObjs[SEVEN]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
+
+
 	BackSkyDome.reset(new IKEObject3d());
 	BackSkyDome->Initialize();
 	BackSkyDome->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Skydome));
 	BackSkyDome->SetScale({ 7.f,7.f,7.f });
 
 
-	ButtonNav_RBLB[0]= IKESprite::Create(ImageManager::BOX, { 0,0 });
-	ButtonNav_RBLB[1]=IKESprite::Create(ImageManager::BOX, { 0,0 });
+	ButtonNav_RBLB[0]= IKESprite::Create(ImageManager::RBBUTTON, { 0,0 });
+	ButtonNav_RBLB[1]=IKESprite::Create(ImageManager::LBBUTTON, { 0,0 });
+
+	ButtonNav_RBLB[0]->SetPosition({ 400,650 });
+	ButtonNav_RBLB[1]->SetPosition({ 200,650 });
+	ButtonNav_RBLB[0]->SetAnchorPoint({ 0.5f,0.5f });
+	ButtonNav_RBLB[1]->SetAnchorPoint({ 0.5f,0.5f });
+	ButtonNav_RBLB[0]->SetSize({ 300,300 });
+	ButtonNav_RBLB[1]->SetSize({ 300,300 });
 
 	//今はいたポリ
 	StageObj[FIRST].reset(IKETexture::Create(ImageManager::SELECT_FIRST, { 0,0,0 }, { 5,5,5 }, { 1,1,1,1 }));
@@ -37,7 +57,7 @@ void SelectScene::Init()
 
 	//ポストエフェクト用
 	BossIcon[FIRST]=IKESprite::Create(ImageManager::CLOSESYTOPON, { 0,0 });
-	BossIcon[SECOND] = IKESprite::Create(ImageManager::BOX, { 0,0 });
+	BossIcon[SECOND] = IKESprite::Create(ImageManager::CLOSEKIDO, { 0,0 });
 	BossIcon[THIRD] = IKESprite::Create(ImageManager::BOX, { 0,0 });
 	BossIcon[FOUR] = IKESprite::Create(ImageManager::BOX, { 0,0 });
 	BossIcon[FIVE] = IKESprite::Create(ImageManager::BOX, { 0,0 });
@@ -54,6 +74,9 @@ void SelectScene::Init()
 		StageObjPos[i].z = Pedestal->GetPosition().z + cosf(StageObjRotAngle[i] * (PI / PI_180)) * PosRad;
 		StageObjPos[i].y = Pedestal->GetPosition().y + 8.f;
 		//BossIcon.
+		StageObjRot[i].y = 90;
+		StageObjs[i]->SetPosition(StageObjPos[i]);
+		StageObjs[i]->SetScale({ 1,1,1 });
 	}
 }
 
@@ -68,7 +91,7 @@ void SelectScene::Upda()
 	Pedestal->SetScale({ 15.f,15.f,15.f });
 	Pedestal->Update();
 
-	if (TrigerSelect == NON) {
+	if (TrigerSelect == NOINP) {
 		if (Input::GetInstance()->TriggerButton(Input::RB)) {
 			SelIndex++;
 			TrigerSelect = RB;
@@ -80,48 +103,43 @@ void SelectScene::Upda()
 		}
 	}
 
-
-	if (!sin && ChangeF)
-	{
-		CloseF = true;
-		if (closeScl <= 0.f) {
-			sin = true;
-			SceneManager::GetInstance()->ChangeScene("FiRST");
-			ChangeF = false;
-		}
-	}
-	if (closeScl >= 10000.f) {
-		CloseF = false;
-		sin = false;
-	}
-
 	CloseIconView(CloseF);
 	Helper::GetInstance()->Clamp(closeScl, 0.f, 12500.f);
 	Helper::GetInstance()->Clamp(closeRad, 0.f, 1500.f);
-
-	BossIcon[FIRST]->SetAnchorPoint({0.5f,0.5f});
-	BossIcon[FIRST]->SetSize({ closeScl,closeScl });
-	BossIcon[FIRST]->SetPosition({ 1280/ 2,720 / 2 });
+	
 
 	RotPedestal();
 
 	if(IconColor[0]>=1.f|| IconColor[1] >= 1.f||IconColor[2]>=1.f|| IconColor[3] >= 1.f
 		|| IconColor[4] >= 1.f|| IconColor[5] >= 1.f|| IconColor[6] >= 1.f)
 	{
-		if (Input::GetInstance()->TriggerButton(Input::B))
-			ChangeF = true;
+		if (Input::GetInstance()->TriggerButton(Input::B)) {
+			if (IconColor[0] >= 1.f)_stages = FIRST;
+			if (IconColor[1] >= 1.f)_stages = SECOND;
+		}
 	}
+
+	ChangeEffect("FIRSTSTAGE", Stage::FIRST, FIRST);
+
+	ChangeEffect("SECONDSTAGE", Stage::SECOND, SECOND);
+
+
+
+
 
 
 	XMFLOAT3 nowSelpos = { Pedestal->GetPosition().x + sinf(180.f * (PI / PI_180)) * PosRad,
 		8.f,Pedestal->GetPosition().z + cosf(180 * (PI / PI_180)) * PosRad };
 
 	for (auto i= 0; i < ObjNum; i++) {
-		if(Collision::GetLength(nowSelpos,StageObjPos[i])<5)
+		if (Collision::GetLength(nowSelpos, StageObjPos[i]) < 5) {
+			StageObjRot[i].y++;
 			IconColor[i] += 0.05f;
-		else
+		}
+		else {
+			StageObjRot[i].y = 90;
 			IconColor[i] -= 0.05f;
-
+		}
 
 		Helper::GetInstance()->Clamp(IconColor[i], 0.3f, 1.f);
 	}
@@ -137,6 +155,11 @@ void SelectScene::Upda()
 		StageObj[i]->SetPosition(StageObjPos[i]);
 		StageObj[i]->SetColor({ 1,1,1,IconColor[i] });
 		StageObj[i]->Update();
+
+		StageObjs[i]->SetColor({ 1,1,1,IconColor[i] });
+		StageObjs[i]->SetRotation({ StageObjRot[i] });
+		StageObjs[i]->SetPosition(StageObjPos[i]);
+		StageObjs[i]->Update();
 	}
 }
 
@@ -147,6 +170,8 @@ void SelectScene::Draw_Obj(DirectXCommon*dxcomn)
 	IKEObject3d::PreDraw();
 	BackSkyDome->Draw();
 	Pedestal->Draw();
+	for (auto i = 0; i < ObjNum; i++)
+		StageObjs[i]->Draw();
 	IKEObject3d::PostDraw();
 
 	IKETexture::PreDraw2(dxcomn,0);
@@ -161,10 +186,16 @@ void SelectScene::Draw_Sprite()
 	//ButtonNav_RBLB[1]->Draw();
 
 	size_t t = ObjNum;
-//	for(auto i=0;i<t;i++)
+	for(auto i=0;i<t;i++)
 	{
-		BossIcon[0]->Draw();
+	//	BossIcon[i]->Draw();
 	}
+	BossIcon[0]->Draw();
+	BossIcon[1]->Draw();
+
+
+	ButtonNav_RBLB[0]->Draw();
+	ButtonNav_RBLB[1]->Draw();
 }
 
 void SelectScene::ResetParam()
@@ -193,7 +224,7 @@ void SelectScene::RotPedestal()
 		}
 	}
 
-	if(TrigerSelect==NON)
+	if(TrigerSelect==NOINP)
 	{
 		IconRotAngle_EaseT = 0.f;
 		for (auto i = 0; i < ObjNum; i++)
@@ -203,7 +234,7 @@ void SelectScene::RotPedestal()
 	{
 		if (Helper::GetInstance()->FrameCheck(IconRotAngle_EaseT, 0.02f))
 		{
-			TrigerSelect = NON;
+			TrigerSelect = NOINP;
 		}
 	}
 	if(Input::GetInstance()->TriggerButton(Input::LB))
@@ -226,7 +257,7 @@ void SelectScene::CloseIconView(bool closeF)
 	//定数わっしょい　良い方法模索中。。。
 	constexpr float texScl = 6500.f;
 	constexpr float MinScl = 2000.f;
-	constexpr float SubRad = 0.48f;
+	constexpr float SubRad = 0.5f;
 
 
 	if (closeF && !sin) {
@@ -247,6 +278,34 @@ void SelectScene::CloseIconView(bool closeF)
 		closeScl += SclingSpeed;
 		closeRad += SclingSpeed * SubRad;
 	}
-
-
 }
+void SelectScene::ChangeEffect(std::string name, Stage stage, UINT iconnum)
+{
+	if (!sin &&_stages==stage)
+	{
+		CloseF = true;
+		if (closeScl <= 0.f) {
+			sin = true;
+			SceneManager::GetInstance()->ChangeScene(name);
+			CloseF = false;
+			//_stages = Stage::NON;
+		}
+	}
+	if (closeScl >= 10000.f) {
+		_stages = Stage::NON;
+		sin = false;
+	}
+
+	if (_stages == stage) {
+		BossIcon[stage]->SetAnchorPoint({ 0.5f,0.5f });
+		BossIcon[stage]->SetSize({ closeScl,closeScl });
+		BossIcon[stage]->SetPosition({ 1280 / 2,720 / 2 });
+	}
+	else
+	{
+		BossIcon[stage]->SetAnchorPoint({ 0.5f,0.5f });
+		BossIcon[stage]->SetSize({ 0,0});
+		BossIcon[stage]->SetPosition({ 1280 / 2,720 / 2 });
+	}
+}
+

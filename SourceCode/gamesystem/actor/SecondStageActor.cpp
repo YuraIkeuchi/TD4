@@ -8,6 +8,7 @@
 #include <algorithm>
 #include "BackObj.h"
 #include "Menu.h"
+#include "SelectScene.h"
 //初期化
 void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	dxCommon->SetFullScreen(true);
@@ -56,6 +57,7 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	lightgroup->SetCircleShadowActive(0, true);
 	lightgroup->SetCircleShadowActive(1, true);
 
+	SelectScene::GetIns()->Init();
 	Menu::GetIns()->Init();
 }
 //更新
@@ -84,8 +86,9 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
 	lightgroup->Update();
 
+	SelectScene::GetIns()->Upda();
 	Menu::GetIns()->Upda();
-	postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
+	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 }
 //描画
 void SecondStageActor::Draw(DirectXCommon* dxCommon) {
@@ -156,9 +159,11 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 			text_->SpriteDraw(dxCommon);
 		}
 	}
+	SelectScene::GetIns()->Draw_Sprite();
 	IKESprite::PostDraw();
 	sceneChanger_->Draw();
 	Menu::GetIns()->Draw();
+
 	camerawork->feedDraw();
 }
 //IMGuiの描画

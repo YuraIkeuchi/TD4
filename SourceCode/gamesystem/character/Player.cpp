@@ -20,7 +20,7 @@ bool Player::Initialize()
 	m_fbxObject->Initialize();
 	m_fbxObject->SetModel(ModelManager::GetInstance()->GetFBXModel(ModelManager::PLAYER));
 	m_fbxObject->LoadAnimation();
-	m_fbxObject->PlayAnimation(0);
+	m_fbxObject->PlayAnimation(2);
 	/*CSV読み込み(CSVファイル名,読み込むパラメータの名前,受け取る値)　今は単一の方のみ対応(int float double charとか)*/
 
 	//spから間接的にアクセスする方法 (Update()内で専用の変数に代入する必要あり)
@@ -88,13 +88,13 @@ void Player::Update()
 			input->TiltPushStick(Input::L_RIGHT, 0.0f) ||
 			input->TiltPushStick(Input::L_LEFT, 0.0f))
 		{
-			m_fbxObject->PlayAnimation(1);
+			//m_fbxObject->PlayAnimation(2);
 			_charaState = CharaState::STATE_RUN;
 		}
 		//何もアクションがなかったらアイドル状態
 		else
 		{
-			m_fbxObject->PlayAnimation(0);
+			//m_fbxObject->PlayAnimation(2);
 			_charaState = CharaState::STATE_IDLE;
 		}
 	}

@@ -49,6 +49,7 @@ public:
 		MENU_FRAME,
 		EXPLANATION,
 		CLOSESYTOPON,
+		CLOSEKIDO,
 		PHOTO_IN,
 		PHOTO_OUT,
 		CIRCLE,
@@ -60,7 +61,8 @@ public:
 		SELECT_FIVE,
 		SELECT_SIX,
 		SELECT_SEVEN,
-
+		RBBUTTON,
+		LBBUTTON,
 
 	};
 	//テクスチャの名前

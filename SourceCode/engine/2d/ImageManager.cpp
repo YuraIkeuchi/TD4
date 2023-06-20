@@ -47,11 +47,14 @@ void ImageManager::SecondLoad2D()
 	IKESprite::LoadTexture(MENU_FRAME, L"Resources/2d/sceneback/TaskFrame.png");
 	IKESprite::LoadTexture(EXPLANATION, L"Resources/2d/sceneback/Explanation.png");
 	IKESprite::LoadTexture(CLOSESYTOPON, L"Resources/2d/objicon/closeSutopon.png");
-
+	IKESprite::LoadTexture(CLOSEKIDO, L"Resources/2d/objicon/closekido.png");
 	IKESprite::LoadTexture(PHOTO_IN, L"Resources/2d/effect/camera_soto.png");
 	IKESprite::LoadTexture(PHOTO_OUT, L"Resources/2d/effect/camera_naka.png");
 	IKESprite::LoadTexture(CIRCLE, L"Resources/2d/objicon/circle.png");
 	IKESprite::LoadTexture(CIRCLECOVER, L"Resources/2d/objicon/circlecover.png");
+	IKESprite::LoadTexture(LBBUTTON, L"Resources/2d/objicon/LB.png");
+	IKESprite::LoadTexture(RBBUTTON, L"Resources/2d/objicon/RB.png");
+
 }
 
 //テクスチャの読み込み
