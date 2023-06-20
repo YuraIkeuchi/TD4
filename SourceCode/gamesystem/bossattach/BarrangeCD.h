@@ -11,9 +11,7 @@ public:
 
 	void BirthCD() override;
 	void StayCD() override;
-	void ThroughCD() override;
 	void CatchCD() override;
-	void ThrowCD() override;
 	void DeathCD() override;
 	void ResPornCD() override;
 public:

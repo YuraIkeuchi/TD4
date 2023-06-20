@@ -5,9 +5,7 @@
 enum CDState {
 	CD_BIRTH,
 	CD_STAY,
-	CD_THROUGH,
 	CD_CATCH,
-	CD_THROW,
 	CD_DEATH,
 	CD_RESPORN,
 };
@@ -46,8 +44,6 @@ protected:
 
 	void CollideBul(vector<InterBullet*>bullet);
 
-	bool PlayerCollide();
-	
 	//攻撃前のCDのセット
 	void SetCD();
 	//エフェクト発生
@@ -56,9 +52,7 @@ protected:
 	//メンバ関数
 	virtual void BirthCD() {};
 	virtual void StayCD() {};
-	virtual void ThroughCD() {};
 	virtual void CatchCD() {};
-	virtual void ThrowCD() {};
 	virtual void DeathCD() {};
 	virtual void ResPornCD() {};
 public:
@@ -87,11 +81,7 @@ protected:
 	float m_Gravity = 0.03f;
 	//キャッチした後のポジション
 	XMFLOAT3 m_CatchPos = {};
-	//投げる間の時間
-	int m_ThrowTimer = {};
-	double m_SpeedX = 0.0f;
-	double m_SpeedZ = 0.0f;
-
+	
 	//リスポーン時間
 	int m_ResPornTimer = {};
 

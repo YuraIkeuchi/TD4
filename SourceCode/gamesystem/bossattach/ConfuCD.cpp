@@ -27,7 +27,6 @@ void ConfuCD::Action() {
 	(this->*stateTable[static_cast<size_t>(m_CDState)])();
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
 	CollideBul(_playerBulA);
-	PlayerCollide();
 	Obj_SetParam();
 	SetCD();
 }
@@ -58,11 +57,6 @@ void ConfuCD::StayCD() {
 
 }
 
-//スルーされたやつ
-void ConfuCD::ThroughCD() {
-
-}
-
 //ボスが手に入れた状態
 void ConfuCD::CatchCD() {
 	if (m_CatchState == CATCH_END) {
@@ -71,29 +65,6 @@ void ConfuCD::CatchCD() {
 	}
 }
 
-//ボスが投げる
-void ConfuCD::ThrowCD() {
-	m_ThrowTimer++;
-	if (m_ThrowTimer == 1) {
-		double sb, sbx, sbz;
-		sbx = Player::GetInstance()->GetPosition().x - m_Position.x;
-		sbz = Player::GetInstance()->GetPosition().z - m_Position.z;
-		sb = sqrt(sbx * sbx + sbz * sbz);
-		m_SpeedX = sbx / sb * 0.8;
-		m_SpeedZ = sbz / sb * 0.8;
-	}
-	else if (m_ThrowTimer > 1) {
-		//プレイヤーにスピード加算
-		m_Position.x += (float)m_SpeedX;
-		m_Position.z += (float)m_SpeedZ;
-		m_Position.y = m_CatchPos.y;
-		if (Helper::GetInstance()->CheckNotValueRange(m_Position.x, -60.0f, 70.0f) || Helper::GetInstance()->CheckNotValueRange(m_Position.z, -65.0f, 65.0f)) {
-			m_CDState = CD_DEATH;
-			m_ThrowTimer = 0;
-		}
-		m_Rotation.y += 3.0f;
-	}
-}
 //消えた
 void ConfuCD::DeathCD() {
 

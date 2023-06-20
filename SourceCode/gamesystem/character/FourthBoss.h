@@ -46,8 +46,6 @@ private:
 	void Confu();
 	//弾幕
 	void Barrage();
-	//投げる
-	void Throw();
 	//行動終わり
 	void EndMove();
 	//CSV読み込み系
@@ -75,7 +73,6 @@ private:
 		STATE_DEBUFF,
 		STATE_CONFU,
 		STATE_BARRA,
-		STATE_THROW,
 		STATE_END
 	};
 
@@ -118,18 +115,6 @@ private:
 	};
 	//動きのインターバル
 	int m_MoveInterVal = {};
-	//CDを投げる際のタイマー
-	int m_ThrowTimer = {};
-
-	//投げる状態
-	enum ThrowState {
-		THROW_SET,
-		THROW_NOW,
-		THROW_END
-	};
-
-	int m_ThrowState = THROW_SET;
-
 	//行動終了の数
 	int m_EndCount = {};
 	//キャッチしたCDの数
@@ -151,4 +136,6 @@ private:
 
 	//弾幕の種類
 	int m_BarraRand = {};
+
+	int m_AttackRand = {};
 };

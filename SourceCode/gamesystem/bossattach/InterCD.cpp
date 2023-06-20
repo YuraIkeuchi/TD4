@@ -6,9 +6,7 @@
 void (InterCD::* InterCD::stateTable[])() = {
 	&InterCD::BirthCD,//生成
 	&InterCD::StayCD, //放置
-	&InterCD::ThroughCD,//スルー
 	&InterCD::CatchCD,//所持
-	&InterCD::ThrowCD,//投げる
 	&InterCD::DeathCD,//なくなった
 	&InterCD::ResPornCD,//りすぽーん
 };
@@ -66,23 +64,6 @@ void InterCD::CollideBul(vector<InterBullet*> bullet)
 			}
 		}
 	}	
-}
-
-//プレイヤーとCDの当たり判定
-bool InterCD::PlayerCollide() {
-	if (m_CDState != CD_THROW)return false;
-	const float l_Radius = 1.0f;
-	if (Collision::CircleCollision(Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z, l_Radius, m_Position.x, m_Position.z, l_Radius)
-		&& Player::GetInstance()->GetDamageInterVal() == 0) {
-		Player::GetInstance()->PlayerHit(m_Position);
-		Player::GetInstance()->RecvDamage(0.5f);
-		return true;
-	}
-	else {
-		return false;
-	}
-
-	return false;
 }
 
 void InterCD::SetCD() {
