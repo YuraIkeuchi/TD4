@@ -289,13 +289,24 @@ void Player::Bullet_Management() {
 	if (((Input::GetInstance()->TriggerButton(Input::RB)) || (Input::GetInstance()->TriggerButton(Input::LB))) && (m_canShot) && (m_ShotTimer == 0))
 	{
 		isShotNow = true;
+		float nowhunger = HungerGauge::GetInstance()->GetNowHunger();
+		if (nowhunger != 0) {
+			m_Skip = false;
+		}
 		if (Input::GetInstance()->TriggerButton(Input::RB)) {
 			if (m_BulletType != BULLET_ATTACK) {
 				m_BulletType++;
+				
+				if (nowhunger <= 0 && m_BulletType == BULLET_ATTACK) {
+					m_BulletType = BULLET_FORROW;
+					m_Skip = true;
+				}
 			}
 			else {
 				m_BulletType = BULLET_FORROW;
 			}
+			
+			
 		}
 		else if (Input::GetInstance()->TriggerButton(Input::LB)) {
 			if (m_BulletType != BULLET_FORROW) {
@@ -303,9 +314,15 @@ void Player::Bullet_Management() {
 			}
 			else {
 				m_BulletType = BULLET_ATTACK;
+				if (nowhunger <= 0 && m_BulletType == BULLET_ATTACK) {
+					m_BulletType = BULLET_SEARCH;
+					m_Skip = true;
+				}
 			}
 		}
 	}
+
+	
 
 	//攻撃
 	//Bが押されたら弾のチャージ
