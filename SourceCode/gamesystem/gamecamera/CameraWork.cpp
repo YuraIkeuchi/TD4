@@ -452,7 +452,7 @@ void CameraWork::SecondBossAppear() {
 		l_AddFrame = 0.05f;
 		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 			//一定時間でカメラを戻す
-			if (Helper::GetInstance()->CheckMin(m_CameraTimer, 50, 1)) {
+			if (Helper::GetInstance()->CheckMin(m_CameraTimer, 100, 1)) {
 				m_AfterEye = { Player::GetInstance()->GetPosition().x,45.0f,Player::GetInstance()->GetPosition().z - 20.0f };
 				m_AfterTarget = { Player::GetInstance()->GetPosition().x,5.0f,Player::GetInstance()->GetPosition().z };
 				m_Frame = {};
@@ -502,11 +502,11 @@ void CameraWork::FourthBossAppear() {
 	else if (spline->GetIndex() >= pointsList.size())
 	{
 		RadEffect += 0.2f;
-		SplineSpeed = 150.0f;
+		SplineSpeed = 180.0f;
 	}
 	else
 	{
-		SplineSpeed = 150.f;
+		SplineSpeed = 180.f;
 	}
 	if (!Finish) {
 

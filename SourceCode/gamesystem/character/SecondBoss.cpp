@@ -225,9 +225,9 @@ void SecondBoss::ImGui_Origin() {
 			wave->ImGuiDraw();
 		}
 	}
-	ImGui::Begin("SECOND");
-	ImGui::Text("Timer:%d", m_StopTimer);
-	ImGui::End();
+	/*ImGui::Begin("SECOND");
+	ImGui::Text("Timer:%d", m_AppearTimer);
+	ImGui::End();*/
 }
 //移動
 void SecondBoss::Move() {
@@ -902,13 +902,13 @@ void SecondBoss::AppearAction() {
 		}
 		m_Rotation.y = Ease(In, Cubic, 0.5f, m_Rotation.y, m_AfterRot.y);
 		if (m_FinishApp) {
-			m_Frame = 0.0f;
+			m_Frame = {};
 			m_AppearState = APPEAR_END;
 			m_AfterRot = { 0.0f,90.0f,0.0f };
 		}
 	}
 	else if (m_AppearState == APPEAR_END) {
-		l_AddFrame = 0.01f;
+		l_AddFrame = 0.02f;
 		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 			m_Frame = 0.0f;
 			m_FinishAppear = true;

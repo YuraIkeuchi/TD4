@@ -78,7 +78,7 @@ protected:
 	//スポットライト
 	XMFLOAT3 spotLightPos[4];
 	XMFLOAT3 spotLightDir[4];
-	float spotLightColor[3] = { 1,1,1 };
+	XMFLOAT3 spotLightColor[4];
 	float spotLightAtten[3] = { 0.0,0.0f,0.0f };
 	float spotLightFactorAngle[2] = { 20.0f,30.0f };
 	//丸影(プレイヤー)

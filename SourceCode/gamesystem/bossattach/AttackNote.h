@@ -74,4 +74,6 @@ private:
 	int m_TargetTimer = {};//oŒ»ŠÔ‚Ì–Ú•W
 
 	int m_Timer = 0;
+
+	float m_Damage = {};
 };

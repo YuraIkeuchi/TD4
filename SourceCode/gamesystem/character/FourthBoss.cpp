@@ -69,10 +69,15 @@ void FourthBoss::SkipInitialize() {
 }
 //CSV
 void FourthBoss::CSVLoad() {
+	auto LimitSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "LIMIT_NUM")));
+
+	m_Limit.resize(LimitSize);
+	LoadCSV::LoadCsvParam_Int("Resources/csv/chara/boss/fourth/fourthboss.csv", m_Limit, "Interval");
+	
 	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "Magnification")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "hp1")));
 	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "HeartTarget")));
-	m_ChoiceInterval = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "ChoiceInterVal")));
+	m_FollowSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "Speed")));
 
 	m_MaxHp = m_HP;
 }
@@ -188,7 +193,7 @@ void FourthBoss::InterValMove() {
 	}
 
 	//
-	if (m_MoveInterVal == 50) {
+	if (m_MoveInterVal == m_Limit[LIMIT_BASE]) {
 		//行動を決めて次の行動に移る
 		m_AttackRand = int(l_RandomMove(mt));
 		if (cd[m_AttackRand]->GetCDState() != CD_STAY) {
@@ -206,17 +211,16 @@ void FourthBoss::InterValMove() {
 void FourthBoss::Choice() {
 	const float l_AddAngle = 5.0f;
 	float l_AddFrame = 0.001f;
-	const float l_FollowSpeed = 0.6f;
 	//二点間の距離計算
 	m_Length = Helper::GetInstance()->ChechLength({ m_Position.x,0.0f,m_Position.z }, { m_AfterPos.x,0.0f,m_AfterPos.z });
 	//次のCDを狙う
 	if (m_Length > 0.5f) {
-		Helper::GetInstance()->FollowMove(m_Position, m_AfterPos, l_FollowSpeed);
+		Helper::GetInstance()->FollowMove(m_Position, m_AfterPos, m_FollowSpeed);
 	}
 	else {
 		//行動を決めて次の行動に移る
 		m_StopTimer++;
-		if (m_StopTimer > 50) {
+		if (m_StopTimer > m_Limit[LIMIT_BASE]) {
 			m_StopTimer = 0;
 			m_Angle = {};
 			if (cd[m_AttackRand]->GetCDState() != CD_STAY) {
@@ -306,10 +310,10 @@ void FourthBoss::Confu() {
 		confueffect->SetAlive(true);
 		Player::GetInstance()->SetConfu(true);
 		if (isStrong) {
-			l_ConfuTimer = 500;
+			l_ConfuTimer = m_Limit[LIMIT_STRONG_CONFU];
 		}
 		else {
-			l_ConfuTimer = 200;
+			l_ConfuTimer = m_Limit[LIMIT_CONFU];
 		}
 		Player::GetInstance()->SetConfuTimer(l_ConfuTimer);
 	}
@@ -350,7 +354,7 @@ void FourthBoss::Barrage() {
 		}
 
 		//一定フレームで終了
-		if (m_RotTimer == 600) {
+		if (m_RotTimer == m_Limit[LIMIT_BARRA]) {
 			cd[CD_BARRA]->SetCDState(CD_DEATH);
 			m_RotTimer = {};
 			m_CheckTimer = {};
