@@ -45,6 +45,7 @@ private:
 	static void (CameraWork::* stateTable[])();
 public:
 	CameraWork(XMFLOAT3 eye = { 2.0f, 30.0f, 2.0f }, XMFLOAT3 target = { 2.0f, 0.0f, 3.0f });
+	void SplineSet();
 	void Update(DebugCamera* camera);//更新
 	void ImGuiDraw();
 
@@ -84,9 +85,13 @@ private://各ボスの登場カメラ
 
 	void SecondBossAppear();
 
+	void FourthBossAppear();
+
 	void FirstBossDead_AfterFeed();
 	//円運動のカメラセットの際のやつ
-	void SetCircleCamera();
+	void SetCircleCameraTarget();
+	//円運動のカメラセットの際のやつ
+	void SetCircleCameraEye(const XMFLOAT3 target);
 public:
 	bool Finish;
 	int Timer_first=1;

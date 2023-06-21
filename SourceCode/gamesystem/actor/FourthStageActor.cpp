@@ -38,7 +38,8 @@ void FourthStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	text_->SelectText(TextManager::ANGER_TALK);
 	camerawork->SetBoss(enemymanager->GetBoss());
 	camerawork->SetCameraState(CAMERA_BOSSAPPEAR);
-	camerawork->SetSceneName("SECONDSTAGE");
+	camerawork->SetSceneName("FOURTHSTAGE");
+	camerawork->SplineSet();
 	camerawork->Update(camera);
 	ui = std::make_unique<UI>();
 	ui->Initialize();
@@ -56,10 +57,28 @@ void FourthStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 
 	lightgroup->SetCircleShadowActive(0, true);
 	lightgroup->SetCircleShadowActive(1, true);
+
+	//丸影のためのやつ
+	lightgroup->SetDirLightActive(0, false);
+	lightgroup->SetDirLightActive(1, false);
+	lightgroup->SetDirLightActive(2, false);
+	for (int i = 0; i < SPOT_NUM; i++) {
+		lightgroup->SetSpotLightActive(i, true);
+	}
+
+	spotLightPos[0] = { 20,  10, 60 };
+	spotLightPos[1] = { 20,  10,  0 };
+	spotLightPos[2] = { -20, 10, 60 };
+	spotLightPos[3] = { -20, 10,  0 };
+
+	spotLightDir[0] = { -2, -1, -2 };
+	spotLightDir[1] = { -2, -1, 2 };
+	spotLightDir[2] = { 2, -1, -2 };
+	spotLightDir[3] = { 2, -1, 2 };
 }
 //更新
 void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
-
+	const float l_AddAngle = 5.0f;
 	//関数ポインタで状態管理
 	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
 	sceneChanger_->Update();
@@ -81,8 +100,24 @@ void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	lightgroup->SetCircleShadowCasterPos(1, XMFLOAT3({ enemymanager->GetBoss()->GetPosition().x, 	0.0f, 	enemymanager->GetBoss()->GetPosition().z }));
 	lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
 	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
+	
+	//sin波によって上下に動く
+	m_Angle += l_AddAngle;
+	m_Angle2 = m_Angle * (3.14f / 180.0f);
+	m_AddPos = (sin(m_Angle2) * 10.0f);
+	//for (int i = 0; i < 4; i++) {
+	//	spotLightPos[i].x += m_AddPos;
+	//	spotLightPos[i].z += m_AddPos;
+	//}
+	///スポットライト
+	for (int i = 0; i < SPOT_NUM; i++) {
+		lightgroup->SetSpotLightDir(i, XMVECTOR({ spotLightDir[i].x,spotLightDir[i].y,spotLightDir[i].z,0}));
+		lightgroup->SetSpotLightPos(i, spotLightPos[i]);
+		lightgroup->SetSpotLightColor(i, XMFLOAT3(spotLightColor));
+		lightgroup->SetSpotLightAtten(i, XMFLOAT3(spotLightAtten));
+		lightgroup->SetSpotLightFactorAngle(i, XMFLOAT2(spotLightFactorAngle));
+	}
 	lightgroup->Update();
-
 	Menu::GetIns()->Upda();
 	postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
 }
@@ -162,10 +197,20 @@ void FourthStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void FourthStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	Player::GetInstance()->ImGuiDraw();
+	ImGui::Begin("Light");
+	ImGui::SliderFloat("LightX0", &spotLightDir[0].x, -3, 3);
+	ImGui::SliderFloat("LightZ0", &spotLightDir[0].z, -3, 3);
+	ImGui::SliderFloat("LightX1", &spotLightDir[1].x, -3, 3);
+	ImGui::SliderFloat("LightZ1", &spotLightDir[1].z, -3, 3);
+	ImGui::SliderFloat("LightX2", &spotLightDir[2].x, -3, 3);
+	ImGui::SliderFloat("LightZ2", &spotLightDir[2].z, -3, 3);
+	ImGui::SliderFloat("LightX3", &spotLightDir[3].x, -3, 3);
+	ImGui::SliderFloat("LightZ3", &spotLightDir[3].z, -3, 3);
+	ImGui::End();
+	//Player::GetInstance()->ImGuiDraw();
 	//loadobj->ImGuiDraw();
-	//camerawork->ImGuiDraw();
-	enemymanager->ImGuiDraw();
+	camerawork->ImGuiDraw();
+	//enemymanager->ImGuiDraw();
 	//loadobj->ImGuiDraw();
 	//SceneSave::GetInstance()->ImGuiDraw();
 }

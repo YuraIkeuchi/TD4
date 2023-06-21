@@ -12,27 +12,52 @@ CameraWork::CameraWork(XMFLOAT3 eye, XMFLOAT3 target) {
 
 	Feed* feed_ = new Feed();
 	feed.reset(feed_);
-
+}
+void CameraWork::SplineSet() {
+	if (SceneName == "FIRSTSTAGE") {
 #pragma region First
-	{
-		if (pointsList.size() == 0) {
-			pointsList.emplace_back(XMFLOAT3{ 150,5,0 });
-			pointsList.emplace_back(XMFLOAT3{ 130,5,120 });
+		{
+			if (pointsList.size() == 0) {
+				pointsList.emplace_back(XMFLOAT3{ 150,5,0 });
+				pointsList.emplace_back(XMFLOAT3{ 130,5,120 });
 
-			pointsList.emplace_back(XMFLOAT3{ 0,5,120 });
+				pointsList.emplace_back(XMFLOAT3{ 0,5,120 });
 
-			pointsList.emplace_back(XMFLOAT3{ -150,5,100 });
+				pointsList.emplace_back(XMFLOAT3{ -150,5,100 });
 
 
-			pointsList.emplace_back(XMFLOAT3{ 0,2,180 });
-			pointsList.emplace_back(XMFLOAT3{ 0,10,90 });
-			pointsList.emplace_back(XMFLOAT3{ 0,30,0 });
-		
+				pointsList.emplace_back(XMFLOAT3{ 0,2,180 });
+				pointsList.emplace_back(XMFLOAT3{ 0,10,90 });
+				pointsList.emplace_back(XMFLOAT3{ 0,30,0 });
+
+			}
+			spline = new Spline();
+			spline->Init(pointsList, static_cast<int>(pointsList.size()));
 		}
-		spline = new Spline();
-		spline->Init(pointsList, static_cast<int>(pointsList.size()));
-	}
 #pragma endregion
+	}
+	else if (SceneName == "FOURTHSTAGE") {
+#pragma region First
+		{
+			if (pointsList.size() == 0) {
+				pointsList.emplace_back(XMFLOAT3{ 150,5,0 });
+				pointsList.emplace_back(XMFLOAT3{ 130,5,120 });
+
+				pointsList.emplace_back(XMFLOAT3{ 0,155,120 });
+
+				pointsList.emplace_back(XMFLOAT3{ -150,5,100 });
+
+
+				pointsList.emplace_back(XMFLOAT3{ 0,2,180 });
+				pointsList.emplace_back(XMFLOAT3{ 0,10,90 });
+				pointsList.emplace_back(XMFLOAT3{ 0,30,0 });
+
+			}
+			spline = new Spline();
+			spline->Init(pointsList, static_cast<int>(pointsList.size()));
+		}
+#pragma endregion
+	}
 }
 /*CharaStateのState並び順に合わせる*/
 void (CameraWork::* CameraWork::stateTable[])() = {
@@ -79,6 +104,9 @@ void CameraWork::BossAppear() {
 	}
 	else if (SceneName == "SECONDSTAGE") {
 		SecondBossAppear();
+	}
+	else if (SceneName == "FOURTHSTAGE") {
+		FourthBossAppear();
 	}
 	if (Input::GetInstance()->TriggerButton(Input::A)) {
 		m_CameraSkip=true;
@@ -223,7 +251,10 @@ void CameraWork::EditorCamera()
 //ImGui
 void CameraWork::ImGuiDraw() {
 	ImGui::Begin("Camera");
-	ImGui::Text("Death:%d", DeathTimer);
+	ImGui::Text("CameraApp:%d", m_AppearType);
+	ImGui::Text("Scale,:%f", m_CameraScale);
+	ImGui::Text("Speed,:%f", m_CameraSpeed);
+	ImGui::Text("POSY:%f", m_eyePos.y);
 	ImGui::End();
 }
 
@@ -310,7 +341,6 @@ void CameraWork::FirstBossDead_AfterFeed()
 {
 	
 }
-
 //2個目のボスのカメラ
 void CameraWork::SecondBossAppear() {
 	float l_AddFrame = 0.0f;
@@ -329,7 +359,7 @@ void CameraWork::SecondBossAppear() {
 			m_AppearType = APPEAR_SECOND;
 		}
 
-		SetCircleCamera();
+		SetCircleCameraTarget();
 	}
 	//右を見る
 	else if (m_AppearType == APPEAR_SECOND) {
@@ -342,7 +372,7 @@ void CameraWork::SecondBossAppear() {
 	
 		m_CameraSpeed = Ease(In, Cubic, m_Frame, m_CameraSpeed, m_AfterSpeed);
 
-		SetCircleCamera();
+		SetCircleCameraTarget();
 	}
 	//左を見る
 	else if (m_AppearType == APPEAR_THIRD) {
@@ -356,7 +386,7 @@ void CameraWork::SecondBossAppear() {
 	
 		m_CameraSpeed = Ease(In, Cubic, m_Frame, m_CameraSpeed, m_AfterSpeed);
 
-		SetCircleCamera();
+		SetCircleCameraTarget();
 	}
 	//上を見る
 	else if (m_AppearType == APPEAR_FOURTH) {
@@ -459,13 +489,42 @@ void CameraWork::SecondBossAppear() {
 		};
 	}
 }
-
+//4つ目のボスの登場
+void CameraWork::FourthBossAppear() {
+	const float l_AddFrame = 0.1f;
+	if (m_AppearType == APPEAR_START) {
+		m_CameraScale = 40.0f;
+		m_CameraSpeed = 30.0f;
+		m_AppearType = APPEAR_SECOND;
+		m_eyePos = { 0.0f,40.0f,0.0f };
+	}
+	else if (m_AppearType == APPEAR_SECOND) {
+		m_CameraScale = Ease(In, Cubic, l_AddFrame, m_CameraScale, 5.0f);
+		m_CameraSpeed = Ease(In, Cubic, l_AddFrame, m_CameraSpeed, 360.0f);
+		SetCircleCameraEye(boss->GetPosition());
+		
+		m_eyePos.y = Ease(In, Cubic, l_AddFrame, m_eyePos.y, 2.0f);
+		if (m_eyePos.y == 2.0f) {
+			m_AppearType = APPEAR_THIRD;
+		}
+	}
+}
 //円運動の際のカメラ位置更新
-void CameraWork::SetCircleCamera() {
+void CameraWork::SetCircleCameraTarget() {
 	//円運動の計算
 	m_CameraRadius = m_CameraSpeed * m_PI / 180.0f;
 	m_CameraCircleX = cosf(m_CameraRadius) * m_CameraScale;
 	m_CameraCircleZ = sinf(m_CameraRadius) * m_CameraScale;
 	m_targetPos.x = m_CameraCircleX;
 	m_targetPos.z = m_CameraCircleZ;
+}
+//円運動の際のカメラ位置更新
+void CameraWork::SetCircleCameraEye(const XMFLOAT3 target) {
+	//円運動の計算
+	m_CameraRadius = m_CameraSpeed * m_PI / 180.0f;
+	m_CameraCircleX = cosf(m_CameraRadius) * m_CameraScale;
+	m_CameraCircleZ = sinf(m_CameraRadius) * m_CameraScale;
+	m_eyePos.x = m_CameraCircleX;
+	m_eyePos.z = m_CameraCircleZ;
+	m_targetPos = target;
 }

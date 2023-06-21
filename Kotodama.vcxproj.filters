@@ -792,9 +792,6 @@
     <ClInclude Include="SourceCode\engine\2d\ShadowMap.h">
       <Filter>engine\2d\PostEffect</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\gamecamera\CameraWork.h">
-      <Filter>gamesystem\gamecamera</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\bossattach\InterStamp.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\InterStamp.h">
@@ -915,6 +912,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\effect\NoteEffect.h">
       <Filter>gamesystem\effect\Note</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\gamecamera\CameraWork.h">
+      <Filter>gamesystem\gamecamera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

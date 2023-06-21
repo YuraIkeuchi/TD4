@@ -77,6 +77,7 @@ float4 main(VSOutput input) : SV_TARGET
 		if (spotLights[i].active)
 		{
 			// ライトへの方向ベクトル
+			float m_AddPower = 3.0f;
 			float3 lightv = spotLights[i].lightpos - input.worldpos.xyz;
 			float d = length(lightv);
 			lightv = normalize(lightv);
@@ -100,9 +101,9 @@ float4 main(VSOutput input) : SV_TARGET
 			// 反射光ベクトル
 			float3 reflect = normalize(-lightv + 2 * dotlightnormal * input.normal);
 			// 拡散反射光
-			float3 diffuse = dotlightnormal * m_diffuse;
+			float3 diffuse = dotlightnormal * (m_diffuse * m_AddPower);
 			// 鏡面反射光
-			float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * m_specular;
+			float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * (m_specular * m_AddPower);
 
 			// 全て加算する
 			shadecolor.rgb += atten * (diffuse + specular) * spotLights[i].lightcolor;

@@ -37,7 +37,7 @@ struct PointLight
 };
 
 // スポットライトの数
-static const int SPOTLIGHT_NUM = 3;
+static const int SPOTLIGHT_NUM = 80;
 
 struct SpotLight
 {
