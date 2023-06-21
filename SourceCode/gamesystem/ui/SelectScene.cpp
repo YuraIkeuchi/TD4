@@ -10,6 +10,50 @@ SelectScene* SelectScene::GetIns()
 	return &ins;
 }
 
+void SelectScene::ResetParama()
+{
+	ButtonNav_Challenge_Cancel[0]->SetPosition({ 400,650 });
+	ButtonNav_Challenge_Cancel[1]->SetPosition({ 200,650 });
+	for (auto i = 0; i < 2; i++)
+	{
+		ButtonNav_Challenge_Cancel[i]->SetAnchorPoint({ 0.5f,0.5f });
+		ButtonNav_Challenge_CancelScl[i] = { 200,150 };
+		ButtonNav_Challenge_CancelColAlpha[i] = 1.f;
+	}
+
+	constexpr float PosRad = 20.f;
+	for (auto i = 0; i < ObjNum; i++)
+	{
+		TipsPosY[i] = -360.f;
+		StageObjRotAngle[i] = static_cast<float>(i) * (360.f / static_cast<float>(ObjNum)) + 180.f;
+		//位置の初期化
+		StageObjPos[i].x = Pedestal->GetPosition().x + sinf(StageObjRotAngle[i] * (PI / PI_180)) * PosRad;
+		StageObjPos[i].z = Pedestal->GetPosition().z + cosf(StageObjRotAngle[i] * (PI / PI_180)) * PosRad;
+		StageObjPos[i].y = Pedestal->GetPosition().y + 8.f;
+		//BossIcon.
+		StageObjRot[i].y = 90;
+		StageObjs[i]->SetPosition(StageObjPos[i]);
+		StageObjs[i]->SetScale({ 1,1,1 });
+	}
+	StageObjs[SECOND]->SetScale({ 4,4,4 });
+	StageObjs[FOUR]->SetScale({ 0.2f,0.2f,0.2f });
+
+	TrigerSelect = NOINP;
+	CloseF = false;
+
+	closeScl = 6500.f;
+	closeRad = 1500.f;
+
+
+	for (auto i = 0; i < ObjNum; i++) {
+		TipsAct[i] = false;
+		TipsPosY[i] = -360.f;
+	}
+
+	sin = false;
+	_stages = Stage::NON;
+}
+
 void SelectScene::Init()
 {
 	Pedestal.reset(new IKEObject3d());
@@ -23,8 +67,8 @@ void SelectScene::Init()
 	}
 	StageObjs[FIRST]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
 	StageObjs[SECOND]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::KIDO_OBJ));
-	StageObjs[THIRD]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::DJ));
-	StageObjs[FOUR]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
+	StageObjs[THIRD]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::MobUsa));
+	StageObjs[FOUR]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::DJ));
 	StageObjs[FIVE]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
 	StageObjs[SIX]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
 	StageObjs[SEVEN]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
@@ -51,10 +95,13 @@ void SelectScene::Init()
 
 	ButtonNav_Challenge_Cancel[0]->SetPosition({ 400,650 });
 	ButtonNav_Challenge_Cancel[1]->SetPosition({ 200,650 });
-	ButtonNav_Challenge_Cancel[0]->SetAnchorPoint({ 0.5f,0.5f });
-	ButtonNav_Challenge_Cancel[1]->SetAnchorPoint({ 0.5f,0.5f });
-	ButtonNav_Challenge_Cancel[0]->SetSize({ 200,150 });
-	ButtonNav_Challenge_Cancel[1]->SetSize({ 200,150 });
+	for(auto i=0;i<2;i++)
+	{
+		ButtonNav_Challenge_Cancel[i]->SetAnchorPoint({ 0.5f,0.5f });
+		ButtonNav_Challenge_CancelScl[i]={ 200,150 };
+		ButtonNav_Challenge_CancelColAlpha[i] = 1.f;
+	}
+
 
 	//今はいたポリ
 	StageObj[FIRST]=IKESprite::Create(ImageManager::tip1, { 0,0 });
@@ -68,8 +115,8 @@ void SelectScene::Init()
 	//ポストエフェクト用
 	BossIcon[FIRST]=IKESprite::Create(ImageManager::CLOSESYTOPON, { 0,0 });
 	BossIcon[SECOND] = IKESprite::Create(ImageManager::CLOSEKIDO, { 0,0 });
-	BossIcon[THIRD] = IKESprite::Create(ImageManager::BOX, { 0,0 });
-	BossIcon[FOUR] = IKESprite::Create(ImageManager::BOX, { 0,0 });
+	BossIcon[THIRD] = IKESprite::Create(ImageManager::CLOSECAMERA, { 0,0 });
+	BossIcon[FOUR] = IKESprite::Create(ImageManager::CLOSEDJ, { 0,0 });
 	BossIcon[FIVE] = IKESprite::Create(ImageManager::BOX, { 0,0 });
 	BossIcon[SIX] = IKESprite::Create(ImageManager::BOX, { 0,0 });
 	BossIcon[SEVEN] = IKESprite::Create(ImageManager::BOX, { 0,0 });
@@ -89,7 +136,7 @@ void SelectScene::Init()
 		StageObjs[i]->SetScale({ 1,1,1 });
 	}
 	StageObjs[SECOND]->SetScale({ 4,4,4});
-	StageObjs[THIRD]->SetScale({ 0.2f,0.2f,0.2f});
+	StageObjs[FOUR]->SetScale({ 0.2f,0.2f,0.2f});
 
 }
 
@@ -133,6 +180,8 @@ void SelectScene::Upda()
 		if (Input::GetInstance()->TriggerButton(Input::B)) {
 			if (IconColor[0] >= 1.f)TipsAct[FIRST] = true;
 			if (IconColor[1] >= 1.f)TipsAct[SECOND] = true;
+			if (IconColor[2] >= 1.f)TipsAct[THIRD] = true;
+			if (IconColor[3] >= 1.f)TipsAct[FOUR] = true;
 		}
 	}
 
@@ -140,8 +189,9 @@ void SelectScene::Upda()
 
 	ChangeEffect("SECONDSTAGE", Stage::SECOND, SECOND);
 
+	ChangeEffect("THIRDSTAGE", Stage::THIRD, THIRD);
 
-
+	ChangeEffect("FOURTHSTAGE", Stage::FOUR, FOUR);
 
 
 
@@ -176,7 +226,7 @@ void SelectScene::Upda()
 		StageObjs[i]->SetColor({ 1,1,1,IconColor[i] });
 		StageObjs[i]->SetRotation({ StageObjRot[i] });
 
-		StageObjs[THIRD]->SetRotation({ 0,StageObjRot[THIRD].y,90 });
+		StageObjs[FOUR]->SetRotation({ 0,StageObjRot[FOUR].y,90 });
 		StageObjs[i]->SetPosition(StageObjPos[i]);
 		StageObjs[i]->Update();
 	}
@@ -210,7 +260,8 @@ void SelectScene::Draw_Sprite()
 
 	BossIcon[0]->Draw();
 	BossIcon[1]->Draw();
-
+	BossIcon[2]->Draw();
+	BossIcon[3]->Draw();
 }
 
 void SelectScene::Draw_SpriteBack()
@@ -227,6 +278,32 @@ void SelectScene::Draw_SpriteBack()
 			TipsPosY[6] >= 360.f) {
 			ButtonNav_Challenge_Cancel[0]->SetPosition({ 700,500 });
 			ButtonNav_Challenge_Cancel[1]->SetPosition({ 500,500 });
+
+			if (!JudgCancel&& Input::GetInstance()->TriggerButton(Input::B))
+				JudgChal = true;
+			if (!JudgChal&& Input::GetInstance()->TriggerButton(Input::X))
+				JudgChal = true;
+
+			if(JudgChal)
+			{
+				ButtonNav_Challenge_CancelScl[0].x += 5.0f;
+				ButtonNav_Challenge_CancelScl[0].y += 5.0f;
+				ButtonNav_Challenge_CancelColAlpha[0] -= 0.02f;
+				ButtonNav_Challenge_CancelColAlpha[1] -= 0.04f;
+
+			}
+			if(JudgCancel)
+			{
+				ButtonNav_Challenge_CancelScl[1].x += 5.0f;
+				ButtonNav_Challenge_CancelScl[1].y += 5.0f;
+				ButtonNav_Challenge_CancelColAlpha[1] -= 0.02f;
+				ButtonNav_Challenge_CancelColAlpha[0] -= 0.04f;
+			}
+			ButtonNav_Challenge_Cancel[0]->SetSize(ButtonNav_Challenge_CancelScl[0]);
+			ButtonNav_Challenge_Cancel[1]->SetSize(ButtonNav_Challenge_CancelScl[1]);
+			ButtonNav_Challenge_Cancel[0]->SetColor({ 1,1,1,ButtonNav_Challenge_CancelColAlpha[0] });
+			ButtonNav_Challenge_Cancel[1]->SetColor({ 1,1,1,ButtonNav_Challenge_CancelColAlpha[1] });
+
 			ButtonNav_Challenge_Cancel[0]->Draw();
 			ButtonNav_Challenge_Cancel[1]->Draw();
 		}
@@ -346,34 +423,34 @@ void SelectScene::ChangeEffect(std::string name, Stage stage, UINT iconnum)
 	}
 }
 
-void SelectScene::ViewTips()
+void SelectScene::TipsPosUpda(Stage stage)
 {
-if(TipsAct[FIRST] && _stages != FIRST)
-{
-	if (TipsPosY[FIRST] >= 360.f) {
-		if (Input::GetInstance()->TriggerButton(Input::B))_stages = FIRST;
-	else if (Input::GetInstance()->TriggerButton(Input::X))TipsAct[FIRST] = false;
-	}
+	if (TipsAct[stage] && _stages != stage)
+	{
+		if (TipsPosY[stage] >= 360.f) {
+			if (Input::GetInstance()->TriggerButton(Input::B))_stages = stage;
+			else if (Input::GetInstance()->TriggerButton(Input::X))TipsAct[stage] = false;
+		}
 	}
 
-if (TipsAct[SECOND]&&_stages!=SECOND)
-{
-	if (TipsPosY[SECOND] >= 360.f) {
-		if (Input::GetInstance()->TriggerButton(Input::B))_stages = SECOND;
-		else if (Input::GetInstance()->TriggerButton(Input::X))TipsAct[SECOND] = false;
-	}
 }
 
+void SelectScene::ViewTips()
+{
+	TipsPosUpda(FIRST);
+	TipsPosUpda(SECOND);
+	TipsPosUpda(THIRD);
+	TipsPosUpda(FOUR);
+	//TipsPosUpda();
+
+constexpr float AddVal = 20.f;
 
 for (auto i = 0; i < ObjNum; i++) {
 	if (TipsAct[i])
-	{
-		TipsPosY[i] += 20.f;
-	}
+	TipsPosY[i] += AddVal;
 	else
-	{
-		TipsPosY[i] -= 20.f;
-	}
+	TipsPosY[i] -= AddVal;
+	
 	Helper::GetInstance()->Clamp(TipsPosY[i], -360.f, 360.f);
 }
 

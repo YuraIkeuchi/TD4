@@ -8,6 +8,7 @@
 #include <algorithm>
 #include "BackObj.h"
 #include "Menu.h"
+#include "SelectScene.h"
 //‰Šú‰»
 void FourthStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	dxCommon->SetFullScreen(true);
@@ -43,6 +44,7 @@ void FourthStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	ui = std::make_unique<UI>();
 	ui->Initialize();
 
+	SelectScene::GetIns()->Init();
 	Menu::GetIns()->Init();
 	ui->SetBoss(enemymanager->GetBoss());
 	BackObj::GetInstance()->Initialize();
@@ -83,8 +85,9 @@ void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
 	lightgroup->Update();
 
+	SelectScene::GetIns()->Upda();
 	Menu::GetIns()->Upda();
-	postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
+	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 }
 //•`‰æ
 void FourthStageActor::Draw(DirectXCommon* dxCommon) {
@@ -93,11 +96,11 @@ void FourthStageActor::Draw(DirectXCommon* dxCommon) {
 	if (PlayPostEffect) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
+		FrontDraw(dxCommon);
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
-		FrontDraw(dxCommon);
 		ImGuiDraw(dxCommon);
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
@@ -156,9 +159,12 @@ void FourthStageActor::FrontDraw(DirectXCommon* dxCommon) {
 		}
 	}
 	IKESprite::PostDraw();
-	sceneChanger_->Draw();
+	IKESprite::PreDraw();
+	//blackwindow->Draw();
 	Menu::GetIns()->Draw();
 	camerawork->feedDraw();
+	SelectScene::GetIns()->Draw_Sprite();
+	IKESprite::PostDraw();
 }
 //IMGui‚Ì•`‰æ
 void FourthStageActor::ImGuiDraw(DirectXCommon* dxCommon) {

@@ -97,11 +97,11 @@ void SecondStageActor::Draw(DirectXCommon* dxCommon) {
 	if (PlayPostEffect) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
+		FrontDraw(dxCommon);
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
-		FrontDraw(dxCommon);
 		ImGuiDraw(dxCommon);
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();

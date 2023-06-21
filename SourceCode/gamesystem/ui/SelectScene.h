@@ -56,6 +56,13 @@ public:
 	void CloseIconView(bool closeF);
 
 	void ViewTips();
+
+	/**
+	 * \brief NONÇÃÇ∆Ç´èâä˙âªóp
+	 */
+	void ResetParama();
+
+	void TipsPosUpda(Stage stage);
 private:
 	//ìyë‰
 	unique_ptr<IKEObject3d>Pedestal=nullptr;
@@ -89,6 +96,10 @@ private:
 private:
 	array<unique_ptr<IKESprite>, 2>ButtonNav_RBLB;
 	array<unique_ptr<IKESprite>, 2>ButtonNav_Challenge_Cancel;
+	array<XMFLOAT2, 2>ButtonNav_Challenge_CancelScl;
+	array<float, 2>ButtonNav_Challenge_CancelColAlpha;
+	bool JudgChal,JudgCancel;
+
 	array<unique_ptr<IKESprite>, ObjNum>StageName;
 	array<unique_ptr<IKESprite>, ObjNum>BossIcon;
 private:
