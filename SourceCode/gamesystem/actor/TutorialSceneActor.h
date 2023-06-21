@@ -31,6 +31,7 @@ private:
 		TEXT_LAST,
 		MAINTUTORIAL,
 		COMPLETE,
+		SKIP,
 	}nowstate_=state::INTORO;
 
 	static void (TutorialSceneActor::* stateTable[])();
@@ -49,6 +50,7 @@ private:
 	void TextLastState();
 	void MainTutorialState();
 	void CompleteState();
+	void Skip();
 
 
 public:
@@ -114,6 +116,7 @@ private:
 	float BosscircleShadowDir[3] = { 0,-1,0 };
 	float BosscircleShadowAtten[3] = { 0.5f,0.6f,0.0f };
 	float BosscircleShadowFactorAngle[2] = { 0.0f, 2.0f };
+	bool skip = false;
 private://便利関数
 	bool Clear(bool mission,int waitTimerMax);
 

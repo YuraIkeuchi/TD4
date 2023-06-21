@@ -199,11 +199,6 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	ColEnemy(enemymanager->GetBulEnemy());
 	loadobj->FirstUpdate();
 	ParticleEmitter::GetInstance()->Update();
-	if (input->TriggerKey(DIK_X)) {
-		Audio::GetInstance()->StopWave(1);
-		SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
-
-	}
 
 	//カメラワークのセット
 	if (enemymanager->BossDestroy())
