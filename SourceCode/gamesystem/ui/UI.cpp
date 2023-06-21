@@ -77,34 +77,71 @@ void UI::Update() {
 	TexList[HeartTwo].Color = { 1,0,0,1 };
 	TexList[PlayerCircle].Rotation = m_PlayerCircleRot;
 	bullet_type_ = Player::GetInstance()->GetBulletType();
+	float nowhunger = HungerGauge::GetInstance()->GetNowHunger();
+	bool skip = Player::GetInstance()->GetSkip();
 	if (bullet_type_ == Bullettype::BULLET_FORROW) {
 		m_limit = 0.f;
+		if (skip == true) {
+			m_limit = 360.f;
+		}
 	}
 	else if (bullet_type_ == Bullettype::BULLET_SEARCH) {
 		m_limit = 120.f;
+		if (skip == true) {
+			m_limit=-240.f;
+		}
 	}
 	else if (bullet_type_ == Bullettype::BULLET_ATTACK) {
 		m_limit = 240.f;
+		
 	}
 	int ans = bullet_type_ - oldbullet_type_;
+	if (m_limit == -240) {
+		m_limit = 120;
+	}
+
+	if (m_limit == 360) {
+		m_limit = 0;
+	}
 	if (m_PlayerCircleRot != m_limit) {
-		if(ans == 1 || ans == -2) {
-			m_PlayerCircleRot += 30.f;
-			if (m_PlayerCircleRot > 360.f) {
-				m_PlayerCircleRot = 0.f;
+		if (ans == 1 || ans == -2) {
+			if (skip == false) {
+				m_PlayerCircleRot += 30.f;
+				if (m_PlayerCircleRot > 360.f) {
+					m_PlayerCircleRot = 0.f;
+				}
+			}
+			else if(skip==true) {
+				m_PlayerCircleRot -= 30.f;
+				if (m_PlayerCircleRot < -240.f) {
+					m_PlayerCircleRot = 120.f;
+					skip = false;
+					Player::GetInstance()->SetSkip(skip);
+				}
 			}
 		}
-		else if(ans == -1 || ans == 2) {
-			m_PlayerCircleRot -= 30.f;
-			if (m_PlayerCircleRot <0.f) {
-				m_PlayerCircleRot = 360;
+		else if (ans == -1 || ans == 2) {
+			if (skip == false) {
+				m_PlayerCircleRot -= 30.f;
+				if (m_PlayerCircleRot < 0.f) {
+					m_PlayerCircleRot = 360;
+				}
+			}
+			else if (skip == true) {
+				m_PlayerCircleRot += 30.f;
+				if (m_PlayerCircleRot > 360.f) {
+					m_PlayerCircleRot = 0.f;
+					skip = false;
+					Player::GetInstance()->SetSkip(skip);
+				}
 			}
 		}
 	}
 	else {
 		oldbullet_type_ = bullet_type_;
 	}
-
+	
+	
 
 	if (boss) {
 		TexList[BossGauge].Size = { boss->HpPercent() * 400.f,40.f };

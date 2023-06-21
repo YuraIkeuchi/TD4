@@ -91,7 +91,7 @@ public:
 	const int& GetBulletType() { return m_BulletType; }
 	const int& GetDamageInterVal() { return m_DamageInterVal; }
 	const bool& GetIsShotNow() { return isShotNow; }
-
+	const bool& GetSkip() { return m_Skip; }
 
 	void SetHP(float hp) { m_HP = hp; };
 	float GetHP() { return m_HP; }
@@ -100,6 +100,7 @@ public:
 	void SetCanShot(const bool m_canShot) {this->m_canShot = m_canShot;}
 	void SetConfu(const bool Confu) { this->m_Confu = Confu; }
 	void SetConfuTimer(const int ConfuTimer) { this->m_ConfuTimer = ConfuTimer; }
+	void SetSkip(const bool Skip) { this->m_Skip = Skip; }
 
 private://各クラス
 	vector<InterBullet*> ghostbullets;//言霊
@@ -132,6 +133,8 @@ private://各クラス
 
 	bool m_Confu = false;
 	int m_ConfuTimer = 0;
+
+	bool m_Skip = false;
 
 public:
 	vector<InterBullet*>GetBulllet_ghost() { return ghostbullets; }
