@@ -28,7 +28,8 @@ public:
 		Heart,
 		Pedestal,
 		DJ,
-		Skydome
+		Skydome,
+		KIDO_OBJ
 	};
 	//FBX‚Ì–¼‘O
 	enum FBXName {

@@ -22,8 +22,8 @@ void SelectScene::Init()
 		StageObjs[i]->Initialize();
 	}
 	StageObjs[FIRST]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
-	StageObjs[SECOND]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
-	StageObjs[THIRD]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
+	StageObjs[SECOND]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::KIDO_OBJ));
+	StageObjs[THIRD]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::DJ));
 	StageObjs[FOUR]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
 	StageObjs[FIVE]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
 	StageObjs[SIX]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
@@ -39,12 +39,22 @@ void SelectScene::Init()
 	ButtonNav_RBLB[0]= IKESprite::Create(ImageManager::RBBUTTON, { 0,0 });
 	ButtonNav_RBLB[1]=IKESprite::Create(ImageManager::LBBUTTON, { 0,0 });
 
+	ButtonNav_Challenge_Cancel[0] = IKESprite::Create(ImageManager::Challenge, { 0,0 });
+	ButtonNav_Challenge_Cancel[1] = IKESprite::Create(ImageManager::Cancel, { 0,0 });
+
 	ButtonNav_RBLB[0]->SetPosition({ 400,650 });
 	ButtonNav_RBLB[1]->SetPosition({ 200,650 });
 	ButtonNav_RBLB[0]->SetAnchorPoint({ 0.5f,0.5f });
 	ButtonNav_RBLB[1]->SetAnchorPoint({ 0.5f,0.5f });
 	ButtonNav_RBLB[0]->SetSize({ 300,300 });
 	ButtonNav_RBLB[1]->SetSize({ 300,300 });
+
+	ButtonNav_Challenge_Cancel[0]->SetPosition({ 400,650 });
+	ButtonNav_Challenge_Cancel[1]->SetPosition({ 200,650 });
+	ButtonNav_Challenge_Cancel[0]->SetAnchorPoint({ 0.5f,0.5f });
+	ButtonNav_Challenge_Cancel[1]->SetAnchorPoint({ 0.5f,0.5f });
+	ButtonNav_Challenge_Cancel[0]->SetSize({ 200,150 });
+	ButtonNav_Challenge_Cancel[1]->SetSize({ 200,150 });
 
 	//¡‚Í‚¢‚½ƒ|ƒŠ
 	StageObj[FIRST]=IKESprite::Create(ImageManager::tip1, { 0,0 });
@@ -78,6 +88,9 @@ void SelectScene::Init()
 		StageObjs[i]->SetPosition(StageObjPos[i]);
 		StageObjs[i]->SetScale({ 1,1,1 });
 	}
+	StageObjs[SECOND]->SetScale({ 4,4,4});
+	StageObjs[THIRD]->SetScale({ 0.2f,0.2f,0.2f});
+
 }
 
 void SelectScene::Upda()
@@ -162,9 +175,12 @@ void SelectScene::Upda()
 
 		StageObjs[i]->SetColor({ 1,1,1,IconColor[i] });
 		StageObjs[i]->SetRotation({ StageObjRot[i] });
+
+		StageObjs[THIRD]->SetRotation({ 0,StageObjRot[THIRD].y,90 });
 		StageObjs[i]->SetPosition(StageObjPos[i]);
 		StageObjs[i]->Update();
 	}
+	
 }
 
 void SelectScene::Draw_Obj(DirectXCommon*dxcomn)
@@ -183,26 +199,40 @@ void SelectScene::Draw_Obj(DirectXCommon*dxcomn)
 void SelectScene::Draw_Sprite()
 {
 
-//	ButtonNav_RBLB[0]->Draw();
-	//ButtonNav_RBLB[1]->Draw();
+	//	ButtonNav_RBLB[0]->Draw();
+		//ButtonNav_RBLB[1]->Draw();
 
 	size_t t = ObjNum;
-	for(auto i=0;i<t;i++)
+	for (auto i = 0; i < t; i++)
 	{
-	//	BossIcon[i]->Draw();
+		//	BossIcon[i]->Draw();
 	}
-	
-
-	ButtonNav_RBLB[0]->Draw();
-	ButtonNav_RBLB[1]->Draw();
-
-	for (auto i = 0; i < ObjNum; i++)
-		StageObj[i]->Draw();
 
 	BossIcon[0]->Draw();
 	BossIcon[1]->Draw();
 
 }
+
+void SelectScene::Draw_SpriteBack()
+{
+	if (closeScl > 0.f) {
+		ButtonNav_RBLB[0]->Draw();
+		ButtonNav_RBLB[1]->Draw();
+
+		for (auto i = 0; i < ObjNum; i++)
+			StageObj[i]->Draw();
+
+		if (TipsPosY[0] >= 360.f || TipsPosY[1] >= 360.f || TipsPosY[2] >= 360.f ||
+			TipsPosY[3] >= 360.f || TipsPosY[4] >= 360.f || TipsPosY[5] >= 360.f ||
+			TipsPosY[6] >= 360.f) {
+			ButtonNav_Challenge_Cancel[0]->SetPosition({ 700,500 });
+			ButtonNav_Challenge_Cancel[1]->SetPosition({ 500,500 });
+			ButtonNav_Challenge_Cancel[0]->Draw();
+			ButtonNav_Challenge_Cancel[1]->Draw();
+		}
+	}
+}
+
 
 void SelectScene::ResetParam()
 {
@@ -318,7 +348,7 @@ void SelectScene::ChangeEffect(std::string name, Stage stage, UINT iconnum)
 
 void SelectScene::ViewTips()
 {
-if(TipsAct[FIRST])
+if(TipsAct[FIRST] && _stages != FIRST)
 {
 	if (TipsPosY[FIRST] >= 360.f) {
 		if (Input::GetInstance()->TriggerButton(Input::B))_stages = FIRST;
@@ -326,7 +356,7 @@ if(TipsAct[FIRST])
 	}
 	}
 
-if (TipsAct[SECOND])
+if (TipsAct[SECOND]&&_stages!=SECOND)
 {
 	if (TipsPosY[SECOND] >= 360.f) {
 		if (Input::GetInstance()->TriggerButton(Input::B))_stages = SECOND;

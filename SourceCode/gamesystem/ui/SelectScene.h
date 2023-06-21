@@ -44,6 +44,7 @@ public:
 	 * \brief 描画
 	 */
 	void Draw_Sprite();
+	void Draw_SpriteBack();
 	void Draw_Obj(DirectXCommon* dxcomn);
 	/**
 	 * \brief 諸々リセット
@@ -87,6 +88,7 @@ private:
 	float SkydomeRotY = 0;
 private:
 	array<unique_ptr<IKESprite>, 2>ButtonNav_RBLB;
+	array<unique_ptr<IKESprite>, 2>ButtonNav_Challenge_Cancel;
 	array<unique_ptr<IKESprite>, ObjNum>StageName;
 	array<unique_ptr<IKESprite>, ObjNum>BossIcon;
 private:

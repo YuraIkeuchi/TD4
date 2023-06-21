@@ -63,7 +63,9 @@ public:
 		SELECT_SEVEN,
 		RBBUTTON,
 		LBBUTTON,
-		tip1
+		tip1,
+		Challenge,
+		Cancel
 	};
 	//テクスチャの名前
 	enum tex2dName

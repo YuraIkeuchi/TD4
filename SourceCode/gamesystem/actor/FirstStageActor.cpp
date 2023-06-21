@@ -358,7 +358,8 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	
 	//ParticleEmitter::GetInstance()->DeathDrawAll();
 
-	if(camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_BEFORE &&camerawork->GetCameraState()!=CameraState::CAMERA_BOSSDEAD_AFTER_FIRST)
+	if(camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_BEFORE &&camerawork->GetCameraState()!=CameraState::CAMERA_BOSSDEAD_AFTER_FIRST&&
+		camerawork->GetCameraState() != CameraState::CAMERA_BOSSAPPEAR)
 	ui->Draw();
 
 	//完全に前に書くスプライト

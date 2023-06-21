@@ -55,6 +55,8 @@ void ImageManager::SecondLoad2D()
 	IKESprite::LoadTexture(LBBUTTON, L"Resources/2d/objicon/LB.png");
 	IKESprite::LoadTexture(RBBUTTON, L"Resources/2d/objicon/RB.png");
 	IKESprite::LoadTexture(tip1, L"Resources/2d/sceneback/tips1.png");
+	IKESprite::LoadTexture(Challenge, L"Resources/2d/objicon/Challenge.png");
+	IKESprite::LoadTexture(Cancel, L"Resources/2d/objicon/Cancel.png");
 
 }
 
