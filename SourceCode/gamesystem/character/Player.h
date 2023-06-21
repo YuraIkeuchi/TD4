@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "ObjCommon.h"
 #include "ViewBullet.h"
 #include "GhostBullet.h"
@@ -150,8 +150,6 @@ public:
 	void isOldPos();
 
 	void RecvDamage(float Damage);
-
 	//弾の全削除
 	void BulletDelete();
 };
-
