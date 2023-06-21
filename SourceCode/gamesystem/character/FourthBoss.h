@@ -121,8 +121,6 @@ private:
 	int m_CatchCount = {};
 	//ボスがプレイヤーから逃げる時間
 	int m_EndTimer = {};
-	//逃げる速さ
-	float m_FollowSpeed = -0.2f;
 
 	//棘の的に使う
 	float m_Angle = 0.0f;
@@ -138,4 +136,18 @@ private:
 	int m_BarraRand = {};
 
 	int m_AttackRand = {};
+
+	//CSV系
+	//各インターバルやリミット時間
+	vector<int>m_Limit;
+
+	enum LimitState {
+		LIMIT_BASE,
+		LIMIT_CONFU,
+		LIMIT_STRONG_CONFU,
+		LIMIT_BARRA,
+	};
+
+	//移動力
+	float m_FollowSpeed = {};
 };

@@ -6,6 +6,7 @@
 #include "VariableCommon.h"
 #include <random>
 #include "Collision.h"
+#include <CsvLoader.h>
 DamageArea::DamageArea(const int Num) {
 	obj.resize(Num);
 	m_Position.resize(Num);
@@ -77,6 +78,9 @@ void DamageArea::Initialize() {
 		m_TexScale[i] = { 0.4f,3.0f,1.0f };
 		m_TexAlive[i] = true;
 	}
+
+	m_VanishLimit = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "LineLimit")));
+	m_Damage = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "LineDamage")));
 }
 
 void DamageArea::Update() {
@@ -185,7 +189,7 @@ void DamageArea::StateManager() {
 	}
 	else if (m_AreaState == STAY) {
 		m_StayTimer++;
-		if (m_StayTimer > 400) {
+		if (m_StayTimer > m_VanishLimit) {
 			m_AreaState = VANISH_AREA;
 			m_AfterAlpha = 0.0f;
 			m_AfterScale = 0.0f;
@@ -222,7 +226,7 @@ bool DamageArea::Collide() {
 		if (Collision::IsCollidingLineAndCircle(lines, points, 5.0f) && (Player::GetInstance()->GetDamageInterVal() == 0) && (m_Alpha == 1.0f))
 		{
 			Player::GetInstance()->PlayerHit(m_TexPosition[i]);
-			Player::GetInstance()->RecvDamage(0.5f);
+			Player::GetInstance()->RecvDamage(m_Damage);
 			break;
 		}
 		else {
