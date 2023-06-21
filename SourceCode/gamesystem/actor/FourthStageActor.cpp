@@ -76,14 +76,13 @@ void FourthStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	spotLightDir[2] = { 0, -1, 0 };
 	spotLightDir[3] = { 0, -1, 0 };
 
-	/*spotLightDir[0] = { -2, -1, -2 };
-	spotLightDir[1] = { -2, -1, 2 };
-	spotLightDir[2] = { 2, -1, -2 };
-	spotLightDir[3] = { 2, -1, 2 };*/
+	spotLightColor[0] = { 1, 1, 1 };
+	spotLightColor[1] = { 1, 1, 1 };
+	spotLightColor[2] = { 1, 1, 1 };
+	spotLightColor[3] = { 1, 1, 1 };
 }
 //更新
 void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
-	const float l_AddAngle = 5.0f;
 	//関数ポインタで状態管理
 	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
 	sceneChanger_->Update();
@@ -106,45 +105,9 @@ void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
 	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
 	
-	//sin波によって上下に動く
-	if (_AppState == APP_START) {
-		for (int i = 0; i < SPOT_NUM; i++) {
-			m_Angle[i] += (l_AddAngle - (0.5f * i));
-			m_Angle2[i] = m_Angle[i] * (3.14f / 180.0f);
-		}
-
-		spotLightDir[0].x = (sin(m_Angle2[0]) * 6.0f + (-2.0f));
-		spotLightDir[0].z = (sin(m_Angle2[0]) * 6.0f + (-2.0f));
-		spotLightDir[1].x = (sin(m_Angle2[1]) * 6.0f + (-2.0f));
-		spotLightDir[1].z = (sin(m_Angle2[1]) * 6.0f + (2.0f));
-		spotLightDir[2].x = (sin(m_Angle2[2]) * 6.0f + (2.0f));
-		spotLightDir[2].z = (sin(m_Angle2[2]) * 6.0f + (-2.0f));
-		spotLightDir[3].x = (sin(m_Angle2[3]) * 6.0f + (2.0f));
-		spotLightDir[3].z = (sin(m_Angle2[3]) * 6.0f + (2.0f));
-
-	}
-	else if (_AppState == APP_NOTICE) {
-		spotLightDir[0] = { Ease(In,Cubic,0.5f,spotLightDir[0].x,-2.0f),
-			spotLightDir[0].y,
-			Ease(In,Cubic,0.5f,spotLightDir[0].z,-2.0f),
-		};
-
-		spotLightDir[1] = { Ease(In,Cubic,0.5f,spotLightDir[1].x,-2.0f),
-		spotLightDir[1].y,
-		Ease(In,Cubic,0.5f,spotLightDir[1].z,2.0f),
-		};
-
-		spotLightDir[2] = { Ease(In,Cubic,0.5f,spotLightDir[2].x,2.0f),
-		spotLightDir[2].y,
-		Ease(In,Cubic,0.5f,spotLightDir[2].z,-2.0f),
-		};
-
-		spotLightDir[3] = { Ease(In,Cubic,0.5f,spotLightDir[3].x,2.0f),
-		spotLightDir[3].y,
-		Ease(In,Cubic,0.5f,spotLightDir[3].z,2.0f),
-		};
-	}
-	else {
+	//スポットライトの動き
+	MoveSpotLight();
+	if(_AppState == APP_END) {
 		//丸影のためのやつ
 		lightgroup->SetDirLightActive(0, true);
 		lightgroup->SetDirLightActive(1, true);
@@ -154,15 +117,11 @@ void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 		}
 	}
 
-	//for (int i = 0; i < 4; i++) {
-	//	spotLightPos[i].x += m_AddPos;
-	//	spotLightPos[i].z += m_AddPos;
-	//}
 	///スポットライト
 	for (int i = 0; i < SPOT_NUM; i++) {
 		lightgroup->SetSpotLightDir(i, XMVECTOR({ spotLightDir[i].x,spotLightDir[i].y,spotLightDir[i].z,0}));
 		lightgroup->SetSpotLightPos(i, spotLightPos[i]);
-		lightgroup->SetSpotLightColor(i, XMFLOAT3(spotLightColor));
+		lightgroup->SetSpotLightColor(i, spotLightColor[i]);
 		lightgroup->SetSpotLightAtten(i, XMFLOAT3(spotLightAtten));
 		lightgroup->SetSpotLightFactorAngle(i, XMFLOAT2(spotLightFactorAngle));
 	}
@@ -273,6 +232,7 @@ void FourthStageActor::IntroUpdate(DebugCamera* camera) {
 	}
 
 	if (camerawork->GetAppearEndF()) {
+		_AppState = APP_END;
 		m_SceneState = SceneState::MainState;
 		camerawork->SetCameraState(CAMERA_NORMAL);
 		enemymanager->SkipInitialize();
@@ -287,14 +247,11 @@ void FourthStageActor::IntroUpdate(DebugCamera* camera) {
 	camerawork->Update(camera);
 
 	m_AppTimer++;
-
-	if (_AppState == APP_START) {
-		if (m_AppTimer == 540) {
-			_AppState = APP_NOTICE;
-		}
+	if (m_AppTimer == 400) {
+		_AppState = APP_NOTICE;
 	}
-	else if (m_AppTimer == 650) {
-		_AppState = APP_END;
+	else if (m_AppTimer == 580) {
+		_AppState = APP_VANISH;
 	}
 }
 //バトルシーン
@@ -366,4 +323,55 @@ void FourthStageActor::MainUpdate(DebugCamera* camera) {
 //撃破シーン
 void FourthStageActor::FinishUpdate(DebugCamera* camera) {
 	Input* input = Input::GetInstance();
+}
+//スポットライトの動き
+void FourthStageActor::MoveSpotLight() {
+	const float l_AddAngle = 5.0f;
+	const float l_AddFrame = 0.5f;
+	const float l_DirMax = 2.0f;
+	const float l_DirMin = -2.0f;
+	const float l_PosMax = 100.0f;
+	const float l_PosMin = -100.0f;
+	//sin波によって上下に動く
+	if (_AppState == APP_START) {
+		for (int i = 0; i < SPOT_NUM; i++) {
+			m_Angle[i] += (l_AddAngle - (0.5f * i));
+			m_Angle2[i] = m_Angle[i] * (3.14f / 180.0f);
+		}
+
+		spotLightDir[0].x = (sin(m_Angle2[0]) * 6.0f + (-2.0f));
+		spotLightDir[0].z = (sin(m_Angle2[0]) * 6.0f + (-2.0f));
+		spotLightDir[1].x = (sin(m_Angle2[1]) * 6.0f + (-2.0f));
+		spotLightDir[1].z = (sin(m_Angle2[1]) * 6.0f + (2.0f));
+		spotLightDir[2].x = (sin(m_Angle2[2]) * 6.0f + (2.0f));
+		spotLightDir[2].z = (sin(m_Angle2[2]) * 6.0f + (-2.0f));
+		spotLightDir[3].x = (sin(m_Angle2[3]) * 6.0f + (2.0f));
+		spotLightDir[3].z = (sin(m_Angle2[3]) * 6.0f + (2.0f));
+
+	}
+	else if (_AppState == APP_NOTICE) {
+		SpotSet(spotLightDir[0], { l_DirMin,{},l_DirMin }, l_AddFrame);
+		SpotSet(spotLightDir[1], { l_DirMin,{},l_DirMax }, l_AddFrame);
+		SpotSet(spotLightDir[2], { l_DirMax,{},l_DirMin }, l_AddFrame);
+		SpotSet(spotLightDir[3], { l_DirMax,{},l_DirMax }, l_AddFrame);
+	}
+	else if (_AppState == APP_VANISH) {
+		//角度
+		SpotSet(spotLightDir[0], {}, l_AddFrame);
+		SpotSet(spotLightDir[1], {}, l_AddFrame);
+		SpotSet(spotLightDir[2], {}, l_AddFrame);
+		SpotSet(spotLightDir[3], {}, l_AddFrame);
+		//座標
+		SpotSet(spotLightPos[0], {l_PosMax,spotLightPos[0].y,l_PosMax}, l_AddFrame);
+		SpotSet(spotLightPos[1], {l_PosMax,spotLightPos[1].y,l_PosMin}, l_AddFrame);
+		SpotSet(spotLightPos[2], {l_PosMin,spotLightPos[2].y,l_PosMax}, l_AddFrame);
+		SpotSet(spotLightPos[3], {l_PosMin,spotLightPos[3].y,l_PosMin}, l_AddFrame);
+	}
+}
+//スポットライト
+void FourthStageActor::SpotSet(XMFLOAT3& Pos,const XMFLOAT3& AfterPos, const float AddFrame) {
+	Pos = { Ease(In,Cubic,AddFrame,Pos.x,AfterPos.x),
+		Pos.y,
+		Ease(In,Cubic,AddFrame,Pos.z,AfterPos.z),
+	};
 }

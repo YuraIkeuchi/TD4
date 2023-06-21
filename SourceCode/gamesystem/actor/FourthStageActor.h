@@ -29,6 +29,9 @@ private:
 	void MainUpdate(DebugCamera* camera)override;		//バトルシーン
 	void FinishUpdate(DebugCamera* camera)override;		//撃破シーン
 
+	void MoveSpotLight();
+	void SpotSet(XMFLOAT3& Pos,const XMFLOAT3& AfterPos, const float AddFrame);
+
 private:
 	static const int SPOT_NUM = 4;
 private:
@@ -56,6 +59,7 @@ private:
 	enum AppState {
 		APP_START,
 		APP_NOTICE,
+		APP_VANISH,
 		APP_END,
 	}_AppState = APP_START;
 };
