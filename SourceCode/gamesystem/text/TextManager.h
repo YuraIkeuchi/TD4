@@ -144,6 +144,7 @@ private:
 	wchar_t* test2;
 
 	Name old=NONE;
-
+	Name_First old_first = VIEWBOSS;
+	Name_Second old_second = ANGER_TALK;
 };
 

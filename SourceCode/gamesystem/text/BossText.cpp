@@ -23,7 +23,7 @@ void BossText::SpriteDraw(DirectXCommon* dxCommon) {
 	IKESprite::PreDraw();
 	window_->Draw();
 	IKESprite::PostDraw();
-	text_->Draw(dxCommon);
+	text_->TestDraw(dxCommon);
 }
 
 void BossText::Display()

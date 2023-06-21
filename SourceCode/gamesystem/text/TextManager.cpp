@@ -207,6 +207,17 @@ void TextManager::SetConversation(Name_First name, const XMVECTOR& color)
 {
 	std::map<TextManager::Name_First, Word>::iterator itr = wordlist_first.find(name);
 
+	if (old_first != itr->first) {
+		for (int i = 0; i < 3; i++) {
+			flag[i] = true;
+			next_f[i] = false;
+		}
+	}
+
+	old_first = itr->first;
+
+	GetWordSize(itr->second);
+
 	CreateCon(conversation_, itr->second);
 	
 	conversation_.FirstFont->SetColor(color);
@@ -219,15 +230,23 @@ void TextManager::SetSecondConversation(Name_Second name)
 {
 	std::map<TextManager::Name_Second, Word>::iterator itr = wordlist_second.find(name);
 
+	if (old_second != itr->first) {
+		for (int i = 0; i < 3; i++) {
+			flag[i] = true;
+			next_f[i] = false;
+		}
+	}
+
+	old_second = itr->first;
+
+	GetWordSize(itr->second);
+
 	CreateCon(conversation_, itr->second);
-	//conversation_ = CreateConversation(itr->second);
 }
 //名前と文字列セットで保存
 void TextManager::CreateWord(Name name, wchar_t* tex1, wchar_t* tex2, wchar_t* tex3)
 {
 	Word temp = SetWord(tex1, tex2, tex3);
-
-	size_t len = wcslen(tex1);
 
 	wordlist_.insert(std::make_pair(name, temp));
 }
