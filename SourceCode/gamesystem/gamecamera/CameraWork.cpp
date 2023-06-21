@@ -42,6 +42,7 @@ void (CameraWork::* CameraWork::stateTable[])() = {
 	&CameraWork::SetBossDead_Before,//ボスのやられたとき
 	&CameraWork::SetBossDead_AfterFirst,//1ボスのやられたとき（フェード後）
 	&CameraWork::SetBossDead_AfterSecond,//2ボスのやられたとき（フェード後）
+	&CameraWork::SetBossDead_AfterFourth,//4ボスのやられたとき（フェード後）
 };
 //XV
 void CameraWork::Update(DebugCamera* camera) {
@@ -184,6 +185,30 @@ void CameraWork::SetBossDead_AfterSecond()
 	DeathTimer++;
 
 	if (DeathTimer == 620) {
+		m_EndDeath = true;
+	}
+}
+
+//フェード後の撃破アクション(2ボス)
+void CameraWork::SetBossDead_AfterFourth()
+{
+	RadEffect = 0.f;
+	if (FeedF) {
+		feed->FeedIn(Feed::FeedType::WHITE, 0.01f, FeedF);
+	}
+	if (SceneName == "FIRSTSTAGE") {
+		FirstBossDead_AfterFeed();
+	}
+	m_eyePos.x = Player::GetInstance()->GetPosition().x;
+	m_eyePos.y = Player::GetInstance()->GetPosition().y + 3.0f;
+	m_eyePos.z = Player::GetInstance()->GetPosition().z - 20.0f;
+
+
+	m_targetPos = { boss->GetPosition().x,boss->GetPosition().y,boss->GetPosition().z };
+
+	DeathTimer++;
+
+	if (DeathTimer == 350) {
 		m_EndDeath = true;
 	}
 }

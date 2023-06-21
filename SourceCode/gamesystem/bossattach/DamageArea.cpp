@@ -74,7 +74,7 @@ void DamageArea::Initialize() {
 	for (size_t i = 0; i < tex.size(); i++) {
 		m_TexColor[i] = { 1.0f,0.0f,0.0f,0.0f };
 		m_TexRotation[i] = { 90.0f,0.0f,0.0f };
-		m_TexScale[i] = { 0.2f,3.0f,1.0f };
+		m_TexScale[i] = { 0.4f,3.0f,1.0f };
 		m_TexAlive[i] = true;
 	}
 }
@@ -162,7 +162,7 @@ void DamageArea::PointUpdate() {
 }
 
 void DamageArea::StateManager() {
-	const float l_AddFrame = 0.01f;
+	const float l_AddFrame = 0.03f;
 	if (m_AreaState == POINT_BIRTH) {
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
@@ -185,7 +185,7 @@ void DamageArea::StateManager() {
 	}
 	else if (m_AreaState == STAY) {
 		m_StayTimer++;
-		if (m_StayTimer > 200) {
+		if (m_StayTimer > 400) {
 			m_AreaState = VANISH_AREA;
 			m_AfterAlpha = 0.0f;
 			m_AfterScale = 0.0f;
@@ -219,7 +219,7 @@ bool DamageArea::Collide() {
 		lines.start = { m_Position[i].x,m_Position[i].z };
 		lines.end = { m_Position[i + 1].x,m_Position[i + 1].z };
 		//”»’è•”
-		if (Collision::IsCollidingLineAndCircle(lines, points, 2.0f) && (Player::GetInstance()->GetDamageInterVal() == 0) && (m_Alpha == 1.0f))
+		if (Collision::IsCollidingLineAndCircle(lines, points, 5.0f) && (Player::GetInstance()->GetDamageInterVal() == 0) && (m_Alpha == 1.0f))
 		{
 			Player::GetInstance()->PlayerHit(m_TexPosition[i]);
 			Player::GetInstance()->RecvDamage(0.5f);
