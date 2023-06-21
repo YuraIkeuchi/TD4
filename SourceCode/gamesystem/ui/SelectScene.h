@@ -53,6 +53,8 @@ public:
 	void SceneChange( SceneChanger* schange);
 
 	void CloseIconView(bool closeF);
+
+	void ViewTips();
 private:
 	//“y‘ä
 	unique_ptr<IKEObject3d>Pedestal=nullptr;
@@ -62,8 +64,10 @@ private:
 	static constexpr int ObjNum = 7;
 
 	array<unique_ptr<IKEObject3d>, ObjNum>StageObjs = { nullptr };
-	array<unique_ptr<IKETexture>, ObjNum>StageObj={nullptr};
+	array<unique_ptr<IKESprite>, ObjNum>StageObj={nullptr};
 	array<XMFLOAT3, ObjNum>StageObjPos;
+	array<float, ObjNum>TipsPosY;
+	array<bool, ObjNum>TipsAct;
 	array<XMFLOAT3, ObjNum>StageObjRot;
 	array<float, ObjNum>StageObjRotAngle;
 	array<float, ObjNum>StageObjEaseT;

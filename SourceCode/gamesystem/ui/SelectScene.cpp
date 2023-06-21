@@ -47,13 +47,13 @@ void SelectScene::Init()
 	ButtonNav_RBLB[1]->SetSize({ 300,300 });
 
 	//今はいたポリ
-	StageObj[FIRST].reset(IKETexture::Create(ImageManager::SELECT_FIRST, { 0,0,0 }, { 5,5,5 }, { 1,1,1,1 }));
-	StageObj[SECOND].reset(IKETexture::Create(ImageManager::SELECT_SECOND, { 0,0,0 }, { 5,5,5 }, { 1,1,1,1 }));
-	StageObj[THIRD].reset(IKETexture::Create(ImageManager::SELECT_THIRD, { 0,0,0 }, { 5,5,5 }, { 1,1,1,1 }));
-	StageObj[FOUR].reset(IKETexture::Create(ImageManager::SELECT_FOUR, { 0,0,0 }, { 5,5,5 }, { 1,1,1,1 }));
-	StageObj[FIVE].reset(IKETexture::Create(ImageManager::SELECT_FIVE, { 0,0,0 }, { 5,5,5 }, { 1,1,1,1 }));
-	StageObj[SIX].reset(IKETexture::Create(ImageManager::SELECT_SIX, { 0,0,0 }, { 5,5,5 }, { 1,1,1,1 }));
-	StageObj[SEVEN].reset(IKETexture::Create(ImageManager::SELECT_SEVEN, { 0,0,0 }, { 5,5,5 }, { 1,1,1,1 }));
+	StageObj[FIRST]=IKESprite::Create(ImageManager::tip1, { 0,0 });
+	StageObj[SECOND] = IKESprite::Create(ImageManager::tip1, { 0,0 });
+	StageObj[THIRD] = IKESprite::Create(ImageManager::tip1, { 0,0 });
+	StageObj[FOUR] = IKESprite::Create(ImageManager::tip1, { 0,0 });
+	StageObj[FIVE] = IKESprite::Create(ImageManager::tip1, { 0,0 });
+	StageObj[SIX] = IKESprite::Create(ImageManager::tip1, { 0,0 });
+	StageObj[SEVEN] = IKESprite::Create(ImageManager::tip1, { 0,0 });
 
 	//ポストエフェクト用
 	BossIcon[FIRST]=IKESprite::Create(ImageManager::CLOSESYTOPON, { 0,0 });
@@ -67,7 +67,7 @@ void SelectScene::Init()
 	constexpr float PosRad = 20.f;
 	for (auto i = 0; i < ObjNum; i++)
 	{
-		StageObj[i]->TextureCreate();
+		TipsPosY[i] = -360.f;
 		StageObjRotAngle[i] = static_cast<float>(i) * (360.f / static_cast<float>(ObjNum))+180.f;
 		//位置の初期化
 		StageObjPos[i].x = Pedestal->GetPosition().x + sinf(StageObjRotAngle[i] * (PI / PI_180)) * PosRad;
@@ -91,18 +91,22 @@ void SelectScene::Upda()
 	Pedestal->SetScale({ 15.f,15.f,15.f });
 	Pedestal->Update();
 
-	if (TrigerSelect == NOINP) {
-		if (Input::GetInstance()->TriggerButton(Input::RB)) {
-			SelIndex++;
-			TrigerSelect = RB;
-		}
+	bool temp[ObjNum] = {};
+	for (auto i = 0; i < TipsAct.size(); i++)
+		temp[i] = TipsAct[i];
+	if (Helper::GetInstance()->All_OfF(temp, ObjNum)) {
+		if (TrigerSelect == NOINP) {
+			if (Input::GetInstance()->TriggerButton(Input::RB)) {
+				SelIndex++;
+				TrigerSelect = RB;
+			}
 
-		if (Input::GetInstance()->TriggerButton(Input::LB)) {
-			SelIndex--;
-			TrigerSelect = LB;
+			if (Input::GetInstance()->TriggerButton(Input::LB)) {
+				SelIndex--;
+				TrigerSelect = LB;
+			}
 		}
 	}
-
 	CloseIconView(CloseF);
 	Helper::GetInstance()->Clamp(closeScl, 0.f, 12500.f);
 	Helper::GetInstance()->Clamp(closeRad, 0.f, 1500.f);
@@ -114,8 +118,8 @@ void SelectScene::Upda()
 		|| IconColor[4] >= 1.f|| IconColor[5] >= 1.f|| IconColor[6] >= 1.f)
 	{
 		if (Input::GetInstance()->TriggerButton(Input::B)) {
-			if (IconColor[0] >= 1.f)_stages = FIRST;
-			if (IconColor[1] >= 1.f)_stages = SECOND;
+			if (IconColor[0] >= 1.f)TipsAct[FIRST] = true;
+			if (IconColor[1] >= 1.f)TipsAct[SECOND] = true;
 		}
 	}
 
@@ -143,7 +147,7 @@ void SelectScene::Upda()
 
 		Helper::GetInstance()->Clamp(IconColor[i], 0.3f, 1.f);
 	}
-	
+	ViewTips();
 	for (auto i = 0; i < ObjNum; i++)
 	{
 		StageObjPos[i].x = Pedestal->GetPosition().x + sinf(StageObjRotAngle[i] * (PI / PI_180)) * PosRad;
@@ -151,10 +155,10 @@ void SelectScene::Upda()
 		//if (StageObjRotAngle[i] >= 360)
 		//	StageObjRotAngle[i] = 0;
 
-		StageObj[i]->SetScale({ 1.f,1.f,5.f });
-		StageObj[i]->SetPosition(StageObjPos[i]);
-		StageObj[i]->SetColor({ 1,1,1,IconColor[i] });
-		StageObj[i]->Update();
+		StageObj[i]->SetSize({ 800.f,500.f });
+		StageObj[i]->SetPosition({640,TipsPosY[i]});
+		StageObj[i]->SetAnchorPoint({ 0.5f,0.5f });
+		StageObj[i]->SetColor({ 1,1,1,1.f });
 
 		StageObjs[i]->SetColor({ 1,1,1,IconColor[i] });
 		StageObjs[i]->SetRotation({ StageObjRot[i] });
@@ -174,9 +178,6 @@ void SelectScene::Draw_Obj(DirectXCommon*dxcomn)
 		StageObjs[i]->Draw();
 	IKEObject3d::PostDraw();
 
-	IKETexture::PreDraw2(dxcomn,0);
-	for(auto i=0;i<ObjNum;i++)
-	StageObj[i]->Draw();
 }
 
 void SelectScene::Draw_Sprite()
@@ -190,12 +191,17 @@ void SelectScene::Draw_Sprite()
 	{
 	//	BossIcon[i]->Draw();
 	}
-	BossIcon[0]->Draw();
-	BossIcon[1]->Draw();
-
+	
 
 	ButtonNav_RBLB[0]->Draw();
 	ButtonNav_RBLB[1]->Draw();
+
+	for (auto i = 0; i < ObjNum; i++)
+		StageObj[i]->Draw();
+
+	BossIcon[0]->Draw();
+	BossIcon[1]->Draw();
+
 }
 
 void SelectScene::ResetParam()
@@ -296,7 +302,8 @@ void SelectScene::ChangeEffect(std::string name, Stage stage, UINT iconnum)
 		sin = false;
 	}
 
-	if (_stages == stage) {
+	if (_stages == stage&& _stages != Stage::NON) {
+		TipsPosY[stage] -= 20.f;
 		BossIcon[stage]->SetAnchorPoint({ 0.5f,0.5f });
 		BossIcon[stage]->SetSize({ closeScl,closeScl });
 		BossIcon[stage]->SetPosition({ 1280 / 2,720 / 2 });
@@ -308,4 +315,38 @@ void SelectScene::ChangeEffect(std::string name, Stage stage, UINT iconnum)
 		BossIcon[stage]->SetPosition({ 1280 / 2,720 / 2 });
 	}
 }
+
+void SelectScene::ViewTips()
+{
+if(TipsAct[FIRST])
+{
+	if (TipsPosY[FIRST] >= 360.f) {
+		if (Input::GetInstance()->TriggerButton(Input::B))_stages = FIRST;
+	else if (Input::GetInstance()->TriggerButton(Input::X))TipsAct[FIRST] = false;
+	}
+	}
+
+if (TipsAct[SECOND])
+{
+	if (TipsPosY[SECOND] >= 360.f) {
+		if (Input::GetInstance()->TriggerButton(Input::B))_stages = SECOND;
+		else if (Input::GetInstance()->TriggerButton(Input::X))TipsAct[SECOND] = false;
+	}
+}
+
+
+for (auto i = 0; i < ObjNum; i++) {
+	if (TipsAct[i])
+	{
+		TipsPosY[i] += 20.f;
+	}
+	else
+	{
+		TipsPosY[i] -= 20.f;
+	}
+	Helper::GetInstance()->Clamp(TipsPosY[i], -360.f, 360.f);
+}
+
+}
+
 

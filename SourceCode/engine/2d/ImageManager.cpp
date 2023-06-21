@@ -54,6 +54,7 @@ void ImageManager::SecondLoad2D()
 	IKESprite::LoadTexture(CIRCLECOVER, L"Resources/2d/objicon/circlecover.png");
 	IKESprite::LoadTexture(LBBUTTON, L"Resources/2d/objicon/LB.png");
 	IKESprite::LoadTexture(RBBUTTON, L"Resources/2d/objicon/RB.png");
+	IKESprite::LoadTexture(tip1, L"Resources/2d/sceneback/tips1.png");
 
 }
 
