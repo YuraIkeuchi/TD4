@@ -40,18 +40,22 @@ void CameraWork::SplineSet() {
 #pragma region First
 		{
 			if (pointsList.size() == 0) {
-				pointsList.emplace_back(XMFLOAT3{ 150,5,0 });
-				pointsList.emplace_back(XMFLOAT3{ 130,5,120 });
+				pointsList.emplace_back(XMFLOAT3{ 50,80,50 });
+				pointsList.emplace_back(XMFLOAT3{  0,70,90 });
+				pointsList.emplace_back(XMFLOAT3{ -50,80,60 });
+				pointsList.emplace_back(XMFLOAT3{  0,20,10 });
+				pointsList.emplace_back(XMFLOAT3{ 50, 70,10 });
+				pointsList.emplace_back(XMFLOAT3{ 30,50,60 });
+				pointsList.emplace_back(XMFLOAT3{ 0,30,60 });
+				pointsList.emplace_back(XMFLOAT3{ -20,20,40 });
+				pointsList.emplace_back(XMFLOAT3{ 0,30,10 });
+				pointsList.emplace_back(XMFLOAT3{ 0,30,10 });
+				//pointsList.emplace_back(XMFLOAT3{ 30,10,-50 });
 
-				pointsList.emplace_back(XMFLOAT3{ 0,155,120 });
 
-				pointsList.emplace_back(XMFLOAT3{ -150,5,100 });
-
-
-				pointsList.emplace_back(XMFLOAT3{ 0,2,180 });
-				pointsList.emplace_back(XMFLOAT3{ 0,10,90 });
-				pointsList.emplace_back(XMFLOAT3{ 0,30,0 });
-
+				//pointsList.emplace_back(XMFLOAT3{ 0,2,180 });
+				//pointsList.emplace_back(XMFLOAT3{ 0,10,90 });
+				//pointsList.emplace_back(XMFLOAT3{ 0,30,0 });
 			}
 			spline = new Spline();
 			spline->Init(pointsList, static_cast<int>(pointsList.size()));
@@ -491,22 +495,51 @@ void CameraWork::SecondBossAppear() {
 }
 //4つ目のボスの登場
 void CameraWork::FourthBossAppear() {
-	const float l_AddFrame = 0.1f;
-	if (m_AppearType == APPEAR_START) {
-		m_CameraScale = 40.0f;
-		m_CameraSpeed = 30.0f;
-		m_AppearType = APPEAR_SECOND;
-		m_eyePos = { 0.0f,40.0f,0.0f };
+	if (spline->GetIndex() >= pointsList.size() - 2)
+	{
+		RadEffect -= 0.2f;
 	}
-	else if (m_AppearType == APPEAR_SECOND) {
-		m_CameraScale = Ease(In, Cubic, l_AddFrame, m_CameraScale, 5.0f);
-		m_CameraSpeed = Ease(In, Cubic, l_AddFrame, m_CameraSpeed, 360.0f);
-		SetCircleCameraEye(boss->GetPosition());
-		
-		m_eyePos.y = Ease(In, Cubic, l_AddFrame, m_eyePos.y, 2.0f);
-		if (m_eyePos.y == 2.0f) {
-			m_AppearType = APPEAR_THIRD;
+	else if (spline->GetIndex() >= pointsList.size())
+	{
+		RadEffect += 0.2f;
+		SplineSpeed = 150.0f;
+	}
+	else
+	{
+		SplineSpeed = 150.f;
+	}
+	if (!Finish) {
+
+		spline->Upda(m_eyePos, SplineSpeed);
+	}
+	Helper::GetInstance()->Clamp(RadEffect, 0.f, 15.f);
+
+	if (spline->GetIndex() >= pointsList.size() - 1)
+	{
+
+		if (Helper::GetInstance()->FrameCheck(m_Frame, 0.01f)) {
+			AppearEndF = true;
+			m_CameraState = CAMERA_NORMAL;
+			m_Frame = 1.0f;
 		}
+		m_AfterEye = { Player::GetInstance()->GetPosition().x,45.0f,Player::GetInstance()->GetPosition().z - 20.0f };
+		m_AfterTarget = Player::GetInstance()->GetPosition();
+		m_targetPos = {
+Ease(In,Cubic,m_Frame,boss->GetPosition().x,m_AfterTarget.x),
+Ease(In,Cubic,m_Frame,boss->GetPosition().y,m_AfterTarget.y),
+Ease(In,Cubic,m_Frame,boss->GetPosition().z,m_AfterTarget.z),
+		};
+
+		m_eyePos = {
+Ease(In,Cubic,m_Frame,m_eyePos.x,m_AfterEye.x),
+Ease(In,Cubic,m_Frame,m_eyePos.y,m_AfterEye.y),
+Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
+		};
+
+		Finish = true;
+	}
+	else {
+		m_targetPos = { boss->GetPosition() };
 	}
 }
 //円運動の際のカメラ位置更新

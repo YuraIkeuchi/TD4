@@ -45,8 +45,17 @@ private:
 
 
 	//ž™‚Ì“I‚ÉŽg‚¤
-	float m_Angle = 0.0f;
-	float m_Angle2 = 0.0f;
+	float m_Angle[SPOT_NUM] = {};
+	float m_Angle2[SPOT_NUM] = {};
 
 	float m_AddPos = {};
+
+	int m_AppTimer = 0;
+
+
+	enum AppState {
+		APP_START,
+		APP_NOTICE,
+		APP_END,
+	}_AppState = APP_START;
 };

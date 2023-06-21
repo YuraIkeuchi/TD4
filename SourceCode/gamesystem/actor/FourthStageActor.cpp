@@ -66,15 +66,20 @@ void FourthStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 		lightgroup->SetSpotLightActive(i, true);
 	}
 
-	spotLightPos[0] = { 20,  10, 60 };
-	spotLightPos[1] = { 20,  10,  0 };
-	spotLightPos[2] = { -20, 10, 60 };
-	spotLightPos[3] = { -20, 10,  0 };
+	spotLightPos[0] = { 30,  10, 60 };
+	spotLightPos[1] = { 30,  10,  0 };
+	spotLightPos[2] = { -30, 10, 60 };
+	spotLightPos[3] = { -30, 10,  0 };
 
-	spotLightDir[0] = { -2, -1, -2 };
+	spotLightDir[0] = { 0, -1, 0 };
+	spotLightDir[1] = { 0, -1, 0 };
+	spotLightDir[2] = { 0, -1, 0 };
+	spotLightDir[3] = { 0, -1, 0 };
+
+	/*spotLightDir[0] = { -2, -1, -2 };
 	spotLightDir[1] = { -2, -1, 2 };
 	spotLightDir[2] = { 2, -1, -2 };
-	spotLightDir[3] = { 2, -1, 2 };
+	spotLightDir[3] = { 2, -1, 2 };*/
 }
 //更新
 void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -102,9 +107,53 @@ void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
 	
 	//sin波によって上下に動く
-	m_Angle += l_AddAngle;
-	m_Angle2 = m_Angle * (3.14f / 180.0f);
-	m_AddPos = (sin(m_Angle2) * 10.0f);
+	if (_AppState == APP_START) {
+		for (int i = 0; i < SPOT_NUM; i++) {
+			m_Angle[i] += (l_AddAngle - (0.5f * i));
+			m_Angle2[i] = m_Angle[i] * (3.14f / 180.0f);
+		}
+
+		spotLightDir[0].x = (sin(m_Angle2[0]) * 6.0f + (-2.0f));
+		spotLightDir[0].z = (sin(m_Angle2[0]) * 6.0f + (-2.0f));
+		spotLightDir[1].x = (sin(m_Angle2[1]) * 6.0f + (-2.0f));
+		spotLightDir[1].z = (sin(m_Angle2[1]) * 6.0f + (2.0f));
+		spotLightDir[2].x = (sin(m_Angle2[2]) * 6.0f + (2.0f));
+		spotLightDir[2].z = (sin(m_Angle2[2]) * 6.0f + (-2.0f));
+		spotLightDir[3].x = (sin(m_Angle2[3]) * 6.0f + (2.0f));
+		spotLightDir[3].z = (sin(m_Angle2[3]) * 6.0f + (2.0f));
+
+	}
+	else if (_AppState == APP_NOTICE) {
+		spotLightDir[0] = { Ease(In,Cubic,0.5f,spotLightDir[0].x,-2.0f),
+			spotLightDir[0].y,
+			Ease(In,Cubic,0.5f,spotLightDir[0].z,-2.0f),
+		};
+
+		spotLightDir[1] = { Ease(In,Cubic,0.5f,spotLightDir[1].x,-2.0f),
+		spotLightDir[1].y,
+		Ease(In,Cubic,0.5f,spotLightDir[1].z,2.0f),
+		};
+
+		spotLightDir[2] = { Ease(In,Cubic,0.5f,spotLightDir[2].x,2.0f),
+		spotLightDir[2].y,
+		Ease(In,Cubic,0.5f,spotLightDir[2].z,-2.0f),
+		};
+
+		spotLightDir[3] = { Ease(In,Cubic,0.5f,spotLightDir[3].x,2.0f),
+		spotLightDir[3].y,
+		Ease(In,Cubic,0.5f,spotLightDir[3].z,2.0f),
+		};
+	}
+	else {
+		//丸影のためのやつ
+		lightgroup->SetDirLightActive(0, true);
+		lightgroup->SetDirLightActive(1, true);
+		lightgroup->SetDirLightActive(2, true);
+		for (int i = 0; i < SPOT_NUM; i++) {
+			lightgroup->SetSpotLightActive(i, false);
+		}
+	}
+
 	//for (int i = 0; i < 4; i++) {
 	//	spotLightPos[i].x += m_AddPos;
 	//	spotLightPos[i].z += m_AddPos;
@@ -206,6 +255,7 @@ void FourthStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	ImGui::SliderFloat("LightZ2", &spotLightDir[2].z, -3, 3);
 	ImGui::SliderFloat("LightX3", &spotLightDir[3].x, -3, 3);
 	ImGui::SliderFloat("LightZ3", &spotLightDir[3].z, -3, 3);
+	ImGui::Text("AppTimer:%d", m_AppTimer);
 	ImGui::End();
 	//Player::GetInstance()->ImGuiDraw();
 	//loadobj->ImGuiDraw();
@@ -216,12 +266,6 @@ void FourthStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 }
 //登場シーン
 void FourthStageActor::IntroUpdate(DebugCamera* camera) {
-
-	//最後までテキストを見た
-	if (enemymanager->GetEnemyFinishAppear()) {
-		m_SceneState = SceneState::MainState;
-		camerawork->SetCameraState(CAMERA_NORMAL);
-	}
 
 	//演出スキップ
 	if (Input::GetInstance()->TriggerButton(Input::A)) {
@@ -241,6 +285,17 @@ void FourthStageActor::IntroUpdate(DebugCamera* camera) {
 	enemymanager->AppearUpdate();
 
 	camerawork->Update(camera);
+
+	m_AppTimer++;
+
+	if (_AppState == APP_START) {
+		if (m_AppTimer == 540) {
+			_AppState = APP_NOTICE;
+		}
+	}
+	else if (m_AppTimer == 650) {
+		_AppState = APP_END;
+	}
 }
 //バトルシーン
 void FourthStageActor::MainUpdate(DebugCamera* camera) {

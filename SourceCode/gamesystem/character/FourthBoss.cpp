@@ -45,6 +45,7 @@ FourthBoss::FourthBoss() {
 //初期化
 bool FourthBoss::Initialize() {
 	m_Position = { 0.0f,3.0f,30.0f };
+	m_Rotation = { 0.0f,90.0f,0.0f };
 	m_Scale = { 0.3f,0.3f,0.3f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	//m_Rotation.y = -90.f;
@@ -62,6 +63,7 @@ bool FourthBoss::Initialize() {
 //スキップ時の初期化
 void FourthBoss::SkipInitialize() {
 	m_Position = { 0.0f,3.0f,30.0f };
+	m_Rotation = { 0.0f,90.0f,0.0f };
 	m_Scale = { 0.3f,0.3f,0.3f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 }
