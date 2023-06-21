@@ -48,6 +48,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	camerawork->SetBoss(enemymanager->GetBoss());
 	camerawork->SetCameraState(CAMERA_BOSSAPPEAR);
 	camerawork->SetSceneName("FIRSTSTAGE");
+	camerawork->SplineSet();
 	//UI
 	ui = std::make_unique<UI>();
 	ui->Initialize();
