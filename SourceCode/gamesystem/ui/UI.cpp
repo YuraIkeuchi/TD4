@@ -56,6 +56,7 @@ void UI::Initialize() {
 		sprites[ArrowBoss] = CreateUi(ImageManager::BOSS_ARROW,{}, {62.0f,62.0f}, {1.f,1.f,1.f,1.f});
 		sprites[ArrowBoss].Tex->SetAnchorPoint({ 0.5,0.5f });
 		TexList.emplace_back(std::move(sprites[ArrowBoss]));
+		TexList[ArrowBoss].IsVisible = false;
 	}
 }
 
@@ -158,6 +159,7 @@ void UI::Update() {
 	}
 
 	//ボスの探索
+	if(boss)
 	SeachBoss();
 
 	for (auto i = 0; i < TexList.size(); i++) {
