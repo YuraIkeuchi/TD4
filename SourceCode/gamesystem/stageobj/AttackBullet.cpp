@@ -21,12 +21,28 @@ bool AttackBullet::Initialize() {
 //ImGuiï`âÊ
 void AttackBullet::ImGui_Origin() {
 	ImGui::Begin("Bullet");
-	ImGui::Text("ScaleX:%f", m_Angle.x);
+	ImGui::Text("Power:%f", m_Power);
 	ImGui::End();
 }
 //íeÇÃì¡óLèàóù
 void AttackBullet::Action() {
 	if (m_Alive) {
+		if (m_PowerState == POWER_NONE) {
+			m_Power = 1.0f;
+			m_Color = { 1.0f,1.0f,1.0f,1.0f };
+		}
+		else if (m_PowerState == POWER_MIDDLE) {
+			m_Power = 2.0f;
+			m_Color = { 1.0f,0.0f,0.0f,1.0f };
+		}
+		else if (m_PowerState == POWER_STRONG) {
+			m_Power = 3.0f;
+			m_Color = { 0.0f,1.0f,0.0f,1.0f };
+		}
+		else {
+			m_Power = 5.0f;
+			m_Color = { 1.0f,0.0f,0.0f,1.0f };
+		}
 		//à⁄ìÆÇâ¡éZ
 		m_Position.x += m_Angle.x * m_AddSpeed;
 		m_Position.z += m_Angle.y * m_AddSpeed;
