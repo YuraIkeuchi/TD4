@@ -40,8 +40,8 @@ bool FirstBoss::Initialize() {
 	m_Radius = 5.0f;
 
 	//優先度
-	CirclePriority = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/firstboss.csv", "SPriority")));
-	SummonPriority = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/firstboss.csv", "CPriority")));
+	CirclePriority = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/firstboss.csv", "CPriority")));
+	SummonPriority = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/firstboss.csv", "SPriority")));
 	//攻撃クールタイム
 	S_DecisionCount = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/firstboss.csv", "DecisionCount")));
 	//落下攻撃　下げ時間
@@ -50,9 +50,6 @@ bool FirstBoss::Initialize() {
 
 	//
 	SummonCool= static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/firstboss.csv", "SummonCool")));
-
-	SummonSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/firstboss.csv", "SummonSpeed")));
-
 	return true;
 }
 
@@ -1029,7 +1026,7 @@ void FirstBoss::AttackDecision()
 		SelAttack();
 
 		//次のアクションまでの猶予
-		S_DecisionCount = rand() % 190 + 120;
+		//S_DecisionCount = rand() % ;
 
 		//最初から
 		Active = false;

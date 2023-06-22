@@ -188,7 +188,6 @@ private:
 	float RotEaseTime;
 	float OldRotY;
 	float ImpactDownMove;
-	int SummonCool;
 	float SummonSpeed;
 	void Move();
 

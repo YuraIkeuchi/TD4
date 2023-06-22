@@ -2,6 +2,7 @@
 #include <random>
 #include "Player.h"
 #include "Collision.h"
+#include "CsvLoader.h"
 #include "Helper.h"
 //ƒ‚ƒfƒ‹“Ç‚Ýž‚Ý
 NormalEnemy::NormalEnemy() {
@@ -23,6 +24,9 @@ bool NormalEnemy::Initialize() {
 	isAlive = true;
 
 	m_fbxObject->PlayAnimation(0);
+
+	SummonSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/firstboss.csv", "SummonSpeed")));
+
 	return true;
 }
 //s“®
@@ -42,7 +46,7 @@ void NormalEnemy::Action() {
 
 	//Obj_SetParam();	//m_Position = Helper::GetInstance()->CircleMove({ 0.0f,5.0f,0.0f }, m_CircleScale, m_CircleSpeed);
 	m_fbxObject->SetScale({ 0.1f,0.1f,0.1f });
-	m_Scale = { 0.10f,0.10f,0.10f };
+	m_Scale = { 0.010f,0.010f,0.010f };
 	Fbx_SetParam();
 	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 	OnCollision();
@@ -214,9 +218,9 @@ void NormalEnemy::RushAction()
 	if (stopMove) {
 		if (isAlive) {
 			m_Position = {
-					m_Position.x + move.m128_f32[0] * 3.f,
+					m_Position.x + move.m128_f32[0] * SummonSpeed,
 				m_Position.y,
-				m_Position.z + move.m128_f32[2] * 3.f
+				m_Position.z + move.m128_f32[2] * SummonSpeed
 			};
 		}
 	}
