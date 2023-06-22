@@ -315,15 +315,22 @@ void Player::Bullet_Management() {
 			}
 		}
 	}
+	if(Input::GetInstance()->TriggerButton(Input::B))
+		AnimationControl(AnimeName::ATTACK,false, 1);
+		TriggerAttack = true;
 
-	
+
+	if (TriggerAttack) {
+		
+		if (!m_fbxObject->GetIsPlay())
+			TriggerAttack = false;
+	}
 
 	//攻撃
 	//Bが押されたら弾のチャージ
 	if (m_BulletType == BULLET_ATTACK) {
 		if (Input::GetInstance()->PushButton(Input::B) && (m_InterVal == 0) && (HungerGauge::GetInstance()->GetCatchCount() >= l_TargetCount)
 			&& (m_canShot)) {
-			AnimationControl(AnimeName::ATTACK, false, 1);
 			isShotNow = true;
 			m_ShotTimer++;
 			viewbullet->SetAlive(true);
@@ -518,6 +525,7 @@ void Player::BirthShot(const std::string& bulletName, bool Super) {
 void Player::Idle()
 {
 	//条件少しおかしいので後で修正
+	if (isShotNow)return;
 	if (_animeName == AnimeName::IDLE)return;
 	AnimationControl(AnimeName::IDLE, true, 1);
 }

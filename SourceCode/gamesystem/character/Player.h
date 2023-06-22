@@ -129,7 +129,8 @@ private://各クラス
 	int m_DamageInterVal = {};
 
 	XMFLOAT2 m_BoundPower = {};
-	
+
+	bool TriggerAttack;
 	//弾の数
 	int m_BulletNum = 0;
 

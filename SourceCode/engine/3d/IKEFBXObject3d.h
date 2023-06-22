@@ -171,6 +171,7 @@ public: //’è”
 	XMMATRIX matScale, matRot, matTrans;
 	XMMATRIX WorldMat;
 	FbxTime SetCurrent() { return currentTime = startTime; }
+	bool GetIsPlay() { return isPlay; }
 	//ƒ{[ƒ“‚ÌÅ‘å”
 	static const int MAX_BONES = 90;
 	int BoneNumber = 0;
