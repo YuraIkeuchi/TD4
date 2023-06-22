@@ -270,9 +270,16 @@ void SelectScene::Draw_Sprite()
 	}
 
 	//BossIcon[0]->Draw();
+	if(BossIcon[1]!=nullptr)
 	BossIcon[1]->Draw();
+
+	if (BossIcon[2] != nullptr)
 	BossIcon[2]->Draw();
+
+	if (BossIcon[3] != nullptr)
 	BossIcon[3]->Draw();
+
+	if (BossIcon[5] != nullptr)
 	BossIcon[5]->Draw();
 }
 
@@ -411,6 +418,8 @@ void SelectScene::ChangeEffect(std::string name, Stage stage, UINT iconnum)
 		CloseF = true;
 		if (closeScl <= 0.f) {
 			sin = true;
+			Player::GetInstance()->MoveStop(false);
+			Player::GetInstance()->SetCanShot(true);
 			SceneManager::GetInstance()->ChangeScene(name);
 			CloseF = false;
 			//_stages = Stage::NON;

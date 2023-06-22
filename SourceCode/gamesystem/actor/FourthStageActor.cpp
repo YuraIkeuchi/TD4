@@ -84,8 +84,13 @@ void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
 	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
 	lightgroup->Update();
+	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
+		SelectScene::GetIns()->Upda();
 
-	SelectScene::GetIns()->Upda();
+	if (Input::GetInstance()->TriggerButton(Input::Y)) {
+		SelectScene::GetIns()->ResetParama();
+		SceneManager::GetInstance()->ChangeScene("SELECT");
+	}
 	Menu::GetIns()->Upda();
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 }

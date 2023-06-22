@@ -255,7 +255,13 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	camerawork->Update(camera);
 	lightgroup->Update();
 
-	SelectScene::GetIns()->Upda();
+	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
+		SelectScene::GetIns()->Upda();
+
+	if (Input::GetInstance()->TriggerButton(Input::Y)) {
+		SelectScene::GetIns()->ResetParama();
+		SceneManager::GetInstance()->ChangeScene("SELECT");
+	}
 	Menu::GetIns()->Upda();
 
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());

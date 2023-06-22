@@ -35,7 +35,6 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	groundTex->TextureCreate();
 
 	Menu::GetIns()->Init();
-	SelectScene::GetIns()->Init();
 	//各クラス
 	//プレイヤー
 	Player::GetInstance()->InitState({ 0.0f,5.0f,-70.0f });

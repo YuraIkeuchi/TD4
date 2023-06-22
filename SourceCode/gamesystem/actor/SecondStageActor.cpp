@@ -57,7 +57,7 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	lightgroup->SetCircleShadowActive(0, true);
 	lightgroup->SetCircleShadowActive(1, true);
 
-	SelectScene::GetIns()->Init();
+	//SelectScene::GetIns()->Init();
 	Menu::GetIns()->Init();
 }
 //更新
@@ -85,8 +85,13 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
 	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
 	lightgroup->Update();
+	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
+		SelectScene::GetIns()->Upda();
 
-	SelectScene::GetIns()->Upda();
+	if (Input::GetInstance()->TriggerButton(Input::Y)) {
+		SelectScene::GetIns()->ResetParama();
+		SceneManager::GetInstance()->ChangeScene("SELECT");
+	}
 	Menu::GetIns()->Upda();
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 }
@@ -158,13 +163,13 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 		if ((camerawork->GetAppearType() == APPEAR_SEVEN) || (camerawork->GetAppearType() == APPEAR_EIGHT)) {
 			text_->SpriteDraw(dxCommon);
 		}
-	}
+	}sceneChanger_->Draw();
+	Menu::GetIns()->Draw();
+	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
 	SelectScene::GetIns()->Draw_Sprite();
 	IKESprite::PostDraw();
-	sceneChanger_->Draw();
-	Menu::GetIns()->Draw();
-
 	camerawork->feedDraw();
+	
 }
 //IMGuiの描画
 void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
