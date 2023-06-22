@@ -42,7 +42,9 @@ void InterCD::Draw(DirectXCommon* dxCommon) {
 	Obj_Draw();
 }
 void InterCD::ImGuiDraw() {
-	
+	//ImGui::Begin("CD");
+	//ImGui::Text("Count:%d", m_BoundCount);
+	//ImGui::End();
 	ImGui_Origin();
 }
 
@@ -97,7 +99,12 @@ void InterCD::BirthEffect() {
 void InterCD::DeathMove(const int Timer, const int TargetTimer) {
 	m_CDState = CD_STAY;
 	const int l_Division = 50;
+	//
 	if (!m_DeathMove) {
+		m_DeathTimer++;
+		if (m_DeathTimer == 1) {
+			m_AudioPlay = true;
+		}
 		if (Timer < TargetTimer) {
 			m_Position = m_CatchPos;
 		}
@@ -112,6 +119,8 @@ void InterCD::DeathMove(const int Timer, const int TargetTimer) {
 		(float)(l_bounddist(mt)) / l_Division,
 			};
 			m_DeathMove = true;
+			_AudioState = AUDIO_END;
+			m_DeathTimer = {};
 		}
 	}
 	else {
@@ -123,5 +132,6 @@ void InterCD::DeathMove(const int Timer, const int TargetTimer) {
 		}
 	}
 
+	AudioAction();
 	Obj_SetParam();
 }

@@ -174,10 +174,15 @@ void FourthBoss::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui
 void FourthBoss::ImGui_Origin() {
-	ImGui::Begin("Fourth");
-	ImGui::Text("Rand:%d", m_AttackRand);
-	ImGui::Text("m_MoveInterVal:%d", m_MoveInterVal);
-	ImGui::End();
+	//ImGui::Begin("Fourth");
+	//ImGui::Text("Rand:%d", m_AttackRand);
+	//ImGui::Text("m_MoveInterVal:%d", m_MoveInterVal);
+	//ImGui::End();
+
+	//CDの更新
+	for (int i = 0; i < cd.size(); i++) {
+		cd[i]->ImGuiDraw();
+	}
 }
 //インターバル
 void FourthBoss::InterValMove() {

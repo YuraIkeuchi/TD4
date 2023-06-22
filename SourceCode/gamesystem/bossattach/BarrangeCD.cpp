@@ -40,7 +40,11 @@ void BarrangeCD::Origin_Draw(DirectXCommon* dxCommon) {
 //IMGUI
 void BarrangeCD::ImGui_Origin() {
 	ImGui::Begin("BARRACD");
-	ImGui::Text("POSY:%f", m_Position.y);
+	ImGui::Text("m_DeathTimer:%d", m_DeathTimer);
+	ImGui::Text("m_BoundCount:%d", m_BoundCount);
+	ImGui::Text("m_BoundCount:%d", m_BoundCount);
+	ImGui::Text("m_PlayAudio:%d", m_AudioPlay);
+	ImGui::Text("AudioState: %d", (int)_AudioState);
 	ImGui::End();
 }
 //¶¬
@@ -91,5 +95,17 @@ void BarrangeCD::ResPornCD() {
 		m_CDState = CD_BIRTH;
 		m_CatchState = CATCH_SET;
 		m_ResPornTimer = {};
+	}
+}
+
+void BarrangeCD::AudioAction() {
+	if (_AudioState == AUDIO_SET) {
+		if (m_AudioPlay) {
+			Audio::GetInstance()->LoopWave(AUDIO_TITLE, VolumManager::GetInstance()->GetBGMVolum() + 2.0f);
+			m_AudioPlay = false;
+		}
+	}
+	else if (_AudioState == AUDIO_END) {
+		Audio::GetInstance()->StopWave(AUDIO_TITLE);
 	}
 }

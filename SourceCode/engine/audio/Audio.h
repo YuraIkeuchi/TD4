@@ -5,7 +5,13 @@
 #include <wrl.h>
 #include <d3d12.h>
 #include <DirectXMath.h>
-
+//オーディオの種類
+enum AudioLoad {
+	AUDIO_TITLE,
+	AUDIO_LOAD,
+	AUDIO_TUTORIAL,
+	AUDIO_BATTLE
+};
 //オーディオのコールバック
 class XAudio2VoiceCallBack : public IXAudio2VoiceCallback {
 public:

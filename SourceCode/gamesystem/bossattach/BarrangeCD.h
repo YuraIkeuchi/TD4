@@ -18,6 +18,8 @@ public:
 
 private:
 	void Action() override;//s“®
+
+	void AudioAction() override;//s“®
 	
 	void ImGui_Origin() override;
 private:

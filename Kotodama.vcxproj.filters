@@ -476,6 +476,9 @@
     <ClCompile Include="SourceCode\gamesystem\effect\NoteEffect.cpp">
       <Filter>gamesystem\effect\Note</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\engine\audio\AudioManager.cpp">
+      <Filter>engine\audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
@@ -915,6 +918,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\gamecamera\CameraWork.h">
       <Filter>gamesystem\gamecamera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\audio\AudioManager.h">
+      <Filter>engine\audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
