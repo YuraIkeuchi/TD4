@@ -16,8 +16,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	//共通の初期化
 	BaseInitialize(dxCommon);
 	//オーディオ
-	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/BGM_boss.wav");
-	Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum()+1.0f);
+	Audio::GetInstance()->LoopWave(AUDIO_BATTLE, VolumManager::GetInstance()->GetBGMVolum() + 1.0f);
 	//ポストエフェクト
 	PlayPostEffect = true;
 
@@ -158,7 +157,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 
 
 	if (enemymanager->BossDestroy()) {
-		Audio::GetInstance()->StopWave(1);
+		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		SceneSave::GetInstance()->SetClearFlag(kFirstStage, true);
 		if(camerawork->GetCameraState()==CameraState::CAMERA_BOSSDEAD_AFTER_FIRST)
 		{
@@ -174,7 +173,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	}
 
 	if (PlayerDestroy()) {
-		Audio::GetInstance()->StopWave(1);
+		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		sceneChanger_->ChangeStart();
 		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::NonReverse);
 	}
@@ -235,7 +234,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	}
 	if (PlayerDestroy()) {
 		std::string str = "GAMEOVER";
-		Audio::GetInstance()->StopWave(1);
+		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		sceneChanger_->ChangeStart();
 		sceneChanger_->ChangeScene(str, SceneChanger::Reverse);
 	}

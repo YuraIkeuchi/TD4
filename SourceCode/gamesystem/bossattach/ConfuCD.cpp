@@ -37,7 +37,8 @@ void ConfuCD::Origin_Draw(DirectXCommon* dxCommon) {
 //ImGui
 void ConfuCD::ImGui_Origin() {
 	ImGui::Begin("CONFUCD");
-	ImGui::Text("POSY:%f", m_Position.y);
+	ImGui::Text("m_DeathTimer:%d", m_DeathTimer);
+	ImGui::Text("m_BoundCount:%d", m_BoundCount);
 	ImGui::End();
 }
 
@@ -88,5 +89,17 @@ void ConfuCD::ResPornCD() {
 		m_CDState = CD_BIRTH;
 		m_CatchState = CATCH_SET;
 		m_ResPornTimer = {};
+	}
+}
+
+void ConfuCD::AudioAction() {
+	if (_AudioState == AUDIO_SET) {
+		if (m_AudioPlay) {
+			Audio::GetInstance()->LoopWave(AUDIO_LOAD, VolumManager::GetInstance()->GetBGMVolum() + 2.0f);
+			m_AudioPlay = false;
+		}
+	}
+	else if (_AudioState == AUDIO_END) {
+		Audio::GetInstance()->StopWave(AUDIO_LOAD);
 	}
 }

@@ -37,7 +37,8 @@ void DebuffCD::Origin_Draw(DirectXCommon* dxCommon) {
 //ImGui
 void DebuffCD::ImGui_Origin() {
 	ImGui::Begin("DEBUFFCD");
-	ImGui::Text("POSY:%f", m_Position.y);
+	ImGui::Text("m_DeathTimer:%d", m_DeathTimer);
+	ImGui::Text("m_BoundCount:%d", m_BoundCount);
 	ImGui::End();
 }
 
@@ -89,5 +90,17 @@ void DebuffCD::ResPornCD() {
 		m_CDState = CD_BIRTH;
 		m_CatchState = CATCH_SET;
 		m_ResPornTimer = {};
+	}
+}
+
+void DebuffCD::AudioAction() {
+	if (_AudioState == AUDIO_SET) {
+		if (m_AudioPlay) {
+			Audio::GetInstance()->LoopWave(AUDIO_TUTORIAL, VolumManager::GetInstance()->GetBGMVolum() + 2.0f);
+			m_AudioPlay = false;
+		}
+	}
+	else if (_AudioState == AUDIO_END) {
+		Audio::GetInstance()->StopWave(AUDIO_TUTORIAL);
 	}
 }

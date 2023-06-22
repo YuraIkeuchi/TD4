@@ -40,6 +40,8 @@ protected:
 
 	virtual void Action() = 0;//ボス特有の処理
 
+	virtual void AudioAction() = 0;//ボス特有の処理(音楽)
+
 	virtual void ImGui_Origin() = 0;//ボスそれぞれのImGui
 
 	void CollideBul(vector<InterBullet*>bullet);
@@ -102,4 +104,15 @@ protected:
 
 	bool m_DeathMove = false;
 	XMFLOAT3 m_BoundPower = {};
+
+	int m_BoundCount = {};
+
+	int m_DeathTimer = {};
+
+	enum AudioState {
+		AUDIO_SET,
+		AUDIO_END,
+	}_AudioState = AUDIO_SET;
+
+	bool m_AudioPlay = false;
 };

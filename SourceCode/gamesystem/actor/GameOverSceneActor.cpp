@@ -37,13 +37,13 @@ void GameOverSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 			str = "FIRSTSTAGE";
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Retry.wav", VolumManager::GetInstance()->GetSEVolum());
 		}
-		//Audio::GetInstance()->StopWave(3);
+		//Audio::GetInstance()->StopWave(AUDIO_LOAD);
 	}
 	if (input->TriggerButton(input->A) && !sceneChanger_->GetEasingStart()) {
 		sceneChanger_->ChangeStart();
 		str = "TITLE";
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Over.wav", VolumManager::GetInstance()->GetSEVolum());
-		//Audio::GetInstance()->StopWave(3);
+		//Audio::GetInstance()->StopWave(AUDIO_LOAD);
 	}
 
 	sceneChanger_->ChangeScene(str, SceneChanger::Reverse);

@@ -14,8 +14,7 @@ void FourthStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	//共通の初期化
 	BaseInitialize(dxCommon);
 	//オーディオ
-	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/BGM_boss.wav");
-	Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum() + 1.0f);
+	Audio::GetInstance()->LoopWave(AUDIO_BATTLE, VolumManager::GetInstance()->GetBGMVolum() + 1.0f);
 
 	//ポストエフェクト
 	PlayPostEffect = true;
@@ -205,21 +204,9 @@ void FourthStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void FourthStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	ImGui::Begin("Light");
-	ImGui::SliderFloat("LightX0", &spotLightDir[0].x, -3, 3);
-	ImGui::SliderFloat("LightZ0", &spotLightDir[0].z, -3, 3);
-	ImGui::SliderFloat("LightX1", &spotLightDir[1].x, -3, 3);
-	ImGui::SliderFloat("LightZ1", &spotLightDir[1].z, -3, 3);
-	ImGui::SliderFloat("LightX2", &spotLightDir[2].x, -3, 3);
-	ImGui::SliderFloat("LightZ2", &spotLightDir[2].z, -3, 3);
-	ImGui::SliderFloat("LightX3", &spotLightDir[3].x, -3, 3);
-	ImGui::SliderFloat("LightZ3", &spotLightDir[3].z, -3, 3);
-	ImGui::Text("AppTimer:%d", m_AppTimer);
-	ImGui::End();
 	//Player::GetInstance()->ImGuiDraw();
 	//loadobj->ImGuiDraw();
-	camerawork->ImGuiDraw();
-	//enemymanager->ImGuiDraw();
+	enemymanager->ImGuiDraw();
 	//loadobj->ImGuiDraw();
 	//SceneSave::GetInstance()->ImGuiDraw();
 }
@@ -261,7 +248,7 @@ void FourthStageActor::MainUpdate(DebugCamera* camera) {
 	//カメラワークのセット
 	if (enemymanager->BossDestroy())
 	{
-		Audio::GetInstance()->StopWave(1);
+		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		//フェード前
 		if (!camerawork->GetFeedEnd()) {
 			enemymanager->SetDeadThrow(true);
@@ -292,7 +279,7 @@ void FourthStageActor::MainUpdate(DebugCamera* camera) {
 	}
 
 	if (PlayerDestroy()) {
-		Audio::GetInstance()->StopWave(1);
+		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		sceneChanger_->ChangeStart();
 		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::Reverse);
 	}

@@ -127,6 +127,7 @@
     <ClCompile Include="SourceCode\engine\3d\ModelManager.cpp" />
     <ClCompile Include="SourceCode\engine\3d\ObjCommon.cpp" />
     <ClCompile Include="SourceCode\engine\audio\Audio.cpp" />
+    <ClCompile Include="SourceCode\engine\audio\AudioManager.cpp" />
     <ClCompile Include="SourceCode\engine\audio\VolumManager.cpp" />
     <ClCompile Include="SourceCode\engine\camera\Camera.cpp" />
     <ClCompile Include="SourceCode\engine\camera\DebugCamera.cpp" />
@@ -269,6 +270,7 @@
     <ClInclude Include="SourceCode\engine\3d\ModelManager.h" />
     <ClInclude Include="SourceCode\engine\3d\ObjCommon.h" />
     <ClInclude Include="SourceCode\engine\audio\Audio.h" />
+    <ClInclude Include="SourceCode\engine\audio\AudioManager.h" />
     <ClInclude Include="SourceCode\engine\audio\VolumManager.h" />
     <ClInclude Include="SourceCode\engine\camera\Camera.h" />
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h" />

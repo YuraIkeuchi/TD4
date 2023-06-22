@@ -7,8 +7,7 @@
 //初期化
 void LoadSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	//オーディオ
-	Audio::GetInstance()->LoadSound(3, "Resources/Sound/BGM/BGM_load.wav");
-	Audio::GetInstance()->LoopWave(3, VolumManager::GetInstance()->GetBGMVolum() + 0.5f);
+	Audio::GetInstance()->LoopWave(AUDIO_LOAD, VolumManager::GetInstance()->GetBGMVolum() + 0.5f);
 
 	BaseInitialize(dxCommon, { 0,10,200 }, { 0,0,-200 });
 	if (!s_GameLoop) {
@@ -45,24 +44,24 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	}
 	//1ステージ
 	if (Input::GetInstance()->TriggerKey(DIK_1)) {
-		Audio::GetInstance()->StopWave(3);
+		Audio::GetInstance()->StopWave(AUDIO_LOAD);
 		str = "FIRSTSTAGE";
 	}
 	//2ステージ
 	if (Input::GetInstance()->TriggerKey(DIK_2)) {
-		Audio::GetInstance()->StopWave(3);
+		Audio::GetInstance()->StopWave(AUDIO_LOAD);
 		str = "SECONDSTAGE";
 	}
 	
 	//3ステージ
 	if (Input::GetInstance()->TriggerKey(DIK_3)) {
-		Audio::GetInstance()->StopWave(3);
+		Audio::GetInstance()->StopWave(AUDIO_LOAD);
 		str="THIRDSTAGE";
 	}
 
 	//4ステージ
 	if (Input::GetInstance()->TriggerKey(DIK_4)) {
-		Audio::GetInstance()->StopWave(3);
+		Audio::GetInstance()->StopWave(AUDIO_LOAD);
 		str = "FOURTHSTAGE";
 	}
 	//一定時間でシーンが変わる
@@ -197,7 +196,7 @@ void LoadSceneActor::MainUpdate(DebugCamera* camera) {
 void LoadSceneActor::FinishUpdate(DebugCamera* camera) {
 	//一定時間でシーンが変わる
 	if (m_LoadTimer >= LoadTimerMax) {
-		//Audio::GetInstance()->StopWave(3);
+		//Audio::GetInstance()->StopWave(AUDIO_LOAD);
 		sceneChanger_->ChangeStart();
 		sceneChanger_->ChangeScene(str, SceneChanger::NonReverse);
 		return;
