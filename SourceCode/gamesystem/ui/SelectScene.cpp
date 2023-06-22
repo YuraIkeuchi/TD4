@@ -52,6 +52,9 @@ void SelectScene::ResetParama()
 
 	sin = false;
 	_stages = Stage::NON;
+
+	JudgCancel = false;
+	JudgChal = false;
 }
 
 void SelectScene::Init()
@@ -67,10 +70,10 @@ void SelectScene::Init()
 	}
 	StageObjs[FIRST]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
 	StageObjs[SECOND]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::KIDO_OBJ));
-	StageObjs[THIRD]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::MobUsa));
-	StageObjs[FOUR]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::DJ));
+	StageObjs[THIRD]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
+	StageObjs[FOUR]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::MobUsa));
 	StageObjs[FIVE]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
-	StageObjs[SIX]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
+	StageObjs[SIX]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::DJ));
 	StageObjs[SEVEN]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
 
 
@@ -115,10 +118,10 @@ void SelectScene::Init()
 	//ポストエフェクト用
 	BossIcon[FIRST]=IKESprite::Create(ImageManager::CLOSESYTOPON, { 0,0 });
 	BossIcon[SECOND] = IKESprite::Create(ImageManager::CLOSEKIDO, { 0,0 });
-	BossIcon[THIRD] = IKESprite::Create(ImageManager::CLOSECAMERA, { 0,0 });
-	BossIcon[FOUR] = IKESprite::Create(ImageManager::CLOSEDJ, { 0,0 });
+	BossIcon[THIRD] = IKESprite::Create(ImageManager::CLOSESYTOPON, { 0,0 });
+	BossIcon[FOUR] = IKESprite::Create(ImageManager::CLOSECAMERA, { 0,0 });
 	BossIcon[FIVE] = IKESprite::Create(ImageManager::BOX, { 0,0 });
-	BossIcon[SIX] = IKESprite::Create(ImageManager::BOX, { 0,0 });
+	BossIcon[SIX] = IKESprite::Create(ImageManager::CLOSEDJ, { 0,0 });
 	BossIcon[SEVEN] = IKESprite::Create(ImageManager::BOX, { 0,0 });
 
 	constexpr float PosRad = 20.f;
@@ -136,7 +139,7 @@ void SelectScene::Init()
 		StageObjs[i]->SetScale({ 1,1,1 });
 	}
 	StageObjs[SECOND]->SetScale({ 4,4,4});
-	StageObjs[FOUR]->SetScale({ 0.2f,0.2f,0.2f});
+	StageObjs[SIX]->SetScale({ 0.2f,0.2f,0.2f});
 
 }
 
@@ -173,26 +176,34 @@ void SelectScene::Upda()
 	
 
 	RotPedestal();
-
+	
 	if(IconColor[0]>=1.f|| IconColor[1] >= 1.f||IconColor[2]>=1.f|| IconColor[3] >= 1.f
 		|| IconColor[4] >= 1.f|| IconColor[5] >= 1.f|| IconColor[6] >= 1.f)
 	{
 		if (Input::GetInstance()->TriggerButton(Input::B)) {
-			if (IconColor[0] >= 1.f)TipsAct[FIRST] = true;
+		//	if (IconColor[0] >= 1.f)TipsAct[FIRST] = true;
 			if (IconColor[1] >= 1.f)TipsAct[SECOND] = true;
 			if (IconColor[2] >= 1.f)TipsAct[THIRD] = true;
 			if (IconColor[3] >= 1.f)TipsAct[FOUR] = true;
+			if (IconColor[4] >= 1.f)TipsAct[FIVE] = true;
+			if (IconColor[5] >= 1.f)TipsAct[SIX] = true;
+			//if (IconColor[6] >= 1.f)TipsAct[SEVEN] = true;
 		}
 	}
 
-	ChangeEffect("FIRSTSTAGE", Stage::FIRST, FIRST);
+	//ChangeEffect("FIRSTSTAGE", Stage::FIRST, FIRST);
 
 	ChangeEffect("SECONDSTAGE", Stage::SECOND, SECOND);
 
-	ChangeEffect("THIRDSTAGE", Stage::THIRD, THIRD);
+	ChangeEffect("FIRSTSTAGE", Stage::THIRD, THIRD);
 
-	ChangeEffect("FOURTHSTAGE", Stage::FOUR, FOUR);
+	ChangeEffect("THIRDSTAGE", Stage::FOUR, FOUR);
 
+	//ChangeEffect("FIVESTAGE", Stage::FIVE,FIVE);
+
+	//ChangeEffect("FOURTHSTAGE", Stage::SIX, SIX);
+
+	ChangeEffect("FOURTHSTAGE", Stage::SIX, SIX);
 
 
 	XMFLOAT3 nowSelpos = { Pedestal->GetPosition().x + sinf(180.f * (PI / PI_180)) * PosRad,
@@ -258,10 +269,11 @@ void SelectScene::Draw_Sprite()
 		//	BossIcon[i]->Draw();
 	}
 
-	BossIcon[0]->Draw();
+	//BossIcon[0]->Draw();
 	BossIcon[1]->Draw();
 	BossIcon[2]->Draw();
 	BossIcon[3]->Draw();
+	BossIcon[5]->Draw();
 }
 
 void SelectScene::Draw_SpriteBack()
@@ -437,10 +449,14 @@ void SelectScene::TipsPosUpda(Stage stage)
 
 void SelectScene::ViewTips()
 {
-	TipsPosUpda(FIRST);
+	//TipsPosUpda(FIRST);
 	TipsPosUpda(SECOND);
 	TipsPosUpda(THIRD);
 	TipsPosUpda(FOUR);
+
+	//TipsPosUpda(FIVE);
+	TipsPosUpda(SIX);
+	//TipsPosUpda(SEVEN);
 	//TipsPosUpda();
 
 constexpr float AddVal = 20.f;

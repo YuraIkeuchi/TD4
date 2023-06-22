@@ -125,6 +125,7 @@ private:
 	void ChangeEffect(std::string name,Stage stage,UINT iconnum);
 public:
 	float GetCloseIconRad() { return closeRad; }
+	float GetCloseScl() { return closeScl; }
 	XMFLOAT3 GetPedestalPos() { return Pedestal->GetPosition(); }
 	int GetNowIndex() { return index; }
 };
