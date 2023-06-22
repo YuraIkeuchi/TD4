@@ -1,7 +1,7 @@
 #pragma once
-#include<DirectXMath.h>
-#include<memory>
-#include<string>
+#include <DirectXMath.h>
+#include <memory>
+#include <string>
 #include "Ghost.h"
 #include "Food.h"
 #include "Heart.h"
@@ -55,6 +55,8 @@ private:
 	void LightReturn();
 	//サードボスに関する関数をまとめています
 	void ThirdBossAction();
+	//ゴーストをエネミーに変換します
+	void ChangeGhost2Enemy();
 	//近場のゴーストをロックします
 	void LockVerseGhost();
 	//ゴーストを削除します。

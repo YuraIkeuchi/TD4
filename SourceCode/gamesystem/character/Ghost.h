@@ -42,7 +42,8 @@ private:
 	bool PlayerCollision();
 	//食料生産
 	void BirthGhost();
-
+	//生成可能かを調べます
+	bool VerseCheck();
 private://ステート
 	static void (Ghost::* stateTable[])();
 	//何もない状態
@@ -76,7 +77,7 @@ public://getter setter
 	const float& GetLimit() { return m_Limit; }
 	const int GetStateInst() { return (int)_charaState; }
 	void SetIsRefer(const bool isRefer) { this->m_IsRefer = isRefer; }
-	void SetIsVerse(const bool isVerse) { this->isVerse = isVerse; }
+	void SetIsVerse(const bool isVerse, int verseCureTimer = 0) { this->isVerse = isVerse; m_VerseCureTimer = verseCureTimer; }
 	void SetCatch(const bool Catch) { m_Catch = Catch; }
 	void SetAlive(const bool Alive) { m_Alive = Alive; }
 	void SetVanish(const bool Vanish) { m_Vanish = Vanish; }
@@ -86,6 +87,7 @@ private:
 	bool m_Alive = true;//生存フラグ
 	bool m_Catch = false;//捕獲フラグ
 	bool isVerse = true;//リスポーンフラグ
+	int m_VerseCureTimer = 0;//リスポーン回復フラグ
 	int m_ResPornTimer = 0;//復活の時間
 	XMFLOAT3 m_FollowPos = {};//追従先
 	XMFLOAT3 m_OBBScale = {};//OBB用の大きさ

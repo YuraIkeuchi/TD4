@@ -14,6 +14,7 @@ void (ThirdBoss::* ThirdBoss::stateTable[])() = {
 	&ThirdBoss::WaitUpdate,//要素0
 	&ThirdBoss::MoveUpdate, //要素1
 	&ThirdBoss::ControlUpdate,
+	&ThirdBoss::EnemySpawnUpdate,
 };
 
 
@@ -141,21 +142,14 @@ void ThirdBoss::WaitUpdate() {
 	ActionTimer++;
 	if (ActionTimer >= ActionTimerMax[(size_t)commandState::WaitCommand]) {
 		if (!isReferCheck) {
-			//mt19937 mt{ std::random_device{}() };
-			//uniform_int_distribution<int> l_Rand(0, 4);
-			//moveSpawn = l_Rand(mt);
-			//if (moveSpawn == nowSpawn) {
-			//	moveSpawn++;
-			//	if (moveSpawn > 4) {
-			//		moveSpawn = 0;
-			//	}
-			//}
-			//nowSpawn = moveSpawn;
-			//isInstruction = ThirdBossInst::None;
+			ChangePos2Random();
+			isInstruction = ThirdBossInst::None;
 			//phase = commandState::MoveCommand;
 		} else {
 			isSearch = true;
-			phase = commandState::ControlCommand;
+			//phase = commandState::ControlCommand;
+			isInstruction = ThirdBossInst::ChangeGhost;
+			phase = commandState::EnemySpawn;
 		}
 		ActionTimer = 0;
 	}
@@ -194,12 +188,29 @@ void ThirdBoss::ControlUpdate() {
 			phase = commandState::WaitCommand;
 		}
 	}
-	//if (isInstruction == ThirdBossInst::SpawnEnemy) {
-	//	for (int i = 0; i < 3;i++) {
-	//		Thirdenemys[i]->SetPosition(jackPos[i]);
-	//	}
-	//	isInstruction = ThirdBossInst::FinishMove;
-	//}
+}
+
+void ThirdBoss::EnemySpawnUpdate() {
+	if (isSearch) { return; }
+	ActionTimer++;
+	if (ActionTimer >= ActionTimerMax[(size_t)commandState::ControlCommand]) {
+		for (int i = 0; i < 3; i++) {
+			Thirdenemys[i]->SetPosition(jackPos[i]);
+		}
+		isShutter = true;
+		for (int i = 0; i < 3; i++) {
+			Thirdenemys[i]->Update();
+		}
+	}
+	if (!isShutter) { return; }
+	if (ShutterEffect()) {
+		if (ShutterFeed()) {
+			ShutterReset();
+			ActionTimer = 0;
+			m_Limit = 20.0f;
+			phase = commandState::WaitCommand;
+		}
+	}
 	//if (isInstruction == ThirdBossInst::FinishMove) {
 	//	//phase = commandState::WaitCommand;
 	//}
@@ -246,6 +257,19 @@ void ThirdBoss::ShutterReset() {
 	photo[Photo_Out_Under]->SetColor({ 1,1,1,1 });
 	shutterTime = 0.0f;
 	feedTimer = 0.0f;
+}
+
+void ThirdBoss::ChangePos2Random() {
+mt19937 mt{ std::random_device{}() };
+uniform_int_distribution<int> l_Rand(0, 4);
+moveSpawn = l_Rand(mt);
+if (moveSpawn == nowSpawn) {
+	moveSpawn++;
+	if (moveSpawn > 4) {
+		moveSpawn = 0;
+	}
+}
+nowSpawn = moveSpawn;
 }
 
 bool ThirdBoss::IsPinch() {

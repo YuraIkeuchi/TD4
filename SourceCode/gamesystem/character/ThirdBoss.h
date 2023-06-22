@@ -37,6 +37,7 @@ private:
 		WaitCommand = 0,
 		MoveCommand,
 		ControlCommand,
+		EnemySpawn,
 		COMMANDMAX
 	};
 
@@ -46,12 +47,13 @@ private:
 	void WaitUpdate();
 	void MoveUpdate();
 	void ControlUpdate();
-
+	void EnemySpawnUpdate();
 
 	bool ShutterEffect();
 	bool ShutterFeed();
 	void ShutterReset();
 
+	void ChangePos2Random();
 	bool IsPinch();
 private:
 	static const int kPhotoSpotMax = 5;

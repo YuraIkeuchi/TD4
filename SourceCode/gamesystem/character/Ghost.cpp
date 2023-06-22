@@ -124,7 +124,7 @@ void Ghost::GhostCollision(const XMFLOAT3& pos) {
 }
 //食料生成
 void Ghost::BirthGhost() {
-	if (!isVerse) { return; }
+	if (!VerseCheck()) { return; }
 	if (m_Alive) { return; }
 	m_ResPornTimer++;
 	//描画バグ起きるから先に座標セット
@@ -151,6 +151,16 @@ void Ghost::BirthGhost() {
 		m_Alive = true;
 		m_ResPornTimer = 0;
 		m_Scale = { 0.5f,0.5f,0.5f };
+	}
+}
+bool Ghost::VerseCheck() {
+	if (!isVerse) { return false; }
+	m_VerseCureTimer--;
+	m_VerseCureTimer=min(m_VerseCureTimer,0);
+	if (m_VerseCureTimer<=0) {
+		return true;
+	} else {
+		return false;
 	}
 }
 //何もない状態

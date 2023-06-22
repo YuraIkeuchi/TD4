@@ -295,6 +295,7 @@ void LoadStageObj::ThirdBossAction() {
 	LockVerseGhost();
 	NonVerseGhost();
 	CheckReferGhost();
+	ChangeGhost2Enemy();
 }
 
 void LoadStageObj::LockVerseGhost() {
@@ -334,11 +335,7 @@ void LoadStageObj::NonVerseGhost() {
 	for (Ghost*& ghost : stopGhosts) {
 		if (!ghost) { continue; }
 		ghost->SetColor({ 1,0,1,1 });
-		//ghost->SetScale({ 0.0f,0.0f,0.0f });
 		ghost->SetIsPostionCheck(true);
-		ghost->SetIsVerse(false);
-		ghost->SetAlive(false);
-		boss->SetJackPos(m_GhostPos, ghost->GetPosition());
 		m_GhostPos++;
 	}
 	boss->SetInstruction(InterBoss::ThirdBossInst::SpawnEnemy);
@@ -359,6 +356,22 @@ bool LoadStageObj::CheckReferGhost() {
 		boss->SetIsReferCheck(false);
 		return true;
 	}
+}
+
+void LoadStageObj::ChangeGhost2Enemy() {
+	InterBoss* boss = m_EnemyManager->GetBoss();
+	if (boss->GetInstruction() != InterBoss::ThirdBossInst::ChangeGhost) { return; }
+	int m_GhostPos = 0;
+	for (Ghost*& ghost : stopGhosts) {
+		if (!ghost) { continue; }
+		ghost->SetColor({ 1,0,1,1 });
+		ghost->SetScale({ 0.0f,0.0f,0.0f });
+		ghost->SetIsVerse(false,180);
+		ghost->SetVanish(true);
+		boss->SetJackPos(m_GhostPos, ghost->GetPosition());
+		m_GhostPos++;
+	}
+	boss->SetInstruction(InterBoss::ThirdBossInst::SpawnEnemy);
 }
 
 //飢餓ゲージをゴースト三体分減らす
