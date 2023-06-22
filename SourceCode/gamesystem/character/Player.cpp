@@ -195,13 +195,13 @@ void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
 	//アニメーションを引数に合わせる
 	if (_animeName != name)
 	{
-		
+		m_fbxObject->PlayAnimation(static_cast<int>(name));
 	}
 
 	//各種パラメータ反映
-	//_animeName = ;
-	
-
+	_animeName = name;
+	m_LoopFlag = loop;
+	m_AnimationSpeed = speed;
 }
 //歩き(コントローラー)
 void Player::Walk()
@@ -323,6 +323,7 @@ void Player::Bullet_Management() {
 	if (m_BulletType == BULLET_ATTACK) {
 		if (Input::GetInstance()->PushButton(Input::B) && (m_InterVal == 0) && (HungerGauge::GetInstance()->GetCatchCount() >= l_TargetCount)
 			&& (m_canShot)) {
+			AnimationControl(AnimeName::ATTACK, false, 1);
 			isShotNow = true;
 			m_ShotTimer++;
 			viewbullet->SetAlive(true);
