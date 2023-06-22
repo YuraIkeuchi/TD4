@@ -75,7 +75,7 @@ void ThirdBoss::Action() {
 		photoSpot[i]->Update();
 	}
 	for (unique_ptr<TutorialEnemy>& enemy : Thirdenemys) {
-		//enemy->Update();
+		enemy->Update();
 	}
 	(this->*stateTable[(size_t)phase])();
 	/*^^^^当たり判定^^^^*/
@@ -183,16 +183,18 @@ void ThirdBoss::ControlUpdate() {
 }
 
 void ThirdBoss::EnemySpawnUpdate() {
-	if (isSearch) { return; }
+	if (isInstruction != ThirdBossInst::SpawnEnemy) { return; }
 	ActionTimer++;
-	if (ActionTimer >= ActionTimerMax[(size_t)commandState::ControlCommand]) {
-		for (int i = 0; i < 3; i++) {
+	if (ActionTimer >= ActionTimerMax[(size_t)commandState::ControlCommand]&&!isShutter) {
+		int num = 3;
+		if (isStrong) {
+			num = 5;
+		}
+		for (int i = 0; i < num; i++) {
 			Thirdenemys[i]->SetPosition(jackPos[i]);
+			Thirdenemys[i]->SetIsActive(true);
 		}
 		isShutter = true;
-		for (int i = 0; i < 3; i++) {
-			Thirdenemys[i]->Update();
-		}
 	}
 	if (!isShutter) { return; }
 	if (ShutterEffect()) {
@@ -203,9 +205,9 @@ void ThirdBoss::EnemySpawnUpdate() {
 			phase = commandState::WaitCommand;
 		}
 	}
-	//if (isInstruction == ThirdBossInst::FinishMove) {
-	//	//phase = commandState::WaitCommand;
-	//}
+	if (isInstruction == ThirdBossInst::FinishMove) {
+		phase = commandState::WaitCommand;
+	}
 }
 
 bool ThirdBoss::ShutterEffect() {

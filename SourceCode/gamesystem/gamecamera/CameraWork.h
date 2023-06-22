@@ -15,6 +15,7 @@ enum CameraState {
 	CAMERA_BOSSDEAD_BEFORE,
 	CAMERA_BOSSDEAD_AFTER_FIRST,
 	CAMERA_BOSSDEAD_AFTER_SECOND,
+	CAMERA_BOSSDEAD_AFTER_THIRD,
 	CAMERA_BOSSDEAD_AFTER_FOURTH,
 };
 
@@ -84,6 +85,7 @@ private://各ボスの登場カメラ
 	void FirstBossAppear();
 
 	void SecondBossAppear();
+	void ThirdBossAppear();
 
 	void FourthBossAppear();
 
@@ -109,7 +111,7 @@ public:
 	}_firstState;
 	//getter setter
 	bool Feed_Spline;
-bool FinishAppear() { if (spline->GetIndex() >= static_cast<int>(pointsList.size() -1))return true; return false; }
+	bool FinishAppear() { if (spline->GetIndex() >= static_cast<int>(static_cast<unsigned long long>(pointsList.size()) -1))return true; return false; }
 
 	void SetBoss(InterBoss* boss) { this->boss = boss; }
 
@@ -142,7 +144,10 @@ private:
 	unique_ptr<Shake> shake = nullptr;
 	//イージングの変数
 	float m_Frame = 0.0f;
+	float m_FrameMax=30.0f;
+	XMFLOAT3 m_BeforeEye = { 0.0f,0.0f,0.0f };
 	XMFLOAT3 m_AfterEye = { 0.0f,0.0f,0.0f };
+	XMFLOAT3 m_BeforeTarget = { 0.0f,0.0f,0.0f };
 	XMFLOAT3 m_AfterTarget = { 0.0f,0.0f,0.0f };
 	//視点座標
 	XMFLOAT3 m_eyePos = { 0.0f,0.0f,0.0f };
