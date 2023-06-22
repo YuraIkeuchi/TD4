@@ -14,8 +14,7 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	BaseInitialize(dxCommon);
 	dxCommon->SetFullScreen(true);
 	//オーディオ
-	Audio::GetInstance()->LoadSound(0, "Resources/Sound/BGM/BGM_title.wav");
-	Audio::GetInstance()->LoopWave(0, VolumManager::GetInstance()->GetBGMVolum()+2.0f);
+	Audio::GetInstance()->LoopWave(AUDIO_TITLE, VolumManager::GetInstance()->GetBGMVolum()+2.0f);
 
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
@@ -34,7 +33,7 @@ void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		!sceneChanger_->GetEasingStart()) {
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Decide.wav", VolumManager::GetInstance()->GetSEVolum());
 		sceneChanger_->ChangeStart();
-		Audio::GetInstance()->StopWave(0);
+		Audio::GetInstance()->StopWave(AUDIO_TITLE);
 	}
 	frame += 0.01f;
 	TitleWordSprite->SetPosition({pos.x+(sinf(frame*5.0f) * 25.0f), pos.y + (sinf(frame) *50.0f)});

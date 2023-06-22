@@ -11,15 +11,15 @@ public:
 
 	void BirthCD() override;
 	void StayCD() override;
-	void ThroughCD() override;
 	void CatchCD() override;
-	void ThrowCD() override;
 	void DeathCD() override;
 	void ResPornCD() override;
 public:
 
 private:
 	void Action() override;//çsìÆ
+
+	void AudioAction() override;//çsìÆ
 
 	void ImGui_Origin() override;
 private:

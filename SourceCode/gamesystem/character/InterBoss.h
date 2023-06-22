@@ -156,6 +156,10 @@ protected:
 
 	//ダメージ倍率
 	float m_Magnification = {};
+	//上昇度
+	float m_AddPower = 0.0f;
+	//重力加速度
+	float m_Gravity = 0.02f;
 
 	//
 	array<XMFLOAT3, 5> jackPos = {};
@@ -182,6 +186,8 @@ protected:
 		SPHERE
 	};
 	void CollideBul(vector<InterBullet*>bullet, Type type = Type::SPHERE);
+	//当たり判定(プレイヤー)
+	void ColPlayer();
 	bool EndSummonRepos;
 	bool ResF;
 public:

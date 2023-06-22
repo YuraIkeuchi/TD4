@@ -1,12 +1,11 @@
 #pragma once
 #include "ObjCommon.h"
 #include "InterBullet.h"
+#include "BreakEffect.h"
 enum CDState {
 	CD_BIRTH,
 	CD_STAY,
-	CD_THROUGH,
 	CD_CATCH,
-	CD_THROW,
 	CD_DEATH,
 	CD_RESPORN,
 };
@@ -22,6 +21,8 @@ protected:
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
+	//CDVロード
+	void CsvLoad();
 	//初期化
 	virtual bool Initialize() = 0;
 	//更新
@@ -34,22 +35,26 @@ public:
 
 	void ImGuiDraw();//ImGuiの描画
 
+	void DeathMove(const int Timer,const int TargetTimer);
 protected:
 
 	virtual void Action() = 0;//ボス特有の処理
+
+	virtual void AudioAction() = 0;//ボス特有の処理(音楽)
 
 	virtual void ImGui_Origin() = 0;//ボスそれぞれのImGui
 
 	void CollideBul(vector<InterBullet*>bullet);
 
-	bool PlayerCollide();
+	//攻撃前のCDのセット
+	void SetCD();
+	//エフェクト発生
+	void BirthEffect();
 protected:
 	//メンバ関数
 	virtual void BirthCD() {};
 	virtual void StayCD() {};
-	virtual void ThroughCD() {};
 	virtual void CatchCD() {};
-	virtual void ThrowCD() {};
 	virtual void DeathCD() {};
 	virtual void ResPornCD() {};
 public:
@@ -61,25 +66,24 @@ public:
 
 	void SetBreakCD(const bool BreakCD) { m_BreakCD = BreakCD; }
 
+	void SetAttackSetCD(const bool AttackSetCD) { m_AttackSetCD = AttackSetCD; }
+
 	void SetCatchPos(const XMFLOAT3 CatchPos) { m_CatchPos = CatchPos; }
 protected:
 	static void (InterCD::* stateTable[])();
 private:
 protected:
+	vector<InterEffect*> effects;
 	//CDの状態
 	int m_CDState = CD_BIRTH;
 
 	//上昇度
 	float m_AddPower = 0.0f;
 	//重力加速度
-	float m_Gravity = 0.02f;
+	float m_Gravity = 0.03f;
 	//キャッチした後のポジション
 	XMFLOAT3 m_CatchPos = {};
-	//投げる間の時間
-	int m_ThrowTimer = {};
-	double m_SpeedX = 0.0f;
-	double m_SpeedZ = 0.0f;
-
+	
 	//リスポーン時間
 	int m_ResPornTimer = {};
 
@@ -93,5 +97,22 @@ protected:
 		CATCH_END,
 	};
 
+	bool m_AttackSetCD = false;
 	int m_CatchState = CATCH_SET;
+
+	float m_HP = {};
+
+	bool m_DeathMove = false;
+	XMFLOAT3 m_BoundPower = {};
+
+	int m_BoundCount = {};
+
+	int m_DeathTimer = {};
+
+	enum AudioState {
+		AUDIO_SET,
+		AUDIO_END,
+	}_AudioState = AUDIO_SET;
+
+	bool m_AudioPlay = false;
 };

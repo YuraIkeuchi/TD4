@@ -19,10 +19,6 @@ void IntroductionSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* ca
 
 	//ポストエフェクトのファイル指定
 	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/SepiaPS.hlsl");
-
-	//オーディオ
-	Audio::GetInstance()->LoadSound(2, "Resources/Sound/BGM/8bo8k-1eq6w.wav");
-	Audio::GetInstance()->LoopWave(2, VolumManager::GetInstance()->GetBGMVolum());
 }
 //更新
 void IntroductionSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {

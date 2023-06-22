@@ -14,8 +14,7 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	//共通の初期化
 	BaseInitialize(dxCommon);
 	//オーディオ
-	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/BGM_boss.wav");
-	Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum() + 1.0f);
+	Audio::GetInstance()->LoopWave(AUDIO_BATTLE, VolumManager::GetInstance()->GetBGMVolum() + 1.0f);
 
 	//ポストエフェクト
 	PlayPostEffect = true;
@@ -292,7 +291,7 @@ void SecondStageActor::MainUpdate(DebugCamera* camera) {
 	//カメラワークのセット
 	if (enemymanager->BossDestroy())
 	{
-		Audio::GetInstance()->StopWave(1);
+		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		//フェード前
 		if (!camerawork->GetFeedEnd()) {
 			enemymanager->SetDeadThrow(true);
@@ -323,7 +322,7 @@ void SecondStageActor::MainUpdate(DebugCamera* camera) {
 	}
 	
 	if (PlayerDestroy()) {
-		Audio::GetInstance()->StopWave(1);
+		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		sceneChanger_->ChangeStart();
 		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::Reverse);
 	}

@@ -127,6 +127,7 @@
     <ClCompile Include="SourceCode\engine\3d\ModelManager.cpp" />
     <ClCompile Include="SourceCode\engine\3d\ObjCommon.cpp" />
     <ClCompile Include="SourceCode\engine\audio\Audio.cpp" />
+    <ClCompile Include="SourceCode\engine\audio\AudioManager.cpp" />
     <ClCompile Include="SourceCode\engine\audio\VolumManager.cpp" />
     <ClCompile Include="SourceCode\engine\camera\Camera.cpp" />
     <ClCompile Include="SourceCode\engine\camera\DebugCamera.cpp" />
@@ -205,7 +206,9 @@
     <ClCompile Include="SourceCode\gamesystem\editor\LoadManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\editor\LoadStageObj.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\BreakEffect.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\effect\ConfuEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\InterEffect.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\effect\NoteEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\gamecamera\CameraWork.cpp" />
     <ClCompile Include="SourceCode\gamesystem\limitline\DownLimit.cpp" />
     <ClCompile Include="SourceCode\gamesystem\limitline\LeftLimit.cpp" />
@@ -267,6 +270,7 @@
     <ClInclude Include="SourceCode\engine\3d\ModelManager.h" />
     <ClInclude Include="SourceCode\engine\3d\ObjCommon.h" />
     <ClInclude Include="SourceCode\engine\audio\Audio.h" />
+    <ClInclude Include="SourceCode\engine\audio\AudioManager.h" />
     <ClInclude Include="SourceCode\engine\audio\VolumManager.h" />
     <ClInclude Include="SourceCode\engine\camera\Camera.h" />
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h" />
@@ -352,7 +356,9 @@
     <ClInclude Include="SourceCode\gamesystem\editor\LoadManager.h" />
     <ClInclude Include="SourceCode\gamesystem\editor\LoadStageObj.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\BreakEffect.h" />
+    <ClInclude Include="SourceCode\gamesystem\effect\ConfuEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\InterEffect.h" />
+    <ClInclude Include="SourceCode\gamesystem\effect\NoteEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\gamecamera\CameraWork.h" />
     <ClInclude Include="SourceCode\gamesystem\limitline\DownLimit.h" />
     <ClInclude Include="SourceCode\gamesystem\limitline\LeftLimit.h" />

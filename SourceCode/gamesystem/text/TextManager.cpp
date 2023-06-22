@@ -52,16 +52,16 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	CreateWord(TYUTORIAL_TALK7, L"チッ、もう追ってきやがった",L"おい人間、死にたくないなら",L"今からいうことをしっかり聞くんだ");
 	CreateWord(TYUTORIAL_TALK8, L"う、うん! ", L" ", L" ");
 	CreateWord(TYUTORIAL_TALK9, L"今からあの追手を倒す", L"その為に近くにいる亡霊に", L"魂を吹き込んで仲間にしろ");
-	CreateWord(SETUMEI2, L"亡霊に近づいてRBを押せ", L"", L"");
+	CreateWord(SETUMEI2, L"LB、RBできりかえて", L"亡霊に近づいてBを押せ", L"");
 	CreateWord(TYUTORIAL_TALK10, L"よし、仲間にできたな", L"そしたら亡霊の力を借りて攻撃だ", L"");
-	CreateWord(SETUMEI3, L"敵に向かってAボタンで攻撃", L"", L"");
+	CreateWord(SETUMEI3, L"LB、RBできりかえて", L"敵に向かってBボタンで攻撃", L"");
 	CreateWord(TYUTORIAL_TALK11, L"ひとまずはこれで安心だな", L"", L"");
 	CreateWord(TYUTORIAL_TALK12, L"あれ?", L"仲間にした亡霊が消えそう", L"");
 	CreateWord(TYUTORIAL_TALK13, L"亡霊は魂が吹き込まれたことで", L"飢えを感じる", L"");
 	CreateWord(TYUTORIAL_TALK14, L"飢えてしまうと", L"亡霊は消えていなくなる", L"");
 	CreateWord(TYUTORIAL_TALK15, L"そうならないために別の亡霊に", L"食料を取ってきてもらうしかない", L"");
 	CreateWord(TYUTORIAL_TALK16, L"試しに近くにいる亡霊に", L"食料を取ってこいと命令してみろ", L"");
-	CreateWord(SETUMEI4, L"亡霊に近づいてLBを押せ", L"", L"");
+	CreateWord(SETUMEI4, L"LB、RBできりかえて", L"亡霊に近づいてBを押せ", L"");
 	CreateWord(TYUTORIAL_TALK17, L"よし、これで亡霊が", L"消える心配は今はないな", L"");
 	CreateWord(TYUTORIAL_TALK18, L"だが、亡霊は魂を吹き込むと", L"常に飢えを感じるから定期的に食料を", L"与えないと直ぐに消えてしまうからな");
 	CreateWord(TYUTORIAL_TALK19, L"また追手が来やがった", L"さっき教えたことをちゃんと覚えているな", L"");
@@ -167,7 +167,7 @@ void TextManager::SetAllColor(const XMVECTOR& color)
 
 void TextManager::SetOnceColor(int row, const XMVECTOR& color)
 {
-	assert(row > 2);
+	assert(row < 3);
 	if (row == 0) {
 		conversation_.FirstFont->SetColor(color);
 	}
@@ -207,6 +207,17 @@ void TextManager::SetConversation(Name_First name, const XMVECTOR& color)
 {
 	std::map<TextManager::Name_First, Word>::iterator itr = wordlist_first.find(name);
 
+	if (old_first != itr->first) {
+		for (int i = 0; i < 3; i++) {
+			flag[i] = true;
+			next_f[i] = false;
+		}
+	}
+
+	old_first = itr->first;
+
+	GetWordSize(itr->second);
+
 	CreateCon(conversation_, itr->second);
 	
 	conversation_.FirstFont->SetColor(color);
@@ -219,15 +230,23 @@ void TextManager::SetSecondConversation(Name_Second name)
 {
 	std::map<TextManager::Name_Second, Word>::iterator itr = wordlist_second.find(name);
 
+	if (old_second != itr->first) {
+		for (int i = 0; i < 3; i++) {
+			flag[i] = true;
+			next_f[i] = false;
+		}
+	}
+
+	old_second = itr->first;
+
+	GetWordSize(itr->second);
+
 	CreateCon(conversation_, itr->second);
-	//conversation_ = CreateConversation(itr->second);
 }
 //名前と文字列セットで保存
 void TextManager::CreateWord(Name name, wchar_t* tex1, wchar_t* tex2, wchar_t* tex3)
 {
 	Word temp = SetWord(tex1, tex2, tex3);
-
-	size_t len = wcslen(tex1);
 
 	wordlist_.insert(std::make_pair(name, temp));
 }

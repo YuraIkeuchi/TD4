@@ -53,6 +53,7 @@ public:
 		PHOTO_OUT,
 		CIRCLE,
 		CIRCLECOVER,
+		BOSS_ARROW
 	};
 	//テクスチャの名前
 	enum tex2dName
@@ -62,9 +63,10 @@ public:
 		ANGER,
 		JOY,
 		MARK,
-	DAMAGEAREA,
+		DAMAGEAREA,
 		GROUND,
 		PHOTOSPOT,
+		STUN,
 	};
 	enum particleName
 	{

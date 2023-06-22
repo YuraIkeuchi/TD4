@@ -38,6 +38,7 @@ private:
 		BossGauge,
 		PlayerCircle,
 		CircleCover,
+		ArrowBoss,
 		UiMax,
 	};
 
@@ -66,8 +67,10 @@ private:
 	float m_limit = 0.f;
 	int bullet_type_ = 0;
 	int oldbullet_type_ = 0;
-
+	XMFLOAT2 m_Circle = { 640.0f,360.0f };
 	std::vector<SpriteData>TexList;
+
+	bool m_Look = false;
 public:
 	//初期化
 	void Initialize();
@@ -79,5 +82,8 @@ private:
 	//
 	SpriteData CreateUi(UINT texNumber, XMFLOAT2 pos, XMFLOAT2 size, XMFLOAT4 color);
 	InterBoss* boss = nullptr;
+private:
+	//ボスの表示
+	void SeachBoss();
 };
 

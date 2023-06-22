@@ -17,6 +17,7 @@ bool AttackNote::Initialize() {
 	m_Color = { 0.0f,1.0f,0.0f,1.0f };
 	m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "Speed")));
 	m_TargetTimer = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "Timer")));
+	m_Damage = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "BarrangeDamage")));
 	return true;
 }
 //ó‘Ô‘JˆÚ
@@ -82,7 +83,7 @@ bool AttackNote::Collide() {
 
 	const float l_Radius = 1.0f;
 	if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, l_PlayerPos.x, l_PlayerPos.z, l_Radius) && (Player::GetInstance()->GetDamageInterVal() == 0)) {
-		Player::GetInstance()->RecvDamage(0.5f);
+		Player::GetInstance()->RecvDamage(m_Damage);
 		Player::GetInstance()->PlayerHit(m_Position);
 		m_Alive = false;
 		return true;

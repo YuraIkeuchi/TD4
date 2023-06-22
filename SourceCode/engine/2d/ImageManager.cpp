@@ -52,6 +52,8 @@ void ImageManager::SecondLoad2D()
 	IKESprite::LoadTexture(PHOTO_OUT, L"Resources/2d/effect/camera_naka.png");
 	IKESprite::LoadTexture(CIRCLE, L"Resources/2d/objicon/circle.png");
 	IKESprite::LoadTexture(CIRCLECOVER, L"Resources/2d/objicon/circlecover.png");
+
+	IKESprite::LoadTexture(BOSS_ARROW, L"Resources/2d/objicon/Arrow.png");
 }
 
 //テクスチャの読み込み
@@ -70,6 +72,7 @@ void ImageManager::SecondLoadTex2D()
 	IKETexture::LoadTexture(DAMAGEAREA, L"Resources/2d/effect/DArea.png");
 	IKETexture::LoadTexture(GROUND, L"Resources/2d/SceneBack/Ground.png");
 	IKETexture::LoadTexture(PHOTOSPOT, L"Resources/2d/effect/PhotoSpot.png");
+	IKETexture::LoadTexture(STUN, L"Resources/2d/effect/stun.png");
 }
 
 void ImageManager::LoadParticle()

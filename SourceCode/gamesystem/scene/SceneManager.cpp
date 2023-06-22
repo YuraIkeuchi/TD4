@@ -1,6 +1,7 @@
 ﻿#include "SceneManager.h"
 #include "ImageManager.h"
 #include "ModelManager.h"
+#include "AudioManager.h"
 #include "BackObj.h"
 #include<cassert>
 void SceneManager::Finalize() {
@@ -65,7 +66,7 @@ void SceneManager::AsyncLoad()
 {
 	std::thread t = std::thread([&] {
 		ImageManager::GetInstance()->SecondLoad2D(), ImageManager::GetInstance()->SecondLoadTex2D(), ModelManager::GetInstance()->SecondInitialize(),
-			BackObj::GetInstance()->LoadMap(); });
+			BackObj::GetInstance()->LoadMap(), AudioManager::GetInstance()->SecondLoadAudio(); });
 
 	t.join();
 	// ロード状態=ロード終了

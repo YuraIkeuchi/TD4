@@ -22,6 +22,7 @@ private:
 	XMFLOAT4 m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	XMFLOAT3 m_Scale = { 0.0f,0.0f,0.0f };
 	float m_DamagRadius = 0.0f;
+	float m_AfterRadius = {};
 	float m_AfterScale = {};
 	bool m_Alive = true;
 	float m_Frame = 0.0f;
