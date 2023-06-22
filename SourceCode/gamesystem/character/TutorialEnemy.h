@@ -10,6 +10,8 @@ public:
 	void Action()override;//更新
 	void ImGuiDraw()override;
 	void Draw(DirectXCommon* dxCommon) override;//描画
+
+	void SetIsActive(bool flag) { isActive = flag; }
 private:
 	void Particle();//パーティクル
 
@@ -29,12 +31,10 @@ private:
 	void JumpUpdate();
 
 	bool Death();
-
-
 private:
-
 	void GetRotation2Player();
 
+	bool isActive = false;
 	const float scale_ = 0.6f;
 
 	float RottoPlayer = 0.0f;

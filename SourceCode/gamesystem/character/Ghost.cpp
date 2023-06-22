@@ -33,9 +33,10 @@ bool Ghost::Initialize() {
 void (Ghost::* Ghost::stateTable[])() = {
 	&Ghost::None,//待機
 	&Ghost::Spawm,
+	&Ghost::Search,//
 	&Ghost::Follow,//移動
-	&Ghost::Search,//攻撃
 	&Ghost::Jack,
+	&Ghost::HyperJack,
 	&Ghost::Vanish,
 };
 //更新
@@ -44,6 +45,7 @@ void Ghost::Update() {
 	m_OldPos = m_Position;
 	m_OBBScale = { m_Scale.x + l_AddScale,m_Scale.y + l_AddScale, m_Scale.z + l_AddScale };
 	if (m_IsPostionCheck) { _charaState = CharaState::STATE_JACK; }
+	if (m_IsAllPostionCheck) { _charaState = CharaState::STATE_HYPERJACK; }
 	//状態移行(charastateに合わせる)
 	(this->*stateTable[_charaState])();
 	//タイプによって色を一旦変えてる
@@ -124,7 +126,7 @@ void Ghost::GhostCollision(const XMFLOAT3& pos) {
 }
 //食料生成
 void Ghost::BirthGhost() {
-	if (!isVerse) { return; }
+	if (!VerseCheck()) { return; }
 	if (m_Alive) { return; }
 	m_ResPornTimer++;
 	//描画バグ起きるから先に座標セット
@@ -140,6 +142,10 @@ void Ghost::BirthGhost() {
 		uniform_int_distribution<int> spawn(30, 45);
 		kSpawnTimerMax = float(spawn(mt));
 		m_Color = { 1.0f,1.0f,1.0f,0.7f };
+		m_IsRefer = false;
+		m_IsHyperRefer = false;
+		RottoPlayer = 0.0f;
+		m_Vanish = false;
 		m_Catch = false;
 		m_Search = false;
 		m_Follow = false;
@@ -151,6 +157,17 @@ void Ghost::BirthGhost() {
 		m_Alive = true;
 		m_ResPornTimer = 0;
 		m_Scale = { 0.5f,0.5f,0.5f };
+	}
+}
+bool Ghost::VerseCheck() {
+	if (!isVerse) { return false; }
+	m_VerseCureTimer--;
+	m_VerseCureTimer = min(m_VerseCureTimer, 0);
+	if (m_VerseCureTimer <= 0) {
+		isVerse = true;
+		return true;
+	} else {
+		return false;
 	}
 }
 //何もない状態
@@ -206,7 +223,6 @@ void Ghost::Search() {
 }
 void Ghost::Jack() {
 	if (m_IsPostionCheck) {
-		//m_radius = Helper::GetInstance()->ChechLength(m_Position, {0,0,0});
 		f_pos = m_Position;
 		m_angle = 0;
 		m_radius = 0;
@@ -223,11 +239,11 @@ void Ghost::Jack() {
 	m_angle += 0.04f;
 	m_radius += 0.08f * m_dir;
 	XMFLOAT3 e_pos = { f_pos.x + sinf(m_angle) * m_radius ,0,f_pos.z + cosf(m_angle) * m_radius };
-	m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, e_pos,-PI_90);
+	m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, e_pos, -PI_90);
 	m_Position.x = e_pos.x;
 	m_Position.z = e_pos.z;
-	if (Player::GetInstance()->PlayerCollide(m_Position)&&
-		Player::GetInstance()->GetDamageInterVal()==0) {
+	if (Player::GetInstance()->PlayerCollide(m_Position) &&
+		Player::GetInstance()->GetDamageInterVal() == 0) {
 		Player::GetInstance()->PlayerHit(m_Position);
 		Player::GetInstance()->RecvDamage(0.5f);
 	}
@@ -236,7 +252,37 @@ void Ghost::Jack() {
 		m_Position.z < -60.0f || m_Position.z>60.0f) {
 		m_Alive = false;
 		m_Scale = { 0.0f,0.0f,0.0f };
+		m_IsHyperRefer = false;
 		m_IsRefer = false;
+		isVerse = true;
+		_charaState = CharaState::STATE_NONE;
+	}
+}
+
+void Ghost::HyperJack() {
+	if (m_IsAllPostionCheck) {
+		GetRotation2Player();
+		f_pos = m_Position;
+		m_radius = 0;
+		m_dir = subDir;
+		m_IsAllPostionCheck = false;
+	}
+	m_radius += 0.8f * m_dir;
+	XMFLOAT3 e_pos = { f_pos.x + sinf(RottoPlayer) * m_radius ,0,f_pos.z + cosf(RottoPlayer) * m_radius };
+	m_Position.x = e_pos.x;
+	m_Position.z = e_pos.z;
+	if (Player::GetInstance()->PlayerCollide(m_Position) &&
+		Player::GetInstance()->GetDamageInterVal() == 0) {
+		Player::GetInstance()->PlayerHit(m_Position);
+		Player::GetInstance()->RecvDamage(1.5f);
+	}
+	if (m_Position.x < -55.0f || m_Position.x>65.0f ||
+		m_Position.z < -60.0f || m_Position.z>60.0f) {
+		m_Alive = false;
+		isVerse = true;
+		m_VerseCureTimer = 180;
+		m_Scale = { 0.0f,0.0f,0.0f };
+		m_IsHyperRefer = false;
 		isVerse = true;
 		_charaState = CharaState::STATE_NONE;
 	}
@@ -250,9 +296,10 @@ void Ghost::Vanish() {
 		m_Rotation.y += 5.0f;
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
-		}
-		else {
+		} else {
 			m_Vanish = false;
+			m_IsRefer = false;
+			m_IsHyperRefer = false;
 			m_Alive = false;
 			m_Frame = {};
 		}
@@ -279,7 +326,6 @@ void Ghost::CarryFood() {
 	XMFLOAT3 l_playerPos = Player::GetInstance()->GetPosition();
 	if ((_searchState == SearchState::SEARCH_END) && (!m_Vanish)) {
 		if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, l_playerPos.x, l_playerPos.z, l_Radius)) {
-			//m_Scale = { 0.0f,0.0f,0.0f };
 			m_Vanish = true;
 			m_Search = false;
 			m_Catch = false;
@@ -304,6 +350,7 @@ bool Ghost::CollideBullet(vector<InterBullet*>bullet) {
 			m_OBB2.SetParam_Scl(_bullet->GetScale());
 
 			if ((Collision::OBBCollision(m_OBB1, m_OBB2)) && (_bullet->GetAlive()) && (!m_Catch) && (m_Alive)) {
+				if (_charaState != STATE_NONE) { return false; }
 				m_Catch = true;
 				if (Player::GetInstance()->GetBulletType() == BULLET_FORROW) {
 					Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Follower.wav", VolumManager::GetInstance()->GetSEVolum() / 2.5f);
@@ -326,4 +373,17 @@ bool Ghost::CollideBullet(vector<InterBullet*>bullet) {
 	}
 
 	return false;
+}
+
+void Ghost::GetRotation2Player() {
+	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
+
+	//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
+	XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
+	XMVECTOR PositionB = { m_Position.x,m_Position.y,m_Position.z };
+	//プレイヤーと敵のベクトルの長さ(差)を求める
+	XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
+
+	RottoPlayer = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
+	m_Rotation.y = RottoPlayer * 60.0f + (PI_90 + PI_180);
 }
