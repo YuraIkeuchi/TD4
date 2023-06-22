@@ -41,6 +41,8 @@ void NormalEnemy::Action() {
 	}
 
 	//Obj_SetParam();	//m_Position = Helper::GetInstance()->CircleMove({ 0.0f,5.0f,0.0f }, m_CircleScale, m_CircleSpeed);
+	m_fbxObject->SetScale({ 0.1f,0.1f,0.1f });
+	m_Scale = { 0.10f,0.10f,0.10f };
 	Fbx_SetParam();
 	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 	OnCollision();

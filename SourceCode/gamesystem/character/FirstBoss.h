@@ -76,6 +76,7 @@ private:
 
 		float JFrame;
 
+		float DownMoveVal;
 	public:
 		void Initialize();
 		void Update(XMFLOAT3& Pos, XMFLOAT3& Rot);
@@ -87,6 +88,7 @@ private:
 	public:
 		void SetAttackF(bool f) { AttackF = f; }
 		bool GetAttackF() { return AttackF; }
+		void SetDownMoveVal(float val) { DownMoveVal = val; }
 
 	};
 
@@ -185,6 +187,9 @@ private:
 	void RottoPlayer();
 	float RotEaseTime;
 	float OldRotY;
+	float ImpactDownMove;
+	int SummonCool;
+	float SummonSpeed;
 	void Move();
 
 private:
@@ -292,6 +297,6 @@ private:
 	float texAlpha;
 	float cinter;
 
-	bool SummonPriority,CirclePriority;
+	int SummonPriority,CirclePriority;
 
 };

@@ -422,6 +422,7 @@ void IKEFBXObject3d::FollowUpdate(bool Loop, int Speed, bool& Stop)
 		auto inverseBindMatrix = XMMatrixInverse(nullptr, bindMatrix);
 		constMapSkin->bones[i] = bindMatrix * bones[i].invInitialPose * matCurrentPose * inverseBindMatrix;
 	}
+	
 
 	IKEFbxLoader::ConvertMatrixFromFbx(
 		&WorldMat, bones[BoneNumber].fbxCluster->GetLink()->EvaluateGlobalTransform(currentTime));

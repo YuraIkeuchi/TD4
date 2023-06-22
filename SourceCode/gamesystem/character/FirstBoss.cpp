@@ -38,10 +38,21 @@ bool FirstBoss::Initialize() {
 	damageara.reset(IKETexture::Create(ImageManager::DAMAGEAREA, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 }));
 	damageara->TextureCreate();
 	m_Radius = 5.0f;
+
+	//優先度
 	CirclePriority = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/firstboss.csv", "SPriority")));
 	SummonPriority = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/firstboss.csv", "CPriority")));
+	//攻撃クールタイム
+	S_DecisionCount = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/firstboss.csv", "DecisionCount")));
+	//落下攻撃　下げ時間
+	ImpactDownMove = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/firstboss.csv", "DownVal")));
+	_charge.SetDownMoveVal(ImpactDownMove);
 
-	
+	//
+	SummonCool= static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/firstboss.csv", "SummonCool")));
+
+	SummonSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/firstboss.csv", "SummonSpeed")));
+
 	return true;
 }
 
@@ -1010,9 +1021,9 @@ void FirstBoss::AttackDecision()
 		RandActionCount = rand() % 100;
 
 		//比重は通常攻撃多め
-	//	if (RandActionCount >=100-SummonPriority)_attackAction = SUMMON;
-//		else if (RandActionCount >= 100 - SummonPriority-CirclePriority)_attackAction = CHARGE;
-		_attackAction = SUMMON;
+		if (RandActionCount >=100-SummonPriority)_attackAction =SUMMON;
+		else if (RandActionCount >= 100 - SummonPriority-CirclePriority)_attackAction = CHARGE;
+		else _attackAction = NORMAL;
 
 		//核攻撃のフラグオン
 		SelAttack();
