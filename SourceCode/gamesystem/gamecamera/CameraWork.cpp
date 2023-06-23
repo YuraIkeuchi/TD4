@@ -35,15 +35,14 @@ void CameraWork::SplineSet() {
 			spline->Init(pointsList, static_cast<int>(pointsList.size()));
 		}
 #pragma endregion
-	}
-	else if (SceneName == "FOURTHSTAGE") {
+	} else if (SceneName == "FOURTHSTAGE") {
 #pragma region First
 		{
 			if (pointsList.size() == 0) {
 				pointsList.emplace_back(XMFLOAT3{ 50,80,50 });
-				pointsList.emplace_back(XMFLOAT3{  0,70,90 });
+				pointsList.emplace_back(XMFLOAT3{ 0,70,90 });
 				pointsList.emplace_back(XMFLOAT3{ -50,80,60 });
-				pointsList.emplace_back(XMFLOAT3{  0,20,10 });
+				pointsList.emplace_back(XMFLOAT3{ 0,20,10 });
 				pointsList.emplace_back(XMFLOAT3{ 50, 70,10 });
 				pointsList.emplace_back(XMFLOAT3{ 30,50,60 });
 				pointsList.emplace_back(XMFLOAT3{ 0,30,60 });
@@ -76,7 +75,7 @@ void (CameraWork::* CameraWork::stateTable[])() = {
 //XV
 void CameraWork::Update(DebugCamera* camera) {
 	//状態移行(charastateに合わせる)
-	
+
 	(this->*stateTable[m_CameraState])();
 	camera->SetEye(m_eyePos);
 	camera->SetTarget(m_targetPos);
@@ -89,8 +88,7 @@ void CameraWork::DefUpda(DebugCamera* camera) {
 	camera->Update();
 }
 //通常のカメラ
-void CameraWork::DefaultCam()
-{
+void CameraWork::DefaultCam() {
 	if (FeedF) {
 		feed->FeedIn(Feed::FeedType::WHITE, 0.01f, FeedF);
 		if (feed->GetFeedEnd()) {
@@ -99,7 +97,7 @@ void CameraWork::DefaultCam()
 		}
 	}
 	m_eyePos.x = Player::GetInstance()->GetPosition().x;
-	m_eyePos.y = Player::GetInstance()->GetPosition().y+50.0f;
+	m_eyePos.y = Player::GetInstance()->GetPosition().y + 50.0f;
 
 	m_eyePos.z = Player::GetInstance()->GetPosition().z - 20.0f;
 	m_targetPos.x = Player::GetInstance()->GetPosition().x;
@@ -111,21 +109,18 @@ void CameraWork::BossAppear() {
 	//シーンによってカメラの関数が違う
 	if (SceneName == "FIRSTSTAGE") {
 		FirstBossAppear();
-	}
-	else if (SceneName == "SECONDSTAGE") {
+	} else if (SceneName == "SECONDSTAGE") {
 		SecondBossAppear();
-	}
-	else if (SceneName == "FOURTHSTAGE") {
+	} else if (SceneName == "THIRDSTAGE") {
+		ThirdBossAppear();
+	} else if (SceneName == "FOURTHSTAGE") {
 		FourthBossAppear();
 	}
 	if (Input::GetInstance()->TriggerButton(Input::A)) {
-		m_CameraSkip=true;
+		m_CameraSkip = true;
 	}
-
-
 	if (m_CameraSkip) {
-		if (!FeedF)
-		{
+		if (!FeedF) {
 			FeedF = true;
 		}
 	}
@@ -136,11 +131,10 @@ void CameraWork::BossAppear() {
 			m_CameraSkip = false;
 		}
 	}
-	
+
 }
 //ボス撃破
-void CameraWork::SetBossDead_Before()
-{
+void CameraWork::SetBossDead_Before() {
 	DeathTimer++;
 	if (DeathTimer == 1) {
 
@@ -164,8 +158,7 @@ void CameraWork::SetBossDead_Before()
 
 	m_eyePos.z += 0.08f;
 
-	if (!FeedF)
-	{
+	if (!FeedF) {
 		FeedF = true;
 	}
 
@@ -179,33 +172,30 @@ void CameraWork::SetBossDead_Before()
 		}
 	}
 
-	
+
 	m_targetPos.x = boss->GetPosition().x;
 	m_targetPos.y = boss->GetPosition().y;
 	m_targetPos.z = boss->GetPosition().z;
 }
 
 //フェード後の撃破アクション(1ボス)
-void CameraWork::SetBossDead_AfterFirst()
-{
+void CameraWork::SetBossDead_AfterFirst() {
 	RadEffect = 0;
-		m_eyePos = {
-		boss->GetPosition().x,
-		Player::GetInstance()->GetPosition().y+5.f ,
-		boss->GetPosition().z - 25.f
-		};
+	m_eyePos = {
+	boss->GetPosition().x,
+	Player::GetInstance()->GetPosition().y + 5.f ,
+	boss->GetPosition().z - 25.f
+	};
 	m_targetPos.x = boss->GetPosition().x;
 	m_targetPos.z = boss->GetPosition().z;
 
-	if(boss->GetPosition().y<=0.f)
-	{
+	if (boss->GetPosition().y <= 0.f) {
 		m_EndDeath = true;
 	}
 	FeedF = false;
 }
 //フェード後の撃破アクション(2ボス)
-void CameraWork::SetBossDead_AfterSecond()
-{
+void CameraWork::SetBossDead_AfterSecond() {
 	RadEffect = 0.f;
 	if (FeedF) {
 		feed->FeedIn(Feed::FeedType::WHITE, 0.01f, FeedF);
@@ -219,7 +209,7 @@ void CameraWork::SetBossDead_AfterSecond()
 
 
 	m_targetPos = { boss->GetPosition().x,boss->GetPosition().y,boss->GetPosition().z };
-	
+
 	DeathTimer++;
 
 	if (DeathTimer == 500) {
@@ -228,8 +218,7 @@ void CameraWork::SetBossDead_AfterSecond()
 }
 
 //フェード後の撃破アクション(2ボス)
-void CameraWork::SetBossDead_AfterFourth()
-{
+void CameraWork::SetBossDead_AfterFourth() {
 	RadEffect = 0.f;
 	if (FeedF) {
 		feed->FeedIn(Feed::FeedType::WHITE, 0.01f, FeedF);
@@ -251,8 +240,7 @@ void CameraWork::SetBossDead_AfterFourth()
 	}
 }
 
-void CameraWork::EditorCamera()
-{
+void CameraWork::EditorCamera() {
 	m_eyePos.y = 35.f;
 	m_targetPos.z = m_eyePos.z + 30.0f;
 	m_targetPos.x = m_eyePos.x;
@@ -272,10 +260,9 @@ void CameraWork::SpecialUpdate() {
 
 }
 
-void CameraWork::feedDraw()
-{
-	if (FeedF||Feed_Spline)
-	feed->Draw();
+void CameraWork::feedDraw() {
+	if (FeedF || Feed_Spline)
+		feed->Draw();
 }
 //最初のボスのカメラ
 void CameraWork::FirstBossAppear() {
@@ -299,15 +286,12 @@ void CameraWork::FirstBossAppear() {
 	//}
 
 
-	if (spline->GetIndex() >= pointsList.size() - 2)
-	{
+	if (spline->GetIndex() >= pointsList.size() - 2) {
 		RadEffect -= 0.2f;
-	} else if (spline->GetIndex() >= pointsList.size())
-	{
+	} else if (spline->GetIndex() >= pointsList.size()) {
 		RadEffect += 0.2f;
 		SplineSpeed = 400.f;
-	} else
-	{
+	} else {
 		SplineSpeed = 300.f;
 	}
 	if (!Finish) {
@@ -316,9 +300,8 @@ void CameraWork::FirstBossAppear() {
 	}
 	Helper::GetInstance()->Clamp(RadEffect, 0.f, 15.f);
 
-	if (spline->GetIndex() >= pointsList.size() - 1)
-	{
-		
+	if (spline->GetIndex() >= pointsList.size() - 1) {
+
 		if (Helper::GetInstance()->FrameCheck(m_Frame, 0.01f)) {
 			AppearEndF = true;
 			m_CameraState = CAMERA_NORMAL;
@@ -347,9 +330,8 @@ Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
 
 
 
-void CameraWork::FirstBossDead_AfterFeed()
-{
-	
+void CameraWork::FirstBossDead_AfterFeed() {
+
 }
 //2個目のボスのカメラ
 void CameraWork::SecondBossAppear() {
@@ -379,7 +361,7 @@ void CameraWork::SecondBossAppear() {
 			m_AppearType = APPEAR_THIRD;
 			m_Frame = 0.0f;
 		}
-	
+
 		m_CameraSpeed = Ease(In, Cubic, m_Frame, m_CameraSpeed, m_AfterSpeed);
 
 		SetCircleCameraTarget();
@@ -393,7 +375,7 @@ void CameraWork::SecondBossAppear() {
 			m_Frame = 0.0f;
 			m_CameraTimer = 0;
 		}
-	
+
 		m_CameraSpeed = Ease(In, Cubic, m_Frame, m_CameraSpeed, m_AfterSpeed);
 
 		SetCircleCameraTarget();
@@ -406,7 +388,7 @@ void CameraWork::SecondBossAppear() {
 			m_Frame = 0.0f;
 			m_CameraTimer = {};
 		}
-	
+
 		m_CameraSpeed = Ease(In, Cubic, m_Frame, m_CameraSpeed, m_AfterSpeed);
 		m_CameraScale = Ease(In, Cubic, m_Frame, m_CameraScale, m_AfterScale);
 		m_targetPos = { Ease(In, Cubic, m_Frame, m_targetPos.x, m_AfterTarget.x),
@@ -415,7 +397,7 @@ void CameraWork::SecondBossAppear() {
 		};
 	}
 	//ボスの後ろにいる
-	else if(m_AppearType == APPEAR_FIVE) {
+	else if (m_AppearType == APPEAR_FIVE) {
 		m_targetPos = boss->GetPosition();
 		m_eyePos = { boss->GetPosition().x - 10.0f,boss->GetPosition().y,boss->GetPosition().z + 20.0f };
 		m_CameraTimer++;
@@ -499,19 +481,85 @@ void CameraWork::SecondBossAppear() {
 		};
 	}
 }
+void CameraWork::ThirdBossAppear() {
+	m_Frame += 1 / m_FrameMax;
+	Helper::GetInstance()->Clamp(m_Frame, 0.0f, 1.0f);
+	switch (m_AppearType) {
+	case APPEAR_START:
+		m_FrameMax = 60.0f;
+		m_eyePos = {
+		Player::GetInstance()->GetPosition().x,
+		0.0f,
+		Player::GetInstance()->GetPosition().z,
+		};
+		m_BeforeEye = m_eyePos;
+		m_AfterEye = m_eyePos;
+		break;
+	case APPEAR_SECOND:
+		m_FrameMax = 60.0f;
+		m_AfterTarget = {
+		20,
+		0,
+		-30
+		};
+		break;
+	case APPEAR_THIRD:
+		m_FrameMax = 60.0f;
+		m_AfterTarget = {
+		0,
+		0,
+		0
+		};
+		break;
+	case APPEAR_FOURTH:
+		m_FrameMax = 60.0f;
+		m_AfterTarget = {
+		-20,
+		0,
+		-30
+		};
+		break;
+	case APPEAR_FIVE:
+		break;
+	case APPEAR_SIX:
+		break;
+	case APPEAR_SEVEN:
+		break;
+	case APPEAR_EIGHT:
+		break;
+	case APPEAR_END:
+		break;
+	default:
+		break;
+	}
+	if (m_Frame == 1.0f) {
+		m_AppearType++;
+		m_BeforeEye = m_eyePos;
+		m_BeforeTarget = m_targetPos;
+		m_Frame = 0.0f;
+	}
+
+	m_eyePos = {
+	Ease(In,Cubic,m_Frame,m_BeforeEye.x,m_AfterEye.x),
+	Ease(In,Cubic,m_Frame,m_BeforeEye.y,m_AfterEye.y),
+	Ease(In,Cubic,m_Frame,m_BeforeEye.z,m_AfterEye.z),
+	};
+
+	m_targetPos = {
+	Ease(In,Cubic,m_Frame,m_BeforeTarget.x,m_AfterTarget.x),
+	Ease(In,Cubic,m_Frame,m_BeforeTarget.y,m_AfterTarget.y),
+	Ease(In,Cubic,m_Frame,m_BeforeTarget.z,m_AfterTarget.z),
+	};
+
+}
 //4つ目のボスの登場
 void CameraWork::FourthBossAppear() {
-	if (spline->GetIndex() >= pointsList.size() - 2)
-	{
+	if (spline->GetIndex() >= pointsList.size() - 2) {
 		RadEffect -= 0.2f;
-	}
-	else if (spline->GetIndex() >= pointsList.size())
-	{
+	} else if (spline->GetIndex() >= pointsList.size()) {
 		RadEffect += 0.2f;
 		SplineSpeed = 180.0f;
-	}
-	else
-	{
+	} else {
 		SplineSpeed = 180.f;
 	}
 	if (!Finish) {
@@ -520,8 +568,7 @@ void CameraWork::FourthBossAppear() {
 	}
 	Helper::GetInstance()->Clamp(RadEffect, 0.f, 15.f);
 
-	if (spline->GetIndex() >= pointsList.size() - 1)
-	{
+	if (spline->GetIndex() >= pointsList.size() - 1) {
 
 		if (Helper::GetInstance()->FrameCheck(m_Frame, 0.01f)) {
 			AppearEndF = true;
@@ -543,8 +590,7 @@ Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
 		};
 
 		Finish = true;
-	}
-	else {
+	} else {
 		m_targetPos = { boss->GetPosition() };
 	}
 }
