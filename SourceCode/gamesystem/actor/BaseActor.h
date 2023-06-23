@@ -105,4 +105,6 @@ protected:
 	XMFLOAT4 black_color{ 1.f,1.f,1.f,0.f };
 	XMFLOAT4 girl_color_{ 1.5f,1.5f,1.5f,0.f };
 	XMFLOAT4 sutopon_color_{ 1.f,1.f,1.f,0.f };
+
+	int textT;
 };

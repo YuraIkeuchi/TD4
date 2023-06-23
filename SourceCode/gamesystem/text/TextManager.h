@@ -83,8 +83,13 @@ public:
 	};
 
 	enum Name_Fourth {
-		TALK
+		TALK_FIRST,
+		TALK_SECOND,
+		TALK_THIRD,
+		TALK_FOURTH,
+		TALK_FIVE,
 	};
+
 	static TextManager* GetInstance();
 
 	//
@@ -110,7 +115,7 @@ public:
 
 	void SetSecondConversation(Name_Second name = ANGER_TALK);
 
-	void SetFourthConversation(Name_Fourth);
+	void SetFourthConversation(Name_Fourth name = TALK_FIRST);
 
 	void GetWordSize(Word word);
 
@@ -121,7 +126,7 @@ private:
 	void CreateWord(Name name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
 	void CreateWord(Name_First name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
 	void SecondCreateWord(Name_Second name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
-
+	void FourthCreateWord(Name_Fourth name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
 	//
 	Word SetWord(wchar_t* tex1, wchar_t* tex2, wchar_t* tex3);
 	//
