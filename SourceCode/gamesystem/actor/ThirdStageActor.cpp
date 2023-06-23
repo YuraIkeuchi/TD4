@@ -130,7 +130,7 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	ParticleEmitter::GetInstance()->Update();
 	if (input->TriggerKey(DIK_X)) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
-		SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
+		//SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
 
 	}
 	//カメラワークのセット
@@ -196,7 +196,7 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 
 	if (Input::GetInstance()->TriggerButton(Input::Y)) {
 		SelectScene::GetIns()->ResetParama();
-		SceneManager::GetInstance()->ChangeScene("SELECT");
+		//SceneManager::GetInstance()->ChangeScene("SELECT");
 	}
 	Menu::GetIns()->Upda();
 
