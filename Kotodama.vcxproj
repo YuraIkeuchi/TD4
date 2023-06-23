@@ -200,7 +200,6 @@
     <ClCompile Include="SourceCode\gamesystem\character\SecondBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\ThirdBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\TutorialEnemy.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\Conversation\Conversation.cpp" />
     <ClCompile Include="SourceCode\gamesystem\editor\Editor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\editor\LoadBox.cpp" />
     <ClCompile Include="SourceCode\gamesystem\editor\LoadManager.cpp" />
@@ -350,7 +349,6 @@
     <ClInclude Include="SourceCode\gamesystem\character\SecondBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\ThirdBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\TutorialEnemy.h" />
-    <ClInclude Include="SourceCode\gamesystem\Conversation\Conversation.h" />
     <ClInclude Include="SourceCode\gamesystem\editor\Editor.h" />
     <ClInclude Include="SourceCode\gamesystem\editor\LoadBox.h" />
     <ClInclude Include="SourceCode\gamesystem\editor\LoadManager.h" />
