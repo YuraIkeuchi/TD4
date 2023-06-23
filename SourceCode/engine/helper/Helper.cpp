@@ -282,6 +282,19 @@ bool Helper::All_Of(bool* flag, int size)
 	}
 	return false;
 }
+bool Helper::All_OfF(bool* flag, int size)
+{
+	for (auto i = 0; i < size;)
+	{
+		//真ならカウント進める
+		if (!flag[i])i++;
+		else return false;
+
+		//今の要素がtrueなら
+		if (i == size && !flag[size - 1])return true;
+	}
+	return false;
+}
 
 bool Helper::All_Of_float(float* list, int size, float standVal)
 {

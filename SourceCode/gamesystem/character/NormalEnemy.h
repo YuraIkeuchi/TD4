@@ -39,5 +39,7 @@ private:
 
 	XMFLOAT3 OldPos_BefRot;
 	float tmpLength;
+
+	float SummonSpeed;
 };
 
