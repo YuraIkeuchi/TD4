@@ -200,7 +200,7 @@ void InterBoss::EndSummon(std::vector<InterEnemy*> boss)
 		if (Helper::GetInstance()->All_Of(tempList, _countof(tempList))) {
 			
 			NextActionInteval++;
-			if (NextActionInteval > 180) {
+			if (NextActionInteval > SummonCool) {
 				ActionTimer++;
 				EndSummonRepos = true;
 				SummobnStop = false;

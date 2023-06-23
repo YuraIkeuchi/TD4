@@ -294,8 +294,12 @@ void LoadStageObj::LightReturn() {
 
 void LoadStageObj::ThirdBossAction() {
 	LockVerseGhost();
+	LockAllGhost();
 	NonVerseGhost();
 	CheckReferGhost();
+	ChangeGhost2Enemy();
+	ChangeGhost2Hyper();
+	SubHunger();
 }
 
 void LoadStageObj::LockVerseGhost() {
@@ -307,11 +311,12 @@ void LoadStageObj::LockVerseGhost() {
 		kStopGhorstMax = 3;
 	}
 	int  nowStopGhorst = 0;
+	int overTime = 0;
 	while (nowStopGhorst < kStopGhorstMax) {
 		for (auto i = 0; i < ghosts.size(); i++) {
 			if (ghosts[i]->GetIsRefer()) { continue; }
 			//キャラステート変える際に気をつけてください
-			if (ghosts[i]->GetStateInst() == 2) { continue; }
+			if (ghosts[i]->GetStateInst() > 2) { continue; }
 			XMFLOAT3 difPos = ghosts[i]->GetPosition();
 			float dif = Helper::GetInstance()->ChechLength(difPos, boss->GetPosition());
 			if (boss->GetLimit() > dif) {
@@ -328,29 +333,38 @@ void LoadStageObj::LockVerseGhost() {
 	boss->SetSearch(false);
 }
 
+void LoadStageObj::LockAllGhost() {
+	InterBoss* boss = m_EnemyManager->GetBoss();
+	if (!boss->GetHyperSearch()) { return; }
+	int  nowStopGhorst = 0;
+	for (auto i = 0; i < ghosts.size(); i++) {
+		if (ghosts[i]->GetIsRefer()) { continue; }
+		//キャラステート変える際に気をつけてください
+		if (ghosts[i]->GetStateInst() > 2) { continue; }
+		stopGhosts[nowStopGhorst] = ghosts[i];
+		ghosts[i]->SetIsRefer(true);
+		nowStopGhorst++;
+	}
+	boss->SetHyperSearch(false);
+}
+
 void LoadStageObj::NonVerseGhost() {
 	InterBoss* boss = m_EnemyManager->GetBoss();
 	if (boss->GetInstruction() != InterBoss::ThirdBossInst::StopGhost) { return; }
-	int m_GhostPos = 0;
-	for (Ghost*& ghost : stopGhosts) {
-		if (!ghost) { continue; }
-		ghost->SetColor({ 1,0,1,1 });
-		//ghost->SetScale({ 0.0f,0.0f,0.0f });
-		ghost->SetIsPostionCheck(true);
-		ghost->SetIsVerse(false);
-		ghost->SetAlive(false);
-		boss->SetJackPos(m_GhostPos, ghost->GetPosition());
-		m_GhostPos++;
+	for (int i = 0; i < kStopGhorstMax;i++) {
+		if (!stopGhosts[i]) { continue; }
+		stopGhosts[i]->SetColor({1,0,1,1});
+		stopGhosts[i]->SetIsPostionCheck(true);
 	}
-	boss->SetInstruction(InterBoss::ThirdBossInst::SpawnEnemy);
+	boss->SetInstruction(InterBoss::ThirdBossInst::FinishMove);
 }
 
 bool LoadStageObj::CheckReferGhost() {
 	InterBoss* boss = m_EnemyManager->GetBoss();
 	int checkNum = 0;
-	for (int i = 0; i < kStopGhorstMax; i++) {
-		if (!stopGhosts[i]) { continue; }
-		if (!stopGhosts[i]->GetIsRefer()) { continue; }
+	for (Ghost*& ghost : stopGhosts) {
+		if (!ghost) { continue; }
+		if (!ghost->GetIsRefer()) { continue; }
 		checkNum++;
 	}
 	if (checkNum == 0) {
@@ -360,6 +374,32 @@ bool LoadStageObj::CheckReferGhost() {
 		boss->SetIsReferCheck(false);
 		return true;
 	}
+}
+
+void LoadStageObj::ChangeGhost2Enemy() {
+	InterBoss* boss = m_EnemyManager->GetBoss();
+	if (boss->GetInstruction() != InterBoss::ThirdBossInst::ChangeGhost) { return; }
+	int m_GhostPos = 0;
+	for (int i = 0; i < kStopGhorstMax; i++) {
+		if (!stopGhosts[i]) { continue; }
+		stopGhosts[i]->SetColor({1,0,1,1});
+		stopGhosts[i]->SetIsVerse(false, 80);
+		stopGhosts[i]->SetVanish(true);
+		boss->SetJackPos(m_GhostPos, stopGhosts[i]->GetPosition());
+		m_GhostPos++;
+	}
+	boss->SetInstruction(InterBoss::ThirdBossInst::SpawnEnemy);
+}
+
+void LoadStageObj::ChangeGhost2Hyper() {
+	InterBoss* boss = m_EnemyManager->GetBoss();
+	if (boss->GetInstruction() != InterBoss::ThirdBossInst::AllSummon) { return; }
+	for (Ghost*& ghost : stopGhosts) {
+		if (!ghost) { continue; }
+		ghost->SetColor({ 1,1,0,1 });
+		ghost->SetIsAllPostionCheck(true);
+	}
+	boss->SetInstruction(InterBoss::ThirdBossInst::FinishMove);
 }
 
 //飢餓ゲージをゴースト三体分減らす
@@ -374,8 +414,7 @@ void LoadStageObj::SubHunger() {
 	if (m_SubHunger) {
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
-		}
-		else {
+		} else {
 			m_Frame = {};
 			m_LimitHunger = {};
 			m_SubHunger = false;

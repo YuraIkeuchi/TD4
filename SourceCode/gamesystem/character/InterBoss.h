@@ -21,9 +21,11 @@ public:
 	enum ThirdBossInst {
 		None = 0,
 		StopGhost,
+		ChangeGhost,
 		SpawnEnemy,
+		AllSummon,
 		FinishMove,
-
+		DELETEGHOST,
 	};
 public:
 	//初期化
@@ -72,6 +74,7 @@ public:
 protected:
 	bool SummonF;
 	bool SummobnStop;
+	int SummonCool;
 	bool SearchF;// = Collision::GetLength(m_Position, l_player) < 25.f;
 private:
 	XMFLOAT3 EffectFirstPos;
@@ -89,6 +92,9 @@ public://gettersetter
 
 	void SetSearch(bool isSearch) { this->isSearch = isSearch; };
 	bool GetSearch() { return isSearch; }
+
+	void SetHyperSearch(bool isSearch) { this->isHyperSearch = isSearch; };
+	bool GetHyperSearch() { return isHyperSearch; }
 
 	void SetInstruction(int isInstruction) { this->isInstruction = isInstruction; };
 	int GetInstruction() { return isInstruction; }
@@ -132,6 +138,8 @@ protected:
 	bool isStrong = false;
 	//ゴーストを5たいサーチ
 	bool isSearch = false;
+	//敵を全てサーチします。
+	bool isHyperSearch = false;
 	//ゴーストを削除しスポーンを止めます。
 	int isInstruction = 0;
 	//ゴーストの状態がSearch状態かしれます

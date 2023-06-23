@@ -47,8 +47,11 @@ void SelectSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	ui->SetBoss(enemymanager->GetBoss());
 	//背景
 	
-	lightgroup->SetCircleShadowActive(0, true);
-	lightgroup->SetCircleShadowActive(1, true);
+	//lightgroup->SetCircleShadowActive(0, true);
+	//lightgroup->SetCircleShadowActive(1, true);
+//	for (int i = 0; i < SPOT_NUM; i++) {
+		lightgroup->SetSpotLightActive(0, true);
+	//}
 }
 //更新
 void SelectSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -86,8 +89,11 @@ void SelectSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 
 	postEffect->SetRadCenter(XMFLOAT2(tex2DPos.m128_f32[0], tex2DPos.m128_f32[1]));
 	postEffect->SetRadPower(camerawork->GetEffectPower());
+	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
+
 	sceneChanger_->Update();
 
+	SelectScene::GetIns()->SceneChange(sceneChanger_.get());
 	SelectScene::GetIns()->Upda();
 	camerawork->SetEye({ SelectScene::GetIns()->GetPedestalPos().x,
 						SelectScene::GetIns()->GetPedestalPos().y + 20.f,
@@ -95,7 +101,14 @@ void SelectSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 		});
 	camerawork->SetTarget(SelectScene::GetIns()->GetPedestalPos());
 
-	camerawork->Update(camera);
+	camerawork->DefUpda(camera);
+
+		lightgroup->SetSpotLightDir(0, XMVECTOR({0,1,0,0 }));
+		lightgroup->SetSpotLightPos(0, {0,10,0});
+		lightgroup->SetSpotLightColor(0,{1,1,1});
+		lightgroup->SetSpotLightAtten(0, XMFLOAT3(spotLightAtten));
+		lightgroup->SetSpotLightFactorAngle(0, XMFLOAT2(spotLightFactorAngle));
+	
 	lightgroup->Update();
 }
 //描画
@@ -105,6 +118,9 @@ void SelectSceneActor::Draw(DirectXCommon* dxCommon) {
 	if (PlayPostEffect) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
+		IKESprite::PreDraw();
+		SelectScene::GetIns()->Draw_SpriteBack();
+		IKESprite::PostDraw();
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 
 		dxCommon->PreDraw();
@@ -136,13 +152,6 @@ void SelectSceneActor::BackDraw(DirectXCommon* dxCommon) {
 }
 //ポストエフェクトがかからない
 void SelectSceneActor::FrontDraw(DirectXCommon* dxCommon) {
-
-
-	//ParticleEmitter::GetInstance()->DeathDrawAll();
-
-	if (camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_BEFORE && camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_AFTER_FIRST)
-		ui->Draw();
-
 	sceneChanger_->Draw();	//完全に前に書くスプライト
 	//if (camerawork->GetAppearType() == APPEAR_SEVEN || camerawork->GetAppearType() == APPEAR_EIGHT) {
 	IKESprite::PreDraw();

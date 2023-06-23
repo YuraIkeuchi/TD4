@@ -35,8 +35,12 @@ private:
 		WaitCommand = 0,
 		MoveCommand,
 		ControlCommand,
+		EnemySpawn,
+		SubGauge,
+		Ultimate,
 		COMMANDMAX
 	};
+	void SelectAction();
 
 	//関数ポインタ
 	static void(ThirdBoss::* stateTable[])();
@@ -44,12 +48,15 @@ private:
 	void WaitUpdate();
 	void MoveUpdate();
 	void ControlUpdate();
-
+	void EnemySpawnUpdate();
+	void SubGaugeUpdate();
+	void UltimateUpdate();
 
 	bool ShutterEffect();
 	bool ShutterFeed();
 	void ShutterReset();
 
+	void ChangePos2Random();
 	bool IsPinch();
 private:
 	static const int kPhotoSpotMax = 5;
@@ -73,7 +80,6 @@ private:
 	};
 	array<unique_ptr<IKESprite>, SpriteMax> photo = {};
 private:
-	array<int, (size_t)commandState::COMMANDMAX> ActionTimerMax = {60,120,90};
 	int moveSpawn = 0;
 	int nowSpawn = 0;
 	commandState phase = commandState::WaitCommand;
@@ -82,8 +88,25 @@ private:
 	float shutterTime = 0.0f;
 	float feedTimer = 0.0f;
 	float shutterHight[2] = { 0,0 };
+	//enum class commandState : int {
+	//	WaitCommand = 0,
+	//	MoveCommand,
+	//	ControlCommand,
+	//	EnemySpawn,
+	//	SubGauge,
+	//	Ultimate,
+	//	COMMANDMAX
+	//};
 
+	array<int, (size_t)commandState::COMMANDMAX> ActionTimerMax = 
+	{   180,
+		120,
+		100,
+		100,
+		60,
+		5
+	};
 
-	float shutterTimeMax = 30.0f;
+	float shutterTimeMax = 40.0f;
 	float feedTimeMax = 15.0f;
 };

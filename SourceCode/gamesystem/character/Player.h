@@ -74,8 +74,9 @@ private:
 	//各アニメーション
 	enum class AnimeName
 	{
-		IDLE=7,
-		WALK=5,
+		IDLE=0,
+		ATTACK=1,
+		WALK=2,
 	}_animeName;
 
 	void AnimationControl(AnimeName name, const bool& loop, int speed);

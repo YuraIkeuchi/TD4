@@ -42,7 +42,8 @@ private:
 	bool PlayerCollision();
 	//食料生産
 	void BirthGhost();
-
+	//生成可能かを調べます
+	bool VerseCheck();
 private://ステート
 	static void (Ghost::* stateTable[])();
 	//何もない状態
@@ -55,6 +56,9 @@ private://ステート
 	void Search();
 	//洗脳
 	void Jack();
+	//洗脳
+	void HyperJack();
+	void GetRotation2Player();
 	//消える
 	void Vanish();
 	//食べ物を運ぶ
@@ -76,16 +80,19 @@ public://getter setter
 	const float& GetLimit() { return m_Limit; }
 	const int GetStateInst() { return (int)_charaState; }
 	void SetIsRefer(const bool isRefer) { this->m_IsRefer = isRefer; }
-	void SetIsVerse(const bool isVerse) { this->isVerse = isVerse; }
+	void SetIsHyperRefer(const bool isRefer) { this->m_IsHyperRefer = isRefer; }
+
+	void SetIsVerse(const bool isVerse, int verseCureTimer = 0) { this->isVerse = isVerse; m_VerseCureTimer = verseCureTimer; }
 	void SetCatch(const bool Catch) { m_Catch = Catch; }
-	void SetAlive(const bool Alive) { m_Alive = Alive; }
 	void SetVanish(const bool Vanish) { m_Vanish = Vanish; }
 	void SetIsPostionCheck(const bool m_IsPostionCheck) { this->m_IsPostionCheck = m_IsPostionCheck; }
+	void SetIsAllPostionCheck(const bool m_IsPostionCheck) { this->m_IsAllPostionCheck = m_IsPostionCheck; }
 	void SetLimit(const float Limit) { m_Limit = Limit; }
 private:
 	bool m_Alive = true;//生存フラグ
 	bool m_Catch = false;//捕獲フラグ
 	bool isVerse = true;//リスポーンフラグ
+	int m_VerseCureTimer = 0;//リスポーン回復フラグ
 	int m_ResPornTimer = 0;//復活の時間
 	XMFLOAT3 m_FollowPos = {};//追従先
 	XMFLOAT3 m_OBBScale = {};//OBB用の大きさ
@@ -94,9 +101,10 @@ private:
 	enum CharaState {
 		STATE_NONE,
 		STATE_SPAWN,
-		STATE_FOLLOW,
 		STATE_SEARCH,
+		STATE_FOLLOW,
 		STATE_JACK,
+		STATE_HYPERJACK,
 		STATE_VANISH,
 	}_charaState = CharaState::STATE_NONE;
 
@@ -130,8 +138,10 @@ private://探索
 	float kSpawnTimerMax = 60.f;
 
 	bool m_IsRefer = false;
-
+	bool m_IsHyperRefer = false;
 	bool m_IsPostionCheck = false;
+	bool m_IsAllPostionCheck = false;
+	float RottoPlayer = 0.0f;
 	XMFLOAT3 f_pos = {};
 	float m_radius = 0.0f;
 	enum {

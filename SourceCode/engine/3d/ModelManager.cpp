@@ -31,7 +31,9 @@ void ModelManager::SecondInitialize()
 	LoadModel(MobUsa, "mobusa");
 	LoadModel(Heart, "heart");
 	LoadModel(Pedestal, "dodai");
-	LoadFBXModel(PLAYER, "PlayerFBXNew");
+	LoadModel(Skydome, "skydome");
+	LoadModel(KIDO_OBJ, "kidokunobj");
+	LoadFBXModel(PLAYER, "kotoko");
 	LoadModel(DJ, "DJ");
 	LoadModel(CD, "CD");
 	LoadFBXModel(SIORI, "siori_idol");

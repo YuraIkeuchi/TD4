@@ -20,7 +20,7 @@ bool Player::Initialize()
 	m_fbxObject->Initialize();
 	m_fbxObject->SetModel(ModelManager::GetInstance()->GetFBXModel(ModelManager::PLAYER));
 	m_fbxObject->LoadAnimation();
-
+	m_fbxObject->PlayAnimation(0);
 	/*CSV読み込み(CSVファイル名,読み込むパラメータの名前,受け取る値)　今は単一の方のみ対応(int float double charとか)*/
 
 	//spから間接的にアクセスする方法 (Update()内で専用の変数に代入する必要あり)
@@ -62,8 +62,8 @@ void Player::InitState(const XMFLOAT3& pos) {
 	//移動処理用
 	velocity /= 5.0f;
 	//大きさ
-	m_Scale = { 2.5f,2.5f,2.5f };
 	m_ChargePower = {};
+	m_Scale = { 1.f,0.5f,1.f };
 }
 //状態遷移
 /*CharaStateのState並び順に合わせる*/
@@ -92,11 +92,13 @@ void Player::Update()
 			input->TiltPushStick(Input::L_RIGHT, 0.0f) ||
 			input->TiltPushStick(Input::L_LEFT, 0.0f))
 		{
+			//m_fbxObject->PlayAnimation(2);
 			_charaState = CharaState::STATE_RUN;
 		}
 		//何もアクションがなかったらアイドル状態
 		else
 		{
+			//m_fbxObject->PlayAnimation(2);
 			_charaState = CharaState::STATE_IDLE;
 		}
 	}
@@ -126,6 +128,8 @@ void Player::Update()
 	//反発
 	ReBound();
 
+	m_LoopFlag = true;
+	m_AnimationSpeed = 1;
 	//適当にダメージ食らってるときは赤色
 	if (m_DamageInterVal == 0) {
 		m_Color = { 1.0f,1.0f,1.0f,1.0f };
@@ -206,7 +210,6 @@ void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
 	_animeName = name;
 	m_LoopFlag = loop;
 	m_AnimationSpeed = speed;
-
 }
 //歩き(コントローラー)
 void Player::Walk()
@@ -328,6 +331,7 @@ void Player::Bullet_Management() {
 	if (m_BulletType == BULLET_ATTACK) {
 		if (Input::GetInstance()->PushButton(Input::B) && (m_InterVal == 0) && (HungerGauge::GetInstance()->GetCatchCount() >= l_TargetCount)
 			&& (m_canShot)) {
+			AnimationControl(AnimeName::ATTACK, false, 1);
 			isShotNow = true;
 			m_ChargePower += 0.2f;
 			viewbullet->SetAlive(true);

@@ -38,6 +38,7 @@ bool TutorialEnemy::Initialize() {
 }
 //行動
 void TutorialEnemy::Action() {
+	if (!isActive) { return; }
 	if (Death()) { return; }
 	//関数ポインタで状態管理
 	(this->*commandTable[static_cast<size_t>(commandState)])();
@@ -52,6 +53,9 @@ void TutorialEnemy::Action() {
 //描画
 void TutorialEnemy::Draw(DirectXCommon* dxCommon) {
 	if (m_Color.w <= 0.f)return;
+	if (!isActive) {
+		return;
+	}
 	IKEObject3d::PreDraw();
 	Obj_Draw();
 }
