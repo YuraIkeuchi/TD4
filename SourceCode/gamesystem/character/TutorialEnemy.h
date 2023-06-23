@@ -11,6 +11,8 @@ public:
 	void ImGuiDraw()override;
 	void Draw(DirectXCommon* dxCommon) override;//描画
 
+	bool GetIsActive() {return isActive; }
+
 	void SetIsActive(bool flag) { isActive = flag; }
 private:
 	void Particle();//パーティクル
