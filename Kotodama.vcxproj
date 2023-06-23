@@ -165,6 +165,7 @@
     <ClCompile Include="SourceCode\gamesystem\actor\BaseActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\ClearSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\EditorSceneActor.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\actor\FiveSategActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\FourthStageActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\GameOverSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\FirstStageActor.cpp" />
@@ -221,6 +222,7 @@
     <ClCompile Include="SourceCode\gamesystem\scene\ClearScene.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\EditorScene.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\FirstStage.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\scene\FiveStage.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\FourthStage.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\Framework.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\GameoverScene.cpp" />
@@ -314,6 +316,7 @@
     <ClInclude Include="SourceCode\gamesystem\actor\BaseActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\ClearSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\EditorSceneActor.h" />
+    <ClInclude Include="SourceCode\gamesystem\actor\FiveSategActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\FourthStageActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\FirstStageActor.h" />
@@ -370,6 +373,7 @@
     <ClInclude Include="SourceCode\gamesystem\scene\ClearScene.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\EditorScene.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\FirstStage.h" />
+    <ClInclude Include="SourceCode\gamesystem\scene\FiveStage.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\FourthStage.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\Framework.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\GameoverScene.h" />
