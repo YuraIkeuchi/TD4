@@ -58,7 +58,7 @@ void InterCD::CollideBul(vector<InterBullet*> bullet)
 			if (Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, l_Radius, m_Position.x, m_Position.z, l_Radius)) {
 				BirthEffect();
 				_bullet->SetAlive(false);
-				m_HP -= 1.0f;
+				m_HP -= _bullet->GetPower();
 				if (m_HP <= 0.0f) {
 					m_CDState = CD_DEATH;
 					m_BreakCD = true;
