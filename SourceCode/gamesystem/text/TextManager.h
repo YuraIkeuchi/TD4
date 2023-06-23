@@ -81,6 +81,15 @@ public:
 		SELECT_JOY,
 		SELECT_JOY2,
 	};
+
+	enum Name_Fourth {
+		TALK_FIRST,
+		TALK_SECOND,
+		TALK_THIRD,
+		TALK_FOURTH,
+		TALK_FIVE,
+	};
+
 	static TextManager* GetInstance();
 
 	//
@@ -106,6 +115,8 @@ public:
 
 	void SetSecondConversation(Name_Second name = ANGER_TALK);
 
+	void SetFourthConversation(Name_Fourth name = TALK_FIRST);
+
 	void GetWordSize(Word word);
 
 	void SetRowPosition(float posX);
@@ -115,7 +126,7 @@ private:
 	void CreateWord(Name name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
 	void CreateWord(Name_First name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
 	void SecondCreateWord(Name_Second name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
-
+	void FourthCreateWord(Name_Fourth name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
 	//
 	Word SetWord(wchar_t* tex1, wchar_t* tex2, wchar_t* tex3);
 	//
@@ -126,6 +137,7 @@ private:
 	std::map<TextManager::Name, Word> wordlist_;
 	std::map<TextManager::Name_First, Word> wordlist_first;
 	std::map<TextManager::Name_Second, Word> wordlist_second;
+	std::map<TextManager::Name_Fourth, Word> wordlist_fourth;
 	Conversation conversation_ = {};
 	Conversation old_conversation_ = {};
 
@@ -144,6 +156,8 @@ private:
 	wchar_t* test2;
 
 	Name old=NONE;
-
+	Name_First old_first = VIEWBOSS;
+	Name_Second old_second = ANGER_TALK;
+	Name_Fourth old_fourth;
 };
 

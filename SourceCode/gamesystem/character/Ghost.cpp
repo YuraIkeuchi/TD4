@@ -35,7 +35,8 @@ void (Ghost::* Ghost::stateTable[])() = {
 	&Ghost::Spawm,
 	&Ghost::Follow,//移動
 	&Ghost::Search,//攻撃
-	&Ghost::Jack
+	&Ghost::Jack,
+	&Ghost::Vanish,
 };
 //更新
 void Ghost::Update() {
@@ -54,6 +55,10 @@ void Ghost::Update() {
 	//食べ物をはこぶ
 	CarryFood();
 	Particle();
+	//消える
+	if (m_Vanish) {
+		_charaState = STATE_VANISH;
+	}
 	//当たり判定（弾）
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_ghost();
 	CollideBullet(_playerBulA);
@@ -188,8 +193,7 @@ void Ghost::Search() {
 	//サーチ状態から一定時間立つと存在消去
 	m_SearchTimer++;
 	if (m_SearchTimer >= l_LimitTimer) {
-		m_Scale = { 0.0f,0.0f,0.0f };
-		m_Alive = false;
+		m_Vanish = true;
 	}
 	//追従
 	if (_searchState == SearchState::SEARCH_START) {
@@ -237,6 +241,27 @@ void Ghost::Jack() {
 		_charaState = CharaState::STATE_NONE;
 	}
 }
+
+//ゴーストが消える
+void Ghost::Vanish() {
+	const float l_AddFrame = 0.01f;
+	const float l_AfterScale = 0.0f;
+	if (m_Vanish) {
+		m_Rotation.y += 5.0f;
+		if (m_Frame < m_FrameMax) {
+			m_Frame += l_AddFrame;
+		}
+		else {
+			m_Vanish = false;
+			m_Alive = false;
+			m_Frame = {};
+		}
+
+		m_Scale = { Ease(In,Cubic,m_Frame,m_Scale.x,l_AfterScale),
+		Ease(In,Cubic,m_Frame,m_Scale.y,l_AfterScale),
+		Ease(In,Cubic,m_Frame,m_Scale.z,l_AfterScale), };
+	}
+}
 //探索スタート
 void Ghost::StartSearch(const XMFLOAT3& pos) {
 	_searchState = SearchState::SEARCH_START;
@@ -252,10 +277,10 @@ void Ghost::CarryFood() {
 	float l_Radius = 1.0f;//当たり判定
 	float l_AddHunger = HungerGauge::m_Hungervalue;//加算される気がゲージ
 	XMFLOAT3 l_playerPos = Player::GetInstance()->GetPosition();
-	if ((_searchState == SearchState::SEARCH_END) && (m_Alive)) {
+	if ((_searchState == SearchState::SEARCH_END) && (!m_Vanish)) {
 		if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, l_playerPos.x, l_playerPos.z, l_Radius)) {
-			m_Scale = { 0.0f,0.0f,0.0f };
-			m_Alive = false;
+			//m_Scale = { 0.0f,0.0f,0.0f };
+			m_Vanish = true;
 			m_Search = false;
 			m_Catch = false;
 			m_Limit = {};

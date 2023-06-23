@@ -161,8 +161,6 @@ private:
 			RotStartPos.x = Player::GetInstance()->GetPosition().x + sinf(RePosAngle * (3.14f / 180.0f)) * 10.0f;
 			RotStartPos.z = Player::GetInstance()->GetPosition().z + cosf(RePosAngle * (3.14f / 180.0f)) * 10.0f;
 		}
-
-		void ColPlayer(XMFLOAT3& Pos);
 	private:
 		float RotSpeed;
 		float EaseT;

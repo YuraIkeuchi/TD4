@@ -103,7 +103,17 @@ void InterBoss::CollideBul(vector<InterBullet*> bullet,Type type)
 		}
 	}
 }
-
+//プレイヤーとボスの当たり判定
+void InterBoss::ColPlayer()
+{
+	//ラッシュ中判定あり
+	if (Collision::CircleCollision(m_Position.x, m_Position.z, m_Radius, Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z, 1.f) &&
+		(Player::GetInstance()->GetDamageInterVal() == 0))
+	{
+		Player::GetInstance()->RecvDamage(1.0f);
+		Player::GetInstance()->PlayerHit(m_Position);
+	}
+}
 //エフェクトの発生
 void InterBoss::BirthEffect() {
 	InterEffect* neweffect;

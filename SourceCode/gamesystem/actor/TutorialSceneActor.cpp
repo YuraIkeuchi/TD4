@@ -34,6 +34,7 @@ void (TutorialSceneActor::* TutorialSceneActor::stateTable[])() = {
 	&TutorialSceneActor::TextLastState,//
 	&TutorialSceneActor::MainTutorialState,//
 	&TutorialSceneActor::CompleteState,//
+	&TutorialSceneActor::Skip,
 };
 
 void TutorialSceneActor::IntroState() {
@@ -420,10 +421,15 @@ void TutorialSceneActor::CompleteState() {
 		conversation == 12) {
 		sceneChanger_->ChangeStart();
 		SceneSave::GetInstance()->SetClearFlag(kTutorialStage,true);
-		Audio::GetInstance()->StopWave(3);
+		Audio::GetInstance()->StopWave(AUDIO_LOAD);
 	}
 	sceneChanger_->ChangeScene("FIRSTSTAGE", SceneChanger::NonReverse);
 
+}
+
+void TutorialSceneActor::Skip()
+{
+	
 }
 
 bool TutorialSceneActor::DebugButton() {
@@ -549,6 +555,19 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 }
 //更新
 void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
+	//スキップ
+	if (input->TriggerButton(Input::A)) {
+		skip = true;
+	}
+
+	if (skip == true) {
+		sceneChanger_->ChangeStart();
+		SceneSave::GetInstance()->SetClearFlag(kTutorialStage, true);
+		Audio::GetInstance()->StopWave(AUDIO_LOAD);
+
+		sceneChanger_->ChangeScene("FIRSTSTAGE", SceneChanger::NonReverse);
+	}
+
 	//プレイヤー
 	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
 	lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().y, Player::GetInstance()->GetPosition().z }));

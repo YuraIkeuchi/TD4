@@ -65,14 +65,6 @@ bool ThirdBoss::Initialize() {
 void ThirdBoss::SkipInitialize() {
 
 }
-void ThirdBoss::ColPlayer(XMFLOAT3& Pos) {
-	//ラッシュ中判定あり
-	if (Collision::CircleCollision(Pos.x, Pos.z, 5.f, Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z, 1.f) &&
-		(Player::GetInstance()->GetDamageInterVal() == 0)) {
-		Player::GetInstance()->RecvDamage(1.0f);
-		Player::GetInstance()->PlayerHit(Pos);
-	}
-}
 
 //行動
 void ThirdBoss::Action() {
@@ -89,7 +81,7 @@ void ThirdBoss::Action() {
 	//弾とボスの当たり判定
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
 	CollideBul(_playerBulA, Type::CIRCLE);
-	ColPlayer(m_Position);
+	ColPlayer();
 	//OBJのステータスのセット
 	Obj_SetParam();
 	//リミット制限

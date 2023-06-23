@@ -96,12 +96,12 @@ void LoadStageObj::SecondUpdate() {
 	}
 
 	//H—¿¶¬
-	if (m_EnemyManager->GetEnemyCheck()) {
+	if (m_EnemyManager->GetEnemyCheck() && (foods.size() < 5)) {
 		Food* newFood;
 		newFood = new Food();
 		newFood->Initialize();
 		newFood->SetPosition({ m_EnemyManager->GetEnemyPosition().x,0.0f,m_EnemyManager->GetEnemyPosition().z });
-		newFood->SetLimit(true);
+		//newFood->SetLimit(true);
 		foods.push_back(newFood);
 		m_EnemyManager->FinishCheck();
 
@@ -207,6 +207,7 @@ void LoadStageObj::VanishGhost() {
 	//œŽZ‚ð‚·‚é
 	m_Division = HungerGauge::GetInstance()->GetNowHunger() / 5.0f;
 	for (auto i = 0; i < ghosts.size(); ++i) {
+		if (ghosts[i]->GetVanish()) { continue; }
 		if (!ghosts[i]->GetAlive()) { continue; }
 		if (!ghosts[i]->GetCatch()) { continue; }
 		if (!ghosts[i]->GetFollow()) { continue; }
@@ -217,7 +218,7 @@ void LoadStageObj::VanishGhost() {
 
 		//for•ª”²‚¯‚é
 		if (m_Vanish) {
-			ghosts[i]->SetAlive(false);
+			ghosts[i]->SetVanish(true);
 			HungerGauge::GetInstance()->SetCatchCount(HungerGauge::GetInstance()->GetCatchCount() - 1);
 			HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() - l_Value);
 			m_Vanish = false;
@@ -364,9 +365,8 @@ bool LoadStageObj::CheckReferGhost() {
 //‹Q‰ìƒQ[ƒW‚ðƒS[ƒXƒgŽO‘Ì•ªŒ¸‚ç‚·
 void LoadStageObj::SubHunger() {
 	const float l_AddFrame = 0.1f;
-	float l_LimitHunger = {};
 	if (m_EnemyManager->GetEnemyCheck()) {
-		l_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - 10.0f;
+		m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - 15.0f;
 		m_SubHunger = true;
 		m_EnemyManager->FinishCheck();
 	}
@@ -377,8 +377,9 @@ void LoadStageObj::SubHunger() {
 		}
 		else {
 			m_Frame = {};
+			m_LimitHunger = {};
 			m_SubHunger = false;
 		}
-		HungerGauge::GetInstance()->SetNowHunger(Ease(In, Cubic, 0.5f, HungerGauge::GetInstance()->GetNowHunger(), l_LimitHunger));
+		HungerGauge::GetInstance()->SetNowHunger(Ease(In, Cubic, m_Frame, HungerGauge::GetInstance()->GetNowHunger(), m_LimitHunger));
 	}
 }

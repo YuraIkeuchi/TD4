@@ -5,7 +5,7 @@
 #include <HungerGauge.h>
 #include "EnemyManager.h"
 #include <Easing.h>
-
+#include <Helper.h>
 UI::~UI() {
 	TexList.clear();
 }
@@ -51,7 +51,13 @@ void UI::Initialize() {
 		sprites[CircleCover].Tex->SetAnchorPoint({ 0.5,0.5f });
 		TexList.emplace_back(std::move(sprites[CircleCover]));
 	}
-
+	//ボスの位置
+	{
+		sprites[ArrowBoss] = CreateUi(ImageManager::BOSS_ARROW,{}, {62.0f,62.0f}, {1.f,1.f,1.f,1.f});
+		sprites[ArrowBoss].Tex->SetAnchorPoint({ 0.5,0.5f });
+		TexList.emplace_back(std::move(sprites[ArrowBoss]));
+		TexList[ArrowBoss].IsVisible = false;
+	}
 }
 
 //更新
@@ -77,34 +83,71 @@ void UI::Update() {
 	TexList[HeartTwo].Color = { 1,0,0,1 };
 	TexList[PlayerCircle].Rotation = m_PlayerCircleRot;
 	bullet_type_ = Player::GetInstance()->GetBulletType();
+	float nowhunger = HungerGauge::GetInstance()->GetNowHunger();
+	bool skip = Player::GetInstance()->GetSkip();
 	if (bullet_type_ == Bullettype::BULLET_FORROW) {
 		m_limit = 0.f;
+		if (skip == true) {
+			m_limit = 360.f;
+		}
 	}
 	else if (bullet_type_ == Bullettype::BULLET_SEARCH) {
 		m_limit = 120.f;
+		if (skip == true) {
+			m_limit=-240.f;
+		}
 	}
 	else if (bullet_type_ == Bullettype::BULLET_ATTACK) {
 		m_limit = 240.f;
+		
 	}
 	int ans = bullet_type_ - oldbullet_type_;
+	if (m_limit == -240) {
+		m_limit = 120;
+	}
+
+	if (m_limit == 360) {
+		m_limit = 0;
+	}
 	if (m_PlayerCircleRot != m_limit) {
-		if(ans == 1 || ans == -2) {
-			m_PlayerCircleRot += 30.f;
-			if (m_PlayerCircleRot > 360.f) {
-				m_PlayerCircleRot = 0.f;
+		if (ans == 1 || ans == -2) {
+			if (skip == false) {
+				m_PlayerCircleRot += 30.f;
+				if (m_PlayerCircleRot > 360.f) {
+					m_PlayerCircleRot = 0.f;
+				}
+			}
+			else if(skip==true) {
+				m_PlayerCircleRot -= 30.f;
+				if (m_PlayerCircleRot < -240.f) {
+					m_PlayerCircleRot = 120.f;
+					skip = false;
+					Player::GetInstance()->SetSkip(skip);
+				}
 			}
 		}
-		else if(ans == -1 || ans == 2) {
-			m_PlayerCircleRot -= 30.f;
-			if (m_PlayerCircleRot <0.f) {
-				m_PlayerCircleRot = 360;
+		else if (ans == -1 || ans == 2) {
+			if (skip == false) {
+				m_PlayerCircleRot -= 30.f;
+				if (m_PlayerCircleRot < 0.f) {
+					m_PlayerCircleRot = 360;
+				}
+			}
+			else if (skip == true) {
+				m_PlayerCircleRot += 30.f;
+				if (m_PlayerCircleRot > 360.f) {
+					m_PlayerCircleRot = 0.f;
+					skip = false;
+					Player::GetInstance()->SetSkip(skip);
+				}
 			}
 		}
 	}
 	else {
 		oldbullet_type_ = bullet_type_;
 	}
-
+	
+	
 
 	if (boss) {
 		TexList[BossGauge].Size = { boss->HpPercent() * 400.f,40.f };
@@ -115,6 +158,10 @@ void UI::Update() {
 
 	}
 
+	//ボスの探索
+	if(boss)
+	SeachBoss();
+
 	for (auto i = 0; i < TexList.size(); i++) {
 		if (TexList[i].Tex == nullptr)continue;
 		TexList[i].Tex->SetPosition(TexList[i].Position);
@@ -122,6 +169,8 @@ void UI::Update() {
 		TexList[i].Tex->SetRotation(TexList[i].Rotation);
 		TexList[i].Tex->SetColor(TexList[i].Color);
 	}
+
+
 }
 
 //描画
@@ -146,3 +195,27 @@ UI::SpriteData UI::CreateUi(UINT texNumber, XMFLOAT2 pos, XMFLOAT2 size, XMFLOAT
 	return itr;
 }
 
+//ボスの探索
+void UI::SeachBoss() {
+	const float l_LookLength = 55.0f;
+	XMFLOAT3 l_PlaPos = Player::GetInstance()->GetPosition();
+	XMFLOAT3 l_bossPos = boss->GetPosition();
+	XMFLOAT3 l_Position{};
+	float l_Radius = 0;
+	XMFLOAT2 rot{};
+	l_Position.x = (l_PlaPos.x - l_bossPos.x);
+	l_Position.z = (l_PlaPos.z - l_bossPos.z);
+
+	l_Radius = atan2f(l_Position.x, l_Position.z);// *PI / 180.0f;
+	m_Circle.x = (sin(-l_Radius) * 150.0f) + WinApp::window_width / 2; //*0.2251f;
+	m_Circle.y = (cos(-l_Radius) * 150.0f) + WinApp::window_height / 2; //*0.2251f;
+	if (l_LookLength < Helper::GetInstance()->ChechLength({ l_PlaPos.x,0.0f,l_PlaPos.z }, { l_bossPos.x,0.0f,l_bossPos.z })) {
+		TexList[ArrowBoss].IsVisible = true;
+	}
+	else {
+		TexList[ArrowBoss].IsVisible = false;
+	}
+	TexList[ArrowBoss].Rotation = (l_Radius * (PI_180 / XM_PI)) + PI_180;//-radius * PI / 180.0f);
+	TexList[ArrowBoss].Position = m_Circle;
+	//TexList[ArrowBoss].Size = { 62.0f,62.0f };
+}

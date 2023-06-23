@@ -68,6 +68,9 @@ public:
 		tip1,
 		Challenge,
 		Cancel
+		BOSS_ARROW,
+		NOTE,
+		NOTE2
 	};
 	//テクスチャの名前
 	enum tex2dName
@@ -77,9 +80,10 @@ public:
 		ANGER,
 		JOY,
 		MARK,
-	DAMAGEAREA,
+		DAMAGEAREA,
 		GROUND,
 		PHOTOSPOT,
+		STUN,
 	};
 	enum particleName
 	{

@@ -12,7 +12,7 @@ private:
 	ModelManager& operator= (const ModelManager& r) = default;
 
 public:
-	//OBJ‚Ì–¼‘O
+	//OBJã®åå‰
 	enum ModelName {
 		Ground,
 		Box,
@@ -29,9 +29,10 @@ public:
 		Pedestal,
 		DJ,
 		Skydome,
-		KIDO_OBJ
+		KIDO_OBJ,
+		CD
 	};
-	//FBX‚Ì–¼‘O
+	//FBXã®åå‰
 	enum FBXName {
 		PLAYER,
 		KIDO,
@@ -40,16 +41,16 @@ public:
 	};
 
 public:
-	static ModelManager* GetInstance();		//æ“¾—p
+	static ModelManager* GetInstance();		//å–å¾—ç”¨
 	void StartInitialize();
-	void SecondInitialize();//‰Šú‰»
-	void Finalize();//‰ğ•ú
-	//“Ç‚İ‚İ
+	void SecondInitialize();//åˆæœŸåŒ–
+	void Finalize();//è§£æ”¾
+	//èª­ã¿è¾¼ã¿
 	void LoadModel(const ModelName modelName, std::string fileName);
 	void LoadFBXModel(const FBXName modelName, std::string fileName);
 	IKEModel* GetModel(ModelName modelName) { return model[modelName]; }
 	IKEFBXModel* GetFBXModel(FBXName FBXName) { return fbxModel[FBXName]; }
 private:
-	static std::map<ModelName, IKEModel*> model;	//ƒ‚ƒfƒ‹Ši”[ƒ}ƒbƒv
+	static std::map<ModelName, IKEModel*> model;	//ãƒ¢ãƒ‡ãƒ«æ ¼ç´ãƒãƒƒãƒ—
 	static std::map<FBXName, IKEFBXModel*> fbxModel;
 };

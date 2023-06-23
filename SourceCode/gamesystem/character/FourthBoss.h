@@ -7,6 +7,8 @@
 #include "DebuffCD.h"
 #include "AttackNote.h"
 #include "DamageArea.h"
+#include "ConfuEffect.h"
+#include "NoteEffect.h"
 class FourthBoss :
 	public InterBoss {
 public:
@@ -22,9 +24,9 @@ public:
 
 	void AppearAction() override;//ボス登場の固有の処理
 
-	void DeadAction() {};//ボス撃破の固有の処理
+	void DeadAction() override;//ボス撃破の固有の処理
 
-	void DeadAction_Throw() {};//ボス撃破の固有の処理 スロー
+	void DeadAction_Throw() override;//ボス撃破の固有の処理 スロー
 
 	void ImGui_Origin() override;//ボスそれぞれのImGui
 
@@ -44,15 +46,14 @@ private:
 	void Confu();
 	//弾幕
 	void Barrage();
-	//投げる
-	void Throw();
 	//行動終わり
 	void EndMove();
 	//CSV読み込み系
 	void CSVLoad();
 	//ノーツの生成
 	void BirthNote(const std::string& BarrageName);
-
+	//死んだときのパーティクル
+	void DeathParticle();
 private:
 	static const int BULLET_NUM = 4;
 	static const int CD_NUM = 4;
@@ -61,6 +62,8 @@ private:
 	array<unique_ptr<InterCD>, CD_NUM> cd;
 	vector<AttackNote*> attacknotes;//怒りのスタンプ
 	unique_ptr<DamageArea> damagearea;//ダメージエリア
+	unique_ptr<ConfuEffect> confueffect;
+	unique_ptr<NoteEffect> noteeffect;
 	//キャラの状態
 	enum CharaState
 	{
@@ -70,7 +73,6 @@ private:
 		STATE_DEBUFF,
 		STATE_CONFU,
 		STATE_BARRA,
-		STATE_THROW,
 		STATE_END
 	};
 
@@ -111,20 +113,41 @@ private:
 		CD_CONFU,
 		CD_BARRA,
 	};
-
+	//動きのインターバル
 	int m_MoveInterVal = {};
+	//行動終了の数
+	int m_EndCount = {};
+	//キャッチしたCDの数
+	int m_CatchCount = {};
+	//ボスがプレイヤーから逃げる時間
+	int m_EndTimer = {};
 
-	int m_ThrowTimer = {};
+	//棘の的に使う
+	float m_Angle = 0.0f;
+	float m_Angle2 = 0.0f;
+	//二点の距離
+	float m_Length = {};
 
-	enum ThrowState {
-		THROW_SET,
-		THROW_NOW,
-		THROW_END
+	//円運動
+	float m_CircleScale = 30.0f;
+	float m_CircleSpeed = {};
+
+	//弾幕の種類
+	int m_BarraRand = {};
+
+	int m_AttackRand = {};
+
+	//CSV系
+	//各インターバルやリミット時間
+	vector<int>m_Limit;
+
+	enum LimitState {
+		LIMIT_BASE,
+		LIMIT_CONFU,
+		LIMIT_STRONG_CONFU,
+		LIMIT_BARRA,
 	};
 
-	int m_ThrowState = THROW_SET;
-
-	int m_EndCount = {};
-
-	int m_CatchCount = {};
+	//移動力
+	float m_FollowSpeed = {};
 };

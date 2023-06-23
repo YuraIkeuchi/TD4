@@ -75,6 +75,12 @@ protected:
 	float pointLightColor[3] = { 1,1,1 };
 	float pointLightAtten[3] = { 15.0f,15.0f,15.0f };
 	float pointLightPower[3] = { 20.0f,20.0f,20.0f };
+	//スポットライト
+	XMFLOAT3 spotLightPos[4];
+	XMFLOAT3 spotLightDir[4];
+	XMFLOAT3 spotLightColor[4];
+	float spotLightAtten[3] = { 0.0,0.0f,0.0f };
+	float spotLightFactorAngle[2] = { 20.0f,30.0f };
 	//丸影(プレイヤー)
 	float circleShadowDir[3] = { 0,-1,0 };
 	float circleShadowAtten[3] = { 0.5f,0.6f,0.0f };
@@ -99,4 +105,6 @@ protected:
 	XMFLOAT4 black_color{ 1.f,1.f,1.f,0.f };
 	XMFLOAT4 girl_color_{ 1.5f,1.5f,1.5f,0.f };
 	XMFLOAT4 sutopon_color_{ 1.f,1.f,1.f,0.f };
+
+	int textT;
 };

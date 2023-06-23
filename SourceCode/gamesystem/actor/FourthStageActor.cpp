@@ -9,26 +9,25 @@
 #include "BackObj.h"
 #include "Menu.h"
 #include "SelectScene.h"
-//‰Šú‰»
+//åˆæœŸåŒ–
 void FourthStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	dxCommon->SetFullScreen(true);
-	//‹¤’Ê‚Ì‰Šú‰»
+	//å…±é€šã®åˆæœŸåŒ–
 	BaseInitialize(dxCommon);
-	//ƒI[ƒfƒBƒI
-	Audio::GetInstance()->LoadSound(1, "Resources/Sound/BGM/BGM_boss.wav");
-	Audio::GetInstance()->LoopWave(1, VolumManager::GetInstance()->GetBGMVolum() + 1.0f);
+	//ã‚ªãƒ¼ãƒ‡ã‚£ã‚ª
+	Audio::GetInstance()->LoopWave(AUDIO_BATTLE, VolumManager::GetInstance()->GetBGMVolum() + 1.0f);
 
-	//ƒ|ƒXƒgƒGƒtƒFƒNƒg
+	//ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
 	PlayPostEffect = true;
-	//ƒp[ƒeƒBƒNƒ‹‘Síœ
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«å…¨å‰Šé™¤
 	ParticleEmitter::GetInstance()->AllDelete();
 
-	//ŠeƒNƒ‰ƒX
+	//å„ã‚¯ãƒ©ã‚¹
 	Player::GetInstance()->InitState({ 0.0f,5.0f,-5.0f });
 
 	backScreen_ = IKESprite::Create(ImageManager::PLAY, { 0,0 });
 	backScreen_->SetSize({ 1280.0f,720.0f });
-	//ƒV[ƒ“ƒ`ƒFƒ“ƒWƒƒ[
+	//ã‚·ãƒ¼ãƒ³ãƒã‚§ãƒ³ã‚¸ãƒ£ãƒ¼
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
 
@@ -36,10 +35,11 @@ void FourthStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	//enemymanager->Initialize(dxCommon);
 	text_ = make_unique<BossText>();
 	text_->Initialize(dxCommon);
-	text_->SelectText(TextManager::ANGER_TALK);
+	text_->SelectText(TextManager::TALK_FIRST);
 	camerawork->SetBoss(enemymanager->GetBoss());
 	camerawork->SetCameraState(CAMERA_BOSSAPPEAR);
-	camerawork->SetSceneName("SECONDSTAGE");
+	camerawork->SetSceneName("FOURTHSTAGE");
+	camerawork->SplineSet();
 	camerawork->Update(camera);
 	ui = std::make_unique<UI>();
 	ui->Initialize();
@@ -58,15 +58,37 @@ void FourthStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 
 	lightgroup->SetCircleShadowActive(0, true);
 	lightgroup->SetCircleShadowActive(1, true);
-}
-//XV
-void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 
-	//ŠÖ”ƒ|ƒCƒ“ƒ^‚Åó‘ÔŠÇ—
+	//ä¸¸å½±ã®ãŸã‚ã®ã‚„ã¤
+	lightgroup->SetDirLightActive(0, false);
+	lightgroup->SetDirLightActive(1, false);
+	lightgroup->SetDirLightActive(2, false);
+	for (int i = 0; i < SPOT_NUM; i++) {
+		lightgroup->SetSpotLightActive(i, true);
+	}
+
+	spotLightPos[0] = { 30,  10, 60 };
+	spotLightPos[1] = { 30,  10,  0 };
+	spotLightPos[2] = { -30, 10, 60 };
+	spotLightPos[3] = { -30, 10,  0 };
+
+	spotLightDir[0] = { 0, -1, 0 };
+	spotLightDir[1] = { 0, -1, 0 };
+	spotLightDir[2] = { 0, -1, 0 };
+	spotLightDir[3] = { 0, -1, 0 };
+
+	spotLightColor[0] = { 1, 1, 1 };
+	spotLightColor[1] = { 1, 1, 1 };
+	spotLightColor[2] = { 1, 1, 1 };
+	spotLightColor[3] = { 1, 1, 1 };
+}
+//æ›´æ–°
+void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
+	//é–¢æ•°ãƒã‚¤ãƒ³ã‚¿ã§çŠ¶æ…‹ç®¡ç†
 	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
 	sceneChanger_->Update();
 
-	//ƒvƒŒƒCƒ„[
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
 	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
 		//SceneSave::GetInstance()->SetClearFlag(kFourthStage, true);
 		lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
@@ -74,15 +96,16 @@ void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 		lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
 		lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
 	}
-	else {//ƒ{ƒXŒ‚”jƒ€[ƒr[‚ÌŒã‚ÍŠÛ‰eÁ‚·
+	else {//ãƒœã‚¹æ’ƒç ´ãƒ ãƒ¼ãƒ“ãƒ¼ã®å¾Œã¯ä¸¸å½±æ¶ˆã™
 		lightgroup->SetCircleShadowActive(0, false);
 	}
 
-	//ƒ{ƒX
+	//ãƒœã‚¹
 	lightgroup->SetCircleShadowDir(1, XMVECTOR({ BosscircleShadowDir[0], BosscircleShadowDir[1], BosscircleShadowDir[2], 0 }));
 	lightgroup->SetCircleShadowCasterPos(1, XMFLOAT3({ enemymanager->GetBoss()->GetPosition().x, 	0.0f, 	enemymanager->GetBoss()->GetPosition().z }));
 	lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
 	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
+
 	lightgroup->Update();
 	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
 		SelectScene::GetIns()->Upda();
@@ -91,13 +114,36 @@ void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 		SelectScene::GetIns()->ResetParama();
 		SceneManager::GetInstance()->ChangeScene("SELECT");
 	}
+
+	
+	//ã‚¹ãƒãƒƒãƒˆãƒ©ã‚¤ãƒˆã®å‹•ã
+	MoveSpotLight();
+	if(_AppState == APP_END) {
+		//ä¸¸å½±ã®ãŸã‚ã®ã‚„ã¤
+		lightgroup->SetDirLightActive(0, true);
+		lightgroup->SetDirLightActive(1, true);
+		lightgroup->SetDirLightActive(2, true);
+		for (int i = 0; i < SPOT_NUM; i++) {
+			lightgroup->SetSpotLightActive(i, false);
+		}
+	}
+
+	///ã‚¹ãƒãƒƒãƒˆãƒ©ã‚¤ãƒˆ
+	for (int i = 0; i < SPOT_NUM; i++) {
+		lightgroup->SetSpotLightDir(i, XMVECTOR({ spotLightDir[i].x,spotLightDir[i].y,spotLightDir[i].z,0}));
+		lightgroup->SetSpotLightPos(i, spotLightPos[i]);
+		lightgroup->SetSpotLightColor(i, spotLightColor[i]);
+		lightgroup->SetSpotLightAtten(i, XMFLOAT3(spotLightAtten));
+		lightgroup->SetSpotLightFactorAngle(i, XMFLOAT2(spotLightFactorAngle));
+	}
+	lightgroup->Update();
 	Menu::GetIns()->Upda();
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 }
-//•`‰æ
+//æç”»
 void FourthStageActor::Draw(DirectXCommon* dxCommon) {
-	//•`‰æ•û–@
-	//ƒ|ƒXƒgƒGƒtƒFƒNƒg‚ğ‚©‚¯‚é‚©
+	//æç”»æ–¹æ³•
+	//ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’ã‹ã‘ã‚‹ã‹
 	if (PlayPostEffect) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
@@ -121,23 +167,23 @@ void FourthStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PostDraw();
 	}
 }
-//‰ğ•ú
+//è§£æ”¾
 void FourthStageActor::Finalize() {
 }
-//Œã‚ë‚Ì•`‰æ
+//å¾Œã‚ã®æç”»
 void FourthStageActor::BackDraw(DirectXCommon* dxCommon) {
 	IKESprite::PreDraw();
 	backScreen_->Draw();
 	IKESprite::PostDraw();
 	IKEObject3d::PreDraw();
 	BackObj::GetInstance()->Draw(dxCommon);
-	//ƒp[ƒeƒBƒNƒ‹•`‰æ
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æç”»
 	if (!camerawork->GetFeedEnd() && m_SceneState == SceneState::MainState) {
 		if (!enemymanager->BossDestroy()) {
 			ParticleEmitter::GetInstance()->BackDrawAll();
 		}
 	}
-	////ŠeƒNƒ‰ƒX‚Ì•`‰æ
+	////å„ã‚¯ãƒ©ã‚¹ã®æç”»
 	if (!camerawork->GetFeedEnd()) {
 		Player::GetInstance()->Draw(dxCommon);
 		loadobj->Draw(dxCommon);
@@ -145,23 +191,21 @@ void FourthStageActor::BackDraw(DirectXCommon* dxCommon) {
 	enemymanager->Draw(dxCommon);
 	IKEObject3d::PostDraw();
 }
-//ƒ|ƒXƒgƒGƒtƒFƒNƒg‚ª‚©‚©‚ç‚È‚¢
+//ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆãŒã‹ã‹ã‚‰ãªã„
 void FourthStageActor::FrontDraw(DirectXCommon* dxCommon) {
-	//ƒp[ƒeƒBƒNƒ‹•`‰æ
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æç”»
 	if (!camerawork->GetFeedEnd() && m_SceneState == SceneState::MainState) {
 		ParticleEmitter::GetInstance()->FlontDrawAll();
 	}
 
 	ParticleEmitter::GetInstance()->DeathDrawAll();
-	//Š®‘S‚É‘O‚É‘‚­ƒXƒvƒ‰ƒCƒg
+	//å®Œå…¨ã«å‰ã«æ›¸ãã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	IKESprite::PreDraw();
 	if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd()) {
 		ui->Draw();
 	}
 	if (m_SceneState == SceneState::IntroState) {
-		if ((camerawork->GetAppearType() == APPEAR_SEVEN) || (camerawork->GetAppearType() == APPEAR_EIGHT)) {
-			text_->SpriteDraw(dxCommon);
-		}
+		text_->SpriteDraw(dxCommon);
 	}
 	IKESprite::PostDraw();
 	IKESprite::PreDraw();
@@ -171,65 +215,87 @@ void FourthStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	SelectScene::GetIns()->Draw_Sprite();
 	IKESprite::PostDraw();
 }
-//IMGui‚Ì•`‰æ
+//IMGuiã®æç”»
 void FourthStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	Player::GetInstance()->ImGuiDraw();
-	//loadobj->ImGuiDraw();
-	//camerawork->ImGuiDraw();
-	enemymanager->ImGuiDraw();
-	//loadobj->ImGuiDraw();
-	//SceneSave::GetInstance()->ImGuiDraw();
+	ImGui::Begin("Fourth");
+	ImGui::Text("Timer:%d", m_AppTimer);
+	ImGui::End();
 }
-//“oêƒV[ƒ“
+//ç™»å ´ã‚·ãƒ¼ãƒ³
 void FourthStageActor::IntroUpdate(DebugCamera* camera) {
 
-	//ÅŒã‚Ü‚ÅƒeƒLƒXƒg‚ğŒ©‚½
-	if (enemymanager->GetEnemyFinishAppear()) {
-		m_SceneState = SceneState::MainState;
-		camerawork->SetCameraState(CAMERA_NORMAL);
-	}
-
-	//‰‰oƒXƒLƒbƒv
+	//æ¼”å‡ºã‚¹ã‚­ãƒƒãƒ—
 	if (Input::GetInstance()->TriggerButton(Input::A)) {
 		camerawork->SetCameraSkip(true);
 	}
 
 	if (camerawork->GetAppearEndF()) {
+		_AppState = APP_END;
 		m_SceneState = SceneState::MainState;
 		camerawork->SetCameraState(CAMERA_NORMAL);
 		enemymanager->SkipInitialize();
 	}
 
-	//ŠeƒNƒ‰ƒXXV
+	//å„ã‚¯ãƒ©ã‚¹æ›´æ–°
 	BackObj::GetInstance()->Update();
 	ParticleEmitter::GetInstance()->Update();
 	Player::GetInstance()->AppearUpdate();
 	enemymanager->AppearUpdate();
 
 	camerawork->Update(camera);
+
+	m_AppTimer++;
+	if (m_AppTimer == 400) {
+		_AppState = APP_NOTICE;
+	}
+	else if (m_AppTimer == 580) {
+		_AppState = APP_VANISH;
+	}
+
+	//ãƒ†ã‚­ã‚¹ãƒˆé–¢ä¿‚
+	text_->Display();
+	if (m_AppTimer == 1) {
+		text_->SelectText(TextManager::TALK_FIRST);
+	}
+	else if (m_AppTimer == 150) {
+		text_->SelectText(TextManager::TALK_SECOND);
+	}
+	else if (m_AppTimer == 300) {
+		text_->SelectText(TextManager::TALK_THIRD);
+		text_->ChangeColor(0, { 1.0f,0.0f,0.0f,1.0f });
+	}
+	else if (m_AppTimer == 400) {
+		text_->SelectText(TextManager::TALK_FOURTH);
+		for (int i = 0; i < 3; i++) {
+			text_->ChangeColor(i, { 1.0f,1.0f,0.0f,1.0f });
+		}
+	}
+	else if (m_AppTimer == 500) {
+		text_->SelectText(TextManager::TALK_FIVE);
+	}
 }
-//ƒoƒgƒ‹ƒV[ƒ“
+//ãƒãƒˆãƒ«ã‚·ãƒ¼ãƒ³
 void FourthStageActor::MainUpdate(DebugCamera* camera) {
 	Input* input = Input::GetInstance();
 	ui->Update();
-	//ƒJƒƒ‰ƒ[ƒN‚ÌƒZƒbƒg
+	//ã‚«ãƒ¡ãƒ©ãƒ¯ãƒ¼ã‚¯ã®ã‚»ãƒƒãƒˆ
 	if (enemymanager->BossDestroy())
 	{
-		Audio::GetInstance()->StopWave(1);
-		//ƒtƒF[ƒh‘O
+		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
+		//ãƒ•ã‚§ãƒ¼ãƒ‰å‰
 		if (!camerawork->GetFeedEnd()) {
 			enemymanager->SetDeadThrow(true);
 			enemymanager->DeadUpdate();
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_BEFORE);
 		}
-		//ƒtƒF[ƒhŒã
+		//ãƒ•ã‚§ãƒ¼ãƒ‰å¾Œ
 		else
 		{
 			PlayPostEffect = false;
 			Player::GetInstance()->InitState({ 0.0f,0.0f,-5.0f });
 			enemymanager->SetDeadThrow(false);
 			enemymanager->DeadUpdate();
-			//camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_Fourth);
+			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_FOURTH);
 		}
 
 		if (camerawork->GetEndDeath()) {
@@ -246,15 +312,15 @@ void FourthStageActor::MainUpdate(DebugCamera* camera) {
 	}
 
 	if (PlayerDestroy()) {
-		Audio::GetInstance()->StopWave(1);
+		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		sceneChanger_->ChangeStart();
 		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::Reverse);
 	}
 
-	//‰¹Šy‚Ì‰¹—Ê‚ª•Ï‚í‚é
+	//éŸ³æ¥½ã®éŸ³é‡ãŒå¤‰ã‚ã‚‹
 	VolumManager::GetInstance()->Update();
 
-	//ŠeƒNƒ‰ƒXXV
+	//å„ã‚¯ãƒ©ã‚¹æ›´æ–°
 	BackObj::GetInstance()->Update();
 
 
@@ -274,7 +340,58 @@ void FourthStageActor::MainUpdate(DebugCamera* camera) {
 	postEffect->SetRadCenter(XMFLOAT2(tex2DPos.m128_f32[0], tex2DPos.m128_f32[1]));
 	postEffect->SetRadPower(camerawork->GetEffectPower());
 }
-//Œ‚”jƒV[ƒ“
+//æ’ƒç ´ã‚·ãƒ¼ãƒ³
 void FourthStageActor::FinishUpdate(DebugCamera* camera) {
 	Input* input = Input::GetInstance();
+}
+//ã‚¹ãƒãƒƒãƒˆãƒ©ã‚¤ãƒˆã®å‹•ã
+void FourthStageActor::MoveSpotLight() {
+	const float l_AddAngle = 5.0f;
+	const float l_AddFrame = 0.5f;
+	const float l_DirMax = 2.0f;
+	const float l_DirMin = -2.0f;
+	const float l_PosMax = 100.0f;
+	const float l_PosMin = -100.0f;
+	//sinæ³¢ã«ã‚ˆã£ã¦ä¸Šä¸‹ã«å‹•ã
+	if (_AppState == APP_START) {
+		for (int i = 0; i < SPOT_NUM; i++) {
+			m_Angle[i] += (l_AddAngle - (0.5f * i));
+			m_Angle2[i] = m_Angle[i] * (3.14f / 180.0f);
+		}
+
+		spotLightDir[0].x = (sin(m_Angle2[0]) * 6.0f + (-2.0f));
+		spotLightDir[0].z = (sin(m_Angle2[0]) * 6.0f + (-2.0f));
+		spotLightDir[1].x = (sin(m_Angle2[1]) * 6.0f + (-2.0f));
+		spotLightDir[1].z = (sin(m_Angle2[1]) * 6.0f + (2.0f));
+		spotLightDir[2].x = (sin(m_Angle2[2]) * 6.0f + (2.0f));
+		spotLightDir[2].z = (sin(m_Angle2[2]) * 6.0f + (-2.0f));
+		spotLightDir[3].x = (sin(m_Angle2[3]) * 6.0f + (2.0f));
+		spotLightDir[3].z = (sin(m_Angle2[3]) * 6.0f + (2.0f));
+
+	}
+	else if (_AppState == APP_NOTICE) {
+		SpotSet(spotLightDir[0], { l_DirMin,{},l_DirMin }, l_AddFrame);
+		SpotSet(spotLightDir[1], { l_DirMin,{},l_DirMax }, l_AddFrame);
+		SpotSet(spotLightDir[2], { l_DirMax,{},l_DirMin }, l_AddFrame);
+		SpotSet(spotLightDir[3], { l_DirMax,{},l_DirMax }, l_AddFrame);
+	}
+	else if (_AppState == APP_VANISH) {
+		//è§’åº¦
+		SpotSet(spotLightDir[0], {}, l_AddFrame);
+		SpotSet(spotLightDir[1], {}, l_AddFrame);
+		SpotSet(spotLightDir[2], {}, l_AddFrame);
+		SpotSet(spotLightDir[3], {}, l_AddFrame);
+		//åº§æ¨™
+		SpotSet(spotLightPos[0], {l_PosMax,spotLightPos[0].y,l_PosMax}, l_AddFrame);
+		SpotSet(spotLightPos[1], {l_PosMax,spotLightPos[1].y,l_PosMin}, l_AddFrame);
+		SpotSet(spotLightPos[2], {l_PosMin,spotLightPos[2].y,l_PosMax}, l_AddFrame);
+		SpotSet(spotLightPos[3], {l_PosMin,spotLightPos[3].y,l_PosMin}, l_AddFrame);
+	}
+}
+//ã‚¹ãƒãƒƒãƒˆãƒ©ã‚¤ãƒˆ
+void FourthStageActor::SpotSet(XMFLOAT3& Pos,const XMFLOAT3& AfterPos, const float AddFrame) {
+	Pos = { Ease(In,Cubic,AddFrame,Pos.x,AfterPos.x),
+		Pos.y,
+		Ease(In,Cubic,AddFrame,Pos.z,AfterPos.z),
+	};
 }

@@ -19,11 +19,15 @@ void BossText::SelectText(TextManager::Name_Second name) {
 void BossText::SelectText(TextManager::Name_First name, const XMVECTOR& color) {
 	text_->SetConversation(name,color);
 }
+
+void BossText::SelectText(TextManager::Name_Fourth name) {
+	text_->SetFourthConversation(name);
+}
 void BossText::SpriteDraw(DirectXCommon* dxCommon) {
 	IKESprite::PreDraw();
 	window_->Draw();
 	IKESprite::PostDraw();
-	text_->Draw(dxCommon);
+	text_->TestDraw(dxCommon);
 }
 
 void BossText::Display()

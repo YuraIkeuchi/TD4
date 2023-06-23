@@ -55,6 +55,8 @@ private://ÉXÉeÅ[Ég
 	void Search();
 	//êÙî]
 	void Jack();
+	//è¡Ç¶ÇÈ
+	void Vanish();
 	//êHÇ◊ï®Çâ^Ç‘
 	void CarryFood();
 	//
@@ -66,6 +68,7 @@ public://getter setter
 	const bool& GetAlive() { return m_Alive; }
 	const bool& GetIsRefer() { return m_IsRefer; }
 	const bool& GetCatch() { return m_Catch; }
+	const bool& GetVanish() { return m_Vanish; }
 	const bool& GetFollow() { return m_Follow; }
 	const bool& GetSearch() { return m_Search; }
 	const bool& GetIsVerse() { return isVerse; }
@@ -76,6 +79,7 @@ public://getter setter
 	void SetIsVerse(const bool isVerse) { this->isVerse = isVerse; }
 	void SetCatch(const bool Catch) { m_Catch = Catch; }
 	void SetAlive(const bool Alive) { m_Alive = Alive; }
+	void SetVanish(const bool Vanish) { m_Vanish = Vanish; }
 	void SetIsPostionCheck(const bool m_IsPostionCheck) { this->m_IsPostionCheck = m_IsPostionCheck; }
 	void SetLimit(const float Limit) { m_Limit = Limit; }
 private:
@@ -93,6 +97,7 @@ private:
 		STATE_FOLLOW,
 		STATE_SEARCH,
 		STATE_JACK,
+		STATE_VANISH,
 	}_charaState = CharaState::STATE_NONE;
 
 private:
@@ -135,6 +140,9 @@ private://íTçı
 	};
 	float m_dir = 1.0f;
 	float m_angle = 0.0f;
+	//è¡Ç¶ÇÈ
+	bool m_Vanish = false;
+	float m_Frame = 0.0f;
 private:
 	//íTçıÇ∑ÇÈÇ‡ÇÃÇÃîÕàÕ
 	float m_Limit = {};

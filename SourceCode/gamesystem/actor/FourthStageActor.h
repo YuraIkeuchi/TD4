@@ -29,6 +29,11 @@ private:
 	void MainUpdate(DebugCamera* camera)override;		//バトルシーン
 	void FinishUpdate(DebugCamera* camera)override;		//撃破シーン
 
+	void MoveSpotLight();
+	void SpotSet(XMFLOAT3& Pos,const XMFLOAT3& AfterPos, const float AddFrame);
+
+private:
+	static const int SPOT_NUM = 4;
 private:
 	float Rads;
 	int textT;
@@ -40,4 +45,21 @@ private:
 	float BosscircleShadowDir[3] = { 0,-1,0 };
 	float BosscircleShadowAtten[3] = { 0.5f,0.6f,0.0f };
 	float BosscircleShadowFactorAngle[2] = { 0.0f, 2.0f };
+
+
+	//棘の的に使う
+	float m_Angle[SPOT_NUM] = {};
+	float m_Angle2[SPOT_NUM] = {};
+
+	float m_AddPos = {};
+
+	int m_AppTimer = 0;
+
+
+	enum AppState {
+		APP_START,
+		APP_NOTICE,
+		APP_VANISH,
+		APP_END,
+	}_AppState = APP_START;
 };

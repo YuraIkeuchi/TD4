@@ -19,8 +19,6 @@ public:
 
 	void Action() override;//行動
 
-	void ColPlayer(XMFLOAT3& Pos);
-
 	void AppearAction() override {};//ボス登場の固有の処理
 
 	void DeadAction() override {};//ボス撃破の固有の処理

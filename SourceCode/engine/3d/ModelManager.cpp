@@ -35,6 +35,7 @@ void ModelManager::SecondInitialize()
 	LoadModel(KIDO_OBJ, "kidokunobj");
 	LoadFBXModel(PLAYER, "kotoko");
 	LoadModel(DJ, "DJ");
+	LoadModel(CD, "CD");
 	LoadFBXModel(SIORI, "siori_idol");
 	LoadFBXModel(KIDO, "kidokun_idol");
 	LoadFBXModel(TIEYOSHI, "tieyosi_anime");

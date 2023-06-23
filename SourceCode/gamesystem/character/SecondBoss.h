@@ -172,11 +172,6 @@ private:
 	};
 	int m_RollType;
 
-	//上昇度
-	float m_AddPower = 0.0f;
-	//重力加速度
-	float m_Gravity = 0.02f;
-
 	//方向転換するためのもの
 	bool m_ChangeRot = false;
 	float m_RotFrame = 0.0f;

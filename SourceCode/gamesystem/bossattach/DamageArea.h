@@ -68,4 +68,7 @@ private:
 	float m_AfterScale = 1.0f;
 
 	int m_StayTimer = 0;
+	int m_VanishLimit = {};
+
+	float m_Damage = {};
 };

@@ -61,6 +61,11 @@ void ImageManager::SecondLoad2D()
 	IKESprite::LoadTexture(Challenge, L"Resources/2d/objicon/Challenge.png");
 	IKESprite::LoadTexture(Cancel, L"Resources/2d/objicon/Cancel.png");
 
+
+	IKESprite::LoadTexture(BOSS_ARROW, L"Resources/2d/objicon/Arrow.png");
+	IKESprite::LoadTexture(NOTE, L"Resources/2d/objicon/onp.png");
+	IKESprite::LoadTexture(NOTE2, L"Resources/2d/objicon/onp2.png");
+
 }
 
 //テクスチャの読み込み
@@ -80,6 +85,7 @@ void ImageManager::SecondLoadTex2D()
 	IKETexture::LoadTexture(GROUND, L"Resources/2d/SceneBack/Ground.png");
 	IKETexture::LoadTexture(PHOTOSPOT, L"Resources/2d/effect/PhotoSpot.png");
 
+
 	IKETexture::LoadTexture(SELECT_FIRST, L"Resources/2d/objicon/firstboss.png");
 	IKETexture::LoadTexture(SELECT_SECOND, L"Resources/2d/objicon/secondboss.png");
 	IKETexture::LoadTexture(SELECT_THIRD, L"Resources/2d/objicon/thirdboss.png");
@@ -88,6 +94,8 @@ void ImageManager::SecondLoadTex2D()
 	IKETexture::LoadTexture(SELECT_SIX, L"Resources/2d/objicon/sixboss.png");
 	IKETexture::LoadTexture(SELECT_SEVEN, L"Resources/2d/objicon/sevenboss.png");
 //	IKETexture::LoadTexture(PHOTOSPOT, L"Resources/2d/objicon/sixboss.png");
+
+	IKETexture::LoadTexture(STUN, L"Resources/2d/effect/stun.png");
 
 }
 

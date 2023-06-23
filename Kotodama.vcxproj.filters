@@ -327,7 +327,6 @@
     <ClCompile Include="SourceCode\gamesystem\scene\PlaceManager.cpp">
       <Filter>gamesystem\editor</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\Conversation\Conversation.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\AngerStamp.cpp">
       <Filter>gamesystem\bossattach\Stamp\Derived\Stamp</Filter>
     </ClCompile>
@@ -469,6 +468,15 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\Menu\Menu.cpp">
       <Filter>gamesystem\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\ConfuEffect.cpp">
+      <Filter>gamesystem\effect\Confu</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\NoteEffect.cpp">
+      <Filter>gamesystem\effect\Note</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\engine\audio\AudioManager.cpp">
+      <Filter>engine\audio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -748,7 +756,6 @@
     <ClInclude Include="SourceCode\gamesystem\scene\PlaceManager.h">
       <Filter>gamesystem\editor</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\Conversation\Conversation.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\PlaceManager.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\AngerStamp.h">
       <Filter>gamesystem\bossattach\Stamp\Derived\Stamp</Filter>
@@ -785,9 +792,6 @@
     </ClInclude>
     <ClInclude Include="SourceCode\engine\2d\ShadowMap.h">
       <Filter>engine\2d\PostEffect</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\gamecamera\CameraWork.h">
-      <Filter>gamesystem\gamecamera</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\bossattach\InterStamp.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor.h" />
@@ -903,6 +907,18 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\Menu\Menu.h">
       <Filter>gamesystem\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\ConfuEffect.h">
+      <Filter>gamesystem\effect\Confu</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\NoteEffect.h">
+      <Filter>gamesystem\effect\Note</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\gamecamera\CameraWork.h">
+      <Filter>gamesystem\gamecamera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\engine\audio\AudioManager.h">
+      <Filter>engine\audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1237,6 +1253,12 @@
     </Filter>
     <Filter Include="gamesystem\charactor\Boss\Base">
       <UniqueIdentifier>{cddcc7b5-f579-4ffb-bf7a-fc05ad2ee680}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\effect\Confu">
+      <UniqueIdentifier>{c229ff53-c832-4466-b342-3ec9a8cb8a47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\effect\Note">
+      <UniqueIdentifier>{831220a2-a861-49a8-a290-74336ac5398d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

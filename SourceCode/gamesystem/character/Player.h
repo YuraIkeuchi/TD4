@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "ObjCommon.h"
 #include "ViewBullet.h"
 #include "GhostBullet.h"
@@ -18,19 +18,19 @@ private:
 	static void (Player::* stateTable[])();
 public:
 	void InitState(const XMFLOAT3& pos);
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	bool Initialize()override;
-	//XV
+	//æ›´æ–°
 	void Update()override;
-	//•`‰æ
+	//æç”»
 	void Draw(DirectXCommon* dxCommon)override;
 	//ImGui
 	void ImGuiDraw();
-	//ƒ{ƒX“oêƒV[ƒ“‚Ì“®‚«
+	//ãƒœã‚¹ç™»å ´ã‚·ãƒ¼ãƒ³ã®å‹•ã
 	void AppearUpdate();
-	//ƒ{ƒXŒ‚”jƒV[ƒ“‚Ì“®‚«
+	//ãƒœã‚¹æ’ƒç ´ã‚·ãƒ¼ãƒ³ã®å‹•ã
 	void DeathUpdate();
-	//ƒLƒƒƒ‰‚Ìó‘Ô
+	//ã‚­ãƒ£ãƒ©ã®çŠ¶æ…‹
 	enum CharaState
 	{
 		STATE_IDLE,
@@ -38,40 +38,40 @@ public:
 	}_charaState;
 
 private:
-	//•à‚«‚Ü‚½‚Í‘–‚èó‘Ô
+	//æ­©ãã¾ãŸã¯èµ°ã‚ŠçŠ¶æ…‹
 	float velocity;
-	//ˆÚ“®•ûŒüw’è—p
+	//ç§»å‹•æ–¹å‘æŒ‡å®šç”¨
 	float angle;
-	//ˆÚ“®‰ÁZ’l
+	//ç§»å‹•åŠ ç®—å€¤
 	float m_AddSpeed;
-	//ª‚Ì’l‚ğCSV‚©‚ç“Ç‚İ‚Ş‚Æ‚«‚ÌŠi”[—p
+	//â†‘ã®å€¤ã‚’CSVã‹ã‚‰èª­ã¿è¾¼ã‚€ã¨ãã®æ ¼ç´ç”¨
 	std::any sp;
 
-	//‚ ‚é‚«ˆ—
+	//ã‚ã‚‹ãå‡¦ç†
 	void Walk();
 	XMFLOAT3 MoveVECTOR(XMVECTOR v, float angle);
 
 private:
-	//’e‚Ì¶¬
+	//å¼¾ã®ç”Ÿæˆ
 	void BirthShot(const std::string& bulletName, bool Super);
 private:
 	void Idle();
-	//ƒCƒ“ƒ^[ƒoƒ‹ŠÇ—
+	//ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«ç®¡ç†
 	void InterVal();
-	//’e‚ÌƒŠƒZƒbƒg
+	//å¼¾ã®ãƒªã‚»ãƒƒãƒˆ
 	void ResetBullet();
-	//’e‚ÌŠÇ—
+	//å¼¾ã®ç®¡ç†
 	void Bullet_Management();
-	//’e‚ÌXV
+	//å¼¾ã®æ›´æ–°
 	void BulletUpdate(std::vector<InterBullet*> bullets);
-	//’e‚Ì•`‰æ
+	//å¼¾ã®æç”»
 	void BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxCommon);
-	//e‚Ìˆ—
+	//éŠƒã®å‡¦ç†
 	void SutoponUpdate();
-	//ƒ_ƒ[ƒWƒp[ƒeƒBƒNƒ‹
+	//ãƒ€ãƒ¡ãƒ¼ã‚¸ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
 	void BirthParticle();
 private:
-	//ŠeƒAƒjƒ[ƒVƒ‡ƒ“
+	//å„ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
 	enum class AnimeName
 	{
 		IDLE=7,
@@ -80,54 +80,62 @@ private:
 
 	void AnimationControl(AnimeName name, const bool& loop, int speed);
 public:
-	//“–‚½‚è”»’èŒn
-	bool PlayerCollide(const XMFLOAT3& pos);//ƒvƒŒƒCƒ„[‚Æ‚Ì“–‚½‚è”»’è
-	//ƒvƒŒƒCƒ„[‚Ì“–‚½‚Á‚½uŠÔ
+	//å½“ãŸã‚Šåˆ¤å®šç³»
+	bool PlayerCollide(const XMFLOAT3& pos);//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ã®å½“ãŸã‚Šåˆ¤å®š
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å½“ãŸã£ãŸç¬é–“
 	void PlayerHit(const XMFLOAT3& pos);
-	//’e‚©‚ê‚éˆ—
+	//å¼¾ã‹ã‚Œã‚‹å‡¦ç†
 	void ReBound();
 public:
 	//gettersetter
 	const int& GetBulletType() { return m_BulletType; }
 	const int& GetDamageInterVal() { return m_DamageInterVal; }
 	const bool& GetIsShotNow() { return isShotNow; }
-
+	const bool& GetSkip() { return m_Skip; }
+	const bool& GetConfu() { return m_Confu; }
 
 	void SetHP(float hp) { m_HP = hp; };
 	float GetHP() { return m_HP; }
 	float GetMaxHP() { return m_MaxHP; }
 
 	void SetCanShot(const bool m_canShot) {this->m_canShot = m_canShot;}
+	void SetConfu(const bool Confu) { this->m_Confu = Confu; }
+	void SetConfuTimer(const int ConfuTimer) { this->m_ConfuTimer = ConfuTimer; }
+	void SetSkip(const bool Skip) { this->m_Skip = Skip; }
 
-
-private://ŠeƒNƒ‰ƒX
-	vector<InterBullet*> ghostbullets;//Œ¾—ì
-	vector<InterBullet*> attackbullets;//UŒ‚
-	unique_ptr<InterBullet> viewbullet;//‰Â‹‰»‚Ì’e
-	unique_ptr<PlayerAttach> playerattach;//ƒvƒŒƒCƒ„[‚Ì‘•”õ
-	vector<InterEffect*> effects;//ƒGƒtƒFƒNƒg
-	//’eŠÖŒW‚Ì•Ï”
-	int m_BulletType = {};//’e‚Ìí—Ş
-	int m_InterVal = {};//’e‚Ì”­Ë‚ÌƒCƒ“ƒ^[ƒoƒ‹
-	int m_RigidityTime = {};//d’¼ŠÔ
-	int m_TargetInterVal = {};//ƒCƒ“ƒ^[ƒoƒ‹‚Ì–Ú•WŠÔ
-	int m_TargetRigidityTime = {};//d’¼ŠÔ‚Ì–Ú•WŠÔ
-	//‘Ì—Í
+private://å„ã‚¯ãƒ©ã‚¹
+	vector<InterBullet*> ghostbullets;//è¨€éœŠ
+	vector<InterBullet*> attackbullets;//æ”»æ’ƒ
+	unique_ptr<InterBullet> viewbullet;//å¯è¦–åŒ–ã®å¼¾
+	unique_ptr<PlayerAttach> playerattach;//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è£…å‚™
+	vector<InterEffect*> effects;//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
+	//å¼¾é–¢ä¿‚ã®å¤‰æ•°
+	int m_BulletType = {};//å¼¾ã®ç¨®é¡
+	int m_InterVal = {};//å¼¾ã®ç™ºå°„ã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«
+	int m_RigidityTime = {};//ç¡¬ç›´æ™‚é–“
+	int m_TargetInterVal = {};//ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«ã®ç›®æ¨™æ™‚é–“
+	int m_TargetRigidityTime = {};//ç¡¬ç›´æ™‚é–“ã®ç›®æ¨™æ™‚é–“
+	//ä½“åŠ›
 	float m_HP = 0.0f;
 	float m_MaxHP = 0.0f;
 
 	XMFLOAT3 m_FollowPos = {};
 
-	int m_ShotTimer = {};//ƒVƒ‡ƒbƒg‚Ìƒ`ƒƒ[ƒWŠÔ
+	int m_ShotTimer = {};//ã‚·ãƒ§ãƒƒãƒˆã®ãƒãƒ£ãƒ¼ã‚¸æ™‚é–“
 	bool m_canShot = true;
-	//ƒ_ƒ[ƒW
+	//ãƒ€ãƒ¡ãƒ¼ã‚¸
 	bool m_Damage = false;
 	int m_DamageInterVal = {};
 
 	XMFLOAT2 m_BoundPower = {};
 	
-	//’e‚Ì”
+	//å¼¾ã®æ•°
 	int m_BulletNum = 0;
+
+	bool m_Confu = false;
+	int m_ConfuTimer = 0;
+
+	bool m_Skip = false;
 
 public:
 	vector<InterBullet*>GetBulllet_ghost() { return ghostbullets; }
@@ -142,8 +150,6 @@ public:
 	void isOldPos();
 
 	void RecvDamage(float Damage);
-
-	//’e‚Ì‘Síœ
+	//å¼¾ã®å…¨å‰Šé™¤
 	void BulletDelete();
 };
-
