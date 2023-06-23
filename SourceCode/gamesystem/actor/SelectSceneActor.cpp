@@ -47,8 +47,11 @@ void SelectSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	ui->SetBoss(enemymanager->GetBoss());
 	//”wŒi
 	
-	lightgroup->SetCircleShadowActive(0, true);
-	lightgroup->SetCircleShadowActive(1, true);
+	//lightgroup->SetCircleShadowActive(0, true);
+	//lightgroup->SetCircleShadowActive(1, true);
+//	for (int i = 0; i < SPOT_NUM; i++) {
+		lightgroup->SetSpotLightActive(0, true);
+	//}
 }
 //XV
 void SelectSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -100,6 +103,12 @@ void SelectSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 
 	camerawork->DefUpda(camera);
 
+		lightgroup->SetSpotLightDir(0, XMVECTOR({0,1,0,0 }));
+		lightgroup->SetSpotLightPos(0, {0,10,0});
+		lightgroup->SetSpotLightColor(0,{1,1,1});
+		lightgroup->SetSpotLightAtten(0, XMFLOAT3(spotLightAtten));
+		lightgroup->SetSpotLightFactorAngle(0, XMFLOAT2(spotLightFactorAngle));
+	
 	lightgroup->Update();
 }
 //•`‰æ
