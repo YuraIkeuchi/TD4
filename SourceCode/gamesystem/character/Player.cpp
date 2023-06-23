@@ -184,15 +184,6 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 }
 //ImGui
 void Player::ImGuiDraw() {
-	for (int i = 0; i < attackbullets.size(); i++) {
-		attackbullets[i]->ImGuiDraw();
-	}
-
-	HungerGauge::GetInstance()->ImGuiDraw();
-	ImGui::Begin("Player");
-	ImGui::Text("Confu:%d", m_Confu);
-	ImGui::Text("ConfuTImer:%d", m_ConfuTimer);
-	ImGui::End();
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)

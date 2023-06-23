@@ -216,7 +216,7 @@ void CameraWork::SetBossDead_AfterSecond()
 	
 	DeathTimer++;
 
-	if (DeathTimer == 620) {
+	if (DeathTimer == 500) {
 		m_EndDeath = true;
 	}
 }
