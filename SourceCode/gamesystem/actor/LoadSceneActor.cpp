@@ -3,10 +3,15 @@
 #include "ImageManager.h"
 #include "Easing.h"
 #include "Helper.h"
+#include "SelectScene.h"
 
 //初期化
 void LoadSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	//オーディオ
+	Audio::GetInstance()->LoadSound(3, "Resources/Sound/BGM/BGM_load.wav");
+	Audio::GetInstance()->LoopWave(3, VolumManager::GetInstance()->GetBGMVolum() + 0.5f);
+	SelectScene::GetIns()->Init();
+
 	Audio::GetInstance()->LoopWave(AUDIO_LOAD, VolumManager::GetInstance()->GetBGMVolum() + 0.5f);
 
 	BaseInitialize(dxCommon, { 0,10,200 }, { 0,0,-200 });

@@ -6,6 +6,7 @@
 #include <HungerGauge.h>
 #include "BackObj.h"
 #include "Menu.h"
+#include "SelectScene.h"
 
 const XMVECTOR kSkyBlue{ 0.f,1.f,1.f,1.f };
 const XMVECTOR kPink{ 0.9f,0.6f,0.8f,1.f };
@@ -33,7 +34,6 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	groundTex->TextureCreate();
 
 	Menu::GetIns()->Init();
-
 	//各クラス
 	//プレイヤー
 	Player::GetInstance()->InitState({ 0.0f,5.0f,-70.0f });
@@ -184,7 +184,14 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	//各クラス更新
 	BackObj::GetInstance()->Update();
 
-	Menu::GetIns()->Upda();
+	if(SelectScene::GetIns()->GetCloseScl()<10000.f)
+	SelectScene::GetIns()->Upda();
+
+	if (Input::GetInstance()->TriggerButton(Input::Y)) {
+		SelectScene::GetIns()->ResetParama();
+		SceneManager::GetInstance()->ChangeScene("SELECT");
+	}
+		Menu::GetIns()->Upda();
 
 	if (enemymanager->BossDestroy())
 	{
@@ -248,7 +255,8 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	
 	postEffect->SetRadCenter(XMFLOAT2(tex2DPos.m128_f32[0], tex2DPos.m128_f32[1]));
 	postEffect->SetRadPower(camerawork->GetEffectPower());
-	postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
+	//postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
+	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 
 
 	sceneChanger_->Update();
@@ -350,7 +358,8 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	
 	//ParticleEmitter::GetInstance()->DeathDrawAll();
 
-	if(camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_BEFORE &&camerawork->GetCameraState()!=CameraState::CAMERA_BOSSDEAD_AFTER_FIRST)
+	if(camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_BEFORE &&camerawork->GetCameraState()!=CameraState::CAMERA_BOSSDEAD_AFTER_FIRST&&
+		camerawork->GetCameraState() != CameraState::CAMERA_BOSSAPPEAR)
 	ui->Draw();
 
 	//完全に前に書くスプライト
@@ -374,6 +383,7 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	//blackwindow->Draw();
 	Menu::GetIns()->Draw();
 	camerawork->feedDraw();
+	SelectScene::GetIns()->Draw_Sprite();
 	IKESprite::PostDraw();
 }
 //IMGuiの描画

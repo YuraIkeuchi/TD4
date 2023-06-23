@@ -290,8 +290,7 @@ void IKEFBXObject3d::Update(bool Loop, int Speed, bool& Stop)
 	//定数バッファへデータ転送
 	ConstBufferDataSkin* constMapSkin = nullptr;
 	result = constBuffSkin->Map(0, nullptr, (void**)&constMapSkin);
-	for (int i = 0; i < bones.size(); i++)
-	{
+	for (int i = 0; i < bones.size(); i++) {
 		//今の姿勢
 		XMMATRIX matCurrentPose;
 		//今の姿勢行列を取得
@@ -299,10 +298,7 @@ void IKEFBXObject3d::Update(bool Loop, int Speed, bool& Stop)
 		//XMMATRIXに変換
 		IKEFbxLoader::ConvertMatrixFromFbx(&matCurrentPose, fbxCurrentPose);
 		//合成してスキニング行列に
-		auto& bindMatrix = model->GetModelTransform();
-		auto inverseBindMatrix = XMMatrixInverse(nullptr, bindMatrix);
-		constMapSkin->bones[i] = bindMatrix * bones[i].invInitialPose * matCurrentPose * inverseBindMatrix;
-		//constMapSkin->bones[i] = bones[i].invInitialPose * matCurrentPose;
+		constMapSkin->bones[i] = bones[i].invInitialPose * matCurrentPose;
 	}
 	constBuffSkin->Unmap(0, nullptr);
 }
@@ -409,8 +405,7 @@ void IKEFBXObject3d::FollowUpdate(bool Loop, int Speed, bool& Stop)
 	//定数バッファへデータ転送
 	ConstBufferDataSkin* constMapSkin = nullptr;
 	result = constBuffSkin->Map(0, nullptr, (void**)&constMapSkin);
-	for (int i = 0; i < bones.size(); i++)
-	{
+	for (int i = 0; i < bones.size(); i++) {
 		//今の姿勢
 		XMMATRIX matCurrentPose;
 		//今の姿勢行列を取得
@@ -418,9 +413,7 @@ void IKEFBXObject3d::FollowUpdate(bool Loop, int Speed, bool& Stop)
 		//XMMATRIXに変換
 		IKEFbxLoader::ConvertMatrixFromFbx(&matCurrentPose, fbxCurrentPose);
 		//合成してスキニング行列に
-		auto& bindMatrix = model->GetModelTransform();
-		auto inverseBindMatrix = XMMatrixInverse(nullptr, bindMatrix);
-		constMapSkin->bones[i] = bindMatrix * bones[i].invInitialPose * matCurrentPose * inverseBindMatrix;
+		constMapSkin->bones[i] = bones[i].invInitialPose * matCurrentPose;
 	}
 
 	IKEFbxLoader::ConvertMatrixFromFbx(

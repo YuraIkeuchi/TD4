@@ -47,15 +47,25 @@ void ImageManager::SecondLoad2D()
 	IKESprite::LoadTexture(MENU_FRAME, L"Resources/2d/sceneback/TaskFrame.png");
 	IKESprite::LoadTexture(EXPLANATION, L"Resources/2d/sceneback/Explanation.png");
 	IKESprite::LoadTexture(CLOSESYTOPON, L"Resources/2d/objicon/closeSutopon.png");
-
+	IKESprite::LoadTexture(CLOSEKIDO, L"Resources/2d/objicon/closekido.png");
+	IKESprite::LoadTexture(CLOSEDJ, L"Resources/2d/objicon/closeDJ.png");
 	IKESprite::LoadTexture(PHOTO_IN, L"Resources/2d/effect/camera_soto.png");
 	IKESprite::LoadTexture(PHOTO_OUT, L"Resources/2d/effect/camera_naka.png");
 	IKESprite::LoadTexture(CIRCLE, L"Resources/2d/objicon/circle.png");
 	IKESprite::LoadTexture(CIRCLECOVER, L"Resources/2d/objicon/circlecover.png");
+	IKESprite::LoadTexture(CLOSECAMERA, L"Resources/2d/objicon/closecamera.png");
+
+	IKESprite::LoadTexture(LBBUTTON, L"Resources/2d/objicon/LB.png");
+	IKESprite::LoadTexture(RBBUTTON, L"Resources/2d/objicon/RB.png");
+	IKESprite::LoadTexture(tip1, L"Resources/2d/sceneback/tips1.png");
+	IKESprite::LoadTexture(Challenge, L"Resources/2d/objicon/Challenge.png");
+	IKESprite::LoadTexture(Cancel, L"Resources/2d/objicon/Cancel.png");
+
 
 	IKESprite::LoadTexture(BOSS_ARROW, L"Resources/2d/objicon/Arrow.png");
 	IKESprite::LoadTexture(NOTE, L"Resources/2d/objicon/onp.png");
 	IKESprite::LoadTexture(NOTE2, L"Resources/2d/objicon/onp2.png");
+
 }
 
 //テクスチャの読み込み
@@ -74,7 +84,19 @@ void ImageManager::SecondLoadTex2D()
 	IKETexture::LoadTexture(DAMAGEAREA, L"Resources/2d/effect/DArea.png");
 	IKETexture::LoadTexture(GROUND, L"Resources/2d/SceneBack/Ground.png");
 	IKETexture::LoadTexture(PHOTOSPOT, L"Resources/2d/effect/PhotoSpot.png");
+
+
+	IKETexture::LoadTexture(SELECT_FIRST, L"Resources/2d/objicon/firstboss.png");
+	IKETexture::LoadTexture(SELECT_SECOND, L"Resources/2d/objicon/secondboss.png");
+	IKETexture::LoadTexture(SELECT_THIRD, L"Resources/2d/objicon/thirdboss.png");
+	IKETexture::LoadTexture(SELECT_FOUR, L"Resources/2d/objicon/fourboss.png");
+	IKETexture::LoadTexture(SELECT_FIVE, L"Resources/2d/objicon/fiveboss.png");
+	IKETexture::LoadTexture(SELECT_SIX, L"Resources/2d/objicon/sixboss.png");
+	IKETexture::LoadTexture(SELECT_SEVEN, L"Resources/2d/objicon/sevenboss.png");
+//	IKETexture::LoadTexture(PHOTOSPOT, L"Resources/2d/objicon/sixboss.png");
+
 	IKETexture::LoadTexture(STUN, L"Resources/2d/effect/stun.png");
+
 }
 
 void ImageManager::LoadParticle()

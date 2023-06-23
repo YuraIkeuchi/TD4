@@ -78,7 +78,7 @@ public:
 	float DirRotation(const XMFLOAT3& target, const XMFLOAT3& base,float margin);
 	//”z—ñ‚Ì’†g‚ª‘S•”true‚©
 	bool All_Of(bool* flag, int size);
-
+	bool All_OfF(bool* flag, int size);
 	bool All_Of_float(float *list,int size,float standVal);
 private:
 

@@ -81,6 +81,12 @@ void CameraWork::Update(DebugCamera* camera) {
 	camera->SetTarget(m_targetPos);
 	camera->Update();
 }
+void CameraWork::DefUpda(DebugCamera* camera) {
+	//状態移行(charastateに合わせる)
+	camera->SetEye(m_eyePos);
+	camera->SetTarget(m_targetPos);
+	camera->Update();
+}
 //通常のカメラ
 void CameraWork::DefaultCam() {
 	if (FeedF) {
