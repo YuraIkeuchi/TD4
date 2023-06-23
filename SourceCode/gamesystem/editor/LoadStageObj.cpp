@@ -294,9 +294,12 @@ void LoadStageObj::LightReturn() {
 
 void LoadStageObj::ThirdBossAction() {
 	LockVerseGhost();
+	LockAllGhost();
 	NonVerseGhost();
 	CheckReferGhost();
 	ChangeGhost2Enemy();
+	ChangeGhost2Hyper();
+	SubHunger();
 }
 
 void LoadStageObj::LockVerseGhost() {
@@ -329,17 +332,30 @@ void LoadStageObj::LockVerseGhost() {
 	boss->SetSearch(false);
 }
 
+void LoadStageObj::LockAllGhost() {
+	InterBoss* boss = m_EnemyManager->GetBoss();
+	if (!boss->GetHyperSearch()) { return; }
+	int  nowStopGhorst = 0;
+	for (auto i = 0; i < ghosts.size(); i++) {
+		if (ghosts[i]->GetIsRefer()) { continue; }
+		//キャラステート変える際に気をつけてください
+		if (ghosts[i]->GetStateInst() == 2) { continue; }
+		stopGhosts[nowStopGhorst] = ghosts[i];
+		ghosts[i]->SetIsRefer(true);
+		nowStopGhorst++;
+	}
+	boss->SetHyperSearch(false);
+}
+
 void LoadStageObj::NonVerseGhost() {
 	InterBoss* boss = m_EnemyManager->GetBoss();
 	if (boss->GetInstruction() != InterBoss::ThirdBossInst::StopGhost) { return; }
-	int m_GhostPos = 0;
 	for (Ghost*& ghost : stopGhosts) {
 		if (!ghost) { continue; }
 		ghost->SetColor({ 1,0,1,1 });
 		ghost->SetIsPostionCheck(true);
-		m_GhostPos++;
 	}
-	boss->SetInstruction(InterBoss::ThirdBossInst::SpawnEnemy);
+	boss->SetInstruction(InterBoss::ThirdBossInst::FinishMove);
 }
 
 bool LoadStageObj::CheckReferGhost() {
@@ -367,12 +383,23 @@ void LoadStageObj::ChangeGhost2Enemy() {
 		if (!ghost) { continue; }
 		ghost->SetColor({ 1,0,1,1 });
 		ghost->SetScale({ 0.0f,0.0f,0.0f });
-		ghost->SetIsVerse(false,180);
+		ghost->SetIsVerse(false, 180);
 		ghost->SetVanish(true);
 		boss->SetJackPos(m_GhostPos, ghost->GetPosition());
 		m_GhostPos++;
 	}
 	boss->SetInstruction(InterBoss::ThirdBossInst::SpawnEnemy);
+}
+
+void LoadStageObj::ChangeGhost2Hyper() {
+	InterBoss* boss = m_EnemyManager->GetBoss();
+	if (boss->GetInstruction() != InterBoss::ThirdBossInst::AllSummon) { return; }
+	for (Ghost*& ghost : stopGhosts) {
+		if (!ghost) { continue; }
+		ghost->SetColor({ 1,1,0,1 });
+		ghost->SetIsAllPostionCheck(true);
+	}
+	boss->SetInstruction(InterBoss::ThirdBossInst::FinishMove);
 }
 
 //飢餓ゲージをゴースト三体分減らす
@@ -387,8 +414,7 @@ void LoadStageObj::SubHunger() {
 	if (m_SubHunger) {
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
-		}
-		else {
+		} else {
 			m_Frame = {};
 			m_LimitHunger = {};
 			m_SubHunger = false;

@@ -57,8 +57,13 @@ private:
 	void ThirdBossAction();
 	//ゴーストをエネミーに変換します
 	void ChangeGhost2Enemy();
+	//ゴーストをエネミーに変換します
+	void ChangeGhost2Hyper();
 	//近場のゴーストをロックします
 	void LockVerseGhost();
+	//多くのゴーストをロックします
+	void LockAllGhost();
+
 	//ゴーストを削除します。
 	void NonVerseGhost();
 	//参照されているゴーストが存在するかチェックします。
@@ -76,7 +81,7 @@ private:
 	LightGroup* lightgroup = nullptr;
 	std::vector<Ghost*> ghosts;
 	//
-	static const int kStopGhostMax = 5;
+	static const int kStopGhostMax = 10;
 	array<Ghost*, kStopGhostMax> stopGhosts;
 	std::vector<Food*> foods;
 	std::vector<Heart*> hearts;

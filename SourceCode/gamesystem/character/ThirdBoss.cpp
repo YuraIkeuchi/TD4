@@ -15,6 +15,9 @@ void (ThirdBoss::* ThirdBoss::stateTable[])() = {
 	&ThirdBoss::MoveUpdate, //要素1
 	&ThirdBoss::ControlUpdate,
 	&ThirdBoss::EnemySpawnUpdate,
+	&ThirdBoss::SubGaugeUpdate,
+	&ThirdBoss::UltimateUpdate,
+
 };
 
 
@@ -98,9 +101,9 @@ void ThirdBoss::Pause() {
 void ThirdBoss::ImGui_Origin() {
 	ImGui::Begin("BOSS");
 	ImGui::SliderInt("Action", &ActionTimer, 0, 100);
-	ImGui::SliderFloat("m_Position.x",&m_Position.x,0.0f,360.0f);
-	ImGui::SliderFloat("m_Position.y",&m_Position.y,0.0f,360.0f);
-	ImGui::SliderFloat("m_Position.z",&m_Position.z,0.0f,360.0f);
+	ImGui::SliderFloat("m_Position.x", &m_Position.x, 0.0f, 360.0f);
+	ImGui::SliderFloat("m_Position.y", &m_Position.y, 0.0f, 360.0f);
+	ImGui::SliderFloat("m_Position.z", &m_Position.z, 0.0f, 360.0f);
 	ImGui::End();
 }
 
@@ -130,19 +133,45 @@ void ThirdBoss::Draw(DirectXCommon* dxCommon) {
 	EffecttexDraw(dxCommon);
 }
 
+void ThirdBoss::SelectAction() {
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_RandAction(0, 100);
+	int l_case = l_RandAction(mt);
+	if (l_case < 10) {
+		ChangePos2Random();
+		isInstruction = ThirdBossInst::None;
+		phase = commandState::MoveCommand;
+	} else if (l_case < 30) {
+		isSearch = true;
+		isInstruction = ThirdBossInst::ChangeGhost;
+		phase = commandState::EnemySpawn;
+	} else if (l_case < 60) {
+		if (isReferCheck) {
+			isSearch = true;
+			isInstruction = ThirdBossInst::None;
+			phase = commandState::ControlCommand;
+		} else {
+			ChangePos2Random();
+			isInstruction = ThirdBossInst::None;
+			phase = commandState::MoveCommand;
+		}
+	} else if (l_case < 90) {
+		isInstruction = ThirdBossInst::None;
+		phase = commandState::SubGauge;
+	} else if (l_case < 95) {
+		isHyperSearch = true;
+		isInstruction = ThirdBossInst::None;
+		phase = commandState::Ultimate;
+	} else if (l_case > 100) {
+		assert(0);
+	}
+}
+
 void ThirdBoss::WaitUpdate() {
 	ActionTimer++;
 	if (ActionTimer >= ActionTimerMax[(size_t)commandState::WaitCommand]) {
-		if (!isReferCheck) {
-			ChangePos2Random();
-			isInstruction = ThirdBossInst::None;
-			//phase = commandState::MoveCommand;
-		} else {
-			isSearch = true;
-			//phase = commandState::ControlCommand;
-			isInstruction = ThirdBossInst::ChangeGhost;
-			phase = commandState::EnemySpawn;
-		}
+		SelectAction();
+
 		ActionTimer = 0;
 	}
 }
@@ -185,7 +214,7 @@ void ThirdBoss::ControlUpdate() {
 void ThirdBoss::EnemySpawnUpdate() {
 	if (isInstruction != ThirdBossInst::SpawnEnemy) { return; }
 	ActionTimer++;
-	if (ActionTimer >= ActionTimerMax[(size_t)commandState::ControlCommand]&&!isShutter) {
+	if (ActionTimer >= ActionTimerMax[(size_t)commandState::ControlCommand] && !isShutter) {
 		int num = 3;
 		if (isStrong) {
 			num = 5;
@@ -208,6 +237,44 @@ void ThirdBoss::EnemySpawnUpdate() {
 	if (isInstruction == ThirdBossInst::FinishMove) {
 		phase = commandState::WaitCommand;
 	}
+}
+
+void ThirdBoss::SubGaugeUpdate() {
+	ActionTimer++;
+	if (ActionTimer >= ActionTimerMax[(size_t)commandState::ControlCommand] && !isShutter) {
+		isShutter = true;
+		m_Check = true;
+	}
+	if (!isShutter) { return; }
+	if (ShutterEffect()) {
+		if (ShutterFeed()) {
+			ShutterReset();
+			ActionTimer = 0;
+			phase = commandState::WaitCommand;
+		}
+	}
+}
+
+void ThirdBoss::UltimateUpdate() {
+	if (isHyperSearch) { return; }
+	ActionTimer++;
+	if (ActionTimer >= ActionTimerMax[(size_t)commandState::ControlCommand]) {
+		isShutter = true;
+	}
+	if (!isShutter) { return; }
+	if (ShutterEffect()) {
+		isInstruction = ThirdBossInst::AllSummon;
+		if (ShutterFeed()) {
+			ShutterReset();
+			ActionTimer = 0;
+			m_Limit = 20.0f;
+			phase = commandState::WaitCommand;
+		}
+	}
+
+
+
+
 }
 
 bool ThirdBoss::ShutterEffect() {
@@ -254,16 +321,16 @@ void ThirdBoss::ShutterReset() {
 }
 
 void ThirdBoss::ChangePos2Random() {
-mt19937 mt{ std::random_device{}() };
-uniform_int_distribution<int> l_Rand(0, 4);
-moveSpawn = l_Rand(mt);
-if (moveSpawn == nowSpawn) {
-	moveSpawn++;
-	if (moveSpawn > 4) {
-		moveSpawn = 0;
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_Rand(0, 4);
+	moveSpawn = l_Rand(mt);
+	if (moveSpawn == nowSpawn) {
+		moveSpawn++;
+		if (moveSpawn > 4) {
+			moveSpawn = 0;
+		}
 	}
-}
-nowSpawn = moveSpawn;
+	nowSpawn = moveSpawn;
 }
 
 bool ThirdBoss::IsPinch() {

@@ -36,6 +36,7 @@ void (Ghost::* Ghost::stateTable[])() = {
 	&Ghost::Follow,//移動
 	&Ghost::Search,//攻撃
 	&Ghost::Jack,
+	&Ghost::HyperJack,
 	&Ghost::Vanish,
 };
 //更新
@@ -44,6 +45,7 @@ void Ghost::Update() {
 	m_OldPos = m_Position;
 	m_OBBScale = { m_Scale.x + l_AddScale,m_Scale.y + l_AddScale, m_Scale.z + l_AddScale };
 	if (m_IsPostionCheck) { _charaState = CharaState::STATE_JACK; }
+	if (m_IsAllPostionCheck) { _charaState = CharaState::STATE_HYPERJACK; }
 	//状態移行(charastateに合わせる)
 	(this->*stateTable[_charaState])();
 	//タイプによって色を一旦変えてる
@@ -158,6 +160,7 @@ bool Ghost::VerseCheck() {
 	m_VerseCureTimer--;
 	m_VerseCureTimer=min(m_VerseCureTimer,0);
 	if (m_VerseCureTimer<=0) {
+		isVerse = false;
 		return true;
 	} else {
 		return false;
@@ -216,7 +219,6 @@ void Ghost::Search() {
 }
 void Ghost::Jack() {
 	if (m_IsPostionCheck) {
-		//m_radius = Helper::GetInstance()->ChechLength(m_Position, {0,0,0});
 		f_pos = m_Position;
 		m_angle = 0;
 		m_radius = 0;
@@ -246,7 +248,37 @@ void Ghost::Jack() {
 		m_Position.z < -60.0f || m_Position.z>60.0f) {
 		m_Alive = false;
 		m_Scale = { 0.0f,0.0f,0.0f };
+		m_IsHyperRefer = false;
 		m_IsRefer = false;
+		isVerse = true;
+		_charaState = CharaState::STATE_NONE;
+	}
+}
+
+void Ghost::HyperJack() {
+	if (m_IsAllPostionCheck) {
+		GetRotation2Player();
+		f_pos = m_Position;
+		m_radius = 0;
+		m_dir = subDir;
+		m_IsAllPostionCheck = false;
+	}
+	m_radius += 0.8f * m_dir;
+	XMFLOAT3 e_pos = { f_pos.x + sinf(RottoPlayer) * m_radius ,0,f_pos.z + cosf(RottoPlayer) * m_radius };
+	m_Position.x = e_pos.x;
+	m_Position.z = e_pos.z;
+	if (Player::GetInstance()->PlayerCollide(m_Position) &&
+		Player::GetInstance()->GetDamageInterVal() == 0) {
+		Player::GetInstance()->PlayerHit(m_Position);
+		Player::GetInstance()->RecvDamage(1.5f);
+	}
+	if (m_Position.x < -55.0f || m_Position.x>65.0f ||
+		m_Position.z < -60.0f || m_Position.z>60.0f) {
+		m_Alive = false;
+		isVerse = true;
+		m_VerseCureTimer = 180;
+		m_Scale = { 0.0f,0.0f,0.0f };
+		m_IsHyperRefer = false;
 		isVerse = true;
 		_charaState = CharaState::STATE_NONE;
 	}
@@ -263,6 +295,8 @@ void Ghost::Vanish() {
 		}
 		else {
 			m_Vanish = false;
+			m_IsRefer = false;
+			m_IsHyperRefer = false;
 			m_Alive = false;
 			m_Frame = {};
 		}
@@ -336,4 +370,17 @@ bool Ghost::CollideBullet(vector<InterBullet*>bullet) {
 	}
 
 	return false;
+}
+
+void Ghost::GetRotation2Player() {
+	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
+
+	//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
+	XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
+	XMVECTOR PositionB = { m_Position.x,m_Position.y,m_Position.z };
+	//プレイヤーと敵のベクトルの長さ(差)を求める
+	XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
+
+	RottoPlayer = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
+	m_Rotation.y = RottoPlayer * 60.0f + (PI_90 + PI_180);
 }

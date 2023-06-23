@@ -56,6 +56,9 @@ private://ÉXÉeÅ[Ég
 	void Search();
 	//êÙî]
 	void Jack();
+	//êÙî]
+	void HyperJack();
+	void GetRotation2Player();
 	//è¡Ç¶ÇÈ
 	void Vanish();
 	//êHÇ◊ï®Çâ^Ç‘
@@ -77,11 +80,14 @@ public://getter setter
 	const float& GetLimit() { return m_Limit; }
 	const int GetStateInst() { return (int)_charaState; }
 	void SetIsRefer(const bool isRefer) { this->m_IsRefer = isRefer; }
+	void SetIsHyperRefer(const bool isRefer) { this->m_IsHyperRefer = isRefer; }
+
 	void SetIsVerse(const bool isVerse, int verseCureTimer = 0) { this->isVerse = isVerse; m_VerseCureTimer = verseCureTimer; }
 	void SetCatch(const bool Catch) { m_Catch = Catch; }
 	void SetAlive(const bool Alive) { m_Alive = Alive; }
 	void SetVanish(const bool Vanish) { m_Vanish = Vanish; }
 	void SetIsPostionCheck(const bool m_IsPostionCheck) { this->m_IsPostionCheck = m_IsPostionCheck; }
+	void SetIsAllPostionCheck(const bool m_IsPostionCheck) { this->m_IsAllPostionCheck = m_IsPostionCheck; }
 	void SetLimit(const float Limit) { m_Limit = Limit; }
 private:
 	bool m_Alive = true;//ê∂ë∂ÉtÉâÉO
@@ -99,6 +105,7 @@ private:
 		STATE_FOLLOW,
 		STATE_SEARCH,
 		STATE_JACK,
+		STATE_HYPERJACK,
 		STATE_VANISH,
 	}_charaState = CharaState::STATE_NONE;
 
@@ -132,8 +139,10 @@ private://íTçı
 	float kSpawnTimerMax = 60.f;
 
 	bool m_IsRefer = false;
-
+	bool m_IsHyperRefer = false;
 	bool m_IsPostionCheck = false;
+	bool m_IsAllPostionCheck = false;
+	float RottoPlayer = 0.0f;
 	XMFLOAT3 f_pos = {};
 	float m_radius = 0.0f;
 	enum {

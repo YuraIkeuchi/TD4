@@ -22,8 +22,9 @@ float4 main(VSOutput input) : SV_TARGET
 	// シェーディングによる色
 	float4 shadecolor = float4(ambientColor * ambient, m_alpha);
 
+	int i = 0;
 	// 平行光源
-	for (int i = 0; i < DIRLIGHT_NUM; i++)
+	for (i = 0; i < DIRLIGHT_NUM; i++)
 	{
 		if (dirLights[i].active)
 		{
@@ -111,7 +112,7 @@ float4 main(VSOutput input) : SV_TARGET
 	}
 
 	// 丸影
-	for (int i = 0; i < CIRCLESHADOW_NUM; i++)
+	for (i = 0; i < CIRCLESHADOW_NUM; i++)
 	{
 		if (circleShadows[i].active)
 		{

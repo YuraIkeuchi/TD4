@@ -241,6 +241,12 @@ void ThirdStageActor::BackDraw(DirectXCommon* dxCommon) {
 	loadobj->Draw(dxCommon);
 
 	ParticleEmitter::GetInstance()->DeathDrawAll();
+	//パーティクル描画
+	if (camerawork->GetCameraState() != CameraState::CAMERA_BOSSAPPEAR &&
+		camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_AFTER_FIRST) {
+		ParticleEmitter::GetInstance()->FlontDrawAll();
+	}
+
 	////各クラスの描画
 	if (camerawork->GetAppearEndF()) {
 		Player::GetInstance()->Draw(dxCommon);
@@ -251,11 +257,6 @@ void ThirdStageActor::BackDraw(DirectXCommon* dxCommon) {
 }
 //ポストエフェクトがかからない
 void ThirdStageActor::FrontDraw(DirectXCommon* dxCommon) {
-	//パーティクル描画
-	if (camerawork->GetCameraState() != CameraState::CAMERA_BOSSAPPEAR &&
-		camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_AFTER_FIRST) {
-		ParticleEmitter::GetInstance()->FlontDrawAll();
-	}
 	//ParticleEmitter::GetInstance()->DeathDrawAll();
 
 	if(camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_BEFORE &&camerawork->GetCameraState()!=CameraState::CAMERA_BOSSDEAD_AFTER_FIRST)
