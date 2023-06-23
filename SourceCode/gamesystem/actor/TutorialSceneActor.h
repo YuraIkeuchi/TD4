@@ -4,7 +4,6 @@
 #include "UI.h"
 #include "BackObj.h"
 #include "LoadStageObj.h"
-#include "Conversation.h"
 #include"MessageWindow.h"
 #include"TextManager.h"
 #include <random>
