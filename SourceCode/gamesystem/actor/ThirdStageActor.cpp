@@ -98,6 +98,8 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		Player::GetInstance()->SetCanShot(true);
 		camerawork->SetCameraState(CAMERA_NORMAL);
 		//enemymanager->SkipInitialize();
+		//各クラス更新
+		BackObj::GetInstance()->Update();
 		enemymanager->BattleUpdate();
 	}
 
@@ -110,8 +112,6 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 	VolumManager::GetInstance()->Update();
 	ui->Update();
-	//各クラス更新
-	BackObj::GetInstance()->Update();
 
 
 	if (enemymanager->BossDestroy())
@@ -238,12 +238,12 @@ void ThirdStageActor::BackDraw(DirectXCommon* dxCommon) {
 			ParticleEmitter::GetInstance()->BackDrawAll();
 		}
 	}
+	loadobj->Draw(dxCommon);
 
 	ParticleEmitter::GetInstance()->DeathDrawAll();
 	////各クラスの描画
-	if (!camerawork->GetFeedEnd()) {
+	if (camerawork->GetAppearEndF()) {
 		Player::GetInstance()->Draw(dxCommon);
-		loadobj->Draw(dxCommon);
 	}
 	enemymanager->Draw(dxCommon);
 	
@@ -251,20 +251,11 @@ void ThirdStageActor::BackDraw(DirectXCommon* dxCommon) {
 }
 //ポストエフェクトがかからない
 void ThirdStageActor::FrontDraw(DirectXCommon* dxCommon) {
-
-	
 	//パーティクル描画
-	if (camerawork->GetCameraState() != CameraState::CAMERA_BOSSAPPEAR&&
-		camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_AFTER_FIRST)
-	//ParticleEmitter::GetInstance()->FlontDrawAll();
 	if (camerawork->GetCameraState() != CameraState::CAMERA_BOSSAPPEAR &&
 		camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_AFTER_FIRST) {
-
 		ParticleEmitter::GetInstance()->FlontDrawAll();
 	}
-
-
-	
 	//ParticleEmitter::GetInstance()->DeathDrawAll();
 
 	if(camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_BEFORE &&camerawork->GetCameraState()!=CameraState::CAMERA_BOSSDEAD_AFTER_FIRST)
