@@ -137,6 +137,13 @@ private://íTçı
 	float m_SpawnTimer = 0.f;
 	float kSpawnTimerMax = 60.f;
 
+	float flash = 0.0f;
+	float flashVel = 0.1f;
+	enum {
+		add=1,
+		sub=-1
+	};
+	float flashAdd = 1.0f;
 	bool m_IsRefer = false;
 	bool m_IsHyperRefer = false;
 	bool m_IsPostionCheck = false;
