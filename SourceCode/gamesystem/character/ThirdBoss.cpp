@@ -104,6 +104,32 @@ void ThirdBoss::ImGui_Origin() {
 	ImGui::SliderFloat("m_Position.x", &m_Position.x, 0.0f, 360.0f);
 	ImGui::SliderFloat("m_Position.y", &m_Position.y, 0.0f, 360.0f);
 	ImGui::SliderFloat("m_Position.z", &m_Position.z, 0.0f, 360.0f);
+	switch (phase) {
+	case ThirdBoss::commandState::WaitCommand:
+		ImGui::Text("WAIT");
+		break;
+	case ThirdBoss::commandState::MoveCommand:
+		ImGui::Text("MOVE");
+		break;
+	case ThirdBoss::commandState::ControlCommand:
+		ImGui::Text("CONTROL");
+		break;
+	case ThirdBoss::commandState::EnemySpawn:
+		ImGui::Text("ENEMYSPAWN");
+		break;
+	case ThirdBoss::commandState::SubGauge:
+		ImGui::Text("SUBGAUGE");
+		break;
+	case ThirdBoss::commandState::Ultimate:
+		ImGui::Text("ULTIMATE");
+		break;
+	default:
+		assert(0);
+		break;
+	}
+
+
+
 	ImGui::End();
 }
 
@@ -156,8 +182,8 @@ void ThirdBoss::SelectAction() {
 			phase = commandState::MoveCommand;
 		}
 	} else if (l_case < 90) {
-		isInstruction = ThirdBossInst::None;
-		phase = commandState::SubGauge;
+		//isInstruction = ThirdBossInst::None;
+		//phase = commandState::SubGauge;
 	} else if (l_case < 95) {
 		isHyperSearch = true;
 		isInstruction = ThirdBossInst::None;
@@ -169,9 +195,8 @@ void ThirdBoss::SelectAction() {
 
 void ThirdBoss::WaitUpdate() {
 	ActionTimer++;
-	if (ActionTimer >= ActionTimerMax[(size_t)commandState::WaitCommand]) {
+	if (ActionTimer >= ActionTimerMax[(size_t)phase]) {
 		SelectAction();
-
 		ActionTimer = 0;
 	}
 }
@@ -179,7 +204,7 @@ void ThirdBoss::WaitUpdate() {
 void ThirdBoss::MoveUpdate() {
 	ActionTimer++;
 	photoSpot[moveSpawn]->SetColor({ 1.0f,0.0f,0.0f,1.0f });
-	if (ActionTimer >= ActionTimerMax[(size_t)commandState::MoveCommand]) {
+	if (ActionTimer >= ActionTimerMax[(size_t)phase] && !isShutter) {
 		isShutter = true;
 	}
 	if (!isShutter) { return; }
@@ -196,7 +221,7 @@ void ThirdBoss::MoveUpdate() {
 void ThirdBoss::ControlUpdate() {
 	if (isSearch) { return; }
 	ActionTimer++;
-	if (ActionTimer >= ActionTimerMax[(size_t)commandState::ControlCommand]) {
+	if (ActionTimer >= ActionTimerMax[(size_t)phase] && !isShutter) {
 		isShutter = true;
 	}
 	if (!isShutter) { return; }
@@ -214,7 +239,7 @@ void ThirdBoss::ControlUpdate() {
 void ThirdBoss::EnemySpawnUpdate() {
 	if (isInstruction != ThirdBossInst::SpawnEnemy) { return; }
 	ActionTimer++;
-	if (ActionTimer >= ActionTimerMax[(size_t)commandState::ControlCommand] && !isShutter) {
+	if (ActionTimer >= ActionTimerMax[(size_t)phase]&& !isShutter) {
 		int num = 3;
 		if (isStrong) {
 			num = 5;
@@ -241,7 +266,7 @@ void ThirdBoss::EnemySpawnUpdate() {
 
 void ThirdBoss::SubGaugeUpdate() {
 	ActionTimer++;
-	if (ActionTimer >= ActionTimerMax[(size_t)commandState::ControlCommand] && !isShutter) {
+	if (ActionTimer >= ActionTimerMax[(size_t)phase] && !isShutter) {
 		isShutter = true;
 		m_Check = true;
 	}
@@ -258,7 +283,7 @@ void ThirdBoss::SubGaugeUpdate() {
 void ThirdBoss::UltimateUpdate() {
 	if (isHyperSearch) { return; }
 	ActionTimer++;
-	if (ActionTimer >= ActionTimerMax[(size_t)commandState::ControlCommand]) {
+	if (ActionTimer >= ActionTimerMax[(size_t)phase] && !isShutter) {
 		isShutter = true;
 	}
 	if (!isShutter) { return; }
@@ -271,10 +296,6 @@ void ThirdBoss::UltimateUpdate() {
 			phase = commandState::WaitCommand;
 		}
 	}
-
-
-
-
 }
 
 bool ThirdBoss::ShutterEffect() {

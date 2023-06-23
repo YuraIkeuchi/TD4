@@ -82,6 +82,8 @@ private:
 	std::vector<Ghost*> ghosts;
 	//
 	static const int kStopGhostMax = 10;
+	int kStopGhorstMax = 3;
+
 	array<Ghost*, kStopGhostMax> stopGhosts;
 	std::vector<Food*> foods;
 	std::vector<Heart*> hearts;
@@ -91,7 +93,6 @@ private:
 
 	float m_Division = 0.0f;
 
-	int kStopGhorstMax = 3;
 
 	//ŠÛ‰e
 	float circleShadowDir[3] = { 0,-1,0 };

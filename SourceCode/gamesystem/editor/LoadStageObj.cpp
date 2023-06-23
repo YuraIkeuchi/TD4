@@ -311,11 +311,12 @@ void LoadStageObj::LockVerseGhost() {
 		kStopGhorstMax = 3;
 	}
 	int  nowStopGhorst = 0;
+	int overTime = 0;
 	while (nowStopGhorst < kStopGhorstMax) {
 		for (auto i = 0; i < ghosts.size(); i++) {
 			if (ghosts[i]->GetIsRefer()) { continue; }
 			//キャラステート変える際に気をつけてください
-			if (ghosts[i]->GetStateInst() == 2) { continue; }
+			if (ghosts[i]->GetStateInst() > 2) { continue; }
 			XMFLOAT3 difPos = ghosts[i]->GetPosition();
 			float dif = Helper::GetInstance()->ChechLength(difPos, boss->GetPosition());
 			if (boss->GetLimit() > dif) {
@@ -339,7 +340,7 @@ void LoadStageObj::LockAllGhost() {
 	for (auto i = 0; i < ghosts.size(); i++) {
 		if (ghosts[i]->GetIsRefer()) { continue; }
 		//キャラステート変える際に気をつけてください
-		if (ghosts[i]->GetStateInst() == 2) { continue; }
+		if (ghosts[i]->GetStateInst() > 2) { continue; }
 		stopGhosts[nowStopGhorst] = ghosts[i];
 		ghosts[i]->SetIsRefer(true);
 		nowStopGhorst++;
@@ -350,10 +351,10 @@ void LoadStageObj::LockAllGhost() {
 void LoadStageObj::NonVerseGhost() {
 	InterBoss* boss = m_EnemyManager->GetBoss();
 	if (boss->GetInstruction() != InterBoss::ThirdBossInst::StopGhost) { return; }
-	for (Ghost*& ghost : stopGhosts) {
-		if (!ghost) { continue; }
-		ghost->SetColor({ 1,0,1,1 });
-		ghost->SetIsPostionCheck(true);
+	for (int i = 0; i < kStopGhorstMax;i++) {
+		if (!stopGhosts[i]) { continue; }
+		stopGhosts[i]->SetColor({1,0,1,1});
+		stopGhosts[i]->SetIsPostionCheck(true);
 	}
 	boss->SetInstruction(InterBoss::ThirdBossInst::FinishMove);
 }
@@ -361,9 +362,9 @@ void LoadStageObj::NonVerseGhost() {
 bool LoadStageObj::CheckReferGhost() {
 	InterBoss* boss = m_EnemyManager->GetBoss();
 	int checkNum = 0;
-	for (int i = 0; i < kStopGhorstMax; i++) {
-		if (!stopGhosts[i]) { continue; }
-		if (!stopGhosts[i]->GetIsRefer()) { continue; }
+	for (Ghost*& ghost : stopGhosts) {
+		if (!ghost) { continue; }
+		if (!ghost->GetIsRefer()) { continue; }
 		checkNum++;
 	}
 	if (checkNum == 0) {
@@ -379,13 +380,12 @@ void LoadStageObj::ChangeGhost2Enemy() {
 	InterBoss* boss = m_EnemyManager->GetBoss();
 	if (boss->GetInstruction() != InterBoss::ThirdBossInst::ChangeGhost) { return; }
 	int m_GhostPos = 0;
-	for (Ghost*& ghost : stopGhosts) {
-		if (!ghost) { continue; }
-		ghost->SetColor({ 1,0,1,1 });
-		ghost->SetScale({ 0.0f,0.0f,0.0f });
-		ghost->SetIsVerse(false, 180);
-		ghost->SetVanish(true);
-		boss->SetJackPos(m_GhostPos, ghost->GetPosition());
+	for (int i = 0; i < kStopGhorstMax; i++) {
+		if (!stopGhosts[i]) { continue; }
+		stopGhosts[i]->SetColor({1,0,1,1});
+		stopGhosts[i]->SetIsVerse(false, 80);
+		stopGhosts[i]->SetVanish(true);
+		boss->SetJackPos(m_GhostPos, stopGhosts[i]->GetPosition());
 		m_GhostPos++;
 	}
 	boss->SetInstruction(InterBoss::ThirdBossInst::SpawnEnemy);

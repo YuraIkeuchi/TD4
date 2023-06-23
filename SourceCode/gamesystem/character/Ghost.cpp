@@ -33,8 +33,8 @@ bool Ghost::Initialize() {
 void (Ghost::* Ghost::stateTable[])() = {
 	&Ghost::None,//ë“ã@
 	&Ghost::Spawm,
+	&Ghost::Search,//
 	&Ghost::Follow,//à⁄ìÆ
-	&Ghost::Search,//çUåÇ
 	&Ghost::Jack,
 	&Ghost::HyperJack,
 	&Ghost::Vanish,
@@ -142,6 +142,10 @@ void Ghost::BirthGhost() {
 		uniform_int_distribution<int> spawn(30, 45);
 		kSpawnTimerMax = float(spawn(mt));
 		m_Color = { 1.0f,1.0f,1.0f,0.7f };
+		m_IsRefer = false;
+		m_IsHyperRefer = false;
+		RottoPlayer = 0.0f;
+		m_Vanish = false;
 		m_Catch = false;
 		m_Search = false;
 		m_Follow = false;
@@ -158,9 +162,9 @@ void Ghost::BirthGhost() {
 bool Ghost::VerseCheck() {
 	if (!isVerse) { return false; }
 	m_VerseCureTimer--;
-	m_VerseCureTimer=min(m_VerseCureTimer,0);
-	if (m_VerseCureTimer<=0) {
-		isVerse = false;
+	m_VerseCureTimer = min(m_VerseCureTimer, 0);
+	if (m_VerseCureTimer <= 0) {
+		isVerse = true;
 		return true;
 	} else {
 		return false;
@@ -235,11 +239,11 @@ void Ghost::Jack() {
 	m_angle += 0.04f;
 	m_radius += 0.08f * m_dir;
 	XMFLOAT3 e_pos = { f_pos.x + sinf(m_angle) * m_radius ,0,f_pos.z + cosf(m_angle) * m_radius };
-	m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, e_pos,-PI_90);
+	m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, e_pos, -PI_90);
 	m_Position.x = e_pos.x;
 	m_Position.z = e_pos.z;
-	if (Player::GetInstance()->PlayerCollide(m_Position)&&
-		Player::GetInstance()->GetDamageInterVal()==0) {
+	if (Player::GetInstance()->PlayerCollide(m_Position) &&
+		Player::GetInstance()->GetDamageInterVal() == 0) {
 		Player::GetInstance()->PlayerHit(m_Position);
 		Player::GetInstance()->RecvDamage(0.5f);
 	}
@@ -292,8 +296,7 @@ void Ghost::Vanish() {
 		m_Rotation.y += 5.0f;
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
-		}
-		else {
+		} else {
 			m_Vanish = false;
 			m_IsRefer = false;
 			m_IsHyperRefer = false;
@@ -323,7 +326,6 @@ void Ghost::CarryFood() {
 	XMFLOAT3 l_playerPos = Player::GetInstance()->GetPosition();
 	if ((_searchState == SearchState::SEARCH_END) && (!m_Vanish)) {
 		if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, l_playerPos.x, l_playerPos.z, l_Radius)) {
-			//m_Scale = { 0.0f,0.0f,0.0f };
 			m_Vanish = true;
 			m_Search = false;
 			m_Catch = false;
@@ -348,6 +350,7 @@ bool Ghost::CollideBullet(vector<InterBullet*>bullet) {
 			m_OBB2.SetParam_Scl(_bullet->GetScale());
 
 			if ((Collision::OBBCollision(m_OBB1, m_OBB2)) && (_bullet->GetAlive()) && (!m_Catch) && (m_Alive)) {
+				if (_charaState != STATE_NONE) { return false; }
 				m_Catch = true;
 				if (Player::GetInstance()->GetBulletType() == BULLET_FORROW) {
 					Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Follower.wav", VolumManager::GetInstance()->GetSEVolum() / 2.5f);

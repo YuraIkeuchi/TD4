@@ -25,7 +25,7 @@ public:
 		SpawnEnemy,
 		AllSummon,
 		FinishMove,
-
+		DELETEGHOST,
 	};
 public:
 	//初期化

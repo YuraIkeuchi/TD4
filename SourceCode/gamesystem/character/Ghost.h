@@ -84,7 +84,6 @@ public://getter setter
 
 	void SetIsVerse(const bool isVerse, int verseCureTimer = 0) { this->isVerse = isVerse; m_VerseCureTimer = verseCureTimer; }
 	void SetCatch(const bool Catch) { m_Catch = Catch; }
-	void SetAlive(const bool Alive) { m_Alive = Alive; }
 	void SetVanish(const bool Vanish) { m_Vanish = Vanish; }
 	void SetIsPostionCheck(const bool m_IsPostionCheck) { this->m_IsPostionCheck = m_IsPostionCheck; }
 	void SetIsAllPostionCheck(const bool m_IsPostionCheck) { this->m_IsAllPostionCheck = m_IsPostionCheck; }
@@ -102,8 +101,8 @@ private:
 	enum CharaState {
 		STATE_NONE,
 		STATE_SPAWN,
-		STATE_FOLLOW,
 		STATE_SEARCH,
+		STATE_FOLLOW,
 		STATE_JACK,
 		STATE_HYPERJACK,
 		STATE_VANISH,

@@ -88,8 +88,24 @@ private:
 	float shutterTime = 0.0f;
 	float feedTimer = 0.0f;
 	float shutterHight[2] = { 0,0 };
+	//enum class commandState : int {
+	//	WaitCommand = 0,
+	//	MoveCommand,
+	//	ControlCommand,
+	//	EnemySpawn,
+	//	SubGauge,
+	//	Ultimate,
+	//	COMMANDMAX
+	//};
 
-	array<int, (size_t)commandState::COMMANDMAX> ActionTimerMax = { 60,120,90,100 };
+	array<int, (size_t)commandState::COMMANDMAX> ActionTimerMax = 
+	{   180,
+		120,
+		100,
+		100,
+		60,
+		5
+	};
 
 	float shutterTimeMax = 40.0f;
 	float feedTimeMax = 15.0f;
