@@ -311,8 +311,8 @@ void LoadStageObj::LockVerseGhost() {
 		kStopGhorstMax = 3;
 	}
 	int  nowStopGhorst = 0;
-	int overTime = 0;
 	while (nowStopGhorst < kStopGhorstMax) {
+		if (boss->GetLimit() > 80.0f) { boss->SetIsMiss(true); break; }
 		for (auto i = 0; i < ghosts.size(); i++) {
 			if (ghosts[i]->GetIsRefer()) { continue; }
 			//キャラステート変える際に気をつけてください
@@ -330,6 +330,7 @@ void LoadStageObj::LockVerseGhost() {
 		}
 		boss->SetLimit(boss->GetLimit() + 5.0f);
 	}
+	boss->SetLimit(20.0f);
 	boss->SetSearch(false);
 }
 

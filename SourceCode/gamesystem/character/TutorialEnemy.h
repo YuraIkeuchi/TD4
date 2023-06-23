@@ -11,6 +11,8 @@ public:
 	void ImGuiDraw()override;
 	void Draw(DirectXCommon* dxCommon) override;//•`‰æ
 
+
+	void Born();
 	bool GetIsActive() {return isActive; }
 
 	void SetIsActive(bool flag) { isActive = flag; }
@@ -36,7 +38,6 @@ private:
 private:
 	void GetRotation2Player();
 
-	bool isActive = false;
 	const float scale_ = 0.6f;
 
 	float RottoPlayer = 0.0f;

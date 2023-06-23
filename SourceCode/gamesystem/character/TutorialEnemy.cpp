@@ -59,6 +59,13 @@ void TutorialEnemy::Draw(DirectXCommon* dxCommon) {
 	IKEObject3d::PreDraw();
 	Obj_Draw();
 }
+void TutorialEnemy::Born() {
+
+	isAlive = true;
+	m_Scale = { scale_,scale_ ,scale_ };
+
+
+}
 //ImGui描画
 void TutorialEnemy::ImGuiDraw() {
 	ImGui::Begin("Enemy");

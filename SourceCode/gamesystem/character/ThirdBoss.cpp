@@ -104,6 +104,8 @@ void ThirdBoss::ImGui_Origin() {
 	ImGui::SliderFloat("m_Position.x", &m_Position.x, 0.0f, 360.0f);
 	ImGui::SliderFloat("m_Position.y", &m_Position.y, 0.0f, 360.0f);
 	ImGui::SliderFloat("m_Position.z", &m_Position.z, 0.0f, 360.0f);
+	ImGui::SliderFloat("Limit", &m_Limit, 0.0f, 360.0f);
+
 	switch (phase) {
 	case ThirdBoss::commandState::WaitCommand:
 		ImGui::Text("WAIT");
@@ -134,7 +136,6 @@ void ThirdBoss::ImGui_Origin() {
 }
 
 void ThirdBoss::EffecttexDraw(DirectXCommon* dxCommon) {
-	//if (m_HP < 0.1f)return;
 	IKETexture::PreDraw2(dxCommon, AlphaBlendType);
 	for (int i = 0; i < kPhotoSpotMax; i++) {
 		photoSpot[i]->Draw();
@@ -188,8 +189,8 @@ void ThirdBoss::SelectAction() {
 			phase = commandState::MoveCommand;
 		}
 	} else if (l_case < 90) {
-		//isInstruction = ThirdBossInst::None;
-		//phase = commandState::SubGauge;
+		isInstruction = ThirdBossInst::None;
+		phase = commandState::SubGauge;
 	} else if (l_case < 95) {
 		isHyperSearch = true;
 		isInstruction = ThirdBossInst::None;
@@ -225,6 +226,12 @@ void ThirdBoss::MoveUpdate() {
 }
 
 void ThirdBoss::ControlUpdate() {
+	if (isMiss) {
+		isInstruction = ThirdBossInst::None;
+		phase = commandState::SubGauge;
+		isMiss = false;
+		return;
+	}
 	if (isSearch) { return; }
 	ActionTimer++;
 	if (ActionTimer >= ActionTimerMax[(size_t)phase] && !isShutter) {
@@ -236,13 +243,19 @@ void ThirdBoss::ControlUpdate() {
 		if (ShutterFeed()) {
 			ShutterReset();
 			ActionTimer = 0;
-			m_Limit = 20.0f;
 			phase = commandState::WaitCommand;
 		}
 	}
 }
 
 void ThirdBoss::EnemySpawnUpdate() {
+	if (isMiss) {
+		isInstruction = ThirdBossInst::None;
+		phase = commandState::SubGauge;
+		isMiss = false;
+		return;
+	}
+	if (isSearch) { return; }
 	if (isInstruction != ThirdBossInst::SpawnEnemy) { return; }
 	ActionTimer++;
 	if (ActionTimer >= ActionTimerMax[(size_t)phase]&& !isShutter) {
@@ -252,6 +265,7 @@ void ThirdBoss::EnemySpawnUpdate() {
 		}
 		for (int i = 0; i < num; i++) {
 			Thirdenemys[i]->SetPosition(jackPos[i]);
+			Thirdenemys[i]->Born();
 			Thirdenemys[i]->SetIsActive(true);
 		}
 		isShutter = true;
@@ -261,7 +275,6 @@ void ThirdBoss::EnemySpawnUpdate() {
 		if (ShutterFeed()) {
 			ShutterReset();
 			ActionTimer = 0;
-			m_Limit = 20.0f;
 			phase = commandState::WaitCommand;
 		}
 	}
@@ -298,7 +311,6 @@ void ThirdBoss::UltimateUpdate() {
 		if (ShutterFeed()) {
 			ShutterReset();
 			ActionTimer = 0;
-			m_Limit = 20.0f;
 			phase = commandState::WaitCommand;
 		}
 	}
