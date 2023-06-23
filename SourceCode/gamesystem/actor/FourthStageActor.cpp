@@ -202,9 +202,10 @@ void FourthStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGui‚Ì•`‰æ
 void FourthStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	ImGui::Begin("Fourth");
+	/*ImGui::Begin("Fourth");
 	ImGui::Text("Timer:%d", m_AppTimer);
-	ImGui::End();
+	ImGui::End();*/
+	Player::GetInstance()->ImGuiDraw();
 }
 //“oêƒV[ƒ“
 void FourthStageActor::IntroUpdate(DebugCamera* camera) {

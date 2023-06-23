@@ -86,6 +86,8 @@ public:
 	void PlayerHit(const XMFLOAT3& pos);
 	//弾かれる処理
 	void ReBound();
+	//
+	float GetPercentage();
 public:
 	//gettersetter
 	const int& GetBulletType() { return m_BulletType; }
@@ -121,7 +123,8 @@ private://各クラス
 
 	XMFLOAT3 m_FollowPos = {};
 
-	int m_ShotTimer = {};//ショットのチャージ時間
+	float m_ChargePower = {};//弾のチャージ
+	int m_ChargeType = {};
 	bool m_canShot = true;
 	//ダメージ
 	bool m_Damage = false;
