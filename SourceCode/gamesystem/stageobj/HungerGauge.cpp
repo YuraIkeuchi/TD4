@@ -29,8 +29,10 @@ bool HungerGauge::Initialize() {
 void HungerGauge::Update() {
 	if (isStop) { return; }
 	float l_Limit = 50.0f;
+	float l_AdditionalLimit = 10.0f;
+	float l_SubExtra = 0.025f;
 	//一定ずつで減少していく(超過分がなくなった場合)
-	if (Helper::GetInstance()->CheckMax(m_Additional, 0.0f, -0.05f)) {
+	if (Helper::GetInstance()->CheckMax(m_Additional, 0.0f, -l_SubExtra)) {
 		if (m_CatchCount <= 5 && m_CatchCount > 0) {
 			m_NowHunger -= m_SubHunger[m_CatchCount - 1];
 		}
@@ -42,6 +44,8 @@ void HungerGauge::Update() {
 	Helper::GetInstance()->Clamp(m_NowHunger, 0.0f, m_HungerMax);
 	m_NowHunger = min(m_NowHunger, m_HungerMax);
 	m_HungerMax = min(m_HungerMax, l_Limit);
+	Helper::GetInstance()->Clamp(m_Additional, 0.0f, l_AdditionalLimit);
+	//m_Additional = max(m_Additional, 0.0f);
 }
 
 //ImGui
@@ -58,15 +62,22 @@ float HungerGauge::GetPercentage() {
 	return temp;
 }
 
+
+float HungerGauge::GetPercentageExtra() {
+	float temp = (m_NowHunger + m_Additional) / 50.0f;
+	Helper::GetInstance()->Clamp(temp, 0.0f, 1.0f);
+	return temp;
+}
+
 void HungerGauge::AddNowHunger(float m_NowHunger) {
 	float temp = m_NowHunger;
 	temp = min(m_NowHunger, m_HungerMax);
 	this->m_NowHunger = temp;
 }
 
-void HungerGauge::RecoveryNowHunger(float m_NowHunger) {
+void HungerGauge::RecoveryNowHunger(float AddHunger) {
 	carriedFood = true;
-	float add = m_NowHunger;
+	float add = m_NowHunger + AddHunger;
 	Helper::GetInstance()->Clamp(add, 0.f, m_HungerMax);
 	SetNowHunger(add);
 }

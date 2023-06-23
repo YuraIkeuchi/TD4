@@ -333,15 +333,16 @@ void Ghost::EndSearch() {
 void Ghost::CarryFood() {
 	float l_Radius = 1.0f;//“–‚½‚è”»’è
 	float l_AddHunger = HungerGauge::m_Hungervalue;//‰ÁŽZ‚³‚ê‚é‹C‚ªƒQ[ƒW
+	float l_AddExtra = 2.5f;
 	XMFLOAT3 l_playerPos = Player::GetInstance()->GetPosition();
-	if ((_searchState == SearchState::SEARCH_END) && (!m_Vanish)) {
+	if ((_searchState == SearchState::SEARCH_END) && (!m_Vanish) && (m_Catch) && (m_Search)) {
 		if (Collision::CircleCollision(m_Position.x, m_Position.z, l_Radius, l_playerPos.x, l_playerPos.z, l_Radius)) {
 			m_Vanish = true;
 			m_Search = false;
 			m_Catch = false;
 			m_Limit = {};
-			HungerGauge::GetInstance()->RecoveryNowHunger(HungerGauge::GetInstance()->GetNowHunger() + l_AddHunger);
-			HungerGauge::GetInstance()->SetAdditional(HungerGauge::GetInstance()->GetAdditional() + l_AddHunger);
+			HungerGauge::GetInstance()->RecoveryNowHunger(0.0f);
+			HungerGauge::GetInstance()->SetAdditional(HungerGauge::GetInstance()->GetAdditional() + l_AddExtra);
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Food.wav", VolumManager::GetInstance()->GetSEVolum());
 		}
 	}

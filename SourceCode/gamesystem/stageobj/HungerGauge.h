@@ -21,9 +21,11 @@ public:
 
 	float GetPercentage();
 
+	float GetPercentageExtra();
+
 	void AddNowHunger(float m_NowHunger);
 
-	void RecoveryNowHunger(float m_NowHunger);
+	void RecoveryNowHunger(float AddHunger);
 
 	void SetIsStop(bool isStop) { this->isStop= isStop; }
 	void SetNowHunger(float m_NowHunger) { this->m_NowHunger = m_NowHunger; }

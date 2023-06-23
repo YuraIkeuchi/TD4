@@ -27,9 +27,19 @@ void UI::Initialize() {
 		TexList.emplace_back(std::move(sprites[UnderStatusGauge]));
 	}
 	{//ゲージ
+		sprites[ExtraGauge] = CreateUi(ImageManager::Gauge, m_GaugePos, m_GaugeSizeMini, { 1.5f, 1.5f, 1.5f,1 });
+		sprites[ExtraGauge].Tex->SetAnchorPoint({ 0,0.5f });
+		TexList.emplace_back(std::move(sprites[ExtraGauge]));
+	}
+	{//ゲージ
 		sprites[StatusGauge] = CreateUi(ImageManager::Gauge, m_GaugePos, m_GaugeSizeMini, { 1.5f, 1.5f, 1.5f,1 });
 		sprites[StatusGauge].Tex->SetAnchorPoint({ 0,0.5f });
 		TexList.emplace_back(std::move(sprites[StatusGauge]));
+	}
+	{//ゲージ
+		sprites[ChargeGauge] = CreateUi(ImageManager::Gauge, m_GaugePos, m_GaugeSizeMini, { 1.5f, 1.5f, 1.5f,1 });
+		sprites[ChargeGauge].Tex->SetAnchorPoint({ 0,0.5f });
+		TexList.emplace_back(std::move(sprites[ChargeGauge]));
 	}
 	{//ゲージ
 		sprites[UnderBossGauge] = CreateUi(ImageManager::WHITE, { 880,0 }, { 400,40 }, { 1.5f, 1.5f, 1.5f,1 });
@@ -66,12 +76,20 @@ void UI::Update() {
 	if (HungerGauge::GetInstance()->GetCatchCount() == 0) {
 		TexList[UnderStatusGauge].IsVisible = false;
 		TexList[StatusGauge].IsVisible = false;
+		TexList[ExtraGauge].IsVisible = false;
+		TexList[ChargeGauge].IsVisible = false;
 	}
 	else {
 		TexList[StatusGauge].Size = { HungerGauge::GetInstance()->GetPercentage() * m_GaugeSizeMini.x,m_GaugeSizeMini.y };
+		TexList[ExtraGauge].Size = { HungerGauge::GetInstance()->GetPercentageExtra() * m_GaugeSizeMini.x,m_GaugeSizeMini.y };
+		TexList[ChargeGauge].Size = { Player::GetInstance()->GetPercentage() * m_GaugeSizeMini.x,m_GaugeSizeMini.y };
 		TexList[UnderStatusGauge].Size = { (HungerGauge::GetInstance()->GetHungerMax() / 5.f) * m_GaugeSize.x / 10.f,m_GaugeSize.y };
 		TexList[UnderStatusGauge].IsVisible = true;
 		TexList[StatusGauge].IsVisible = true;
+		TexList[ExtraGauge].IsVisible = true;
+		TexList[ChargeGauge].IsVisible = true;
+		TexList[ExtraGauge].Color = { 0.0f,1.0f,1.0f,1.0f };
+		TexList[ChargeGauge].Color = { 1.0f,0.0f,1.0f,1.0f };
 	}
 	//ライフ処理
 	TexList[HeartThree].Size = { (Player::GetInstance()->GetHP() / Player::GetInstance()->GetMaxHP()) * m_PlayerHpSize.x,m_PlayerHpSize.y };

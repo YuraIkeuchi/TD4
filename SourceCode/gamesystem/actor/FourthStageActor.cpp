@@ -217,9 +217,10 @@ void FourthStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void FourthStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	ImGui::Begin("Fourth");
+	/*ImGui::Begin("Fourth");
 	ImGui::Text("Timer:%d", m_AppTimer);
-	ImGui::End();
+	ImGui::End();*/
+	Player::GetInstance()->ImGuiDraw();
 }
 //登場シーン
 void FourthStageActor::IntroUpdate(DebugCamera* camera) {

@@ -62,6 +62,7 @@ void Player::InitState(const XMFLOAT3& pos) {
 	//移動処理用
 	velocity /= 5.0f;
 	//大きさ
+	m_ChargePower = {};
 	m_Scale = { 1.f,0.5f,1.f };
 }
 //状態遷移
@@ -188,6 +189,13 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 }
 //ImGui
 void Player::ImGuiDraw() {
+	HungerGauge::GetInstance()->ImGuiDraw();
+	for (int i = 0; i < attackbullets.size(); i++) {
+		attackbullets[i]->ImGuiDraw();
+	}
+	ImGui::Begin("Player");
+	ImGui::Text("Charge:%f", m_ChargePower);
+	ImGui::End();
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
@@ -280,7 +288,7 @@ void Player::Bullet_Management() {
 	const int l_Limit = 20;//ショットのチャージ時間
 	/*-----------------------------*/
 	//RB||LBが押されたら弾を切り替える
-	if (((Input::GetInstance()->TriggerButton(Input::RB)) || (Input::GetInstance()->TriggerButton(Input::LB))) && (m_canShot) && (m_ShotTimer == 0))
+	if (((Input::GetInstance()->TriggerButton(Input::RB)) || (Input::GetInstance()->TriggerButton(Input::LB))) && (m_canShot) && (m_ChargePower == 0.0f))
 	{
 		isShotNow = true;
 		float nowhunger = HungerGauge::GetInstance()->GetNowHunger();
@@ -315,35 +323,50 @@ void Player::Bullet_Management() {
 			}
 		}
 	}
+	if(Input::GetInstance()->TriggerButton(Input::B))
+		AnimationControl(AnimeName::ATTACK,false, 1);
+		TriggerAttack = true;
 
-	
+
+	if (TriggerAttack) {
+		
+		if (!m_fbxObject->GetIsPlay())
+			TriggerAttack = false;
+	}
 
 	//攻撃
 	//Bが押されたら弾のチャージ
 	if (m_BulletType == BULLET_ATTACK) {
 		if (Input::GetInstance()->PushButton(Input::B) && (m_InterVal == 0) && (HungerGauge::GetInstance()->GetCatchCount() >= l_TargetCount)
 			&& (m_canShot)) {
-			AnimationControl(AnimeName::ATTACK, false, 1);
 			isShotNow = true;
-			m_ShotTimer++;
+			m_ChargePower += 0.2f;
 			viewbullet->SetAlive(true);
 		}
 
-		//チャージ時間が一定を超えたら飢餓ゲージの減る速度が上がる
-		if (m_ShotTimer > l_Limit) {
-			viewbullet->SetCharge(true);
-			HungerGauge::GetInstance()->SetSubVelocity(2.0f);
-			//チャージ中に飢餓ゲージが切れた場合弾が自動で放たれる
-			if (HungerGauge::GetInstance()->GetNowHunger() == 0.0f) {
-				BirthShot("Attack", true);
-				playerattach->SetAlive(true);
-				HungerGauge::GetInstance()->SetSubVelocity(1.0f);
-				ResetBullet();
-			}
+		//チャージ中に飢餓ゲージが切れた場合弾が自動で放たれる
+		if (HungerGauge::GetInstance()->GetNowHunger() == 0.0f && m_ChargePower != 0.0f) {
+			BirthShot("Attack", true);
+			playerattach->SetAlive(true);
+			//HungerGauge::GetInstance()->SetSubVelocity(1.0f);
+			ResetBullet();
 		}
 
-		if (!Input::GetInstance()->PushButton(Input::B) && m_ShotTimer != 0) {
-			if (m_ShotTimer < l_Limit) {
+		if (m_ChargePower < 13.0f) {
+			m_ChargeType = POWER_NONE;
+		}
+		else if (m_ChargePower >= 13.0f && m_ChargePower < 25.0f) {
+			m_ChargeType = POWER_MIDDLE;
+		}
+		else if (m_ChargePower >= 25.0f && m_ChargePower < 40.0f) {
+			m_ChargeType = POWER_STRONG;
+		}
+		else {
+			m_ChargeType = POWER_UNLIMITED;
+		}
+
+		if (!Input::GetInstance()->PushButton(Input::B) && m_ChargePower != 0.0f) {
+			if (m_ChargeType < POWER_STRONG) {
 				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
 				BirthShot("Attack", false);
 				playerattach->SetAlive(true);
@@ -352,7 +375,6 @@ void Player::Bullet_Management() {
 				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Charge.wav", VolumManager::GetInstance()->GetSEVolum());
 				BirthShot("Attack", true);
 				playerattach->SetAlive(true);
-				HungerGauge::GetInstance()->SetSubVelocity(1.0f);
 			}
 			ResetBullet();
 		}
@@ -428,6 +450,8 @@ void Player::Bullet_Management() {
 	viewbullet->SetAngle(l_Angle);
 	viewbullet->SetPosition({ m_Position.x,0.0f,m_Position.z });
 
+	m_ChargePower = min(m_ChargePower, HungerGauge::GetInstance()->GetNowHunger());
+	m_ChargePower = max(m_ChargePower, 0.0f);
 	SutoponUpdate();
 }
 void Player::BulletUpdate(std::vector<InterBullet*> bullets) {
@@ -487,13 +511,8 @@ void Player::BirthShot(const std::string& bulletName, bool Super) {
 			newbullet = new AttackBullet();
 			newbullet->Initialize();
 			newbullet->SetPosition(viewbullet->GetPosition());
-			//チャージショットかどうか
-			if (Super) {
-				newbullet->SetScale(viewbullet->GetScale());
-			}
-			else {
-				newbullet->SetScale({ 1.5f,1.5f,1.5f });
-			}
+			newbullet->SetScale({ 1.5f,1.5f,1.5f });
+			newbullet->SetPowerState(m_ChargeType);
 			newbullet->SetAngle(l_Angle);
 			attackbullets.push_back(newbullet);
 		}
@@ -518,6 +537,7 @@ void Player::BirthShot(const std::string& bulletName, bool Super) {
 void Player::Idle()
 {
 	//条件少しおかしいので後で修正
+	if (isShotNow)return;
 	if (_animeName == AnimeName::IDLE)return;
 	AnimationControl(AnimeName::IDLE, true, 1);
 }
@@ -544,7 +564,7 @@ void Player::ResetBullet() {
 	m_RigidityTime = m_TargetRigidityTime;
 	viewbullet->SetAlive(false);
 	viewbullet->SetCharge(false);
-	m_ShotTimer = {};
+	m_ChargePower = {};
 }
 void Player::isOldPos()
 {
@@ -626,4 +646,10 @@ void Player::DeathUpdate() {
 
 	//どっち使えばいいか分からなかったから保留
 	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+}
+//割合
+float Player::GetPercentage() {
+	float temp = m_ChargePower / 50.0f;
+	Helper::GetInstance()->Clamp(temp, 0.0f, 1.0f);
+	return temp;
 }

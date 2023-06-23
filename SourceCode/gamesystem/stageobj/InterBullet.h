@@ -7,6 +7,13 @@ enum Bullettype {
 	BULLET_SEARCH,//探索
 	BULLET_ATTACK,//攻撃
 };
+
+enum AttackState {
+	POWER_NONE,
+	POWER_MIDDLE,
+	POWER_STRONG,
+	POWER_UNLIMITED
+};
 //弾の基底クラス
 class InterBullet :
 	public ObjCommon {
@@ -35,11 +42,13 @@ public:
 	//gettersetter
 	const bool& GetAlive() { return m_Alive; }
 	const int& GetBulletType() { return m_BulletType; }
-
+	const int& GetPowerState() { return m_PowerState; }
+	const float& GetPower() { return m_Power; }
 
 	void SetAlive(const bool Alive) { m_Alive = Alive; }
 	void SetAngle(const XMFLOAT2& Angle) { m_Angle = Angle; }
 	void SetBulletType(const int BulletType) { m_BulletType = BulletType; }
+	void SetPowerState(const int PowerState) { m_PowerState = PowerState; }
 	void SetCharge(const bool Charge) { m_Charge = Charge; }
 
 public:
@@ -51,4 +60,7 @@ public:
 	int m_TargetTimer = {};//出現時間の目標
 	bool m_Alive = true;//生存フラグ
 	bool m_Charge = false;//チャージしたかどうか
+
+	int m_PowerState = POWER_NONE;
+	float m_Power = {};//ダメージ量
 };
