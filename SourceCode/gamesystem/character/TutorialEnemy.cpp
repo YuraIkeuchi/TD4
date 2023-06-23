@@ -172,10 +172,13 @@ void TutorialEnemy::JumpUpdate() {
 
 bool TutorialEnemy::Death() {
 	if (isAlive) { return false; }
-	if (deathFrame > 1.0f) { return false; }
+	if (deathFrame > 1.0f) { isActive = false; return false; }
 	deathFrame += 1.0f / deathFrameMax;
 
 	m_Color.w = 0.0f;
+
+
+
 	XMFLOAT4 s_color = { 1.0f,0.0f,0.0f,1.0f };
 	XMFLOAT4 e_color = { 1.0f,0.5f,0.0f,0.0f };
 	float s_scale = 5.0f;

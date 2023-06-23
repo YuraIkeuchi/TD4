@@ -168,9 +168,15 @@ void ThirdBoss::SelectAction() {
 		isInstruction = ThirdBossInst::None;
 		phase = commandState::MoveCommand;
 	} else if (l_case < 30) {
-		isSearch = true;
-		isInstruction = ThirdBossInst::ChangeGhost;
-		phase = commandState::EnemySpawn;
+		if (!EnemysIsActiveCheck()) {
+			isSearch = true;
+			isInstruction = ThirdBossInst::ChangeGhost;
+			phase = commandState::EnemySpawn;
+		} else {
+			ChangePos2Random();
+			isInstruction = ThirdBossInst::None;
+			phase = commandState::MoveCommand;
+		}
 	} else if (l_case < 60) {
 		if (isReferCheck) {
 			isSearch = true;
@@ -339,6 +345,14 @@ void ThirdBoss::ShutterReset() {
 	photo[Photo_Out_Under]->SetColor({ 1,1,1,1 });
 	shutterTime = 0.0f;
 	feedTimer = 0.0f;
+}
+
+bool ThirdBoss::EnemysIsActiveCheck() {
+	for (unique_ptr<TutorialEnemy>& enemy :Thirdenemys) {
+		if (!enemy) { continue; }
+		if (enemy->GetIsActive()) { return true; }
+	}
+	return false;
 }
 
 void ThirdBoss::ChangePos2Random() {
