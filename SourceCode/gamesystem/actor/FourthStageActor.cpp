@@ -34,7 +34,7 @@ void FourthStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	//enemymanager->Initialize(dxCommon);
 	text_ = make_unique<BossText>();
 	text_->Initialize(dxCommon);
-	text_->SelectText(TextManager::ANGER_TALK);
+	text_->SelectText(TextManager::TALK_FIRST);
 	camerawork->SetBoss(enemymanager->GetBoss());
 	camerawork->SetCameraState(CAMERA_BOSSAPPEAR);
 	camerawork->SetSceneName("FOURTHSTAGE");
@@ -193,9 +193,7 @@ void FourthStageActor::FrontDraw(DirectXCommon* dxCommon) {
 		ui->Draw();
 	}
 	if (m_SceneState == SceneState::IntroState) {
-		if ((camerawork->GetAppearType() == APPEAR_SEVEN) || (camerawork->GetAppearType() == APPEAR_EIGHT)) {
-			text_->SpriteDraw(dxCommon);
-		}
+		text_->SpriteDraw(dxCommon);
 	}
 	IKESprite::PostDraw();
 	sceneChanger_->Draw();
@@ -204,11 +202,9 @@ void FourthStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void FourthStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	//Player::GetInstance()->ImGuiDraw();
-	//loadobj->ImGuiDraw();
-	enemymanager->ImGuiDraw();
-	//loadobj->ImGuiDraw();
-	//SceneSave::GetInstance()->ImGuiDraw();
+	ImGui::Begin("Fourth");
+	ImGui::Text("Timer:%d", m_AppTimer);
+	ImGui::End();
 }
 //登場シーン
 void FourthStageActor::IntroUpdate(DebugCamera* camera) {
@@ -239,6 +235,28 @@ void FourthStageActor::IntroUpdate(DebugCamera* camera) {
 	}
 	else if (m_AppTimer == 580) {
 		_AppState = APP_VANISH;
+	}
+
+	//テキスト関係
+	text_->Display();
+	if (m_AppTimer == 1) {
+		text_->SelectText(TextManager::TALK_FIRST);
+	}
+	else if (m_AppTimer == 150) {
+		text_->SelectText(TextManager::TALK_SECOND);
+	}
+	else if (m_AppTimer == 300) {
+		text_->SelectText(TextManager::TALK_THIRD);
+		text_->ChangeColor(0, { 1.0f,0.0f,0.0f,1.0f });
+	}
+	else if (m_AppTimer == 400) {
+		text_->SelectText(TextManager::TALK_FOURTH);
+		for (int i = 0; i < 3; i++) {
+			text_->ChangeColor(i, { 1.0f,1.0f,0.0f,1.0f });
+		}
+	}
+	else if (m_AppTimer == 500) {
+		text_->SelectText(TextManager::TALK_FIVE);
 	}
 }
 //バトルシーン

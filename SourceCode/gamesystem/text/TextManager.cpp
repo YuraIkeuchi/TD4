@@ -22,7 +22,6 @@ void TextManager::Create(DirectXCommon* dxcomon)
 	conversation_.FirstFont->SetColor(color_);
 	conversation_.SecondFont->SetColor(color_);
 	conversation_.ThirdFont->SetColor(color_);
-
 	old_conversation_.FirstFont = new Font();
 	old_conversation_.SecondFont = new Font();
 	old_conversation_.ThirdFont = new Font();
@@ -32,14 +31,12 @@ void TextManager::Create(DirectXCommon* dxcomon)
 	old_conversation_.FirstFont->SetColor(color_);
 	old_conversation_.SecondFont->SetColor(color_);
 	old_conversation_.ThirdFont->SetColor(color_);
-
 }
 
 
 //初期化
 void TextManager::Initialize(DirectXCommon* dxcomon)
 {
-
 	//ワード追加
 	CreateWord(NONE, L" ", L" ", L" ");
 	CreateWord(TYUTORIAL_TALK1, L"ここはどこだろう?", L"ん?何か動いてる?", L"");
@@ -101,6 +98,12 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	SecondCreateWord(SELECT_ANGER2, L"このカンジョウにまかせて", L"オマエをたおしてもいいってことだな!!!", L"!!!!!!!!");
 	SecondCreateWord(SELECT_JOY, L"キミよくわかってるね!", L"ってことはさ、キミは", L"このぼくのカンジョウ・・・");
 	SecondCreateWord(SELECT_JOY2, L"めのまえのやつをたおすヨロコビを", L"リカイしてくれるよね!!!", L"!!!!!!!!!!");
+
+	FourthCreateWord(TALK_FIRST, L"ようこそ!!!", L"Ladies And ", L"Gentlemen!!!");
+	FourthCreateWord(TALK_SECOND, L"キミもオレがながす", L"イカしてるメロディーを", L"ききたいんだろ");
+	FourthCreateWord(TALK_THIRD, L"そこにCDがあるかぎり!", L"オレはオトをとめない!!!", L"");
+	FourthCreateWord(TALK_FOURTH, L"オレをテラセ!!!!!!", L"スポットライト!!!!!!", L"このオレを!!!!!!");
+	FourthCreateWord(TALK_FIVE, L"さあ!!!", L"ショータイムのはじまりだ!!!", L"");
 	//コンヴァージョン初期化
 	Create(dxcomon);
 
@@ -243,6 +246,24 @@ void TextManager::SetSecondConversation(Name_Second name)
 
 	CreateCon(conversation_, itr->second);
 }
+//名前から文字列を呼び出しセットする
+void TextManager::SetFourthConversation(Name_Fourth name)
+{
+	std::map<TextManager::Name_Fourth, Word>::iterator itr = wordlist_fourth.find(name);
+
+	if (old_fourth != itr->first) {
+		for (int i = 0; i < 3; i++) {
+			flag[i] = true;
+			next_f[i] = false;
+		}
+	}
+
+	old_fourth = itr->first;
+
+	GetWordSize(itr->second);
+
+	CreateCon(conversation_, itr->second);
+}
 //名前と文字列セットで保存
 void TextManager::CreateWord(Name name, wchar_t* tex1, wchar_t* tex2, wchar_t* tex3)
 {
@@ -265,6 +286,14 @@ void TextManager::SecondCreateWord(Name_Second name, wchar_t* tex1, wchar_t* tex
 	Word temp = SetWord(tex1, tex2, tex3);
 
 	wordlist_second.insert(std::make_pair(name, temp));
+}
+
+//名前と文字列セットで保存(2個目のボス)
+void TextManager::FourthCreateWord(Name_Fourth name, wchar_t* tex1, wchar_t* tex2, wchar_t* tex3)
+{
+	Word temp = SetWord(tex1, tex2, tex3);
+
+	wordlist_fourth.insert(std::make_pair(name, temp));
 }
 
 void TextManager::SetRowPosition(float posX)

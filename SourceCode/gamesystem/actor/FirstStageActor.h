@@ -26,7 +26,6 @@ public:
 	void ColEnemy(std::vector<InterEnemy*> enelist);
 private:
 	float Rads;
-	int textT;
 	unique_ptr<MessageWindow> messagewindow_;
 	unique_ptr<BossText> text_;
 	unique_ptr<IKESprite> backScreen_ = nullptr;
