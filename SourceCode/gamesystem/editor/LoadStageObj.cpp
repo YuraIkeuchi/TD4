@@ -316,7 +316,7 @@ void LoadStageObj::LockVerseGhost() {
 		for (auto i = 0; i < ghosts.size(); i++) {
 			if (ghosts[i]->GetIsRefer()) { continue; }
 			//キャラステート変える際に気をつけてください
-			if (ghosts[i]->GetStateInst() > 2) { continue; }
+			if (ghosts[i]->GetStateInst() >= 3) { continue; }
 			XMFLOAT3 difPos = ghosts[i]->GetPosition();
 			float dif = Helper::GetInstance()->ChechLength(difPos, boss->GetPosition());
 			if (boss->GetLimit() > dif) {
@@ -340,7 +340,7 @@ void LoadStageObj::LockAllGhost() {
 	for (auto i = 0; i < ghosts.size(); i++) {
 		if (ghosts[i]->GetIsRefer()) { continue; }
 		//キャラステート変える際に気をつけてください
-		if (ghosts[i]->GetStateInst() > 2) { continue; }
+		if (ghosts[i]->GetStateInst() >= 3) { continue; }
 		stopGhosts[nowStopGhorst] = ghosts[i];
 		ghosts[i]->SetIsRefer(true);
 		nowStopGhorst++;

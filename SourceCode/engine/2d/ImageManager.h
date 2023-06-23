@@ -67,7 +67,7 @@ public:
 		LBBUTTON,
 		tip1,
 		Challenge,
-		Cancel
+		Cancel,
 		BOSS_ARROW,
 		NOTE,
 		NOTE2
