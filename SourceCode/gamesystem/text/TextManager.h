@@ -81,6 +81,10 @@ public:
 		SELECT_JOY,
 		SELECT_JOY2,
 	};
+
+	enum Name_Fourth {
+		TALK
+	};
 	static TextManager* GetInstance();
 
 	//
@@ -106,6 +110,8 @@ public:
 
 	void SetSecondConversation(Name_Second name = ANGER_TALK);
 
+	void SetFourthConversation(Name_Fourth);
+
 	void GetWordSize(Word word);
 
 	void SetRowPosition(float posX);
@@ -126,6 +132,7 @@ private:
 	std::map<TextManager::Name, Word> wordlist_;
 	std::map<TextManager::Name_First, Word> wordlist_first;
 	std::map<TextManager::Name_Second, Word> wordlist_second;
+	std::map<TextManager::Name_Fourth, Word> wordlist_fourth;
 	Conversation conversation_ = {};
 	Conversation old_conversation_ = {};
 
@@ -146,5 +153,6 @@ private:
 	Name old=NONE;
 	Name_First old_first = VIEWBOSS;
 	Name_Second old_second = ANGER_TALK;
+	Name_Fourth old_fourth;
 };
 

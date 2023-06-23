@@ -30,7 +30,7 @@ void HungerGauge::Update() {
 	if (isStop) { return; }
 	float l_Limit = 50.0f;
 	//一定ずつで減少していく(超過分がなくなった場合)
-	if (Helper::GetInstance()->CheckMax(m_Additional, 0.0f, -0.01f)) {
+	if (Helper::GetInstance()->CheckMax(m_Additional, 0.0f, -0.05f)) {
 		if (m_CatchCount <= 5 && m_CatchCount > 0) {
 			m_NowHunger -= m_SubHunger[m_CatchCount - 1];
 		}

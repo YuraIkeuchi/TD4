@@ -54,6 +54,8 @@ void ImageManager::SecondLoad2D()
 	IKESprite::LoadTexture(CIRCLECOVER, L"Resources/2d/objicon/circlecover.png");
 
 	IKESprite::LoadTexture(BOSS_ARROW, L"Resources/2d/objicon/Arrow.png");
+	IKESprite::LoadTexture(NOTE, L"Resources/2d/objicon/onp.png");
+	IKESprite::LoadTexture(NOTE2, L"Resources/2d/objicon/onp2.png");
 }
 
 //テクスチャの読み込み

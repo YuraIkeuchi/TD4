@@ -26,7 +26,8 @@ private:
 	//音符が流れるエフェクト
 	void FlowNote();
 private:
-	static const int NOTE_MAX = 9;
+	static const int NOTE_MAX = 15;
+	static const int NOTE_MAX2 = 15;
 public:
 	//gettersetter
 	bool GetAlive() { return m_Alive; }
@@ -34,11 +35,16 @@ public:
 	void SetAlive(const bool Alive) { m_Alive = Alive; }
 private:
 	array<unique_ptr<IKESprite>,NOTE_MAX> NoteSprite;
+	array<unique_ptr<IKESprite>, NOTE_MAX> NoteSprite2;
 	bool m_Alive = false;
 	//ノーツエフェクトの変数
 	array<XMFLOAT2, NOTE_MAX> m_NotePos;
 	array<XMFLOAT3, NOTE_MAX> m_NoteScale;
 	array<XMFLOAT4, NOTE_MAX> m_NoteColor;
+	//ノーツエフェクトの変数
+	array<XMFLOAT2, NOTE_MAX> m_NotePos2;
+	array<XMFLOAT3, NOTE_MAX> m_NoteScale2;
+	array<XMFLOAT4, NOTE_MAX> m_NoteColor2;
 
 	//光の状態
 	enum EmiState {
