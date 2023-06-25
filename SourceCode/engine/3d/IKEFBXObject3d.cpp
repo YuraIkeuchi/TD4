@@ -278,11 +278,12 @@ void IKEFBXObject3d::Update(bool Loop, int Speed, bool& Stop)
 		{
 			if (currentTime > endTime)
 			{
-				isPlay = false;
 				if (Stop)
 				{
 					Stop = false;
 				}
+				isPlay = false;
+			
 			}
 		}
 	}
