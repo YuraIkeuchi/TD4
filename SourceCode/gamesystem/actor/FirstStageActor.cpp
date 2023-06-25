@@ -184,13 +184,13 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	//各クラス更新
 	BackObj::GetInstance()->Update();
 
-	if(SelectScene::GetIns()->GetCloseScl()<10000.f)
+	/*if(SelectScene::GetIns()->GetCloseScl()<10000.f)
 	SelectScene::GetIns()->Upda();
 
 	if (Input::GetInstance()->TriggerButton(Input::Y)) {
 		SelectScene::GetIns()->ResetParama();
 		SceneManager::GetInstance()->ChangeScene("SELECT");
-	}
+	}*/
 		Menu::GetIns()->Upda();
 
 	if (enemymanager->BossDestroy())
@@ -383,7 +383,7 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	//blackwindow->Draw();
 	Menu::GetIns()->Draw();
 	camerawork->feedDraw();
-	SelectScene::GetIns()->Draw_Sprite();
+	//SelectScene::GetIns()->Draw_Sprite();
 	IKESprite::PostDraw();
 }
 //IMGuiの描画
