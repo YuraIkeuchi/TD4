@@ -63,6 +63,7 @@ void Player::InitState(const XMFLOAT3& pos) {
 	velocity /= 5.0f;
 	//大きさ
 	m_ChargePower = {};
+	m_ChargeType = POWER_NONE;
 	m_Scale = { 1.f,0.5f,1.f };
 }
 //状態遷移
@@ -195,6 +196,7 @@ void Player::ImGuiDraw() {
 	}
 	ImGui::Begin("Player");
 	ImGui::Text("Charge:%f", m_ChargePower);
+	ImGui::Text("ChargeType:%d", m_ChargeType);
 	ImGui::End();
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
@@ -324,7 +326,20 @@ void Player::Bullet_Management() {
 		}
 	}
 
-	
+	//チャージの量によって威力変える
+	if (m_ChargePower < 13.0f) {
+		m_ChargeType = POWER_NONE;
+	}
+	else if (m_ChargePower >= 13.0f && m_ChargePower < 25.0f) {
+		m_ChargeType = POWER_MIDDLE;
+	}
+	else if (m_ChargePower >= 25.0f && m_ChargePower < 40.0f) {
+		m_ChargeType = POWER_STRONG;
+	}
+	else {
+		m_ChargeType = POWER_UNLIMITED;
+	}
+
 
 	//攻撃
 	//Bが押されたら弾のチャージ
@@ -338,24 +353,10 @@ void Player::Bullet_Management() {
 		}
 
 		//チャージ中に飢餓ゲージが切れた場合弾が自動で放たれる
-		if (HungerGauge::GetInstance()->GetNowHunger() == 0.0f && m_ChargePower != 0.0f) {
+		if ((HungerGauge::GetInstance()->GetNowHunger() == 0.0f && m_ChargePower != 0.0f) || (m_ChargePower >= HungerGauge::GetInstance()->GetNowHunger())) {
 			BirthShot("Attack", true);
 			playerattach->SetAlive(true);
-			//HungerGauge::GetInstance()->SetSubVelocity(1.0f);
 			ResetBullet();
-		}
-
-		if (m_ChargePower < 13.0f) {
-			m_ChargeType = POWER_NONE;
-		}
-		else if (m_ChargePower >= 13.0f && m_ChargePower < 25.0f) {
-			m_ChargeType = POWER_MIDDLE;
-		}
-		else if (m_ChargePower >= 25.0f && m_ChargePower < 40.0f) {
-			m_ChargeType = POWER_STRONG;
-		}
-		else {
-			m_ChargeType = POWER_UNLIMITED;
 		}
 
 		if (!Input::GetInstance()->PushButton(Input::B) && m_ChargePower != 0.0f) {
