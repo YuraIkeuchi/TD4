@@ -31,6 +31,12 @@ public:
 	void ThirdUpdate();
 	//更新
 	void FourthUpdate();
+	//更新
+	void FiveUpdate();
+	//更新
+	void SixUpdate();
+	//更新
+	void SevenUpdate();
 
 	//描画
 	void Draw(DirectXCommon* dxCommon)override;
@@ -54,7 +60,7 @@ private:
 	//ライトのサイド生成
 	void LightReturn();
 	//サードボスに関する関数をまとめています
-	void ThirdBossAction();
+	void FourthBossAction();
 	//ゴーストをエネミーに変換します
 	void ChangeGhost2Enemy();
 	//ゴーストをエネミーに変換します

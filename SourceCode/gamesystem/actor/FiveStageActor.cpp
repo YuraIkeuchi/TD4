@@ -1,4 +1,4 @@
-#include "FiveSategActor.h"
+#include "FiveStageActor.h"
 #include "Audio.h"
 #include"Easing.h"
 #include "SceneManager.h"
@@ -9,7 +9,7 @@
 #include "BackObj.h"
 #include "Menu.h"
 
-void FiveSategActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
+void FiveStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
 	dxCommon->SetFullScreen(true);
 	//共通の初期化
@@ -37,7 +37,7 @@ void FiveSategActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	text_->SelectText(TextManager::ANGER_TALK);
 	camerawork->SetBoss(enemymanager->GetBoss());
 	camerawork->SetCameraState(CAMERA_BOSSAPPEAR);
-	camerawork->SetSceneName("FIRSTSTAGE");
+	camerawork->SetSceneName("FIVESTAGE");
 	camerawork->SplineSet();
 	camerawork->Update(camera);
 	ui = std::make_unique<UI>();
@@ -59,11 +59,11 @@ void FiveSategActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	Menu::GetIns()->Init();
 }
 
-void FiveSategActor::Finalize()
+void FiveStageActor::Finalize()
 {
 }
 
-void FiveSategActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
+void FiveStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
 	//関数ポインタで状態管理
 	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
@@ -92,7 +92,7 @@ void FiveSategActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
 }
 
-void FiveSategActor::Draw(DirectXCommon* dxCommon)
+void FiveStageActor::Draw(DirectXCommon* dxCommon)
 {
 	//描画方法
 	//ポストエフェクトをかけるか
@@ -118,7 +118,7 @@ void FiveSategActor::Draw(DirectXCommon* dxCommon)
 	}
 }
 
-void FiveSategActor::FrontDraw(DirectXCommon* dxCommon)
+void FiveStageActor::FrontDraw(DirectXCommon* dxCommon)
 {
 	//パーティクル描画
 	if (!camerawork->GetFeedEnd() && m_SceneState == SceneState::MainState) {
@@ -142,7 +142,7 @@ void FiveSategActor::FrontDraw(DirectXCommon* dxCommon)
 	camerawork->feedDraw();
 }
 
-void FiveSategActor::BackDraw(DirectXCommon* dxCommon)
+void FiveStageActor::BackDraw(DirectXCommon* dxCommon)
 {
 	IKESprite::PreDraw();
 	backScreen_->Draw();
@@ -164,7 +164,7 @@ void FiveSategActor::BackDraw(DirectXCommon* dxCommon)
 	IKEObject3d::PostDraw();
 }
 
-void FiveSategActor::IntroUpdate(DebugCamera* camera)
+void FiveStageActor::IntroUpdate(DebugCamera* camera)
 {
 	//演出スキップ
 	if (Input::GetInstance()->TriggerButton(Input::A)) {
@@ -217,7 +217,7 @@ void FiveSategActor::IntroUpdate(DebugCamera* camera)
 	}
 }
 
-void FiveSategActor::MainUpdate(DebugCamera* camera)
+void FiveStageActor::MainUpdate(DebugCamera* camera)
 {
 	Input* input = Input::GetInstance();
 	ui->Update();
@@ -284,7 +284,7 @@ void FiveSategActor::MainUpdate(DebugCamera* camera)
 	postEffect->SetRadPower(camerawork->GetEffectPower());
 }
 
-void FiveSategActor::FinishUpdate(DebugCamera* camera)
+void FiveStageActor::FinishUpdate(DebugCamera* camera)
 {
 	Input* input = Input::GetInstance();
 }

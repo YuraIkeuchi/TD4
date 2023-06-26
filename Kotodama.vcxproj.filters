@@ -478,9 +478,33 @@
     <ClCompile Include="SourceCode\engine\audio\AudioManager.cpp">
       <Filter>engine\audio</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\scene\FiveStage.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\actor\FiveSategActor.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\character\FiveBoss.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\character\SixBoss.cpp">
+      <Filter>gamesystem\charactor\Boss\Six</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\SevenBoss.cpp">
+      <Filter>gamesystem\charactor\Boss\Seven</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\FiveStageActor.cpp">
+      <Filter>gamesystem\actor\FIve</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\SevenStageActor.cpp">
+      <Filter>gamesystem\actor\Seven</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\SixStageActor.cpp">
+      <Filter>gamesystem\actor\Six</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\FiveBoss.cpp">
+      <Filter>gamesystem\charactor\Boss\Five</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\SevenStage.cpp">
+      <Filter>gamesystem\scene\Play\Seven</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\SixStage.cpp">
+      <Filter>gamesystem\scene\Play\Six</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\FiveStage.cpp">
+      <Filter>gamesystem\scene\Play\Five</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
@@ -923,9 +947,33 @@
     <ClInclude Include="SourceCode\engine\audio\AudioManager.h">
       <Filter>engine\audio</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\scene\FiveStage.h" />
-    <ClInclude Include="SourceCode\gamesystem\actor\FiveSategActor.h" />
-    <ClInclude Include="SourceCode\gamesystem\character\FiveBoss.h" />
+    <ClInclude Include="SourceCode\gamesystem\character\SixBoss.h">
+      <Filter>gamesystem\charactor\Boss\Six</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\SevenBoss.h">
+      <Filter>gamesystem\charactor\Boss\Seven</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\FiveStageActor.h">
+      <Filter>gamesystem\actor\FIve</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\SevenStageActor.h">
+      <Filter>gamesystem\actor\Seven</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\SixStageActor.h">
+      <Filter>gamesystem\actor\Six</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\FiveBoss.h">
+      <Filter>gamesystem\charactor\Boss\Five</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\SevenStage.h">
+      <Filter>gamesystem\scene\Play\Seven</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\SixStage.h">
+      <Filter>gamesystem\scene\Play\Six</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\FiveStage.h">
+      <Filter>gamesystem\scene\Play\Five</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
@@ -1265,6 +1313,33 @@
     </Filter>
     <Filter Include="gamesystem\effect\Note">
       <UniqueIdentifier>{831220a2-a861-49a8-a290-74336ac5398d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\charactor\Boss\Six">
+      <UniqueIdentifier>{b7f512e4-f30b-4794-bcaf-1cc472040edb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\charactor\Boss\Seven">
+      <UniqueIdentifier>{1758275f-71b2-4f0a-97bb-d62a93d29ca4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\actor\FIve">
+      <UniqueIdentifier>{b0e3bb02-22cb-4239-89d0-e8233ddb1940}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\actor\Six">
+      <UniqueIdentifier>{077f1196-a4b8-4a6f-9c07-413ee9f82c51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\actor\Seven">
+      <UniqueIdentifier>{648b5b01-a289-4220-9274-068ecf9d46ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\charactor\Boss\Five">
+      <UniqueIdentifier>{ef1fcbbc-6811-40b3-b1f8-33abeb6d24a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Play\Five">
+      <UniqueIdentifier>{ff450f5b-f452-4158-8782-6c0ba94ed002}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Play\Six">
+      <UniqueIdentifier>{a4058aaa-0b6e-4a9b-a409-62125457bf88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Play\Seven">
+      <UniqueIdentifier>{c22e072a-798b-4f56-ace8-3ba410fe85a4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

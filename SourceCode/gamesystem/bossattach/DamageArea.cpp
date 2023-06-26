@@ -79,8 +79,8 @@ void DamageArea::Initialize() {
 		m_TexAlive[i] = true;
 	}
 
-	m_VanishLimit = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "LineLimit")));
-	m_Damage = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "LineDamage")));
+	m_VanishLimit = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Six/Sixboss.csv", "LineLimit")));
+	m_Damage = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Six/Sixboss.csv", "LineDamage")));
 }
 
 void DamageArea::Update() {

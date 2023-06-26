@@ -16,7 +16,7 @@ bool AngerStamp::Initialize(const XMFLOAT3& pos) {
 	m_Birth = true;
 	m_Position = { pos.x,0.0f,pos.z };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
-	m_DamagePower = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "StampDamage")));
+	m_DamagePower = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Third/Thirdboss.csv", "StampDamage")));
 	return true;
 }
 

@@ -1,28 +1,31 @@
-ï»¿#pragma once
-#include "BaseActor.h"
-#include "BossText.h"
-#include "LoadStageObj.h"
-#include"Font.h"
-#include"Feed.h"
+#pragma once
+#include"BaseActor.h"
+#include"BossText.h"
 #include "MessageWindow.h"
-#include"Spline.h"
+#include<windows.h>
+#include<vector>
 
-/// ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³
-class SecondStageActor : public BaseActor {
-
+class FiveStageActor:public BaseActor
+{
 public:
-	/// åˆæœŸåŒ–
+	/// ‰Šú‰»
 	void Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) override;
-	/// çµ‚äº†
+	/// I—¹
 	void Finalize() override;
-	/// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°
+	/// –ˆƒtƒŒ[ƒ€XV
 	void Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) override;
-	/// æç”»
+	/// •`‰æ
 	void Draw(DirectXCommon* dxCommon) override;
 	void FrontDraw(DirectXCommon* dxCommon);
 	void BackDraw(DirectXCommon* dxCommon);
-	void ImGuiDraw(DirectXCommon* dxCommon);
-	void ColEnemy(std::vector<InterEnemy*> enelist);
+private:
+
+	void IntroUpdate(DebugCamera* camera)override;		//“oêƒV[ƒ“
+	void MainUpdate(DebugCamera* camera)override;		//ƒoƒgƒ‹ƒV[ƒ“
+	void FinishUpdate(DebugCamera* camera)override;		//Œ‚”jƒV[ƒ“
+
+private:
+	static const int SPOT_NUM = 4;
 private:
 	float Rads;
 	int textT;
@@ -30,21 +33,26 @@ private:
 	unique_ptr<BossText> text_;
 	unique_ptr<IKESprite> backScreen_ = nullptr;
 
-	Spline* spline;
-	vector<XMFLOAT3> pointsList;
-
-	enum class TextScene
-	{
-		NON,
-		TIEYOSHI_EXP,
-		STOPON_SPK,
-		KILL_TIEYOSHI,
-		LET_GO,
-		ENDTEXT
-	}_Tscne = TextScene::ENDTEXT;
-
-	//ä¸¸å½±(ãƒœã‚¹)
+	//ŠÛ‰e(ƒ{ƒX)
 	float BosscircleShadowDir[3] = { 0,-1,0 };
 	float BosscircleShadowAtten[3] = { 0.5f,0.6f,0.0f };
 	float BosscircleShadowFactorAngle[2] = { 0.0f, 2.0f };
+
+
+	//™‚Ì“I‚Ég‚¤
+	float m_Angle[SPOT_NUM] = {};
+	float m_Angle2[SPOT_NUM] = {};
+
+	float m_AddPos = {};
+
+	int m_AppTimer = 0;
+
+
+	enum AppState {
+		APP_START,
+		APP_NOTICE,
+		APP_VANISH,
+		APP_END,
+	}_AppState = APP_START;
 };
+

@@ -5,6 +5,8 @@
 #include "ThirdBoss.h"
 #include "FourthBoss.h"
 #include"FiveBoss.h"
+#include "SixBoss.h"
+#include "SevenBoss.h"
 #include "NormalEnemy.h"
 #include "TutorialEnemy.h"
 #include<vector>
@@ -63,7 +65,7 @@ private:
 	//ボス(初期化によってステージごとのボスに変更)
 	unique_ptr<InterBoss> boss;
 	//ファーストステージ用
-	static const int firstEnemyMax = 3;
+	static const int thirdEnemyMax = 3;
 	std::vector<InterEnemy*>bulletenemy;
 	//チュートリアル用
 	static const int tutorialEnemyMax = 4;

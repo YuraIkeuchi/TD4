@@ -1,529 +1,401 @@
 #include "FourthBoss.h"
 #include <any>
 #include <random>
+
 #include "Collision.h"
 #include "CsvLoader.h"
+#include "ImageManager.h"
+#include "Shake.h"
 #include "Player.h"
-#include "VariableCommon.h"
+#include <Easing.h>
+#include <TutorialEnemy.h>
 
 void (FourthBoss::* FourthBoss::stateTable[])() = {
-	&FourthBoss::InterValMove,//動きの合間
-	&FourthBoss::Choice,//選択
-	&FourthBoss::LineSet,//ダメージエリアのセット
-	&FourthBoss::Debuff,//デバフ
-	&FourthBoss::Confu,//混乱
-	&FourthBoss::Barrage,//弾幕
-	&FourthBoss::EndMove,//行動の終わり
+	&FourthBoss::WaitUpdate,//要素0
+	&FourthBoss::MoveUpdate, //要素1
+	&FourthBoss::ControlUpdate,
+	&FourthBoss::EnemySpawnUpdate,
+	&FourthBoss::SubGaugeUpdate,
+	&FourthBoss::UltimateUpdate,
+
 };
+
+
 //生成
 FourthBoss::FourthBoss() {
-	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::DJ);
-
+	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::MobUsa);
 	m_Object.reset(new IKEObject3d());
 	m_Object->Initialize();
 	m_Object->SetModel(m_Model);
-
-	//CDの初期化
-	cd[CD_BARRA].reset(new BarrangeCD);
-	cd[CD_BARRA]->Initialize();
-
-	cd[CD_LINE].reset(new LineCD);
-	cd[CD_LINE]->Initialize();
-
-	cd[CD_CONFU].reset(new ConfuCD);
-	cd[CD_CONFU]->Initialize();
-
-	cd[CD_DEBUFF].reset(new DebuffCD);
-	cd[CD_DEBUFF]->Initialize();
-
-	confueffect.reset(new ConfuEffect());
-	confueffect->Initialize();
-
-	noteeffect.reset(new NoteEffect());
-	noteeffect->Initialize();
-}
-//初期化
-bool FourthBoss::Initialize() {
-	m_Position = { 0.0f,3.0f,30.0f };
-	m_Rotation = { 0.0f,90.0f,0.0f };
-	m_Scale = { 0.3f,0.3f,0.3f };
-	m_Color = { 1.0f,1.0f,1.0f,1.0f };
-	//m_Rotation.y = -90.f;
-
-	ActionTimer = 1;
-
-	m_Radius = 5.2f;
-
-	_charaState = STATE_INTER;
-	m_AreaState = AREA_SET;
-	//CSVロード
-	CSVLoad();
-	return true;
-}
-//スキップ時の初期化
-void FourthBoss::SkipInitialize() {
-	m_Position = { 0.0f,3.0f,30.0f };
-	m_Rotation = { 0.0f,90.0f,0.0f };
-	m_Scale = { 0.3f,0.3f,0.3f };
-	m_Color = { 1.0f,1.0f,1.0f,1.0f };
-}
-//CSV
-void FourthBoss::CSVLoad() {
-	auto LimitSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "LIMIT_NUM")));
-
-	m_Limit.resize(LimitSize);
-	LoadCSV::LoadCsvParam_Int("Resources/csv/chara/boss/fourth/fourthboss.csv", m_Limit, "Interval");
-	
-	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "Magnification")));
-	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "hp1")));
-	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "HeartTarget")));
-	m_FollowSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/fourthboss.csv", "Speed")));
-
-	m_MaxHp = m_HP;
-}
-//行動
-void FourthBoss::Action() {
-	//状態移行(charastateに合わせる)
-	if (m_HP > 0.0f) {
-		(this->*stateTable[_charaState])();
+	for (int i = 0; i < kPhotoSpotMax; i++) {
+		IKETexture* photoSpot_ = IKETexture::Create(ImageManager::PHOTOSPOT, spotPos[i], { 1.5f,1.5f,1.5f }, { 1,1,1,1 });
+		photoSpot_->SetRotation({ 90.0f,0.0f,0.0f });
+		photoSpot_->TextureCreate();
+		photoSpot[i].reset(photoSpot_);
 	}
 
+	photo[Photo_In] = IKESprite::Create(ImageManager::PHOTO_IN, { 0,0 });
+	photo[Photo_Out_Top] = IKESprite::Create(ImageManager::PHOTO_OUT, { 0,-360 });
+	photo[Photo_Out_Under] = IKESprite::Create(ImageManager::PHOTO_OUT, { 0,1080 });
+	for (int i = Photo_Out_Top; i <= Photo_Out_Under; i++) {
+		photo[i]->SetSize({ 1280,360 });
+	}
+
+	for (unique_ptr<TutorialEnemy>& enemy : Fourthenemys) {
+		enemy = make_unique<TutorialEnemy>();
+		enemy->Initialize();
+		//enemy->SetIsWeak(true);
+		enemy->Update();
+	}
+}
+
+bool FourthBoss::Initialize() {
+	m_Position = { 0.0f,0.0f,0.0f };
+	m_Scale = { 2.0f,2.0f,2.0f };
+	m_Color = { 1.0f,1.0f,1.0f,1.0f };
+	m_Rotation.y = -90.f;
+	//m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Fourth/Fourthboss.csv", "pos")));
+	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Fourth/Fourthboss.csv", "Magnification")));
+	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Fourth/Fourthboss.csv", "hp1")));
+	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Fourth/Fourthboss.csv", "HeartTarget")));
+	m_MaxHp = m_HP;
+
+	ActionTimer = 0;
+
+	m_Radius = 5.0f;
+	return true;
+}
+
+void FourthBoss::SkipInitialize() {
+
+}
+
+//行動
+void FourthBoss::Action() {
+	if (m_HP < 0.1f) return;
+	if (IsPinch()) { isStrong = true; }
+	for (int i = 0; i < kPhotoSpotMax; i++) {
+		photoSpot[i]->Update();
+	}
+	for (unique_ptr<TutorialEnemy>& enemy : Fourthenemys) {
+		enemy->Update();
+	}
+	(this->*stateTable[(size_t)phase])();
 	/*^^^^当たり判定^^^^*/
 	//弾とボスの当たり判定
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
 	CollideBul(_playerBulA, Type::CIRCLE);
-	//プレイヤーの当たり判定
 	ColPlayer();
 	//OBJのステータスのセット
 	Obj_SetParam();
 	//リミット制限
 	Helper::GetInstance()->Clamp(m_Position.x, -55.0f, 65.0f);
 	Helper::GetInstance()->Clamp(m_Position.z, -60.0f, 60.0f);
-		
-	//CDの更新
-	for (size_t i = 0; i < cd.size(); i++) {
-		cd[i]->SetCatchPos({ m_Position.x,((m_Position.y + 2.0f) + (0.5f * i)),m_Position.z });
-		cd[i]->Update();
-
-		if (cd[i]->GetBreakCD()) {
-			m_EndCount++;
-			cd[i]->SetBreakCD(false);
-		}
-	}
-
-	//攻撃の音符
-	for (AttackNote* newnote : attacknotes) {
-		if (newnote != nullptr) {
-			newnote->Update();
-		}
-	}
-
-	//攻撃の音符の削除
-	for (int i = 0; i < attacknotes.size(); i++) {
-		if (attacknotes[i] == nullptr) {
-			continue;
-		}
-
-		if (!attacknotes[i]->GetAlive()) {
-			attacknotes.erase(cbegin(attacknotes) + i);
-		}
-	}
-
-	if (damagearea != nullptr) {
-		damagearea->Update();
-	}
-
-	confueffect->Update();
-	noteeffect->Update();
-	//HPが半分切ったら強化
-	if (m_HP < m_MaxHp / 2) {
-		isStrong = true;
-	}
 }
 //ポーズ
 void FourthBoss::Pause() {
-	
-}
-//エフェクト描画
-void FourthBoss::EffecttexDraw(DirectXCommon* dxCommon)
-{
-	if (m_HP < 0.0f)return;
 
-	confueffect->Draw(dxCommon);
-	noteeffect->Draw(dxCommon);
+
+}
+
+void FourthBoss::ImGui_Origin() {
+	ImGui::Begin("BOSS");
+	ImGui::SliderInt("Action", &ActionTimer, 0, 100);
+	ImGui::SliderFloat("m_Position.x", &m_Position.x, 0.0f, 360.0f);
+	ImGui::SliderFloat("m_Position.y", &m_Position.y, 0.0f, 360.0f);
+	ImGui::SliderFloat("m_Position.z", &m_Position.z, 0.0f, 360.0f);
+	ImGui::SliderFloat("Limit", &m_Limit, 0.0f, 360.0f);
+
+	switch (phase) {
+	case FourthBoss::commandState::WaitCommand:
+		ImGui::Text("WAIT");
+		break;
+	case FourthBoss::commandState::MoveCommand:
+		ImGui::Text("MOVE");
+		break;
+	case FourthBoss::commandState::ControlCommand:
+		ImGui::Text("CONTROL");
+		break;
+	case FourthBoss::commandState::EnemySpawn:
+		ImGui::Text("ENEMYSPAWN");
+		break;
+	case FourthBoss::commandState::SubGauge:
+		ImGui::Text("SUBGAUGE");
+		break;
+	case FourthBoss::commandState::Ultimate:
+		ImGui::Text("ULTIMATE");
+		break;
+	default:
+		assert(0);
+		break;
+	}
+
+
+
+	ImGui::End();
+}
+
+void FourthBoss::EffecttexDraw(DirectXCommon* dxCommon) {
+	IKETexture::PreDraw2(dxCommon, AlphaBlendType);
+	for (int i = 0; i < kPhotoSpotMax; i++) {
+		photoSpot[i]->Draw();
+	}
+	IKETexture::PostDraw();
+	IKESprite::PreDraw();
+	if (phase == commandState::MoveCommand && ActionTimer > 60 && shutterTime < 1.0f) {
+		photo[Photo_In]->Draw();
+	}
+	for (int i = Photo_Out_Top; i <= Photo_Out_Under; i++) {
+		photo[i]->Draw();
+	}
+	IKESprite::PostDraw();
 }
 //描画
 void FourthBoss::Draw(DirectXCommon* dxCommon) {
-	Obj_Draw();
-	//CDの更新
-	for (size_t i = 0; i < cd.size(); i++) {
-		cd[i]->Draw(dxCommon);
-	}
-	if (m_HP > 0.0f) {
-		//攻撃の音符
-		for (AttackNote* newnote : attacknotes) {
-			if (newnote != nullptr) {
-				newnote->Draw(dxCommon);
-			}
-		}
-		if (damagearea != nullptr) {
-			damagearea->Draw(dxCommon);
-		}
-		EffecttexDraw(dxCommon);
-	}
-}
-//ImGui
-void FourthBoss::ImGui_Origin() {
-	//ImGui::Begin("Fourth");
-	//ImGui::Text("Rand:%d", m_AttackRand);
-	//ImGui::Text("m_MoveInterVal:%d", m_MoveInterVal);
-	//ImGui::End();
-
-	//CDの更新
-	for (int i = 0; i < cd.size(); i++) {
-		cd[i]->ImGuiDraw();
-	}
-}
-//インターバル
-void FourthBoss::InterValMove() {
-	m_MoveInterVal++;
-	m_AreaState = AREA_SET;
-	mt19937 mt{ std::random_device{}() };
-	uniform_int_distribution<int> l_RandomMove(0, 3);
-	//すべてが消えていたら復活させる
-	if ((cd[CD_LINE]->GetCDState() == CD_DEATH) && (cd[CD_DEBUFF]->GetCDState() == CD_DEATH) &&
-		(cd[CD_CONFU]->GetCDState() == CD_DEATH) && (cd[CD_BARRA]->GetCDState() == CD_DEATH)) {
-		m_EndCount = 0;
-		_charaState = STATE_END;
-	}
-
 	//
-	if (m_MoveInterVal == m_Limit[LIMIT_BASE]) {
-		//行動を決めて次の行動に移る
-		m_AttackRand = int(l_RandomMove(mt));
-		if (cd[m_AttackRand]->GetCDState() != CD_STAY) {
-			m_MoveInterVal = 49;
+	for (unique_ptr<TutorialEnemy>& enemy : Fourthenemys) {
+		enemy->Draw(dxCommon);
+	}
+	Obj_Draw();
+	EffecttexDraw(dxCommon);
+}
+
+void FourthBoss::SelectAction() {
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_RandAction(0, 100);
+	int l_case = l_RandAction(mt);
+	if (l_case < 10) {
+		ChangePos2Random();
+		isInstruction = FourthBossInst::None;
+		phase = commandState::MoveCommand;
+	}
+	else if (l_case < 30) {
+		if (!EnemysIsActiveCheck()) {
+			isSearch = true;
+			isInstruction = FourthBossInst::ChangeGhost;
+			phase = commandState::EnemySpawn;
 		}
 		else {
-			m_AfterPos = cd[m_AttackRand]->GetPosition();
-			m_AfterRot.y = Helper::GetInstance()->DirRotation(m_Position, cd[m_AttackRand]->GetPosition(), -PI_180);
-			m_MoveInterVal = {};
-			_charaState = STATE_CHOICE;
+			ChangePos2Random();
+			isInstruction = FourthBossInst::None;
+			phase = commandState::MoveCommand;
+		}
+	}
+	else if (l_case < 60) {
+		if (isReferCheck) {
+			isSearch = true;
+			isInstruction = FourthBossInst::None;
+			phase = commandState::ControlCommand;
+		}
+		else {
+			ChangePos2Random();
+			isInstruction = FourthBossInst::None;
+			phase = commandState::MoveCommand;
+		}
+	}
+	else if (l_case < 90) {
+		isInstruction = FourthBossInst::None;
+		phase = commandState::SubGauge;
+	}
+	else if (l_case < 95) {
+		isHyperSearch = true;
+		isInstruction = FourthBossInst::None;
+		phase = commandState::Ultimate;
+	}
+	else if (l_case > 100) {
+		assert(0);
+	}
+}
+
+void FourthBoss::WaitUpdate() {
+	ActionTimer++;
+	if (ActionTimer >= ActionTimerMax[(size_t)phase]) {
+		//SelectAction();
+		isHyperSearch = true;
+		isInstruction = FourthBossInst::None;
+		phase = commandState::Ultimate;
+		ActionTimer = 0;
+	}
+}
+
+void FourthBoss::MoveUpdate() {
+	ActionTimer++;
+	photoSpot[moveSpawn]->SetColor({ 1.0f,0.0f,0.0f,1.0f });
+	if (ActionTimer >= ActionTimerMax[(size_t)phase] && !isShutter) {
+		isShutter = true;
+	}
+	if (!isShutter) { return; }
+	if (ShutterEffect()) {
+		m_Position = spotPos[moveSpawn];
+		if (ShutterFeed()) {
+			ShutterReset();
+			ActionTimer = 0;
+			phase = commandState::WaitCommand;
 		}
 	}
 }
-//動きの選択
-void FourthBoss::Choice() {
-	const float l_AddAngle = 5.0f;
-	float l_AddFrame = 0.001f;
-	//二点間の距離計算
-	m_Length = Helper::GetInstance()->ChechLength({ m_Position.x,0.0f,m_Position.z }, { m_AfterPos.x,0.0f,m_AfterPos.z });
-	//次のCDを狙う
-	if (m_Length > 0.5f) {
-		Helper::GetInstance()->FollowMove(m_Position, m_AfterPos, m_FollowSpeed);
+
+void FourthBoss::ControlUpdate() {
+	if (isMiss) {
+		isInstruction = FourthBossInst::None;
+		phase = commandState::SubGauge;
+		isMiss = false;
+		return;
 	}
-	else {
-		//行動を決めて次の行動に移る
-		m_StopTimer++;
-		if (m_StopTimer > m_Limit[LIMIT_BASE]) {
-			m_StopTimer = 0;
-			m_Angle = {};
-			if (cd[m_AttackRand]->GetCDState() != CD_STAY) {
-				_charaState = STATE_INTER;
-			}
-			else {
-				cd[m_AttackRand]->SetAttackSetCD(true);
-				_charaState = m_AttackRand + 2;
-				cd[m_AttackRand]->SetCDState(CD_CATCH);
-				m_EndCount++;
-			}
-		}
+	if (isSearch) { return; }
+	ActionTimer++;
+	if (ActionTimer >= ActionTimerMax[(size_t)phase] && !isShutter) {
+		isShutter = true;
 	}
-
-	//sin波によって上下に動く
-	m_Angle += l_AddAngle;
-	m_Angle2 = m_Angle * (3.14f / 180.0f);
-	m_Position.y = (sin(m_Angle2) * 2.0f + 2.0f);
-
-	m_AfterRot.y = Helper::GetInstance()->DirRotation(m_Position, m_AfterPos, PI_90);
-
-	m_Rotation.y = Ease(In, Cubic, 0.5f, m_Rotation.y, m_AfterRot.y);
-}
-//ダメージエリアのセット
-void FourthBoss::LineSet() {
-	int l_BirthNum = {};
-	const int l_StartLimit = 120;
-
-	//HPの削り具合によって出す線の数を変える
-	if (isStrong) {
-		l_BirthNum = 4;
-	}
-	else {
-		l_BirthNum = 2;
-	}
-
-	m_CheckTimer++;
-
-	//最初にSE鳴らす
-	if (m_CheckTimer == 50) {
-		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
-	}
-
-	if (m_CheckTimer > l_StartLimit) {
-		if (m_AreaState == AREA_SET) {
-			damagearea.reset(new DamageArea(l_BirthNum));
-			damagearea->Initialize();
-			m_AreaState = AREA_STOP;
-		}
-		else if (m_AreaState == AREA_STOP) {
-			cd[CD_LINE]->SetCDState(CD_DEATH);
-			_charaState = STATE_INTER;
-			m_CheckTimer = {};
+	if (!isShutter) { return; }
+	if (ShutterEffect()) {
+		isInstruction = FourthBossInst::StopGhost;
+		if (ShutterFeed()) {
+			ShutterReset();
+			ActionTimer = 0;
+			phase = commandState::WaitCommand;
 		}
 	}
 }
-//プレイヤーのデバフ
-void FourthBoss::Debuff() {
-	const int l_StartLimit = 150;
-	m_CheckTimer++;
-	if (m_CheckTimer == 50) {
-		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
+
+void FourthBoss::EnemySpawnUpdate() {
+	if (isMiss) {
+		isInstruction = FourthBossInst::None;
+		phase = commandState::SubGauge;
+		isMiss = false;
+		return;
 	}
-	else if (m_CheckTimer == 80) {
-		noteeffect->SetAlive(true);
+	if (isSearch) { return; }
+	if (isInstruction != FourthBossInst::SpawnEnemy) { return; }
+	ActionTimer++;
+	if (ActionTimer >= ActionTimerMax[(size_t)phase] && !isShutter) {
+		int num = 3;
+		if (isStrong) {
+			num = 5;
+		}
+		for (int i = 0; i < num; i++) {
+			Fourthenemys[i]->SetPosition(jackPos[i]);
+			Fourthenemys[i]->Born();
+			Fourthenemys[i]->SetIsActive(true);
+		}
+		isShutter = true;
 	}
-	else if (m_CheckTimer == 110) {
+	if (!isShutter) { return; }
+	if (ShutterEffect()) {
+		if (ShutterFeed()) {
+			ShutterReset();
+			ActionTimer = 0;
+			phase = commandState::WaitCommand;
+		}
+	}
+	if (isInstruction == FourthBossInst::FinishMove) {
+		phase = commandState::WaitCommand;
+	}
+}
+
+void FourthBoss::SubGaugeUpdate() {
+	ActionTimer++;
+	if (ActionTimer >= ActionTimerMax[(size_t)phase] && !isShutter) {
+		isShutter = true;
 		m_Check = true;
 	}
-	else if (m_CheckTimer == l_StartLimit) {
-		cd[CD_DEBUFF]->SetCDState(CD_DEATH);
-		_charaState = STATE_INTER;
-		m_CheckTimer = {};
+	if (!isShutter) { return; }
+	if (ShutterEffect()) {
+		if (ShutterFeed()) {
+			ShutterReset();
+			ActionTimer = 0;
+			phase = commandState::WaitCommand;
+		}
 	}
 }
-//プレイヤー混乱
-void FourthBoss::Confu() {
-	m_CheckTimer++;
-	const int l_LimitConfu = 80;
-	const int l_EndConfu = 120;
-	int l_ConfuTimer = {};
-	if (m_CheckTimer == 50) {
-		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
-	}
 
-	if (m_CheckTimer == l_LimitConfu) {
-		confueffect->SetAlive(true);
-		Player::GetInstance()->SetConfu(true);
-		if (isStrong) {
-			l_ConfuTimer = m_Limit[LIMIT_STRONG_CONFU];
-		}
-		else {
-			l_ConfuTimer = m_Limit[LIMIT_CONFU];
-		}
-		Player::GetInstance()->SetConfuTimer(l_ConfuTimer);
+void FourthBoss::UltimateUpdate() {
+	if (isHyperSearch) { return; }
+	ParticleEmitter::GetInstance()->CameraEffect(80, m_Position, 4.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
+	ParticleEmitter::GetInstance()->CameraEffect(80, spotPos[0], 4.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
+	ParticleEmitter::GetInstance()->CameraEffect(80, spotPos[2], 4.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
+
+	ActionTimer++;
+	if (ActionTimer >= ActionTimerMax[(size_t)phase] && !isShutter) {
+		isShutter = true;
 	}
-	else if (m_CheckTimer == l_EndConfu) {
-		cd[CD_CONFU]->SetCDState(CD_DEATH);
-		_charaState = STATE_INTER;
-		m_CheckTimer = {};
+	if (!isShutter) { return; }
+	if (ShutterEffect()) {
+		isInstruction = FourthBossInst::AllSummon;
+		if (ShutterFeed()) {
+			ShutterReset();
+			ActionTimer = 0;
+			phase = commandState::WaitCommand;
+		}
 	}
 }
-//拡散(ふつう)
-void FourthBoss::Barrage() {
-	const int l_StartLimit = 100;
 
+bool FourthBoss::ShutterEffect() {
+	shutterTime += 1.0f / shutterTimeMax;
+	shutterTime = clamp(shutterTime, 0.0f, 1.0f);
+
+	shutterHight[0] = Ease(Out, Quad, shutterTime, -360, 0);
+	shutterHight[1] = Ease(Out, Quad, shutterTime, 1080, 360);
+
+	photo[Photo_Out_Top]->SetPosition({ 0,shutterHight[0] });
+	photo[Photo_Out_Under]->SetPosition({ 0,shutterHight[1] });
+	if (shutterTime == 1.0f) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+bool FourthBoss::ShutterFeed() {
+	feedTimer += 1.0f / feedTimeMax;
+	float color = Ease(Out, Linear, feedTimer, 1.0f, 0.0f);
+	photoSpot[moveSpawn]->SetColor({ 1.0f,1.0f,1.0f,1.0f });
+	photo[Photo_Out_Top]->SetColor({ 1,1,1, color });
+	photo[Photo_Out_Under]->SetColor({ 1,1,1,color });
+	feedTimer = clamp(feedTimer, 0.0f, 1.0f);
+
+	if (feedTimer == 1.0f) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+void FourthBoss::ShutterReset() {
+	isShutter = false;
+	shutterHight[0] = -360.0f;
+	shutterHight[1] = 1080.0f;
+	photo[Photo_Out_Top]->SetPosition({ 0,shutterHight[0] });
+	photo[Photo_Out_Under]->SetPosition({ 0,shutterHight[1] });
+	photo[Photo_Out_Top]->SetColor({ 1,1,1,1 });
+	photo[Photo_Out_Under]->SetColor({ 1,1,1,1 });
+	shutterTime = 0.0f;
+	feedTimer = 0.0f;
+}
+
+bool FourthBoss::EnemysIsActiveCheck() {
+	for (unique_ptr<TutorialEnemy>& enemy : Fourthenemys) {
+		if (!enemy) { continue; }
+		if (enemy->GetIsActive()) { return true; }
+	}
+	return false;
+}
+
+void FourthBoss::ChangePos2Random() {
 	mt19937 mt{ std::random_device{}() };
-	uniform_int_distribution<int> l_RandomMove(0, 1);
-
-	m_CheckTimer++;
-	if (m_CheckTimer == 50) {
-		m_BarraRand = int(l_RandomMove(mt));
-		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
+	uniform_int_distribution<int> l_Rand(0, 4);
+	moveSpawn = l_Rand(mt);
+	if (moveSpawn == nowSpawn) {
+		moveSpawn++;
+		if (moveSpawn > 4) {
+			moveSpawn = 0;
+		}
 	}
-	else if (m_CheckTimer > l_StartLimit) {
-		m_Rotation.y += 2.0f;
-		m_RotTimer++;
-		if (m_RotTimer % 5 == 0) {
-			//乱数によって弾幕の種類が変わる
-			if (m_BarraRand == 0) {
-				if (!isStrong) {
-					BirthNote("NORMAL");
-				}
-				else {
-					BirthNote("ALTER");
-				}
-			}
-			else if (m_BarraRand == 1) {
-				BirthNote("RANDOM");
-			}
-		}
-
-		//一定フレームで終了
-		if (m_RotTimer == m_Limit[LIMIT_BARRA]) {
-			cd[CD_BARRA]->SetCDState(CD_DEATH);
-			m_RotTimer = {};
-			m_CheckTimer = {};
-			m_CircleScale = 30.0f;
-			m_CircleSpeed = {};
-			m_BarraRand = {};
-			_charaState = STATE_INTER;
-		}
-
-		if (m_Rotation.y > 360.0f) {
-			m_Rotation.y = 0.0f;
-		}
-
-		//強さによって回転が変わる
-		if (isStrong) {
-			m_CircleSpeed += 1.0f;
-			m_CircleScale += 0.3f;
-		}
-		else {
-			m_CircleSpeed += 0.5f;
-			m_CircleScale += 0.2f;
-		}
-		m_AfterPos = Helper::GetInstance()->CircleMove({}, m_CircleScale, m_CircleSpeed);
-
-		m_Position = {
-			Ease(In,Cubic,0.2f,m_Position.x,m_AfterPos.x),
-			m_Position.y,
-			Ease(In,Cubic,0.2f,m_Position.z,m_AfterPos.z),
-		};
-	}
+	nowSpawn = moveSpawn;
 }
-//行動の終わり(プレイヤーから逃げる)
-void FourthBoss::EndMove() {
-	const int l_EndLimit = 100;
-	const float l_AddAngle = 5.0f;
-	float l_AddSpeed = {};
-	const float l_FollowSpeed = 0.3f;
-	m_EndTimer++;
 
-	//二点間の距離計算
-	m_Length = Helper::GetInstance()->ChechLength({ m_Position.x,0.0f,m_Position.z }, {});
-	//次のCDを狙う
-	if (m_Length > 0.5f) {
-		Helper::GetInstance()->FollowMove(m_Position, {}, l_FollowSpeed);
-		m_AddPower -= m_Gravity;
-		if (Helper::GetInstance()->CheckMax(m_Position.y, {}, m_AddPower)) {
-			m_AddPower = 0.5f;
-		}
-	}
-	else {
-		_charaState = STATE_INTER;
-		m_EndTimer = {};
-		m_AddPower = {};
-	}
-
-	if (m_EndTimer == 30) {
-		for (int i = 0; i < cd.size(); i++) {
-			cd[i]->SetCDState(CD_RESPORN);
-		}
-	}
-}
-//ノーツの生成
-void FourthBoss::BirthNote(const std::string& BarrageName) {
-	//ヒトツずつ生成されるパターン
-	if (BarrageName == "NORMAL" || BarrageName == "RANDOM") {
-		XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
-		XMMATRIX matRot = {};
-		if (BarrageName == "RANDOM") {		//ランダム
-			mt19937 mt{ std::random_device{}() };
-			uniform_int_distribution<int> l_RandomRot(0, 360);
-			matRot = XMMatrixRotationY(XMConvertToRadians(float(l_RandomRot(mt))));
-		}
-		else if (BarrageName == "NORMAL") {	//ボスの向き依存
-			matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
-		}
-		move = XMVector3TransformNormal(move, matRot);
-		XMFLOAT2 l_Angle;
-		l_Angle.x = move.m128_f32[0];
-		l_Angle.y = move.m128_f32[2];
-		//ノーツの発生
-		AttackNote* newnote;
-		newnote = new AttackNote();
-		newnote->Initialize();
-		newnote->SetPosition(m_Position);
-		newnote->SetAngle(l_Angle);
-		attacknotes.push_back(newnote);
-	}
-	else if (BarrageName == "ALTER") {		//同時に弾を出す
-		for (int i = 0; i < BULLET_NUM; i++) {
-			XMVECTOR move2 = { 0.0f, 0.0f, 0.1f, 0.0f };
-
-			XMMATRIX matRot2;
-			if (i == 0) {
-				matRot2 = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
-			}
-			else if (i == 1) {
-				matRot2 = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 90.0f));
-			}
-			else if (i == 2) {
-				matRot2 = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 180.0f));
-			}
-			else {
-				matRot2 = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 270));
-			}
-
-			move2 = XMVector3TransformNormal(move2, matRot2);
-			XMFLOAT2 l_Angle2;
-			l_Angle2.x = move2.m128_f32[0];
-			l_Angle2.y = move2.m128_f32[2];
-
-			//ノーツの発生
-			AttackNote* newnote;
-			newnote = new AttackNote();
-			newnote->Initialize();
-			newnote->SetPosition(m_Position);
-			newnote->SetAngle(l_Angle2);
-			attacknotes.push_back(newnote);
-		}
-	}
-}
-//登場シーン
-void FourthBoss::AppearAction() {
-	Obj_SetParam();
-}
-//ボス撃破シーン
-void FourthBoss::DeadAction() {
-	const float l_AddAngle = 5.0f;
-	m_DeathTimer++;
-	const int l_BaseTarget = 50;
-	if (m_DeathTimer == 1) {
-		m_Position = { 0.0f,30.0f,20.0f };
-		m_Rotation = { 0.0f,0.0f,0.0f };
-	}
-	else if (m_DeathTimer >= 2 && m_DeathTimer < 300) {
-		//sin波によって上下に動く
-		m_Angle += l_AddAngle;
-		m_Angle2 = m_Angle * (3.14f / 180.0f);
-		m_Position.x = (sin(m_Angle2) * 15.0f + 15.0f);
-		DeathParticle();
-		for (int i = 0; i < cd.size(); i++) {
-			cd[i]->DeathMove(m_DeathTimer, (i * l_BaseTarget) + l_BaseTarget);
-		}
-	}
-	else {
-		m_Gravity = 0.05f;
-		//飛ぶような感じにするため重力を入れる
-		m_AddPower -= m_Gravity;
-		Helper::GetInstance()->CheckMax(m_Position.y, 6.0f, m_AddPower);
-	}
-
-	Obj_SetParam();
-}
-//ボス撃破シーン(スロー)
-void FourthBoss::DeadAction_Throw() {
-	Obj_SetParam();
-}
-//撃破パーティクル
-void FourthBoss::DeathParticle() {
-	const XMFLOAT4 s_color = { 1.0f,1.0f,1.0f,1.0f };
-	const XMFLOAT4 e_color = { 0.0f,0.0f,1.0f,1.0f };
-	float s_scale = 5.0f;
-	float e_scale = 0.0f;
-	float l_velocity = 0.5f;
-	for (int i = 0; i < 3; ++i) {
-		ParticleEmitter::GetInstance()->DeathEffect(50, { m_Position.x,(m_Position.y - 1.0f),m_Position.z }, s_scale, e_scale, s_color, e_color, l_velocity);
-	}
+bool FourthBoss::IsPinch() {
+	return 	m_HP < (m_MaxHp * 0.66f);
 }

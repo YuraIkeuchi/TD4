@@ -6,13 +6,6 @@
 #include "CsvLoader.h"
 #include <random>
 
-void (FiveBoss::* FiveBoss::stateTable[])() = {
-	&FiveBoss::InterValMove,
-	&FiveBoss::Choice,
-
-	&FiveBoss::EndMove,
-};
-
 FiveBoss::FiveBoss()
 {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::DJ);
@@ -61,10 +54,10 @@ void FiveBoss::Pause()
 
 void FiveBoss::Action()
 {
-	//状態移行(charastateに合わせる)
-	if (m_HP > 0.0f) {
-		(this->*stateTable[_charaState])();
-	}
+	////状態移行(charastateに合わせる)
+	//if (m_HP > 0.0f) {
+	//	(this->*stateTable[_charaState])();
+	//}
 
 	/*^^^^当たり判定^^^^*/
 	//弾とボスの当たり判定
@@ -120,24 +113,4 @@ void FiveBoss::EffecttexDraw(DirectXCommon* dxCommon)
 void FiveBoss::Draw(DirectXCommon* dxCommon)
 {
 	Obj_Draw();
-}
-
-void FiveBoss::InterValMove()
-{
-}
-
-void FiveBoss::Choice()
-{
-}
-
-void FiveBoss::RockOnAttack()
-{
-}
-
-void FiveBoss::RandAttack()
-{
-}
-
-void FiveBoss::EndMove()
-{
 }
