@@ -14,7 +14,7 @@ bool HungerGauge::Initialize() {
 	m_CatchCount = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/hunger/hungergauge.csv", "Catch")));
 	m_NowHunger = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/hunger/hungergauge.csv", "Now")));
 	m_HungerMax = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/hunger/hungergauge.csv", "Max")));
-
+	m_SubExtra = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/hunger/hungergauge.csv", "SubExtra")));
 	//だるいんで一旦これで
 	m_SubHunger[0] = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/hunger/hungergauge.csv", "Sub1")));
 	m_SubHunger[1] = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/hunger/hungergauge.csv", "Sub2")));
@@ -30,9 +30,8 @@ void HungerGauge::Update() {
 	if (isStop) { return; }
 	float l_Limit = 50.0f;
 	float l_AdditionalLimit = 10.0f;
-	float l_SubExtra = 0.025f;
 	//一定ずつで減少していく(超過分がなくなった場合)
-	if (Helper::GetInstance()->CheckMax(m_Additional, 0.0f, -l_SubExtra)) {
+	if (Helper::GetInstance()->CheckMax(m_Additional, 0.0f, -m_SubExtra)) {
 		if (m_CatchCount <= 5 && m_CatchCount > 0) {
 			m_NowHunger -= m_SubHunger[m_CatchCount - 1];
 		}

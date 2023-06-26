@@ -23,7 +23,10 @@ EnemyManager::EnemyManager(const std::string& SceneName) {
 	} else if (m_SceneName == "FOURTHSTAGE") {
 		boss = make_unique <FourthBoss>();
 		boss->Initialize();
-	}else if (m_SceneName == "TUTORIAL") {
+	} else if (m_SceneName == "FIVESTAGE") {
+		boss = make_unique <FiveBoss>();
+		boss->Initialize();
+	} else if (m_SceneName == "TUTORIAL") {
 		for (auto i = 0; i < tutorialenemy.size(); i++) {
 			tutorialenemy[i] = make_unique<TutorialEnemy>();
 			tutorialenemy[i]->Initialize();

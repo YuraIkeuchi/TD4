@@ -30,7 +30,7 @@ void FiveSategActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
 
-	enemymanager = std::make_unique<EnemyManager>("SECONDSTAGE");
+	enemymanager = std::make_unique<EnemyManager>("FIVESTAGE");
 	//enemymanager->Initialize(dxCommon);
 	text_ = make_unique<BossText>();
 	text_->Initialize(dxCommon);
@@ -38,6 +38,7 @@ void FiveSategActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	camerawork->SetBoss(enemymanager->GetBoss());
 	camerawork->SetCameraState(CAMERA_BOSSAPPEAR);
 	camerawork->SetSceneName("FIRSTSTAGE");
+	camerawork->SplineSet();
 	camerawork->Update(camera);
 	ui = std::make_unique<UI>();
 	ui->Initialize();
@@ -165,106 +166,13 @@ void FiveSategActor::BackDraw(DirectXCommon* dxCommon)
 
 void FiveSategActor::IntroUpdate(DebugCamera* camera)
 {
-	if (camerawork->GetAppearType() == APPEAR_SEVEN || camerawork->GetAppearType() == APPEAR_EIGHT) {
-		text_->Display();
-		//最初の言葉(怒り)
-		if (m_AppState == AppState::ANGER_START) {
-			text_->SelectText(TextManager::ANGER_TALK);
-			if (Input::GetInstance()->TriggerButton(Input::B)) {
-				m_AppState = AppState::ANGER_SECOND;
-			}
-		}
-		//2つ目の言葉(怒り)
-		else if (m_AppState == AppState::ANGER_SECOND) {
-			text_->SelectText(TextManager::ANGER_TALK2);
-			if (Input::GetInstance()->TriggerButton(Input::B)) {
-				m_AppState = AppState::JOY_START;
-				enemymanager->DirSet(DIR_JOY);
-			}
-		}
-		//最初の言葉(喜び)
-		else if (m_AppState == AppState::JOY_START) {
-			text_->SelectText(TextManager::JOY_TALK);
-			if (Input::GetInstance()->TriggerButton(Input::B)) {
-				m_AppState = AppState::JOY_SECOND;
-			}
-		}
-		//2個目の言葉(喜び)
-		else if (m_AppState == AppState::JOY_SECOND) {
-			text_->SelectText(TextManager::JOY_TALK2);
-			if (Input::GetInstance()->TriggerButton(Input::B)) {
-				m_AppState = AppState::JOY_THIRD;
-			}
-		}
-		//3個めの言葉(喜び)
-		else if (m_AppState == AppState::JOY_THIRD) {
-			text_->SelectText(TextManager::JOY_TALK3);
-			if (Input::GetInstance()->TriggerButton(Input::B)) {
-				m_AppState = AppState::SELECT_EMO;
-			}
-		}
-		//選択肢
-		else if (m_AppState == AppState::SELECT_EMO) {
-			text_->ChangeColor(1, { 1.0f,0.0f,0.0f,1.0f });
-			text_->ChangeColor(2, { 0.5f,1.0f,0.1f,1.0f });
-			text_->SelectText(TextManager::SELECT_TALK);
-			if (Input::GetInstance()->TriggerButton(Input::Y)) {
-				enemymanager->DirSet(DIR_ANGER);
-				m_AppState = AppState::EMO_ANGER;
-			}
-			else if (Input::GetInstance()->TriggerButton(Input::X)) {
-				enemymanager->DirSet(DIR_JOY);
-				m_AppState = AppState::EMO_JOY;
-			}
-		}
-		//イカリを選んだ場合
-		else if (m_AppState == AppState::EMO_ANGER) {
-			for (int i = 0; i < 3; i++) {
-				text_->ChangeColor(i, { 1.0f,1.0f,1.0f,1.0f });
-			}
-			text_->SelectText(TextManager::SELECT_ANGER);
-			if (Input::GetInstance()->TriggerButton(Input::B)) {
-				m_AppState = AppState::EMO_ANGER2;
-				camerawork->SetApproach(true);
-			}
-		}
-		else if (m_AppState == AppState::EMO_ANGER2) {
-			for (int i = 0; i < 3; i++) {
-				text_->ChangeColor(i, { 1.0f,0.0f,0.0f,1.0f });
-			}
-			text_->SelectText(TextManager::SELECT_ANGER2);
-		}
-		//よろこびを選んだ場合
-		else if (m_AppState == AppState::EMO_JOY) {
-			for (int i = 0; i < 3; i++) {
-				text_->ChangeColor(i, { 1.0f,1.0f,1.0f,1.0f });
-			}
-			text_->SelectText(TextManager::SELECT_JOY);
-			if (Input::GetInstance()->TriggerButton(Input::B)) {
-				m_AppState = AppState::EMO_JOY2;
-				camerawork->SetApproach(true);
-			}
-		}
-		else if (m_AppState == AppState::EMO_JOY2) {
-			for (int i = 0; i < 3; i++) {
-				text_->ChangeColor(i, { 1.0f,0.0f,0.0f,1.0f });
-			}
-			text_->SelectText(TextManager::SELECT_JOY2);
-		}
-	}
-
-	//最後までテキストを見た
-	if (enemymanager->GetEnemyFinishAppear()) {
-		m_SceneState = SceneState::MainState;
-		camerawork->SetCameraState(CAMERA_NORMAL);
-	}
-
 	//演出スキップ
 	if (Input::GetInstance()->TriggerButton(Input::A)) {
 		camerawork->SetCameraSkip(true);
 	}
 
 	if (camerawork->GetAppearEndF()) {
+		_AppState = APP_END;
 		m_SceneState = SceneState::MainState;
 		camerawork->SetCameraState(CAMERA_NORMAL);
 		enemymanager->SkipInitialize();
@@ -277,6 +185,36 @@ void FiveSategActor::IntroUpdate(DebugCamera* camera)
 	enemymanager->AppearUpdate();
 
 	camerawork->Update(camera);
+
+	m_AppTimer++;
+	if (m_AppTimer == 400) {
+		_AppState = APP_NOTICE;
+	}
+	else if (m_AppTimer == 580) {
+		_AppState = APP_VANISH;
+	}
+
+	//テキスト関係
+	text_->Display();
+	if (m_AppTimer == 1) {
+		text_->SelectText(TextManager::TALK_FIRST);
+	}
+	else if (m_AppTimer == 150) {
+		text_->SelectText(TextManager::TALK_SECOND);
+	}
+	else if (m_AppTimer == 300) {
+		text_->SelectText(TextManager::TALK_THIRD);
+		text_->ChangeColor(0, { 1.0f,0.0f,0.0f,1.0f });
+	}
+	else if (m_AppTimer == 400) {
+		text_->SelectText(TextManager::TALK_FOURTH);
+		for (int i = 0; i < 3; i++) {
+			text_->ChangeColor(i, { 1.0f,1.0f,0.0f,1.0f });
+		}
+	}
+	else if (m_AppTimer == 500) {
+		text_->SelectText(TextManager::TALK_FIVE);
+	}
 }
 
 void FiveSategActor::MainUpdate(DebugCamera* camera)

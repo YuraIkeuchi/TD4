@@ -136,7 +136,6 @@ protected:
 	bool isAlive = true;
 	//ゴーストがフィールドにいない
 	bool isMiss = false;
-
 	float m_HP = {};
 	float m_MaxHp = {};
 	float m_Limit = 20.0f;

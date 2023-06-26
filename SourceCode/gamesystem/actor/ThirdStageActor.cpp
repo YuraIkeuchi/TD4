@@ -66,7 +66,6 @@ void ThirdStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	lightgroup->SetCircleShadowActive(0, true);
 	lightgroup->SetCircleShadowActive(1, true);
 
-	SelectScene::GetIns()->Init();
 	Menu::GetIns()->Init();
 }
 //更新
@@ -190,6 +189,14 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 
 	camerawork->Update(camera);
 	lightgroup->Update();
+
+	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
+		//SelectScene::GetIns()->Upda();
+
+	if (Input::GetInstance()->TriggerButton(Input::Y)) {
+		SelectScene::GetIns()->ResetParama();
+		SceneManager::GetInstance()->ChangeScene("SELECT");
+	}
 	Menu::GetIns()->Upda();
 
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
@@ -285,6 +292,8 @@ void ThirdStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	IKESprite::PreDraw();
 	Menu::GetIns()->Draw();
 	camerawork->feedDraw();
+
+	//SelectScene::GetIns()->Draw_Sprite();
 	IKESprite::PostDraw();
 }
 //IMGuiの描画
