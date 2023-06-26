@@ -132,7 +132,7 @@ protected:
 	int ActionCool;
 
 	bool isAlive = true;
-	float m_HP = {};
+	float m_HP = 5.f;
 	float m_MaxHp = {};
 	float m_Limit = 20.0f;
 	bool isStrong = false;

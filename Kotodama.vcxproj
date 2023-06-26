@@ -191,6 +191,7 @@
     <ClCompile Include="SourceCode\gamesystem\bossattach\ShockWave.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\EnemyManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\FirstBoss.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\character\FiveBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\FourthBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\Ghost.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\InterBoss.cpp" />
@@ -342,6 +343,7 @@
     <ClInclude Include="SourceCode\gamesystem\bossattach\ShockWave.h" />
     <ClInclude Include="SourceCode\gamesystem\character\EnemyManager.h" />
     <ClInclude Include="SourceCode\gamesystem\character\FirstBoss.h" />
+    <ClInclude Include="SourceCode\gamesystem\character\FiveBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\FourthBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\Ghost.h" />
     <ClInclude Include="SourceCode\gamesystem\character\InterBoss.h" />
