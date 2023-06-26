@@ -66,7 +66,6 @@ void ThirdStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	lightgroup->SetCircleShadowActive(0, true);
 	lightgroup->SetCircleShadowActive(1, true);
 
-	SelectScene::GetIns()->Init();
 	Menu::GetIns()->Init();
 }
 //更新
@@ -130,7 +129,7 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	ParticleEmitter::GetInstance()->Update();
 	if (input->TriggerKey(DIK_X)) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
-		SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
+		//SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
 
 	}
 	//カメラワークのセット
@@ -192,7 +191,7 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	lightgroup->Update();
 
 	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
-		SelectScene::GetIns()->Upda();
+		//SelectScene::GetIns()->Upda();
 
 	if (Input::GetInstance()->TriggerButton(Input::Y)) {
 		SelectScene::GetIns()->ResetParama();
@@ -291,10 +290,10 @@ void ThirdStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	
 	//}
 	IKESprite::PreDraw();
-	//blackwindow->Draw();
 	Menu::GetIns()->Draw();
 	camerawork->feedDraw();
-	SelectScene::GetIns()->Draw_Sprite();
+
+	//SelectScene::GetIns()->Draw_Sprite();
 	IKESprite::PostDraw();
 }
 //IMGuiの描画

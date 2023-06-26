@@ -106,7 +106,7 @@ void SelectSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 		lightgroup->SetSpotLightDir(0, XMVECTOR({0,1,0,0 }));
 		lightgroup->SetSpotLightPos(0, {0,10,0});
 		lightgroup->SetSpotLightColor(0,{1,1,1});
-		lightgroup->SetSpotLightAtten(0, XMFLOAT3(spotLightAtten));
+		lightgroup->SetSpotLightAtten(0, {0.01f,0.f,0.01f});
 		lightgroup->SetSpotLightFactorAngle(0, XMFLOAT2(spotLightFactorAngle));
 	
 	lightgroup->Update();

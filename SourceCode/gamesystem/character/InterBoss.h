@@ -93,6 +93,8 @@ public://gettersetter
 	void SetSearch(bool isSearch) { this->isSearch = isSearch; };
 	bool GetSearch() { return isSearch; }
 
+	void SetIsMiss(bool isMiss) { this->isMiss = isMiss; };
+
 	void SetHyperSearch(bool isSearch) { this->isHyperSearch = isSearch; };
 	bool GetHyperSearch() { return isHyperSearch; }
 
@@ -132,7 +134,9 @@ protected:
 	int ActionCool;
 
 	bool isAlive = true;
-	float m_HP = 5.f;
+	//ゴーストがフィールドにいない
+	bool isMiss = false;
+	float m_HP = {};
 	float m_MaxHp = {};
 	float m_Limit = 20.0f;
 	bool isStrong = false;

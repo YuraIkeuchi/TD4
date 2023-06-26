@@ -71,7 +71,8 @@ public:
 	void SetHP(int HP) { this->HP = HP; }
 
 	float GetRadius() { return radius; }
-	void SetUnrival(bool isUnrival) { this->isUnrival = isUnrival; };
+	void SetUnrival(bool isUnrival) {
+		this->isUnrival = isUnrival; isActive = isUnrival;};
 protected:
 	void ColPlayer();
 	void OnCollision();
@@ -80,6 +81,7 @@ protected:
 	bool canRot = false;
 	float deathFrame = 0.0f;
 	float deathFrameMax = 40.0f;
+	bool isActive = false;
 
 	bool Rush = false;
 public:
