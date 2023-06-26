@@ -56,6 +56,7 @@ private:
 	bool ShutterFeed();
 	void ShutterReset();
 
+	bool EnemysIsActiveCheck();
 	void ChangePos2Random();
 	bool IsPinch();
 private:

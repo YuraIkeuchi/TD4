@@ -92,6 +92,7 @@ public:
 public:
 	//gettersetter
 	const int& GetBulletType() { return m_BulletType; }
+	const int& GetChargeType() { return m_ChargeType; }
 	const int& GetDamageInterVal() { return m_DamageInterVal; }
 	const bool& GetIsShotNow() { return isShotNow; }
 	const bool& GetSkip() { return m_Skip; }

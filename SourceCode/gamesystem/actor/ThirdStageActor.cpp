@@ -129,7 +129,7 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	ParticleEmitter::GetInstance()->Update();
 	if (input->TriggerKey(DIK_X)) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
-		SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
+		//SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
 
 	}
 	//カメラワークのセット
@@ -189,6 +189,7 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 
 	camerawork->Update(camera);
 	lightgroup->Update();
+<<<<<<< HEAD
 
 	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
 		//SelectScene::GetIns()->Upda();
@@ -197,6 +198,8 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		SelectScene::GetIns()->ResetParama();
 		SceneManager::GetInstance()->ChangeScene("SELECT");
 	}
+=======
+>>>>>>> f2f4b0760de84f2b4d8b11f77b8adc17e0e9966c
 	Menu::GetIns()->Upda();
 
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
@@ -290,10 +293,12 @@ void ThirdStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	
 	//}
 	IKESprite::PreDraw();
-	//blackwindow->Draw();
 	Menu::GetIns()->Draw();
 	camerawork->feedDraw();
+<<<<<<< HEAD
 	//SelectScene::GetIns()->Draw_Sprite();
+=======
+>>>>>>> f2f4b0760de84f2b4d8b11f77b8adc17e0e9966c
 	IKESprite::PostDraw();
 }
 //IMGuiの描画

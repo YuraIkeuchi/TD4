@@ -91,7 +91,17 @@ void Ghost::Particle() {
 	float s_scale = 3.0f;
 	float e_scale = 0.0f;
 	if (m_Alive) {
-		if (_charaState == CharaState::STATE_NONE) {
+		if (m_IsRefer&& _charaState < CharaState::STATE_JACK) {
+			flash += flashVel * flashAdd;
+			flash = clamp(flash,0.0f,1.0f);
+			if (flash==1.0f) {
+				flashAdd = sub;
+			}
+			if (flash==0.0f) {
+				flashAdd = add;
+			}
+			m_Color = { 1.0f,flash,1.0f,1.0f};
+		}else if (_charaState == CharaState::STATE_NONE) {
 			m_Color = { 1.0f,1.0f,1.0f,0.7f };
 			m_Scale = { 0.5f,0.5f,0.5f };
 			//ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color, e_color);
@@ -162,7 +172,7 @@ void Ghost::BirthGhost() {
 bool Ghost::VerseCheck() {
 	if (!isVerse) { return false; }
 	m_VerseCureTimer--;
-	m_VerseCureTimer = min(m_VerseCureTimer, 0);
+	m_VerseCureTimer = clamp(m_VerseCureTimer, 0,1000);
 	if (m_VerseCureTimer <= 0) {
 		isVerse = true;
 		return true;
@@ -352,6 +362,7 @@ bool Ghost::CollideBullet(vector<InterBullet*>bullet) {
 
 			if ((Collision::OBBCollision(m_OBB1, m_OBB2)) && (_bullet->GetAlive()) && (!m_Catch) && (m_Alive)) {
 				if (_charaState != STATE_NONE) { return false; }
+				if (m_IsRefer)  {return false; }
 				m_Catch = true;
 				if (Player::GetInstance()->GetBulletType() == BULLET_FORROW) {
 					Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Follower.wav", VolumManager::GetInstance()->GetSEVolum() / 2.5f);
