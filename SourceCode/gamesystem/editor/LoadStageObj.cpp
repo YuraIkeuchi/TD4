@@ -24,7 +24,7 @@ void LoadStageObj::FoodLoad(const std::string& sceneName) {
 	size_t Size;
 	if (sceneName == "FIRSTSTAGE") {
 		Size = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/food/food.csv", "Stage1")));
-	} else if (sceneName == "SECONDSTAGE") {
+	} else if (sceneName == "THIRDSTAGE") {
 		Size = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/food/food.csv", "Stage2")));
 	} else if (sceneName == "TUTORIAL") {
 		Size = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/food/food.csv", "Stage1")));
@@ -83,6 +83,11 @@ void LoadStageObj::FirstUpdate() {
 void LoadStageObj::SecondUpdate() {
 	//更新
 	CommonUpdate();
+}
+//3
+void LoadStageObj::ThirdUpdate() {
+	//更新
+	CommonUpdate();
 	//こっから特有の処理
 	//食料の削除(このステージのみ)
 	for (int i = 0; i < foods.size(); i++) {
@@ -110,15 +115,28 @@ void LoadStageObj::SecondUpdate() {
 		}
 	}
 }
-void LoadStageObj::ThirdUpdate() {
-	//更新
-	CommonUpdate();
-	ThirdBossAction();
-}
+//4
 void LoadStageObj::FourthUpdate() {
 	//更新
 	CommonUpdate();
+	FourthBossAction();
+
+}
+//5
+void LoadStageObj::FiveUpdate() {
+	//更新
+	CommonUpdate();
+}
+//6
+void LoadStageObj::SixUpdate() {
+	//更新
+	CommonUpdate();
 	SubHunger();
+}
+//7
+void LoadStageObj::SevenUpdate() {
+	//更新
+	CommonUpdate();
 }
 //描画
 void LoadStageObj::Draw(DirectXCommon* dxCommon) {
@@ -292,7 +310,7 @@ void LoadStageObj::BirthHeart() {
 void LoadStageObj::LightReturn() {
 }
 
-void LoadStageObj::ThirdBossAction() {
+void LoadStageObj::FourthBossAction() {
 	LockVerseGhost();
 	LockAllGhost();
 	NonVerseGhost();
@@ -351,13 +369,13 @@ void LoadStageObj::LockAllGhost() {
 
 void LoadStageObj::NonVerseGhost() {
 	InterBoss* boss = m_EnemyManager->GetBoss();
-	if (boss->GetInstruction() != InterBoss::ThirdBossInst::StopGhost) { return; }
+	if (boss->GetInstruction() != InterBoss::FourthBossInst::StopGhost) { return; }
 	for (int i = 0; i < kStopGhorstMax;i++) {
 		if (!stopGhosts[i]) { continue; }
 		stopGhosts[i]->SetColor({1,0,1,1});
 		stopGhosts[i]->SetIsPostionCheck(true);
 	}
-	boss->SetInstruction(InterBoss::ThirdBossInst::FinishMove);
+	boss->SetInstruction(InterBoss::FourthBossInst::FinishMove);
 }
 
 bool LoadStageObj::CheckReferGhost() {
@@ -379,7 +397,7 @@ bool LoadStageObj::CheckReferGhost() {
 
 void LoadStageObj::ChangeGhost2Enemy() {
 	InterBoss* boss = m_EnemyManager->GetBoss();
-	if (boss->GetInstruction() != InterBoss::ThirdBossInst::ChangeGhost) { return; }
+	if (boss->GetInstruction() != InterBoss::FourthBossInst::ChangeGhost) { return; }
 	int m_GhostPos = 0;
 	for (int i = 0; i < kStopGhorstMax; i++) {
 		if (!stopGhosts[i]) { continue; }
@@ -389,18 +407,18 @@ void LoadStageObj::ChangeGhost2Enemy() {
 		boss->SetJackPos(m_GhostPos, stopGhosts[i]->GetPosition());
 		m_GhostPos++;
 	}
-	boss->SetInstruction(InterBoss::ThirdBossInst::SpawnEnemy);
+	boss->SetInstruction(InterBoss::FourthBossInst::SpawnEnemy);
 }
 
 void LoadStageObj::ChangeGhost2Hyper() {
 	InterBoss* boss = m_EnemyManager->GetBoss();
-	if (boss->GetInstruction() != InterBoss::ThirdBossInst::AllSummon) { return; }
+	if (boss->GetInstruction() != InterBoss::FourthBossInst::AllSummon) { return; }
 	for (Ghost*& ghost : stopGhosts) {
 		if (!ghost) { continue; }
 		ghost->SetColor({ 1,1,0,1 });
 		ghost->SetIsAllPostionCheck(true);
 	}
-	boss->SetInstruction(InterBoss::ThirdBossInst::FinishMove);
+	boss->SetInstruction(InterBoss::FourthBossInst::FinishMove);
 }
 
 //飢餓ゲージをゴースト三体分減らす

@@ -13,7 +13,7 @@ void (InterCD::* InterCD::stateTable[])() = {
 
 //CDVì«Ç›çûÇ›
 void InterCD::CsvLoad() {
-	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/CD.csv", "hp")));
+	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Six/CD.csv", "hp")));
 }
 
 void InterCD::Update() {

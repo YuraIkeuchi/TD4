@@ -18,7 +18,7 @@ protected:
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
-	enum ThirdBossInst {
+	enum FourthBossInst {
 		None = 0,
 		StopGhost,
 		ChangeGhost,

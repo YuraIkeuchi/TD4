@@ -8,14 +8,14 @@ EnemyManager::EnemyManager(const std::string& SceneName) {
 	if (m_SceneName == "FIRSTSTAGE") {
 		boss.reset(new FirstBoss());
 		boss->Initialize();
-		bulletenemy.resize(firstEnemyMax);
+	} else if (m_SceneName == "SECONDSTAGE") {
+		boss = make_unique < SecondBoss>();
+		boss->Initialize();
+		bulletenemy.resize(thirdEnemyMax);
 		for (auto i = 0; i < bulletenemy.size(); i++) {
 			bulletenemy[i] = new NormalEnemy();
 			bulletenemy[i]->Initialize();
 		}
-	} else if (m_SceneName == "SECONDSTAGE") {
-		boss = make_unique < SecondBoss>();
-		boss->Initialize();
 	} else if (m_SceneName == "THIRDSTAGE") {
 		boss = make_unique<ThirdBoss>();
 		boss->Initialize();
@@ -26,7 +26,16 @@ EnemyManager::EnemyManager(const std::string& SceneName) {
 	} else if (m_SceneName == "FIVESTAGE") {
 		boss = make_unique <FiveBoss>();
 		boss->Initialize();
-	} else if (m_SceneName == "TUTORIAL") {
+	}
+	else if (m_SceneName == "SIXSTAGE") {
+		boss = make_unique<SixBoss>();
+		boss->Initialize();
+	}
+	else if (m_SceneName == "SEVENSTAGE") {
+		boss = make_unique<SevenBoss>();
+		boss->Initialize();
+	}
+	else if (m_SceneName == "TUTORIAL") {
 		for (auto i = 0; i < tutorialenemy.size(); i++) {
 			tutorialenemy[i] = make_unique<TutorialEnemy>();
 			tutorialenemy[i]->Initialize();
@@ -52,7 +61,7 @@ void EnemyManager::SkipInitialize() {
 //バトル更新
 void EnemyManager::BattleUpdate() {
 	boss->Update();
-	if (m_SceneName == "FIRSTSTAGE") {
+	if (m_SceneName == "SECONDSTAGE") {
 		boss->isRespawn(bulletenemy);
 		boss->SummonEnemyUpda(bulletenemy);
 	} 
@@ -82,7 +91,7 @@ void EnemyManager::TutorialUpdate(int pattern) {
 //描画
 void EnemyManager::Draw(DirectXCommon* dxCommon) {
 	boss->Draw(dxCommon);
-	if (m_SceneName == "FIRSTSTAGE") {
+	if (m_SceneName == "SECONDSTAGE") {
 		boss->SummonEnemyDraw(bulletenemy, dxCommon);
 	}
 }

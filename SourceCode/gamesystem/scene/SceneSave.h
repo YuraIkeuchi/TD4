@@ -3,7 +3,12 @@
 enum SeceneCategory {
 	kTutorialStage=0,
 	kFirstStage,
-	kSecondStage
+	kSecondStage,
+	kThirdStage,
+	kFourthStage,
+	kFiveStage,
+	kSixStage,
+	kSevenStage
 };
 
 
@@ -22,5 +27,10 @@ private:
 	static bool m_TutorialStageClear;
 	static bool m_FirstStageClear;
 	static bool m_SecondStageClear;
+	static bool m_ThirdStageClear;
+	static bool m_FourthStageClear;
+	static bool m_FiveStageClear;
+	static bool m_SixStageClear;
+	static bool m_SevenStageClear;
 };
 

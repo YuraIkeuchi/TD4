@@ -200,14 +200,6 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 //ImGui
 void Player::ImGuiDraw() {
 	HungerGauge::GetInstance()->ImGuiDraw();
-	for (int i = 0; i < attackbullets.size(); i++) {
-		attackbullets[i]->ImGuiDraw();
-	}
-	ImGui::Begin("Player");
-	ImGui::Text("Charge:%f", m_ChargePower);
-	ImGui::Text("ChargeType:%d", m_ChargeType);
-	ImGui::Text("m_LimitHunger:%f", m_LimitHunger);
-	ImGui::End();
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
@@ -381,6 +373,12 @@ void Player::Bullet_Management() {
 
 		//チャージ中に飢餓ゲージが切れた場合弾が自動で放たれる
 		if ((HungerGauge::GetInstance()->GetNowHunger() == 0.0f && m_ChargePower != 0.0f) || (m_ChargePower > HungerGauge::GetInstance()->GetNowHunger())) {
+			if (m_ChargeType < POWER_STRONG) {
+				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
+			}
+			else {
+				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Charge.wav", VolumManager::GetInstance()->GetSEVolum());
+			}
 			BirthShot("Attack", true);
 			playerattach->SetAlive(true);
 			//減る飢餓ゲージ量を決める

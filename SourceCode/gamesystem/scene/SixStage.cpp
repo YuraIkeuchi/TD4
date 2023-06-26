@@ -1,27 +1,27 @@
-#include "FiveStage.h"
+#include "SixStage.h"
 //初期化
-void FiveStage::Initialize(DirectXCommon* dxCommon)
+void SixStage::Initialize(DirectXCommon* dxCommon)
 {
 	//共通の初期化
 	BaseInitialize(dxCommon);
 	//プレイシーンのアクター
 	BaseActor* actor_;
-	actor_ = new FiveStageActor();
+	actor_ = new SixStageActor();
 	actor_->Initialize(dxCommon, camera, lightGroup);
 	actor.reset(actor_);
 }
 //更新
-void FiveStage::Update(DirectXCommon* dxCommon)
+void SixStage::Update(DirectXCommon* dxCommon)
 {
 	actor->Update(dxCommon, camera, lightGroup);
 }
 //描画
-void FiveStage::Draw(DirectXCommon* dxCommon)
+void SixStage::Draw(DirectXCommon* dxCommon)
 {
 	actor->Draw(dxCommon);
 }
 //解放
-void FiveStage::Finalize()
+void SixStage::Finalize()
 {
 	actor->Finalize();
 }

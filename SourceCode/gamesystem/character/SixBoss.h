@@ -1,21 +1,18 @@
 #pragma once
 #include "InterBoss.h"
-#include "JoyStamp.h"
-#include "AngerStamp.h"
-#include "ShockWave.h"
-#include "Predict.h"
-#include "Collision.h"
 #include "Shake.h"
+#include "BarrangeCD.h"
+#include "ConfuCD.h"
+#include "LineCD.h"
+#include "DebuffCD.h"
+#include "AttackNote.h"
+#include "DamageArea.h"
 #include "ConfuEffect.h"
 #include "NoteEffect.h"
-
-class Spline;
-
-class FiveBoss : 
-	public InterBoss
-{
+class SixBoss :
+	public InterBoss {
 public:
-	FiveBoss();
+	SixBoss();
 
 	bool Initialize() override;//初期化
 
@@ -37,16 +34,34 @@ public:
 
 	void Draw(DirectXCommon* dxCommon) override;//描画
 private:
-
-private:
+	//インターバル
+	void InterValMove();
+	//動きの選択
+	void Choice();
+	//ダメージエリアのセット
+	void LineSet();
+	//プレイヤーのデバフ
+	void Debuff();
+	//混乱
+	void Confu();
+	//弾幕
+	void Barrage();
+	//行動終わり
+	void EndMove();
 	//CSV読み込み系
 	void CSVLoad();
+	//ノーツの生成
+	void BirthNote(const std::string& BarrageName);
 	//死んだときのパーティクル
 	void DeathParticle();
 private:
+	static const int BULLET_NUM = 4;
 	static const int CD_NUM = 4;
 private:
 	//各クラス
+	array<unique_ptr<InterCD>, CD_NUM> cd;
+	vector<AttackNote*> attacknotes;//怒りのスタンプ
+	unique_ptr<DamageArea> damagearea;//ダメージエリア
 	unique_ptr<ConfuEffect> confueffect;
 	unique_ptr<NoteEffect> noteeffect;
 	//キャラの状態
@@ -54,9 +69,10 @@ private:
 	{
 		STATE_INTER,
 		STATE_CHOICE,
-		STATE_ROCKON,
-		STATE_RAND,
-		STATE_HIT,
+		STATE_LINE,
+		STATE_DEBUFF,
+		STATE_CONFU,
+		STATE_BARRA,
 		STATE_END
 	};
 
@@ -65,6 +81,8 @@ private:
 	//どの行動にするか
 	int m_MoveState = {};
 
+	//関数ポインタ
+	static void(SixBoss::* stateTable[])();
 
 	int _charaState = STATE_INTER;
 
@@ -89,6 +107,12 @@ private:
 	int m_AreaState = AREA_SET;
 	float SplineSpeed = false;
 
+	enum CDType {
+		CD_LINE,
+		CD_DEBUFF,
+		CD_CONFU,
+		CD_BARRA,
+	};
 	//動きのインターバル
 	int m_MoveInterVal = {};
 	//行動終了の数
@@ -127,5 +151,3 @@ private:
 	//移動力
 	float m_FollowSpeed = {};
 };
-
-

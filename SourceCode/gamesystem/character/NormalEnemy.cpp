@@ -25,7 +25,7 @@ bool NormalEnemy::Initialize() {
 
 	m_fbxObject->PlayAnimation(0);
 
-	SummonSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/firstboss.csv", "SummonSpeed")));
+	SummonSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/SECOND/SECONDboss.csv", "SummonSpeed")));
 
 	return true;
 }

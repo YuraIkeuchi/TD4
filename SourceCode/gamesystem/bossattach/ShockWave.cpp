@@ -13,7 +13,7 @@ void ShockWave::Initialize(const XMFLOAT3& pos) {
 
 	m_Alive = true;
 
-	m_DamagePower = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "WaveDamage")));
+	m_DamagePower = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Third/Thirdboss.csv", "WaveDamage")));
 }
 
 void ShockWave::Update() {

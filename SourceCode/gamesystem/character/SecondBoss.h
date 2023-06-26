@@ -1,218 +1,299 @@
 ﻿#pragma once
+#include"IKESprite.h"
 #include "InterBoss.h"
-#include "JoyStamp.h"
-#include "AngerStamp.h"
-#include "ShockWave.h"
-#include "Predict.h"
-#include "Collision.h"
 #include "Shake.h"
-
-class Spline;
-enum DirEmo {
-	DIR_ANGER,
-	DIR_JOY,
-};
+#include "Player.h"
 class SecondBoss :
 	public InterBoss {
 public:
 	SecondBoss();
 	bool Initialize() override;//初期化
+
 	void SkipInitialize() override;//スキップ時の初期化
+
 	void Pause() override;//ポーズ
 
-	void Draw(DirectXCommon* dxCommon) override;//描画
-public:
-	
-private:
 	void Action() override;//行動
+
 	void AppearAction() override;//登場
+
 	void DeadAction() override;//撃破
 	void DeadAction_Throw() override;//撃破
+	void EffecttexDraw(DirectXCommon* dxCommon) override;
 
 	void ImGui_Origin() override;
 
-	//エフェクト
-	void EffecttexDraw(DirectXCommon* dxCommon) override;
-	//基本移動
+	void Draw(DirectXCommon* dxCommon) override;//描画
+private:
+	struct SummonEnemy
+	{
+	private:
+		bool AttackF;
+
+	public:
+		//通常関数
+		void Update(XMFLOAT3& Pos, XMFLOAT3& Rot);
+		void Attack(XMFLOAT3& Pos, XMFLOAT3& Rot);
+		void StayAction();
+		void TexScling();
+		void Draw();
+	public:
+		bool GetAttackF() { return AttackF; }
+		void SetAttackF(bool f) { AttackF = f; }
+	};
+	SummonEnemy _sumattack;
+
+
+private:
+	//ため攻撃
+	struct ChargeAttack
+	{
+	private:
+		//ため時間
+		int ChargeTime;
+		int Damage;
+		float RotSpeed;
+	public:
+		enum class Phase_Charge
+		{
+			NON,
+			CHARGE,
+			JUMP,
+			ATTACK,
+			END
+		}_phase;
+		void ReturnPosJudg(bool& reposf);
+	private:
+		//シェイク
+		Shake* shake;
+		float shakeX, shakeZ;
+		//範囲テクスチャ
+		array<unique_ptr<IKETexture>, 2>impacttex;
+		array<float, 2>texAlpha;
+		array<XMFLOAT2, 2>texScl;
+
+		bool AttackF;
+
+		float JFrame;
+
+		float DownMoveVal;
+	public:
+		void Initialize();
+		void Update(XMFLOAT3& Pos, XMFLOAT3& Rot);
+		void Attack(XMFLOAT3& Pos, XMFLOAT3& Rot);
+		void ChargeAction();
+		void JumpAction(XMFLOAT3& Pos, XMFLOAT3& Rot);
+		void TexScling(XMFLOAT3& Rot);
+		void Draw();
+	public:
+		void SetAttackF(bool f) { AttackF = f; }
+		bool GetAttackF() { return AttackF; }
+		void SetDownMoveVal(float val) { DownMoveVal = val; }
+
+	};
+
+	ChargeAttack _cattack;
+	//使わない変数大量にあるのであとでけす
+
+	//通常突進3回
+	struct NormalAttak
+	{
+	private:
+		float RushOldRotY;
+		bool RushRotationF;
+
+		XMVECTOR m_move = { 0.f,0.f, 0.1f, 0.0f };
+
+		XMMATRIX m_matRot;
+
+		XMFLOAT3 RotStartPos;
+		float RushMoveEaseT;
+		XMFLOAT3 RushOldPos;
+		float SetCircleMoveSPos;
+		int StayCount;
+		bool StayF;
+
+		XMFLOAT3 OldPos_Remove;
+		float SPosMoveEaseT;
+
+		XMFLOAT3 BeforeShakePos;
+		bool shakeend;
+		float RemovePosEaseT;
+		float RotEaseTime;
+		bool NormalAttackF;
+		float BackEaseT;
+		float BackSpeed;
+		float RePosAngle;
+		bool HitF;
+		XMFLOAT3 ColPos;
+
+		Shake* shake;
+		//このやり方ひどくない？？
+		enum class Phase_Normal
+		{
+			NON,
+			ROTPLAYER_0,
+			PHASE_ONE,
+			ROTPLAYER_1,
+			PHASE_TWO,
+			ROTPLAYER_2,
+			PHASE_THREE,
+			ROTPLAYER_3,
+
+			STIFF
+		}_phaseN = Phase_Normal::NON;
+	private:
+
+		void Idle(XMFLOAT3& Pos, XMFLOAT3 Rot, bool& Enf);
+		void ShakeAction(XMFLOAT3& Pos, XMFLOAT3& Rot);
+		void Rot(XMFLOAT3& Pos, XMFLOAT3& Rot);
+		void Attack();
+		void Attack(XMFLOAT3& Pos, XMFLOAT3& Rot);
+		bool ViewDAreaF;
+	public:
+		bool GetViewDAreaF() { return ViewDAreaF; };
+		void Initialize();
+		void Update(XMFLOAT3& Pos, XMFLOAT3& Rot, bool& Enf);
+		void SetNormalAttackF(bool f) { NormalAttackF = f; }
+		bool GetAttackF() { return NormalAttackF; }
+		void SetAngle(float val) { RePosAngle = val; }void Remove(XMFLOAT3& Pos, XMFLOAT3& Scl, bool Enf);
+		void SetRushpos(XMFLOAT3 pos) { RushOldPos = pos; }
+		inline void SetreposAngle() {
+			RotStartPos.x = Player::GetInstance()->GetPosition().x + sinf(RePosAngle * (3.14f / 180.0f)) * 10.0f;
+			RotStartPos.z = Player::GetInstance()->GetPosition().z + cosf(RePosAngle * (3.14f / 180.0f)) * 10.0f;
+		}
+	private:
+		float RotSpeed;
+		float EaseT;
+		int RandKnock;
+		float KnockVal;
+	};
+	ChargeAttack _charge;
+	NormalAttak _normal;
+	float PosYMovingT;
+	float RotEaseT;
+
+	bool isRot;
+	int RTime;
+	void Rot();
+
+	float BossAngle = 1.f;
+	void FrontAttack();
+	void ImpactAttack();
+	void NormalAttack();
+	void RushAttack();
+
+	void RottoPlayer();
+	float RotEaseTime;
+	float OldRotY;
+	float ImpactDownMove;
+	float SummonSpeed;
 	void Move();
-	//攻撃(スタンプ攻撃)
-	void Stamp();
-	//ランダム攻撃
-	void RandomStamp();
-	//当たり判定
-	bool Collide();
-	//CSV読み込み系
-	void CSVLoad();
+
 private:
-	//キャラの行動繊維
-	static void (SecondBoss::* stateTable[])();
+
+	bool GoAway;
+	float AwayRotEaseT;
+	float RushOldRotY;
+	bool RushRotationF;
+
+
+	float RushMoveEaseT;
+	void Move_Away();
+
+	XMVECTOR m_move = { 0.f,0.f, 0.1f, 0.0f };
+
+	XMMATRIX m_matRot;
+
 private:
-	//ダメージ食らった処理
+	XMFLOAT3 BeforeShakePos;
+	bool shakeend;
+	float RemovePosEaseT;
+
+	void DebRot();
+	//このやり方ひどくない？？
+	enum class Phase_Normal
+	{
+		ROTPLAYER_0,
+		PHASE_ONE,
+		ROTPLAYER_1,
+		PHASE_TWO,
+		ROTPLAYER_2,
+		PHASE_THREE,
+		ROTPLAYER_3,
+		NON,
+		STIFF
+	}_phaseN;
+
 	void DamAction();
-	//スタンプの生成
-	void BirthStamp(const std::string& stampName);
-	//スタンプの更新
-	void StampUpdate(std::vector<InterStamp*> stamps);
-	//スタンプの描画
-	void StampDraw(std::vector<InterStamp*> stamps, DirectXCommon* dxCommon);
-	//スタンプのImGui
-	void StampImGui(std::vector<InterStamp*> stamps);
-	
-	//　動き方それぞれ //
-	void AlterMove();//交互
-	void AngerMove();//怒り
-	void JoyMove();//喜び
-	void ChoiceMove();//動きのチョイス
-	void BirthWave(const float scale);//衝撃波の生成
-	void BirthPredict();//予測テクスチャの生成
-	//転がるやつ
-	void Rolling();
-	//転がるやつの共通イージング
-	void RollEaseCommn(const XMFLOAT3& AfterPos,const float AddFrame,const float AfterRot);
-	//転がる際の方向転換
-	void ChangeRot(const float AfterRot);
-	//スタンプ攻撃の初期化
-	void StampInit(const int AttackNumber,const bool Random);
-	//動きの初期化
-	void MoveInit(const std::string& HighState);
 
-	//テクスチャの更新
-	void MarkUpdate();
+	bool DamColSetF;
 
+	XMFLOAT3 RotStartPos;
+	XMFLOAT3 OldPos_Remove;
+	float SPosMoveEaseT;
+	float YmovEaseT;
+	bool EncF;
+
+	int MoveCount;
+	bool RotChange;
+	float YRotRandVal;
+	float YRotOld;
+	float RotEaseTime_noBat;
+	void NoBattleMove();
+	void RemovePos();
+	XMFLOAT3 OldPos;
+
+private:
+	float EaseT_BatStart;
+	bool BattleStartF;
+	int noBattleCount;
+
+	void EndSumon_returnPos(bool& f, float& easespeed);
+	bool ReturnPosF;
+	float RePosEaseT;
+	XMFLOAT3 OldPos_EndSummon;
+
+	bool ReturnPosF_Impact;
+	float RePosEaseT_Impact;
+private:
+	void ColPlayer_Def();
+
+	std::unique_ptr<IKESprite>deathImpactTex[2];
+	XMFLOAT2 DeathTexScl[2];
+	float DeathTexAlpha[2];
+	float DeathMotionTimer;
+
+	bool ResetRota;
+	Shake* shake;
+	float DeathSpeed;
+	float RotFrontSpeed;
+	XMFLOAT3 ShakePos;
+	float SinRotCount;
+
+	enum Action
+	{
+		NON,
+		NORMAL,
+		CHARGE,
+		SUMMON
+	}_attackAction;
+	int RandActionCount;
+	int S_DecisionCount = 50;
+	bool Active;
+	void AttackDecision();
+	void SelAttack();
+
+	void DeathEffect();
+	bool DeathEffectF;
+	int Timer;
 	void DeathParticle();
-private:
-	//移動回数の計算
-	int m_MoveCount = 0;
-	//バトルしているかどうか
-	bool m_Buttle = false;
-	//イージング
-	float m_Frame = {};
-	//前座標
-	XMFLOAT3 m_OldPos = {};
-	//X方向の回転
-	XMFLOAT3 m_AfterRot = { 180.0f,0.0f,0.0f };
-	//追従関係に使う
-	float m_FollowSpeed = 0.0f;
-	float m_AfterFollowSpeed = 0.0f;
-	//停止時間
-	int m_StopTimer = 0;
-	//どの行動にするか
-	int m_MoveState = {};
-	//イージング後の位置
-	XMFLOAT3 m_AfterPos = {};
-	//シェイク用変数
-	XMFLOAT3 m_ShakePos = { 0.0f,0.0f,0.0f };
-private:
-	enum InterValState {
-		DownState,
-		UpState,
-	}_InterValState = DownState;
-private:
-	inline void IsOldPos()
-	{
-		m_Position = m_OldPos;
-	}
 
 private:
-	vector<InterStamp*> angerstamps;//怒りのスタンプ
-	vector<InterStamp*> joystamps;//喜びのスタンプ
-	vector<ShockWave*> shockwaves;//衝撃波
-	vector<Predict*> predicts;
-	unique_ptr<Shake> shake;//シェイク
-private:
-	//キャラの状態
-	enum CharaState
-	{
-		STATE_MOVE,
-		STATE_STAMP,
-		STATE_RANDOM,
-		STATE_ROLL,
-	}_charaState;
+	unique_ptr<IKETexture>damageara;
+	XMFLOAT3 texpos, texscl, texrot;
+	float texAlpha;
+	float cinter;
 
-	//動き方の種類
-	enum MoveState {
-		MOVE_ALTER,//交互
-		MOVE_ANGER,//怒りのみ
-		MOVE_JOY,//喜びのみ
-		MOVE_CHOICE,//どの動きかの選択するターン
-	};
-
-	OBB m_OBB1 = {};
-	OBB m_OBB2 = {};
-
-private:
-	//プレス
-	enum PressType {
-		PRESS_START,
-		PRESS_SET,
-		PRESS_ATTACK,
-		PRESS_SHAKE,
-		PRESS_RETURN,
-		PRESS_END,
-	};
-	int m_PressType;
-	//ランダム攻撃
-	enum RandomType {
-		RANDOM_START,
-		RANDOM_SET,
-		RANDOM_ATTACK,
-		RANDOM_END,
-	};
-	int m_RandomType;
-
-	//転がる攻撃
-	enum RollType {
-		ROLL_ONE,
-		ROLL_SECOND,
-		ROLL_THIRD,
-		ROLL_FOURTH,
-		ROLL_FIVE,
-		ROLL_SIX,
-		ROLL_END,
-	};
-	int m_RollType;
-
-	//方向転換するためのもの
-	bool m_ChangeRot = false;
-	float m_RotFrame = 0.0f;
-
-	bool ResetRota = false;
-private:
-	unique_ptr<IKETexture> mark;
-	XMFLOAT4 m_MarkColor = { 1.0f,1.0f,1.0f,0.0f };
-private:
-	enum AppearState {
-		APPEAR_START,
-		APPEAR_SET,
-		APPEAR_LOOK,
-		APPEAR_DIR,
-		APPEAR_STOP,
-		APPEAR_END,
-	};
-
-	int m_AppearState = APPEAR_START;
-
-	int m_AppearTimer = {};
-
-
-	//すべてのインターバル系
-	vector<int>m_StampInterval;
-	vector<int>m_RandomInterval;
-	vector<float>m_DamagePower;
-	int m_MoveInterval = {};
-	int m_QuickMoveInterval = {};
-	int m_ChoiceInterval = {};
-
-	Spline* spline;
-	vector<XMFLOAT3>pointsList;
-
-	bool m_SplineEnd = false;
-
-	//棘の的に使う
-	float m_Angle = 0.0f;
-	float m_Angle2 = 0.0f;
-
-	bool m_BirthWave = false;
-public:
-	void SetAppearEnd(bool end) { if (end) { m_AppearState = APPEAR_END; } }
+	int SummonPriority, CirclePriority;
 };

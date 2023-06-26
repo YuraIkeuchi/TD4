@@ -1,4 +1,4 @@
-ï»¿#include "FirstStageActor.h"
+#include "FiveStageActor.h"
 #include "Audio.h"
 #include"Easing.h"
 #include "SceneManager.h"
@@ -9,35 +9,35 @@
 #include "BackObj.h"
 #include "Menu.h"
 
-void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
+void FiveStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
 	dxCommon->SetFullScreen(true);
-	//å…±é€šã®åˆæœŸåŒ–
+	//‹¤’Ê‚Ì‰Šú‰»
 	BaseInitialize(dxCommon);
-	//ã‚ªãƒ¼ãƒ‡ã‚£ã‚ª
+	//ƒI[ƒfƒBƒI
 	Audio::GetInstance()->LoopWave(AUDIO_BATTLE, VolumManager::GetInstance()->GetBGMVolum() + 1.0f);
-	//ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
+	//ƒ|ƒXƒgƒGƒtƒFƒNƒg
 	PlayPostEffect = true;
-	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«å…¨å‰Šé™¤
+	//ƒp[ƒeƒBƒNƒ‹‘Síœ
 	ParticleEmitter::GetInstance()->AllDelete();
 
-	//å„ã‚¯ãƒ©ã‚¹
+	//ŠeƒNƒ‰ƒX
 	Player::GetInstance()->InitState({ 0.0f,5.0f,-5.0f });
 
 	backScreen_ = IKESprite::Create(ImageManager::PLAY, { 0,0 });
 	backScreen_->SetSize({ 1280.0f,720.0f });
-	//ã‚·ãƒ¼ãƒ³ãƒã‚§ãƒ³ã‚¸ãƒ£ãƒ¼
+	//ƒV[ƒ“ƒ`ƒFƒ“ƒWƒƒ[
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
 
-	enemymanager = std::make_unique<EnemyManager>("FIRSTSTAGE");
+	enemymanager = std::make_unique<EnemyManager>("FIVESTAGE");
 	//enemymanager->Initialize(dxCommon);
 	text_ = make_unique<BossText>();
 	text_->Initialize(dxCommon);
 	text_->SelectText(TextManager::ANGER_TALK);
 	camerawork->SetBoss(enemymanager->GetBoss());
 	camerawork->SetCameraState(CAMERA_BOSSAPPEAR);
-	camerawork->SetSceneName("FIRSTSTAGE");
+	camerawork->SetSceneName("FIVESTAGE");
 	camerawork->SplineSet();
 	camerawork->Update(camera);
 	ui = std::make_unique<UI>();
@@ -59,29 +59,29 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	Menu::GetIns()->Init();
 }
 
-void FirstStageActor::Finalize()
+void FiveStageActor::Finalize()
 {
 }
 
-void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
+void FiveStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
-	//é–¢æ•°ãƒã‚¤ãƒ³ã‚¿ã§çŠ¶æ…‹ç®¡ç†
+	//ŠÖ”ƒ|ƒCƒ“ƒ^‚Åó‘ÔŠÇ—
 	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
 	sceneChanger_->Update();
 
-	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
+	//ƒvƒŒƒCƒ„[
 	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
-		SceneSave::GetInstance()->SetClearFlag(kFirstStage, true);
+		SceneSave::GetInstance()->SetClearFlag(kFiveStage, true);
 		lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
 		lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, 0.0f, Player::GetInstance()->GetPosition().z }));
 		lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
 		lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
 	}
-	else {//ãƒœã‚¹æ’ƒç ´ãƒ ãƒ¼ãƒ“ãƒ¼ã®å¾Œã¯ä¸¸å½±æ¶ˆã™
+	else {//ƒ{ƒXŒ‚”jƒ€[ƒr[‚ÌŒã‚ÍŠÛ‰eÁ‚·
 		lightgroup->SetCircleShadowActive(0, false);
 	}
 
-	//ãƒœã‚¹
+	//ƒ{ƒX
 	lightgroup->SetCircleShadowDir(1, XMVECTOR({ BosscircleShadowDir[0], BosscircleShadowDir[1], BosscircleShadowDir[2], 0 }));
 	lightgroup->SetCircleShadowCasterPos(1, XMFLOAT3({ enemymanager->GetBoss()->GetPosition().x, 	0.0f, 	enemymanager->GetBoss()->GetPosition().z }));
 	lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
@@ -92,10 +92,10 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
 }
 
-void FirstStageActor::Draw(DirectXCommon* dxCommon)
+void FiveStageActor::Draw(DirectXCommon* dxCommon)
 {
-	//æç”»æ–¹æ³•
-	//ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’ã‹ã‘ã‚‹ã‹
+	//•`‰æ•û–@
+	//ƒ|ƒXƒgƒGƒtƒFƒNƒg‚ğ‚©‚¯‚é‚©
 	if (PlayPostEffect) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
@@ -118,15 +118,15 @@ void FirstStageActor::Draw(DirectXCommon* dxCommon)
 	}
 }
 
-void FirstStageActor::FrontDraw(DirectXCommon* dxCommon)
+void FiveStageActor::FrontDraw(DirectXCommon* dxCommon)
 {
-	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æç”»
+	//ƒp[ƒeƒBƒNƒ‹•`‰æ
 	if (!camerawork->GetFeedEnd() && m_SceneState == SceneState::MainState) {
 		ParticleEmitter::GetInstance()->FlontDrawAll();
 	}
 
 	ParticleEmitter::GetInstance()->DeathDrawAll();
-	//å®Œå…¨ã«å‰ã«æ›¸ãã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
+	//Š®‘S‚É‘O‚É‘‚­ƒXƒvƒ‰ƒCƒg
 	IKESprite::PreDraw();
 	if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd()) {
 		ui->Draw();
@@ -142,20 +142,20 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon)
 	camerawork->feedDraw();
 }
 
-void FirstStageActor::BackDraw(DirectXCommon* dxCommon)
+void FiveStageActor::BackDraw(DirectXCommon* dxCommon)
 {
 	IKESprite::PreDraw();
 	backScreen_->Draw();
 	IKESprite::PostDraw();
 	IKEObject3d::PreDraw();
 	BackObj::GetInstance()->Draw(dxCommon);
-	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æç”»
+	//ƒp[ƒeƒBƒNƒ‹•`‰æ
 	if (!camerawork->GetFeedEnd() && m_SceneState == SceneState::MainState) {
 		if (!enemymanager->BossDestroy()) {
 			ParticleEmitter::GetInstance()->BackDrawAll();
 		}
 	}
-	////å„ã‚¯ãƒ©ã‚¹ã®æç”»
+	////ŠeƒNƒ‰ƒX‚Ì•`‰æ
 	if (!camerawork->GetFeedEnd()) {
 		Player::GetInstance()->Draw(dxCommon);
 		loadobj->Draw(dxCommon);
@@ -164,9 +164,9 @@ void FirstStageActor::BackDraw(DirectXCommon* dxCommon)
 	IKEObject3d::PostDraw();
 }
 
-void FirstStageActor::IntroUpdate(DebugCamera* camera)
+void FiveStageActor::IntroUpdate(DebugCamera* camera)
 {
-	//æ¼”å‡ºã‚¹ã‚­ãƒƒãƒ—
+	//‰‰oƒXƒLƒbƒv
 	if (Input::GetInstance()->TriggerButton(Input::A)) {
 		camerawork->SetCameraSkip(true);
 	}
@@ -178,7 +178,7 @@ void FirstStageActor::IntroUpdate(DebugCamera* camera)
 		enemymanager->SkipInitialize();
 	}
 
-	//å„ã‚¯ãƒ©ã‚¹æ›´æ–°
+	//ŠeƒNƒ‰ƒXXV
 	BackObj::GetInstance()->Update();
 	ParticleEmitter::GetInstance()->Update();
 	Player::GetInstance()->AppearUpdate();
@@ -194,7 +194,7 @@ void FirstStageActor::IntroUpdate(DebugCamera* camera)
 		_AppState = APP_VANISH;
 	}
 
-	//ãƒ†ã‚­ã‚¹ãƒˆé–¢ä¿‚
+	//ƒeƒLƒXƒgŠÖŒW
 	text_->Display();
 	if (m_AppTimer == 1) {
 		text_->SelectText(TextManager::TALK_FIRST);
@@ -217,21 +217,21 @@ void FirstStageActor::IntroUpdate(DebugCamera* camera)
 	}
 }
 
-void FirstStageActor::MainUpdate(DebugCamera* camera)
+void FiveStageActor::MainUpdate(DebugCamera* camera)
 {
 	Input* input = Input::GetInstance();
 	ui->Update();
-	//ã‚«ãƒ¡ãƒ©ãƒ¯ãƒ¼ã‚¯ã®ã‚»ãƒƒãƒˆ
+	//ƒJƒƒ‰ƒ[ƒN‚ÌƒZƒbƒg
 	if (enemymanager->BossDestroy())
 	{
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
-		//ãƒ•ã‚§ãƒ¼ãƒ‰å‰
+		//ƒtƒF[ƒh‘O
 		if (!camerawork->GetFeedEnd()) {
 			enemymanager->SetDeadThrow(true);
 			enemymanager->DeadUpdate();
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_BEFORE);
 		}
-		//ãƒ•ã‚§ãƒ¼ãƒ‰å¾Œ
+		//ƒtƒF[ƒhŒã
 		else
 		{
 			PlayPostEffect = false;
@@ -260,10 +260,10 @@ void FirstStageActor::MainUpdate(DebugCamera* camera)
 		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::Reverse);
 	}
 
-	//éŸ³æ¥½ã®éŸ³é‡ãŒå¤‰ã‚ã‚‹
+	//‰¹Šy‚Ì‰¹—Ê‚ª•Ï‚í‚é
 	VolumManager::GetInstance()->Update();
 
-	//å„ã‚¯ãƒ©ã‚¹æ›´æ–°
+	//ŠeƒNƒ‰ƒXXV
 	BackObj::GetInstance()->Update();
 
 
@@ -284,7 +284,7 @@ void FirstStageActor::MainUpdate(DebugCamera* camera)
 	postEffect->SetRadPower(camerawork->GetEffectPower());
 }
 
-void FirstStageActor::FinishUpdate(DebugCamera* camera)
+void FiveStageActor::FinishUpdate(DebugCamera* camera)
 {
 	Input* input = Input::GetInstance();
 }

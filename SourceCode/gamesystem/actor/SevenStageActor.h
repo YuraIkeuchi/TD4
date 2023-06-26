@@ -1,12 +1,15 @@
 #pragma once
-#include"BaseActor.h"
-#include"BossText.h"
+#include "BaseActor.h"
+#include "BossText.h"
+#include "LoadStageObj.h"
+#include"Font.h"
+#include"Feed.h"
 #include "MessageWindow.h"
-#include<windows.h>
-#include<vector>
+#include"Spline.h"
 
-class FiveSategActor:public BaseActor
-{
+/// タイトルシーン
+class SevenStageActor : public BaseActor {
+
 public:
 	/// 初期化
 	void Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) override;
@@ -18,11 +21,16 @@ public:
 	void Draw(DirectXCommon* dxCommon) override;
 	void FrontDraw(DirectXCommon* dxCommon);
 	void BackDraw(DirectXCommon* dxCommon);
+	void ImGuiDraw(DirectXCommon* dxCommon);
+
 private:
 
 	void IntroUpdate(DebugCamera* camera)override;		//登場シーン
 	void MainUpdate(DebugCamera* camera)override;		//バトルシーン
 	void FinishUpdate(DebugCamera* camera)override;		//撃破シーン
+
+	void MoveSpotLight();
+	void SpotSet(XMFLOAT3& Pos, const XMFLOAT3& AfterPos, const float AddFrame);
 
 private:
 	static const int SPOT_NUM = 4;
@@ -55,4 +63,3 @@ private:
 		APP_END,
 	}_AppState = APP_START;
 };
-
