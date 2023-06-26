@@ -87,7 +87,7 @@ void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 
 	if (enemymanager->BossDestroy()) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
-		SceneSave::GetInstance()->SetClearFlag(kFirstStage, true);
+		SceneSave::GetInstance()->SetClearFlag(kFourthStage, true);
 		if (camerawork->GetCameraState() == CameraState::CAMERA_BOSSDEAD_AFTER_FIRST)
 		{
 			PlayPostEffect = false;

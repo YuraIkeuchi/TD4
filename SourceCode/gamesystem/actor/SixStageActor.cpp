@@ -86,17 +86,16 @@ void SixStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Lig
 void SixStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	//関数ポインタで状態管理
 	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
-	sceneChanger_->Update();
-
+	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
+	lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, 0.0f, Player::GetInstance()->GetPosition().z }));
+	lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
+	lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
 	//プレイヤー
 	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
-		//SceneSave::GetInstance()->SetClearFlag(kSixStage, true);
-		lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-		lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, 0.0f, Player::GetInstance()->GetPosition().z }));
-		lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
-		lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
+		SceneSave::GetInstance()->SetClearFlag(kSixStage, true);
 	}
-	else {//ボス撃破ムービーの後は丸影消す
+
+	if (enemymanager->BossDestroy()) {
 		lightgroup->SetCircleShadowActive(0, false);
 	}
 
@@ -137,6 +136,8 @@ void SixStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGr
 		lightgroup->SetSpotLightFactorAngle(i, XMFLOAT2(spotLightFactorAngle));
 	}
 	lightgroup->Update();
+	sceneChanger_->Update();
+
 	Menu::GetIns()->Upda();
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 }
@@ -207,9 +208,7 @@ void SixStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	if (m_SceneState == SceneState::IntroState) {
 		text_->SpriteDraw(dxCommon);
 	}
-	IKESprite::PostDraw();
-	IKESprite::PreDraw();
-	//blackwindow->Draw();
+	sceneChanger_->Draw();
 	Menu::GetIns()->Draw();
 	camerawork->feedDraw();
 	//SelectScene::GetIns()->Draw_Sprite();
@@ -337,7 +336,6 @@ void SixStageActor::MainUpdate(DebugCamera* camera) {
 	tex2DPos = Helper::GetInstance()->PosDivi(tex2DPos, camera->GetProjectionMatrix(), true);
 	tex2DPos = Helper::GetInstance()->WDivision(tex2DPos, false);
 	tex2DPos = Helper::GetInstance()->PosDivi(tex2DPos, camera->GetViewPort(), false);
-
 	postEffect->SetRadCenter(XMFLOAT2(tex2DPos.m128_f32[0], tex2DPos.m128_f32[1]));
 	postEffect->SetRadPower(camerawork->GetEffectPower());
 }

@@ -71,7 +71,7 @@ void FiveStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 
 	//ƒvƒŒƒCƒ„[
 	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
-		SceneSave::GetInstance()->SetClearFlag(kSecondStage, true);
+		SceneSave::GetInstance()->SetClearFlag(kFiveStage, true);
 		lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
 		lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, 0.0f, Player::GetInstance()->GetPosition().z }));
 		lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
