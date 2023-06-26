@@ -36,7 +36,8 @@ public:
 		STATE_IDLE,
 		STATE_RUN,
 	}_charaState;
-
+private:
+	void LoadCSV();
 private:
 	//歩きまたは走り状態
 	float velocity;
@@ -143,6 +144,15 @@ private://各クラス
 
 	bool m_Skip = false;
 
+	//飢餓ゲージを減らす
+	bool m_SubHunger = false;
+	float m_Frame = 0.0f;
+
+	float m_LimitHunger = {};
+
+	//CSV系
+	//弾の強さのリミット
+	vector<float>m_PowerLimit;
 public:
 	vector<InterBullet*>GetBulllet_ghost() { return ghostbullets; }
 	vector<InterBullet*>GetBulllet_attack() { return attackbullets; }
