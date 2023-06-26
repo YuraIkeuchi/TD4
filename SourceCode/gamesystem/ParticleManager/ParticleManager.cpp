@@ -871,7 +871,7 @@ void ParticleManager::LoadTexture(UINT texNumber, const std::string& filename) {
 	ScratchImage scratchImg{};
 
 	//ディレクトリパスとファイル名を連結してフルパスを得る
-	std::string fullPath = directoryPath + filename + extensionPath;
+	std::string fullPath = directoryPath + filename;//+ extensionPath;
 
 	//ユニコード文字列に変換する
 	wchar_t wfilepath[128];

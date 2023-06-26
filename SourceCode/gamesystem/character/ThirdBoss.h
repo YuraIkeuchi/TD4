@@ -105,7 +105,7 @@ private:
 		100,
 		100,
 		60,
-		5
+		250
 	};
 
 	float shutterTimeMax = 40.0f;

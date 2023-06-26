@@ -203,7 +203,10 @@ void ThirdBoss::SelectAction() {
 void ThirdBoss::WaitUpdate() {
 	ActionTimer++;
 	if (ActionTimer >= ActionTimerMax[(size_t)phase]) {
-		SelectAction();
+		//SelectAction();
+		isHyperSearch = true;
+		isInstruction = ThirdBossInst::None;
+		phase = commandState::Ultimate;
 		ActionTimer = 0;
 	}
 }
@@ -301,6 +304,10 @@ void ThirdBoss::SubGaugeUpdate() {
 
 void ThirdBoss::UltimateUpdate() {
 	if (isHyperSearch) { return; }
+	ParticleEmitter::GetInstance()->CameraEffect(80, m_Position, 4.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
+	ParticleEmitter::GetInstance()->CameraEffect(80, spotPos[0], 4.0f, 0.0f, {0.8f,0.5f,0.4f,1.0f}, {1.0f,1.0f,1.0f,1.0f});
+	ParticleEmitter::GetInstance()->CameraEffect(80, spotPos[2], 4.0f, 0.0f, {0.8f,0.5f,0.4f,1.0f}, {1.0f,1.0f,1.0f,1.0f});
+
 	ActionTimer++;
 	if (ActionTimer >= ActionTimerMax[(size_t)phase] && !isShutter) {
 		isShutter = true;
