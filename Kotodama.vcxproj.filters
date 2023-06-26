@@ -480,6 +480,7 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\scene\FiveStage.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\FiveSategActor.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\character\FiveBoss.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
@@ -924,6 +925,7 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\FiveStage.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\FiveSategActor.h" />
+    <ClInclude Include="SourceCode\gamesystem\character\FiveBoss.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
