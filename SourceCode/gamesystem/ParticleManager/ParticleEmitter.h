@@ -48,6 +48,8 @@ public: //メンバ関数
 	void DeathEffect(int life, XMFLOAT3 l_pos, float startscale, float endscale, XMFLOAT4 startcolor, XMFLOAT4 endcolor, float velocity);
 	//ヒールエフェクト
 	void HealEffect(const int life, const XMFLOAT3& pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor);
+	//カメラボスUltimateエフェクト
+	void CameraEffect(const int life, const XMFLOAT3& pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor);
 	//削除
 	void AllDelete();
 	//爆発　ボス
@@ -69,4 +71,7 @@ private: //メンバ変数
 	unique_ptr<ParticleManager> healParticle;
 	//パーティクルマネージャー(ボスデス)
 	unique_ptr<ParticleManager>BossDeadParticle;
+	//パーティクルマネージャー(cameraBOss)
+	unique_ptr<ParticleManager> PhotoParticle;
+
 };

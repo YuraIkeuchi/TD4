@@ -101,7 +101,9 @@ void ImageManager::SecondLoadTex2D()
 
 void ImageManager::LoadParticle()
 {
-	ParticleManager::LoadTexture(Normal, "effect1");
-	ParticleManager::LoadTexture(Smoke, "hootEffect");
-	ParticleManager::LoadTexture(Heal, "effect2");
+	ParticleManager::LoadTexture(Normal, "effect1.png");
+	ParticleManager::LoadTexture(Smoke, "hootEffect.png");
+	ParticleManager::LoadTexture(Heal, "effect2.png");
+	ParticleManager::LoadTexture(Photo, "PhotoSpot.jpg");
+
 }
