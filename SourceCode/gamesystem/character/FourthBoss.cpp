@@ -106,7 +106,7 @@ void FourthBoss::ImGui_Origin() {
 	ImGui::SliderFloat("m_Position.y", &m_Position.y, 0.0f, 360.0f);
 	ImGui::SliderFloat("m_Position.z", &m_Position.z, 0.0f, 360.0f);
 	ImGui::SliderFloat("Limit", &m_Limit, 0.0f, 360.0f);
-	
+
 	switch (phase) {
 	case FourthBoss::commandState::WaitCommand:
 		ImGui::Text("WAIT");
@@ -201,7 +201,7 @@ void FourthBoss::SelectAction() {
 		isInstruction = FourthBossInst::None;
 		limitHp = m_HP * 0.7f;
 		phase = commandState::Ultimate;
-		stage_move = ActionTimerMax[(size_t)phase]/3;
+		stage_move = ActionTimerMax[(size_t)phase] / 3;
 	} else if (l_case > 100) {
 		assert(0);
 	}
@@ -313,7 +313,7 @@ void FourthBoss::SubGaugeUpdate() {
 
 void FourthBoss::UltimateUpdate() {
 	if (isHyperSearch) { return; }
-	if (limitHp >= m_HP) {
+	if (limitHp >= m_HP && !isShutter && feedTimer == 0.0f) {
 		m_HP = limitHp;
 		phase = commandState::Explosion;
 		return;
@@ -357,7 +357,7 @@ void FourthBoss::UltimateUpdate() {
 }
 
 void FourthBoss::ExplosionUpdate() {
-
+	m_Rotation.z =  30.0f;
 
 	float l_AddSize = 2.5f;
 	const float RandScale = 3.0f;
@@ -444,13 +444,13 @@ void FourthBoss::ChangePos2Random() {
 
 void FourthBoss::ChangePos2Rand() {
 	mt19937 mt{ std::random_device{}() };
-	uniform_int_distribution<int> l_Rand(0, 2); 
-	int lol=l_Rand(mt);
-	if (lol==0) {
+	uniform_int_distribution<int> l_Rand(0, 2);
+	int lol = l_Rand(mt);
+	if (lol == 0) {
 		moveSpawn = 1;
-	} else if (lol==1) {
+	} else if (lol == 1) {
 		moveSpawn = 2;
-	} else if(lol==2){
+	} else if (lol == 2) {
 		moveSpawn = 4;
 	}
 	nowSpawn = moveSpawn;
