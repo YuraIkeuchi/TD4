@@ -17,7 +17,7 @@ void (FourthBoss::* FourthBoss::stateTable[])() = {
 	&FourthBoss::EnemySpawnUpdate,
 	&FourthBoss::SubGaugeUpdate,
 	&FourthBoss::UltimateUpdate,
-
+	&FourthBoss::ExplosionUpdate,
 };
 
 
@@ -100,12 +100,16 @@ void FourthBoss::Pause() {
 
 void FourthBoss::ImGui_Origin() {
 	ImGui::Begin("BOSS");
-	ImGui::SliderInt("Action", &ActionTimer, 0, 100);
+	ImGui::SliderInt("Action", &ActionTimer, 0, 1000);
+	ImGui::SliderInt("ActionA", &stage_move, 0, 1000);
+	ImGui::SliderInt("ActionB", &stage_move_count, 0, 1000);
+	ImGui::SliderInt("ActionC", &stage_move_max, 0, 1000);
+
 	ImGui::SliderFloat("m_Position.x", &m_Position.x, 0.0f, 360.0f);
 	ImGui::SliderFloat("m_Position.y", &m_Position.y, 0.0f, 360.0f);
 	ImGui::SliderFloat("m_Position.z", &m_Position.z, 0.0f, 360.0f);
 	ImGui::SliderFloat("Limit", &m_Limit, 0.0f, 360.0f);
-
+	
 	switch (phase) {
 	case FourthBoss::commandState::WaitCommand:
 		ImGui::Text("WAIT");
@@ -125,6 +129,10 @@ void FourthBoss::ImGui_Origin() {
 	case FourthBoss::commandState::Ultimate:
 		ImGui::Text("ULTIMATE");
 		break;
+	case FourthBoss::commandState::Explosion:
+		ImGui::Text("Explosion");
+		break;
+
 	default:
 		assert(0);
 		break;
@@ -168,41 +176,36 @@ void FourthBoss::SelectAction() {
 		ChangePos2Random();
 		isInstruction = FourthBossInst::None;
 		phase = commandState::MoveCommand;
-	}
-	else if (l_case < 30) {
+	} else if (l_case < 30) {
 		if (!EnemysIsActiveCheck()) {
 			isSearch = true;
 			isInstruction = FourthBossInst::ChangeGhost;
 			phase = commandState::EnemySpawn;
-		}
-		else {
+		} else {
 			ChangePos2Random();
 			isInstruction = FourthBossInst::None;
 			phase = commandState::MoveCommand;
 		}
-	}
-	else if (l_case < 60) {
+	} else if (l_case < 60) {
 		if (isReferCheck) {
 			isSearch = true;
 			isInstruction = FourthBossInst::None;
 			phase = commandState::ControlCommand;
-		}
-		else {
+		} else {
 			ChangePos2Random();
 			isInstruction = FourthBossInst::None;
 			phase = commandState::MoveCommand;
 		}
-	}
-	else if (l_case < 90) {
+	} else if (l_case < 90) {
 		isInstruction = FourthBossInst::None;
 		phase = commandState::SubGauge;
-	}
-	else if (l_case < 95) {
+	} else if (l_case < 95) {
 		isHyperSearch = true;
 		isInstruction = FourthBossInst::None;
+		limitHp = m_HP * 0.7f;
 		phase = commandState::Ultimate;
-	}
-	else if (l_case > 100) {
+		stage_move = ActionTimerMax[(size_t)phase]/3;
+	} else if (l_case > 100) {
 		assert(0);
 	}
 }
@@ -213,7 +216,9 @@ void FourthBoss::WaitUpdate() {
 		//SelectAction();
 		isHyperSearch = true;
 		isInstruction = FourthBossInst::None;
+		limitHp = m_HP * 0.7f;
 		phase = commandState::Ultimate;
+		stage_move = ActionTimerMax[(size_t)phase] / 3;
 		ActionTimer = 0;
 	}
 }
@@ -311,11 +316,35 @@ void FourthBoss::SubGaugeUpdate() {
 
 void FourthBoss::UltimateUpdate() {
 	if (isHyperSearch) { return; }
-	ParticleEmitter::GetInstance()->CameraEffect(80, m_Position, 4.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
-	ParticleEmitter::GetInstance()->CameraEffect(80, spotPos[0], 4.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
+	if (limitHp >= m_HP) {
+		m_HP = limitHp;
+		phase = commandState::Explosion;
+		return;
+	}
+	ParticleEmitter::GetInstance()->CameraEffect(80, spotPos[1], 4.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
 	ParticleEmitter::GetInstance()->CameraEffect(80, spotPos[2], 4.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
+	ParticleEmitter::GetInstance()->CameraEffect(80, spotPos[4], 4.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
 
 	ActionTimer++;
+
+	if (stage_move_count < stage_move_max) {
+
+		if (ActionTimer >= stage_move * stage_move_count) {
+			if (!isShutter) {
+				ChangePos2Rand();
+				isShutter = true;
+				stage_move_count++;
+			}
+		}
+		if (!isShutter) { return; }
+		if (ShutterEffect()) {
+			m_Position = spotPos[moveSpawn];
+			if (ShutterFeed()) {
+				ShutterReset();
+			}
+		}
+		return;
+	}
 	if (ActionTimer >= ActionTimerMax[(size_t)phase] && !isShutter) {
 		isShutter = true;
 	}
@@ -330,6 +359,28 @@ void FourthBoss::UltimateUpdate() {
 	}
 }
 
+void FourthBoss::ExplosionUpdate() {
+
+
+	float l_AddSize = 2.5f;
+	const float RandScale = 3.0f;
+	float s_scale = 0.3f * l_AddSize;
+	float e_scale = (4.0f + (float)rand() / RAND_MAX * RandScale - RandScale / 2.0f) * l_AddSize;
+
+	//êF
+	const float RandRed = 0.2f;
+	const float red = 0.2f + (float)rand() / RAND_MAX * RandRed;
+	const XMFLOAT4 s_color = { 0.9f, red, 0.1f, 1.0f }; //îZÇ¢ê‘
+	const XMFLOAT4 e_color = { 0, 0, 0, 1.0f }; //ñ≥êF
+
+	//óêêîéwíË
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_Randlife(10, 40);
+	int l_Life = int(l_Randlife(mt));
+	ParticleEmitter::GetInstance()->Explosion(l_Life, m_Position, l_AddSize, s_scale, e_scale, s_color, e_color);
+
+}
+
 bool FourthBoss::ShutterEffect() {
 	shutterTime += 1.0f / shutterTimeMax;
 	shutterTime = clamp(shutterTime, 0.0f, 1.0f);
@@ -341,8 +392,7 @@ bool FourthBoss::ShutterEffect() {
 	photo[Photo_Out_Under]->SetPosition({ 0,shutterHight[1] });
 	if (shutterTime == 1.0f) {
 		return true;
-	}
-	else {
+	} else {
 		return false;
 	}
 }
@@ -357,8 +407,7 @@ bool FourthBoss::ShutterFeed() {
 
 	if (feedTimer == 1.0f) {
 		return true;
-	}
-	else {
+	} else {
 		return false;
 	}
 }
@@ -392,6 +441,20 @@ void FourthBoss::ChangePos2Random() {
 		if (moveSpawn > 4) {
 			moveSpawn = 0;
 		}
+	}
+	nowSpawn = moveSpawn;
+}
+
+void FourthBoss::ChangePos2Rand() {
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_Rand(0, 2); 
+	int lol=l_Rand(mt);
+	if (lol==0) {
+		moveSpawn = 1;
+	} else if (lol==1) {
+		moveSpawn = 2;
+	} else if(lol==2){
+		moveSpawn = 4;
 	}
 	nowSpawn = moveSpawn;
 }
