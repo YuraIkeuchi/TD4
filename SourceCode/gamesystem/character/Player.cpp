@@ -1,11 +1,10 @@
 ﻿#include "Player.h"
 #include "CsvLoader.h"
 #include "Helper.h"
-#include "VariableCommon.h"
 #include "HungerGauge.h"
-#include "Collision.h"
 #include "Input.h"
 #include "Easing.h"
+#include "Collision.h"
 Player* Player::GetInstance()
 {
 	static Player instance;
@@ -264,7 +263,7 @@ void Player::Walk()
 	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
 	move = XMVector3TransformNormal(move, matRot);
 	//向いた方向に進む
-	if (m_RigidityTime == m_ResetNumber) {
+	if (m_RigidityTime == 0) {
 		//混乱していると逆状態になる
 		if (!m_Confu) {
 			m_Position.x += move.m128_f32[0] * m_AddSpeed;

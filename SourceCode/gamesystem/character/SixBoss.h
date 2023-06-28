@@ -1,6 +1,5 @@
 #pragma once
 #include "InterBoss.h"
-#include "Shake.h"
 #include "BarrangeCD.h"
 #include "ConfuCD.h"
 #include "LineCD.h"

@@ -3,9 +3,8 @@
 #include <random>
 #include "Collision.h"
 #include "CsvLoader.h"
+#include "Helper.h"
 #include "Player.h"
-#include "VariableCommon.h"
-
 //¶¬
 SevenBoss::SevenBoss() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::DJ);

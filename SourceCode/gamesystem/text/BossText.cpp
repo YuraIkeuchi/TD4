@@ -1,5 +1,7 @@
 #include "BossText.h"
 #include "Helper.h"
+#include "ImageManager.h"
+#include "Easing.h"
 BossText::BossText() {
 	window_ = IKESprite::Create(ImageManager::WINDOW, window_pos);
 	window_->SetAnchorPoint({ 0.5f,0.5f });

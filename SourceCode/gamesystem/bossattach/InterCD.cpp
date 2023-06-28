@@ -1,8 +1,8 @@
 #include "InterCD.h"
 #include "Collision.h"
-#include "Player.h"
 #include "CsvLoader.h"
 #include <random>
+#include "Helper.h"
 void (InterCD::* InterCD::stateTable[])() = {
 	&InterCD::BirthCD,//ê∂ê¨
 	&InterCD::StayCD, //ï˙íu

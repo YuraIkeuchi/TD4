@@ -4,7 +4,8 @@
 #include "Collision.h"
 #include "CsvLoader.h"
 #include "Player.h"
-#include "VariableCommon.h"
+#include "Easing.h"
+#include "Helper.h"
 
 void (SixBoss::* SixBoss::stateTable[])() = {
 	&SixBoss::InterValMove,//“®‚«‚Ì‡ŠÔ

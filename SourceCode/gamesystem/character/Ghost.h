@@ -1,7 +1,6 @@
 #pragma once
 #include "ObjCommon.h"
 #include "InterBullet.h"
-#include "Collision.h"
 #include "CollisionPrimitive.h"
 //ゴーストクラス
 class Ghost :

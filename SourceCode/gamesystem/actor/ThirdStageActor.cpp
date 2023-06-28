@@ -1,14 +1,11 @@
 ﻿#include "ThirdStageActor.h"
-#include "Audio.h"
 #include"Easing.h"
-#include "SceneManager.h"
-#include "imgui.h"
 #include "ParticleEmitter.h"
 #include "ImageManager.h"
-#include <algorithm>
 #include "BackObj.h"
 #include "Menu.h"
 #include "SelectScene.h"
+#include "Helper.h"
 //初期化
 void ThirdStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	dxCommon->SetFullScreen(true);

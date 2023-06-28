@@ -1,9 +1,8 @@
 #include "AttackNote.h"
-#include "VariableCommon.h"
 #include "Collision.h"
-#include "HungerGauge.h"
 #include "CsvLoader.h"
 #include "Player.h"
+#include "Helper.h"
 AttackNote::AttackNote() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::NOTE);
 	m_Object.reset(new IKEObject3d());

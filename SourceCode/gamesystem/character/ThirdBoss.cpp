@@ -2,9 +2,10 @@
 #include "ImageManager.h"
 #include "Helper.h"
 #include "Player.h"
-#include "VariableCommon.h"
 #include "CsvLoader.h"
 #include <random>
+#include "Spline.h"
+#include "Easing.h"
 //生成
 ThirdBoss::ThirdBoss() {
 	//モデル初期化と読み込み

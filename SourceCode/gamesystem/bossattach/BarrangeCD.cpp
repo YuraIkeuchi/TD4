@@ -39,13 +39,6 @@ void BarrangeCD::Origin_Draw(DirectXCommon* dxCommon) {
 }
 //IMGUI
 void BarrangeCD::ImGui_Origin() {
-	ImGui::Begin("BARRACD");
-	ImGui::Text("m_DeathTimer:%d", m_DeathTimer);
-	ImGui::Text("m_BoundCount:%d", m_BoundCount);
-	ImGui::Text("m_BoundCount:%d", m_BoundCount);
-	ImGui::Text("m_PlayAudio:%d", m_AudioPlay);
-	ImGui::Text("AudioState: %d", (int)_AudioState);
-	ImGui::End();
 }
 //ê∂ê¨
 void BarrangeCD::BirthCD() {

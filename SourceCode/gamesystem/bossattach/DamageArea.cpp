@@ -3,10 +3,10 @@
 #include "ImageManager.h"
 #include "Helper.h"
 #include <Easing.h>
-#include "VariableCommon.h"
 #include <random>
-#include "Collision.h"
 #include <CsvLoader.h>
+#include "Player.h"
+#include "Collision.h"
 DamageArea::DamageArea(const int Num) {
 	obj.resize(Num);
 	m_Position.resize(Num);

@@ -2,7 +2,6 @@
 #include <DirectXMath.h>
 #include <array>   
 #include <memory> 
-#include "Helper.h"
 #include "ParticleEmitter.h"
 using namespace std;         //  名前空間指定
 //エフェクトの基底クラス

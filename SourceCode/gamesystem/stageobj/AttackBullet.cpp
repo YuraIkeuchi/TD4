@@ -20,9 +20,7 @@ bool AttackBullet::Initialize() {
 }
 //ImGui•`‰æ
 void AttackBullet::ImGui_Origin() {
-	ImGui::Begin("Bullet");
-	ImGui::Text("Power:%f", m_Power);
-	ImGui::End();
+
 }
 //’e‚Ì“Á—Lˆ—
 void AttackBullet::Action() {
