@@ -1,5 +1,6 @@
 ﻿#include "MessageWindow.h"
-
+#include "ImageManager.h"
+#include "Easing.h"
 void MessageWindow::Initialize()
 {
 	window_ = IKESprite::Create(ImageManager::WINDOW, window_pos);

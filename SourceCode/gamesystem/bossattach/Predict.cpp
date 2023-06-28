@@ -1,9 +1,7 @@
 #include "Predict.h"
 #include "ImageManager.h"
-#include"Collision.h"
-#include "Helper.h"
 #include "Easing.h"
-#include "VariableCommon.h"
+#include "Player.h"
 void Predict::Initialize(const XMFLOAT3& pos) {
 	tex = IKETexture::Create(ImageManager::MARK, { 0,0,0 }, { 12,12,12 }, { 1,1,1,0.6f });
 	tex->TextureCreate();

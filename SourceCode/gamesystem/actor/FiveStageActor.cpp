@@ -1,14 +1,11 @@
 #include "FiveStageActor.h"
-#include "Audio.h"
 #include"Easing.h"
-#include "SceneManager.h"
-#include "imgui.h"
 #include "ParticleEmitter.h"
 #include "ImageManager.h"
 #include <algorithm>
 #include "BackObj.h"
 #include "Menu.h"
-
+#include "Helper.h"
 void FiveStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
 	dxCommon->SetFullScreen(true);

@@ -1,8 +1,8 @@
 #include "ConfuEffect.h"
 #include "ImageManager.h"
-#include "VariableCommon.h"
 #include "Easing.h"
 #include "Player.h"
+#include "Helper.h"
 #define WindowW 1920
 #define WindowH 1020
 //ì«Ç›çûÇ›

@@ -1,13 +1,9 @@
 ﻿#include "TitleSceneActor.h"
-#include "Audio.h"
 #include "input.h"
-#include "SceneManager.h"
 #include <Easing.h>
 #include "ImageManager.h"
-#include "imgui.h"
-#include "VariableCommon.h"
 #include "ParticleEmitter.h"
-#include "Menu/Menu.h"
+#include "Menu.h"
 //初期化
 void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	//共通の初期化

@@ -1,8 +1,6 @@
 #pragma once
 #include "ObjCommon.h"
 #include "InterBullet.h"
-#include "Collision.h"
-#include "CollisionPrimitive.h"
 enum SetType {
 	SET_FOLLOW,
 	SET_DIFF,

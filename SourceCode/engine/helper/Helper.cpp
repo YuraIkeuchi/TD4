@@ -1,6 +1,6 @@
 ﻿#include "Helper.h"
 #include"WinApp.h"	
-#include "VariableCommon.h"
+#include "Easing.h"
 Helper* Helper::GetInstance()
 {
 	static Helper instance;

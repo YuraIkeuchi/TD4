@@ -2,6 +2,8 @@
 #include"DirectXCommon.h"
 #include"VariableCommon.h"
 #include"Font.h"
+#include <map>
+using namespace std;         //  名前空間指定
 class TextManager
 {
 private:
