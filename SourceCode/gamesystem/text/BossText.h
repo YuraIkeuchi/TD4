@@ -1,7 +1,7 @@
 #pragma once
 #include "TextManager.h"
-
-
+#include "IKESprite.h"
+using namespace std;         //  –¼‘O‹óŠÔw’è
 enum TextState {
 	TEXTANGER_START,
 	TEXTANGER_SECOND,
@@ -37,6 +37,7 @@ public:
 private:
 	unique_ptr<TextManager> text_;
 	unique_ptr<IKESprite> window_;
+
 	//ƒJƒƒ‰‚Ìó‘Ô
 	int m_TextState = 0;
 

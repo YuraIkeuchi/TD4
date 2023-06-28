@@ -2,7 +2,6 @@
 #include "IKESprite.h"
 #include "InterBoss.h"
 #include "Shake.h"
-#include "Player.h"
 #include "IKETexture.h"
 #include "TutorialEnemy.h"
 

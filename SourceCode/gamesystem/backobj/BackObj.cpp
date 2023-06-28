@@ -1,12 +1,10 @@
 #include "BackObj.h"
-#include "VariableCommon.h"
 #include "JsonLoader.h"
 #include "ParticleEmitter.h"
 #include "LeftLimit.h"
 #include "RightLimit.h"
 #include "DownLimit.h"
 #include "UpLimit.h"
-#include <random>
 BackObj* BackObj::GetInstance()
 {
 	static BackObj instance;

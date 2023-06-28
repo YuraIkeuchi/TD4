@@ -1,11 +1,10 @@
 ﻿#include "Player.h"
 #include "CsvLoader.h"
 #include "Helper.h"
-#include "VariableCommon.h"
 #include "HungerGauge.h"
-#include "Collision.h"
 #include "Input.h"
 #include "Easing.h"
+#include "Collision.h"
 Player* Player::GetInstance()
 {
 	static Player instance;
@@ -264,7 +263,7 @@ void Player::Walk()
 	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
 	move = XMVector3TransformNormal(move, matRot);
 	//向いた方向に進む
-	if (m_RigidityTime == m_ResetNumber) {
+	if (m_RigidityTime == 0) {
 		//混乱していると逆状態になる
 		if (!m_Confu) {
 			m_Position.x += move.m128_f32[0] * m_AddSpeed;
@@ -372,30 +371,32 @@ void Player::Bullet_Management() {
 		}
 
 		//チャージ中に飢餓ゲージが切れた場合弾が自動で放たれる
-		if ((HungerGauge::GetInstance()->GetNowHunger() == 0.0f && m_ChargePower != 0.0f) || (m_ChargePower > HungerGauge::GetInstance()->GetNowHunger())) {
-			if (m_ChargeType < POWER_STRONG) {
-				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
-			}
-			else {
-				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Charge.wav", VolumManager::GetInstance()->GetSEVolum());
-			}
-			BirthShot("Attack", true);
-			playerattach->SetAlive(true);
-			//減る飢餓ゲージ量を決める
-			if (m_ChargeType != POWER_NONE) {
-				if (m_ChargeType == POWER_MIDDLE) {
-					m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_NONE];
+		if (m_ChargePower != 0.0f) {
+			if ((HungerGauge::GetInstance()->GetNowHunger() == 0.0f) || (m_ChargePower > HungerGauge::GetInstance()->GetNowHunger())) {
+				if (m_ChargeType < POWER_STRONG) {
+					Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
 				}
-				else if (m_ChargeType == POWER_STRONG) {
-					m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_MIDDLE];
+				else {
+					Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Charge.wav", VolumManager::GetInstance()->GetSEVolum());
 				}
-				else if (m_ChargeType == POWER_UNLIMITED) {
-					m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_STRONG];
+				BirthShot("Attack", true);
+				playerattach->SetAlive(true);
+				//減る飢餓ゲージ量を決める
+				if (m_ChargeType != POWER_NONE) {
+					if (m_ChargeType == POWER_MIDDLE) {
+						m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_NONE];
+					}
+					else if (m_ChargeType == POWER_STRONG) {
+						m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_MIDDLE];
+					}
+					else if (m_ChargeType == POWER_UNLIMITED) {
+						m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_STRONG];
+					}
+					m_Frame = {};
+					m_SubHunger = true;
 				}
-				m_Frame = {};
-				m_SubHunger = true;
+				ResetBullet();
 			}
-			ResetBullet();
 		}
 
 		if (!Input::GetInstance()->PushButton(Input::B) && m_ChargePower != 0.0f) {

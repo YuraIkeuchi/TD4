@@ -1,15 +1,12 @@
 #include "FourthBoss.h"
 #include <any>
 #include <random>
-
 #include "Collision.h"
 #include "CsvLoader.h"
 #include "ImageManager.h"
-#include "Shake.h"
 #include "Player.h"
 #include <Easing.h>
-#include <TutorialEnemy.h>
-
+#include "Helper.h"
 void (FourthBoss::* FourthBoss::stateTable[])() = {
 	&FourthBoss::WaitUpdate,//—v‘f0
 	&FourthBoss::MoveUpdate, //—v‘f1
