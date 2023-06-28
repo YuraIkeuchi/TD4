@@ -77,6 +77,7 @@ void InterCD::SetCD() {
 		else if (m_CatchState == CATCH_MOVE) {
 			m_AddPower -= m_Gravity;
 			if (Helper::GetInstance()->CheckMax(m_Position.y, m_CatchPos.y, m_AddPower) && m_AddPower < -1.0f) {
+				Audio::GetInstance()->PlayWave("Resources/Sound/SE/CDSet.wav", VolumManager::GetInstance()->GetSEVolum());
 				m_CatchState = CATCH_END;
 				m_AttackSetCD = false;
 			}

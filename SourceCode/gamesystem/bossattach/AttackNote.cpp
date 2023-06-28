@@ -5,7 +5,7 @@
 #include "CsvLoader.h"
 #include "Player.h"
 AttackNote::AttackNote() {
-	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Bullet);
+	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::NOTE);
 	m_Object.reset(new IKEObject3d());
 	m_Object->Initialize();
 	m_Object->SetModel(m_Model);
@@ -13,6 +13,8 @@ AttackNote::AttackNote() {
 //‰Šú‰»
 bool AttackNote::Initialize() {
 	m_Position = { 0.0f,0.0f,0.0f };
+	m_Rotation.y = 270.0f;
+	m_Object->SetBillboard(true);
 	m_Scale = { 1.0f,1.0f,1.0f };
 	m_Color = { 0.0f,1.0f,0.0f,1.0f };
 	m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Six/Sixboss.csv", "Speed")));
