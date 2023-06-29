@@ -25,6 +25,9 @@ void BossText::SelectText(TextManager::Name_First name, const XMVECTOR& color) {
 void BossText::SelectText(TextManager::Name_Fourth name) {
 	text_->SetFourthConversation(name);
 }
+void BossText::SelectText(TextManager::Name_CameraBoss name, const XMVECTOR& color) {
+	text_->SetCameraBossConversation(name);
+}
 void BossText::SpriteDraw(DirectXCommon* dxCommon) {
 	IKESprite::PreDraw();
 	window_->Draw();

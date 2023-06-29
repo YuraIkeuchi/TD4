@@ -24,9 +24,18 @@ public:
 	void BackDraw(DirectXCommon* dxCommon);
 	void ImGuiDraw(DirectXCommon* dxCommon);
 	void ColEnemy(std::vector<InterEnemy*> enelist);
+
+	void IntroUpdate(DebugCamera* camera)override;		//登場シーン
+	void MainUpdate(DebugCamera* camera)override;		//バトルシーン
+	void FinishUpdate(DebugCamera* camera)override;		//撃破シーン
+
+
 private:
 	float Rads;
 	int textT;
+
+	int m_AppTimer = 0;
+
 	unique_ptr<MessageWindow> messagewindow_;
 	unique_ptr<BossText> text_;
 	unique_ptr<IKESprite> backScreen_ = nullptr;

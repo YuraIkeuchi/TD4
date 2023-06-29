@@ -89,6 +89,12 @@ void FourthBoss::Action() {
 	Helper::GetInstance()->Clamp(m_Position.x, -55.0f, 65.0f);
 	Helper::GetInstance()->Clamp(m_Position.z, -60.0f, 60.0f);
 }
+void FourthBoss::AppearAction() {
+
+
+	Obj_SetParam();
+
+}
 //ƒ|[ƒY
 void FourthBoss::Pause() {
 
@@ -210,12 +216,7 @@ void FourthBoss::SelectAction() {
 void FourthBoss::WaitUpdate() {
 	ActionTimer++;
 	if (ActionTimer >= ActionTimerMax[(size_t)phase]) {
-		//SelectAction();
-		isHyperSearch = true;
-		isInstruction = FourthBossInst::None;
-		limitHp = m_HP * 0.7f;
-		phase = commandState::Ultimate;
-		stage_move = ActionTimerMax[(size_t)phase] / 3;
+		SelectAction();
 		ActionTimer = 0;
 	}
 }
