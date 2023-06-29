@@ -18,7 +18,7 @@ public:
 
 	void Action() override;//行動
 
-	void AppearAction() override {};//ボス登場の固有の処理
+	void AppearAction() override;//ボス登場の固有の処理
 
 	void DeadAction() override {};//ボス撃破の固有の処理
 

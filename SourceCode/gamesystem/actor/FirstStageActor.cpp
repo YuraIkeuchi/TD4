@@ -262,8 +262,6 @@ void FirstStageActor::MainUpdate(DebugCamera* camera)
 
 	//各クラス更新
 	BackObj::GetInstance()->Update();
-
-
 	enemymanager->BattleUpdate();
 	loadobj->FirstUpdate();
 	ParticleEmitter::GetInstance()->Update();
