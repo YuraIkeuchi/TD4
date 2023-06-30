@@ -1,5 +1,5 @@
-#pragma once
-#include "BaseActor.h"\
+﻿#pragma once
+#include "BaseActor.h"
 #include "Audio.h"
 #include"Easing.h"
 #include "SceneManager.h"
@@ -10,11 +10,6 @@
 #include "BackObj.h"
 #include "Menu.h"
 #include "SelectScene.h"
-class SixStageActor :
-    public BaseActor
-{
-};
-
 #include "BossText.h"
 #include "LoadStageObj.h"
 #include"Font.h"

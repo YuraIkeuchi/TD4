@@ -1,4 +1,4 @@
-#include"ModelManager.h"
+﻿#include"ModelManager.h"
 #include "IKEFbxLoader.h"
 
 std::map<ModelManager::ModelName, IKEModel*> ModelManager::model;

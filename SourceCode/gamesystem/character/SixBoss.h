@@ -1,12 +1,6 @@
-#pragma once
+﻿#pragma once
 #include "InterBoss.h"
 #include"IKEFBXObject3d.h"
-
-class SixBoss :
-    public InterBoss
-{
-};
-
 #include "BarrangeCD.h"
 #include "ConfuCD.h"
 #include "LineCD.h"
