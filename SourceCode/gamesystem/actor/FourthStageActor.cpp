@@ -197,6 +197,8 @@ void FourthStageActor::IntroUpdate(DebugCamera* camera) {
 
 	if (camerawork->GetAppearEndF()) {
 		m_SceneState = SceneState::MainState;
+		Player::GetInstance()->SetCanShot(true);
+		Player::GetInstance()->MoveStop(false);
 		camerawork->SetCameraState(CAMERA_NORMAL);
 		enemymanager->SkipInitialize();
 	}
