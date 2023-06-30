@@ -54,9 +54,11 @@ private:
 	/**
 	 * \brief 操作説明テクスチャ
 	 */
-	unique_ptr<IKESprite>ExpTex;
-	float ExpEaseFrame;
-
+	array<unique_ptr<IKESprite>,3>ExpTex;
+	array<float,3> ExpEaseFrame;
+	array<float, 3> ReExpEaseFrame;
+	array<bool, 3>nextExp;
+	array<bool, 3>removeExp;
 	/**
 	 * \brief 枠
 	 */
@@ -68,6 +70,8 @@ private:
 	bool CloseF=false;
 
 	int OpenHomeCount=0;
+
+	bool trigger;
 public:
 	//初期化
 	void Init();

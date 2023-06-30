@@ -187,7 +187,7 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	lightgroup->Update();
 
 	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
-		//SelectScene::GetIns()->Upda();
+		SelectScene::GetIns()->Upda();
 
 		if (Input::GetInstance()->TriggerButton(Input::Y)) {
 			SelectScene::GetIns()->ResetParama();
@@ -290,7 +290,7 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	Menu::GetIns()->Draw();
 	camerawork->feedDraw();
 
-	//SelectScene::GetIns()->Draw_Sprite();
+	SelectScene::GetIns()->Draw_Sprite();
 	IKESprite::PostDraw();
 }
 //IMGuiの描画

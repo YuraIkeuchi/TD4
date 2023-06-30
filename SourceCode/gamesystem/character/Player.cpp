@@ -35,7 +35,7 @@ bool Player::Initialize()
 	skirtobj->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::SKIRT));
 
 	//11
-	skirtobj->SetRotation({ 0,0,90});
+	skirtobj->SetRotation({ 0,0,-90});
 	skirtobj->SetScale({2,2,2 });
 
 	LoadCSV();
@@ -130,6 +130,7 @@ void Player::Update()
 	//状態移行(charastateに合わせる)
 	(this->*stateTable[_charaState])();
 
+	index = 15;
 	m_fbxObject->GetBoneIndexMat(index, skirtmat);
 	skirtobj->FollowUpdate(skirtmat);
 	//Stateに入れなくていいやつ
