@@ -51,10 +51,20 @@ bool FourthBoss::Initialize() {
 	m_Scale = { 2.0f,2.0f,2.0f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Rotation.y = -90.f;
+	string str = "Resources/csv/chara/boss/Fourth/Fourthboss.csv";
 	//m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Fourth/Fourthboss.csv", "pos")));
-	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Fourth/Fourthboss.csv", "Magnification")));
-	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Fourth/Fourthboss.csv", "hp1")));
-	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Fourth/Fourthboss.csv", "HeartTarget")));
+	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Magnification")));
+	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "hp1")));
+	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "HeartTarget")));
+	shutterTimeMax = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "shutterTime")));
+	feedTimeMax = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "feedTime")));
+	ActionTimerMax[(size_t)commandState::WaitCommand]=static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Wait")));
+	ActionTimerMax[(size_t)commandState::MoveCommand] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Move")));
+	ActionTimerMax[(size_t)commandState::ControlCommand] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Control")));
+	ActionTimerMax[(size_t)commandState::EnemySpawn] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "EnemySpawn")));
+	ActionTimerMax[(size_t)commandState::SubGauge] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "SubGauge")));
+	ActionTimerMax[(size_t)commandState::Ultimate] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Ultimate")));
+	ActionTimerMax[(size_t)commandState::Explosion] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Explosion")));
 	m_MaxHp = m_HP;
 
 	ActionTimer = 0;
