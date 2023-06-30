@@ -51,6 +51,7 @@ void (SevenBoss::* SevenBoss::stateTable[])() = {
 	&SevenBoss::InterValMove,//動きの合間
 	&SevenBoss::Polter,//ポルターガイスト
 	&SevenBoss::ThrowBound,//投げる
+	&SevenBoss::BirthAvatar,//偽物のボス
 };
 //行動
 void SevenBoss::Action() {
@@ -87,6 +88,25 @@ void SevenBoss::Action() {
 			poltergeist.erase(cbegin(poltergeist) + i);
 		}
 	}
+
+	//偽物のボス
+	for (InterBoss* newboss : avatarboss) {
+		if (newboss != nullptr) {
+			newboss->Update();
+		}
+	}
+
+	//偽物のボスの削除
+	for (int i = 0; i < avatarboss.size(); i++) {
+		if (avatarboss[i] == nullptr) {
+			continue;
+		}
+
+		if (avatarboss[i]->GetHP() <= 0.0f) {
+			avatarboss.erase(cbegin(avatarboss) + i);
+			m_AvatarCount--;
+		}
+	}
 }
 //ポーズ
 void SevenBoss::Pause() {
@@ -108,6 +128,13 @@ void SevenBoss::Draw(DirectXCommon* dxCommon) {
 				newpolter->Draw(dxCommon);
 			}
 		}
+
+		//偽物のボス
+		for (InterBoss* newboss : avatarboss) {
+			if (newboss != nullptr) {
+				newboss->Draw(dxCommon);
+			}
+		}
 	}
 }
 //ImGui
@@ -115,11 +142,18 @@ void SevenBoss::ImGui_Origin() {
 	ImGui::Begin("Seven");
 	ImGui::Text("Inter:%d", m_InterVal);
 	ImGui::Text("Move:%d", m_MoveTimer);
+	ImGui::Text("AvatarCount:%d", m_AvatarCount);
 	ImGui::End();
 
 	for (Poltergeist* newpolter : poltergeist) {
 		if (newpolter != nullptr) {
 			newpolter->ImGuiDraw();
+		}
+	}
+
+	for (InterBoss* newboss : avatarboss) {
+		if (newboss != nullptr) {
+			newboss->ImGuiDraw();
 		}
 	}
 }
@@ -129,7 +163,9 @@ void SevenBoss::InterValMove() {
 	m_InterVal++;
 
 	if (m_InterVal == l_LimitTimer) {
-		_charaState = STATE_BOUND;
+		if (m_AvatarCount == 0) {
+			_charaState = STATE_AVATAR;
+		}
 		m_InterVal = 0;
 	}
 }
@@ -149,6 +185,28 @@ void SevenBoss::ThrowBound() {
 	m_MoveTimer++;
 	if (m_MoveTimer == l_LimitTimer) {
 		BirthPolter("Bound");
+		m_MoveTimer = {};
+		_charaState = STATE_INTER;
+	}
+}
+//偽物のボスを生む
+void SevenBoss::BirthAvatar() {
+	const int l_LimitTimer = 100;
+	m_MoveTimer++;
+	if (m_MoveTimer == l_LimitTimer) {
+		for (int i = 0; i < AVATAR_NUM; i++) {
+			InterBoss* boss;
+			boss = new AvatarBoss();
+			boss->Initialize();
+			if (i == 0) {
+				boss->SetPosition({ 20.0f,3.0f,10.0f });
+			}
+			else {
+				boss->SetPosition({ -20.0f,3.0f,10.0f });
+			}
+			avatarboss.push_back(boss);
+			m_AvatarCount++;
+		}
 		m_MoveTimer = {};
 		_charaState = STATE_INTER;
 	}
