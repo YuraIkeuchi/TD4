@@ -1,4 +1,4 @@
-#include "SixBoss.h"
+﻿#include "SixBoss.h"
 
 #include <any>
 #include <random>
