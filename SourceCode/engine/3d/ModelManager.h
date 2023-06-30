@@ -30,7 +30,8 @@ public:
 		DJ,
 		Skydome,
 		KIDO_OBJ,
-		CD
+		CD,
+		SKIRT
 	};
 	//FBXの名前
 	enum FBXName {

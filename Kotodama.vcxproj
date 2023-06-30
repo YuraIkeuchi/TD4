@@ -109,6 +109,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DarkBullet.cpp" />
     <ClCompile Include="SourceCode\engine\2d\DebugText.cpp" />
     <ClCompile Include="SourceCode\engine\2d\Feed.cpp" />
     <ClCompile Include="SourceCode\engine\2d\Font.cpp" />
@@ -173,6 +174,7 @@
     <ClCompile Include="SourceCode\gamesystem\actor\LoadSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\SecondStageActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\SelectSceneActor.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\actor\SixStageActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\ThirdStageActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\TitleSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\TutorialSceneActor.cpp" />
@@ -199,6 +201,7 @@
     <ClCompile Include="SourceCode\gamesystem\character\Player.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\PlayerAttach.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\SecondBoss.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\character\SixBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\ThirdBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\TutorialEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\editor\Editor.cpp" />
@@ -236,6 +239,7 @@
     <ClCompile Include="SourceCode\gamesystem\scene\SceneSave.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\SecondStage.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\SelectStageScene.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\scene\SixScene.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\ThirdStage.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\TitleScene.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\TutorialScene.cpp" />
@@ -253,6 +257,7 @@
     <ClCompile Include="SourceCode\gamesystem\ui\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DarkBullet.h" />
     <ClInclude Include="SourceCode\engine\2d\DebugText.h" />
     <ClInclude Include="SourceCode\engine\2d\Feed.h" />
     <ClInclude Include="SourceCode\engine\2d\Font.h" />
@@ -324,6 +329,7 @@
     <ClInclude Include="SourceCode\gamesystem\actor\LoadSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\SecondStageActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\SelectSceneActor.h" />
+    <ClInclude Include="SourceCode\gamesystem\actor\SixStageActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\ThirdStageActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\TitleSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\TutorialSceneActor.h" />
@@ -350,6 +356,7 @@
     <ClInclude Include="SourceCode\gamesystem\character\Player.h" />
     <ClInclude Include="SourceCode\gamesystem\character\PlayerAttach.h" />
     <ClInclude Include="SourceCode\gamesystem\character\SecondBoss.h" />
+    <ClInclude Include="SourceCode\gamesystem\character\SixBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\ThirdBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\TutorialEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\editor\Editor.h" />
@@ -376,7 +383,6 @@
     <ClInclude Include="SourceCode\gamesystem\scene\FiveStage.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\FourthStage.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\Framework.h" />
-    <ClInclude Include="SourceCode\gamesystem\scene\GameoverScene.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\IkeGame.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\IntroductionScene.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\LoadScene.h" />
@@ -387,6 +393,7 @@
     <ClInclude Include="SourceCode\gamesystem\scene\SceneSave.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\SecondStage.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\SelectStageScene.h" />
+    <ClInclude Include="SourceCode\gamesystem\scene\SixScene.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\ThirdStage.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\TitleScene.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\TutorialScene.h" />
