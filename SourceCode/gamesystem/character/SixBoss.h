@@ -60,7 +60,7 @@ private:
 private:
 	//各クラス
 	array<unique_ptr<InterCD>, CD_NUM> cd;
-	vector<AttackNote*> attacknotes;//怒りのスタンプ
+	vector<AttackNote*> attacknotes;//弾幕
 	unique_ptr<DamageArea> damagearea;//ダメージエリア
 	unique_ptr<ConfuEffect> confueffect;
 	unique_ptr<NoteEffect> noteeffect;
