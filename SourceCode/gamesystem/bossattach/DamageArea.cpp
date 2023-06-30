@@ -31,9 +31,10 @@ DamageArea::DamageArea(const int Num) {
 	}
 
 	for (size_t i = 0; i < tex.size(); i++) {
-		tex[i] = IKETexture::Create(ImageManager::DAMAGEAREA, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
+		tex[i] = IKETexture::Create(ImageManager::DAMAGEAREA2, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
 		tex[i]->TextureCreate();
 		tex[i]->SetPosition({ 0.0f,-500.0f,0.0f });
+		tex[i]->SetTiling(2.0f);
 	}
 }
 
@@ -73,7 +74,7 @@ void DamageArea::Initialize() {
 	}
 
 	for (size_t i = 0; i < tex.size(); i++) {
-		m_TexColor[i] = { 1.0f,0.0f,0.0f,0.0f };
+		m_TexColor[i] = { 1.0f,1.0f,1.0f,0.0f };
 		m_TexRotation[i] = { 90.0f,0.0f,0.0f };
 		m_TexScale[i] = { 0.4f,3.0f,1.0f };
 		m_TexAlive[i] = true;
@@ -141,8 +142,10 @@ void DamageArea::LineUpdate() {
 		m_TexRotation[i].y = Helper::GetInstance()->DirRotation(m_TexPosition[i], m_Position[i], -PI_180);
 
 		m_TexScale[i].y = Helper::GetInstance()->ChechLength(m_Position[i], m_Position[i + 1]) * 0.1f;
+		m_OffSet.x = -0.01f;
 		if (tex[i] != nullptr) {
 			tex[i]->Update();
+			tex[i]->SetAddOffset(m_OffSet);
 			tex[i]->SetPosition(m_TexPosition[i]);
 			tex[i]->SetRotation(m_TexRotation[i]);
 			tex[i]->SetScale(m_TexScale[i]);
