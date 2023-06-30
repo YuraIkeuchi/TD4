@@ -89,7 +89,9 @@ public:
 	{
 		Normal,
 		Smoke,
-		Heal
+		Heal,
+		Photo,
+
 	};
 
 public:

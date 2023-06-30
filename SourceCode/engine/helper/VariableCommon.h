@@ -3,12 +3,6 @@
 #include <d3d12.h>
 #include <DirectXMath.h>
 
-#include "Audio.h"
-#include "Easing.h"
-#include "SceneManager.h"
-#include "ImageManager.h"
-#include "ParticleEmitter.h"
-
 // DirectX::を省略
 using XMFLOAT2 = DirectX::XMFLOAT2;
 using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -18,10 +12,6 @@ using XMMATRIX = DirectX::XMMATRIX;
 //共通の変数はまとめる(主にマジックナンバー)
 const float m_ColorMax = 1.0f;//透過度の最大
 const float m_ColorMin = 0.0f;//透過度の最小
-
-//フレームの最大と最小(イージングのためのやつ)
-const float m_FrameMax = 1.0f;
-const float m_FrameMin = 0.0f;
 
 //変数を0にするためやif文で(0.0f <)とかのためのもの
 //int

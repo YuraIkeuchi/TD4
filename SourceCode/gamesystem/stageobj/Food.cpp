@@ -4,6 +4,7 @@
 #include "Player.h"
 #include <random>
 #include "Easing.h"
+#include "Helper.h"
 Food::Food() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Food);
 	m_Object.reset(new IKEObject3d());

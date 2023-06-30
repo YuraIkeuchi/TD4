@@ -1,14 +1,10 @@
 #pragma once
+#include "IKESprite.h"
 #include "InterBoss.h"
 #include "Shake.h"
-#include "BarrangeCD.h"
-#include "ConfuCD.h"
-#include "LineCD.h"
-#include "DebuffCD.h"
-#include "AttackNote.h"
-#include "DamageArea.h"
-#include "ConfuEffect.h"
-#include "NoteEffect.h"
+#include "IKETexture.h"
+#include "TutorialEnemy.h"
+
 class FourthBoss :
 	public InterBoss {
 public:
@@ -24,9 +20,9 @@ public:
 
 	void AppearAction() override;//ボス登場の固有の処理
 
-	void DeadAction() override;//ボス撃破の固有の処理
+	void DeadAction() override {};//ボス撃破の固有の処理
 
-	void DeadAction_Throw() override;//ボス撃破の固有の処理 スロー
+	void DeadAction_Throw() override {};//ボス撃破の固有の処理 スロー
 
 	void ImGui_Origin() override;//ボスそれぞれのImGui
 
@@ -34,120 +30,94 @@ public:
 
 	void Draw(DirectXCommon* dxCommon) override;//描画
 private:
-	//インターバル
-	void InterValMove();
-	//動きの選択
-	void Choice();
-	//ダメージエリアのセット
-	void LineSet();
-	//プレイヤーのデバフ
-	void Debuff();
-	//混乱
-	void Confu();
-	//弾幕
-	void Barrage();
-	//行動終わり
-	void EndMove();
-	//CSV読み込み系
-	void CSVLoad();
-	//ノーツの生成
-	void BirthNote(const std::string& BarrageName);
-	//死んだときのパーティクル
-	void DeathParticle();
-private:
-	static const int BULLET_NUM = 4;
-	static const int CD_NUM = 4;
-private:
-	//各クラス
-	array<unique_ptr<InterCD>, CD_NUM> cd;
-	vector<AttackNote*> attacknotes;//怒りのスタンプ
-	unique_ptr<DamageArea> damagearea;//ダメージエリア
-	unique_ptr<ConfuEffect> confueffect;
-	unique_ptr<NoteEffect> noteeffect;
-	//キャラの状態
-	enum CharaState
-	{
-		STATE_INTER,
-		STATE_CHOICE,
-		STATE_LINE,
-		STATE_DEBUFF,
-		STATE_CONFU,
-		STATE_BARRA,
-		STATE_END
+	enum class commandState : int {
+		WaitCommand = 0,
+		MoveCommand,
+		ControlCommand,
+		EnemySpawn,
+		SubGauge,
+		Ultimate,
+		Explosion,
+		COMMANDMAX
 	};
-
-	//停止時間
-	int m_StopTimer = 0;
-	//どの行動にするか
-	int m_MoveState = {};
+	void SelectAction();
 
 	//関数ポインタ
 	static void(FourthBoss::* stateTable[])();
-	
-	int _charaState = STATE_INTER;
+	//メンバ関数
+	void WaitUpdate();
+	void MoveUpdate();
+	void ControlUpdate();
+	void EnemySpawnUpdate();
+	void SubGaugeUpdate();
+	void UltimateUpdate();
+	void ExplosionUpdate();
 
-	//CSV系
-	int m_ChoiceInterval = {};
+	bool ShutterEffect();
+	bool ShutterFeed();
+	void ShutterReset();
 
-	//イージング後の位置
-	XMFLOAT3 m_AfterPos = {};
-	//X方向の回転
-	XMFLOAT3 m_AfterRot = { 0.0f,0.0f,0.0f };
-	float m_Frame = {};
+	bool EnemysIsActiveCheck();
+	void ChangePos2Random();
+	void ChangePos2Rand();
 
-	int m_RotCount = 0;
-	int m_RotTimer = 0;
+	bool IsPinch();
+private:
+	static const int kPhotoSpotMax = 5;
+	array<unique_ptr<IKETexture>, kPhotoSpotMax> photoSpot = {};
 
-	enum AreaState {
-		AREA_SET,
-		AREA_STOP,
-		AREA_END,
+	static const int FourthEnemyMax = 5;
+	array<unique_ptr<TutorialEnemy>, FourthEnemyMax>Fourthenemys = {};
+
+	array<XMFLOAT3, kPhotoSpotMax> spotPos = {
+		XMFLOAT3({-48,0,-55}),
+		XMFLOAT3({58,0,-55}),
+		XMFLOAT3({-48,0,55}),
+		XMFLOAT3({58,0,55}),
+		XMFLOAT3({0,0,0})
+	};
+	enum {
+		Photo_In,
+		Photo_Out_Top,
+		Photo_Out_Under,
+		SpriteMax,
+	};
+	array<unique_ptr<IKESprite>, SpriteMax> photo = {};
+private:
+	int moveSpawn = 0;
+	int nowSpawn = 0;
+	commandState phase = commandState::WaitCommand;
+
+
+	float limitHp = 0.0f;
+
+	int stage_move = 0;
+	int stage_move_count = 1;
+	int stage_move_max = 4;
+
+	bool isShutter = false;
+	float shutterTime = 0.0f;
+	float feedTimer = 0.0f;
+	float shutterHight[2] = { 0,0 };
+	//enum class commandState : int {
+	//	WaitCommand = 0,
+	//	MoveCommand,
+	//	ControlCommand,
+	//	EnemySpawn,
+	//	SubGauge,
+	//	Ultimate,
+	//	COMMANDMAX
+	//};
+
+	array<int, (size_t)commandState::COMMANDMAX> ActionTimerMax =
+	{ 180,
+		120,
+		100,
+		100,
+		60,
+		700
 	};
 
-	int m_AreaState = AREA_SET;
-	float SplineSpeed = false;
-
-	enum CDType {
-		CD_LINE,
-		CD_DEBUFF,
-		CD_CONFU,
-		CD_BARRA,
-	};
-	//動きのインターバル
-	int m_MoveInterVal = {};
-	//行動終了の数
-	int m_EndCount = {};
-	//キャッチしたCDの数
-	int m_CatchCount = {};
-	//ボスがプレイヤーから逃げる時間
-	int m_EndTimer = {};
-
-	//棘の的に使う
-	float m_Angle = 0.0f;
-	float m_Angle2 = 0.0f;
-	//二点の距離
-	float m_Length = {};
-
-	//円運動
-	float m_CircleScale = 30.0f;
-	float m_CircleSpeed = {};
-
-	//弾幕の種類
-	int m_BarraRand = {};
-
-	int m_AttackRand = {};
-
-	//CSV系
-	//各インターバルやリミット時間
-	vector<int>m_Limit;
-
-	enum LimitState {
-		LIMIT_BASE,
-		LIMIT_CONFU,
-		LIMIT_STRONG_CONFU,
-		LIMIT_BARRA,
-	};
-
-	//移動力
-	float m_FollowSpeed = {};
+	float shutterTimeMax = 40.0f;
+	float feedTimeMax = 15.0f;
 };

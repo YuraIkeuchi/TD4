@@ -1,9 +1,10 @@
 #include "Ghost.h"
-#include "VariableCommon.h"
 #include "Collision.h"
-#include "HungerGauge.h"
+#include "Easing.h"
 #include <random>
 #include "Player.h"
+#include "HungerGauge.h"
+#include "Helper.h"
 Ghost::Ghost() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Ghost);
 	model_follow.reset(ModelManager::GetInstance()->GetModel(ModelManager::Buddy));

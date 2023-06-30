@@ -1,6 +1,6 @@
 #pragma once
 #include"BaseScene.h"
-#include"FiveSategActor.h"
+#include"FiveStageActor.h"
 
 class FiveStage:public BaseScene
 {

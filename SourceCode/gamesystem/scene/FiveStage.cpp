@@ -6,7 +6,7 @@ void FiveStage::Initialize(DirectXCommon* dxCommon)
 	BaseInitialize(dxCommon);
 	//プレイシーンのアクター
 	BaseActor* actor_;
-	actor_ = new FiveSategActor();
+	actor_ = new FiveStageActor();
 	actor_->Initialize(dxCommon, camera, lightGroup);
 	actor.reset(actor_);
 }

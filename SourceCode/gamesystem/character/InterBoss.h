@@ -18,7 +18,7 @@ protected:
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
 public:
-	enum ThirdBossInst {
+	enum FourthBossInst {
 		None = 0,
 		StopGhost,
 		ChangeGhost,
@@ -136,7 +136,6 @@ protected:
 	bool isAlive = true;
 	//ゴーストがフィールドにいない
 	bool isMiss = false;
-
 	float m_HP = {};
 	float m_MaxHp = {};
 	float m_Limit = 20.0f;

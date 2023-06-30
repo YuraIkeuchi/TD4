@@ -90,13 +90,13 @@ void UI::Update() {
 		TexList[ChargeGauge].IsVisible = true;
 		TexList[ExtraGauge].Color = { 0.0f,1.0f,1.0f,1.0f };
 		if (Player::GetInstance()->GetChargeType() == 0) {
-			TexList[ChargeGauge].Color = { 1.0f,1.0f,1.0f,1.0f };
+			TexList[ChargeGauge].Color = { 1.0f,1.0f,0.2f,1.0f };
 		}
 		else if (Player::GetInstance()->GetChargeType() == 1) {
-			TexList[ChargeGauge].Color = { 1.0f,1.0f,1.0f,1.0f };
+			TexList[ChargeGauge].Color = { 1.0f,0.6f,0.0f,1.0f };
 		}
 		else if (Player::GetInstance()->GetChargeType() == 2) {
-			TexList[ChargeGauge].Color = { 1.0f,0.6f,0.0f,1.0f };
+			TexList[ChargeGauge].Color = { 1.0f,0.3f,0.0f,1.0f };
 		}
 		else {
 			TexList[ChargeGauge].Color = { 1.0f,0.0f,0.0f,1.0f };

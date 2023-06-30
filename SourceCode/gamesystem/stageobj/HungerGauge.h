@@ -47,5 +47,6 @@ private:
 	bool isStop = false;
 
 	//’´‰ß‚·‚é‹Q‰ìƒQ[ƒW(‚±‚ê‚ª–S‚­‚È‚ç‚È‚¢‚Æ‹Q‰ìƒQ[ƒW‚ÍŒ¸‚ç‚È‚¢)
-	float m_Additional = 0.0f;
+	float m_Additional = {};
+	float m_SubExtra = {};
 };

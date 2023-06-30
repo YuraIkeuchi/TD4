@@ -166,7 +166,7 @@
     <ClCompile Include="SourceCode\gamesystem\actor\BaseActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\ClearSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\EditorSceneActor.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\actor\FiveSategActor.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\actor\FiveStageActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\FourthStageActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\GameOverSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\FirstStageActor.cpp" />
@@ -174,6 +174,7 @@
     <ClCompile Include="SourceCode\gamesystem\actor\LoadSceneActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\SecondStageActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\SelectSceneActor.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\actor\SevenStageActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\SixStageActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\ThirdStageActor.cpp" />
     <ClCompile Include="SourceCode\gamesystem\actor\TitleSceneActor.cpp" />
@@ -193,6 +194,7 @@
     <ClCompile Include="SourceCode\gamesystem\bossattach\ShockWave.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\EnemyManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\FirstBoss.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\character\FiveBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\FourthBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\Ghost.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\InterBoss.cpp" />
@@ -201,6 +203,7 @@
     <ClCompile Include="SourceCode\gamesystem\character\Player.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\PlayerAttach.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\SecondBoss.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\character\SevenBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\SixBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\ThirdBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\TutorialEnemy.cpp" />
@@ -240,6 +243,8 @@
     <ClCompile Include="SourceCode\gamesystem\scene\SecondStage.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\SelectStageScene.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\SixScene.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\scene\SevenStage.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\scene\SixStage.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\ThirdStage.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\TitleScene.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\TutorialScene.cpp" />
@@ -321,7 +326,7 @@
     <ClInclude Include="SourceCode\gamesystem\actor\BaseActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\ClearSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\EditorSceneActor.h" />
-    <ClInclude Include="SourceCode\gamesystem\actor\FiveSategActor.h" />
+    <ClInclude Include="SourceCode\gamesystem\actor\FiveStageActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\FourthStageActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\GameOverSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\FirstStageActor.h" />
@@ -329,6 +334,7 @@
     <ClInclude Include="SourceCode\gamesystem\actor\LoadSceneActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\SecondStageActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\SelectSceneActor.h" />
+    <ClInclude Include="SourceCode\gamesystem\actor\SevenStageActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\SixStageActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\ThirdStageActor.h" />
     <ClInclude Include="SourceCode\gamesystem\actor\TitleSceneActor.h" />
@@ -348,6 +354,7 @@
     <ClInclude Include="SourceCode\gamesystem\bossattach\ShockWave.h" />
     <ClInclude Include="SourceCode\gamesystem\character\EnemyManager.h" />
     <ClInclude Include="SourceCode\gamesystem\character\FirstBoss.h" />
+    <ClInclude Include="SourceCode\gamesystem\character\FiveBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\FourthBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\Ghost.h" />
     <ClInclude Include="SourceCode\gamesystem\character\InterBoss.h" />
@@ -356,6 +363,7 @@
     <ClInclude Include="SourceCode\gamesystem\character\Player.h" />
     <ClInclude Include="SourceCode\gamesystem\character\PlayerAttach.h" />
     <ClInclude Include="SourceCode\gamesystem\character\SecondBoss.h" />
+    <ClInclude Include="SourceCode\gamesystem\character\SevenBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\SixBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\ThirdBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\TutorialEnemy.h" />
@@ -394,6 +402,8 @@
     <ClInclude Include="SourceCode\gamesystem\scene\SecondStage.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\SelectStageScene.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\SixScene.h" />
+    <ClInclude Include="SourceCode\gamesystem\scene\SevenStage.h" />
+    <ClInclude Include="SourceCode\gamesystem\scene\SixStage.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\ThirdStage.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\TitleScene.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\TutorialScene.h" />

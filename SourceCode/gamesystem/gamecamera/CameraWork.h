@@ -17,6 +17,9 @@ enum CameraState {
 	CAMERA_BOSSDEAD_AFTER_SECOND,
 	CAMERA_BOSSDEAD_AFTER_THIRD,
 	CAMERA_BOSSDEAD_AFTER_FOURTH,
+	CAMERA_BOSSDEAD_AFTER_FIVE,
+	CAMERA_BOSSDEAD_AFTER_SIX,
+	CAMERA_BOSSDEAD_AFTER_SEVEN,
 };
 
 //ボス登場シーンのカメラの動き(2個目のボスがこの量なだけでボスによってはへらしてもいいよ)
@@ -59,7 +62,11 @@ private:
 	void SetBossDead_Before();//撃破
 	void SetBossDead_AfterFirst();//撃破時（フェード後）
 	void SetBossDead_AfterSecond();//撃破時（フェード後）
+	void SetBossDead_AfterThird();//撃破時（フェード後）
 	void SetBossDead_AfterFourth();//撃破時（フェード後）
+	void SetBossDead_AfterFive();//撃破時（フェード後）
+	void SetBossDead_AfterSix();//撃破時（フェード後）
+	void SetBossDead_AfterSeven();//撃破時（フェード後）
 	//void SetBoss(InterBoss* boss) { this->boss = boss; }
 	//ゲームシーン以外で使うカメラ更新(this変数で変更可能)
 	void SpecialUpdate();//更新
@@ -82,12 +89,14 @@ private:
 private://各ボスの登場カメラ
 	Spline* spline;
 	vector<XMFLOAT3>pointsList;
+	//各ボスの登場ムービー
 	void FirstBossAppear();
-
 	void SecondBossAppear();
 	void ThirdBossAppear();
-
 	void FourthBossAppear();
+	void FiveBossAppear();
+	void SixBossAppear();
+	void SevenBossAppear();
 
 	void FirstBossDead_AfterFeed();
 	//円運動のカメラセットの際のやつ

@@ -1,5 +1,4 @@
 ﻿#include "LoadSceneActor.h"
-#include "SceneManager.h"
 #include "ImageManager.h"
 #include "Easing.h"
 #include "Helper.h"
@@ -73,6 +72,16 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	if (Input::GetInstance()->TriggerKey(DIK_5)) {
 		Audio::GetInstance()->StopWave(AUDIO_LOAD);
 		str = "FIVESTAGE";
+	}
+	//6ステージ
+	if (Input::GetInstance()->TriggerKey(DIK_6)) {
+		Audio::GetInstance()->StopWave(AUDIO_LOAD);
+		str = "SIXSTAGE";
+	}
+	//7ステージ
+	if (Input::GetInstance()->TriggerKey(DIK_7)) {
+		Audio::GetInstance()->StopWave(AUDIO_LOAD);
+		str = "SEVENSTAGE";
 	}
 	//一定時間でシーンが変わる
 	if (m_LoadTimer >= 200 && !SceneManager::GetInstance()->GetLoad()) {

@@ -1,9 +1,9 @@
 #include "ShockWave.h"
 #include "ImageManager.h"
-#include"Collision.h"
-#include "Helper.h"
-#include "VariableCommon.h"
+#include "Easing.h"
 #include "CsvLoader.h"
+#include "Player.h"
+#include "Collision.h"
 void ShockWave::Initialize(const XMFLOAT3& pos) {
 	tex = IKETexture::Create(ImageManager::IMPACT, { 0,0,0 }, { 12,12,12 }, { 1,1,1,0.6f });
 	tex->TextureCreate();
@@ -13,7 +13,7 @@ void ShockWave::Initialize(const XMFLOAT3& pos) {
 
 	m_Alive = true;
 
-	m_DamagePower = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/secondboss.csv", "WaveDamage")));
+	m_DamagePower = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Third/Thirdboss.csv", "WaveDamage")));
 }
 
 void ShockWave::Update() {

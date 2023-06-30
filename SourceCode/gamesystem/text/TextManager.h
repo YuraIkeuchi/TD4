@@ -2,6 +2,8 @@
 #include"DirectXCommon.h"
 #include"VariableCommon.h"
 #include"Font.h"
+#include <map>
+using namespace std;         //  名前空間指定
 class TextManager
 {
 private:
@@ -90,6 +92,15 @@ public:
 		TALK_FIVE,
 	};
 
+	enum Name_CameraBoss {
+		TALK_FIRST_T,
+		TALK_SECOND_T,
+		TALK_THIRD_T,
+		TALK_FOURTH_T,
+		TALK_FIVE_T,
+		TALK_SIX_T,
+	};
+
 	static TextManager* GetInstance();
 
 	//
@@ -117,6 +128,8 @@ public:
 
 	void SetFourthConversation(Name_Fourth name = TALK_FIRST);
 
+	void SetCameraBossConversation(Name_CameraBoss name = TALK_FIRST_T);
+
 	void GetWordSize(Word word);
 
 	void SetRowPosition(float posX);
@@ -127,6 +140,7 @@ private:
 	void CreateWord(Name_First name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
 	void SecondCreateWord(Name_Second name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
 	void FourthCreateWord(Name_Fourth name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
+	void CameraBossCreateWord(Name_CameraBoss name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
 	//
 	Word SetWord(wchar_t* tex1, wchar_t* tex2, wchar_t* tex3);
 	//
@@ -137,7 +151,9 @@ private:
 	std::map<TextManager::Name, Word> wordlist_;
 	std::map<TextManager::Name_First, Word> wordlist_first;
 	std::map<TextManager::Name_Second, Word> wordlist_second;
+	std::map<TextManager::Name_CameraBoss, Word> wordlist_cameraBoss;
 	std::map<TextManager::Name_Fourth, Word> wordlist_fourth;
+
 	Conversation conversation_ = {};
 	Conversation old_conversation_ = {};
 
@@ -158,6 +174,7 @@ private:
 	Name old=NONE;
 	Name_First old_first = VIEWBOSS;
 	Name_Second old_second = ANGER_TALK;
-	Name_Fourth old_fourth;
+	Name_Fourth old_fourth = TALK_FIRST;
+	Name_CameraBoss old_cameraBoss = TALK_FIRST_T;
 };
 

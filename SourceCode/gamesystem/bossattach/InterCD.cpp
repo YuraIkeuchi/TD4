@@ -1,8 +1,8 @@
 #include "InterCD.h"
 #include "Collision.h"
-#include "Player.h"
 #include "CsvLoader.h"
 #include <random>
+#include "Helper.h"
 void (InterCD::* InterCD::stateTable[])() = {
 	&InterCD::BirthCD,//ê∂ê¨
 	&InterCD::StayCD, //ï˙íu
@@ -13,7 +13,7 @@ void (InterCD::* InterCD::stateTable[])() = {
 
 //CDVì«Ç›çûÇ›
 void InterCD::CsvLoad() {
-	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/fourth/CD.csv", "hp")));
+	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Six/CD.csv", "hp")));
 }
 
 void InterCD::Update() {
@@ -77,6 +77,7 @@ void InterCD::SetCD() {
 		else if (m_CatchState == CATCH_MOVE) {
 			m_AddPower -= m_Gravity;
 			if (Helper::GetInstance()->CheckMax(m_Position.y, m_CatchPos.y, m_AddPower) && m_AddPower < -1.0f) {
+				Audio::GetInstance()->PlayWave("Resources/Sound/SE/CDSet.wav", VolumManager::GetInstance()->GetSEVolum());
 				m_CatchState = CATCH_END;
 				m_AttackSetCD = false;
 			}

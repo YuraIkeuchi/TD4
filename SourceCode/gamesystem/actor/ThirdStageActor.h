@@ -1,16 +1,10 @@
-﻿
-#pragma once
+﻿#pragma once
 #include "BaseActor.h"
+#include <vector>
+#include<windows.h>
 #include "BossText.h"
-#include "LoadStageObj.h"
-#include"Font.h"
-#include"Feed.h"
-#include "MessageWindow.h"
-#include"Spline.h"
-
 /// タイトルシーン
 class ThirdStageActor : public BaseActor {
-
 public:
 	/// 初期化
 	void Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) override;
@@ -23,29 +17,36 @@ public:
 	void FrontDraw(DirectXCommon* dxCommon);
 	void BackDraw(DirectXCommon* dxCommon);
 	void ImGuiDraw(DirectXCommon* dxCommon);
-	void ColEnemy(std::vector<InterEnemy*> enelist);
 private:
-	float Rads;
-	int textT;
-	unique_ptr<MessageWindow> messagewindow_;
+
+	void IntroUpdate(DebugCamera* camera)override;		//登場シーン
+	void MainUpdate(DebugCamera* camera)override;		//バトルシーン
+	void FinishUpdate(DebugCamera* camera)override;		//撃破シーン
+
 	unique_ptr<BossText> text_;
 	unique_ptr<IKESprite> backScreen_ = nullptr;
+private:
 
-	Spline* spline;
-	vector<XMFLOAT3> pointsList;
+	//導入シーン
+	enum class AppState : int {
+		ANGER_START,
+		ANGER_Third,
+		JOY_START,
+		JOY_Third,
+		JOY_THIRD,
+		SELECT_EMO,
+		EMO_JOY,
+		EMO_JOY2,
+		EMO_ANGER,
+		EMO_ANGER2,
+	};
 
-	enum class TextScene
-	{
-		NON,
-		TIEYOSHI_EXP,
-		STOPON_SPK,
-		KILL_TIEYOSHI,
-		LET_GO,
-		ENDTEXT
-	}_Tscne=TextScene::ENDTEXT;
+	//シーンでの遷移
+	AppState m_AppState = AppState::ANGER_START;
+
 
 	//丸影(ボス)
 	float BosscircleShadowDir[3] = { 0,-1,0 };
 	float BosscircleShadowAtten[3] = { 0.5f,0.6f,0.0f };
-	float BosscircleShadowFactorAngle[2] = { 0.0f, 2.0f };
+	float BosscircleShadowFactorAngle[2] = { 1.8f, 1.8f };
 };

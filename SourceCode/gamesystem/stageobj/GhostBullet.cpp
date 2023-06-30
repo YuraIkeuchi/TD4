@@ -21,9 +21,6 @@ bool GhostBullet::Initialize() {
 }
 //ImGui•`‰æ
 void GhostBullet::ImGui_Origin() {
-	ImGui::Begin("Ghost");
-	ImGui::Text("Alive:%d", m_Alive);
-	ImGui::End();
 }
 //’e‚Ì“Á—Lˆ—
 void GhostBullet::Action() {

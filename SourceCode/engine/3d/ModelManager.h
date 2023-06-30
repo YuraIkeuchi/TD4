@@ -32,6 +32,7 @@ public:
 		KIDO_OBJ,
 		CD,
 		SKIRT
+		NOTE
 	};
 	//FBXの名前
 	enum FBXName {

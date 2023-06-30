@@ -1,7 +1,7 @@
 #pragma once
 #include "TextManager.h"
-
-
+#include "IKESprite.h"
+using namespace std;         //  名前空間指定
 enum TextState {
 	TEXTANGER_START,
 	TEXTANGER_SECOND,
@@ -30,6 +30,7 @@ public:
 	//メッセージ選択
 	void SelectText(TextManager::Name_Second name);
 	void SelectText(TextManager::Name_Fourth name);
+	void SelectText(TextManager::Name_CameraBoss name, const XMVECTOR& color = { 1.f,1.f,1.f,1.f });
 	void SelectText(TextManager::Name_First name,const XMVECTOR& color={1.f,1.f,1.f,1.f});
 	void ChangeColor(int row, const XMVECTOR& color);
 public:
@@ -37,6 +38,7 @@ public:
 private:
 	unique_ptr<TextManager> text_;
 	unique_ptr<IKESprite> window_;
+
 	//カメラの状態
 	int m_TextState = 0;
 

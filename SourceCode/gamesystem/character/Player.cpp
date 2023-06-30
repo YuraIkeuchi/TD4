@@ -1,11 +1,10 @@
 ﻿#include "Player.h"
 #include "CsvLoader.h"
 #include "Helper.h"
-#include "VariableCommon.h"
 #include "HungerGauge.h"
-#include "Collision.h"
 #include "Input.h"
 #include "Easing.h"
+#include "Collision.h"
 Player* Player::GetInstance()
 {
 	static Player instance;
@@ -21,17 +20,6 @@ bool Player::Initialize()
 	m_fbxObject->SetModel(ModelManager::GetInstance()->GetFBXModel(ModelManager::PLAYER));
 	m_fbxObject->LoadAnimation();
 	m_fbxObject->PlayAnimation(0);
-	/*CSV読み込み(CSVファイル名,読み込むパラメータの名前,受け取る値)　今は単一の方のみ対応(int float double charとか)*/
-
-	//spから間接的にアクセスする方法 (Update()内で専用の変数に代入する必要あり)
-	/*①*/LoadCSV::LoadCsvParam("Resources/csv/chara/player/player.csv", "speed1", sp);/*m_AddSpeedにspを代入*/
-
-	//関数の戻り値から直接値を取る方法(こっちのほうが楽ではある　ただ行数が少し長くなる)
-	/*②*/m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player/player.csv", "speed2")));
-	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player/player.csv", "HP")));
-	m_MaxHP = m_HP;
-	m_TargetInterVal = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player/player.csv", "InterVal")));
-	m_TargetRigidityTime = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player/player.csv", "Rigidity")));
 
 	//飢餓ゲージはプレイヤーで管理する
 	HungerGauge::GetInstance()->Initialize();
@@ -41,6 +29,7 @@ bool Player::Initialize()
 
 	playerattach.reset(new PlayerAttach());
 	playerattach->Initialize();
+
 	skirtobj.reset(new IKEObject3d());
 	skirtobj->Initialize();
 	skirtobj->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::SKIRT));
@@ -48,7 +37,28 @@ bool Player::Initialize()
 	//11
 	skirtobj->SetRotation({ 0,0,90});
 	skirtobj->SetScale({2,2,2 });
+
+	LoadCSV();
+	//CSV読み込み
 	return true;
+}
+//CSV読み込み
+void Player::LoadCSV() {
+	auto LimitSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player/player.csv", "POWER_NUM")));
+
+	m_PowerLimit.resize(LimitSize);
+	LoadCSV::LoadCsvParam_Float("Resources/csv/chara/player/player.csv", m_PowerLimit, "PowerLimit");
+	/*CSV読み込み(CSVファイル名,読み込むパラメータの名前,受け取る値)　今は単一の方のみ対応(int float double charとか)*/
+
+//spから間接的にアクセスする方法 (Update()内で専用の変数に代入する必要あり)
+	/*①*/LoadCSV::LoadCsvParam("Resources/csv/chara/player/player.csv", "speed1", sp);/*m_AddSpeedにspを代入*/
+
+	//関数の戻り値から直接値を取る方法(こっちのほうが楽ではある　ただ行数が少し長くなる)
+	/*②*/m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player/player.csv", "speed2")));
+	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player/player.csv", "HP")));
+	m_MaxHP = m_HP;
+	m_TargetInterVal = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player/player.csv", "InterVal")));
+	m_TargetRigidityTime = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player/player.csv", "Rigidity")));
 }
 //ステータスの初期化
 void Player::InitState(const XMFLOAT3& pos) {
@@ -204,6 +214,7 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 //ImGui
 void Player::ImGuiDraw() {
 	HungerGauge::GetInstance()->ImGuiDraw();
+
 	for (int i = 0; i < attackbullets.size(); i++) {
 		attackbullets[i]->ImGuiDraw();
 	}
@@ -212,6 +223,7 @@ void Player::ImGuiDraw() {
 	ImGui::Text("Charge:%f", m_ChargePower);
 	ImGui::Text("ChargeType:%d", m_ChargeType);
 	ImGui::End();
+
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
@@ -276,7 +288,7 @@ void Player::Walk()
 	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
 	move = XMVector3TransformNormal(move, matRot);
 	//向いた方向に進む
-	if (m_RigidityTime == m_ResetNumber) {
+	if (m_RigidityTime == 0) {
 		//混乱していると逆状態になる
 		if (!m_Confu) {
 			m_Position.x += move.m128_f32[0] * m_AddSpeed;
@@ -302,6 +314,7 @@ XMFLOAT3 Player::MoveVECTOR(XMVECTOR v, float angle)
 void Player::Bullet_Management() {
 	const int l_TargetCount = 1;
 	const int l_Limit = 20;//ショットのチャージ時間
+	const float l_AddFrame = 0.1f;
 	/*-----------------------------*/
 	//RB||LBが押されたら弾を切り替える
 	if (((Input::GetInstance()->TriggerButton(Input::RB)) || (Input::GetInstance()->TriggerButton(Input::LB))) && (m_canShot) && (m_ChargePower == 0.0f))
@@ -323,8 +336,6 @@ void Player::Bullet_Management() {
 			else {
 				m_BulletType = BULLET_FORROW;
 			}
-			
-			
 		}
 		else if (Input::GetInstance()->TriggerButton(Input::LB)) {
 			if (m_BulletType != BULLET_FORROW) {
@@ -343,27 +354,23 @@ void Player::Bullet_Management() {
 		AnimationControl(AnimeName::ATTACK,false, 1);
 		TriggerAttack = true;
 
-	//チャージの量によって威力変える
-	if (m_ChargePower < 13.0f) {
-		m_ChargeType = POWER_NONE;
-	}
-	else if (m_ChargePower >= 13.0f && m_ChargePower < 25.0f) {
-		m_ChargeType = POWER_MIDDLE;
-	}
-	else if (m_ChargePower >= 25.0f && m_ChargePower < 40.0f) {
-		m_ChargeType = POWER_STRONG;
-	}
-	else {
-		m_ChargeType = POWER_UNLIMITED;
-	}
-
 	if (TriggerAttack) {
-		
 		if (!m_fbxObject->GetIsPlay())
 			TriggerAttack = false;
 	}
 
-
+	//弾を打った瞬間チャージ量分飢餓ゲージを減らす
+	if (m_SubHunger) {
+		if (m_Frame < m_FrameMax) {
+			m_Frame += l_AddFrame;
+		}
+		else {
+			m_Frame = {};
+			m_LimitHunger = {};
+			m_SubHunger = false;
+		}
+		HungerGauge::GetInstance()->SetNowHunger(Ease(In, Cubic, m_Frame, HungerGauge::GetInstance()->GetNowHunger(), m_LimitHunger));
+	}
 	//攻撃
 	//Bが押されたら弾のチャージ
 	if (m_BulletType == BULLET_ATTACK) {
@@ -372,13 +379,49 @@ void Player::Bullet_Management() {
 			isShotNow = true;
 			m_ChargePower += 0.2f;
 			viewbullet->SetAlive(true);
+
+			//チャージの量によって威力変える
+			if (m_ChargePower < m_PowerLimit[POWER_NONE]) {
+				m_ChargeType = POWER_NONE;
+			}
+			else if (m_ChargePower >= m_PowerLimit[POWER_NONE] && m_ChargePower < m_PowerLimit[POWER_MIDDLE]) {
+				m_ChargeType = POWER_MIDDLE;
+			}
+			else if (m_ChargePower >= m_PowerLimit[POWER_MIDDLE] && m_ChargePower < m_PowerLimit[POWER_STRONG]) {
+				m_ChargeType = POWER_STRONG;
+			}
+			else {
+				m_ChargeType = POWER_UNLIMITED;
+			}
 		}
 
 		//チャージ中に飢餓ゲージが切れた場合弾が自動で放たれる
-		if ((HungerGauge::GetInstance()->GetNowHunger() == 0.0f && m_ChargePower != 0.0f) || (m_ChargePower >= HungerGauge::GetInstance()->GetNowHunger())) {
-			BirthShot("Attack", true);
-			playerattach->SetAlive(true);
-			ResetBullet();
+		if (m_ChargePower != 0.0f) {
+			if ((HungerGauge::GetInstance()->GetNowHunger() == 0.0f) || (m_ChargePower > HungerGauge::GetInstance()->GetNowHunger())) {
+				if (m_ChargeType < POWER_STRONG) {
+					Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
+				}
+				else {
+					Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Charge.wav", VolumManager::GetInstance()->GetSEVolum());
+				}
+				BirthShot("Attack", true);
+				playerattach->SetAlive(true);
+				//減る飢餓ゲージ量を決める
+				if (m_ChargeType != POWER_NONE) {
+					if (m_ChargeType == POWER_MIDDLE) {
+						m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_NONE];
+					}
+					else if (m_ChargeType == POWER_STRONG) {
+						m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_MIDDLE];
+					}
+					else if (m_ChargeType == POWER_UNLIMITED) {
+						m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_STRONG];
+					}
+					m_Frame = {};
+					m_SubHunger = true;
+				}
+				ResetBullet();
+			}
 		}
 
 		if (!Input::GetInstance()->PushButton(Input::B) && m_ChargePower != 0.0f) {
@@ -391,6 +434,20 @@ void Player::Bullet_Management() {
 				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Charge.wav", VolumManager::GetInstance()->GetSEVolum());
 				BirthShot("Attack", true);
 				playerattach->SetAlive(true);
+			}
+			//減る飢餓ゲージ量を決める
+			if (m_ChargeType != POWER_NONE) {
+				if (m_ChargeType == POWER_MIDDLE) {
+					m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_NONE];
+				}
+				else if (m_ChargeType == POWER_STRONG) {
+					m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_MIDDLE];
+				}
+				else if (m_ChargeType == POWER_UNLIMITED) {
+					m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_STRONG];
+				}
+				m_Frame = {};
+				m_SubHunger = true;
 			}
 			ResetBullet();
 		}
@@ -459,7 +516,6 @@ void Player::Bullet_Management() {
 	XMFLOAT2 l_Angle;
 	l_Angle.x = move.m128_f32[0];
 	l_Angle.y = move.m128_f32[2];
-
 
 	//可視化の弾関係
 	viewbullet->Update();
@@ -581,6 +637,7 @@ void Player::ResetBullet() {
 	viewbullet->SetAlive(false);
 	viewbullet->SetCharge(false);
 	m_ChargePower = {};
+	m_ChargeType = POWER_NONE;
 }
 void Player::isOldPos()
 {

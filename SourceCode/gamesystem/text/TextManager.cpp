@@ -87,7 +87,6 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	//CreateWord(Name_First::VIEWBOSS, L"ちちうえ!ほんがうごきまわってるでござる!",L"どうするでござるか!?",L"しめるでござるか!?");
 	//CreateWord(Name_First::SPEAKPLAYER1, L"。。。。。。。");
 	//CreateWord(Name_First::SPEALPLAYER2, L"あれはわしらにはすくえぬものじゃ",L"ぜんりょくでころすのじゃ");
-
 	SecondCreateWord(ANGER_TALK, L"うぉおおおおい!!!", L"いったいオマエは!!!!!!", L"ナニしにキタ!?!?!?!?!?!?");
 	SecondCreateWord(ANGER_TALK2, L"もしかして", L"おれにたいして", L"ケンカをうりにきたのか!?");
 	SecondCreateWord(JOY_TALK, L"まあまあおちついてよ", L"ほらみてみなよ", L"こわがってるじゃんか!");
@@ -99,6 +98,13 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	SecondCreateWord(SELECT_JOY, L"キミよくわかってるね!", L"ってことはさ、キミは", L"このぼくのカンジョウ・・・");
 	SecondCreateWord(SELECT_JOY2, L"めのまえのやつをたおすヨロコビを", L"リカイしてくれるよね!!!", L"!!!!!!!!!!");
 
+	CameraBossCreateWord(TALK_FIRST_T, L"ストポンとはぐれちゃった...", L"どこにいっちゃっただろう", L"おなかもすいちゃったし");
+	CameraBossCreateWord(TALK_SECOND_T, L"な、なにかサガしているのかい？", L"ぼ、ぼくでよければ", L"");
+	CameraBossCreateWord(TALK_THIRD_T, L"ぬ", L"ぬ", L"ぬ");
+	CameraBossCreateWord(TALK_FOURTH_T, L"", L"", L"");
+	CameraBossCreateWord(TALK_FIVE_T, L"", L"", L"");
+	CameraBossCreateWord(TALK_SIX_T, L"", L"", L"");
+		
 	FourthCreateWord(TALK_FIRST, L"ようこそ!!!", L"Ladies And ", L"Gentlemen!!!");
 	FourthCreateWord(TALK_SECOND, L"キミもオレがながす", L"イカしてるメロディーを", L"ききたいんだろ");
 	FourthCreateWord(TALK_THIRD, L"そこにCDがあるかぎり!", L"オレはオトをとめない!!!", L"");
@@ -264,6 +270,26 @@ void TextManager::SetFourthConversation(Name_Fourth name)
 
 	CreateCon(conversation_, itr->second);
 }
+
+void TextManager::SetCameraBossConversation(Name_CameraBoss name) {
+	
+	std::map<TextManager::Name_CameraBoss, Word>::iterator itr = wordlist_cameraBoss.find(name);
+
+	if (old_cameraBoss != itr->first) {
+		for (int i = 0; i < 3; i++) {
+			flag[i] = true;
+			next_f[i] = false;
+		}
+	}
+
+	old_cameraBoss = itr->first;
+
+	GetWordSize(itr->second);
+
+	CreateCon(conversation_, itr->second);
+
+}
+
 //名前と文字列セットで保存
 void TextManager::CreateWord(Name name, wchar_t* tex1, wchar_t* tex2, wchar_t* tex3)
 {
@@ -295,7 +321,11 @@ void TextManager::FourthCreateWord(Name_Fourth name, wchar_t* tex1, wchar_t* tex
 
 	wordlist_fourth.insert(std::make_pair(name, temp));
 }
+void TextManager::CameraBossCreateWord(Name_CameraBoss name, wchar_t* tex1, wchar_t* tex2, wchar_t* tex3) {
+	Word temp = SetWord(tex1, tex2, tex3);
 
+	wordlist_cameraBoss.insert(std::make_pair(name, temp));
+}
 void TextManager::SetRowPosition(float posX)
 {
 	//フォントのあれこれ

@@ -20,6 +20,7 @@ void ParticleEmitter::Initialize()
 	deathParticle.reset(ParticleManager::Create(ImageManager::Normal));
 	BossDeadParticle.reset(ParticleManager::Create(ImageManager::Normal));
 	wallParticle.reset(ParticleManager::Create(ImageManager::Normal));
+	PhotoParticle.reset(ParticleManager::Create(ImageManager::Photo));
 }
 
 
@@ -31,10 +32,12 @@ void ParticleEmitter::Update()
 	deathParticle->Update();
 	BossDeadParticle->Update();
 	wallParticle->Update();
+	PhotoParticle->Update();
 }
 
 void ParticleEmitter::FlontDrawAll() {
 	circleParticle->Draw(AddBlendType);
+	PhotoParticle->Draw(AddBlendType);
 }
 
 void ParticleEmitter::DeathDrawAll() {
@@ -149,6 +152,18 @@ void ParticleEmitter::HealEffect(const int life, const XMFLOAT3& l_pos, const fl
 	vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 
 	healParticle->Add(life, { pos.x,pos.y,pos.z }, vel, {}, startscale, endscale, startcolor, endcolor, {});
+}
+void ParticleEmitter::CameraEffect(const int life, const XMFLOAT3& pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor) {
+	const float rnd_vel = 0.1f;
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_RandPos(-10, 10);
+	XMFLOAT3 vel{};
+	vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+	vel.y = (float)rand() / RAND_MAX * rnd_vel * 2.0f;// -rnd_vel / 2.0f;
+	vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+
+	PhotoParticle->Add(life, { pos.x+ (float)l_RandPos(mt),pos.y,pos.z + (float)l_RandPos(mt) }, vel, {}, startscale, endscale, startcolor, endcolor, {});
+
 }
 void ParticleEmitter::AllDelete()
 {

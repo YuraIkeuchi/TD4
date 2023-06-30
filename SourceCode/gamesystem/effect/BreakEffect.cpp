@@ -1,4 +1,5 @@
 #include "BreakEffect.h"
+#include "Helper.h"
 #include <random>
 
 BreakEffect::BreakEffect() {
@@ -33,9 +34,4 @@ void BreakEffect::BirthEffect() {
 }
 
 void BreakEffect::ImGuiOrigin() {
-	ImGui::Begin("Effect");
-	ImGui::Text("POSX:%f", m_Position.x);
-	ImGui::Text("POSY:%f", m_Position.y);
-	ImGui::Text("POSZ:%f", m_Position.z);
-	ImGui::End();
 }

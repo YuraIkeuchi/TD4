@@ -1,13 +1,10 @@
 #include "SelectSceneActor.h"
-#include "SelectSceneActor.h"
-#include "Audio.h"
 #include "SceneManager.h"
-#include "imgui.h"
 #include "ParticleEmitter.h"
 #include <HungerGauge.h>
 #include "BackObj.h"
 #include"SelectScene.h"
-
+#include "Helper.h"
 const XMVECTOR kSkyBlue{ 0.f,1.f,1.f,1.f };
 const XMVECTOR kPink{ 0.9f,0.6f,0.8f,1.f };
 
