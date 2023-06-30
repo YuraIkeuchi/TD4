@@ -1,4 +1,5 @@
 #include "SixBoss.h"
+
 #include <any>
 #include <random>
 #include "Collision.h"
@@ -8,15 +9,15 @@
 #include "Helper.h"
 
 void (SixBoss::* SixBoss::stateTable[])() = {
-	&SixBoss::InterValMove,//“®‚«‚Ì‡ŠÔ
-	&SixBoss::Choice,//‘I‘ğ
-	&SixBoss::LineSet,//ƒ_ƒ[ƒWƒGƒŠƒA‚ÌƒZƒbƒg
-	&SixBoss::Debuff,//ƒfƒoƒt
-	&SixBoss::Confu,//¬—
-	&SixBoss::Barrage,//’e–‹
-	&SixBoss::EndMove,//s“®‚ÌI‚í‚è
+	&SixBoss::InterValMove,//å‹•ãã®åˆé–“
+	&SixBoss::Choice,//é¸æŠ
+	&SixBoss::LineSet,//ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚¨ãƒªã‚¢ã®ã‚»ãƒƒãƒˆ
+	&SixBoss::Debuff,//ãƒ‡ãƒãƒ•
+	&SixBoss::Confu,//æ··ä¹±
+	&SixBoss::Barrage,//å¼¾å¹•
+	&SixBoss::EndMove,//è¡Œå‹•ã®çµ‚ã‚ã‚Š
 };
-//¶¬
+//ç”Ÿæˆ
 SixBoss::SixBoss() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::DJ);
 
@@ -24,7 +25,7 @@ SixBoss::SixBoss() {
 	m_Object->Initialize();
 	m_Object->SetModel(m_Model);
 
-	//CD‚Ì‰Šú‰»
+	//CDã®åˆæœŸåŒ–
 	cd[CD_BARRA].reset(new BarrangeCD);
 	cd[CD_BARRA]->Initialize();
 
@@ -43,7 +44,7 @@ SixBoss::SixBoss() {
 	noteeffect.reset(new NoteEffect());
 	noteeffect->Initialize();
 }
-//‰Šú‰»
+//åˆæœŸåŒ–
 bool SixBoss::Initialize() {
 	m_Position = { 0.0f,3.0f,30.0f };
 	m_Rotation = { 0.0f,90.0f,0.0f };
@@ -57,11 +58,11 @@ bool SixBoss::Initialize() {
 
 	_charaState = STATE_INTER;
 	m_AreaState = AREA_SET;
-	//CSVƒ[ƒh
+	//CSVãƒ­ãƒ¼ãƒ‰
 	CSVLoad();
 	return true;
 }
-//ƒXƒLƒbƒv‚Ì‰Šú‰»
+//ã‚¹ã‚­ãƒƒãƒ—æ™‚ã®åˆæœŸåŒ–
 void SixBoss::SkipInitialize() {
 	m_Position = { 0.0f,3.0f,30.0f };
 	m_Rotation = { 0.0f,90.0f,0.0f };
@@ -82,26 +83,26 @@ void SixBoss::CSVLoad() {
 
 	m_MaxHp = m_HP;
 }
-//s“®
+//è¡Œå‹•
 void SixBoss::Action() {
-	//ó‘ÔˆÚs(charastate‚É‡‚í‚¹‚é)
+	//çŠ¶æ…‹ç§»è¡Œ(charastateã«åˆã‚ã›ã‚‹)
 	if (m_HP > 0.0f) {
 		(this->*stateTable[_charaState])();
 	}
 
-	/*^^^^“–‚½‚è”»’è^^^^*/
-	//’e‚Æƒ{ƒX‚Ì“–‚½‚è”»’è
+	/*^^^^å½“ãŸã‚Šåˆ¤å®š^^^^*/
+	//å¼¾ã¨ãƒœã‚¹ã®å½“ãŸã‚Šåˆ¤å®š
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
 	CollideBul(_playerBulA, Type::CIRCLE);
-	//ƒvƒŒƒCƒ„[‚Ì“–‚½‚è”»’è
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å½“ãŸã‚Šåˆ¤å®š
 	ColPlayer();
-	//OBJ‚ÌƒXƒe[ƒ^ƒX‚ÌƒZƒbƒg
+	//OBJã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã®ã‚»ãƒƒãƒˆ
 	Obj_SetParam();
-	//ƒŠƒ~ƒbƒg§ŒÀ
+	//ãƒªãƒŸãƒƒãƒˆåˆ¶é™
 	Helper::GetInstance()->Clamp(m_Position.x, -55.0f, 65.0f);
 	Helper::GetInstance()->Clamp(m_Position.z, -60.0f, 60.0f);
 
-	//CD‚ÌXV
+	//CDã®æ›´æ–°
 	for (size_t i = 0; i < cd.size(); i++) {
 		cd[i]->SetCatchPos({ m_Position.x,((m_Position.y + 2.0f) + (0.5f * i)),m_Position.z });
 		cd[i]->Update();
@@ -112,14 +113,14 @@ void SixBoss::Action() {
 		}
 	}
 
-	//UŒ‚‚Ì‰¹•„
+	//æ”»æ’ƒã®éŸ³ç¬¦
 	for (AttackNote* newnote : attacknotes) {
 		if (newnote != nullptr) {
 			newnote->Update();
 		}
 	}
 
-	//UŒ‚‚Ì‰¹•„‚Ìíœ
+	//æ”»æ’ƒã®éŸ³ç¬¦ã®å‰Šé™¤
 	for (int i = 0; i < attacknotes.size(); i++) {
 		if (attacknotes[i] == nullptr) {
 			continue;
@@ -136,16 +137,16 @@ void SixBoss::Action() {
 
 	confueffect->Update();
 	noteeffect->Update();
-	//HP‚ª”¼•ªØ‚Á‚½‚ç‹­‰»
+	//HPãŒåŠåˆ†åˆ‡ã£ãŸã‚‰å¼·åŒ–
 	if (m_HP < m_MaxHp / 2) {
 		isStrong = true;
 	}
 }
-//ƒ|[ƒY
+//ãƒãƒ¼ã‚º
 void SixBoss::Pause() {
 
 }
-//ƒGƒtƒFƒNƒg•`‰æ
+//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆæç”»
 void SixBoss::EffecttexDraw(DirectXCommon* dxCommon)
 {
 	if (m_HP < 0.0f)return;
@@ -153,15 +154,15 @@ void SixBoss::EffecttexDraw(DirectXCommon* dxCommon)
 	confueffect->Draw(dxCommon);
 	noteeffect->Draw(dxCommon);
 }
-//•`‰æ
+//æç”»
 void SixBoss::Draw(DirectXCommon* dxCommon) {
 	Obj_Draw();
-	//CD‚ÌXV
+	//CDã®æ›´æ–°
 	for (size_t i = 0; i < cd.size(); i++) {
 		cd[i]->Draw(dxCommon);
 	}
 	if (m_HP > 0.0f) {
-		//UŒ‚‚Ì‰¹•„
+		//æ”»æ’ƒã®éŸ³ç¬¦
 		for (AttackNote* newnote : attacknotes) {
 			if (newnote != nullptr) {
 				newnote->Draw(dxCommon);
@@ -180,18 +181,18 @@ void SixBoss::ImGui_Origin() {
 	//ImGui::Text("m_MoveInterVal:%d", m_MoveInterVal);
 	//ImGui::End();
 
-	//CD‚ÌXV
+	//CDã®æ›´æ–°
 	for (int i = 0; i < cd.size(); i++) {
 		cd[i]->ImGuiDraw();
 	}
 }
-//ƒCƒ“ƒ^[ƒoƒ‹
+//ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«
 void SixBoss::InterValMove() {
 	m_MoveInterVal++;
 	m_AreaState = AREA_SET;
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> l_RandomMove(0, 3);
-	//‚·‚×‚Ä‚ªÁ‚¦‚Ä‚¢‚½‚ç•œŠˆ‚³‚¹‚é
+	//ã™ã¹ã¦ãŒæ¶ˆãˆã¦ã„ãŸã‚‰å¾©æ´»ã•ã›ã‚‹
 	if ((cd[CD_LINE]->GetCDState() == CD_DEATH) && (cd[CD_DEBUFF]->GetCDState() == CD_DEATH) &&
 		(cd[CD_CONFU]->GetCDState() == CD_DEATH) && (cd[CD_BARRA]->GetCDState() == CD_DEATH)) {
 		m_EndCount = 0;
@@ -200,7 +201,7 @@ void SixBoss::InterValMove() {
 
 	//
 	if (m_MoveInterVal == m_Limit[LIMIT_BASE]) {
-		//s“®‚ğŒˆ‚ß‚ÄŸ‚Ìs“®‚ÉˆÚ‚é
+		//è¡Œå‹•ã‚’æ±ºã‚ã¦æ¬¡ã®è¡Œå‹•ã«ç§»ã‚‹
 		m_AttackRand = int(l_RandomMove(mt));
 		if (cd[m_AttackRand]->GetCDState() != CD_STAY) {
 			m_MoveInterVal = 49;
@@ -213,18 +214,18 @@ void SixBoss::InterValMove() {
 		}
 	}
 }
-//“®‚«‚Ì‘I‘ğ
+//å‹•ãã®é¸æŠ
 void SixBoss::Choice() {
 	const float l_AddAngle = 5.0f;
 	float l_AddFrame = 0.001f;
-	//“ñ“_ŠÔ‚Ì‹——£ŒvZ
+	//äºŒç‚¹é–“ã®è·é›¢è¨ˆç®—
 	m_Length = Helper::GetInstance()->ChechLength({ m_Position.x,0.0f,m_Position.z }, { m_AfterPos.x,0.0f,m_AfterPos.z });
-	//Ÿ‚ÌCD‚ğ‘_‚¤
+	//æ¬¡ã®CDã‚’ç‹™ã†
 	if (m_Length > 0.5f) {
 		Helper::GetInstance()->FollowMove(m_Position, m_AfterPos, m_FollowSpeed);
 	}
 	else {
-		//s“®‚ğŒˆ‚ß‚ÄŸ‚Ìs“®‚ÉˆÚ‚é
+		//è¡Œå‹•ã‚’æ±ºã‚ã¦æ¬¡ã®è¡Œå‹•ã«ç§»ã‚‹
 		m_StopTimer++;
 		if (m_StopTimer > m_Limit[LIMIT_BASE]) {
 			m_StopTimer = 0;
@@ -241,7 +242,7 @@ void SixBoss::Choice() {
 		}
 	}
 
-	//sin”g‚É‚æ‚Á‚Äã‰º‚É“®‚­
+	//sinæ³¢ã«ã‚ˆã£ã¦ä¸Šä¸‹ã«å‹•ã
 	m_Angle += l_AddAngle;
 	m_Angle2 = m_Angle * (3.14f / 180.0f);
 	m_Position.y = (sin(m_Angle2) * 2.0f + 2.0f);
@@ -250,12 +251,12 @@ void SixBoss::Choice() {
 
 	m_Rotation.y = Ease(In, Cubic, 0.5f, m_Rotation.y, m_AfterRot.y);
 }
-//ƒ_ƒ[ƒWƒGƒŠƒA‚ÌƒZƒbƒg
+//ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚¨ãƒªã‚¢ã®ã‚»ãƒƒãƒˆ
 void SixBoss::LineSet() {
 	int l_BirthNum = {};
 	const int l_StartLimit = 120;
 
-	//HP‚Ìí‚è‹ï‡‚É‚æ‚Á‚Äo‚·ü‚Ì”‚ğ•Ï‚¦‚é
+	//HPã®å‰Šã‚Šå…·åˆã«ã‚ˆã£ã¦å‡ºã™ç·šã®æ•°ã‚’å¤‰ãˆã‚‹
 	if (isStrong) {
 		l_BirthNum = 4;
 	}
@@ -265,7 +266,7 @@ void SixBoss::LineSet() {
 
 	m_CheckTimer++;
 
-	//Å‰‚ÉSE–Â‚ç‚·
+	//æœ€åˆã«SEé³´ã‚‰ã™
 	if (m_CheckTimer == 50) {
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
 	}
@@ -283,7 +284,7 @@ void SixBoss::LineSet() {
 		}
 	}
 }
-//ƒvƒŒƒCƒ„[‚Ìƒfƒoƒt
+//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒ‡ãƒãƒ•
 void SixBoss::Debuff() {
 	const int l_StartLimit = 150;
 	m_CheckTimer++;
@@ -302,7 +303,7 @@ void SixBoss::Debuff() {
 		m_CheckTimer = {};
 	}
 }
-//ƒvƒŒƒCƒ„[¬—
+//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æ··ä¹±
 void SixBoss::Confu() {
 	m_CheckTimer++;
 	const int l_LimitConfu = 80;
@@ -329,7 +330,7 @@ void SixBoss::Confu() {
 		m_CheckTimer = {};
 	}
 }
-//ŠgU(‚Ó‚Â‚¤)
+//æ‹¡æ•£(ãµã¤ã†)
 void SixBoss::Barrage() {
 	const int l_StartLimit = 100;
 
@@ -345,7 +346,7 @@ void SixBoss::Barrage() {
 		m_Rotation.y += 2.0f;
 		m_RotTimer++;
 		if (m_RotTimer % 5 == 0) {
-			//—”‚É‚æ‚Á‚Ä’e–‹‚Ìí—Ş‚ª•Ï‚í‚é
+			//ä¹±æ•°ã«ã‚ˆã£ã¦å¼¾å¹•ã®ç¨®é¡ãŒå¤‰ã‚ã‚‹
 			if (m_BarraRand == 0) {
 				if (!isStrong) {
 					BirthNote("NORMAL");
@@ -359,7 +360,7 @@ void SixBoss::Barrage() {
 			}
 		}
 
-		//ˆê’èƒtƒŒ[ƒ€‚ÅI—¹
+		//ä¸€å®šãƒ•ãƒ¬ãƒ¼ãƒ ã§çµ‚äº†
 		if (m_RotTimer == m_Limit[LIMIT_BARRA]) {
 			cd[CD_BARRA]->SetCDState(CD_DEATH);
 			m_RotTimer = {};
@@ -374,7 +375,7 @@ void SixBoss::Barrage() {
 			m_Rotation.y = 0.0f;
 		}
 
-		//‹­‚³‚É‚æ‚Á‚Ä‰ñ“]‚ª•Ï‚í‚é
+		//å¼·ã•ã«ã‚ˆã£ã¦å›è»¢ãŒå¤‰ã‚ã‚‹
 		if (isStrong) {
 			m_CircleSpeed += 1.0f;
 			m_CircleScale += 0.3f;
@@ -392,7 +393,7 @@ void SixBoss::Barrage() {
 		};
 	}
 }
-//s“®‚ÌI‚í‚è(ƒvƒŒƒCƒ„[‚©‚ç“¦‚°‚é)
+//è¡Œå‹•ã®çµ‚ã‚ã‚Š(ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‹ã‚‰é€ƒã’ã‚‹)
 void SixBoss::EndMove() {
 	const int l_EndLimit = 100;
 	const float l_AddAngle = 5.0f;
@@ -400,9 +401,9 @@ void SixBoss::EndMove() {
 	const float l_FollowSpeed = 0.3f;
 	m_EndTimer++;
 
-	//“ñ“_ŠÔ‚Ì‹——£ŒvZ
+	//äºŒç‚¹é–“ã®è·é›¢è¨ˆç®—
 	m_Length = Helper::GetInstance()->ChechLength({ m_Position.x,0.0f,m_Position.z }, {});
-	//Ÿ‚ÌCD‚ğ‘_‚¤
+	//æ¬¡ã®CDã‚’ç‹™ã†
 	if (m_Length > 0.5f) {
 		Helper::GetInstance()->FollowMove(m_Position, {}, l_FollowSpeed);
 		m_AddPower -= m_Gravity;
@@ -422,25 +423,25 @@ void SixBoss::EndMove() {
 		}
 	}
 }
-//ƒm[ƒc‚Ì¶¬
+//ãƒãƒ¼ãƒ„ã®ç”Ÿæˆ
 void SixBoss::BirthNote(const std::string& BarrageName) {
-	//ƒqƒgƒc‚¸‚Â¶¬‚³‚ê‚éƒpƒ^[ƒ“
+	//ãƒ’ãƒˆãƒ„ãšã¤ç”Ÿæˆã•ã‚Œã‚‹ãƒ‘ã‚¿ãƒ¼ãƒ³
 	if (BarrageName == "NORMAL" || BarrageName == "RANDOM") {
 		XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
 		XMMATRIX matRot = {};
-		if (BarrageName == "RANDOM") {		//ƒ‰ƒ“ƒ_ƒ€
+		if (BarrageName == "RANDOM") {		//ãƒ©ãƒ³ãƒ€ãƒ 
 			mt19937 mt{ std::random_device{}() };
 			uniform_int_distribution<int> l_RandomRot(0, 360);
 			matRot = XMMatrixRotationY(XMConvertToRadians(float(l_RandomRot(mt))));
 		}
-		else if (BarrageName == "NORMAL") {	//ƒ{ƒX‚ÌŒü‚«ˆË‘¶
+		else if (BarrageName == "NORMAL") {	//ãƒœã‚¹ã®å‘ãä¾å­˜
 			matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
 		}
 		move = XMVector3TransformNormal(move, matRot);
 		XMFLOAT2 l_Angle;
 		l_Angle.x = move.m128_f32[0];
 		l_Angle.y = move.m128_f32[2];
-		//ƒm[ƒc‚Ì”­¶
+		//ãƒãƒ¼ãƒ„ã®ç™ºç”Ÿ
 		AttackNote* newnote;
 		newnote = new AttackNote();
 		newnote->Initialize();
@@ -448,7 +449,7 @@ void SixBoss::BirthNote(const std::string& BarrageName) {
 		newnote->SetAngle(l_Angle);
 		attacknotes.push_back(newnote);
 	}
-	else if (BarrageName == "ALTER") {		//“¯‚É’e‚ğo‚·
+	else if (BarrageName == "ALTER") {		//åŒæ™‚ã«å¼¾ã‚’å‡ºã™
 		for (int i = 0; i < BULLET_NUM; i++) {
 			XMVECTOR move2 = { 0.0f, 0.0f, 0.1f, 0.0f };
 
@@ -471,7 +472,7 @@ void SixBoss::BirthNote(const std::string& BarrageName) {
 			l_Angle2.x = move2.m128_f32[0];
 			l_Angle2.y = move2.m128_f32[2];
 
-			//ƒm[ƒc‚Ì”­¶
+			//ãƒãƒ¼ãƒ„ã®ç™ºç”Ÿ
 			AttackNote* newnote;
 			newnote = new AttackNote();
 			newnote->Initialize();
@@ -481,11 +482,11 @@ void SixBoss::BirthNote(const std::string& BarrageName) {
 		}
 	}
 }
-//“oêƒV[ƒ“
+//ç™»å ´ã‚·ãƒ¼ãƒ³
 void SixBoss::AppearAction() {
 	Obj_SetParam();
 }
-//ƒ{ƒXŒ‚”jƒV[ƒ“
+//ãƒœã‚¹æ’ƒç ´ã‚·ãƒ¼ãƒ³
 void SixBoss::DeadAction() {
 	const float l_AddAngle = 5.0f;
 	m_DeathTimer++;
@@ -495,7 +496,7 @@ void SixBoss::DeadAction() {
 		m_Rotation = { 0.0f,0.0f,0.0f };
 	}
 	else if (m_DeathTimer >= 2 && m_DeathTimer < 300) {
-		//sin”g‚É‚æ‚Á‚Äã‰º‚É“®‚­
+		//sinæ³¢ã«ã‚ˆã£ã¦ä¸Šä¸‹ã«å‹•ã
 		m_Angle += l_AddAngle;
 		m_Angle2 = m_Angle * (3.14f / 180.0f);
 		m_Position.x = (sin(m_Angle2) * 15.0f + 15.0f);
@@ -506,18 +507,18 @@ void SixBoss::DeadAction() {
 	}
 	else {
 		m_Gravity = 0.05f;
-		//”ò‚Ô‚æ‚¤‚ÈŠ´‚¶‚É‚·‚é‚½‚ßd—Í‚ğ“ü‚ê‚é
+		//é£›ã¶ã‚ˆã†ãªæ„Ÿã˜ã«ã™ã‚‹ãŸã‚é‡åŠ›ã‚’å…¥ã‚Œã‚‹
 		m_AddPower -= m_Gravity;
 		Helper::GetInstance()->CheckMax(m_Position.y, 6.0f, m_AddPower);
 	}
 
 	Obj_SetParam();
 }
-//ƒ{ƒXŒ‚”jƒV[ƒ“(ƒXƒ[)
+//ãƒœã‚¹æ’ƒç ´ã‚·ãƒ¼ãƒ³(ã‚¹ãƒ­ãƒ¼)
 void SixBoss::DeadAction_Throw() {
 	Obj_SetParam();
 }
-//Œ‚”jƒp[ƒeƒBƒNƒ‹
+//æ’ƒç ´ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
 void SixBoss::DeathParticle() {
 	const XMFLOAT4 s_color = { 1.0f,1.0f,1.0f,1.0f };
 	const XMFLOAT4 e_color = { 0.0f,0.0f,1.0f,1.0f };

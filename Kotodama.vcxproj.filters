@@ -478,6 +478,18 @@
     <ClCompile Include="SourceCode\engine\audio\AudioManager.cpp">
       <Filter>engine\audio</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\FiveStage.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\actor\FiveSategActor.cpp" />
+    <ClCompile Include="DarkBullet.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\scene\SixScene.cpp">
+      <Filter>gamesystem\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\SixBoss.cpp">
+      <Filter>gamesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\SixStageActor.cpp">
+      <Filter>gamesystem\scene</Filter>
+     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\SixBoss.cpp">
       <Filter>gamesystem\charactor\Boss\Six</Filter>
     </ClCompile>
@@ -744,9 +756,6 @@
     <ClInclude Include="SourceCode\gamesystem\scene\LoadScene.h">
       <Filter>gamesystem\scene\Load</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\scene\GameoverScene.h">
-      <Filter>gamesystem\scene\GameOver</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\BaseScene.h">
       <Filter>gamesystem\scene\Base</Filter>
     </ClInclude>
@@ -947,6 +956,18 @@
     <ClInclude Include="SourceCode\engine\audio\AudioManager.h">
       <Filter>engine\audio</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\FiveStage.h" />
+    <ClInclude Include="SourceCode\gamesystem\actor\FiveSategActor.h" />
+    <ClInclude Include="DarkBullet.h" />
+    <ClInclude Include="SourceCode\gamesystem\scene\SixScene.h">
+      <Filter>gamesystem\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\SixBoss.h">
+      <Filter>gamesystem</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\SixStageActor.h">
+      <Filter>gamesystem\scene</Filter>
+     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\SixBoss.h">
       <Filter>gamesystem\charactor\Boss\Six</Filter>
     </ClInclude>
@@ -1314,7 +1335,13 @@
     <Filter Include="gamesystem\effect\Note">
       <UniqueIdentifier>{831220a2-a861-49a8-a290-74336ac5398d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="gamesystem\charactor\Boss\Six">
+    <Filter Include="gamesystem\actor\Five">
+      <UniqueIdentifier>{5173ded3-c5fb-4587-823c-2a2d51a18860}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Six">
+      <UniqueIdentifier>{aa3aa91f-7e77-45a6-a95b-ebb4ae1db898}</UniqueIdentifier>
+    </Filter>
+      <Filter Include="gamesystem\charactor\Boss\Six">
       <UniqueIdentifier>{b7f512e4-f30b-4794-bcaf-1cc472040edb}</UniqueIdentifier>
     </Filter>
     <Filter Include="gamesystem\charactor\Boss\Seven">

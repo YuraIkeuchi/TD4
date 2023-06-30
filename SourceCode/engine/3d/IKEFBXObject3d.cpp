@@ -522,3 +522,12 @@ XMMATRIX IKEFBXObject3d::ExtractPositionMat(XMMATRIX matworld)
 {
 	return XMMatrixTranslation(matworld.r[3].m128_f32[0], matworld.r[3].m128_f32[1], matworld.r[3].m128_f32[2]);
 }
+
+void IKEFBXObject3d::GetBoneIndexMat(int index, XMMATRIX& matworld)
+{
+	IKEFbxLoader::ConvertMatrixFromFbx(&matworld,
+		model->GetBones()[index].fbxCluster->GetLink()->
+		EvaluateGlobalTransform(currentTime));
+
+	matworld = matworld * matWorld;
+}
