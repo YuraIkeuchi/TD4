@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Helper.h"
 #include "Easing.h"
+#include <random>
 Poltergeist::Poltergeist() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::CD);
 	m_Object.reset(new IKEObject3d());
@@ -16,10 +17,11 @@ bool Poltergeist::Initialize() {
 	m_Rotation.y = 270.0f;
 	m_Scale = { 0.3f,0.3f,0.3f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
-	//m_Damage = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Six/Sixboss.csv", "BarrangeDamage")));
+	m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "Speed")));
 	m_Alive = true;
 	m_AfterPos.y = 5.0f;
 	m_ThrowType = THROW_SET;
+	m_AliveTimer = {};
 	return true;
 }
 //状態遷移
@@ -45,9 +47,8 @@ void Poltergeist::Draw(DirectXCommon* dxCommon) {
 //ImGui描画
 void Poltergeist::ImGuiDraw() {
 	ImGui::Begin("Polter");
-	ImGui::Text("m_TargetTimer:%d", m_TargetTimer);
-	ImGui::Text("m_ThrowType:%d", m_ThrowType);
-	ImGui::Text("m_Position.y:%f", m_Position.y);
+	ImGui::Text("Timer:%d", m_AliveTimer);
+	ImGui::Text("POSY:%f", m_Position.y);
 	ImGui::End();
 }
 
@@ -124,5 +125,59 @@ void Poltergeist::Follow() {
 }
 //反射弾
 void Poltergeist::Bound() {
+	const float l_AddFrame = 0.01f;
+	const float l_AddCircle = 2.0f;
+	const int l_BaseTimer = 50;
+	const int l_LimitTimer = 1000;
+	//弾のセット(だんだん浮かび逢ふがるような感じ)
+	if (m_ThrowType == THROW_SET) {
+		if (m_Frame < m_FrameMax) {
+			m_Frame += l_AddFrame;
+		}
+		else {
+			m_Frame = {};
+			m_ThrowType = THROW_INTER;
+		}
 
+		m_Position.y = Ease(In, Cubic, m_Frame, m_Position.y, m_AfterPos.y);
+		m_Position = Helper::GetInstance()->CircleMove({ m_BasePos.x,m_Position.y,m_BasePos.z }, m_CircleScale, m_CircleSpeed);
+	}
+	//時間が来るまで回転する
+	else if (m_ThrowType == THROW_INTER) {
+		XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
+		XMMATRIX matRot = {};
+		mt19937 mt{ std::random_device{}() };
+		uniform_int_distribution<int> l_RandomRot(0, 360);
+		m_ThrowTimer++;
+		m_CircleSpeed += l_AddCircle;
+		if (m_ThrowTimer == l_BaseTimer + m_TargetTimer) {
+			matRot = XMMatrixRotationY(XMConvertToRadians(float(l_RandomRot(mt))));
+			move = XMVector3TransformNormal(move, matRot);
+			m_Angle.x = move.m128_f32[0];
+			m_Angle.y = move.m128_f32[2];
+			m_ThrowType = THROW_PLAY;
+		}
+
+		m_Position = Helper::GetInstance()->CircleMove(m_BasePos, m_CircleScale, m_CircleSpeed);
+	}
+	//適当に投げる
+	else {
+		m_AliveTimer++;
+		//プレイヤーにスピード加算
+		m_Position.x += m_Angle.x * m_AddSpeed;
+		m_Position.z += m_Angle.y * m_AddSpeed;
+
+		//反射処理
+		if (Helper::GetInstance()->CheckNotValueRange(m_Position.x, -60.0f, 70.0f)) {
+			m_Angle.x *= -1.0f;
+		}
+
+		if (Helper::GetInstance()->CheckNotValueRange(m_Position.z, -65.0f, 65.0f)) {
+			m_Angle.y *= -1.0f;
+		}
+
+		if (m_AliveTimer == l_LimitTimer) {
+			m_Alive = false;
+		}
+	}
 }

@@ -47,10 +47,14 @@ public://getter setter
 public:
 	//gettersetter
 	const bool& GetAlive() { return m_Alive; }
+
 	void SetAlive(const bool Alive) { m_Alive = Alive; }
 	void SetPolterType(const int PolterType) { m_PolterType = PolterType; }
 
 	void SetTargetTimer(const int TargetTimer) { m_TargetTimer = TargetTimer; }
+	void SetCircleSpeed(const float CircleSpeed) { m_CircleSpeed = CircleSpeed; }
+
+	void SetBasePos(const XMFLOAT3& BasePos) { m_BasePos = BasePos; }
 private:
 	bool m_Alive = true;//ê∂ë∂ÉtÉâÉO
 	int m_PolterType = TYPE_FOLLOW;
@@ -71,4 +75,15 @@ private:
 
 	double m_SpeedX = {};
 	double m_SpeedZ = {};
+
+	//â~â^ìÆ
+	XMFLOAT3 m_BasePos = {};
+	float m_CircleScale = 10.0f;
+	float m_CircleSpeed = {};
+
+	XMFLOAT2 m_Angle = {};
+
+	float m_AddSpeed = {};//â¡ë¨ìx
+
+	int m_AliveTimer = {};
 };

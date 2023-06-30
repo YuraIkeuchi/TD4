@@ -129,14 +129,15 @@ void SevenBoss::InterValMove() {
 	m_InterVal++;
 
 	if (m_InterVal == l_LimitTimer) {
-		_charaState = STATE_POLTER;
+		_charaState = STATE_BOUND;
 		m_InterVal = 0;
 	}
 }
 //ポルターガイスト
 void SevenBoss::Polter() {
+	const int l_LimitTimer = 300;
 	m_MoveTimer++;
-	if (m_MoveTimer == 300) {
+	if (m_MoveTimer == l_LimitTimer) {
 		BirthPolter("Normal");
 		m_MoveTimer = {};
 		_charaState = STATE_INTER;
@@ -144,11 +145,18 @@ void SevenBoss::Polter() {
 }
 //バウンド弾
 void SevenBoss::ThrowBound() {
-
+	const int l_LimitTimer = 300;
+	m_MoveTimer++;
+	if (m_MoveTimer == l_LimitTimer) {
+		BirthPolter("Bound");
+		m_MoveTimer = {};
+		_charaState = STATE_INTER;
+	}
 }
 //ポルターガイストの生成
 void SevenBoss::BirthPolter(const std::string& PolterName) {
 	const int l_LimitTimer = 20;//障害物が動くまでの時間
+	const int l_LimitTimer2 = 50;//障害物が動くまでの時間2
 	if (PolterName == "Normal") {
 		for (int i = 0; i < POLTER_NUM; i++) {
 			//ノーツの発生
@@ -170,6 +178,20 @@ void SevenBoss::BirthPolter(const std::string& PolterName) {
 			else {
 				newpolter->SetPosition({ m_Position.x,m_Position.y - 10.0f,m_Position.z - 3.0f });
 			}
+			poltergeist.push_back(newpolter);
+		}
+	}else if(PolterName == "Bound") {
+		for (int i = 0; i < POLTER_NUM; i++) {
+			//ノーツの発生
+			Poltergeist* newpolter;
+			newpolter = new Poltergeist();
+			newpolter->Initialize();
+
+			newpolter->SetPolterType(TYPE_BOUND);
+			newpolter->SetTargetTimer(i * l_LimitTimer2);
+			newpolter->SetBasePos(m_Position);
+			newpolter->SetPosition({ m_Position.x,m_Position.y - 10.0f,m_Position.z });
+			newpolter->SetCircleSpeed(i * 90.0f);
 			poltergeist.push_back(newpolter);
 		}
 	}
