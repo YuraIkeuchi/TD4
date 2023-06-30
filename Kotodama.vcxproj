@@ -190,8 +190,10 @@
     <ClCompile Include="SourceCode\gamesystem\bossattach\JoyStamp.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\InterCD.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\LineCD.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\bossattach\Poltergeist.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\Predict.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\ShockWave.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\character\AvatarBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\EnemyManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\FirstBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\FiveBoss.cpp" />
@@ -350,8 +352,10 @@
     <ClInclude Include="SourceCode\gamesystem\bossattach\JoyStamp.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\InterCD.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\LineCD.h" />
+    <ClInclude Include="SourceCode\gamesystem\bossattach\Poltergeist.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\Predict.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\ShockWave.h" />
+    <ClInclude Include="SourceCode\gamesystem\character\AvatarBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\EnemyManager.h" />
     <ClInclude Include="SourceCode\gamesystem\character\FirstBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\FiveBoss.h" />

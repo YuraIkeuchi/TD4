@@ -1,12 +1,13 @@
-#include "SevenBoss.h"
+#include "AvatarBoss.h"
 #include <any>
 #include <random>
 #include "Collision.h"
 #include "CsvLoader.h"
 #include "Helper.h"
 #include "Player.h"
+#include "Easing.h"
 //生成
-SevenBoss::SevenBoss() {
+AvatarBoss::AvatarBoss() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::DJ);
 
 	m_Object.reset(new IKEObject3d());
@@ -14,11 +15,11 @@ SevenBoss::SevenBoss() {
 	m_Object->SetModel(m_Model);
 }
 //初期化
-bool SevenBoss::Initialize() {
+bool AvatarBoss::Initialize() {
 	m_Position = { 0.0f,3.0f,30.0f };
 	m_Rotation = { 0.0f,90.0f,0.0f };
 	m_Scale = { 0.3f,0.3f,0.3f };
-	m_Color = { 0.0f,0.0f,1.0f,1.0f };
+	m_Color = { 1.0f,1.0f,1.0f,0.0f };
 	//m_Rotation.y = -90.f;
 
 	ActionTimer = 1;
@@ -31,30 +32,29 @@ bool SevenBoss::Initialize() {
 	return true;
 }
 //スキップ時の初期化
-void SevenBoss::SkipInitialize() {
+void AvatarBoss::SkipInitialize() {
 	m_Position = { 0.0f,3.0f,30.0f };
 	m_Rotation = { 0.0f,90.0f,0.0f };
 	m_Scale = { 0.1f,0.1f,0.1f };
-	m_Color = { 0.0f,0.0f,1.0f,1.0f };
+	m_Color = { 0.0f,0.0f,1.0f,0.0f };
 }
 //CSV
-void SevenBoss::CSVLoad() {
-	
-	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "Magnification")));
-	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "hp1")));
-	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "HeartTarget")));
+void AvatarBoss::CSVLoad() {
+
+	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Avatar/Avatarboss.csv", "Magnification")));
+	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Avatar/Avatarboss.csv", "hp1")));
+	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Avatar/Avatarboss.csv", "HeartTarget")));
 
 	m_MaxHp = m_HP;
 }
 
-void (SevenBoss::* SevenBoss::stateTable[])() = {
-	&SevenBoss::InterValMove,//動きの合間
-	&SevenBoss::Polter,//ポルターガイスト
-	&SevenBoss::ThrowBound,//投げる
-	&SevenBoss::BirthAvatar,//偽物のボス
+void (AvatarBoss::* AvatarBoss::stateTable[])() = {
+	&AvatarBoss::InterValMove,//動きの合間
+	&AvatarBoss::Polter,//ポルターガイスト
+	&AvatarBoss::ThrowBound,//投げる
 };
 //行動
-void SevenBoss::Action() {
+void AvatarBoss::Action() {
 	//状態移行(charastateに合わせる)
 	if (m_HP > 0.0f) {
 		(this->*stateTable[_charaState])();
@@ -89,37 +89,20 @@ void SevenBoss::Action() {
 		}
 	}
 
-	//偽物のボス
-	for (InterBoss* newboss : avatarboss) {
-		if (newboss != nullptr) {
-			newboss->Update();
-		}
-	}
-
-	//偽物のボスの削除
-	for (int i = 0; i < avatarboss.size(); i++) {
-		if (avatarboss[i] == nullptr) {
-			continue;
-		}
-
-		if (avatarboss[i]->GetHP() <= 0.0f) {
-			avatarboss.erase(cbegin(avatarboss) + i);
-			m_AvatarCount--;
-		}
-	}
+	m_Color.w = Ease(In, Cubic, 0.2f, m_Color.w, 1.0f);
 }
 //ポーズ
-void SevenBoss::Pause() {
+void AvatarBoss::Pause() {
 
 }
 //エフェクト描画
-void SevenBoss::EffecttexDraw(DirectXCommon* dxCommon)
+void AvatarBoss::EffecttexDraw(DirectXCommon* dxCommon)
 {
 	if (m_HP < 0.0f)return;
 
 }
 //描画
-void SevenBoss::Draw(DirectXCommon* dxCommon) {
+void AvatarBoss::Draw(DirectXCommon* dxCommon) {
 	Obj_Draw();
 	if (m_HP > 0.0f) {
 		//障害物
@@ -128,21 +111,13 @@ void SevenBoss::Draw(DirectXCommon* dxCommon) {
 				newpolter->Draw(dxCommon);
 			}
 		}
-
-		//偽物のボス
-		for (InterBoss* newboss : avatarboss) {
-			if (newboss != nullptr) {
-				newboss->Draw(dxCommon);
-			}
-		}
 	}
 }
 //ImGui
-void SevenBoss::ImGui_Origin() {
-	ImGui::Begin("Seven");
+void AvatarBoss::ImGui_Origin() {
+	ImGui::Begin("Avatar");
 	ImGui::Text("Inter:%d", m_InterVal);
 	ImGui::Text("Move:%d", m_MoveTimer);
-	ImGui::Text("AvatarCount:%d", m_AvatarCount);
 	ImGui::End();
 
 	for (Poltergeist* newpolter : poltergeist) {
@@ -150,27 +125,19 @@ void SevenBoss::ImGui_Origin() {
 			newpolter->ImGuiDraw();
 		}
 	}
-
-	for (InterBoss* newboss : avatarboss) {
-		if (newboss != nullptr) {
-			newboss->ImGuiDraw();
-		}
-	}
 }
 //インターバル
-void SevenBoss::InterValMove() {
+void AvatarBoss::InterValMove() {
 	int l_LimitTimer = 100;
 	m_InterVal++;
 
 	if (m_InterVal == l_LimitTimer) {
-		if (m_AvatarCount == 0) {
-			_charaState = STATE_AVATAR;
-		}
+		_charaState = STATE_BOUND;
 		m_InterVal = 0;
 	}
 }
 //ポルターガイスト
-void SevenBoss::Polter() {
+void AvatarBoss::Polter() {
 	const int l_LimitTimer = 300;
 	m_MoveTimer++;
 	if (m_MoveTimer == l_LimitTimer) {
@@ -180,7 +147,7 @@ void SevenBoss::Polter() {
 	}
 }
 //バウンド弾
-void SevenBoss::ThrowBound() {
+void AvatarBoss::ThrowBound() {
 	const int l_LimitTimer = 300;
 	m_MoveTimer++;
 	if (m_MoveTimer == l_LimitTimer) {
@@ -189,30 +156,8 @@ void SevenBoss::ThrowBound() {
 		_charaState = STATE_INTER;
 	}
 }
-//偽物のボスを生む
-void SevenBoss::BirthAvatar() {
-	const int l_LimitTimer = 100;
-	m_MoveTimer++;
-	if (m_MoveTimer == l_LimitTimer) {
-		for (int i = 0; i < AVATAR_NUM; i++) {
-			InterBoss* boss;
-			boss = new AvatarBoss();
-			boss->Initialize();
-			if (i == 0) {
-				boss->SetPosition({ 20.0f,3.0f,10.0f });
-			}
-			else {
-				boss->SetPosition({ -20.0f,3.0f,10.0f });
-			}
-			avatarboss.push_back(boss);
-			m_AvatarCount++;
-		}
-		m_MoveTimer = {};
-		_charaState = STATE_INTER;
-	}
-}
 //ポルターガイストの生成
-void SevenBoss::BirthPolter(const std::string& PolterName) {
+void AvatarBoss::BirthPolter(const std::string& PolterName) {
 	const int l_LimitTimer = 20;//障害物が動くまでの時間
 	const int l_LimitTimer2 = 50;//障害物が動くまでの時間2
 	if (PolterName == "Normal") {
@@ -221,7 +166,7 @@ void SevenBoss::BirthPolter(const std::string& PolterName) {
 			Poltergeist* newpolter;
 			newpolter = new Poltergeist();
 			newpolter->Initialize();
-			
+
 			newpolter->SetPolterType(TYPE_FOLLOW);
 			newpolter->SetTargetTimer(i * l_LimitTimer);
 			if (i == 0) {
@@ -230,15 +175,10 @@ void SevenBoss::BirthPolter(const std::string& PolterName) {
 			else if (i == 1) {
 				newpolter->SetPosition({ m_Position.x - 3.0f,m_Position.y - 10.0f,m_Position.z });
 			}
-			else if (i == 2) {
-				newpolter->SetPosition({ m_Position.x,m_Position.y - 10.0f,m_Position.z + 3.0f});
-			}
-			else {
-				newpolter->SetPosition({ m_Position.x,m_Position.y - 10.0f,m_Position.z - 3.0f });
-			}
 			poltergeist.push_back(newpolter);
 		}
-	}else if(PolterName == "Bound") {
+	}
+	else if (PolterName == "Bound") {
 		for (int i = 0; i < POLTER_NUM; i++) {
 			//ノーツの発生
 			Poltergeist* newpolter;
@@ -249,21 +189,21 @@ void SevenBoss::BirthPolter(const std::string& PolterName) {
 			newpolter->SetTargetTimer(i * l_LimitTimer2);
 			newpolter->SetBasePos(m_Position);
 			newpolter->SetPosition({ m_Position.x,m_Position.y - 10.0f,m_Position.z });
-			newpolter->SetCircleSpeed(i * 90.0f);
+			newpolter->SetCircleSpeed(i * 180.0f);
 			poltergeist.push_back(newpolter);
 		}
 	}
 }
 //登場シーン
-void SevenBoss::AppearAction() {
+void AvatarBoss::AppearAction() {
 	Obj_SetParam();
 }
 //ボス撃破シーン
-void SevenBoss::DeadAction() {
+void AvatarBoss::DeadAction() {
 
 	Obj_SetParam();
 }
 //ボス撃破シーン(スロー)
-void SevenBoss::DeadAction_Throw() {
+void AvatarBoss::DeadAction_Throw() {
 	Obj_SetParam();
 }

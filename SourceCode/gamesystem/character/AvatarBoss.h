@@ -2,12 +2,11 @@
 #include "InterBoss.h"
 #include "Shake.h"
 #include "Poltergeist.h"
-#include "AvatarBoss.h"
 
-class SevenBoss :
+class AvatarBoss :
 	public InterBoss {
 public:
-	SevenBoss();
+	AvatarBoss();
 
 	bool Initialize() override;//初期化
 
@@ -30,12 +29,11 @@ public:
 	void Draw(DirectXCommon* dxCommon) override;//描画
 private:
 	void CSVLoad();
-	
+
 	//各ボスの行動
 	void InterValMove();//インターバル
 	void Polter();//ポルターガイスト
 	void ThrowBound();//バウンド弾
-	void BirthAvatar();//偽物のボス
 
 	void BirthPolter(const std::string& PolterName);//ポルターガイストの生成
 private:
@@ -45,19 +43,16 @@ private:
 		STATE_INTER,
 		STATE_POLTER,
 		STATE_BOUND,
-		STATE_AVATAR,
 	}_charaState;
 
 	//関数ポインタ
-	static void(SevenBoss::* stateTable[])();
+	static void(AvatarBoss::* stateTable[])();
 private:
-	static const int POLTER_NUM = 4;
-	static const int AVATAR_NUM = 2;
+	static const int POLTER_NUM = 2;
 private:
 	vector<Poltergeist*> poltergeist;//ポルターガイスト
-	vector<InterBoss*> avatarboss;//偽物のボス
+
 	int m_InterVal = {};
 
 	int m_MoveTimer = {};
-	int m_AvatarCount = {};
 };
