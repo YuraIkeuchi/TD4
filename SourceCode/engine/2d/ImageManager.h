@@ -81,6 +81,7 @@ public:
 		JOY,
 		MARK,
 		DAMAGEAREA,
+		DAMAGEAREA2,
 		GROUND,
 		PHOTOSPOT,
 		STUN,
