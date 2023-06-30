@@ -1,5 +1,4 @@
-#include "SixStageActor.h"
-
+﻿#include "SixStageActor.h"
 #include"Easing.h"
 #include "ParticleEmitter.h"
 #include "ImageManager.h"
