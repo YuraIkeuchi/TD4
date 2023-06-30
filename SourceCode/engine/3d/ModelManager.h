@@ -31,6 +31,7 @@ public:
 		Skydome,
 		KIDO_OBJ,
 		CD,
+		SKIRT
 		NOTE
 	};
 	//FBXの名前

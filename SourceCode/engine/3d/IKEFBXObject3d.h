@@ -117,6 +117,7 @@ public: //ƒƒ“ƒoŠÖ”
 	XMMATRIX GetMatScl() { return matScale; }
 	const int GetBoneNumber() { return BoneNumber; }
 	const bool GetReverse() { return m_Reverse; }
+	void GetBoneIndexMat(int index, XMMATRIX& matworld);
 
 	void SetBoneNumber(int BoneNumber) { this->BoneNumber = BoneNumber; }
 	/// <summary>

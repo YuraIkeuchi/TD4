@@ -13,7 +13,7 @@ public:
 	static Player* GetInstance();
 
 private:
-
+	int index;
 	static void (Player::* stateTable[])();
 public:
 	void InitState(const XMFLOAT3& pos);
@@ -35,6 +35,8 @@ public:
 		STATE_IDLE,
 		STATE_RUN,
 	}_charaState;
+	unique_ptr<IKEObject3d>skirtobj;
+	XMMATRIX skirtmat;
 private:
 	void LoadCSV();
 private:

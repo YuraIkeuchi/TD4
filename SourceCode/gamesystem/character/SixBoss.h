@@ -1,5 +1,12 @@
 #pragma once
 #include "InterBoss.h"
+#include"IKEFBXObject3d.h"
+
+class SixBoss :
+    public InterBoss
+{
+};
+
 #include "BarrangeCD.h"
 #include "ConfuCD.h"
 #include "LineCD.h"
@@ -13,57 +20,57 @@ class SixBoss :
 public:
 	SixBoss();
 
-	bool Initialize() override;//‰Šú‰»
+	bool Initialize() override;//åˆæœŸåŒ–
 
-	void SkipInitialize() override;//ƒXƒLƒbƒv‚Ì‰Šú‰»
+	void SkipInitialize() override;//ã‚¹ã‚­ãƒƒãƒ—æ™‚ã®åˆæœŸåŒ–
 
-	void Pause() override;//ƒ|[ƒY
+	void Pause() override;//ãƒãƒ¼ã‚º
 
-	void Action() override;//s“®
+	void Action() override;//è¡Œå‹•
 
-	void AppearAction() override;//ƒ{ƒX“oê‚ÌŒÅ—L‚Ìˆ—
+	void AppearAction() override;//ãƒœã‚¹ç™»å ´ã®å›ºæœ‰ã®å‡¦ç†
 
-	void DeadAction() override;//ƒ{ƒXŒ‚”j‚ÌŒÅ—L‚Ìˆ—
+	void DeadAction() override;//ãƒœã‚¹æ’ƒç ´ã®å›ºæœ‰ã®å‡¦ç†
 
-	void DeadAction_Throw() override;//ƒ{ƒXŒ‚”j‚ÌŒÅ—L‚Ìˆ— ƒXƒ[
+	void DeadAction_Throw() override;//ãƒœã‚¹æ’ƒç ´ã®å›ºæœ‰ã®å‡¦ç† ã‚¹ãƒ­ãƒ¼
 
-	void ImGui_Origin() override;//ƒ{ƒX‚»‚ê‚¼‚ê‚ÌImGui
+	void ImGui_Origin() override;//ãƒœã‚¹ãã‚Œãã‚Œã®ImGui
 
 	void EffecttexDraw(DirectXCommon* dxCommon) override;
 
-	void Draw(DirectXCommon* dxCommon) override;//•`‰æ
+	void Draw(DirectXCommon* dxCommon) override;//æç”»
 private:
-	//ƒCƒ“ƒ^[ƒoƒ‹
+	//ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«
 	void InterValMove();
-	//“®‚«‚Ì‘I‘ğ
+	//å‹•ãã®é¸æŠ
 	void Choice();
-	//ƒ_ƒ[ƒWƒGƒŠƒA‚ÌƒZƒbƒg
+	//ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚¨ãƒªã‚¢ã®ã‚»ãƒƒãƒˆ
 	void LineSet();
-	//ƒvƒŒƒCƒ„[‚Ìƒfƒoƒt
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒ‡ãƒãƒ•
 	void Debuff();
-	//¬—
+	//æ··ä¹±
 	void Confu();
-	//’e–‹
+	//å¼¾å¹•
 	void Barrage();
-	//s“®I‚í‚è
+	//è¡Œå‹•çµ‚ã‚ã‚Š
 	void EndMove();
-	//CSV“Ç‚İ‚İŒn
+	//CSVèª­ã¿è¾¼ã¿ç³»
 	void CSVLoad();
-	//ƒm[ƒc‚Ì¶¬
+	//ãƒãƒ¼ãƒ„ã®ç”Ÿæˆ
 	void BirthNote(const std::string& BarrageName);
-	//€‚ñ‚¾‚Æ‚«‚Ìƒp[ƒeƒBƒNƒ‹
+	//æ­»ã‚“ã ã¨ãã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
 	void DeathParticle();
 private:
 	static const int BULLET_NUM = 4;
 	static const int CD_NUM = 4;
 private:
-	//ŠeƒNƒ‰ƒX
+	//å„ã‚¯ãƒ©ã‚¹
 	array<unique_ptr<InterCD>, CD_NUM> cd;
-	vector<AttackNote*> attacknotes;//“{‚è‚ÌƒXƒ^ƒ“ƒv
-	unique_ptr<DamageArea> damagearea;//ƒ_ƒ[ƒWƒGƒŠƒA
+	vector<AttackNote*> attacknotes;//æ€’ã‚Šã®ã‚¹ã‚¿ãƒ³ãƒ—
+	unique_ptr<DamageArea> damagearea;//ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚¨ãƒªã‚¢
 	unique_ptr<ConfuEffect> confueffect;
 	unique_ptr<NoteEffect> noteeffect;
-	//ƒLƒƒƒ‰‚Ìó‘Ô
+	//ã‚­ãƒ£ãƒ©ã®çŠ¶æ…‹
 	enum CharaState
 	{
 		STATE_INTER,
@@ -75,22 +82,22 @@ private:
 		STATE_END
 	};
 
-	//’â~ŠÔ
+	//åœæ­¢æ™‚é–“
 	int m_StopTimer = 0;
-	//‚Ç‚Ìs“®‚É‚·‚é‚©
+	//ã©ã®è¡Œå‹•ã«ã™ã‚‹ã‹
 	int m_MoveState = {};
 
-	//ŠÖ”ƒ|ƒCƒ“ƒ^
+	//é–¢æ•°ãƒã‚¤ãƒ³ã‚¿
 	static void(SixBoss::* stateTable[])();
 
 	int _charaState = STATE_INTER;
 
-	//CSVŒn
+	//CSVç³»
 	int m_ChoiceInterval = {};
 
-	//ƒC[ƒWƒ“ƒOŒã‚ÌˆÊ’u
+	//ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°å¾Œã®ä½ç½®
 	XMFLOAT3 m_AfterPos = {};
-	//X•ûŒü‚Ì‰ñ“]
+	//Xæ–¹å‘ã®å›è»¢
 	XMFLOAT3 m_AfterRot = { 0.0f,0.0f,0.0f };
 	float m_Frame = {};
 
@@ -112,32 +119,32 @@ private:
 		CD_CONFU,
 		CD_BARRA,
 	};
-	//“®‚«‚ÌƒCƒ“ƒ^[ƒoƒ‹
+	//å‹•ãã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«
 	int m_MoveInterVal = {};
-	//s“®I—¹‚Ì”
+	//è¡Œå‹•çµ‚äº†ã®æ•°
 	int m_EndCount = {};
-	//ƒLƒƒƒbƒ`‚µ‚½CD‚Ì”
+	//ã‚­ãƒ£ãƒƒãƒã—ãŸCDã®æ•°
 	int m_CatchCount = {};
-	//ƒ{ƒX‚ªƒvƒŒƒCƒ„[‚©‚ç“¦‚°‚éŠÔ
+	//ãƒœã‚¹ãŒãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‹ã‚‰é€ƒã’ã‚‹æ™‚é–“
 	int m_EndTimer = {};
 
-	//™‚Ì“I‚Ég‚¤
+	//æ£˜ã®çš„ã«ä½¿ã†
 	float m_Angle = 0.0f;
 	float m_Angle2 = 0.0f;
-	//“ñ“_‚Ì‹——£
+	//äºŒç‚¹ã®è·é›¢
 	float m_Length = {};
 
-	//‰~‰^“®
+	//å††é‹å‹•
 	float m_CircleScale = 30.0f;
 	float m_CircleSpeed = {};
 
-	//’e–‹‚Ìí—Ş
+	//å¼¾å¹•ã®ç¨®é¡
 	int m_BarraRand = {};
 
 	int m_AttackRand = {};
 
-	//CSVŒn
-	//ŠeƒCƒ“ƒ^[ƒoƒ‹‚âƒŠƒ~ƒbƒgŠÔ
+	//CSVç³»
+	//å„ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«ã‚„ãƒªãƒŸãƒƒãƒˆæ™‚é–“
 	vector<int>m_Limit;
 
 	enum LimitState {
@@ -147,6 +154,6 @@ private:
 		LIMIT_BARRA,
 	};
 
-	//ˆÚ“®—Í
+	//ç§»å‹•åŠ›
 	float m_FollowSpeed = {};
 };

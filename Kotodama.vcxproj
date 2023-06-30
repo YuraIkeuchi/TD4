@@ -109,6 +109,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DarkBullet.cpp" />
     <ClCompile Include="SourceCode\engine\2d\DebugText.cpp" />
     <ClCompile Include="SourceCode\engine\2d\Feed.cpp" />
     <ClCompile Include="SourceCode\engine\2d\Font.cpp" />
@@ -241,6 +242,7 @@
     <ClCompile Include="SourceCode\gamesystem\scene\SceneSave.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\SecondStage.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\SelectStageScene.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\scene\SixScene.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\SevenStage.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\SixStage.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\ThirdStage.cpp" />
@@ -260,6 +262,7 @@
     <ClCompile Include="SourceCode\gamesystem\ui\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DarkBullet.h" />
     <ClInclude Include="SourceCode\engine\2d\DebugText.h" />
     <ClInclude Include="SourceCode\engine\2d\Feed.h" />
     <ClInclude Include="SourceCode\engine\2d\Font.h" />
@@ -388,7 +391,6 @@
     <ClInclude Include="SourceCode\gamesystem\scene\FiveStage.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\FourthStage.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\Framework.h" />
-    <ClInclude Include="SourceCode\gamesystem\scene\GameoverScene.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\IkeGame.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\IntroductionScene.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\LoadScene.h" />
@@ -399,6 +401,7 @@
     <ClInclude Include="SourceCode\gamesystem\scene\SceneSave.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\SecondStage.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\SelectStageScene.h" />
+    <ClInclude Include="SourceCode\gamesystem\scene\SixScene.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\SevenStage.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\SixStage.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\ThirdStage.h" />

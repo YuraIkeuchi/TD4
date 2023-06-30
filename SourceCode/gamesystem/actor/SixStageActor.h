@@ -1,5 +1,20 @@
 #pragma once
-#include "BaseActor.h"
+#include "BaseActor.h"\
+#include "Audio.h"
+#include"Easing.h"
+#include "SceneManager.h"
+#include "imgui.h"
+#include "ParticleEmitter.h"
+#include "ImageManager.h"
+#include <algorithm>
+#include "BackObj.h"
+#include "Menu.h"
+#include "SelectScene.h"
+class SixStageActor :
+    public BaseActor
+{
+};
+
 #include "BossText.h"
 #include "LoadStageObj.h"
 #include"Font.h"
@@ -7,17 +22,17 @@
 #include "MessageWindow.h"
 #include"Spline.h"
 
-/// ƒ^ƒCƒgƒ‹ƒV[ƒ“
+/// ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³
 class SixStageActor : public BaseActor {
 
 public:
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	void Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) override;
-	/// I—¹
+	/// çµ‚äº†
 	void Finalize() override;
-	/// –ˆƒtƒŒ[ƒ€XV
+	/// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°
 	void Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) override;
-	/// •`‰æ
+	/// æç”»
 	void Draw(DirectXCommon* dxCommon) override;
 	void FrontDraw(DirectXCommon* dxCommon);
 	void BackDraw(DirectXCommon* dxCommon);
@@ -25,9 +40,9 @@ public:
 
 private:
 
-	void IntroUpdate(DebugCamera* camera)override;		//“oêƒV[ƒ“
-	void MainUpdate(DebugCamera* camera)override;		//ƒoƒgƒ‹ƒV[ƒ“
-	void FinishUpdate(DebugCamera* camera)override;		//Œ‚”jƒV[ƒ“
+	void IntroUpdate(DebugCamera* camera)override;		//ç™»å ´ã‚·ãƒ¼ãƒ³
+	void MainUpdate(DebugCamera* camera)override;		//ãƒãƒˆãƒ«ã‚·ãƒ¼ãƒ³
+	void FinishUpdate(DebugCamera* camera)override;		//æ’ƒç ´ã‚·ãƒ¼ãƒ³
 
 	void MoveSpotLight();
 	void SpotSet(XMFLOAT3& Pos, const XMFLOAT3& AfterPos, const float AddFrame);
@@ -41,13 +56,13 @@ private:
 	unique_ptr<BossText> text_;
 	unique_ptr<IKESprite> backScreen_ = nullptr;
 
-	//ŠÛ‰e(ƒ{ƒX)
+	//ä¸¸å½±(ãƒœã‚¹)
 	float BosscircleShadowDir[3] = { 0,-1,0 };
 	float BosscircleShadowAtten[3] = { 0.5f,0.6f,0.0f };
 	float BosscircleShadowFactorAngle[2] = { 0.0f, 2.0f };
 
 
-	//™‚Ì“I‚Ég‚¤
+	//æ£˜ã®çš„ã«ä½¿ã†
 	float m_Angle[SPOT_NUM] = {};
 	float m_Angle2[SPOT_NUM] = {};
 
