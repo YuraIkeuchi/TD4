@@ -157,6 +157,7 @@ void Menu::Home_()
 	if (Input::GetInstance()->TriggerButton(Input::B))
 	{
 		if (index == 0)_tasks = RuleExp;
+		else if (index == 1)_tasks = ResetBattle;
 		else if (index == 2)_tasks = MapChange;
 	}
 	
@@ -167,6 +168,7 @@ void Menu::ResetBattle_()
 {
 	//if (!Open_Reset())return;
 
+	SceneManager::GetInstance()->ChangeScene("SELECT");
 
 	tasks[ResetBattle].ActFlag = true;
 

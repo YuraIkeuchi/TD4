@@ -14,6 +14,14 @@ FiveBoss::FiveBoss()
 	m_Object->Initialize();
 	m_Object->SetModel(m_Model);
 
+	//ダーク琴子モデル
+		//モデル初期化と読み込み
+	m_fbxObject.reset(new IKEFBXObject3d());
+	m_fbxObject->Initialize();
+	m_fbxObject->SetModel(ModelManager::GetInstance()->GetFBXModel(ModelManager::PLAYER));
+	m_fbxObject->LoadAnimation();
+	m_fbxObject->PlayAnimation(0);
+
 	confueffect.reset(new ConfuEffect());
 	confueffect->Initialize();
 
@@ -76,6 +84,12 @@ void FiveBoss::Action()
 	if (m_HP < m_MaxHp / 2) {
 		isStrong = true;
 	}
+	//基礎パラメータ設定
+	Fbx_SetParam();
+
+	//どっち使えばいいか分からなかったから保留
+	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+
 }
 
 void FiveBoss::AppearAction()
@@ -113,4 +127,6 @@ void FiveBoss::EffecttexDraw(DirectXCommon* dxCommon)
 void FiveBoss::Draw(DirectXCommon* dxCommon)
 {
 	Obj_Draw();
+	Fbx_Draw(dxCommon);
+
 }

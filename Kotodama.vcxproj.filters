@@ -479,7 +479,6 @@
       <Filter>engine\audio</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\scene\FiveStage.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\actor\FiveSategActor.cpp" />
     <ClCompile Include="DarkBullet.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\SixScene.cpp">
       <Filter>gamesystem\scene</Filter>
@@ -489,7 +488,7 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\actor\SixStageActor.cpp">
       <Filter>gamesystem\scene</Filter>
-     </ClCompile>
+    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\SixBoss.cpp">
       <Filter>gamesystem\charactor\Boss\Six</Filter>
     </ClCompile>
@@ -516,6 +515,15 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\scene\FiveStage.cpp">
       <Filter>gamesystem\scene\Play\Five</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\InterAttack.cpp">
+      <Filter>gamesystem\charactor\Boss\Five\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\ShotAttack.cpp">
+      <Filter>gamesystem\charactor\Boss\Five\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\NormalAttack.cpp">
+      <Filter>gamesystem\charactor\Boss\Five\Attack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -957,7 +965,6 @@
       <Filter>engine\audio</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\FiveStage.h" />
-    <ClInclude Include="SourceCode\gamesystem\actor\FiveSategActor.h" />
     <ClInclude Include="DarkBullet.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\SixScene.h">
       <Filter>gamesystem\scene</Filter>
@@ -967,7 +974,7 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\actor\SixStageActor.h">
       <Filter>gamesystem\scene</Filter>
-     </ClInclude>
+    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\SixBoss.h">
       <Filter>gamesystem\charactor\Boss\Six</Filter>
     </ClInclude>
@@ -994,6 +1001,15 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\FiveStage.h">
       <Filter>gamesystem\scene\Play\Five</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\InterAttack.h">
+      <Filter>gamesystem\charactor\Boss\Five\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\ShotAttack.h">
+      <Filter>gamesystem\charactor\Boss\Five\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\NormalAttack.h">
+      <Filter>gamesystem\charactor\Boss\Five\Attack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1341,7 +1357,7 @@
     <Filter Include="gamesystem\scene\Six">
       <UniqueIdentifier>{aa3aa91f-7e77-45a6-a95b-ebb4ae1db898}</UniqueIdentifier>
     </Filter>
-      <Filter Include="gamesystem\charactor\Boss\Six">
+    <Filter Include="gamesystem\charactor\Boss\Six">
       <UniqueIdentifier>{b7f512e4-f30b-4794-bcaf-1cc472040edb}</UniqueIdentifier>
     </Filter>
     <Filter Include="gamesystem\charactor\Boss\Seven">
@@ -1367,6 +1383,9 @@
     </Filter>
     <Filter Include="gamesystem\scene\Play\Seven">
       <UniqueIdentifier>{c22e072a-798b-4f56-ace8-3ba410fe85a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\charactor\Boss\Five\Attack">
+      <UniqueIdentifier>{b8214fa0-f473-446d-baaf-7a742334d608}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
