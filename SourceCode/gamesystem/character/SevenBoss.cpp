@@ -77,6 +77,7 @@ void SevenBoss::Action() {
 	//ÉäÉ~ÉbÉgêßå¿
 	Helper::GetInstance()->Clamp(m_Position.x, -55.0f, 65.0f);
 	Helper::GetInstance()->Clamp(m_Position.z, -60.0f, 60.0f);
+	Helper::GetInstance()->Clamp(m_HP, -1.0f, m_MaxHp);
 
 	//è·äQï®
 	for (Poltergeist* newpolter : poltergeist) {
@@ -176,9 +177,8 @@ void SevenBoss::Draw(DirectXCommon* dxCommon) {
 //ImGui
 void SevenBoss::ImGui_Origin() {
 	ImGui::Begin("Seven");
-	ImGui::Text("Count::%d", m_AttackCount);
-	ImGui::Text("Stun::%d", m_Stun);
-	ImGui::Text("interVal::%d", m_InterVal);
+	ImGui::Text("HP:%f", m_HP);
+	ImGui::Text("Absorption::%d", m_Absorption);
 	ImGui::Text("Rand::%d", int(_charaState));
 	ImGui::End();
 }
@@ -332,12 +332,13 @@ void SevenBoss::BulletCatch() {
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
 	CatchBul(_playerBulA);
 	m_MoveTimer++;
-
+	m_Absorption = true;
 	if (m_MoveTimer == l_LimitTimer) {
 		m_Color = { 0.0f,0.0f,1.0f,1.0f };
-		_charaState = STATE_INTER;
 		m_MoveTimer = {};
 		m_AttackCount = {};
+		m_Absorption = false;
+		_charaState = STATE_INTER;
 	}
 	if (m_MoveTimer % 6 == 0) {
 		BirthParticle();
@@ -347,6 +348,7 @@ void SevenBoss::BulletCatch() {
 void SevenBoss::Stun() {
 	const int l_LimitTimer = 500;
 	m_MoveTimer++;
+	m_Absorption = false;
 	m_Color = { 0.0f,1.0f,1.0f,1.0f };
 	if (m_MoveTimer == l_LimitTimer) {
 		m_Stun = false;
@@ -387,6 +389,7 @@ void SevenBoss::CatchBul(vector<InterBullet*> bullet)
 				m_Stun = true;
 				m_AttackCount = {};
 				_bullet->SetAlive(false);
+				m_Absorption = false;
 				_charaState = STATE_STUN;
 			}
 		}
