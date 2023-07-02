@@ -475,7 +475,7 @@ void LoadStageObj::CollideBoss() {
 		float l_dir = Helper::GetInstance()->ChechLength(l_ghostpos, m_EnemyManager->GetEnemyPosition());
 		if (l_dir < l_Radius) {
 			ghosts[i]->SetVanish(true);
-			m_EnemyManager->HealHP(1.0f);
+			m_EnemyManager->HealHP(0.5f);
 		}
 	}
 }

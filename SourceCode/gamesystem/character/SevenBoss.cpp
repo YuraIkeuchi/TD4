@@ -179,6 +179,7 @@ void SevenBoss::ImGui_Origin() {
 	ImGui::Begin("Seven");
 	ImGui::Text("HP:%f", m_HP);
 	ImGui::Text("Absorption::%d", m_Absorption);
+	ImGui::Text("MoveTimer::%d", m_MoveTimer);
 	ImGui::Text("Rand::%d", int(_charaState));
 	ImGui::End();
 }
@@ -391,6 +392,7 @@ void SevenBoss::CatchBul(vector<InterBullet*> bullet)
 				_bullet->SetAlive(false);
 				m_Absorption = false;
 				_charaState = STATE_STUN;
+				m_MoveTimer = {};
 			}
 		}
 	}
