@@ -26,7 +26,7 @@ bool SevenBoss::Initialize() {
 
 	ActionTimer = 1;
 
-	m_Radius = 5.2f;
+	m_Radius = 2.2f;
 
 	_charaState = STATE_INTER;
 	//CSVロード
@@ -115,12 +115,29 @@ void SevenBoss::Action() {
 		}
 	}
 
+	//吸収エフェクト
+	for (AbsorptionEffect* neweffect : abseffect) {
+		if (neweffect != nullptr) {
+			neweffect->Update();
+		}
+	}
+
+	//吸収エフェクト
+	for (int i = 0; i < abseffect.size(); i++) {
+		if (abseffect[i] == nullptr) {
+			continue;
+		}
+
+		if (!abseffect[i]->GetAlive()) {
+			abseffect.erase(cbegin(abseffect) + i);
+		}
+	}
+
 	bossstuneffect->SetBasePos(m_Position);
 	bossstuneffect->Update();
 }
 //ポーズ
 void SevenBoss::Pause() {
-
 }
 //エフェクト描画
 void SevenBoss::EffecttexDraw(DirectXCommon* dxCommon)
@@ -128,6 +145,12 @@ void SevenBoss::EffecttexDraw(DirectXCommon* dxCommon)
 	if (m_HP < 0.0f)return;
 	bossstuneffect->Draw(dxCommon);
 
+	//吸収エフェクト
+	for (AbsorptionEffect* neweffect : abseffect) {
+		if (neweffect != nullptr) {
+			neweffect->Draw(dxCommon);
+		}
+	}
 }
 //描画
 void SevenBoss::Draw(DirectXCommon* dxCommon) {
@@ -155,32 +178,38 @@ void SevenBoss::ImGui_Origin() {
 	ImGui::Begin("Seven");
 	ImGui::Text("Count::%d", m_AttackCount);
 	ImGui::Text("Stun::%d", m_Stun);
+	ImGui::Text("interVal::%d", m_InterVal);
+	ImGui::Text("Rand::%d", int(_charaState));
 	ImGui::End();
-
-	bossstuneffect->ImGuiDraw();
-	//for (Poltergeist* newpolter : poltergeist) {
-	//	if (newpolter != nullptr) {
-	//		newpolter->ImGuiDraw();
-	//	}
-	//}
-
-	//for (InterBoss* newboss : avatarboss) {
-	//	if (newboss != nullptr) {
-	//		newboss->ImGuiDraw();
-	//	}
-	//}
 }
 //インターバル
 void SevenBoss::InterValMove() {
-	int l_LimitTimer = 100;
+	const int l_LimitTimer = 100;
 	m_InterVal++;
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_RandomMove(0, 2);
 	if (m_InterVal == l_LimitTimer) {
-		_charaState = STATE_BOUND;
-		/*if (m_AvatarCount == 0) {
-		
-		}*/
-		m_InterVal = 0;
+		//行動を決めて次の行動に移る
+		m_AttackRand = int(l_RandomMove(mt));
+
+		if (m_AttackRand == 0) {
+			_charaState = STATE_BOUND;
+			m_InterVal = {};
+		}
+		else if(m_AttackRand == 1) {
+			_charaState = STATE_POLTER;
+			m_InterVal = {};
+		}
+		else {
+			if (m_AvatarCount == 0) {
+				_charaState = STATE_AVATAR;
+				m_InterVal = {};
+			}
+			else {
+				m_InterVal = l_LimitTimer - 1;
+			}
+		}
 	}
 }
 //ポルターガイスト
@@ -191,6 +220,7 @@ void SevenBoss::Polter() {
 	if (m_MoveTimer == l_LimitTimer) {
 		BirthPolter("Normal");
 		m_MoveTimer = {};
+		m_AttackCount++;
 		//二回攻撃したら吸収行動に移行する
 		if (m_AttackCount != 2) {
 			_charaState = STATE_INTER;
@@ -309,6 +339,9 @@ void SevenBoss::BulletCatch() {
 		m_MoveTimer = {};
 		m_AttackCount = {};
 	}
+	if (m_MoveTimer % 6 == 0) {
+		BirthParticle();
+	}
 }
 //スタンした時
 void SevenBoss::Stun() {
@@ -378,4 +411,13 @@ void SevenBoss::BirthExplosion() {
 	int l_Life = int(l_Randlife(mt));
 
 	ParticleEmitter::GetInstance()->Explosion(l_Life, m_Position, l_AddSize, s_scale, e_scale, s_color, e_color);
+}
+//パーティクル
+void SevenBoss::BirthParticle() {
+	//ノーツの発生
+	AbsorptionEffect* neweffect;
+	neweffect = new AbsorptionEffect();
+	neweffect->Initialize();
+	neweffect->SetBasePos(m_Position);
+	abseffect.push_back(neweffect);
 }

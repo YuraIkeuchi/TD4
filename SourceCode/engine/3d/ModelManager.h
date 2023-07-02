@@ -15,7 +15,6 @@ public:
 	//OBJの名前
 	enum ModelName {
 		Ground,
-		Box,
 		Bullet,
 		GhostBullet,
 		BulEnemy,

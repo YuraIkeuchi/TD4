@@ -525,6 +525,9 @@
     <ClCompile Include="SourceCode\gamesystem\effect\BossStunEffect.cpp">
       <Filter>gamesystem\effect\Confu</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\AbsorptionEffect.cpp">
+      <Filter>gamesystem\effect\Absorption</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
@@ -1011,6 +1014,9 @@
     <ClInclude Include="SourceCode\gamesystem\effect\BossStunEffect.h">
       <Filter>gamesystem\effect\Confu</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\AbsorptionEffect.h">
+      <Filter>gamesystem\effect\Absorption</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
@@ -1389,6 +1395,9 @@
     </Filter>
     <Filter Include="gamesystem\bossattach\Poltergeist">
       <UniqueIdentifier>{5a43992e-f1a8-4f1d-b1cb-355c74d6bff7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\effect\Absorption">
+      <UniqueIdentifier>{d0388d6d-9d5c-459c-b23b-05c48a2c4aac}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

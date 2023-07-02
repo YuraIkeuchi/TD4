@@ -19,7 +19,6 @@ void ModelManager::StartInitialize()
 void ModelManager::SecondInitialize()
 {
 	LoadModel(Ground, "ground");
-	LoadModel(Box, "UVSphere");
 	LoadModel(Bullet, "UVSphere");
 	LoadModel(GhostBullet, "voice");
 	LoadModel(BulEnemy, "tri");

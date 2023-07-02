@@ -18,13 +18,13 @@ AvatarBoss::AvatarBoss() {
 bool AvatarBoss::Initialize() {
 	m_Position = { 0.0f,3.0f,30.0f };
 	m_Rotation = { 0.0f,90.0f,0.0f };
-	m_Scale = { 0.3f,0.3f,0.3f };
+	m_Scale = { 0.1f,0.1f,0.1f };
 	m_Color = { 1.0f,1.0f,1.0f,0.0f };
 	//m_Rotation.y = -90.f;
 
 	ActionTimer = 1;
 
-	m_Radius = 5.2f;
+	m_Radius = 2.2f;
 
 	_charaState = STATE_INTER;
 	//CSVロード
@@ -130,10 +130,20 @@ void AvatarBoss::ImGui_Origin() {
 void AvatarBoss::InterValMove() {
 	int l_LimitTimer = 100;
 	m_InterVal++;
-
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_RandomMove(0, 1);
 	if (m_InterVal == l_LimitTimer) {
-		_charaState = STATE_BOUND;
-		m_InterVal = 0;
+		//行動を決めて次の行動に移る
+		m_AttackRand = int(l_RandomMove(mt));
+
+		if (m_AttackRand == 0) {
+			_charaState = STATE_BOUND;
+			m_InterVal = {};
+		}
+		else{
+			_charaState = STATE_POLTER;
+			m_InterVal = {};
+		}
 	}
 }
 //ポルターガイスト
