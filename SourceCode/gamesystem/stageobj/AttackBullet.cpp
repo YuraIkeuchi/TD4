@@ -2,6 +2,7 @@
 #include "VariableCommon.h"
 #include "CsvLoader.h"
 #include "Helper.h"
+#include "Easing.h"
 AttackBullet::AttackBullet() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Bullet);
 	m_Object.reset(new IKEObject3d());
@@ -20,10 +21,28 @@ bool AttackBullet::Initialize() {
 }
 //ImGui•`‰æ
 void AttackBullet::ImGui_Origin() {
-
+	ImGui::Begin("Attack");
+	ImGui::Text("TargetPos:%f", m_TargetPos.z);
+	ImGui::Text("Catch:%d", m_BossCatch);
+	ImGui::End();
 }
 //’e‚Ì“Á—Lˆ—
 void AttackBullet::Action() {
+	//‹zŽû‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©‚Å’e‚Ì‹““®‚ðŒˆ‚ß‚é
+	if (!m_BossCatch) {
+		NormalShot();
+	}
+	else {
+		AbsorptionShot();
+	}
+
+
+	if (m_Alive) {
+		Obj_SetParam();
+	}
+}
+//’Êí‚Ì’e
+void AttackBullet::NormalShot() {
 	if (m_Alive) {
 		if (m_PowerState == POWER_NONE) {
 			m_Power = 1.0f;
@@ -53,7 +72,22 @@ void AttackBullet::Action() {
 		m_MatRot = m_Object->GetMatrot();
 	}
 
-	if (m_Alive) {
-		Obj_SetParam();
+}
+//‹z‚¢ž‚Ý‚Ì’e
+void AttackBullet::AbsorptionShot() {
+	const float l_SubSpeed = 4.0f;
+	const float l_SubScale = 0.3f;
+
+	m_CircleSpeed += l_SubSpeed;
+	if (Helper::GetInstance()->CheckMax(m_CircleScale, 0.0f, -l_SubScale)) {
+		m_Alive = false;
 	}
+
+	m_AfterPos = Helper::GetInstance()->CircleMove(m_TargetPos, m_CircleScale, m_CircleSpeed);
+
+	m_Position = {
+		Ease(In,Cubic,0.5f,m_Position.x,m_AfterPos.x),
+		m_Position.y,
+		Ease(In,Cubic,0.5f,m_Position.z,m_AfterPos.z),
+	};
 }

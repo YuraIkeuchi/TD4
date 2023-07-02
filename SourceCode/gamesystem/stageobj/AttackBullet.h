@@ -15,4 +15,16 @@ public:
 private:
 	//弾の動く処理
 	void Action() override;
+
+private:
+	//ふつうの弾
+	void NormalShot();
+	//ボスが吸収したときの動き
+	void AbsorptionShot();
+private:
+	//イージング後の位置
+	XMFLOAT3 m_AfterPos = {};
+	//円運動
+	float m_CircleScale = 30.0f;
+	float m_CircleSpeed = {};
 };
