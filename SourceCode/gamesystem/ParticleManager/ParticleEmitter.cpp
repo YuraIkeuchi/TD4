@@ -106,7 +106,6 @@ void ParticleEmitter::Explosion(const int life, const XMFLOAT3& pos, const float
 	}
 }
 
-
 //ダメージ時のエフェクト
 void ParticleEmitter::Break(const int life, const XMFLOAT3& pos,const float startscale, const float endscale,
 	const XMFLOAT4& startcolor, const XMFLOAT4& endcolor,const float Gravity,float divi) {
@@ -130,7 +129,6 @@ void ParticleEmitter::Break(const int life, const XMFLOAT3& pos,const float star
 
 	circleParticle->Add(life, l_pos, vel, {}, startscale, endscale, startcolor, endcolor,Gravity,divi);
 }
-
 
 void ParticleEmitter::DeathEffect(int life, XMFLOAT3 l_pos, float startscale, float endscale, XMFLOAT4 startcolor, XMFLOAT4 endcolor, float velocity) {
 	XMFLOAT3 pos = l_pos;

@@ -3,7 +3,7 @@
 #include <array>
 using namespace std;         //  名前空間指定
 //混乱時のエフェクト
-class BossStunEffect {
+class AbsorptionEffect {
 private:
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -13,7 +13,7 @@ private:
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public:
-	BossStunEffect();
+	AbsorptionEffect();
 	//初期化
 	void Initialize();
 	//更新
@@ -23,11 +23,8 @@ public:
 
 	void ImGuiDraw();
 private:
-	//上のぴよぴよのやつ
-	void StunEffect();
-
+	void MoveEffect();
 private:
-	static const int STUN_MAX = 4;
 public:
 	//gettersetter
 	bool GetAlive() { return m_Alive; }
@@ -35,15 +32,19 @@ public:
 	void SetAlive(const bool Alive) { m_Alive = Alive; }
 	void SetBasePos(const XMFLOAT3& BasePos) { m_BasePos = BasePos; }
 private:
-	array<unique_ptr<IKETexture>, STUN_MAX> stuntex;
-	bool m_Alive = false;
+	unique_ptr<IKETexture> tex;
 
-	//ぴよぴよの位置
-	array<float, STUN_MAX> m_Stunradius;
-	array<float, STUN_MAX> m_StunSpeed;
-	array<float, STUN_MAX> m_Stunscale;
-	array<float, STUN_MAX> m_StunCircleX;
-	array<float, STUN_MAX> m_StunCircleZ;
-	array<XMFLOAT3, STUN_MAX> m_StunPos;
+	float m_CircleRadius;
+	float m_CircleSpeed;
+	float m_CircleScale;
+	float m_CircleX;
+	float m_CircleZ;
+
+	bool m_Alive = false;
+	XMFLOAT3 m_Position = {};
 	XMFLOAT3 m_BasePos = {};
+
+	float m_Frame = {};
+
+	XMFLOAT3 m_Scale = { 0.3f,0.3f,0.3f };
 };

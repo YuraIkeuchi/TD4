@@ -97,6 +97,7 @@ void ImageManager::SecondLoadTex2D()
 //	IKETexture::LoadTexture(PHOTOSPOT, L"Resources/2d/objicon/sixboss.png");
 
 	IKETexture::LoadTexture(STUN, L"Resources/2d/effect/stun.png");
+	IKETexture::LoadTexture(CATCH, L"Resources/2d/effect/effect1.png");
 
 }
 
@@ -106,5 +107,4 @@ void ImageManager::LoadParticle()
 	ParticleManager::LoadTexture(Smoke, "hootEffect.png");
 	ParticleManager::LoadTexture(Heal, "effect2.png");
 	ParticleManager::LoadTexture(Photo, "PhotoSpot.jpg");
-
 }

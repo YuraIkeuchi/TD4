@@ -55,4 +55,7 @@ private:
 	int m_InterVal = {};
 
 	int m_MoveTimer = {};
+
+	//UŒ‚‚Ì—”
+	int m_AttackRand = {};
 };

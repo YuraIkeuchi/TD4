@@ -4,6 +4,7 @@
 #include "Poltergeist.h"
 #include "AvatarBoss.h"
 #include "BossStunEffect.h"
+#include "AbsorptionEffect.h"
 class SevenBoss :
 	public InterBoss {
 public:
@@ -43,6 +44,8 @@ private:
 	void BirthPolter(const std::string& PolterName);//ポルターガイストの生成
 
 	void CatchBul(vector<InterBullet*>bullet);
+
+	void BirthParticle();
 private:
 	//キャラの状態
 	enum CharaState
@@ -64,6 +67,7 @@ private:
 	vector<Poltergeist*> poltergeist;//ポルターガイスト
 	vector<InterBoss*> avatarboss;//偽物のボス
 	unique_ptr<BossStunEffect> bossstuneffect;
+	vector<AbsorptionEffect*> abseffect;//弾幕
 	int m_InterVal = {};
 
 	int m_MoveTimer = {};
@@ -71,6 +75,8 @@ private:
 
 	//攻撃回数
 	int m_AttackCount = {};
-	
+	//スタンしたかどうか
 	bool m_Stun = false;
+	//攻撃の乱数
+	int m_AttackRand = {};
 };

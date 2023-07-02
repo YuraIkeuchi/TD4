@@ -85,6 +85,7 @@ public:
 		GROUND,
 		PHOTOSPOT,
 		STUN,
+		CATCH,
 	};
 	enum particleName
 	{

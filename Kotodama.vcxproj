@@ -213,6 +213,7 @@
     <ClCompile Include="SourceCode\gamesystem\editor\LoadBox.cpp" />
     <ClCompile Include="SourceCode\gamesystem\editor\LoadManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\editor\LoadStageObj.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\effect\AbsorptionEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\BossStunEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\BreakEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\ConfuEffect.cpp" />
@@ -376,6 +377,7 @@
     <ClInclude Include="SourceCode\gamesystem\editor\LoadBox.h" />
     <ClInclude Include="SourceCode\gamesystem\editor\LoadManager.h" />
     <ClInclude Include="SourceCode\gamesystem\editor\LoadStageObj.h" />
+    <ClInclude Include="SourceCode\gamesystem\effect\AbsorptionEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\BossStunEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\BreakEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\ConfuEffect.h" />
