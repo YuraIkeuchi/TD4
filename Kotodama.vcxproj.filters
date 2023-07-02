@@ -522,6 +522,9 @@
     <ClCompile Include="SourceCode\gamesystem\character\AvatarBoss.cpp">
       <Filter>gamesystem\charactor\Boss\Seven\Avatar</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\BossStunEffect.cpp">
+      <Filter>gamesystem\effect\Confu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
@@ -1004,6 +1007,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\AvatarBoss.h">
       <Filter>gamesystem\charactor\Boss\Seven\Avatar</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\BossStunEffect.h">
+      <Filter>gamesystem\effect\Confu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

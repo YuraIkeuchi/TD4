@@ -3,7 +3,7 @@
 #include "Shake.h"
 #include "Poltergeist.h"
 #include "AvatarBoss.h"
-
+#include "BossStunEffect.h"
 class SevenBoss :
 	public InterBoss {
 public:
@@ -36,8 +36,13 @@ private:
 	void Polter();//ポルターガイスト
 	void ThrowBound();//バウンド弾
 	void BirthAvatar();//偽物のボス
+	void BulletCatch();//弾を吸収
+	void Stun();//スタン
+	void BirthExplosion();
 
 	void BirthPolter(const std::string& PolterName);//ポルターガイストの生成
+
+	void CatchBul(vector<InterBullet*>bullet);
 private:
 	//キャラの状態
 	enum CharaState
@@ -46,6 +51,8 @@ private:
 		STATE_POLTER,
 		STATE_BOUND,
 		STATE_AVATAR,
+		STATE_CATCH,
+		STATE_STUN,
 	}_charaState;
 
 	//関数ポインタ
@@ -56,8 +63,14 @@ private:
 private:
 	vector<Poltergeist*> poltergeist;//ポルターガイスト
 	vector<InterBoss*> avatarboss;//偽物のボス
+	unique_ptr<BossStunEffect> bossstuneffect;
 	int m_InterVal = {};
 
 	int m_MoveTimer = {};
 	int m_AvatarCount = {};
+
+	//攻撃回数
+	int m_AttackCount = {};
+	
+	bool m_Stun = false;
 };

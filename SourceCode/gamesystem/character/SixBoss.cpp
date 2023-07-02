@@ -135,6 +135,7 @@ void SixBoss::Action() {
 		damagearea->Update();
 	}
 
+	confueffect->SetBasePos(Player::GetInstance()->GetPosition());
 	confueffect->Update();
 	noteeffect->Update();
 	//HPが半分切ったら強化

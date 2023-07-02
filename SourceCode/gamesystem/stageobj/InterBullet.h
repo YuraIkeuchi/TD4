@@ -50,7 +50,8 @@ public:
 	void SetBulletType(const int BulletType) { m_BulletType = BulletType; }
 	void SetPowerState(const int PowerState) { m_PowerState = PowerState; }
 	void SetCharge(const bool Charge) { m_Charge = Charge; }
-
+	void SetBossCatch(const bool BossCatch) { m_BossCatch = BossCatch; }
+	void SetTargetPos(const XMFLOAT3& TargetPos) { m_TargetPos = TargetPos; }
 public:
 
 	XMFLOAT2 m_Angle = {};//弾の角度
@@ -63,4 +64,8 @@ public:
 
 	int m_PowerState = POWER_NONE;
 	float m_Power = {};//ダメージ量
+
+	//ボスが弾をキャッチしたか
+	bool m_BossCatch = false;
+	XMFLOAT3 m_TargetPos = {};
 };
