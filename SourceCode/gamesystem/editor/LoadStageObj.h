@@ -71,7 +71,8 @@ private:
 	void LockVerseGhost();
 	//多くのゴーストをロックします
 	void LockAllGhost();
-
+	//
+	void ReferGhorstReseted();
 	//ゴーストを削除します。
 	void NonVerseGhost();
 	//参照されているゴーストが存在するかチェックします。

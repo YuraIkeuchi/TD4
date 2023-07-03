@@ -52,7 +52,7 @@ void UI::Initialize() {
 		TexList.emplace_back(std::move(sprites[BossGauge]));
 	}
 	{
-		sprites[PlayerCircle] = CreateUi(ImageManager::CIRCLE, { m_PlayerCireclePos }, { m_PlayerCircleSize }, { 1.f,1.f,1.f,1.f });
+		sprites[PlayerCircle] = CreateUi(ImageManager::CIRCLE, { m_PlayerCireclePos }, { m_PlayerCircleSize }, { 0.9f,0.9f,0.9f,1.f });
 		sprites[PlayerCircle].Tex->SetAnchorPoint({ 0.5,0.5f });
 		TexList.emplace_back(std::move(sprites[PlayerCircle]));
 	}

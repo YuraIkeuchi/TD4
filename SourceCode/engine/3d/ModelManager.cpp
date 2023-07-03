@@ -28,6 +28,7 @@ void ModelManager::SecondInitialize()
 	LoadModel(Ghost,"ghost");
 	LoadModel(Buddy,"buddy");
 	LoadModel(MobUsa, "mobusa");
+	LoadModel(Camera, "A&J");
 	LoadModel(Heart, "heart");
 	LoadModel(Pedestal, "dodai");
 	LoadModel(Skydome, "skydome");
