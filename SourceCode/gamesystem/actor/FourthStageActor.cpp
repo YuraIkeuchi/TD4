@@ -69,9 +69,11 @@ void FourthStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 //更新
 void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	//関数ポインタで状態管理
-	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
-	sceneChanger_->Update();
-	camerawork->Update(camera);
+	if (!Menu::GetIns()->GetMenuOpen()) {
+		(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+		sceneChanger_->Update();
+		camerawork->Update(camera);
+	}
 	Menu::GetIns()->Upda();
 	postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
 	messagewindow_->Update(girl_color_, sutopon_color_);

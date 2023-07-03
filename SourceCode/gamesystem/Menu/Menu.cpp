@@ -38,6 +38,23 @@ void Menu::Init()
 
 void Menu::Upda()
 {
+	if (_tasks != NON)MenuOpenF = true;
+	else {
+		MenuOpenF = false;
+		MenuRestartTimer++;
+	}
+	if (MenuOpenF) {
+		MenuRestartTimer = 0;
+		MenuResetTimer++;
+	} else {
+		MenuResetTimer = 0;
+	}
+	if(MenuResetTimer>60){if(Input::GetInstance()->TriggerButton(Input::START))
+{
+	_tasks = NON;
+}
+
+}
 	//ó‘ÔˆÚs
 	(this->*stateTable[_tasks])();
 	
@@ -268,6 +285,8 @@ void Menu::SceneChange()
 
 void Menu::Non()
 {
+	if (MenuRestartTimer < 60)return;
+
 	//ƒz[ƒ€‰æ–Ê‚Ö
 	if (Input::GetInstance()->TriggerButton(Input::START))_tasks = Home;
 
