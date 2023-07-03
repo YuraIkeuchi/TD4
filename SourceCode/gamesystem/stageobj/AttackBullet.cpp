@@ -17,13 +17,17 @@ bool AttackBullet::Initialize() {
 	//CSVÇ©ÇÁì«Ç›çûÇ›
 	m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet/bullet.csv", "AttackSpeed")));
 	m_TargetTimer = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet/bullet.csv", "AttackLimit")));
+	auto PowerSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet/bullet.csv", "POWER_MAX")));
+
+	m_Power.resize(PowerSize);
+
+	LoadCSV::LoadCsvParam_Float("Resources/csv/chara/bullet/bullet.csv", m_Power, "Power");
 	return true;
 }
 //ImGuiï`âÊ
 void AttackBullet::ImGui_Origin() {
 	ImGui::Begin("Attack");
-	ImGui::Text("TargetPos:%f", m_TargetPos.z);
-	ImGui::Text("Catch:%d", m_BossCatch);
+	ImGui::Text("Power:%f", m_DamagePower);
 	ImGui::End();
 }
 //íeÇÃì¡óLèàóù
@@ -45,19 +49,19 @@ void AttackBullet::Action() {
 void AttackBullet::NormalShot() {
 	if (m_Alive) {
 		if (m_PowerState == POWER_NONE) {
-			m_Power = 1.0f;
+			m_DamagePower = m_Power[0];
 			m_Color = { 1.0f,1.0f,1.0f,1.0f };
 		}
 		else if (m_PowerState == POWER_MIDDLE) {
-			m_Power = 2.0f;
+			m_DamagePower = m_Power[1];
 			m_Color = { 1.0f,0.0f,0.0f,1.0f };
 		}
 		else if (m_PowerState == POWER_STRONG) {
-			m_Power = 3.0f;
+			m_DamagePower = m_Power[2];
 			m_Color = { 0.0f,1.0f,0.0f,1.0f };
 		}
 		else {
-			m_Power = 5.0f;
+			m_DamagePower = m_Power[3];
 			m_Color = { 1.0f,0.0f,0.0f,1.0f };
 		}
 		//à⁄ìÆÇâ¡éZ
