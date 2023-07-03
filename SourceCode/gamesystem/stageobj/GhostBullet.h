@@ -23,4 +23,6 @@ private:
 private:
 	float m_Frame = 0.0f;
 	float m_AddFrame = {};
+	float m_StartScale = {};
+	float m_EndScale = {};
 };

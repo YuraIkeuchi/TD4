@@ -9,6 +9,10 @@ AttackLimit,40
 GhostSpeed,10
 //生存時間
 GhostLimit,8
+//始まりの大きさ
+StartScale,2.0
+//終わりの大きさ
+EndScale,3.0
 
 //これは気にしないで
 Stopon,40
