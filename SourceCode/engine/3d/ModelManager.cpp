@@ -47,6 +47,7 @@ void ModelManager::SecondInitialize()
 	LoadModel(MILKCAP_NORMAL, "milkCap_normal");
 	LoadModel(MILKCAP_BREAK, "milkCap_break");
 	LoadModel(CAP, "cap");
+
 }
 
 void ModelManager::Finalize()
