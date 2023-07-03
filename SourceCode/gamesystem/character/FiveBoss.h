@@ -8,6 +8,7 @@
 #include "Shake.h"
 #include "ConfuEffect.h"
 #include "NoteEffect.h"
+#include "ShotAttack.h"
 
 class Spline;
 
@@ -126,6 +127,15 @@ private:
 
 	//ˆÚ“®—Í
 	float m_FollowSpeed = {};
+	ShotAttack* shot;
+	static void (FiveBoss::* attackTable[])();
+	enum ActionPhase
+	{
+		MOVE,
+		ATTACK_SHOT,
+		END
+	};
+	inline void Shot() { shot->Upda(); }
 };
 
 
