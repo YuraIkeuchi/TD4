@@ -92,11 +92,9 @@ void LineCD::ResPornCD() {
 void LineCD::AudioAction() {
 	if (_AudioState == AUDIO_SET) {
 		if (m_AudioPlay) {
-			Audio::GetInstance()->LoopWave(AUDIO_BATTLE, VolumManager::GetInstance()->GetBGMVolum() + 2.0f);
 			m_AudioPlay = false;
 		}
 	}
 	else if (_AudioState == AUDIO_END) {
-		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 	}
 }
