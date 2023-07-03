@@ -44,13 +44,15 @@ public:
 	void ImGuiDraw();
 	//ライトのセット
 	void LightSet(LightGroup* light);
-	//ライトの更新
-	void LightUpdate();
 private:
 	//食料の検索
 	void SearchFood();
 	//食料とゴーストの当たり判定
 	void CollideFood();
+	//ゴーストの吸収
+	void Absorption();
+	//ボスとゴーストの当たり判定
+	void CollideBoss();
 	//ゴーストが消える
 	void VanishGhost();
 	//共通の更新
@@ -69,7 +71,8 @@ private:
 	void LockVerseGhost();
 	//多くのゴーストをロックします
 	void LockAllGhost();
-
+	//
+	void ReferGhorstReseted();
 	//ゴーストを削除します。
 	void NonVerseGhost();
 	//参照されているゴーストが存在するかチェックします。

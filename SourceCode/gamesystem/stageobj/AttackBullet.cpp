@@ -2,6 +2,7 @@
 #include "VariableCommon.h"
 #include "CsvLoader.h"
 #include "Helper.h"
+#include "Easing.h"
 AttackBullet::AttackBullet() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Bullet);
 	m_Object.reset(new IKEObject3d());
@@ -16,29 +17,51 @@ bool AttackBullet::Initialize() {
 	//CSVÇ©ÇÁì«Ç›çûÇ›
 	m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet/bullet.csv", "AttackSpeed")));
 	m_TargetTimer = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet/bullet.csv", "AttackLimit")));
+	auto PowerSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet/bullet.csv", "POWER_MAX")));
+
+	m_Power.resize(PowerSize);
+
+	LoadCSV::LoadCsvParam_Float("Resources/csv/chara/bullet/bullet.csv", m_Power, "Power");
 	return true;
 }
 //ImGuiï`âÊ
 void AttackBullet::ImGui_Origin() {
-
+	ImGui::Begin("Attack");
+	ImGui::Text("Power:%f", m_DamagePower);
+	ImGui::End();
 }
 //íeÇÃì¡óLèàóù
 void AttackBullet::Action() {
+	//ãzé˚Ç≥ÇÍÇƒÇ¢ÇÈÇ©Ç«Ç§Ç©Ç≈íeÇÃãììÆÇåàÇﬂÇÈ
+	if (!m_BossCatch) {
+		NormalShot();
+	}
+	else {
+		AbsorptionShot();
+	}
+
+
+	if (m_Alive) {
+		Obj_SetParam();
+	}
+}
+//í èÌÇÃíe
+void AttackBullet::NormalShot() {
 	if (m_Alive) {
 		if (m_PowerState == POWER_NONE) {
-			m_Power = 1.0f;
+			m_DamagePower = m_Power[0];
 			m_Color = { 1.0f,1.0f,1.0f,1.0f };
 		}
 		else if (m_PowerState == POWER_MIDDLE) {
-			m_Power = 2.0f;
+			m_DamagePower = m_Power[1];
 			m_Color = { 1.0f,0.0f,0.0f,1.0f };
 		}
 		else if (m_PowerState == POWER_STRONG) {
-			m_Power = 3.0f;
+			m_DamagePower = m_Power[2];
 			m_Color = { 0.0f,1.0f,0.0f,1.0f };
 		}
 		else {
-			m_Power = 5.0f;
+			m_DamagePower = m_Power[3];
 			m_Color = { 1.0f,0.0f,0.0f,1.0f };
 		}
 		//à⁄ìÆÇâ¡éZ
@@ -53,7 +76,22 @@ void AttackBullet::Action() {
 		m_MatRot = m_Object->GetMatrot();
 	}
 
-	if (m_Alive) {
-		Obj_SetParam();
+}
+//ãzÇ¢çûÇ›ÇÃíe
+void AttackBullet::AbsorptionShot() {
+	const float l_SubSpeed = 4.0f;
+	const float l_SubScale = 0.3f;
+
+	m_CircleSpeed += l_SubSpeed;
+	if (Helper::GetInstance()->CheckMax(m_CircleScale, 0.0f, -l_SubScale)) {
+		m_Alive = false;
 	}
+
+	m_AfterPos = Helper::GetInstance()->CircleMove(m_TargetPos, m_CircleScale, m_CircleSpeed);
+
+	m_Position = {
+		Ease(In,Cubic,0.5f,m_Position.x,m_AfterPos.x),
+		m_Position.y,
+		Ease(In,Cubic,0.5f,m_Position.z,m_AfterPos.z),
+	};
 }

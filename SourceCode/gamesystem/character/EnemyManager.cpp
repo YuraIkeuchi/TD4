@@ -145,3 +145,8 @@ void EnemyManager::FinishHeart() {
 void EnemyManager::DirSet(int dir) {
 	boss->SetDirEmo(dir);
 }
+
+//ボスのHP回復
+void EnemyManager::HealHP(const float power) {
+	boss->SetHP(boss->GetHP() + power);
+}

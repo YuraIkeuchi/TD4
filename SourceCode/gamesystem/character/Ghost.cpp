@@ -74,10 +74,8 @@ void Ghost::Draw(DirectXCommon* dxCommon) {
 //ImGuiï`âÊ
 void Ghost::ImGuiDraw() {
 	ImGui::Begin("Ghost");
-	ImGui::Text("ColorR:%f", m_Color.x);
-	ImGui::Text("ColorG:%f", m_Color.y);
-	ImGui::Text("ColorB:%f", m_Color.z);
-	ImGui::Text("ColorW:%f", m_Color.w);
+	ImGui::Text("Abso:%d", m_Absorption);
+	ImGui::Text("PosZ:%f", m_Position.z);
 	ImGui::End();
 }
 
@@ -160,6 +158,7 @@ void Ghost::BirthGhost() {
 		m_Catch = false;
 		m_Search = false;
 		m_Follow = false;
+		m_Absorption = false;
 		m_SearchTimer = 0;
 		m_SpawnTimer = 0;
 	}
@@ -186,10 +185,14 @@ void Ghost::None() {
 	//ïÇóVèÛë‘
 	noneTimer += 0.05f;
 	float size = sinf(noneTimer) * 0.05f;
-	m_Position.x += cosf(m_Rotation.y * (PI_180 / XM_PI)) * size;
-	m_Position.y = sinf(noneTimer) * 1.2f;
-	m_Position.z += sinf(m_Rotation.y * (PI_180 / XM_PI)) * size;
-
+	if (!m_Absorption) {
+		m_Position.x += cosf(m_Rotation.y * (PI_180 / XM_PI)) * size;
+		m_Position.y = sinf(noneTimer) * 1.2f;
+		m_Position.z += sinf(m_Rotation.y * (PI_180 / XM_PI)) * size;
+	}
+	else {
+		Absorption();
+	}
 }
 //ê∂Ç‹ÇÍÇÈèÛë‘
 void Ghost::Spawm() {
@@ -294,7 +297,6 @@ void Ghost::HyperJack() {
 		m_VerseCureTimer = 180;
 		m_Scale = { 0.0f,0.0f,0.0f };
 		m_IsHyperRefer = false;
-		isVerse = true;
 		_charaState = CharaState::STATE_NONE;
 	}
 }
@@ -365,7 +367,7 @@ bool Ghost::CollideBullet(vector<InterBullet*>bullet) {
 				if (_charaState != STATE_NONE) { return false; }
 				if (m_IsRefer)  {return false; }
 				m_Catch = true;
-				if (Player::GetInstance()->GetBulletType() == BULLET_FORROW) {
+				if (_bullet->GetBulletType() == BULLET_FORROW) {
 					Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Follower.wav", VolumManager::GetInstance()->GetSEVolum() / 2.5f);
 					HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() + l_AddHungerMax);
 					HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() + l_AddHungerMax);
@@ -399,4 +401,10 @@ void Ghost::GetRotation2Player() {
 
 	RottoPlayer = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
 	m_Rotation.y = RottoPlayer * 60.0f + (PI_90 + PI_180);
+}
+//ãzé˚
+void Ghost::Absorption() {
+	float l_Vel = 0.35f;//ë¨ìx
+	Helper::GetInstance()->FollowMove(m_Position,m_TargetPos, l_Vel);
+	m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, m_TargetPos, -PI_90);
 }

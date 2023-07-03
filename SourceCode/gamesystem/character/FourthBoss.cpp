@@ -20,7 +20,7 @@ void (FourthBoss::* FourthBoss::stateTable[])() = {
 
 //¶¬
 FourthBoss::FourthBoss() {
-	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::MobUsa);
+	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Camera);
 	m_Object.reset(new IKEObject3d());
 	m_Object->Initialize();
 	m_Object->SetModel(m_Model);
@@ -48,17 +48,26 @@ FourthBoss::FourthBoss() {
 
 bool FourthBoss::Initialize() {
 	m_Position = { 0.0f,0.0f,0.0f };
-	m_Scale = { 2.0f,2.0f,2.0f };
+	m_Scale = { 10.0f,10.0f,10.0f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
-	m_Rotation.y = -90.f;
+	m_Rotation.y = 90.f;
+	string str = "Resources/csv/chara/boss/Fourth/Fourthboss.csv";
 	//m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Fourth/Fourthboss.csv", "pos")));
-	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Fourth/Fourthboss.csv", "Magnification")));
-	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Fourth/Fourthboss.csv", "hp1")));
-	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Fourth/Fourthboss.csv", "HeartTarget")));
+	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Magnification")));
+	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "hp1")));
 	m_MaxHp = m_HP;
+	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "HeartTarget")));
+	shutterTimeMax = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "shutterTime")));
+	feedTimeMax = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "feedTime")));
+	ActionTimerMax[(size_t)commandState::WaitCommand]=static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Wait")));
+	ActionTimerMax[(size_t)commandState::MoveCommand] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Move")));
+	ActionTimerMax[(size_t)commandState::ControlCommand] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Control")));
+	ActionTimerMax[(size_t)commandState::EnemySpawn] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "EnemySpawn")));
+	ActionTimerMax[(size_t)commandState::SubGauge] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "SubGauge")));
+	ActionTimerMax[(size_t)commandState::Ultimate] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Ultimate")));
+	ActionTimerMax[(size_t)commandState::Explosion] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Explosion")));
 
 	ActionTimer = 0;
-
 	m_Radius = 5.0f;
 	return true;
 }
@@ -104,15 +113,6 @@ void FourthBoss::Pause() {
 void FourthBoss::ImGui_Origin() {
 	ImGui::Begin("BOSS");
 	ImGui::SliderInt("Action", &ActionTimer, 0, 1000);
-	ImGui::SliderInt("ActionA", &stage_move, 0, 1000);
-	ImGui::SliderInt("ActionB", &stage_move_count, 0, 1000);
-	ImGui::SliderInt("ActionC", &stage_move_max, 0, 1000);
-
-	ImGui::SliderFloat("m_Position.x", &m_Position.x, 0.0f, 360.0f);
-	ImGui::SliderFloat("m_Position.y", &m_Position.y, 0.0f, 360.0f);
-	ImGui::SliderFloat("m_Position.z", &m_Position.z, 0.0f, 360.0f);
-	ImGui::SliderFloat("Limit", &m_Limit, 0.0f, 360.0f);
-
 	switch (phase) {
 	case FourthBoss::commandState::WaitCommand:
 		ImGui::Text("WAIT");
@@ -140,9 +140,6 @@ void FourthBoss::ImGui_Origin() {
 		assert(0);
 		break;
 	}
-
-
-
 	ImGui::End();
 }
 
@@ -203,7 +200,6 @@ void FourthBoss::SelectAction() {
 		isInstruction = FourthBossInst::None;
 		phase = commandState::SubGauge;
 	} else if (l_case < 95) {
-		isHyperSearch = true;
 		isInstruction = FourthBossInst::None;
 		limitHp = m_HP * 0.7f;
 		phase = commandState::Ultimate;
@@ -313,7 +309,6 @@ void FourthBoss::SubGaugeUpdate() {
 }
 
 void FourthBoss::UltimateUpdate() {
-	if (isHyperSearch) { return; }
 	if (limitHp >= m_HP && !isShutter && feedTimer == 0.0f) {
 		m_HP = limitHp;
 		phase = commandState::Explosion;
@@ -326,7 +321,6 @@ void FourthBoss::UltimateUpdate() {
 	ActionTimer++;
 
 	if (stage_move_count < stage_move_max) {
-
 		if (ActionTimer >= stage_move * stage_move_count) {
 			if (!isShutter) {
 				ChangePos2Rand();
@@ -345,7 +339,9 @@ void FourthBoss::UltimateUpdate() {
 	}
 	if (ActionTimer >= ActionTimerMax[(size_t)phase] && !isShutter) {
 		isShutter = true;
+		isHyperSearch = true;
 	}
+	if (isHyperSearch) { return; }
 	if (!isShutter) { return; }
 	if (ShutterEffect()) {
 		isInstruction = FourthBossInst::AllSummon;

@@ -19,7 +19,6 @@ void ModelManager::StartInitialize()
 void ModelManager::SecondInitialize()
 {
 	LoadModel(Ground, "ground");
-	LoadModel(Box, "UVSphere");
 	LoadModel(Bullet, "UVSphere");
 	LoadModel(GhostBullet, "voice");
 	LoadModel(BulEnemy, "tri");
@@ -29,6 +28,7 @@ void ModelManager::SecondInitialize()
 	LoadModel(Ghost,"ghost");
 	LoadModel(Buddy,"buddy");
 	LoadModel(MobUsa, "mobusa");
+	LoadModel(Camera, "A&J");
 	LoadModel(Heart, "heart");
 	LoadModel(Pedestal, "dodai");
 	LoadModel(Skydome, "skydome");
@@ -41,6 +41,13 @@ void ModelManager::SecondInitialize()
 	LoadFBXModel(SIORI, "siori_idol");
 	LoadFBXModel(KIDO, "kidokun_idol");
 	LoadFBXModel(TIEYOSHI, "tieyosi_anime");
+	LoadModel(GLASS1, "glass1");
+	LoadModel(GLASS2, "glass2");
+	LoadModel(GLASS3, "glass3");
+	LoadModel(MILKCAP_NORMAL, "milkCap_normal");
+	LoadModel(MILKCAP_BREAK, "milkCap_break");
+	LoadModel(CAP, "cap");
+
 }
 
 void ModelManager::Finalize()

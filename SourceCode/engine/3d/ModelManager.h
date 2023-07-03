@@ -15,7 +15,6 @@ public:
 	//OBJの名前
 	enum ModelName {
 		Ground,
-		Box,
 		Bullet,
 		GhostBullet,
 		BulEnemy,
@@ -25,12 +24,19 @@ public:
 		Ghost,
 		Buddy,
 		MobUsa,
+		Camera,
 		Heart,
 		Pedestal,
 		DJ,
 		Skydome,
 		KIDO_OBJ,
 		CD,
+		GLASS1,
+		GLASS2,
+		GLASS3,
+		MILKCAP_NORMAL,
+		MILKCAP_BREAK,
+		CAP,
 		SKIRT,
 		NOTE
 	};

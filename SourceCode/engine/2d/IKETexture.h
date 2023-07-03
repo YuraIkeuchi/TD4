@@ -45,6 +45,8 @@ public: // サブクラス
 		XMMATRIX mat; // ３Ｄ変換行列
 		bool clips;
 		float Cinter;
+		XMFLOAT2 offset;//オフセット値
+		float Tiling;//タイリング
 	};
 
 private: // 定数
@@ -209,7 +211,10 @@ public: // メンバ関数
 	void SetRotation(const XMFLOAT3& rotation) { this->rotation = rotation; }
 	void SetScale(const XMFLOAT3& scale) { this->scale = scale; }
 	const XMFLOAT3& GetScale() { return scale; }
-
+	//タイリングの設定
+	void SetTiling(float Tiling) { this->Tiling = Tiling; }
+	//オフセットの設定
+	void SetAddOffset(XMFLOAT2 addoffset) { this->addoffset = addoffset; }
 
 	//アフィン変換行列を乗算する
 	void AddMatrix(XMMATRIX matrix)
@@ -270,4 +275,9 @@ private: // メンバ変数
 
 	//親子構造用
 	XMMATRIX matrix = {};
+
+	//オフセット値
+	XMFLOAT2 offset = { 0.0f,0.0f };
+	float Tiling = 1.0f;
+	XMFLOAT2 addoffset = {};
 };

@@ -36,6 +36,7 @@ public:
 	bool GetAlive() { return m_Alive; }
 
 	void SetAlive(const bool Alive) { m_Alive = Alive; }
+	void SetBasePos(const XMFLOAT3& BasePos) { m_BasePos = BasePos; }
 private:
 	unique_ptr<IKESprite> EmiSprite;
 	array<unique_ptr<IKETexture>, STUN_MAX> stuntex;
@@ -53,6 +54,7 @@ private:
 	array<float, STUN_MAX> m_StunCircleX;
 	array<float, STUN_MAX> m_StunCircleZ;
 	array<XMFLOAT3, STUN_MAX> m_StunPos;
+	XMFLOAT3 m_BasePos = {};
 
 	//Œõ‚Ìó‘Ô
 	enum EmiState {

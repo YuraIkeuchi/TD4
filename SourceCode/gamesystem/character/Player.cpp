@@ -219,11 +219,11 @@ void Player::ImGuiDraw() {
 	for (int i = 0; i < attackbullets.size(); i++) {
 		attackbullets[i]->ImGuiDraw();
 	}
-	ImGui::Begin("Player");
-	ImGui::SliderInt("index", &index, 0, 20);
-	ImGui::Text("Charge:%f", m_ChargePower);
-	ImGui::Text("ChargeType:%d", m_ChargeType);
-	ImGui::End();
+	//ImGui::Begin("Player");
+	//ImGui::SliderInt("index", &index, 0, 20);
+	//ImGui::Text("Charge:%f", m_ChargePower);
+	//ImGui::Text("ChargeType:%d", m_ChargeType);
+	//ImGui::End();
 
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)

@@ -52,10 +52,12 @@ float4 bloom(SamplerState smp, float2 uv, float intensity = 50.f)
 }
 float4 main(Output input) : SV_TARGET
 {
+	// テクスチャマッピング
+float2 offsetscroll = float2(offset.x,offset.y);
 	float3 light = normalize(float3(1, -1, 1));
 	float diffuse = saturate(dot(-light, input.normal));
 	float brightness = diffuse + 1.0f;
-	float4 texcolor = float4(tex.Sample(smp, input.uv));
+	float4 texcolor = float4(tex.Sample(smp, input.uv * Tiling + offsetscroll));
 
 	if (clips) {
 		//アンカーポイントできないうちはこれで範囲指定

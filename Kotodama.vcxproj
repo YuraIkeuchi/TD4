@@ -190,8 +190,10 @@
     <ClCompile Include="SourceCode\gamesystem\bossattach\JoyStamp.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\InterCD.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\LineCD.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\bossattach\Poltergeist.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\Predict.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\ShockWave.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\character\AvatarBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\EnemyManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\FirstBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\FiveBoss.cpp" />
@@ -214,6 +216,8 @@
     <ClCompile Include="SourceCode\gamesystem\editor\LoadBox.cpp" />
     <ClCompile Include="SourceCode\gamesystem\editor\LoadManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\editor\LoadStageObj.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\effect\AbsorptionEffect.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\effect\BossStunEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\BreakEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\ConfuEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\InterEffect.cpp" />
@@ -353,8 +357,10 @@
     <ClInclude Include="SourceCode\gamesystem\bossattach\JoyStamp.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\InterCD.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\LineCD.h" />
+    <ClInclude Include="SourceCode\gamesystem\bossattach\Poltergeist.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\Predict.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\ShockWave.h" />
+    <ClInclude Include="SourceCode\gamesystem\character\AvatarBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\EnemyManager.h" />
     <ClInclude Include="SourceCode\gamesystem\character\FirstBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\FiveBoss.h" />
@@ -377,6 +383,8 @@
     <ClInclude Include="SourceCode\gamesystem\editor\LoadBox.h" />
     <ClInclude Include="SourceCode\gamesystem\editor\LoadManager.h" />
     <ClInclude Include="SourceCode\gamesystem\editor\LoadStageObj.h" />
+    <ClInclude Include="SourceCode\gamesystem\effect\AbsorptionEffect.h" />
+    <ClInclude Include="SourceCode\gamesystem\effect\BossStunEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\BreakEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\ConfuEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\InterEffect.h" />

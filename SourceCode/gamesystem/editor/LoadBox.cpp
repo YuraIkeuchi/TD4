@@ -35,11 +35,11 @@ void LoadBox::Load()
 	for (auto i = 0; i < boxes.size(); i++) {
 		if(Name[i]=="Box")
 		{
-			boxes[i]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Box));
+			boxes[i]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Bullet));
 		}
 		else if(Name[i]=="Cube")
 		{
-			boxes[i]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Box));
+			boxes[i]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Bullet));
 		}
 
 		boxes[i]->SetPosition(Pos[i]);
