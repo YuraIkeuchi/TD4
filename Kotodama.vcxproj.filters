@@ -990,9 +990,6 @@
     <ClInclude Include="SourceCode\gamesystem\actor\SixStageActor.h">
       <Filter>gamesystem\actor\Six</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\FiveBoss.h">
-      <Filter>gamesystem\charactor\Boss\Five</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\SevenStage.h">
       <Filter>gamesystem\scene\Play\Seven</Filter>
     </ClInclude>
@@ -1010,6 +1007,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\NormalAttack.h">
       <Filter>gamesystem\charactor\Boss\Five\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\FiveBoss.h">
+      <Filter>gamesystem\charactor\Boss\Five</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -7,6 +7,7 @@
 #include "Collision.h"
 #include "Shake.h"
 #include "ConfuEffect.h"
+#include "NormalAttack.h"
 #include "NoteEffect.h"
 #include "ShotAttack.h"
 
@@ -128,14 +129,17 @@ private:
 	//ˆÚ“®—Í
 	float m_FollowSpeed = {};
 	ShotAttack* shot;
+	NormalAttack* normal;
+
 	static void (FiveBoss::* attackTable[])();
 	enum ActionPhase
 	{
 		MOVE,
 		ATTACK_SHOT,
-		END
-	};
+		ATTACK_NORMAL,
+	}_aPhase=ATTACK_NORMAL;
 	inline void Shot() { shot->Upda(); }
+	inline void Normal() { normal ->Upda(); }
 };
 
 

@@ -15,10 +15,10 @@ public:
 
 	virtual void Draw()=0;
 
-	virtual void SpriteDraw();
+	virtual void SpriteDraw()=0;
 
 public:
-	void SetPlayer(InterBoss* boss);
+	void SetBoss(InterBoss* boss) { this->boss = boss; };
 protected:
 	InterBoss* boss=nullptr;
 
@@ -26,7 +26,7 @@ protected:
 
 	float FollowAngle;
 
-
+	XMFLOAT3 m_Position,m_Rotation;
 protected:
 	void FollowPlayer();
 };

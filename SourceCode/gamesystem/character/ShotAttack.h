@@ -18,9 +18,15 @@ private:
     std::array<std::unique_ptr<IKEObject3d>, BulSize>ShotObj;
 	std::array<std::unique_ptr<IKESprite>, 4>ShotArea;
     std::array<float, 4>AreaAngle={};
+    std::array<XMFLOAT3, BulSize>BulPos;
+    std::array<XMFLOAT3, BulSize>BulRot;
+    std::array<float, BulSize>BulAlpha;
+
+    std::array<XMVECTOR, BulSize>move;
+    std::array<XMMATRIX, BulSize>matRot;
 
     //フェーズ
-    enum class Phase
+    enum Phase
     {
         NON,
         SHOT,
@@ -34,6 +40,9 @@ private:
     void Phase_Shot();
 
     void Phase_End();
+
+
+    void RottoPlayer();
 
 public:
     //Phase GetPhase();

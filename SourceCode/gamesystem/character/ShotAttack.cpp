@@ -1,5 +1,7 @@
 #include "ShotAttack.h"
 
+#include "Player.h"
+
 void ShotAttack::Init()
 {
 	for (auto i = 0; i < BulSize; i++) {
@@ -17,8 +19,18 @@ void (ShotAttack::* ShotAttack::stateTable[])() = {
 
 void ShotAttack::Upda()
 {
+	if (_phase == Phase::NON)_phase = Phase::SHOT;
 	//状態移行(charastateに合わせる)
-	(this->*stateTable[static_cast<int>(_phase)])();
+	(this->*stateTable[_phase])();
+
+	for(auto i=0;i<BulSize;i++)
+	{
+		ShotObj[i]->SetColor({ 1.f,1.f,1.f ,1.f});
+		ShotObj[i]->SetScale({ 1.f,1.f,1.f });
+		ShotObj[i]->SetRotation(BulRot[i]);
+		ShotObj[i]->SetPosition(BulPos[i]);
+		ShotObj[i]->Update();
+	}
 }
 
 void ShotAttack::Draw()
@@ -45,28 +57,71 @@ void ShotAttack::Phase_Idle()
 {
 	for(auto i=0;i<BulSize;i++)
 	{
-		ShotObj[i]->SetPosition(boss->GetPosition());
+		BulPos[i]=(boss->GetPosition());
 		//攻撃カウンタ
-		AttackTimer++;
+		
 	}
+	AttackTimer++;
 	FollowPlayer();
 
 	//次フェーズ
 	bool next = AttackTimer > 120;
 
+	m_Rotation = boss->GetRotation();
 	if (next)_phase = Phase::SHOT;
 }
 
 void ShotAttack::Phase_Shot()
 {
-	
+
+	//m_Rotation.y++;
+//	boss->SetRotation(m_Rotation);
+	//弾の向きをプレイヤーに
+	RottoPlayer();
+	//向いた方向に進む
+	constexpr float SummonSpeed = 2.f;
+
+	for (auto i = 0; i < BulSize; i++)
+	{
+		move[i] = { 0.f,0.f,0.1f,0.f };
+		matRot[i] = XMMatrixRotationY(XMConvertToRadians(boss->GetRotation().y +90+ (static_cast<float>(i * 30.f - 30.f))));
+		move[i] = XMVector3TransformNormal(move[i], matRot[i]);
+
+	}
+	for (auto i = 0; i < BulSize; i++)
+	{
+	//進行スピード
+		BulPos[i] = {
+			BulPos[i].x + move[i].m128_f32[0] * SummonSpeed,
+			BulPos[i].y,
+			BulPos[i].z + move[i].m128_f32[2] * SummonSpeed
+		};
+		//弾を薄く
+		//BulAlpha[i] -= 0.02f;
+	}
+
+	for (auto i = 0; i < BulSize;)
+	{
+		if (BulAlpha[i] == 0.f)i++;
+		else continue;
+
+		
+
+	}
 }
 
 void ShotAttack::Phase_End()
 {
-	
+	AttackTimer = 0;
 }
 
 
+void ShotAttack::RottoPlayer()
+{
+	//FollowPlayer();
+
+	
+	
+}
 
 
