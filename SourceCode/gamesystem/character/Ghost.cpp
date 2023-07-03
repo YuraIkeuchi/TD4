@@ -170,7 +170,7 @@ void Ghost::BirthGhost() {
 	}
 }
 bool Ghost::VerseCheck() {
-	if (isVerse) { return false; }
+	if (!isVerse) { return false; }
 	m_VerseCureTimer--;
 	m_VerseCureTimer = clamp(m_VerseCureTimer, 0,1000);
 	if (m_VerseCureTimer <= 0) {
