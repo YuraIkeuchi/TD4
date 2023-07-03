@@ -7,8 +7,6 @@
 //初期化
 void LoadSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	//オーディオ
-	Audio::GetInstance()->LoadSound(3, "Resources/Sound/BGM/BGM_load.wav");
-	Audio::GetInstance()->LoopWave(3, VolumManager::GetInstance()->GetBGMVolum() + 0.5f);
 	SelectScene::GetIns()->Init();
 
 	Audio::GetInstance()->LoopWave(AUDIO_LOAD, VolumManager::GetInstance()->GetBGMVolum() + 0.5f);
@@ -215,7 +213,7 @@ void LoadSceneActor::MainUpdate(DebugCamera* camera) {
 void LoadSceneActor::FinishUpdate(DebugCamera* camera) {
 	//一定時間でシーンが変わる
 	if (m_LoadTimer >= LoadTimerMax) {
-		//Audio::GetInstance()->StopWave(AUDIO_LOAD);
+		Audio::GetInstance()->StopWave(AUDIO_LOAD);
 		sceneChanger_->ChangeStart();
 		sceneChanger_->ChangeScene(str, SceneChanger::NonReverse);
 		return;
