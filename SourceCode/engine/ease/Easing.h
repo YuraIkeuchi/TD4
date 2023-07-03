@@ -29,3 +29,7 @@ namespace EasingFunction {
 
 //イージングタイプによって動きが変わる
 float Ease(type Type, category Ease, float t, float start, float end);
+
+//フレームの最大と最小(イージングのためのやつ)
+const float m_FrameMax = 1.0f;
+const float m_FrameMin = 0.0f;

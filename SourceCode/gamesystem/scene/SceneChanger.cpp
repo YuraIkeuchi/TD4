@@ -1,7 +1,7 @@
 #include "SceneChanger.h"
 #include "ImageManager.h"
 #include <SceneManager.h>
-
+#include "Helper.h"
 
 SceneChanger::SceneChanger() {
 }

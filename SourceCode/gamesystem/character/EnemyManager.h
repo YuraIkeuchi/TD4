@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include "Player.h"
 #include "FirstBoss.h"
 #include "SecondBoss.h"
 #include "ThirdBoss.h"
@@ -49,11 +48,14 @@ public:
 	void FinishHeart();
 	//ボスの向き
 	void DirSet(int Dir);
+public:
+	void HealHP(const float power);
 public://getter setter
 	//敵関係getで取る
 	InterBoss* GetBoss() { return boss.get(); }
 	const XMFLOAT3& GetEnemyPosition() { return boss.get()->GetPosition(); }
 	const bool GetEnemyCheck() { return boss.get()->GetCheck(); }
+	const bool GetEnemyAbsorption() { return boss.get()->GetAbsorption(); }
 	const bool GetEnemyFinishAppear() { return boss.get()->GetFinishAppear(); }
 
 	const bool GetBirthHeart() { return boss.get()->GetBirthHeart(); }

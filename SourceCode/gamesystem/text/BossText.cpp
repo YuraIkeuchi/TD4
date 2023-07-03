@@ -1,5 +1,7 @@
 #include "BossText.h"
 #include "Helper.h"
+#include "ImageManager.h"
+#include "Easing.h"
 BossText::BossText() {
 	window_ = IKESprite::Create(ImageManager::WINDOW, window_pos);
 	window_->SetAnchorPoint({ 0.5f,0.5f });
@@ -22,6 +24,9 @@ void BossText::SelectText(TextManager::Name_First name, const XMVECTOR& color) {
 
 void BossText::SelectText(TextManager::Name_Fourth name) {
 	text_->SetFourthConversation(name);
+}
+void BossText::SelectText(TextManager::Name_CameraBoss name, const XMVECTOR& color) {
+	text_->SetCameraBossConversation(name);
 }
 void BossText::SpriteDraw(DirectXCommon* dxCommon) {
 	IKESprite::PreDraw();

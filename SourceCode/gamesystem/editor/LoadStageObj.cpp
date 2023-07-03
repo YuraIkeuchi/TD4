@@ -137,6 +137,10 @@ void LoadStageObj::SixUpdate() {
 void LoadStageObj::SevenUpdate() {
 	//更新
 	CommonUpdate();
+	//吸収
+	Absorption();
+	//回復
+	CollideBoss();
 }
 //描画
 void LoadStageObj::Draw(DirectXCommon* dxCommon) {
@@ -159,7 +163,7 @@ void LoadStageObj::Draw(DirectXCommon* dxCommon) {
 //ImGui
 void LoadStageObj::ImGuiDraw() {
 	//ゴースト
-	//ghosts[0]->ImGuiDraw();
+	ghosts[0]->ImGuiDraw();
 	/*ImGui::Begin("Heart");
 	ImGui::Text("m_Division:%f", m_Division);
 	ImGui::End();*/
@@ -334,7 +338,7 @@ void LoadStageObj::LockVerseGhost() {
 		for (auto i = 0; i < ghosts.size(); i++) {
 			if (ghosts[i]->GetIsRefer()) { continue; }
 			//キャラステート変える際に気をつけてください
-			if (ghosts[i]->GetStateInst() >= 3) { continue; }
+			if (ghosts[i]->GetStateInst() >= 2) { continue; }
 			XMFLOAT3 difPos = ghosts[i]->GetPosition();
 			float dif = Helper::GetInstance()->ChechLength(difPos, boss->GetPosition());
 			if (boss->GetLimit() > dif) {
@@ -439,5 +443,39 @@ void LoadStageObj::SubHunger() {
 			m_SubHunger = false;
 		}
 		HungerGauge::GetInstance()->SetNowHunger(Ease(In, Cubic, m_Frame, HungerGauge::GetInstance()->GetNowHunger(), m_LimitHunger));
+	}
+}
+//ゴーストの吸収
+void LoadStageObj::Absorption() {
+	for (auto i = 0; i < ghosts.size(); ++i) {
+		if (ghosts[i]->GetVanish()) { continue; }
+		if (!ghosts[i]->GetAlive()) { continue; }
+		if (ghosts[i]->GetCatch()) { continue; }
+		if (ghosts[i]->GetFollow()) { continue; }
+
+		if (m_EnemyManager->GetEnemyAbsorption()) {
+			ghosts[i]->SetTargetPos(m_EnemyManager->GetEnemyPosition());
+			ghosts[i]->SetAbsorption(true);
+		}
+		else {
+			ghosts[i]->SetRotation({ ghosts[i]->GetRotation().x,-90.0f,ghosts[i]->GetRotation().z });
+			ghosts[i]->SetAbsorption(false);
+		}
+	}
+}
+void LoadStageObj::CollideBoss() {
+	float l_Radius = 6.0f;
+	for (auto i = 0; i < ghosts.size(); ++i) {
+		if (ghosts[i]->GetVanish()) { continue; }
+		if (!ghosts[i]->GetAlive()) { continue; }
+		if (ghosts[i]->GetCatch()) { continue; }
+		if (ghosts[i]->GetFollow()) { continue; }
+		if (!ghosts[i]->GetAbsorption()) { continue; }
+		XMFLOAT3 l_ghostpos = ghosts[i]->GetPosition();
+		float l_dir = Helper::GetInstance()->ChechLength(l_ghostpos, m_EnemyManager->GetEnemyPosition());
+		if (l_dir < l_Radius) {
+			ghosts[i]->SetVanish(true);
+			m_EnemyManager->HealHP(0.5f);
+		}
 	}
 }

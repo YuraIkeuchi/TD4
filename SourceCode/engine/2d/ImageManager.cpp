@@ -82,6 +82,7 @@ void ImageManager::SecondLoadTex2D()
 	IKETexture::LoadTexture(JOY, L"Resources/2d/objicon/JoyStamp.png");
 	IKETexture::LoadTexture(MARK, L"Resources/2d/objicon/box.png");
 	IKETexture::LoadTexture(DAMAGEAREA, L"Resources/2d/effect/DArea.png");
+	IKETexture::LoadTexture(DAMAGEAREA2, L"Resources/2d/effect/DArea2.png");
 	IKETexture::LoadTexture(GROUND, L"Resources/2d/SceneBack/Ground.png");
 	IKETexture::LoadTexture(PHOTOSPOT, L"Resources/2d/effect/PhotoSpot.png");
 
@@ -96,6 +97,7 @@ void ImageManager::SecondLoadTex2D()
 //	IKETexture::LoadTexture(PHOTOSPOT, L"Resources/2d/objicon/sixboss.png");
 
 	IKETexture::LoadTexture(STUN, L"Resources/2d/effect/stun.png");
+	IKETexture::LoadTexture(CATCH, L"Resources/2d/effect/effect1.png");
 
 }
 
@@ -105,5 +107,4 @@ void ImageManager::LoadParticle()
 	ParticleManager::LoadTexture(Smoke, "hootEffect.png");
 	ParticleManager::LoadTexture(Heal, "effect2.png");
 	ParticleManager::LoadTexture(Photo, "PhotoSpot.jpg");
-
 }

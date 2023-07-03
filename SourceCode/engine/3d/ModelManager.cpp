@@ -1,4 +1,4 @@
-#include"ModelManager.h"
+ï»¿#include"ModelManager.h"
 #include "IKEFbxLoader.h"
 
 std::map<ModelManager::ModelName, IKEModel*> ModelManager::model;
@@ -10,16 +10,15 @@ ModelManager* ModelManager::GetInstance()
 	return &instans;
 }
 
-//ƒ‚ƒfƒ‹“Ç‚İ‚İ(Å‰‚©‚ç“Ç‚İ‚Ş‚à‚Ì)
+//ãƒ¢ãƒ‡ãƒ«èª­ã¿è¾¼ã¿(æœ€åˆã‹ã‚‰èª­ã¿è¾¼ã‚€ã‚‚ã®)
 void ModelManager::StartInitialize()
 {
 }
 
-//ƒ‚ƒfƒ‹“Ç‚İ‚İ(”ñ“¯Šúˆ—‚Å“Ç‚İ‚Ş‚à‚Ì)
+//ãƒ¢ãƒ‡ãƒ«èª­ã¿è¾¼ã¿(éåŒæœŸå‡¦ç†ã§èª­ã¿è¾¼ã‚€ã‚‚ã®)
 void ModelManager::SecondInitialize()
 {
 	LoadModel(Ground, "ground");
-	LoadModel(Box, "UVSphere");
 	LoadModel(Bullet, "UVSphere");
 	LoadModel(GhostBullet, "voice");
 	LoadModel(BulEnemy, "tri");
@@ -36,6 +35,8 @@ void ModelManager::SecondInitialize()
 	LoadFBXModel(PLAYER, "kotoko");
 	LoadModel(DJ, "DJ");
 	LoadModel(CD, "CD");
+	LoadModel(SKIRT, "skirt");
+	LoadModel(NOTE, "NOTE");
 	LoadFBXModel(SIORI, "siori_idol");
 	LoadFBXModel(KIDO, "kidokun_idol");
 	LoadFBXModel(TIEYOSHI, "tieyosi_anime");

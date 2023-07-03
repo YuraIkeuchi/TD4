@@ -1,12 +1,11 @@
 ﻿#include "SecondBoss.h"
 #include <any>
 #include <random>
-
 #include "Collision.h"
 #include "CsvLoader.h"
 #include "ImageManager.h"
-#include "Shake.h"
-#include "Player.h"
+#include "Helper.h"
+#include "Easing.h"
 //生成
 SecondBoss::SecondBoss() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Tyuta);

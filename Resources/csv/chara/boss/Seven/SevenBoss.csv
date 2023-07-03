@@ -9,7 +9,7 @@ ChoiceInterVal,40
 //弾の生存時間
 Timer,300
 //移動の速さ
-Speed,0.6
+Speed,5.0
 //ダメージ線が消えるまでの時間
 LineLimit,400
 

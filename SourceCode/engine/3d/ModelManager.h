@@ -15,7 +15,6 @@ public:
 	//OBJの名前
 	enum ModelName {
 		Ground,
-		Box,
 		Bullet,
 		GhostBullet,
 		BulEnemy,
@@ -37,6 +36,8 @@ public:
 		MILKCAP_NORMAL,
 		MILKCAP_BREAK,
 		CAP,
+		SKIRT,
+		NOTE
 	};
 	//FBXの名前
 	enum FBXName {

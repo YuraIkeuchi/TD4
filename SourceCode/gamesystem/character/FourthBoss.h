@@ -2,7 +2,6 @@
 #include "IKESprite.h"
 #include "InterBoss.h"
 #include "Shake.h"
-#include "Player.h"
 #include "IKETexture.h"
 #include "TutorialEnemy.h"
 
@@ -19,7 +18,7 @@ public:
 
 	void Action() override;//行動
 
-	void AppearAction() override {};//ボス登場の固有の処理
+	void AppearAction() override;//ボス登場の固有の処理
 
 	void DeadAction() override {};//ボス撃破の固有の処理
 
@@ -38,6 +37,7 @@ private:
 		EnemySpawn,
 		SubGauge,
 		Ultimate,
+		Explosion,
 		COMMANDMAX
 	};
 	void SelectAction();
@@ -51,6 +51,7 @@ private:
 	void EnemySpawnUpdate();
 	void SubGaugeUpdate();
 	void UltimateUpdate();
+	void ExplosionUpdate();
 
 	bool ShutterEffect();
 	bool ShutterFeed();
@@ -58,6 +59,8 @@ private:
 
 	bool EnemysIsActiveCheck();
 	void ChangePos2Random();
+	void ChangePos2Rand();
+
 	bool IsPinch();
 private:
 	static const int kPhotoSpotMax = 5;
@@ -85,6 +88,13 @@ private:
 	int nowSpawn = 0;
 	commandState phase = commandState::WaitCommand;
 
+
+	float limitHp = 0.0f;
+
+	int stage_move = 0;
+	int stage_move_count = 1;
+	int stage_move_max = 4;
+
 	bool isShutter = false;
 	float shutterTime = 0.0f;
 	float feedTimer = 0.0f;
@@ -105,7 +115,7 @@ private:
 		100,
 		100,
 		60,
-		250
+		700
 	};
 
 	float shutterTimeMax = 40.0f;

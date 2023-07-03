@@ -1,14 +1,11 @@
 #include "SevenStageActor.h"
-#include "Audio.h"
 #include"Easing.h"
-#include "SceneManager.h"
-#include "imgui.h"
 #include "ParticleEmitter.h"
 #include "ImageManager.h"
-#include <algorithm>
 #include "BackObj.h"
 #include "Menu.h"
 #include "SelectScene.h"
+#include "Helper.h"
 //‰Šú‰»
 void SevenStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	dxCommon->SetFullScreen(true);
@@ -217,10 +214,9 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGui‚Ì•`‰æ
 void SevenStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	/*ImGui::Begin("Seven");
-	ImGui::Text("Timer:%d", m_AppTimer);
-	ImGui::End();*/
+	enemymanager->ImGuiDraw();
 	Player::GetInstance()->ImGuiDraw();
+	//loadobj->ImGuiDraw();
 }
 //“oêƒV[ƒ“
 void SevenStageActor::IntroUpdate(DebugCamera* camera) {

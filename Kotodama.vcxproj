@@ -109,6 +109,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DarkBullet.cpp" />
     <ClCompile Include="SourceCode\engine\2d\DebugText.cpp" />
     <ClCompile Include="SourceCode\engine\2d\Feed.cpp" />
     <ClCompile Include="SourceCode\engine\2d\Font.cpp" />
@@ -189,8 +190,10 @@
     <ClCompile Include="SourceCode\gamesystem\bossattach\JoyStamp.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\InterCD.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\LineCD.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\bossattach\Poltergeist.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\Predict.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\ShockWave.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\character\AvatarBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\EnemyManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\FirstBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\FiveBoss.cpp" />
@@ -210,6 +213,8 @@
     <ClCompile Include="SourceCode\gamesystem\editor\LoadBox.cpp" />
     <ClCompile Include="SourceCode\gamesystem\editor\LoadManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\editor\LoadStageObj.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\effect\AbsorptionEffect.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\effect\BossStunEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\BreakEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\ConfuEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\InterEffect.cpp" />
@@ -241,6 +246,7 @@
     <ClCompile Include="SourceCode\gamesystem\scene\SceneSave.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\SecondStage.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\SelectStageScene.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\scene\SixScene.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\SevenStage.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\SixStage.cpp" />
     <ClCompile Include="SourceCode\gamesystem\scene\ThirdStage.cpp" />
@@ -260,6 +266,7 @@
     <ClCompile Include="SourceCode\gamesystem\ui\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DarkBullet.h" />
     <ClInclude Include="SourceCode\engine\2d\DebugText.h" />
     <ClInclude Include="SourceCode\engine\2d\Feed.h" />
     <ClInclude Include="SourceCode\engine\2d\Font.h" />
@@ -347,8 +354,10 @@
     <ClInclude Include="SourceCode\gamesystem\bossattach\JoyStamp.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\InterCD.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\LineCD.h" />
+    <ClInclude Include="SourceCode\gamesystem\bossattach\Poltergeist.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\Predict.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\ShockWave.h" />
+    <ClInclude Include="SourceCode\gamesystem\character\AvatarBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\EnemyManager.h" />
     <ClInclude Include="SourceCode\gamesystem\character\FirstBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\FiveBoss.h" />
@@ -368,6 +377,8 @@
     <ClInclude Include="SourceCode\gamesystem\editor\LoadBox.h" />
     <ClInclude Include="SourceCode\gamesystem\editor\LoadManager.h" />
     <ClInclude Include="SourceCode\gamesystem\editor\LoadStageObj.h" />
+    <ClInclude Include="SourceCode\gamesystem\effect\AbsorptionEffect.h" />
+    <ClInclude Include="SourceCode\gamesystem\effect\BossStunEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\BreakEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\ConfuEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\InterEffect.h" />
@@ -388,7 +399,6 @@
     <ClInclude Include="SourceCode\gamesystem\scene\FiveStage.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\FourthStage.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\Framework.h" />
-    <ClInclude Include="SourceCode\gamesystem\scene\GameoverScene.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\IkeGame.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\IntroductionScene.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\LoadScene.h" />
@@ -399,6 +409,7 @@
     <ClInclude Include="SourceCode\gamesystem\scene\SceneSave.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\SecondStage.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\SelectStageScene.h" />
+    <ClInclude Include="SourceCode\gamesystem\scene\SixScene.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\SevenStage.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\SixStage.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\ThirdStage.h" />

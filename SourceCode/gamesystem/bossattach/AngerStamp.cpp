@@ -1,10 +1,10 @@
 #include "AngerStamp.h"
-#include "VariableCommon.h"
+#include "Easing.h"
 #include "ImageManager.h"
-#include "Collision.h"
 #include <random>
 #include "Player.h"
 #include "CsvLoader.h"
+#include "Collision.h"
 AngerStamp::AngerStamp() {
 	
 }

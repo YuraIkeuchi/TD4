@@ -904,7 +904,8 @@ void IKETexture::Update()
 	UpdateWorldMatrix();
 	const XMMATRIX& matViewProjection = camera->GetViewProjectionMatrix();
 	const XMFLOAT3& cameraPos = camera->GetEye();
-
+	offset.x += addoffset.x;
+	offset.y += addoffset.y;
 	// 定数バッファへデータ転送
 	ConstBufferData* constMap = nullptr;
 	result = constBuff->Map(0, nullptr, (void**)&constMap);
@@ -912,6 +913,8 @@ void IKETexture::Update()
 	constMap->mat = matWorld * matViewProjection; // 行列の合成
 	constMap->clips = ClipF;
 	constMap->Cinter = CenterPos;
+	constMap->offset = offset;
+	constMap->Tiling = Tiling;
 	constBuff->Unmap(0, nullptr);
 }
 

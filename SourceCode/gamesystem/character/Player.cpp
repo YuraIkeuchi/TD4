@@ -1,11 +1,10 @@
 ﻿#include "Player.h"
 #include "CsvLoader.h"
 #include "Helper.h"
-#include "VariableCommon.h"
 #include "HungerGauge.h"
-#include "Collision.h"
 #include "Input.h"
 #include "Easing.h"
+#include "Collision.h"
 Player* Player::GetInstance()
 {
 	static Player instance;
@@ -30,6 +29,15 @@ bool Player::Initialize()
 
 	playerattach.reset(new PlayerAttach());
 	playerattach->Initialize();
+
+	skirtobj.reset(new IKEObject3d());
+	skirtobj->Initialize();
+	skirtobj->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::SKIRT));
+
+	//11
+	skirtobj->SetRotation({ 0,0,90});
+	skirtobj->SetScale({2,2,2 });
+
 	LoadCSV();
 	//CSV読み込み
 	return true;
@@ -73,7 +81,8 @@ void Player::InitState(const XMFLOAT3& pos) {
 	//大きさ
 	m_ChargePower = {};
 	m_ChargeType = POWER_NONE;
-	m_Scale = { 1.f,0.5f,1.f };
+	m_Position.y = 0.f;
+	m_Scale = { 1.2f,0.8f,1.2f };
 }
 //状態遷移
 /*CharaStateのState並び順に合わせる*/
@@ -121,6 +130,8 @@ void Player::Update()
 	//状態移行(charastateに合わせる)
 	(this->*stateTable[_charaState])();
 
+	m_fbxObject->GetBoneIndexMat(index, skirtmat);
+	skirtobj->FollowUpdate(skirtmat);
 	//Stateに入れなくていいやつ
 	//攻撃のインターバル
 	InterVal();
@@ -186,6 +197,9 @@ void Player::Draw(DirectXCommon* dxCommon)
 	//弾の描画
 	BulletDraw(ghostbullets, dxCommon);
 	BulletDraw(attackbullets, dxCommon);
+	IKEObject3d::PreDraw();
+	skirtobj->Draw();
+	IKEObject3d::PostDraw();
 }
 //弾の描画
 void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxCommon) {
@@ -200,6 +214,16 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 //ImGui
 void Player::ImGuiDraw() {
 	HungerGauge::GetInstance()->ImGuiDraw();
+
+	for (int i = 0; i < attackbullets.size(); i++) {
+		attackbullets[i]->ImGuiDraw();
+	}
+	//ImGui::Begin("Player");
+	//ImGui::SliderInt("index", &index, 0, 20);
+	//ImGui::Text("Charge:%f", m_ChargePower);
+	//ImGui::Text("ChargeType:%d", m_ChargeType);
+	//ImGui::End();
+
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
@@ -264,7 +288,7 @@ void Player::Walk()
 	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
 	move = XMVector3TransformNormal(move, matRot);
 	//向いた方向に進む
-	if (m_RigidityTime == m_ResetNumber) {
+	if (m_RigidityTime == 0) {
 		//混乱していると逆状態になる
 		if (!m_Confu) {
 			m_Position.x += move.m128_f32[0] * m_AddSpeed;
@@ -372,30 +396,32 @@ void Player::Bullet_Management() {
 		}
 
 		//チャージ中に飢餓ゲージが切れた場合弾が自動で放たれる
-		if ((HungerGauge::GetInstance()->GetNowHunger() == 0.0f && m_ChargePower != 0.0f) || (m_ChargePower > HungerGauge::GetInstance()->GetNowHunger())) {
-			if (m_ChargeType < POWER_STRONG) {
-				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
-			}
-			else {
-				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Charge.wav", VolumManager::GetInstance()->GetSEVolum());
-			}
-			BirthShot("Attack", true);
-			playerattach->SetAlive(true);
-			//減る飢餓ゲージ量を決める
-			if (m_ChargeType != POWER_NONE) {
-				if (m_ChargeType == POWER_MIDDLE) {
-					m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_NONE];
+		if (m_ChargePower != 0.0f) {
+			if ((HungerGauge::GetInstance()->GetNowHunger() == 0.0f) || (m_ChargePower > HungerGauge::GetInstance()->GetNowHunger())) {
+				if (m_ChargeType < POWER_STRONG) {
+					Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
 				}
-				else if (m_ChargeType == POWER_STRONG) {
-					m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_MIDDLE];
+				else {
+					Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Charge.wav", VolumManager::GetInstance()->GetSEVolum());
 				}
-				else if (m_ChargeType == POWER_UNLIMITED) {
-					m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_STRONG];
+				BirthShot("Attack", true);
+				playerattach->SetAlive(true);
+				//減る飢餓ゲージ量を決める
+				if (m_ChargeType != POWER_NONE) {
+					if (m_ChargeType == POWER_MIDDLE) {
+						m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_NONE];
+					}
+					else if (m_ChargeType == POWER_STRONG) {
+						m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_MIDDLE];
+					}
+					else if (m_ChargeType == POWER_UNLIMITED) {
+						m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_STRONG];
+					}
+					m_Frame = {};
+					m_SubHunger = true;
 				}
-				m_Frame = {};
-				m_SubHunger = true;
+				ResetBullet();
 			}
-			ResetBullet();
 		}
 
 		if (!Input::GetInstance()->PushButton(Input::B) && m_ChargePower != 0.0f) {

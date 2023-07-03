@@ -1,7 +1,14 @@
 #pragma once
 #include "IKETexture.h"
-#include "Player.h"
 class Predict {
+private:
+	// DirectX::Çè»ó™
+	using XMFLOAT2 = DirectX::XMFLOAT2;
+	using XMFLOAT3 = DirectX::XMFLOAT3;
+	using XMFLOAT4 = DirectX::XMFLOAT4;
+	using XMVECTOR = DirectX::XMVECTOR;
+	using XMMATRIX = DirectX::XMMATRIX;
+
 public:
 	void Initialize(const XMFLOAT3& pos);
 	void Update();

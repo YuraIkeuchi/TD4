@@ -1,9 +1,10 @@
 #include "Ghost.h"
-#include "VariableCommon.h"
 #include "Collision.h"
-#include "HungerGauge.h"
+#include "Easing.h"
 #include <random>
 #include "Player.h"
+#include "HungerGauge.h"
+#include "Helper.h"
 Ghost::Ghost() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Ghost);
 	model_follow.reset(ModelManager::GetInstance()->GetModel(ModelManager::Buddy));
@@ -73,10 +74,8 @@ void Ghost::Draw(DirectXCommon* dxCommon) {
 //ImGui•`‰æ
 void Ghost::ImGuiDraw() {
 	ImGui::Begin("Ghost");
-	ImGui::Text("ColorR:%f", m_Color.x);
-	ImGui::Text("ColorG:%f", m_Color.y);
-	ImGui::Text("ColorB:%f", m_Color.z);
-	ImGui::Text("ColorW:%f", m_Color.w);
+	ImGui::Text("Abso:%d", m_Absorption);
+	ImGui::Text("PosZ:%f", m_Position.z);
 	ImGui::End();
 }
 
@@ -159,6 +158,7 @@ void Ghost::BirthGhost() {
 		m_Catch = false;
 		m_Search = false;
 		m_Follow = false;
+		m_Absorption = false;
 		m_SearchTimer = 0;
 		m_SpawnTimer = 0;
 	}
@@ -185,10 +185,14 @@ void Ghost::None() {
 	//•‚—Vó‘Ô
 	noneTimer += 0.05f;
 	float size = sinf(noneTimer) * 0.05f;
-	m_Position.x += cosf(m_Rotation.y * (PI_180 / XM_PI)) * size;
-	m_Position.y = sinf(noneTimer) * 1.2f;
-	m_Position.z += sinf(m_Rotation.y * (PI_180 / XM_PI)) * size;
-
+	if (!m_Absorption) {
+		m_Position.x += cosf(m_Rotation.y * (PI_180 / XM_PI)) * size;
+		m_Position.y = sinf(noneTimer) * 1.2f;
+		m_Position.z += sinf(m_Rotation.y * (PI_180 / XM_PI)) * size;
+	}
+	else {
+		Absorption();
+	}
 }
 //¶‚Ü‚ê‚éó‘Ô
 void Ghost::Spawm() {
@@ -398,4 +402,10 @@ void Ghost::GetRotation2Player() {
 
 	RottoPlayer = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
 	m_Rotation.y = RottoPlayer * 60.0f + (PI_90 + PI_180);
+}
+//‹zŽû
+void Ghost::Absorption() {
+	float l_Vel = 0.35f;//‘¬“x
+	Helper::GetInstance()->FollowMove(m_Position,m_TargetPos, l_Vel);
+	m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, m_TargetPos, -PI_90);
 }

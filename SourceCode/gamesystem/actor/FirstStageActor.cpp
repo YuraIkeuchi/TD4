@@ -1,14 +1,11 @@
 ﻿#include "FirstStageActor.h"
-#include "Audio.h"
 #include"Easing.h"
-#include "SceneManager.h"
-#include "imgui.h"
 #include "ParticleEmitter.h"
 #include "ImageManager.h"
 #include <algorithm>
 #include "BackObj.h"
 #include "Menu.h"
-
+#include "Helper.h"
 void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
 	dxCommon->SetFullScreen(true);
@@ -128,9 +125,9 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon)
 	ParticleEmitter::GetInstance()->DeathDrawAll();
 	//完全に前に書くスプライト
 	IKESprite::PreDraw();
-	if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd()) {
+	//if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd()) {
 		ui->Draw();
-	}
+	//}
 	if (m_SceneState == SceneState::IntroState) {
 		if ((camerawork->GetAppearType() == APPEAR_SEVEN) || (camerawork->GetAppearType() == APPEAR_EIGHT)) {
 			text_->SpriteDraw(dxCommon);
@@ -265,8 +262,6 @@ void FirstStageActor::MainUpdate(DebugCamera* camera)
 
 	//各クラス更新
 	BackObj::GetInstance()->Update();
-
-
 	enemymanager->BattleUpdate();
 	loadobj->FirstUpdate();
 	ParticleEmitter::GetInstance()->Update();

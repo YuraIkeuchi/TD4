@@ -43,14 +43,15 @@ public:
 	const bool& GetAlive() { return m_Alive; }
 	const int& GetBulletType() { return m_BulletType; }
 	const int& GetPowerState() { return m_PowerState; }
-	const float& GetPower() { return m_Power; }
+	const float& GetPower() { return m_DamagePower; }
 
 	void SetAlive(const bool Alive) { m_Alive = Alive; }
 	void SetAngle(const XMFLOAT2& Angle) { m_Angle = Angle; }
 	void SetBulletType(const int BulletType) { m_BulletType = BulletType; }
 	void SetPowerState(const int PowerState) { m_PowerState = PowerState; }
 	void SetCharge(const bool Charge) { m_Charge = Charge; }
-
+	void SetBossCatch(const bool BossCatch) { m_BossCatch = BossCatch; }
+	void SetTargetPos(const XMFLOAT3& TargetPos) { m_TargetPos = TargetPos; }
 public:
 
 	XMFLOAT2 m_Angle = {};//弾の角度
@@ -63,4 +64,9 @@ public:
 
 	int m_PowerState = POWER_NONE;
 	float m_Power = {};//ダメージ量
+	float m_DamagePower = {};
+
+	//ボスが弾をキャッチしたか
+	bool m_BossCatch = false;
+	XMFLOAT3 m_TargetPos = {};
 };

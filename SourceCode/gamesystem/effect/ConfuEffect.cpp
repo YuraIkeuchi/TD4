@@ -1,8 +1,8 @@
 #include "ConfuEffect.h"
 #include "ImageManager.h"
-#include "VariableCommon.h"
 #include "Easing.h"
 #include "Player.h"
+#include "Helper.h"
 #define WindowW 1920
 #define WindowH 1020
 //“Ç‚İ‚İ
@@ -22,7 +22,7 @@ ConfuEffect::ConfuEffect() {
 //‰Šú‰»
 void ConfuEffect::Initialize() {
 	for (int i = 0; i < stuntex.size(); i++) {
-		m_Stunscale[i] = 2.0f;
+		m_Stunscale[i] = 4.0f;
 		m_StunSpeed[i] = i * 90.0f;
 		m_StunCircleX[i] = {};
 		m_StunCircleZ[i] = {};
@@ -55,10 +55,6 @@ void ConfuEffect::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui
 void ConfuEffect::ImGuiDraw() {
-	ImGui::Begin("Confu");
-	ImGui::Text("Alpha:%f", m_Alpha);
-	ImGui::Text("Speed:%f", m_StunSpeed[0]);
-	ImGui::End();
 }
 //ˆêu‚Ì”­Œõ
 void ConfuEffect::Emission() {
@@ -101,9 +97,9 @@ void ConfuEffect::StunEffect() {
 		m_Stunradius[i] = m_StunSpeed[i] * PI / 180.0f;
 		m_StunCircleX[i] = cosf(m_Stunradius[i]) * m_Stunscale[i];
 		m_StunCircleZ[i] = sinf(m_Stunradius[i]) * m_Stunscale[i];
-		m_StunPos[i].x = m_StunCircleX[i] + Player::GetInstance()->GetPosition().x;
-		m_StunPos[i].z = m_StunCircleZ[i] + Player::GetInstance()->GetPosition().z;
-		m_StunPos[i].y = Player::GetInstance()->GetPosition().y + 5.0f;
+		m_StunPos[i].x = m_StunCircleX[i] + m_BasePos.x;
+		m_StunPos[i].z = m_StunCircleZ[i] + m_BasePos.z;
+		m_StunPos[i].y = m_BasePos.y + 7.0f;
 		stuntex[i]->SetPosition(m_StunPos[i]);
 		stuntex[i]->Update();
 		stuntex[i]->SetIsBillboard(true);

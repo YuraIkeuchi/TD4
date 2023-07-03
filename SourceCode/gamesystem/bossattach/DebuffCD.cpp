@@ -36,10 +36,7 @@ void DebuffCD::Origin_Draw(DirectXCommon* dxCommon) {
 }
 //ImGui
 void DebuffCD::ImGui_Origin() {
-	ImGui::Begin("DEBUFFCD");
-	ImGui::Text("m_DeathTimer:%d", m_DeathTimer);
-	ImGui::Text("m_BoundCount:%d", m_BoundCount);
-	ImGui::End();
+
 }
 
 //ê∂ê¨

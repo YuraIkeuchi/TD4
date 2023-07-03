@@ -1,7 +1,6 @@
 #pragma once
 #include "ObjCommon.h"
 #include "InterBullet.h"
-#include "Collision.h"
 #include "CollisionPrimitive.h"
 //ゴーストクラス
 class Ghost :
@@ -48,6 +47,8 @@ private://ステート
 	static void (Ghost::* stateTable[])();
 	//何もない状態
 	void None();
+	//吸収
+	void Absorption();
 	//生まれる状態
 	void Spawm();
 	//追従
@@ -74,19 +75,25 @@ public://getter setter
 	const bool& GetCatch() { return m_Catch; }
 	const bool& GetVanish() { return m_Vanish; }
 	const bool& GetFollow() { return m_Follow; }
+	const bool& GetAbsorption() { return m_Absorption; }
 	const bool& GetSearch() { return m_Search; }
 	const bool& GetIsVerse() { return isVerse; }
 	const bool& GetIsPostionCheck() { return m_IsPostionCheck; }
 	const float& GetLimit() { return m_Limit; }
 	const int GetStateInst() { return (int)_charaState; }
+	const XMFLOAT3& GetTargetPos() { return m_TargetPos; }
+
 	void SetIsRefer(const bool isRefer) { this->m_IsRefer = isRefer; }
 	void SetIsHyperRefer(const bool isRefer) { this->m_IsHyperRefer = isRefer; }
 
 	void SetIsVerse(const bool isVerse, int verseCureTimer = 0) { this->isVerse = isVerse; m_VerseCureTimer = verseCureTimer; }
 	void SetCatch(const bool Catch) { m_Catch = Catch; }
+	void SetAbsorption(const bool Absorption) { m_Absorption = Absorption; }
 	void SetVanish(const bool Vanish) { m_Vanish = Vanish; }
 	void SetIsPostionCheck(const bool m_IsPostionCheck) { this->m_IsPostionCheck = m_IsPostionCheck; }
 	void SetIsAllPostionCheck(const bool m_IsPostionCheck) { this->m_IsAllPostionCheck = m_IsPostionCheck; }
+
+	void SetTargetPos(const XMFLOAT3& TargetPos) { m_TargetPos = TargetPos; }
 	void SetLimit(const float Limit) { m_Limit = Limit; }
 private:
 	bool m_Alive = true;//生存フラグ
@@ -160,6 +167,9 @@ private://探索
 	//消える
 	bool m_Vanish = false;
 	float m_Frame = 0.0f;
+
+	bool m_Absorption = false;
+	XMFLOAT3 m_TargetPos = {};
 private:
 	//探索するものの範囲
 	float m_Limit = {};
