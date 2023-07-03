@@ -164,9 +164,10 @@ void LoadStageObj::Draw(DirectXCommon* dxCommon) {
 void LoadStageObj::ImGuiDraw() {
 	//ゴースト
 	ghosts[0]->ImGuiDraw();
-	/*ImGui::Begin("Heart");
-	ImGui::Text("m_Division:%f", m_Division);
-	ImGui::End();*/
+	ImGui::Begin("Heart");
+	int num = GetGhostNumber();
+	ImGui::Text("GetGhostNumber():%d", num);
+	ImGui::End();
 	//m_EnemyManager->ImGuiDraw();
 }
 //当たり判定(ゴースト)
@@ -334,8 +335,10 @@ void LoadStageObj::LockVerseGhost() {
 	}
 	int  nowStopGhorst = 0;
 	while (nowStopGhorst < kStopGhorstMax) {
-		if (boss->GetLimit() > 80.0f) {
+		if (boss->GetLimit() > 150.0f) {
 			boss->SetIsMiss(true);
+			boss->SetLimit(20.0f);
+			ReferGhorstReseted();
 			break;
 		}
 		for (auto i = 0; i < ghosts.size(); i++) {
@@ -376,6 +379,8 @@ void LoadStageObj::LockAllGhost() {
 
 void LoadStageObj::ReferGhorstReseted() {
 	for (Ghost*& ghost : stopGhosts) {
+		if (!ghost) { continue; }
+		if (ghost->GetStateInst()==4) { continue; }
 		ghost->SetIsRefer(false);
 	}
 }
@@ -414,9 +419,10 @@ void LoadStageObj::ChangeGhost2Enemy() {
 	int m_GhostPos = 0;
 	for (int i = 0; i < kStopGhorstMax; i++) {
 		if (!stopGhosts[i]) { continue; }
-		stopGhosts[i]->SetColor({ 1,0,1,1 });
-		stopGhosts[i]->SetIsVerse(false, 80);
+		if (!stopGhosts[i]->GetIsRefer()) { continue; }
+		stopGhosts[i]->SetColor({ 0,0,0,1 });
 		stopGhosts[i]->SetVanish(true);
+		stopGhosts[i]->SetIsVerse(false, 80);
 		boss->SetJackPos(m_GhostPos, stopGhosts[i]->GetPosition());
 		m_GhostPos++;
 	}
@@ -428,7 +434,7 @@ void LoadStageObj::ChangeGhost2Hyper() {
 	if (boss->GetInstruction() != InterBoss::FourthBossInst::AllSummon) { return; }
 	for (Ghost*& ghost : stopGhosts) {
 		if (!ghost) { continue; }
-		ghost->SetColor({ 1,1,0,1 });
+		ghost->SetColor({ 0,0,0,1 });
 		ghost->SetIsAllPostionCheck(true);
 	}
 	boss->SetInstruction(InterBoss::FourthBossInst::FinishMove);
@@ -453,6 +459,17 @@ void LoadStageObj::SubHunger() {
 		}
 		HungerGauge::GetInstance()->SetNowHunger(Ease(In, Cubic, m_Frame, HungerGauge::GetInstance()->GetNowHunger(), m_LimitHunger));
 	}
+}
+int LoadStageObj::GetGhostNumber() {
+	int num = 0;
+	for (auto i = 0; i < ghosts.size(); i++) {
+		if (!ghosts[i]) { continue; }
+		if (!ghosts[i]->GetAlive()) { continue; }
+		if (ghosts[i]->GetIsRefer()) { continue; }
+		if (ghosts[i]->GetStateInst()>=2) { continue; }
+		num++;
+	}
+	return num;
 }
 //ゴーストの吸収
 void LoadStageObj::Absorption() {

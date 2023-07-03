@@ -59,7 +59,7 @@ bool FourthBoss::Initialize() {
 	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "HeartTarget")));
 	shutterTimeMax = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "shutterTime")));
 	feedTimeMax = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "feedTime")));
-	ActionTimerMax[(size_t)commandState::WaitCommand]=static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Wait")));
+	ActionTimerMax[(size_t)commandState::WaitCommand] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Wait")));
 	ActionTimerMax[(size_t)commandState::MoveCommand] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Move")));
 	ActionTimerMax[(size_t)commandState::ControlCommand] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Control")));
 	ActionTimerMax[(size_t)commandState::EnemySpawn] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "EnemySpawn")));
@@ -112,6 +112,8 @@ void FourthBoss::Pause() {
 
 void FourthBoss::ImGui_Origin() {
 	ImGui::Begin("BOSS");
+	ImGui::SliderInt("AI-Pattern", &cases, 0, 100);
+	ImGui::Text("isMiss %s", (isMiss ? "true" : "false"));
 	ImGui::SliderInt("Action", &ActionTimer, 0, 1000);
 	switch (phase) {
 	case FourthBoss::commandState::WaitCommand:
@@ -140,6 +142,8 @@ void FourthBoss::ImGui_Origin() {
 		assert(0);
 		break;
 	}
+
+
 	ImGui::End();
 }
 
@@ -172,6 +176,7 @@ void FourthBoss::SelectAction() {
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> l_RandAction(0, 100);
 	int l_case = l_RandAction(mt);
+	cases = l_case;
 	if (l_case < 10) {
 		ChangePos2Random();
 		isInstruction = FourthBossInst::None;
@@ -238,7 +243,6 @@ void FourthBoss::ControlUpdate() {
 	if (isMiss) {
 		isInstruction = FourthBossInst::None;
 		phase = commandState::SubGauge;
-		isMiss = false;
 		return;
 	}
 	if (isSearch) { return; }
@@ -261,7 +265,6 @@ void FourthBoss::EnemySpawnUpdate() {
 	if (isMiss) {
 		isInstruction = FourthBossInst::None;
 		phase = commandState::SubGauge;
-		isMiss = false;
 		return;
 	}
 	if (isSearch) { return; }
@@ -303,6 +306,7 @@ void FourthBoss::SubGaugeUpdate() {
 		if (ShutterFeed()) {
 			ShutterReset();
 			ActionTimer = 0;
+			isMiss = false;
 			phase = commandState::WaitCommand;
 		}
 	}
@@ -354,7 +358,7 @@ void FourthBoss::UltimateUpdate() {
 }
 
 void FourthBoss::ExplosionUpdate() {
-	m_Rotation.z =  30.0f;
+	m_Rotation.z = 30.0f;
 
 	float l_AddSize = 2.5f;
 	const float RandScale = 3.0f;
@@ -372,7 +376,18 @@ void FourthBoss::ExplosionUpdate() {
 	uniform_int_distribution<int> l_Randlife(10, 40);
 	int l_Life = int(l_Randlife(mt));
 	ParticleEmitter::GetInstance()->Explosion(l_Life, m_Position, l_AddSize, s_scale, e_scale, s_color, e_color);
-
+	if (ActionTimer >= ActionTimerMax[(size_t)phase] && !isShutter) {
+		isShutter = true;
+	}
+	if (!isShutter) { return; }
+	if (ShutterEffect()) {
+		if (ShutterFeed()) {
+			ShutterReset();
+			m_Rotation.z = 0.0f;
+			ActionTimer = 0;
+			phase = commandState::WaitCommand;
+		}
+	}
 }
 
 bool FourthBoss::ShutterEffect() {

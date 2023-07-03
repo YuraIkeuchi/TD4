@@ -250,6 +250,11 @@ void Ghost::Jack() {
 		}
 		m_IsPostionCheck = false;
 	}
+	const int l_LimitTimer = 800;
+	m_SearchTimer++;
+	if (m_SearchTimer >= l_LimitTimer) {
+		m_Vanish = true;
+	}
 	m_angle += 0.04f;
 	m_radius += 0.08f * m_dir;
 	XMFLOAT3 e_pos = { f_pos.x + sinf(m_angle) * m_radius ,0,f_pos.z + cosf(m_angle) * m_radius };

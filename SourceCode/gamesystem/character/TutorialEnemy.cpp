@@ -63,6 +63,9 @@ void TutorialEnemy::Born() {
 
 	isAlive = true;
 	m_Scale = { scale_,scale_ ,scale_ };
+	deathFrame = 0.0f;
+	m_Color.w = 1.0f;
+	HP = 1;
 
 
 }
@@ -71,10 +74,14 @@ void TutorialEnemy::ImGuiDraw() {
 	ImGui::Begin("Enemy");
 	//ImGui::Text("time %f", t);
 	//ImGui::Text("RotOld %f", RottoPlayer);
+	//ImGui::Text("EnePosX:%f", m_Position.x);
+	//ImGui::Text("EnePosY:%f", m_Position.y);
+	//ImGui::Text("EnePosZ:%f", m_Position.z);
+	ImGui::Checkbox("isAlive", &isAlive);
 
-	ImGui::Text("EnePosX:%f", m_Position.x);
-	ImGui::Text("EnePosY:%f", m_Position.y);
-	ImGui::Text("EnePosZ:%f", m_Position.z);
+
+
+
 	ImGui::End();
 }
 //開放
