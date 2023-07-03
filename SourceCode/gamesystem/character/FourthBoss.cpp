@@ -55,6 +55,7 @@ bool FourthBoss::Initialize() {
 	//m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Fourth/Fourthboss.csv", "pos")));
 	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Magnification")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "hp1")));
+	m_MaxHp = m_HP;
 	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "HeartTarget")));
 	shutterTimeMax = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "shutterTime")));
 	feedTimeMax = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "feedTime")));
@@ -65,10 +66,8 @@ bool FourthBoss::Initialize() {
 	ActionTimerMax[(size_t)commandState::SubGauge] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "SubGauge")));
 	ActionTimerMax[(size_t)commandState::Ultimate] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Ultimate")));
 	ActionTimerMax[(size_t)commandState::Explosion] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Explosion")));
-	m_MaxHp = m_HP;
 
 	ActionTimer = 0;
-
 	m_Radius = 5.0f;
 	return true;
 }
