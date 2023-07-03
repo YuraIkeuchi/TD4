@@ -334,7 +334,10 @@ void LoadStageObj::LockVerseGhost() {
 	}
 	int  nowStopGhorst = 0;
 	while (nowStopGhorst < kStopGhorstMax) {
-		if (boss->GetLimit() > 80.0f) { boss->SetIsMiss(true); break; }
+		if (boss->GetLimit() > 80.0f) {
+			boss->SetIsMiss(true);
+			break;
+		}
 		for (auto i = 0; i < ghosts.size(); i++) {
 			if (ghosts[i]->GetIsRefer()) { continue; }
 			//キャラステート変える際に気をつけてください
@@ -371,12 +374,18 @@ void LoadStageObj::LockAllGhost() {
 	boss->SetHyperSearch(false);
 }
 
+void LoadStageObj::ReferGhorstReseted() {
+	for (Ghost*& ghost : stopGhosts) {
+		ghost->SetIsRefer(false);
+	}
+}
+
 void LoadStageObj::NonVerseGhost() {
 	InterBoss* boss = m_EnemyManager->GetBoss();
 	if (boss->GetInstruction() != InterBoss::FourthBossInst::StopGhost) { return; }
-	for (int i = 0; i < kStopGhorstMax;i++) {
+	for (int i = 0; i < kStopGhorstMax; i++) {
 		if (!stopGhosts[i]) { continue; }
-		stopGhosts[i]->SetColor({1,0,1,1});
+		stopGhosts[i]->SetColor({ 1,0,1,1 });
 		stopGhosts[i]->SetIsPostionCheck(true);
 	}
 	boss->SetInstruction(InterBoss::FourthBossInst::FinishMove);
@@ -405,7 +414,7 @@ void LoadStageObj::ChangeGhost2Enemy() {
 	int m_GhostPos = 0;
 	for (int i = 0; i < kStopGhorstMax; i++) {
 		if (!stopGhosts[i]) { continue; }
-		stopGhosts[i]->SetColor({1,0,1,1});
+		stopGhosts[i]->SetColor({ 1,0,1,1 });
 		stopGhosts[i]->SetIsVerse(false, 80);
 		stopGhosts[i]->SetVanish(true);
 		boss->SetJackPos(m_GhostPos, stopGhosts[i]->GetPosition());
@@ -456,8 +465,7 @@ void LoadStageObj::Absorption() {
 		if (m_EnemyManager->GetEnemyAbsorption()) {
 			ghosts[i]->SetTargetPos(m_EnemyManager->GetEnemyPosition());
 			ghosts[i]->SetAbsorption(true);
-		}
-		else {
+		} else {
 			ghosts[i]->SetRotation({ ghosts[i]->GetRotation().x,-90.0f,ghosts[i]->GetRotation().z });
 			ghosts[i]->SetAbsorption(false);
 		}
