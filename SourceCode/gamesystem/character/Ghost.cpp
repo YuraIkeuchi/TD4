@@ -297,7 +297,6 @@ void Ghost::HyperJack() {
 		m_VerseCureTimer = 180;
 		m_Scale = { 0.0f,0.0f,0.0f };
 		m_IsHyperRefer = false;
-		isVerse = true;
 		_charaState = CharaState::STATE_NONE;
 	}
 }
@@ -368,7 +367,7 @@ bool Ghost::CollideBullet(vector<InterBullet*>bullet) {
 				if (_charaState != STATE_NONE) { return false; }
 				if (m_IsRefer)  {return false; }
 				m_Catch = true;
-				if (Player::GetInstance()->GetBulletType() == BULLET_FORROW) {
+				if (_bullet->GetBulletType() == BULLET_FORROW) {
 					Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Follower.wav", VolumManager::GetInstance()->GetSEVolum() / 2.5f);
 					HungerGauge::GetInstance()->SetHungerMax(HungerGauge::GetInstance()->GetHungerMax() + l_AddHungerMax);
 					HungerGauge::GetInstance()->SetNowHunger(HungerGauge::GetInstance()->GetNowHunger() + l_AddHungerMax);

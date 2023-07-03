@@ -24,6 +24,7 @@ public:
 		Ghost,
 		Buddy,
 		MobUsa,
+		Camera,
 		Heart,
 		Pedestal,
 		DJ,
