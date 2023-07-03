@@ -170,7 +170,7 @@ void Ghost::BirthGhost() {
 	}
 }
 bool Ghost::VerseCheck() {
-	if (!isVerse) { return false; }
+	if (isVerse) { return true; }
 	m_VerseCureTimer--;
 	m_VerseCureTimer = clamp(m_VerseCureTimer, 0,1000);
 	if (m_VerseCureTimer <= 0) {
@@ -293,7 +293,7 @@ void Ghost::HyperJack() {
 	if (m_Position.x < -55.0f || m_Position.x>65.0f ||
 		m_Position.z < -60.0f || m_Position.z>60.0f) {
 		m_Alive = false;
-		isVerse = true;
+		isVerse = false;
 		m_VerseCureTimer = 180;
 		m_Scale = { 0.0f,0.0f,0.0f };
 		m_IsHyperRefer = false;
