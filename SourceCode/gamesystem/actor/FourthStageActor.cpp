@@ -73,6 +73,7 @@ void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	sceneChanger_->Update();
 	camerawork->Update(camera);
 	Menu::GetIns()->Upda();
+	ui->Update();
 	postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
 	messagewindow_->Update(girl_color_, sutopon_color_);
 	lightgroup->Update();
@@ -151,14 +152,14 @@ void FourthStageActor::FrontDraw(DirectXCommon* dxCommon) {
 
 	ParticleEmitter::GetInstance()->DeathDrawAll();
 	//完全に前に書くスプライト
-	IKESprite::PreDraw();
 	if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd()) {
+		IKESprite::PreDraw();
 		ui->Draw();
+		IKESprite::PostDraw();
 	}
 	if (m_SceneState == SceneState::IntroState) {
 			text_->SpriteDraw(dxCommon);
 	}
-	IKESprite::PostDraw();
 	sceneChanger_->Draw();
 	Menu::GetIns()->Draw();
 	camerawork->feedDraw();
