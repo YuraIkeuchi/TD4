@@ -214,10 +214,9 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGui‚Ì•`‰æ
 void SevenStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	/*ImGui::Begin("Seven");
-	ImGui::Text("Timer:%d", m_AppTimer);
-	ImGui::End();*/
+	enemymanager->ImGuiDraw();
 	Player::GetInstance()->ImGuiDraw();
+	//loadobj->ImGuiDraw();
 }
 //“oêƒV[ƒ“
 void SevenStageActor::IntroUpdate(DebugCamera* camera) {

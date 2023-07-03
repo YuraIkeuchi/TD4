@@ -15,7 +15,7 @@ void PlaceBox::Initialize()
 {
 	SampleObj = std::make_unique<IKEObject3d>();
 	SampleObj->Initialize();
-	SampleObj->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Box));
+	SampleObj->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Bullet));
 
 
 	float radius = 5.0f;
@@ -63,14 +63,14 @@ void PlaceBox::Update()
 		if (imguilist[i]->GetBoxnumber() == CreateImGui::WOOD && BoxsList[i] != Boxs::WOOD)
 		{
 			boxes[i]->SetModeName("Wood");
-			boxes[i]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Box));
+			boxes[i]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Bullet));
 			BoxsList[i] = Boxs::WOOD;
 		}
 
 		if (imguilist[i]->GetBoxnumber() == CreateImGui::STONE && BoxsList[i] != Boxs::CUBE)
 		{
 			boxes[i]->SetModeName("Cube");
-			boxes[i]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Box));
+			boxes[i]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Bullet));
 			BoxsList[i] = Boxs::CUBE;
 		}
 
@@ -84,12 +84,12 @@ void PlaceBox::Update()
 
 	if (ArgmentFlag) {
 		BoxsList.push_back(Boxs::WOOD);
-		ArgmentObj(ArgmentFlag, "Box", ModelManager::GetInstance()->GetModel(ModelManager::Box));
+		ArgmentObj(ArgmentFlag, "Box", ModelManager::GetInstance()->GetModel(ModelManager::Bullet));
 	}
 
 	if (StoneArgment) {
 		BoxsList.push_back(Boxs::CUBE);
-		ArgmentObj(StoneArgment, "Cube", ModelManager::GetInstance()->GetModel(ModelManager::Box));
+		ArgmentObj(StoneArgment, "Cube", ModelManager::GetInstance()->GetModel(ModelManager::Bullet));
 	}
 
 }

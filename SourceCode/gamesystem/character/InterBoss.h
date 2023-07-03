@@ -106,6 +106,9 @@ public://gettersetter
 	void SetCheck(bool Check) { m_Check = Check; };
 	bool GetCheck() { return m_Check; }
 
+	void SetAbsorption(bool Absorption) { m_Absorption = Absorption; };
+	bool GetAbsorption() { return m_Absorption; }
+
 	void SetFinishApp(bool FinishApp) { m_FinishApp = FinishApp; };
 
 	bool GetFinishAppear() { return m_FinishAppear; }
@@ -174,6 +177,9 @@ protected:
 
 	//
 	array<XMFLOAT3, 5> jackPos = {};
+
+	//吸収してるか
+	bool m_Absorption = false;
 private:
 
 	enum class ActionList {

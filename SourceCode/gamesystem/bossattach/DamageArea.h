@@ -71,4 +71,5 @@ private:
 	int m_VanishLimit = {};
 
 	float m_Damage = {};
+	XMFLOAT2 m_OffSet = { -0.01f,0.0f };
 };

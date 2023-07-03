@@ -63,9 +63,9 @@ private: //メンバ関数
 private: //メンバ変数
 	//パーティクルマネージャー(丸)
 	unique_ptr<ParticleManager> circleParticle;
-	//パーティクルマネージャー(丸)
+	//パーティクルマネージャー(壁)
 	unique_ptr<ParticleManager> wallParticle;
-	//パーティクルマネージャー(丸)
+	//パーティクルマネージャー(死亡)
 	unique_ptr<ParticleManager> deathParticle;
 	//パーティクルマネージャー(ヒール)
 	unique_ptr<ParticleManager> healParticle;
@@ -74,4 +74,6 @@ private: //メンバ変数
 	//パーティクルマネージャー(cameraBOss)
 	unique_ptr<ParticleManager> PhotoParticle;
 
+private:
+	int m_Timer = 0;
 };
