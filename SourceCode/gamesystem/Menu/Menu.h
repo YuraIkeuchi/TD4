@@ -23,6 +23,8 @@ public:
 
 
 private:
+	bool MenuOpenF;
+
 	struct Texparam
 	{
 		unique_ptr<IKESprite>Sprite;
@@ -51,12 +53,16 @@ private:
 	bool k;
 	bool sin = false;;
 	float SclingSpeed=55.f,CorrSpeed=0.48f;
+	int MenuResetTimer = 0;
+	int MenuRestartTimer = 0;
 	/**
 	 * \brief 操作説明テクスチャ
 	 */
-	unique_ptr<IKESprite>ExpTex;
-	float ExpEaseFrame;
-
+	array<unique_ptr<IKESprite>,3>ExpTex;
+	array<float,3> ExpEaseFrame;
+	array<float, 3> ReExpEaseFrame;
+	array<bool, 3>nextExp;
+	array<bool, 3>removeExp;
 	/**
 	 * \brief 枠
 	 */
@@ -68,6 +74,8 @@ private:
 	bool CloseF=false;
 
 	int OpenHomeCount=0;
+
+	bool trigger;
 public:
 	//初期化
 	void Init();
@@ -81,7 +89,8 @@ public:
 	bool GetTaskActFlag(Task task) { return tasks[task].ActFlag; }
 	//ポストエフェクト用
 	float GetCloseIconRad() { return closeRad; }
-
+	//
+	bool GetMenuOpen() { return MenuOpenF; }
 	void SetSceneName(std::string name) { SceneName = name; }
 private:
 	/*各タスク開く条件設定*/

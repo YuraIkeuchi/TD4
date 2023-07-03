@@ -68,6 +68,10 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 }
 //更新
 void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
+	if (!Menu::GetIns()->GetMenuOpen()) {
+		//関数ポインタで状態管理
+	//	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+	
 	Input* input = Input::GetInstance();
 	//プレイヤー
 	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
@@ -114,8 +118,7 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	if (enemymanager->BossDestroy())
 	{
 		Player::GetInstance()->DeathUpdate();
-	}
-	else
+	} else
 	{
 		Player::GetInstance()->Update();
 	}
@@ -152,8 +155,7 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 			sceneChanger_->ChangeStart();
 			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::ReverseType::NonReverse);
 		}
-	}
-	else
+	} else
 	{
 		//if (camerawork->FinishAppear()) {
 			//m_SceneState = SceneState::MainState;
@@ -187,13 +189,14 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	lightgroup->Update();
 
 	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
-		//SelectScene::GetIns()->Upda();
+		SelectScene::GetIns()->Upda();
 
-		if (Input::GetInstance()->TriggerButton(Input::Y)) {
-			SelectScene::GetIns()->ResetParama();
-			SceneManager::GetInstance()->ChangeScene("SELECT");
-		}
-	Menu::GetIns()->Upda();
+	if (Input::GetInstance()->TriggerButton(Input::Y)) {
+		SelectScene::GetIns()->ResetParama();
+		SceneManager::GetInstance()->ChangeScene("SELECT");
+	}
+
+}Menu::GetIns()->Upda();
 	BackObj::GetInstance()->Update();
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 }
@@ -290,7 +293,7 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	Menu::GetIns()->Draw();
 	camerawork->feedDraw();
 
-	//SelectScene::GetIns()->Draw_Sprite();
+	SelectScene::GetIns()->Draw_Sprite();
 	IKESprite::PostDraw();
 }
 //IMGuiの描画

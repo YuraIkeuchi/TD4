@@ -69,8 +69,8 @@ void SelectScene::Init()
 		StageObjs[i]->Initialize();
 	}
 	StageObjs[FIRST]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
-	StageObjs[SECOND]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::KIDO_OBJ));
-	StageObjs[THIRD]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
+	StageObjs[SECOND]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
+	StageObjs[THIRD]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::KIDO_OBJ));
 	StageObjs[FOUR]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::MobUsa));
 	StageObjs[FIVE]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
 	StageObjs[SIX]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::DJ));
@@ -117,8 +117,8 @@ void SelectScene::Init()
 
 	//ポストエフェクト用
 	BossIcon[FIRST]=IKESprite::Create(ImageManager::CLOSESYTOPON, { 0,0 });
-	BossIcon[SECOND] = IKESprite::Create(ImageManager::CLOSEKIDO, { 0,0 });
-	BossIcon[THIRD] = IKESprite::Create(ImageManager::CLOSESYTOPON, { 0,0 });
+	BossIcon[SECOND] = IKESprite::Create(ImageManager::CLOSESYTOPON, { 0,0 });
+	BossIcon[THIRD] = IKESprite::Create(ImageManager::CLOSEKIDO, { 0,0 });
 	BossIcon[FOUR] = IKESprite::Create(ImageManager::CLOSECAMERA, { 0,0 });
 	BossIcon[FIVE] = IKESprite::Create(ImageManager::BOX, { 0,0 });
 	BossIcon[SIX] = IKESprite::Create(ImageManager::CLOSEDJ, { 0,0 });
@@ -138,7 +138,7 @@ void SelectScene::Init()
 		StageObjs[i]->SetPosition(StageObjPos[i]);
 		StageObjs[i]->SetScale({ 1,1,1 });
 	}
-	StageObjs[SECOND]->SetScale({ 4,4,4});
+	StageObjs[THIRD]->SetScale({ 4,4,4});
 	StageObjs[SIX]->SetScale({ 0.2f,0.2f,0.2f});
 
 }
@@ -191,19 +191,19 @@ void SelectScene::Upda()
 		}
 	}
 
-	//ChangeEffect("FIRSTSTAGE", Stage::FIRST, FIRST);
+	ChangeEffect("FIRSTSTAGE", Stage::FIRST, FIRST);
 
 	ChangeEffect("SECONDSTAGE", Stage::SECOND, SECOND);
 
-	ChangeEffect("FIRSTSTAGE", Stage::THIRD, THIRD);
+	ChangeEffect("FOURTHSTAGE", Stage::FOUR, FOUR);
 
-	ChangeEffect("THIRDSTAGE", Stage::FOUR, FOUR);
+	ChangeEffect("THIRDSTAGE", Stage::THIRD, THIRD);
 
 	//ChangeEffect("FIVESTAGE", Stage::FIVE,FIVE);
 
 	//ChangeEffect("FOURTHSTAGE", Stage::SIX, SIX);
 
-	ChangeEffect("FOURTHSTAGE", Stage::SIX, SIX);
+	ChangeEffect("SixSTAGE", Stage::SIX, SIX);
 
 
 	XMFLOAT3 nowSelpos = { Pedestal->GetPosition().x + sinf(180.f * (PI / PI_180)) * PosRad,

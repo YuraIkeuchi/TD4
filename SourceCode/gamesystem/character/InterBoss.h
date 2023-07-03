@@ -123,6 +123,8 @@ public://gettersetter
 	void SetIsReferCheck(bool isReferCheck) { this->isReferCheck = isReferCheck; };
 	bool GetIsReferCheck() { return isReferCheck; }
 
+	int ActionNum;
+	void SetActionNum(int num) { ActionNum = num; }
 private:
 	std::string SceneName;
 	vector<InterEffect*> effects;

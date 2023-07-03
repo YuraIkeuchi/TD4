@@ -28,13 +28,33 @@ void Menu::Init()
 	
 	frame = IKESprite::Create(ImageManager::MENU_FRAME, tasks[Home].Pos);
 	
-	ExpTex=IKESprite::Create(ImageManager::EXPLANATION, tasks[Home].Pos);
+	ExpTex[0] = IKESprite::Create(ImageManager::EXPLANATION, tasks[Home].Pos);
+	ExpTex[1] = IKESprite::Create(ImageManager::CLOSEKIDO, tasks[Home].Pos);
+	ExpTex[2] = IKESprite::Create(ImageManager::CLOSECAMERA, tasks[Home].Pos);
+
 	//ExpTex->SetAnchorPoint({ 0.5f,0.5f });
 	closeTex = IKESprite::Create(ImageManager::CLOSESYTOPON, tasks[Home].Pos);
 }
 
 void Menu::Upda()
 {
+	if (_tasks != NON)MenuOpenF = true;
+	else {
+		MenuOpenF = false;
+		MenuRestartTimer++;
+	}
+	if (MenuOpenF) {
+		MenuRestartTimer = 0;
+		MenuResetTimer++;
+	} else {
+		MenuResetTimer = 0;
+	}
+	if(MenuResetTimer>60){if(Input::GetInstance()->TriggerButton(Input::START))
+{
+	_tasks = NON;
+}
+
+}
 	//状態移行
 	(this->*stateTable[_tasks])();
 	
@@ -81,12 +101,15 @@ void Menu::Draw()
 {
 	if (_tasks != NON) {
 		tasks[Home].Sprite->Draw();
+		if(tasks[2].Sprite->GetSize().x>290.f)
 		frame->Draw();
+
 		for (auto i = 2; i < tasks.size(); i++)
 		{
 			tasks[i].Sprite->Draw();
 		}
-		ExpTex->Draw();
+		for(auto i=0;i<3;i++)
+		ExpTex[i]->Draw();
 	}
 	if (_tasks == MapChange||sin)
 	closeTex->Draw();
@@ -104,16 +127,28 @@ void Menu::Home_()
 	}
 
 	tasks[RuleExp].ActFlag = false;
-	ExpEaseFrame = 0.f;
-
+	ExpEaseFrame[0] = 0.f;
+	ExpEaseFrame[1] = 0.f;
+	ExpEaseFrame[2] = 0.f;
 	//外枠移動処理
-	if (Input::GetInstance()->TriggerButton(Input::A))
+	if (!trigger && Input::GetInstance()->TiltPushStick(Input::L_RIGHT, 0.0f))
+	{
 		index++;
-
-	else if (Input::GetInstance()->TriggerButton(Input::Y))
+		trigger = true;
+	}
+	if (!trigger && Input::GetInstance()->TiltPushStick(Input::L_LEFT, 0.0f))
+	{
 		index--;
+		trigger = true;
+	}
+	Helper::GetInstance()->Clamp(index, 0, 2);
+	if(!Input::GetInstance()->TiltPushStick(Input::L_LEFT, 0.0f)&&
+		!Input::GetInstance()->TiltPushStick(Input::L_RIGHT, 0.0f))
+	{
+		trigger = false;
 
-	frame->SetPosition({YInter[index],300.f });
+	}
+		frame->SetPosition({YInter[index],300.f });
 	frame->SetSize({ 300,180 });
 
 
@@ -139,6 +174,7 @@ void Menu::Home_()
 	if (Input::GetInstance()->TriggerButton(Input::B))
 	{
 		if (index == 0)_tasks = RuleExp;
+		else if (index == 1)_tasks = ResetBattle;
 		else if (index == 2)_tasks = MapChange;
 	}
 	
@@ -149,6 +185,7 @@ void Menu::ResetBattle_()
 {
 	//if (!Open_Reset())return;
 
+	SceneManager::GetInstance()->ChangeScene("SELECT");
 
 	tasks[ResetBattle].ActFlag = true;
 
@@ -156,24 +193,83 @@ void Menu::ResetBattle_()
 
 void Menu::RuleExp_()
 {
+
 	if (Input::GetInstance()->TriggerButton(Input::START))_tasks = NON;
 
-	if(ExpEaseFrame<=0.f||ExpEaseFrame>=1.0f)
 		if (Input::GetInstance()->TriggerButton(Input::A))
 		{
-			ExpEaseFrame = 0;
+			ExpEaseFrame[0] = 0;
+			ExpEaseFrame[1] = 0;
+			ExpEaseFrame[2] = 0;
 			tasks[RuleExp].ActFlag = true;
 		}
 	if(!tasks[RuleExp].ActFlag)
 	{
-		Helper::GetInstance()->FrameCheck(ExpEaseFrame, 0.05f);
-		ExpTex->SetPosition({ Ease(In, Cubic, ExpEaseFrame, WINW, 0),0 });
+		Helper::GetInstance()->FrameCheck(ExpEaseFrame[0], 0.05f);
+		ExpTex[0]->SetPosition({Ease(In, Cubic, ExpEaseFrame[0], WINW, 0),0});
+
+		if (!removeExp[1]&& ExpTex[0]->GetPosition().x <= 0.f)
+		{
+
+			ReExpEaseFrame[1] = 0;
+			if (Input::GetInstance()->TiltPushStick(Input::L_RIGHT, 0.0f))
+				nextExp[1] = true;
+
+			if (nextExp[1])
+			{
+				Helper::GetInstance()->FrameCheck(ExpEaseFrame[1], 0.05f);
+				ExpTex[1]->SetPosition({ Ease(In, Cubic, ExpEaseFrame[1], WINW, 0),0 });
+			}
+		}
+		if (!removeExp[2] && ExpTex[1]->GetPosition().x <= 0.f)
+		{
+			ReExpEaseFrame[2] = 0;
+
+			if (Input::GetInstance()->TiltPushStick(Input::L_RIGHT, 0.0f))
+				nextExp[2] = true;
+
+			if (nextExp[2])
+			{
+				Helper::GetInstance()->FrameCheck(ExpEaseFrame[2], 0.05f);
+				ExpTex[2]->SetPosition({ Ease(In, Cubic, ExpEaseFrame[2], WINW, 0),0 });
+			}
+			
+		}
+
+
+		if (Input::GetInstance()->TiltPushStick(Input::L_LEFT, 0.0f)) {
+			if (ExpTex[2]->GetPosition().x>=WINW&& ExpTex[1]->GetPosition().x <= 0.f)
+				removeExp[1] = true;
+			if (ExpTex[2]->GetPosition().x <= 0.f)
+				removeExp[2] = true;
+
+			for (auto i = 0; i < 3; i++) {
+				if(i>0)ExpEaseFrame[i] = 0;
+				nextExp[i] = false;
+			}
+		}
+
+		for (auto i = 0; i < 3; i++) {
+			
+					if (removeExp[i])
+				{
+					Helper::GetInstance()->FrameCheck(ReExpEaseFrame[i], 0.05f);
+					ExpTex[i]->SetPosition({ Ease(In, Cubic, ReExpEaseFrame[i], 0,WINW) ,0});
+				}
+			
+			if (ExpTex[i]->GetPosition().x >= WINW)
+			{
+				removeExp[i] = false;
+			}
+		}
 	}
 	else
 	{
-		Helper::GetInstance()->FrameCheck(ExpEaseFrame, 0.05f);
-		ExpTex->SetPosition({ Ease(In, Cubic, ExpEaseFrame,0, WINW),0 });
-		if (ExpEaseFrame >= 1.f)_tasks = Home;
+		for (auto i = 0; i < 3; i++) {
+			Helper::GetInstance()->FrameCheck(ExpEaseFrame[i], 0.05f);
+			ExpTex[i]->SetPosition({ Ease(In, Cubic, ExpEaseFrame[i],0, WINW),0});
+		}
+			if (ExpEaseFrame[0] >= 1.f)_tasks = Home;
 	}
 	
 
@@ -189,6 +285,8 @@ void Menu::SceneChange()
 
 void Menu::Non()
 {
+	if (MenuRestartTimer < 60)return;
+
 	//ホーム画面へ
 	if (Input::GetInstance()->TriggerButton(Input::START))_tasks = Home;
 
@@ -219,12 +317,15 @@ void Menu::ResetAllTask()
 		frame->SetPosition({ YInter[0],300.f });
 		frame->SetSize({ 0,0 });
 
-		ExpTex->SetSize({ WINW + 100,WINH });
-		ExpTex->SetPosition({ WINW,0.f });
-
+		for (auto i = 0; i < 3; i++) {
+			ExpTex[i]->SetSize({WINW + 100,WINH});
+			ExpTex[i]->SetPosition({WINW,0.f});
+		}
 		//操作説明関連初期化
 		tasks[RuleExp].ActFlag = false;
-		ExpEaseFrame = 0;
+		ExpEaseFrame[0] = 0;
+		ExpEaseFrame[1] = 0.f;
+		ExpEaseFrame[2] = 0.f;
 		//
 		for (auto i = 1; i < tasks.size(); i++)
 		{

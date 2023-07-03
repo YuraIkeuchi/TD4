@@ -516,6 +516,14 @@
     <ClCompile Include="SourceCode\gamesystem\scene\FiveStage.cpp">
       <Filter>gamesystem\scene\Play\Five</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\InterAttack.cpp">
+      <Filter>gamesystem\charactor\Boss\Five\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\ShotAttack.cpp">
+      <Filter>gamesystem\charactor\Boss\Five\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\NormalAttack.cpp">
+      <Filter>gamesystem\charactor\Boss\Five\Attack</Filter>
     <ClCompile Include="SourceCode\gamesystem\bossattach\Poltergeist.cpp">
       <Filter>gamesystem\bossattach\Poltergeist</Filter>
     </ClCompile>
@@ -993,9 +1001,6 @@
     <ClInclude Include="SourceCode\gamesystem\actor\SixStageActor.h">
       <Filter>gamesystem\actor\Six</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\FiveBoss.h">
-      <Filter>gamesystem\charactor\Boss\Five</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\SevenStage.h">
       <Filter>gamesystem\scene\Play\Seven</Filter>
     </ClInclude>
@@ -1004,6 +1009,18 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\FiveStage.h">
       <Filter>gamesystem\scene\Play\Five</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\InterAttack.h">
+      <Filter>gamesystem\charactor\Boss\Five\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\ShotAttack.h">
+      <Filter>gamesystem\charactor\Boss\Five\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\NormalAttack.h">
+      <Filter>gamesystem\charactor\Boss\Five\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\FiveBoss.h">
+      <Filter>gamesystem\charactor\Boss\Five</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\bossattach\Poltergeist.h">
       <Filter>gamesystem\bossattach\Poltergeist</Filter>
@@ -1390,7 +1407,10 @@
     <Filter Include="gamesystem\scene\Play\Seven">
       <UniqueIdentifier>{c22e072a-798b-4f56-ace8-3ba410fe85a4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="gamesystem\charactor\Boss\Seven\Avatar">
+    <Filter Include="gamesystem\charactor\Boss\Five\Attack">
+      <UniqueIdentifier>{b8214fa0-f473-446d-baaf-7a742334d608}</UniqueIdentifier>
+   </Filter>
+      <Filter Include="gamesystem\charactor\Boss\Seven\Avatar">
       <UniqueIdentifier>{8bd348bd-8efe-44ee-9794-e8665164a4fe}</UniqueIdentifier>
     </Filter>
     <Filter Include="gamesystem\bossattach\Poltergeist">
