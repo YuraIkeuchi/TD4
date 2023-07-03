@@ -30,7 +30,13 @@ public:
 		DJ,
 		Skydome,
 		KIDO_OBJ,
-		CD
+		CD,
+		GLASS1,
+		GLASS2,
+		GLASS3,
+		MILKCAP_NORMAL,
+		MILKCAP_BREAK,
+		CAP,
 	};
 	//FBXの名前
 	enum FBXName {
