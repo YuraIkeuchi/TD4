@@ -14,7 +14,7 @@ void (FirstBoss::* FirstBoss::stateTable[])() = {
 
 FirstBoss::FirstBoss()
 {
-	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::GLASS1);
+	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::MILKCAP_NORMAL);
 
 	m_Object.reset(new IKEObject3d());
 	m_Object->Initialize();
@@ -33,8 +33,8 @@ bool FirstBoss::Initialize()
 {
 	m_Position = { 0.0f,3.0f,30.0f };
 	m_Rotation = { 0.0f,90.0f,0.0f };
-	m_Scale = { 10.3f,10.3f,10.3f };
-	m_Color = { 1.0f,0.0f,0.0f,1.0f };
+	m_Scale = { 15.3f,15.3f,15.3f };
+	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Rotation.y = -90.f;
 	m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/Firstboss.csv", "pos")));
 	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/Firstboss.csv", "Magnification")));
@@ -50,8 +50,8 @@ void FirstBoss::SkipInitialize()
 {
 	m_Position = { 0.0f,3.0f,30.0f };
 	m_Rotation = { 0.0f,90.0f,0.0f };
-	m_Scale = { 0.3f,0.3f,0.3f };
-	m_Color = { 1.0f,0.0f,0.0f,1.0f };
+	m_Scale = { 15.3f,15.3f,15.3f };
+	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 }
 
 void FirstBoss::Pause()
