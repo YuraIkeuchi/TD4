@@ -22,9 +22,13 @@ private:
 	//ボスが吸収したときの動き
 	void AbsorptionShot();
 private:
+	static const int POWER_MAX = 4;
+private:
 	//イージング後の位置
 	XMFLOAT3 m_AfterPos = {};
 	//円運動
 	float m_CircleScale = 30.0f;
 	float m_CircleSpeed = {};
+
+	vector<float>m_Power;
 };
