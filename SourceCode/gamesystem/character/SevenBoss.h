@@ -46,6 +46,12 @@ private:
 	void CatchBul(vector<InterBullet*>bullet);
 
 	void BirthParticle();
+
+	//一瞬ボスが消える
+	void VanishBoss();
+
+	//モンスターが消える範囲設定
+	void VanishCollide(vector<InterBullet*>bullet);
 private:
 	//キャラの状態
 	enum CharaState
@@ -79,4 +85,18 @@ private:
 	bool m_Stun = false;
 	//攻撃の乱数
 	int m_AttackRand = {};
+
+	//敵が弾を避けるかどうか
+	bool m_Vanish = false;
+
+	enum VanishState {
+		VANISH_SET,
+		VANISH_END,
+	}_vanishState;
+
+	float m_VanishFrame = {};
+
+	int m_VanishTarget = {};
+
+	float m_AfterAlpha = {};
 };

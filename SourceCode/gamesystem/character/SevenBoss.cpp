@@ -5,6 +5,7 @@
 #include "CsvLoader.h"
 #include "Helper.h"
 #include "Player.h"
+#include "Easing.h"
 //生成
 SevenBoss::SevenBoss() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::DJ);
@@ -27,7 +28,7 @@ bool SevenBoss::Initialize() {
 	ActionTimer = 1;
 
 	m_Radius = 2.2f;
-
+	m_AfterAlpha = 1.0f;
 	_charaState = STATE_INTER;
 	//CSVロード
 	CSVLoad();
@@ -46,6 +47,7 @@ void SevenBoss::CSVLoad() {
 	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "Magnification")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "hp1")));
 	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "HeartTarget")));
+	m_VanishTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "VanishTarget")));
 
 	m_MaxHp = m_HP;
 }
@@ -68,12 +70,20 @@ void SevenBoss::Action() {
 	//弾とボスの当たり判定
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
 	if (_charaState != STATE_CATCH) {
-		CollideBul(_playerBulA, Type::CIRCLE);
+		if (m_Color.w > 0.9f) {
+			CollideBul(_playerBulA, Type::CIRCLE);
+		}
+		if (_charaState != STATE_STUN) {
+			VanishCollide(_playerBulA);
+		}
 	}
+
 	//プレイヤーの当たり判定
 	ColPlayer();
 	//OBJのステータスのセット
 	Obj_SetParam();
+	//ボスの消える判定
+	VanishBoss();
 	//リミット制限
 	Helper::GetInstance()->Clamp(m_Position.x, -55.0f, 65.0f);
 	Helper::GetInstance()->Clamp(m_Position.z, -60.0f, 60.0f);
@@ -177,17 +187,17 @@ void SevenBoss::Draw(DirectXCommon* dxCommon) {
 //ImGui
 void SevenBoss::ImGui_Origin() {
 	ImGui::Begin("Seven");
-	ImGui::Text("HP:%f", m_HP);
-	ImGui::Text("Absorption::%d", m_Absorption);
-	ImGui::Text("MoveTimer::%d", m_MoveTimer);
-	ImGui::Text("Rand::%d", int(_charaState));
+	ImGui::Text("VanishState:%d", int(_vanishState));
+	ImGui::Text("Vanish:%d", m_Vanish);
+	ImGui::Text("Target:%d", m_VanishTarget);
+	ImGui::Text("Color:%f", m_Color.w);
+	ImGui::Text("Frame:%f", m_VanishFrame);
 	ImGui::End();
 }
 //インターバル
 void SevenBoss::InterValMove() {
 	const int l_LimitTimer = 100;
 	m_InterVal++;
-	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> l_RandomMove(0, 2);
 	if (m_InterVal == l_LimitTimer) {
@@ -215,7 +225,6 @@ void SevenBoss::InterValMove() {
 }
 //ポルターガイスト
 void SevenBoss::Polter() {
-	m_Color = { 1.0f,0.0f,0.0f,1.0f };
 	const int l_LimitTimer = 200;
 	m_MoveTimer++;
 	if (m_MoveTimer == l_LimitTimer) {
@@ -228,14 +237,12 @@ void SevenBoss::Polter() {
 		}
 		else {
 			_charaState = STATE_CATCH;
-			m_Color = { 1.0f,0.0f,0.0f,1.0f };
 		}
 	}
 }
 //バウンド弾
 void SevenBoss::ThrowBound() {
 	const int l_LimitTimer = 200;
-	m_Color = { 0.0f,1.0f,0.0f,1.0f };
 	m_MoveTimer++;
 	if (m_MoveTimer == l_LimitTimer) {
 		BirthPolter("Bound");
@@ -248,14 +255,12 @@ void SevenBoss::ThrowBound() {
 		}
 		else {
 			_charaState = STATE_CATCH;
-			m_Color = { 1.0f,0.0f,0.0f,1.0f };
 		}
 	}
 }
 //偽物のボスを生む
 void SevenBoss::BirthAvatar() {
 	const int l_LimitTimer = 100;
-	m_Color = { 0.0f,0.0f,1.0f,1.0f };
 	m_MoveTimer++;
 	if (m_MoveTimer == l_LimitTimer) {
 		for (int i = 0; i < AVATAR_NUM; i++) {
@@ -328,14 +333,12 @@ void SevenBoss::BirthPolter(const std::string& PolterName) {
 //弾を吸収
 void SevenBoss::BulletCatch() {
 	const int l_LimitTimer = 500;
-	m_Color = { 1.0f,1.0f,0.0f,1.0f };
 	//弾とボスの当たり判定
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
 	CatchBul(_playerBulA);
 	m_MoveTimer++;
 	m_Absorption = true;
 	if (m_MoveTimer == l_LimitTimer) {
-		m_Color = { 0.0f,0.0f,1.0f,1.0f };
 		m_MoveTimer = {};
 		m_AttackCount = {};
 		m_Absorption = false;
@@ -344,13 +347,14 @@ void SevenBoss::BulletCatch() {
 	if (m_MoveTimer % 6 == 0) {
 		BirthParticle();
 	}
+
+	m_Color.w = Ease(In, Cubic, 0.5f, m_Color.w, 1.0f);
 }
 //スタンした時
 void SevenBoss::Stun() {
 	const int l_LimitTimer = 500;
 	m_MoveTimer++;
 	m_Absorption = false;
-	m_Color = { 0.0f,1.0f,1.0f,1.0f };
 	if (m_MoveTimer == l_LimitTimer) {
 		m_Stun = false;
 		m_MoveTimer = {};
@@ -425,4 +429,58 @@ void SevenBoss::BirthParticle() {
 	neweffect->Initialize();
 	neweffect->SetBasePos(m_Position);
 	abseffect.push_back(neweffect);
+}
+//ボスの消える判定
+void SevenBoss::VanishCollide(vector<InterBullet*> bullet)
+{
+	int l_RandCount = 0;
+	const float l_VanishRadius = m_Radius + 5.0f;
+	for (InterBullet* _bullet : bullet) {
+		if (_bullet != nullptr && _bullet->GetAlive() && !_bullet->GetInArea()) {
+		
+			if (Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, l_VanishRadius, m_Position.x, m_Position.z, l_VanishRadius) && (!m_Stun) && (!m_Vanish)) {
+				//乱数指定
+				mt19937 mt{ std::random_device{}() };
+				uniform_int_distribution<int> l_RandomRange(1, 100);
+				l_RandCount = int(l_RandomRange(mt));
+				_bullet->SetInArea(true);
+
+				//乱数が一定の値より大きかったらハートが出る
+				if (l_RandCount > m_VanishTarget) {
+					m_Vanish = true;
+					m_VanishFrame = {};
+					m_AfterAlpha = {};
+					_vanishState = VANISH_SET;
+				}
+			}
+		}
+	}
+}
+//ボスが一瞬消える
+void SevenBoss::VanishBoss() {
+	const float l_AddFrame = 0.05f;
+	if (m_Vanish) {
+		if (_vanishState == VANISH_SET) {
+			if (m_VanishFrame < m_FrameMax) {
+				m_VanishFrame += l_AddFrame;
+			}
+			else {
+				m_VanishFrame = {};
+				m_AfterAlpha = 1.0f;
+				_vanishState = VANISH_END;
+			}
+		}
+		else {
+			if (m_VanishFrame < m_FrameMax) {
+				m_VanishFrame += l_AddFrame;
+			}
+			else {
+				m_VanishFrame = {};
+				m_AfterAlpha = 0.0f;
+				_vanishState = VANISH_SET;
+				m_Vanish = false;
+			}
+		}
+		m_Color.w = Ease(In, Cubic, m_VanishFrame, m_Color.w, m_AfterAlpha);
+	}
 }

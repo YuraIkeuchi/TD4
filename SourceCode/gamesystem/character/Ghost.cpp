@@ -361,7 +361,7 @@ bool Ghost::CollideBullet(vector<InterBullet*>bullet) {
 		if (_bullet != nullptr && _bullet->GetAlive()) {
 			m_OBB2.SetParam_Pos(_bullet->GetPosition());
 			m_OBB2.SetParam_Rot(_bullet->GetMatRot());
-			m_OBB2.SetParam_Scl(_bullet->GetScale());
+			m_OBB2.SetParam_Scl({ 2.0f,2.0f,_bullet->GetScale().z + 3.0f });
 
 			if ((Collision::OBBCollision(m_OBB1, m_OBB2)) && (_bullet->GetAlive()) && (!m_Catch) && (m_Alive)) {
 				if (_charaState != STATE_NONE) { return false; }

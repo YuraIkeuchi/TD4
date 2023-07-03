@@ -64,6 +64,8 @@ public:
 
 	void TipsPosUpda(Stage stage);
 private:
+	//
+	bool SelectF;
 	//“y‘ä
 	unique_ptr<IKEObject3d>Pedestal=nullptr;
 	XMFLOAT3 PedestalRot={0,0,0};
@@ -128,5 +130,6 @@ public:
 	float GetCloseScl() { return closeScl; }
 	XMFLOAT3 GetPedestalPos() { return Pedestal->GetPosition(); }
 	int GetNowIndex() { return index; }
+	bool GetSelect() { return SelectF; }
 };
 
