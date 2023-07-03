@@ -30,6 +30,12 @@ public:
 		Skydome,
 		KIDO_OBJ,
 		CD,
+		GLASS1,
+		GLASS2,
+		GLASS3,
+		MILKCAP_NORMAL,
+		MILKCAP_BREAK,
+		CAP,
 		SKIRT,
 		NOTE
 	};
