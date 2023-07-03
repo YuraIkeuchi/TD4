@@ -89,7 +89,7 @@ void AvatarBoss::Action() {
 		}
 	}
 
-	m_Color.w = Ease(In, Cubic, 0.2f, m_Color.w, 1.0f);
+	m_Color.w = Ease(In, Cubic, 0.5f, m_Color.w, 1.0f);
 }
 //É|Å[ÉY
 void AvatarBoss::Pause() {

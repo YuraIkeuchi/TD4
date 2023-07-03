@@ -41,6 +41,7 @@ public:
 public:
 	//gettersetter
 	const bool& GetAlive() { return m_Alive; }
+	const bool& GetInArea() { return m_InArea; }
 	const int& GetBulletType() { return m_BulletType; }
 	const int& GetPowerState() { return m_PowerState; }
 	const float& GetPower() { return m_DamagePower; }
@@ -50,6 +51,7 @@ public:
 	void SetBulletType(const int BulletType) { m_BulletType = BulletType; }
 	void SetPowerState(const int PowerState) { m_PowerState = PowerState; }
 	void SetCharge(const bool Charge) { m_Charge = Charge; }
+	void SetInArea(const bool InArea) { m_InArea = InArea; }
 	void SetBossCatch(const bool BossCatch) { m_BossCatch = BossCatch; }
 	void SetTargetPos(const XMFLOAT3& TargetPos) { m_TargetPos = TargetPos; }
 public:
@@ -69,4 +71,6 @@ public:
 	//ボスが弾をキャッチしたか
 	bool m_BossCatch = false;
 	XMFLOAT3 m_TargetPos = {};
+
+	bool m_InArea = false;
 };
