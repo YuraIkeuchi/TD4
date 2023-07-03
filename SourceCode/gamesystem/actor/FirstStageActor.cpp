@@ -125,9 +125,9 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon)
 	ParticleEmitter::GetInstance()->DeathDrawAll();
 	//完全に前に書くスプライト
 	IKESprite::PreDraw();
-	if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd()) {
+	//if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd()) {
 		ui->Draw();
-	}
+	//}
 	if (m_SceneState == SceneState::IntroState) {
 		if ((camerawork->GetAppearType() == APPEAR_SEVEN) || (camerawork->GetAppearType() == APPEAR_EIGHT)) {
 			text_->SpriteDraw(dxCommon);
