@@ -49,6 +49,8 @@ private://ƒXƒe[ƒg
 	void None();
 	//‹zŽû
 	void Absorption();
+	//‘€‚ç‚ê‚Ä‚¢‚é
+	void Manipulate();
 	//¶‚Ü‚ê‚éó‘Ô
 	void Spawm();
 	//’Ç]
@@ -78,6 +80,7 @@ public://getter setter
 	const bool& GetAbsorption() { return m_Absorption; }
 	const bool& GetSearch() { return m_Search; }
 	const bool& GetIsVerse() { return isVerse; }
+	const bool& GetManipulate() { return m_Manipulate; }
 	const bool& GetIsPostionCheck() { return m_IsPostionCheck; }
 	const float& GetLimit() { return m_Limit; }
 	const int GetStateInst() { return (int)_charaState; }
@@ -87,6 +90,7 @@ public://getter setter
 	void SetIsHyperRefer(const bool isRefer) { this->m_IsHyperRefer = isRefer; }
 
 	void SetIsVerse(const bool isVerse, int verseCureTimer = 0) { this->isVerse = isVerse; m_VerseCureTimer = verseCureTimer; }
+	void SetManipulate(const bool Manipulate) { m_Manipulate = Manipulate; }
 	void SetCatch(const bool Catch) { m_Catch = Catch; }
 	void SetAbsorption(const bool Absorption) { m_Absorption = Absorption; }
 	void SetVanish(const bool Vanish) { m_Vanish = Vanish; }
@@ -177,4 +181,7 @@ private:
 	bool m_Hit = false;
 
 	OBB m_OBB1 = {}, m_OBB2 = {};
+
+	//‘€‚ç‚ê‚Ä‚¢‚é
+	bool m_Manipulate = false;
 };

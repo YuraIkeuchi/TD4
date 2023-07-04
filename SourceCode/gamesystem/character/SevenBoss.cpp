@@ -57,6 +57,7 @@ void (SevenBoss::* SevenBoss::stateTable[])() = {
 	&SevenBoss::Polter,//ポルターガイスト
 	&SevenBoss::ThrowBound,//投げる
 	&SevenBoss::BirthAvatar,//偽物のボス
+	&SevenBoss::Manipulate,//ゴーストを操る
 	&SevenBoss::BulletCatch,//弾を吸収
 	&SevenBoss::Stun,//スタン
 };
@@ -188,10 +189,7 @@ void SevenBoss::Draw(DirectXCommon* dxCommon) {
 void SevenBoss::ImGui_Origin() {
 	ImGui::Begin("Seven");
 	ImGui::Text("VanishState:%d", int(_vanishState));
-	ImGui::Text("Vanish:%d", m_Vanish);
-	ImGui::Text("Target:%d", m_VanishTarget);
-	ImGui::Text("Color:%f", m_Color.w);
-	ImGui::Text("Frame:%f", m_VanishFrame);
+	ImGui::Text("Mani:%d", m_Manipulate);
 	ImGui::End();
 }
 //インターバル
@@ -201,26 +199,28 @@ void SevenBoss::InterValMove() {
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> l_RandomMove(0, 2);
 	if (m_InterVal == l_LimitTimer) {
-		//行動を決めて次の行動に移る
-		m_AttackRand = int(l_RandomMove(mt));
+		_charaState = STATE_MANIPULATE;
+		m_InterVal = {};
+		////行動を決めて次の行動に移る
+		//m_AttackRand = int(l_RandomMove(mt));
 
-		if (m_AttackRand == 0) {
-			_charaState = STATE_BOUND;
-			m_InterVal = {};
-		}
-		else if(m_AttackRand == 1) {
-			_charaState = STATE_POLTER;
-			m_InterVal = {};
-		}
-		else {
-			if (m_AvatarCount == 0) {
-				_charaState = STATE_AVATAR;
-				m_InterVal = {};
-			}
-			else {
-				m_InterVal = l_LimitTimer - 1;
-			}
-		}
+		//if (m_AttackRand == 0) {
+		//	_charaState = STATE_BOUND;
+		//	m_InterVal = {};
+		//}
+		//else if(m_AttackRand == 1) {
+		//	_charaState = STATE_POLTER;
+		//	m_InterVal = {};
+		//}
+		//else {
+		//	if (m_AvatarCount == 0) {
+		//		_charaState = STATE_AVATAR;
+		//		m_InterVal = {};
+		//	}
+		//	else {
+		//		m_InterVal = l_LimitTimer - 1;
+		//	}
+		//}
 	}
 }
 //ポルターガイスト
@@ -278,6 +278,26 @@ void SevenBoss::BirthAvatar() {
 		}
 		m_AttackCount++;
 		m_MoveTimer = {};
+		//二回攻撃したら吸収行動に移行する
+		if (m_AttackCount != 2) {
+			_charaState = STATE_INTER;
+		}
+		else {
+			_charaState = STATE_CATCH;
+		}
+	}
+}
+//捕まえているゴーストを操る
+void SevenBoss::Manipulate() {
+	const int l_LimitTimer = 10;
+	m_MoveTimer++;
+	m_Manipulate = true;
+
+	if (m_MoveTimer == l_LimitTimer) {
+		m_MoveTimer = {};
+		m_Manipulate = false;
+		m_AttackCount++;
+
 		//二回攻撃したら吸収行動に移行する
 		if (m_AttackCount != 2) {
 			_charaState = STATE_INTER;
@@ -434,6 +454,8 @@ void SevenBoss::BirthParticle() {
 void SevenBoss::VanishCollide(vector<InterBullet*> bullet)
 {
 	int l_RandCount = 0;
+	XMFLOAT2 m_RandPos = {};
+	int l_RandDir = {};
 	const float l_VanishRadius = m_Radius + 5.0f;
 	for (InterBullet* _bullet : bullet) {
 		if (_bullet != nullptr && _bullet->GetAlive() && !_bullet->GetInArea()) {
@@ -442,6 +464,10 @@ void SevenBoss::VanishCollide(vector<InterBullet*> bullet)
 				//乱数指定
 				mt19937 mt{ std::random_device{}() };
 				uniform_int_distribution<int> l_RandomRange(1, 100);
+				uniform_int_distribution<int> l_RandomPosX(5, 10);
+				uniform_int_distribution<int> l_RandomPosZ(5, 10);
+				uniform_int_distribution<int> l_RandomDirX(0, 1);
+				uniform_int_distribution<int> l_RandomDirZ(0, 1);
 				l_RandCount = int(l_RandomRange(mt));
 				_bullet->SetInArea(true);
 
@@ -451,6 +477,17 @@ void SevenBoss::VanishCollide(vector<InterBullet*> bullet)
 					m_VanishFrame = {};
 					m_AfterAlpha = {};
 					_vanishState = VANISH_SET;
+					////消えた後少し移動する
+					//m_RandPos.x = float(l_RandomPosX(mt));
+					//m_RandPos.y = float(l_RandomPosZ(mt));
+					//if (int(l_RandomDirX(mt)) == 1) {
+					//	m_RandPos.x *= -1.0f;
+					//}
+					//if (int(l_RandomDirZ(mt)) == 1) {
+					//	m_RandPos.y *= -1.0f;
+					//}
+
+					//m_AfterPos = { m_Position.x + m_RandPos.x,m_Position.y,m_Position.z + m_RandPos.y };
 				}
 			}
 		}
@@ -482,5 +519,8 @@ void SevenBoss::VanishBoss() {
 			}
 		}
 		m_Color.w = Ease(In, Cubic, m_VanishFrame, m_Color.w, m_AfterAlpha);
+	/*	m_Position = { Ease(In,Cubic,m_VanishFrame,m_Position.x,m_AfterPos.x),
+		m_Position.y,
+		Ease(In,Cubic,m_VanishFrame,m_Position.z,m_AfterPos.z) };*/
 	}
 }

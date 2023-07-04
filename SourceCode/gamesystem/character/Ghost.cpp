@@ -212,8 +212,14 @@ void Ghost::Spawm() {
 void Ghost::Follow() {
 	float l_Vel = 0.35f;//‘¬“x
 	XMFLOAT3 l_playerPos = Player::GetInstance()->GetPosition();
-	Helper::GetInstance()->FollowMove(m_Position, l_playerPos, l_Vel);
-	m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, l_playerPos, -PI_90);
+	//‘€‚ç‚ê‚Ä‚¢‚é‚©
+	if (!m_Manipulate) {
+		Helper::GetInstance()->FollowMove(m_Position, l_playerPos, l_Vel);
+		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, l_playerPos, -PI_90);
+	}
+	else {
+		Manipulate();
+	}
 }
 //’Tõ
 void Ghost::Search() {
@@ -407,4 +413,8 @@ void Ghost::Absorption() {
 	float l_Vel = 0.35f;//‘¬“x
 	Helper::GetInstance()->FollowMove(m_Position,m_TargetPos, l_Vel);
 	m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, m_TargetPos, -PI_90);
+}
+//‘€‚ç‚ê‚Ä‚¢‚é
+void Ghost::Manipulate() {
+	m_Color = { 1.0f,0.0f,1.0f,1.0f };
 }

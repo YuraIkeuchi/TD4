@@ -55,12 +55,18 @@ void Poltergeist::ImGuiDraw() {
 //パーティクル
 void Poltergeist::Particle() {
 	XMFLOAT4 s_color = { 0.0f,0.4f,1.0f,1.0f };
+	XMFLOAT4 s_color2 = { 0.4f,0.0f,1.0f,1.0f };
 	XMFLOAT4 e_color = { 1.0f,1.0f,1.0f,1.0f };
 	float s_scale = 2.0f;
 	float e_scale = 0.0f;
 	const int m_Life = 50;
 	if (m_Alive) {
-		ParticleEmitter::GetInstance()->FireEffect(m_Life, m_Position, s_scale, e_scale, s_color, e_color);
+		if (m_PolterType == TYPE_FOLLOW) {
+			ParticleEmitter::GetInstance()->FireEffect(m_Life, m_Position, s_scale, e_scale, s_color, e_color);
+		}
+		else {
+			ParticleEmitter::GetInstance()->FireEffect(m_Life, m_Position, s_scale, e_scale, s_color2, e_color);
+		}
 	}
 }
 

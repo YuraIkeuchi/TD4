@@ -141,6 +141,8 @@ void LoadStageObj::SevenUpdate() {
 	Absorption();
 	//回復
 	CollideBoss();
+	//操っている
+	Manipulate();
 }
 //描画
 void LoadStageObj::Draw(DirectXCommon* dxCommon) {
@@ -233,6 +235,7 @@ void LoadStageObj::VanishGhost() {
 		if (!ghosts[i]->GetAlive()) { continue; }
 		if (!ghosts[i]->GetCatch()) { continue; }
 		if (!ghosts[i]->GetFollow()) { continue; }
+		if (ghosts[i]->GetManipulate()) { continue; }
 		//特定の値を下回ったら
 		if (m_Division <= l_TargetCatchCount) {
 			m_Vanish = true;
@@ -471,6 +474,7 @@ void LoadStageObj::Absorption() {
 		}
 	}
 }
+//ボスとの当たり判定
 void LoadStageObj::CollideBoss() {
 	float l_Radius = 6.0f;
 	for (auto i = 0; i < ghosts.size(); ++i) {
@@ -485,5 +489,31 @@ void LoadStageObj::CollideBoss() {
 			ghosts[i]->SetVanish(true);
 			m_EnemyManager->HealHP(0.5f);
 		}
+	}
+}
+//捕まえているゴーストを操る
+void LoadStageObj::Manipulate() {
+	const float l_AddFrame = 0.05f;
+	for (auto i = 0; i < ghosts.size(); ++i) {
+		if (ghosts[i]->GetVanish()) { continue; }
+		if (!ghosts[i]->GetAlive()) { continue; }
+		if (!ghosts[i]->GetCatch()) { continue; }
+		if (!ghosts[i]->GetFollow()) { continue; }
+		if (m_EnemyManager->GetManipulate()) {
+			ghosts[i]->SetManipulate(true);
+			m_SubHunger = true;
+		}
+	}
+
+	if (m_SubHunger) {
+		if (m_Frame < m_FrameMax) {
+			m_Frame += l_AddFrame;
+		}
+		else {
+			m_Frame = {};
+			m_SubHunger = false;
+		}
+		HungerGauge::GetInstance()->SetCatchCount(0);
+		HungerGauge::GetInstance()->SetNowHunger(Ease(In, Cubic, m_Frame, HungerGauge::GetInstance()->GetNowHunger(), 0.0f));
 	}
 }
