@@ -109,6 +109,9 @@ public://gettersetter
 	void SetAbsorption(bool Absorption) { m_Absorption = Absorption; };
 	bool GetAbsorption() { return m_Absorption; }
 
+	void SetManipulate(bool Manipulate) { m_Manipulate = Manipulate; };
+	bool GetManipulate() { return m_Manipulate; }
+
 	void SetFinishApp(bool FinishApp) { m_FinishApp = FinishApp; };
 
 	bool GetFinishAppear() { return m_FinishAppear; }
@@ -182,6 +185,8 @@ protected:
 
 	//吸収してるか
 	bool m_Absorption = false;
+	//操る
+	bool m_Manipulate = false;
 private:
 
 	enum class ActionList {

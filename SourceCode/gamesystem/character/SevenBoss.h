@@ -37,6 +37,7 @@ private:
 	void Polter();//ポルターガイスト
 	void ThrowBound();//バウンド弾
 	void BirthAvatar();//偽物のボス
+	void Manipulate();//操る
 	void BulletCatch();//弾を吸収
 	void Stun();//スタン
 	void BirthExplosion();
@@ -60,6 +61,7 @@ private:
 		STATE_POLTER,
 		STATE_BOUND,
 		STATE_AVATAR,
+		STATE_MANIPULATE,
 		STATE_CATCH,
 		STATE_STUN,
 	}_charaState;
@@ -89,14 +91,16 @@ private:
 	//敵が弾を避けるかどうか
 	bool m_Vanish = false;
 
+	//透明のステート
 	enum VanishState {
 		VANISH_SET,
 		VANISH_END,
 	}_vanishState;
-
+	//透明化する時間
 	float m_VanishFrame = {};
-
+	//透明化する確率
 	int m_VanishTarget = {};
-
+	//糖度
 	float m_AfterAlpha = {};
+	XMFLOAT3 m_AfterPos = {};
 };

@@ -51,6 +51,8 @@ private:
 	void CollideFood();
 	//ゴーストの吸収
 	void Absorption();
+	//捕まえているゴーストを操る
+	void Manipulate();
 	//ボスとゴーストの当たり判定
 	void CollideBoss();
 	//ゴーストが消える

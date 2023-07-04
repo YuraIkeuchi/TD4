@@ -56,6 +56,7 @@ public://getter setter
 	const XMFLOAT3& GetEnemyPosition() { return boss.get()->GetPosition(); }
 	const bool GetEnemyCheck() { return boss.get()->GetCheck(); }
 	const bool GetEnemyAbsorption() { return boss.get()->GetAbsorption(); }
+	const bool GetManipulate() { return boss.get()->GetManipulate(); }
 	const bool GetEnemyFinishAppear() { return boss.get()->GetFinishAppear(); }
 
 	const bool GetBirthHeart() { return boss.get()->GetBirthHeart(); }
