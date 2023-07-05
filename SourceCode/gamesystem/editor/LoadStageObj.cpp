@@ -165,10 +165,11 @@ void LoadStageObj::Draw(DirectXCommon* dxCommon) {
 //ImGui
 void LoadStageObj::ImGuiDraw() {
 	//ゴースト
-	ghosts[0]->ImGuiDraw();
-	/*ImGui::Begin("Heart");
-	ImGui::Text("m_Division:%f", m_Division);
-	ImGui::End();*/
+	//ghosts[0]->ImGuiDraw();
+	ImGui::Begin("Heart");
+	ImGui::Text("m_Wide:%d", m_Wide);
+	ImGui::Text("m_WideArea:%f", m_WideArea);
+	ImGui::End();
 	//m_EnemyManager->ImGuiDraw();
 }
 //当たり判定(ゴースト)
@@ -499,9 +500,23 @@ void LoadStageObj::Manipulate() {
 		if (!ghosts[i]->GetAlive()) { continue; }
 		if (!ghosts[i]->GetCatch()) { continue; }
 		if (!ghosts[i]->GetFollow()) { continue; }
+		XMFLOAT3 l_ghostpos = ghosts[i]->GetPosition();
 		if (m_EnemyManager->GetManipulate()) {
-			ghosts[i]->SetManipulate(true);
+			m_Wide = true;
 			m_SubHunger = true;
+		}
+		float l_dir = Helper::GetInstance()->ChechLength(l_ghostpos, m_EnemyManager->GetEnemyPosition());
+		if (m_Wide) {
+			m_WideArea += 50.0f;
+
+			if (m_WideArea > l_dir) {
+				ghosts[i]->SetManipulate(true);
+			}
+
+			if (m_WideArea > 100.0f) {
+				m_WideArea = {};
+				m_Wide = false;
+			}
 		}
 	}
 

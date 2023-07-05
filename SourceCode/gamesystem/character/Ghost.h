@@ -1,6 +1,7 @@
 #pragma once
 #include "ObjCommon.h"
 #include "InterBullet.h"
+#include "AttackNote.h"
 #include "CollisionPrimitive.h"
 //ゴーストクラス
 class Ghost :
@@ -68,6 +69,8 @@ private://ステート
 	void CarryFood();
 	//
 	bool CollideBullet(vector<InterBullet*>bullet);
+
+	void BirthBullet();
 public:
 	//ゴースト同士の当たり判定
 	void GhostCollision(const XMFLOAT3& pos);
@@ -100,6 +103,7 @@ public://getter setter
 	void SetTargetPos(const XMFLOAT3& TargetPos) { m_TargetPos = TargetPos; }
 	void SetLimit(const float Limit) { m_Limit = Limit; }
 private:
+	vector<AttackNote*> attacknotes;//弾幕
 	bool m_Alive = true;//生存フラグ
 	bool m_Catch = false;//捕獲フラグ
 	bool isVerse = true;//リスポーンフラグ
@@ -116,6 +120,7 @@ private:
 		STATE_FOLLOW,
 		STATE_JACK,
 		STATE_HYPERJACK,
+		STATE_MANIPULATE,
 		STATE_VANISH,
 	}_charaState = CharaState::STATE_NONE;
 
@@ -184,4 +189,16 @@ private:
 
 	//操られている
 	bool m_Manipulate = false;
+
+	enum ManiState {
+		MANI_SET,
+		MANI_MOVE,
+		MANI_ATTACK,
+		MANI_END,
+	}_ManiState;
+
+	XMFLOAT3 m_AfterPos = {};
+	float m_AfterRotY = {};
+
+	int m_RotTimer = {};
 };
