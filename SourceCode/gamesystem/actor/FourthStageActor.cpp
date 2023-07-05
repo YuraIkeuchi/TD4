@@ -227,11 +227,24 @@ void FourthStageActor::IntroUpdate(DebugCamera* camera) {
 		text_->ChangeColor(0, { 1.0f,0.0f,0.0f,1.0f });
 	} else if (m_AppTimer == 400) {
 		text_->SelectText(TextManager::TALK_FOURTH_T);
-		for (int i = 0; i < 3; i++) {
-			text_->ChangeColor(i, { 1.0f,1.0f,0.0f,1.0f });
-		}
+		//for (int i = 0; i < 3; i++) {
+		//	text_->ChangeColor(i, { 1.0f,1.0f,0.0f,1.0f });
+		//}
 	} else if (m_AppTimer == 500) {
 		text_->SelectText(TextManager::TALK_FIVE_T);
+	}
+	else if (m_AppTimer == 600) {
+		text_->SelectText(TextManager::TALK_SIX_T);
+	} else if (m_AppTimer == 700) {
+		text_->SelectText(TextManager::TALK_SEVEN_T);
+	} else if (m_AppTimer == 800) {
+		text_->SelectText(TextManager::TALK_EIGHT_T);
+	} else if (m_AppTimer == 900) {
+		text_->SelectText(TextManager::TALK_NINE_T);
+	} else if (m_AppTimer == 1000) {
+		text_->SelectText(TextManager::TALK_TEN_T);
+	} else if (m_AppTimer == 1100) {
+		text_->SelectText(TextManager::TALK_ELEVEN_T);
 	}
 }
 

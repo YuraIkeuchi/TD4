@@ -99,12 +99,18 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	SecondCreateWord(SELECT_JOY2, L"めのまえのやつをたおすヨロコビを", L"リカイしてくれるよね!!!", L"!!!!!!!!!!");
 
 	CameraBossCreateWord(TALK_FIRST_T, L"ストポンとはぐれちゃった...", L"どこにいっちゃっただろう", L"おなかもすいちゃったし");
-	CameraBossCreateWord(TALK_SECOND_T, L"な、なにかサガしているのかい？", L"ぼ、ぼくでよければ", L"");
-	CameraBossCreateWord(TALK_THIRD_T, L"ぬ", L"ぬ", L"ぬ");
-	CameraBossCreateWord(TALK_FOURTH_T, L"", L"", L"");
-	CameraBossCreateWord(TALK_FIVE_T, L"", L"", L"");
-	CameraBossCreateWord(TALK_SIX_T, L"", L"", L"");
-		
+	CameraBossCreateWord(TALK_SECOND_T, L"な、なにかサガしているのかい？", L"もしかして", L"さっきのメガホンかな...");
+	CameraBossCreateWord(TALK_THIRD_T, L"そうなのかも！", L"でもおなかがすいて", L"もうウゴけない...");
+	CameraBossCreateWord(TALK_FOURTH_T, L"それならボクにマカせて！！", L"イチドトったら",L"いつでもだせるんだ！");
+	CameraBossCreateWord(TALK_FIVE_T, L"わーすごい！", L"ありがとう!", L"えーと...");
+	CameraBossCreateWord(TALK_SIX_T, L"ボクにはなまえがないんだ...", L"きづいたらここにいて", L"だからきにしないで");
+	CameraBossCreateWord(TALK_SEVEN_T, L"それならこれからはアポーね！", L"おカアさんが", L"りんごのエイゴ？をオシえてくれたの！");
+	CameraBossCreateWord(TALK_EIGHT_T, L"アポー...", L"とてもいいナマエだ", L"きにいったよ");
+	CameraBossCreateWord(TALK_NINE_T, L"アポーも友達になろう！", L"ストポンもいるし", L"きっと仲よくなれるよ！");
+	CameraBossCreateWord(TALK_TEN_T, L"いいのかい？", L"ボクはここからうごかないから", L"まってるね！");
+	CameraBossCreateWord(TALK_ELEVEN_T, L"ストポンみつけて", L"あしたあいにくるね", L"またね！アポー！");
+
+
 	FourthCreateWord(TALK_FIRST, L"ようこそ!!!", L"Ladies And ", L"Gentlemen!!!");
 	FourthCreateWord(TALK_SECOND, L"キミもオレがながす", L"イカしてるメロディーを", L"ききたいんだろ");
 	FourthCreateWord(TALK_THIRD, L"そこにCDがあるかぎり!", L"オレはオトをとめない!!!", L"");

@@ -99,6 +99,12 @@ public:
 		TALK_FOURTH_T,
 		TALK_FIVE_T,
 		TALK_SIX_T,
+		TALK_SEVEN_T,
+		TALK_EIGHT_T,
+		TALK_NINE_T,
+		TALK_TEN_T,
+		TALK_ELEVEN_T,
+
 	};
 
 	static TextManager* GetInstance();
