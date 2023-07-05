@@ -7,7 +7,7 @@
 #include "VariableCommon.h"
 #include <Easing.h>
 EnemyManager* LoadStageObj::m_EnemyManager = nullptr;
-//ƒS[ƒXƒg‚Ìƒ[ƒh
+//ã‚´ãƒ¼ã‚¹ãƒˆã®ãƒ­ãƒ¼ãƒ‰
 void LoadStageObj::GhostLoad() {
 	auto Size = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/ghost/ghost.csv", "Quantity")));
 
@@ -19,7 +19,7 @@ void LoadStageObj::GhostLoad() {
 	Scl.resize(Size);
 
 }
-//H‚×•¨ƒ[ƒh
+//é£Ÿã¹ç‰©ãƒ­ãƒ¼ãƒ‰
 void LoadStageObj::FoodLoad(const std::string& sceneName) {
 	size_t Size;
 	if (sceneName == "FIRSTSTAGE") {
@@ -39,33 +39,33 @@ void LoadStageObj::FoodLoad(const std::string& sceneName) {
 	Rot.resize(Size);
 	Scl.resize(Size);
 }
-//‚·‚×‚Äƒ[ƒh
+//ã™ã¹ã¦ãƒ­ãƒ¼ãƒ‰
 void LoadStageObj::AllLoad(const std::string& sceneName) {
 	m_SceneName = sceneName;
-	//ƒS[ƒXƒgŠÖŒW
+	//ã‚´ãƒ¼ã‚¹ãƒˆé–¢ä¿‚
 	GhostLoad();
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	for (auto i = 0; i < ghosts.size(); i++) {
 		ghosts[i] = new Ghost();
 		ghosts[i]->Initialize();
 	}
-	//H‚×•¨ŠÖŒW
+	//é£Ÿã¹ç‰©é–¢ä¿‚
 	FoodLoad(sceneName);
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	for (auto i = 0; i < foods.size(); i++) {
 		foods[i] = new Food();
 		foods[i]->Initialize();
 	}
 }
-//ƒ‰ƒCƒgƒZƒbƒg(H‚×•¨‚Ég‚¤)
+//ãƒ©ã‚¤ãƒˆã‚»ãƒƒãƒˆ(é£Ÿã¹ç‰©ã«ä½¿ã†)
 void LoadStageObj::LightSet(LightGroup* light) {
 	lightgroup = light;
 	for (auto i = 0; i < foods.size(); i++) {
 		lightgroup->SetCircleShadowActive(i + 2, true);
 	}
 }
-//‰Šú‰»
+//åˆæœŸåŒ–
 void LoadStageObj::Initialize() {
 	//Load();
 }
@@ -73,23 +73,23 @@ void LoadStageObj::TutorialUpdate() {
 
 	CommonUpdate();
 }
-//XV(ƒXƒe[ƒW1)
+//æ›´æ–°(ã‚¹ãƒ†ãƒ¼ã‚¸1)
 void LoadStageObj::FirstUpdate() {
-	//XV
+	//æ›´æ–°
 	CommonUpdate();
 }
 
-//XV
+//æ›´æ–°
 void LoadStageObj::SecondUpdate() {
-	//XV
+	//æ›´æ–°
 	CommonUpdate();
 }
 //3
 void LoadStageObj::ThirdUpdate() {
-	//XV
+	//æ›´æ–°
 	CommonUpdate();
-	//‚±‚Á‚©‚ç“Á—L‚Ìˆ—
-	//H—¿‚Ìíœ(‚±‚ÌƒXƒe[ƒW‚Ì‚İ)
+	//ã“ã£ã‹ã‚‰ç‰¹æœ‰ã®å‡¦ç†
+	//é£Ÿæ–™ã®å‰Šé™¤(ã“ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã®ã¿)
 	for (int i = 0; i < foods.size(); i++) {
 		if (foods[i] == nullptr) {
 			continue;
@@ -100,7 +100,7 @@ void LoadStageObj::ThirdUpdate() {
 		}
 	}
 
-	//H—¿¶¬
+	//é£Ÿæ–™ç”Ÿæˆ
 	if (m_EnemyManager->GetEnemyCheck() && (foods.size() < 5)) {
 		Food* newFood;
 		newFood = new Food();
@@ -117,46 +117,46 @@ void LoadStageObj::ThirdUpdate() {
 }
 //4
 void LoadStageObj::FourthUpdate() {
-	//XV
+	//æ›´æ–°
 	CommonUpdate();
 	FourthBossAction();
 
 }
 //5
 void LoadStageObj::FiveUpdate() {
-	//XV
+	//æ›´æ–°
 	CommonUpdate();
 }
 //6
 void LoadStageObj::SixUpdate() {
-	//XV
+	//æ›´æ–°
 	CommonUpdate();
 	SubHunger();
 }
 //7
 void LoadStageObj::SevenUpdate() {
-	//XV
+	//æ›´æ–°
 	CommonUpdate();
-	//‹zû
+	//å¸å
 	Absorption();
-	//‰ñ•œ
+	//å›å¾©
 	CollideBoss();
-	//‘€‚Á‚Ä‚¢‚é
+	//æ“ã£ã¦ã„ã‚‹
 	Manipulate();
 }
-//•`‰æ
+//æç”»
 void LoadStageObj::Draw(DirectXCommon* dxCommon) {
-	//ƒS[ƒXƒg
+	//ã‚´ãƒ¼ã‚¹ãƒˆ
 	for (auto i = 0; i < ghosts.size(); i++) {
 		ghosts[i]->Draw(dxCommon);
 	}
 	//
-	//H‚×•¨
+	//é£Ÿã¹ç‰©
 	for (auto i = 0; i < foods.size(); i++) {
 		foods[i]->Draw(dxCommon);
 	}
 
-	//ƒn[ƒg
+	//ãƒãƒ¼ãƒˆ
 	for (auto i = 0; i < hearts.size(); i++) {
 		hearts[i]->Draw(dxCommon);
 	}
@@ -164,15 +164,12 @@ void LoadStageObj::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui
 void LoadStageObj::ImGuiDraw() {
-	//ƒS[ƒXƒg
-	//ghosts[0]->ImGuiDraw();
-	ImGui::Begin("Heart");
-	ImGui::Text("m_Wide:%d", m_Wide);
-	ImGui::Text("m_WideArea:%f", m_WideArea);
+	//ã‚´ãƒ¼ã‚¹ãƒˆ
+
 	ImGui::End();
 	//m_EnemyManager->ImGuiDraw();
 }
-//“–‚½‚è”»’è(ƒS[ƒXƒg)
+//å½“ãŸã‚Šåˆ¤å®š(ã‚´ãƒ¼ã‚¹ãƒˆ)
 void LoadStageObj::Collide() {
 	for (auto i = 0; i < ghosts.size(); ++i) {
 		for (auto j = 0; j < ghosts.size(); ++j) {
@@ -188,7 +185,7 @@ void LoadStageObj::Collide() {
 		}
 	}
 }
-//H—¿‚ÌŒŸõ
+//é£Ÿæ–™ã®æ¤œç´¢
 void LoadStageObj::SearchFood() {
 	for (auto i = 0; i < ghosts.size(); i++) {
 		XMFLOAT3 l_ghostpos = ghosts[i]->GetPosition();
@@ -209,7 +206,7 @@ void LoadStageObj::SearchFood() {
 		}
 	}
 }
-//H—¿‚ÆƒS[ƒXƒg‚Ì“–‚½‚è”»’è
+//é£Ÿæ–™ã¨ã‚´ãƒ¼ã‚¹ãƒˆã®å½“ãŸã‚Šåˆ¤å®š
 void LoadStageObj::CollideFood() {
 	float l_Radius = 1.5f;
 	for (auto i = 0; i < ghosts.size(); i++) {
@@ -225,11 +222,11 @@ void LoadStageObj::CollideFood() {
 		}
 	}
 }
-//ƒS[ƒXƒg‚ªÁ‚¦‚é
+//ã‚´ãƒ¼ã‚¹ãƒˆãŒæ¶ˆãˆã‚‹
 void LoadStageObj::VanishGhost() {
 	int l_TargetCatchCount = HungerGauge::GetInstance()->GetCatchCount() - 1;
 	float l_Value = HungerGauge::m_Hungervalue;
-	//œZ‚ğ‚·‚é
+	//é™¤ç®—ã‚’ã™ã‚‹
 	m_Division = HungerGauge::GetInstance()->GetNowHunger() / 5.0f;
 	for (auto i = 0; i < ghosts.size(); ++i) {
 		if (ghosts[i]->GetVanish()) { continue; }
@@ -237,12 +234,12 @@ void LoadStageObj::VanishGhost() {
 		if (!ghosts[i]->GetCatch()) { continue; }
 		if (!ghosts[i]->GetFollow()) { continue; }
 		if (ghosts[i]->GetManipulate()) { continue; }
-		//“Á’è‚Ì’l‚ğ‰º‰ñ‚Á‚½‚ç
+		//ç‰¹å®šã®å€¤ã‚’ä¸‹å›ã£ãŸã‚‰
 		if (m_Division <= l_TargetCatchCount) {
 			m_Vanish = true;
 		}
 
-		//for•ª”²‚¯‚é
+		//foråˆ†æŠœã‘ã‚‹
 		if (m_Vanish) {
 			ghosts[i]->SetVanish(true);
 			HungerGauge::GetInstance()->SetCatchCount(HungerGauge::GetInstance()->GetCatchCount() - 1);
@@ -252,25 +249,25 @@ void LoadStageObj::VanishGhost() {
 		}
 	}
 }
-//‹¤’Ê‚ÌXV
+//å…±é€šã®æ›´æ–°
 void LoadStageObj::CommonUpdate() {
-	//ƒS[ƒXƒg
+	//ã‚´ãƒ¼ã‚¹ãƒˆ
 	for (auto i = 0; i < ghosts.size(); i++) {
 		ghosts[i]->Update();
 	}
 
 	//
-	//H‚×•¨
+	//é£Ÿã¹ç‰©
 	for (auto i = 0; i < foods.size(); i++) {
 		foods[i]->Update();
 	}
 
-	//ƒn[ƒg
+	//ãƒãƒ¼ãƒˆ
 	for (auto i = 0; i < hearts.size(); i++) {
 		hearts[i]->Update();
 	}
 
-	//H—¿‚Ìíœ(‚±‚ÌƒXƒe[ƒW‚Ì‚İ)
+	//é£Ÿæ–™ã®å‰Šé™¤(ã“ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã®ã¿)
 	for (int i = 0; i < hearts.size(); i++) {
 		if (hearts[i] == nullptr) {
 			continue;
@@ -281,20 +278,20 @@ void LoadStageObj::CommonUpdate() {
 		}
 	}
 	//
-	//“–‚½‚è”»’è
+	//å½“ãŸã‚Šåˆ¤å®š
 	Collide();
-	//H‚×•¨‚Ì“–‚½‚è”»’è
+	//é£Ÿã¹ç‰©ã®å½“ãŸã‚Šåˆ¤å®š
 	CollideFood();
-	//H‚×•¨‚ÌŒŸõ
+	//é£Ÿã¹ç‰©ã®æ¤œç´¢
 	SearchFood();
-	//ƒS[ƒXƒg‚ªÁ‚¦‚é
+	//ã‚´ãƒ¼ã‚¹ãƒˆãŒæ¶ˆãˆã‚‹
 	VanishGhost();
-	//ƒn[ƒg‚Ì¶¬
+	//ãƒãƒ¼ãƒˆã®ç”Ÿæˆ
 	BirthHeart();
-	//ƒ‰ƒCƒg¶¬
+	//ãƒ©ã‚¤ãƒˆç”Ÿæˆ
 	LightReturn();
 }
-//ƒn[ƒg‚Ì¶¬
+//ãƒãƒ¼ãƒˆã®ç”Ÿæˆ
 void LoadStageObj::BirthHeart() {
 	if (!m_EnemyManager->GetBoss()) { return; }
 	if (m_EnemyManager->GetBirthHeart()) {
@@ -338,13 +335,15 @@ void LoadStageObj::LockVerseGhost() {
 	}
 	int  nowStopGhorst = 0;
 	while (nowStopGhorst < kStopGhorstMax) {
-		if (boss->GetLimit() > 80.0f) {
+		if (boss->GetLimit() > 150.0f) {
 			boss->SetIsMiss(true);
+			boss->SetLimit(20.0f);
+			ReferGhorstReseted();
 			break;
 		}
 		for (auto i = 0; i < ghosts.size(); i++) {
 			if (ghosts[i]->GetIsRefer()) { continue; }
-			//ƒLƒƒƒ‰ƒXƒe[ƒg•Ï‚¦‚éÛ‚É‹C‚ğ‚Â‚¯‚Ä‚­‚¾‚³‚¢
+			//ã‚­ãƒ£ãƒ©ã‚¹ãƒ†ãƒ¼ãƒˆå¤‰ãˆã‚‹éš›ã«æ°—ã‚’ã¤ã‘ã¦ãã ã•ã„
 			if (ghosts[i]->GetStateInst() >= 2) { continue; }
 			XMFLOAT3 difPos = ghosts[i]->GetPosition();
 			float dif = Helper::GetInstance()->ChechLength(difPos, boss->GetPosition());
@@ -369,7 +368,7 @@ void LoadStageObj::LockAllGhost() {
 	int  nowStopGhorst = 0;
 	for (auto i = 0; i < ghosts.size(); i++) {
 		if (ghosts[i]->GetIsRefer()) { continue; }
-		//ƒLƒƒƒ‰ƒXƒe[ƒg•Ï‚¦‚éÛ‚É‹C‚ğ‚Â‚¯‚Ä‚­‚¾‚³‚¢
+		//ã‚­ãƒ£ãƒ©ã‚¹ãƒ†ãƒ¼ãƒˆå¤‰ãˆã‚‹éš›ã«æ°—ã‚’ã¤ã‘ã¦ãã ã•ã„
 		if (ghosts[i]->GetStateInst() >= 3) { continue; }
 		stopGhosts[nowStopGhorst] = ghosts[i];
 		ghosts[i]->SetIsRefer(true);
@@ -380,6 +379,8 @@ void LoadStageObj::LockAllGhost() {
 
 void LoadStageObj::ReferGhorstReseted() {
 	for (Ghost*& ghost : stopGhosts) {
+		if (!ghost) { continue; }
+		if (ghost->GetStateInst()==4) { continue; }
 		ghost->SetIsRefer(false);
 	}
 }
@@ -418,9 +419,10 @@ void LoadStageObj::ChangeGhost2Enemy() {
 	int m_GhostPos = 0;
 	for (int i = 0; i < kStopGhorstMax; i++) {
 		if (!stopGhosts[i]) { continue; }
-		stopGhosts[i]->SetColor({ 1,0,1,1 });
-		stopGhosts[i]->SetIsVerse(false, 80);
+		if (!stopGhosts[i]->GetIsRefer()) { continue; }
+		stopGhosts[i]->SetColor({ 0,0,0,1 });
 		stopGhosts[i]->SetVanish(true);
+		stopGhosts[i]->SetIsVerse(false, 80);
 		boss->SetJackPos(m_GhostPos, stopGhosts[i]->GetPosition());
 		m_GhostPos++;
 	}
@@ -432,13 +434,13 @@ void LoadStageObj::ChangeGhost2Hyper() {
 	if (boss->GetInstruction() != InterBoss::FourthBossInst::AllSummon) { return; }
 	for (Ghost*& ghost : stopGhosts) {
 		if (!ghost) { continue; }
-		ghost->SetColor({ 1,1,0,1 });
+		ghost->SetColor({ 0,0,0,1 });
 		ghost->SetIsAllPostionCheck(true);
 	}
 	boss->SetInstruction(InterBoss::FourthBossInst::FinishMove);
 }
 
-//‹Q‰ìƒQ[ƒW‚ğƒS[ƒXƒgO‘Ì•ªŒ¸‚ç‚·
+//é£¢é¤“ã‚²ãƒ¼ã‚¸ã‚’ã‚´ãƒ¼ã‚¹ãƒˆä¸‰ä½“åˆ†æ¸›ã‚‰ã™
 void LoadStageObj::SubHunger() {
 	const float l_AddFrame = 0.1f;
 	if (m_EnemyManager->GetEnemyCheck()) {
@@ -458,7 +460,18 @@ void LoadStageObj::SubHunger() {
 		HungerGauge::GetInstance()->SetNowHunger(Ease(In, Cubic, m_Frame, HungerGauge::GetInstance()->GetNowHunger(), m_LimitHunger));
 	}
 }
-//ƒS[ƒXƒg‚Ì‹zû
+int LoadStageObj::GetGhostNumber() {
+	int num = 0;
+	for (auto i = 0; i < ghosts.size(); i++) {
+		if (!ghosts[i]) { continue; }
+		if (!ghosts[i]->GetAlive()) { continue; }
+		if (ghosts[i]->GetIsRefer()) { continue; }
+		if (ghosts[i]->GetStateInst()>=2) { continue; }
+		num++;
+	}
+	return num;
+}
+//ã‚´ãƒ¼ã‚¹ãƒˆã®å¸å
 void LoadStageObj::Absorption() {
 	for (auto i = 0; i < ghosts.size(); ++i) {
 		if (ghosts[i]->GetVanish()) { continue; }
@@ -475,7 +488,7 @@ void LoadStageObj::Absorption() {
 		}
 	}
 }
-//ƒ{ƒX‚Æ‚Ì“–‚½‚è”»’è
+//ãƒœã‚¹ã¨ã®å½“ãŸã‚Šåˆ¤å®š
 void LoadStageObj::CollideBoss() {
 	float l_Radius = 6.0f;
 	for (auto i = 0; i < ghosts.size(); ++i) {
@@ -492,7 +505,7 @@ void LoadStageObj::CollideBoss() {
 		}
 	}
 }
-//•ß‚Ü‚¦‚Ä‚¢‚éƒS[ƒXƒg‚ğ‘€‚é
+//æ•ã¾ãˆã¦ã„ã‚‹ã‚´ãƒ¼ã‚¹ãƒˆã‚’æ“ã‚‹
 void LoadStageObj::Manipulate() {
 	const float l_AddFrame = 0.05f;
 	for (auto i = 0; i < ghosts.size(); ++i) {
