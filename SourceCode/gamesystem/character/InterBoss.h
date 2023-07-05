@@ -5,6 +5,7 @@
 #include "ObjCommon.h"
 #include "BreakEffect.h"
 #include "InterEnemy.h"
+
 using namespace std;         //  名前空間指定
 
 //ボスの基底クラス
@@ -49,6 +50,7 @@ public:
 
 	virtual void EffecttexDraw(DirectXCommon* dxCommon) = 0;
 
+	void AwakeUpdate();
 protected:
 
 	virtual void Action() = 0;//ボス特有の処理
@@ -114,6 +116,8 @@ public://gettersetter
 
 	void SetFinishApp(bool FinishApp) { m_FinishApp = FinishApp; };
 
+	void SetDeleteObj(bool DeleteObj) { m_DeleteObj = DeleteObj; };
+
 	bool GetFinishAppear() { return m_FinishAppear; }
 
 	bool GetBirthHeart() { return m_BirthHeart; }
@@ -132,6 +136,7 @@ private:
 	std::string SceneName;
 	vector<InterEffect*> effects;
 protected:
+
 	//ダメージ食らったとの色変換
 	float ColChangeEaseT;
 	int ActionTimer;
@@ -231,5 +236,7 @@ public:
 	void SetThrowUpdateF(bool f) { ThrowUpdateF = f; }
 
 	int m_BirthTarget = {};
+
+	bool m_DeleteObj = false;
 };
 

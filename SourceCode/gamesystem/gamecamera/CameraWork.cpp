@@ -75,6 +75,7 @@ void (CameraWork::* CameraWork::stateTable[])() = {
 	&CameraWork::SetBossDead_AfterFive,//5ボスのやられたとき（フェード後）
 	&CameraWork::SetBossDead_AfterSix,//6ボスのやられたとき（フェード後）
 	&CameraWork::SetBossDead_AfterSeven,//7ボスのやられたとき（フェード後）
+	&CameraWork::StrongCamera,//ボス覚醒カメラ
 };
 //XV
 void CameraWork::Update(DebugCamera* camera) {
@@ -337,10 +338,9 @@ void CameraWork::EditorCamera() {
 //ImGui
 void CameraWork::ImGuiDraw() {
 	ImGui::Begin("Camera");
-	ImGui::Text("CameraApp:%d", m_AppearType);
-	ImGui::Text("Scale,:%f", m_CameraScale);
-	ImGui::Text("Speed,:%f", m_CameraSpeed);
-	ImGui::Text("POSY:%f", m_eyePos.y);
+	ImGui::Text("Feed:%d", FeedF);
+	ImGui::Text("End:%d", FeedEndF);
+	ImGui::Text("Timer:%d", m_StrongTimer);
 	ImGui::End();
 }
 void CameraWork::SpecialUpdate() {
@@ -871,4 +871,42 @@ void CameraWork::SetCircleCameraEye(const XMFLOAT3 target) {
 	m_eyePos.x = m_CameraCircleX;
 	m_eyePos.z = m_CameraCircleZ;
 	m_targetPos = target;
+}
+void CameraWork::StrongCamera() {
+	const int l_Timer = 200;
+	if (_StrongState == STRONG_ONE) {
+		if (FeedF) {
+			feed->FeedIn(Feed::FeedType::WHITE, 0.025f, FeedF);
+			if (feed->GetAlpha() >= 1.0f) {
+				_StrongState = STRONG_SECOND;
+			}
+		}
+	}
+	else if (_StrongState == STRONG_SECOND) {
+		m_eyePos = { 0.0f,20.0f,-20.0f };
+		m_targetPos = { 0.0f,0.0f,0.0f };
+		if (feed->GetAlpha() == 0.0f) {
+			m_StrongTimer++;
+		}
+		
+		if (m_StrongTimer == 10) {
+			FeedEndF = false;
+		}
+		if (m_StrongTimer == l_Timer) {
+			FeedF = true;
+			m_Finish = true;
+		}
+
+		if (FeedF) {
+			feed->FeedIn(Feed::FeedType::WHITE, 0.025f, FeedF);
+			if (feed->GetAlpha() >= 1.0f) {
+				if (m_Finish) {
+					_StrongState = STRONG_THIRD;
+					m_EndStrong = true;
+				}
+			}
+		}
+	}else{
+	}
+
 }

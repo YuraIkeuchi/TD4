@@ -20,6 +20,7 @@ enum CameraState {
 	CAMERA_BOSSDEAD_AFTER_FIVE,
 	CAMERA_BOSSDEAD_AFTER_SIX,
 	CAMERA_BOSSDEAD_AFTER_SEVEN,
+	CAMERA_BOSS_STRONG,
 };
 
 //ボス登場シーンのカメラの動き(2個目のボスがこの量なだけでボスによってはへらしてもいいよ)
@@ -70,6 +71,7 @@ private:
 	//void SetBoss(InterBoss* boss) { this->boss = boss; }
 	//ゲームシーン以外で使うカメラ更新(this変数で変更可能)
 	void SpecialUpdate();//更新
+	void StrongCamera();
 public:
 	//void EditorCamera();
 	void BossDefeatcamera();
@@ -129,13 +131,23 @@ public:
 	void SetTarget(const XMFLOAT3& target) { m_targetPos = target; }
 	XMFLOAT3& GetTarget() { return m_targetPos; }
 
+	void SetFeedF(const bool Feed) { FeedF = Feed; }
+
 	bool GetFeedF() { return FeedF; }
+
+	bool GetCameraStrong() { return m_CameraStrong; }
+
+	void SetCameraStrong(const bool CameraStrong) { m_CameraStrong = CameraStrong; }
 
 	bool GetEndDeath() { return m_EndDeath; }
 
 	bool GetAppearEndF() { return AppearEndF; }
 
+	bool GetEndStrong() { return m_EndStrong; }
+
 	int GetAppearType() { return m_AppearType; }
+
+	//
 	void SetCameraState(const int CameraState) { m_CameraState = CameraState; }
 
 	//シーンネームの取得
@@ -198,4 +210,17 @@ private:
 
 	//カメラをスキップするか
 	bool m_CameraSkip = false;
+
+	bool m_CameraStrong = false;
+
+	enum StrongState {
+		STRONG_ONE,
+		STRONG_SECOND,
+		STRONG_THIRD,
+	}_StrongState;
+
+	int m_StrongTimer = 0;
+
+	bool m_EndStrong = false;
+	bool m_Finish = false;
 };

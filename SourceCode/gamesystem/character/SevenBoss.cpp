@@ -89,6 +89,7 @@ void SevenBoss::Action() {
 	Obj_SetParam();
 	//ボスの消える判定
 	VanishBoss();
+	DeleteObj();
 	//リミット制限
 	Helper::GetInstance()->Clamp(m_Position.x, -55.0f, 65.0f);
 	Helper::GetInstance()->Clamp(m_Position.z, -60.0f, 60.0f);
@@ -151,6 +152,11 @@ void SevenBoss::Action() {
 
 	bossstuneffect->SetBasePos(m_Position);
 	bossstuneffect->Update();
+
+	//HPが半分切ったら強化
+	if (m_HP < m_MaxHp / 2) {
+		isStrong = true;
+	}
 }
 //ポーズ
 void SevenBoss::Pause() {
@@ -542,5 +548,45 @@ void SevenBoss::VanishBoss() {
 	/*	m_Position = { Ease(In,Cubic,m_VanishFrame,m_Position.x,m_AfterPos.x),
 		m_Position.y,
 		Ease(In,Cubic,m_VanishFrame,m_Position.z,m_AfterPos.z) };*/
+	}
+}
+
+void SevenBoss::DeleteObj() {
+	if (m_DeleteObj) {
+		avatarboss.clear();
+		poltergeist.clear();
+		abseffect.clear();
+		m_Position = { 0.0f,3.0f,30.0f };
+		m_Rotation = { 0.0f,90.0f,0.0f };
+		m_Scale = { 0.1f,0.1f,0.1f };
+		m_Color = { 1.0f,1.0f,1.0f,1.0f };
+		_charaState = STATE_INTER;
+		m_InterVal = {};
+		m_MoveTimer = {};
+	
+		//攻撃回数
+		m_AttackCount = {};
+		//スタンしたかどうか
+		m_Stun = false;
+		//攻撃の乱数
+		m_AttackRand = {};
+
+		//敵が弾を避けるかどうか
+		m_Vanish = false;
+
+		_vanishState = VANISH_SET;
+		//透明化する時間
+		m_VanishFrame = {};
+		//透明化する確率
+		m_VanishTarget = {};
+		//糖度
+		m_AfterAlpha = {};
+		m_AfterPos = {};
+
+		m_RotTimer = {};
+		m_StartMani = false;
+		m_DeleteObj = false;
+
+
 	}
 }

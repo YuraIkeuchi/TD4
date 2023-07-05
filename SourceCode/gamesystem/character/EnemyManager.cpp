@@ -150,3 +150,10 @@ void EnemyManager::DirSet(int dir) {
 void EnemyManager::HealHP(const float power) {
 	boss->SetHP(boss->GetHP() + power);
 }
+//覚醒
+void EnemyManager::Awake() {
+	boss->AwakeUpdate();
+}
+void EnemyManager::DeleteObj() {
+	boss->SetDeleteObj(true);
+}
