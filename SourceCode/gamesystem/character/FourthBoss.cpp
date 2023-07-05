@@ -31,7 +31,11 @@ FourthBoss::FourthBoss() {
 		photoSpot[i].reset(photoSpot_);
 	}
 
-	photo[Photo_In] = IKESprite::Create(ImageManager::PHOTO_IN, { 0,0 });
+	photo[Photo_In] = IKESprite::Create(ImageManager::PHOTO_IN, { 0,0 }, {1,1,1,0.5f});
+	photo[Photo_In_Change] = IKESprite::Create(ImageManager::PHOTO_IN_Change, { 0,0 }, { 1,1,1,0.5f });
+	photo[Photo_In_Control] = IKESprite::Create(ImageManager::PHOTO_IN_Control, { 0,0 }, { 1,1,1,0.5f });
+	photo[Photo_In_Sub] = IKESprite::Create(ImageManager::PHOTO_IN_Sub, { 0,0 }, { 1,1,1,0.5f });
+	photo[Photo_In_Ult] = IKESprite::Create(ImageManager::PHOTO_IN_Ult, { 0,0 }, { 1,1,1,0.5f });
 	photo[Photo_Out_Top] = IKESprite::Create(ImageManager::PHOTO_OUT, { 0,-360 });
 	photo[Photo_Out_Under] = IKESprite::Create(ImageManager::PHOTO_OUT, { 0,1080 });
 	for (int i = Photo_Out_Top; i <= Photo_Out_Under; i++) {
@@ -154,8 +158,20 @@ void FourthBoss::EffecttexDraw(DirectXCommon* dxCommon) {
 	}
 	IKETexture::PostDraw();
 	IKESprite::PreDraw();
-	if (phase == commandState::MoveCommand && ActionTimer > 60 && shutterTime < 1.0f) {
+	if (phase == commandState::MoveCommand) {
 		photo[Photo_In]->Draw();
+	}
+	if (phase == commandState::EnemySpawn) {
+		photo[Photo_In_Change]->Draw();
+	}
+	if (phase == commandState::ControlCommand) {
+		photo[Photo_In_Control]->Draw();
+	}
+	if (phase == commandState::SubGauge) {
+		photo[Photo_In_Sub]->Draw();
+	}
+	if (phase == commandState::Ultimate) {
+		photo[Photo_In_Ult]->Draw();
 	}
 	for (int i = Photo_Out_Top; i <= Photo_Out_Under; i++) {
 		photo[i]->Draw();

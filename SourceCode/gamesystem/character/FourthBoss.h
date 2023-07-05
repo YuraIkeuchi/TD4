@@ -78,6 +78,10 @@ private:
 	};
 	enum {
 		Photo_In,
+		Photo_In_Change,
+		Photo_In_Control,
+		Photo_In_Sub,
+		Photo_In_Ult,
 		Photo_Out_Top,
 		Photo_Out_Under,
 		SpriteMax,
