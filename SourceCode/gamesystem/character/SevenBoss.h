@@ -106,4 +106,15 @@ private:
 
 	int m_RotTimer = {};
 	bool m_StartMani = false;
+
+	//CSV系
+	//各インターバルやリミット時間
+	vector<int>m_RandAct;
+
+	enum RandState {
+		RAND_POLTER,
+		RAND_BOUND,
+		RAND_AVATAR,
+		RAND_MANIPULATE
+	};
 };

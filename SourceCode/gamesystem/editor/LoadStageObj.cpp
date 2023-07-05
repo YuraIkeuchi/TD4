@@ -1,4 +1,4 @@
-#include "LoadStageObj.h"
+﻿#include "LoadStageObj.h"
 #include "CsvLoader.h"
 #include "HungerGauge.h"
 #include "Collision.h"

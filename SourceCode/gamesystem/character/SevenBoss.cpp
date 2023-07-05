@@ -6,6 +6,7 @@
 #include "Helper.h"
 #include "Player.h"
 #include "Easing.h"
+#include "HungerGauge.h"
 //生成
 SevenBoss::SevenBoss() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::DJ);
@@ -43,7 +44,10 @@ void SevenBoss::SkipInitialize() {
 }
 //CSV
 void SevenBoss::CSVLoad() {
-	
+	auto ActSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "ACT_NUM")));
+	m_RandAct.resize(ActSize);
+	LoadCSV::LoadCsvParam_Int("Resources/csv/chara/boss/Seven/Sevenboss.csv", m_RandAct, "RandAct");
+
 	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "Magnification")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "hp1")));
 	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "HeartTarget")));
@@ -197,31 +201,38 @@ void SevenBoss::InterValMove() {
 	const int l_LimitTimer = 100;
 	m_InterVal++;
 	mt19937 mt{ std::random_device{}() };
-	uniform_int_distribution<int> l_RandomMove(0, 2);
+	uniform_int_distribution<int> l_RandomMove(0, 100);
 	if (m_InterVal == l_LimitTimer) {
-		_charaState = STATE_MANIPULATE;
-		m_InterVal = {};
-		m_StartMani = true;
-		////行動を決めて次の行動に移る
-		//m_AttackRand = int(l_RandomMove(mt));
+		//行動を決めて次の行動に移る
+		m_AttackRand = int(l_RandomMove(mt));
 
-		//if (m_AttackRand == 0) {
-		//	_charaState = STATE_BOUND;
-		//	m_InterVal = {};
-		//}
-		//else if(m_AttackRand == 1) {
-		//	_charaState = STATE_POLTER;
-		//	m_InterVal = {};
-		//}
-		//else {
-		//	if (m_AvatarCount == 0) {
-		//		_charaState = STATE_AVATAR;
-		//		m_InterVal = {};
-		//	}
-		//	else {
-		//		m_InterVal = l_LimitTimer - 1;
-		//	}
-		//}
+		if (m_AttackRand < m_RandAct[RAND_POLTER]) {
+			_charaState = STATE_POLTER;
+			m_InterVal = {};
+		}
+		else if (m_AttackRand >= m_RandAct[RAND_POLTER] && m_AttackRand < m_RandAct[RAND_BOUND]) {
+			_charaState = STATE_BOUND;
+			m_InterVal = {};
+		}
+		else if (m_AttackRand >= m_RandAct[RAND_BOUND] && m_AttackRand < m_RandAct[RAND_AVATAR]) {
+			if (m_AvatarCount == 0) {
+				_charaState = STATE_AVATAR;
+				m_InterVal = {};
+			}
+			else {
+				m_InterVal = l_LimitTimer - 1;
+			}
+		}
+		else {
+			if (HungerGauge::GetInstance()->GetCatchCount() != 0) {
+				_charaState = STATE_MANIPULATE;
+				m_InterVal = {};
+				m_StartMani = true;
+			}
+			else {
+				m_InterVal = l_LimitTimer - 1;
+			}
+		}
 	}
 }
 //ポルターガイスト
