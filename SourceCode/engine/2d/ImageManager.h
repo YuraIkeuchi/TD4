@@ -70,7 +70,8 @@ public:
 		Cancel,
 		BOSS_ARROW,
 		NOTE,
-		NOTE2
+		NOTE2,
+		DARKBOM
 	};
 	//テクスチャの名前
 	enum tex2dName

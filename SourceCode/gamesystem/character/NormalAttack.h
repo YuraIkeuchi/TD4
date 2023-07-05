@@ -8,7 +8,7 @@ public:
 
 	void Upda() override;
 
-	void Draw() override;
+	void Draw(DirectXCommon* dxCommon) override;
 
 	void SpriteDraw() override;
 private:

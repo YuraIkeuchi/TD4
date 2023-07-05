@@ -8,6 +8,8 @@ void ShotAttack::Init()
 		ShotObj[i].reset(new IKEObject3d());
 		ShotObj[i]->Initialize();
 		ShotObj[i]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Bullet));
+
+		BulAlpha[i] = 1.f;
 	}
 
 }
@@ -19,21 +21,37 @@ void (ShotAttack::* ShotAttack::stateTable[])() = {
 
 void ShotAttack::Upda()
 {
-	if (_phase == Phase::NON)_phase = Phase::SHOT;
-	//状態移行(charastateに合わせる)
+	m_Position = boss->GetPosition();
+
+	if (_phase == Phase::NON&&!ActionEnd) {
+		_phase = Phase::SHOT;
+	}
+		//状態移行(charastateに合わせる)
 	(this->*stateTable[_phase])();
 
 	for(auto i=0;i<BulSize;i++)
 	{
-		ShotObj[i]->SetColor({ 1.f,1.f,1.f ,1.f});
+		ShotObj[i]->SetColor({ 1.f,1.f,1.f ,BulAlpha[i]});
 		ShotObj[i]->SetScale({ 1.f,1.f,1.f });
 		ShotObj[i]->SetRotation(BulRot[i]);
 		ShotObj[i]->SetPosition(BulPos[i]);
 		ShotObj[i]->Update();
 	}
+	boss->SetPosition(m_Position);
+
+	//攻撃終了時の初期化周り
+	if(ActionEnd)
+	{
+		for(auto i=0;i<BulSize;i++)
+		BulAlpha[i] = 1.f;
+		PhaseCount = 0;
+		AttackTimer = 0;
+		_phase = NON;
+
+	}
 }
 
-void ShotAttack::Draw()
+void ShotAttack::Draw(DirectXCommon* dxCommon)
 {
 	IKEObject3d::PreDraw();
 	for (auto i = 0; i < BulSize; i++)
@@ -55,12 +73,6 @@ void ShotAttack::SpriteDraw()
 #pragma region 行動の中身
 void ShotAttack::Phase_Idle()
 {
-	for(auto i=0;i<BulSize;i++)
-	{
-		BulPos[i]=(boss->GetPosition());
-		//攻撃カウンタ
-		
-	}
 	AttackTimer++;
 	FollowPlayer();
 
@@ -68,51 +80,60 @@ void ShotAttack::Phase_Idle()
 	bool next = AttackTimer > 120;
 
 	m_Rotation = boss->GetRotation();
-	if (next)_phase = Phase::SHOT;
-}
+	if (next) {
+		for (auto i = 0; i < BulSize; i++)
+			BulPos[i] = boss->GetPosition();
+
+		_phase = Phase::SHOT;
+	}
+	}
 
 void ShotAttack::Phase_Shot()
 {
-
-	//m_Rotation.y++;
-//	boss->SetRotation(m_Rotation);
 	//弾の向きをプレイヤーに
 	RottoPlayer();
 	//向いた方向に進む
-	constexpr float SummonSpeed = 2.f;
+	constexpr float SummonSpeed = 4.f;
 
 	for (auto i = 0; i < BulSize; i++)
 	{
 		move[i] = { 0.f,0.f,0.1f,0.f };
-		matRot[i] = XMMatrixRotationY(XMConvertToRadians(boss->GetRotation().y +90+ (static_cast<float>(i * 30.f - 30.f))));
+		matRot[i] = XMMatrixRotationY(XMConvertToRadians(boss->GetRotation().y -0.f+ (static_cast<float>(i * 30.f - 30.f))));
 		move[i] = XMVector3TransformNormal(move[i], matRot[i]);
 
 	}
 	for (auto i = 0; i < BulSize; i++)
 	{
+		if(BulAlpha[i]>=1.f)BulPos[i] = boss->GetPosition();
 	//進行スピード
-		BulPos[i] = {
-			BulPos[i].x + move[i].m128_f32[0] * SummonSpeed,
-			BulPos[i].y,
-			BulPos[i].z + move[i].m128_f32[2] * SummonSpeed
-		};
+		BulPos[i].x += move[i].m128_f32[0] * SummonSpeed;
+		BulPos[i].z += move[i].m128_f32[2] * SummonSpeed;
 		//弾を薄く
-		//BulAlpha[i] -= 0.02f;
-	}
-
-	for (auto i = 0; i < BulSize;)
-	{
-		if (BulAlpha[i] == 0.f)i++;
-		else continue;
-
+		BulAlpha[i] -= 0.01f;
 		
-
 	}
+
+	if (
+		BulAlpha[0] <= 0.f) {
+		OldRot=boss->GetRotation();
+		PhaseCount++;
+		_phase = END;
+	}
+
 }
 
 void ShotAttack::Phase_End()
 {
-	AttackTimer = 0;
+	for(auto i=0;i<BulSize;i++)
+	{
+		BulAlpha[i] = 1.f;
+		BulPos[i] = boss->GetPosition();
+	}
+	boss->SetRotation({ boss->GetRotation().x,
+	OldRot.y + 90.f,
+	boss->GetRotation().z });
+	if (PhaseCount < 4)_phase = SHOT;
+	else ActionEnd = true;
 }
 
 

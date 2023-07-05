@@ -13,11 +13,14 @@ public:
 
 	virtual void Upda()=0;
 
-	virtual void Draw()=0;
+	virtual void Draw(DirectXCommon* dxCommon)=0;
 
 	virtual void SpriteDraw()=0;
 
 public:
+	bool GetActionEnd() { return ActionEnd; }
+
+	void SetActionEnd(bool f) { ActionEnd = f; }
 	void SetBoss(InterBoss* boss) { this->boss = boss; };
 protected:
 	InterBoss* boss=nullptr;
@@ -25,6 +28,8 @@ protected:
 	int AttackTimer=0;
 
 	float FollowAngle;
+
+	bool ActionEnd;
 
 	XMFLOAT3 m_Position,m_Rotation;
 protected:

@@ -24,12 +24,15 @@ FiveBoss::FiveBoss()
 
 	shot = new ShotAttack();
 	normal = new NormalAttack();
+	smash = new SmashShotAttack();
 
+	smash->Init();
 	shot->Init();
-	shot->SetBoss(this);
+
 	
 	normal->Init();
 normal->SetBoss(this);
+
 
 	noteeffect.reset(new NoteEffect());
 	noteeffect->Initialize();
@@ -70,19 +73,59 @@ void (FiveBoss::* FiveBoss::attackTable[])() = {
 	&FiveBoss::Pause,
 	&FiveBoss::Shot,
 	&FiveBoss::Normal,
+	& FiveBoss::Smash,
 };
 
 void FiveBoss::Action()
 {
+	smash->SetBoss(this);
+	shot->SetBoss(this);
 	////状態移行(charastateに合わせる)
 	//if (m_HP > 0.0f) {
 		(this->*attackTable[_aPhase])();
 	//}
-	if(Input::GetInstance()->TriggerButton(Input::Y))
-	{
-		_aPhase = ATTACK_SHOT;
+
+	/// <summary>
+	/// 攻撃ー３WAY
+	/// </summary>
+
+		if (_aPhase == ATTACK_SHOT)
+		{
+			RandAction = 0;
+			if (shot->GetActionEnd())
+			{
+				ActionTimer++;
+				_aPhase = ATTACK_NORMAL;
+			}
+		}
+		if (_aPhase == ATTACK_IMPACT)
+		{
+			RandAction = 0;
+		if (smash->GetActionEnd())
+		{
+			ActionTimer++;
+			_aPhase = ATTACK_NORMAL;
+		}
 	}
 
+		if (_aPhase == ATTACK_NORMAL)ActionTimer++;
+
+
+	mt19937 mt{ std::random_device{}() };
+	if (_aPhase == ATTACK_NORMAL&&ActionTimer%120==0) {
+		RandAction = rand() % 3;
+
+		if (RandAction==1)
+		{
+			shot->SetActionEnd(false);
+			_aPhase = ATTACK_SHOT;
+		}
+		if (RandAction==2)
+		{
+			smash->SetActionEnd(false);
+			_aPhase = ATTACK_IMPACT;
+		}
+	}
 	/*^^^^当たり判定^^^^*/
 	//弾とボスの当たり判定
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
@@ -144,7 +187,8 @@ void FiveBoss::EffecttexDraw(DirectXCommon* dxCommon)
 void FiveBoss::Draw(DirectXCommon* dxCommon)
 {
 	//Obj_Draw();
-	shot->Draw();
+	smash->Draw(dxCommon);
+	shot->Draw(dxCommon);
 	Fbx_Draw(dxCommon);
 
 }

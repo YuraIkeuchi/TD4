@@ -1,7 +1,6 @@
 #pragma once
 #include "InterAttack.h"
-#include"IKESprite.h"
-class ShotAttack :
+class SmashShotAttack :
     public InterAttack
 {
 public:
@@ -12,15 +11,23 @@ public:
     void Draw(DirectXCommon* dxCommon) override;
 
     void SpriteDraw() override;
+
+    void BomParticle();
 private:
     //ÉÇÉfÉãÅAçUåÇó\ë™ÇÃîÕàÕ
-    static constexpr int BulSize = 3;
+    static constexpr int BulSize = 10;
     std::array<std::unique_ptr<IKEObject3d>, BulSize>ShotObj;
-	std::array<std::unique_ptr<IKESprite>, 4>ShotArea;
-    std::array<float, 4>AreaAngle={};
-    std::array<XMFLOAT3, BulSize>BulPos;
+    std::array<std::unique_ptr<IKETexture>, BulSize>ShotArea;
+    std::array<float, BulSize>AreaScl;
+    std::array<float, BulSize>AreaAlpha;
+    std::array<float, BulSize>BulEaseCount;
+	std::array<float, BulSize>PosXVal,PosZVal;
+    std::array<float, BulSize>BulSpeed;
+    std::array<float, BulSize>BulRotZ;
+	std::array<XMFLOAT3, BulSize>BulPos;
     std::array<XMFLOAT3, BulSize>BulRot;
     std::array<float, BulSize>BulAlpha;
+    std::array<XMFLOAT3, BulSize>ImpactTexPos;
 
     std::array<XMVECTOR, BulSize>move;
     std::array<XMMATRIX, BulSize>matRot;
@@ -33,16 +40,18 @@ private:
     {
         NON,
         SHOT,
+        IMPACT,
         END
-    }_phase=Phase::NON;
+    }_phase = Phase::NON;
     int PhaseCount = 0;
 
-    static void (ShotAttack::* stateTable[])();
+    static void (SmashShotAttack::* stateTable[])();
 
     void Phase_Idle();
 
     void Phase_Shot();
 
+    void Phase_Impact();
     void Phase_End();
 
 
