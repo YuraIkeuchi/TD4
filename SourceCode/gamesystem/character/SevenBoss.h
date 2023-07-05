@@ -103,4 +103,7 @@ private:
 	//“œ“x
 	float m_AfterAlpha = {};
 	XMFLOAT3 m_AfterPos = {};
+
+	int m_RotTimer = {};
+	bool m_StartMani = false;
 };

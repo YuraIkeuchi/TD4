@@ -201,6 +201,7 @@ void SevenBoss::InterValMove() {
 	if (m_InterVal == l_LimitTimer) {
 		_charaState = STATE_MANIPULATE;
 		m_InterVal = {};
+		m_StartMani = true;
 		////行動を決めて次の行動に移る
 		//m_AttackRand = int(l_RandomMove(mt));
 
@@ -289,21 +290,29 @@ void SevenBoss::BirthAvatar() {
 }
 //捕まえているゴーストを操る
 void SevenBoss::Manipulate() {
-	const int l_LimitTimer = 10;
-	m_MoveTimer++;
-	m_Manipulate = true;
-
-	if (m_MoveTimer == l_LimitTimer) {
-		m_MoveTimer = {};
-		m_Manipulate = false;
-		m_AttackCount++;
-
-		//二回攻撃したら吸収行動に移行する
-		if (m_AttackCount != 2) {
-			_charaState = STATE_INTER;
+	const int l_LimitTimer = 200;
+	if (m_StartMani) {
+		m_MoveTimer++;
+		if (m_MoveTimer == 50) {
+			m_Manipulate = true;
 		}
-		else {
-			_charaState = STATE_CATCH;
+		else if (m_MoveTimer == 52) {
+			m_Manipulate = false;
+		}
+
+		if (m_MoveTimer == l_LimitTimer) {
+			m_MoveTimer = {};
+			m_Manipulate = false;
+			m_StartMani = false;
+			m_AttackCount++;
+
+			//二回攻撃したら吸収行動に移行する
+			if (m_AttackCount != 2) {
+				_charaState = STATE_INTER;
+			}
+			else {
+				_charaState = STATE_CATCH;
+			}
 		}
 	}
 }

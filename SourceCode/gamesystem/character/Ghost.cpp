@@ -38,6 +38,7 @@ void (Ghost::* Ghost::stateTable[])() = {
 	&Ghost::Follow,//ˆÚ“®
 	&Ghost::Jack,
 	&Ghost::HyperJack,
+	&Ghost::Manipulate,//‘€‚é
 	&Ghost::Vanish,
 };
 //XV
@@ -65,11 +66,36 @@ void Ghost::Update() {
 	//“–‚½‚è”»’èi’ej
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_ghost();
 	CollideBullet(_playerBulA);
+
+	//UŒ‚‚Ì‰¹•„
+	for (AttackNote* newnote : attacknotes) {
+		if (newnote != nullptr) {
+			newnote->Update();
+		}
+	}
+
+	//UŒ‚‚Ì‰¹•„‚Ìíœ
+	for (int i = 0; i < attacknotes.size(); i++) {
+		if (attacknotes[i] == nullptr) {
+			continue;
+		}
+
+		if (!attacknotes[i]->GetAlive()) {
+			attacknotes.erase(cbegin(attacknotes) + i);
+		}
+	}
 }
 //•`‰æ
 void Ghost::Draw(DirectXCommon* dxCommon) {
 	//if (!m_Alive) { return; }
 	Obj_Draw();
+
+	//UŒ‚‚Ì‰¹•„
+	for (AttackNote* newnote : attacknotes) {
+		if (newnote != nullptr) {
+			newnote->Draw(dxCommon);
+		}
+	}
 }
 //ImGui•`‰æ
 void Ghost::ImGuiDraw() {
@@ -218,7 +244,64 @@ void Ghost::Follow() {
 		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, l_playerPos, -PI_90);
 	}
 	else {
-		Manipulate();
+		_ManiState = MANI_SET;
+		_charaState = STATE_MANIPULATE;
+	}
+}
+//‘€‚èUŒ‚
+void Ghost::Manipulate() {
+	const float l_AddFrame = 0.01f;
+	const float l_AddRot = 10.0f;
+	const int l_Limit = 300;
+	m_Color = { Ease(In,Cubic,0.5f,m_Color.x,1.0f),
+	Ease(In,Cubic,0.5f,m_Color.y,0.0f),
+	Ease(In,Cubic,0.5f,m_Color.z,1.0f),
+	Ease(In,Cubic,0.5f,m_Color.w,0.7f),
+	};
+	//ˆÚ“®æ‚ğŒˆ‚ß‚é
+	if (_ManiState == MANI_SET) {
+		//—”w’è
+		mt19937 mt{ std::random_device{}() };
+		uniform_int_distribution<int> l_distX(-50, 60);
+		uniform_int_distribution<int> l_distZ(-55, 55);
+		m_AfterPos = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
+		m_AfterRotY = Helper::GetInstance()->DirRotation(m_Position, m_AfterPos, -PI_90);
+		_ManiState = MANI_MOVE;
+	}
+	//ˆÚ“®‚·‚é
+	else if (_ManiState == MANI_MOVE) {
+		if (m_Frame < m_FrameMax) {
+			m_Frame += l_AddFrame;
+		}
+		else {
+			m_Frame = {};
+			m_Rotation.y = -90.0f;
+			_ManiState = MANI_ATTACK;
+		}
+
+		m_Position = { Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
+		Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
+		Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z),
+		};
+
+		m_Rotation.y = Ease(In, Cubic, m_Frame, m_Rotation.y, m_AfterRotY);
+	}
+	else if (_ManiState == MANI_ATTACK) {
+		m_Rotation.y += l_AddRot;
+		m_RotTimer++;
+
+		if (m_RotTimer % 20 == 0) {
+			BirthBullet();
+		}
+
+		if (m_RotTimer == l_Limit) {
+			m_RotTimer = {};
+			_ManiState = MANI_END;
+		}
+	}
+	else {
+		m_Manipulate = false;
+		m_Vanish = true;
 	}
 }
 //’Tõ
@@ -419,7 +502,21 @@ void Ghost::Absorption() {
 	Helper::GetInstance()->FollowMove(m_Position,m_TargetPos, l_Vel);
 	m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, m_TargetPos, -PI_90);
 }
-//‘€‚ç‚ê‚Ä‚¢‚é
-void Ghost::Manipulate() {
-	m_Color = { 1.0f,0.0f,1.0f,1.0f };
+//UŒ‚
+void Ghost::BirthBullet() {
+	XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
+	XMMATRIX matRot = {};
+	matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
+	move = XMVector3TransformNormal(move, matRot);
+	XMFLOAT2 l_Angle;
+	l_Angle.x = move.m128_f32[0];
+	l_Angle.y = move.m128_f32[2];
+	//ƒm[ƒc‚Ì”­¶
+	AttackNote* newnote;
+	newnote = new AttackNote();
+	newnote->SetChange(true);
+	newnote->Initialize();
+	newnote->SetPosition(m_Position);
+	newnote->SetAngle(l_Angle);
+	attacknotes.push_back(newnote);
 }

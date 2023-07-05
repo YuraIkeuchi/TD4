@@ -123,5 +123,8 @@ private:
 	float m_Frame = 0.0f;
 
 	float m_LimitHunger = {};
+
+	bool m_Wide = false;
+	float m_WideArea = {};
 };
 

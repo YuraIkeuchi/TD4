@@ -51,6 +51,7 @@ public:
 	const bool& GetAlive() { return m_Alive; }
 	void SetType(const int SetType) { m_SetType = SetType; }
 	void SetAlive(const bool Alive) { m_Alive = Alive; }
+	void SetChange(const bool Change) { m_Change = Change; }
 	void SetAngle(const XMFLOAT2& Angle) { m_Angle = Angle; }
 private:
 	bool m_Alive = true;//生存フラグ
@@ -63,6 +64,7 @@ private:
 	}_charaState = CharaState::STATE_FOLLOW;
 
 private:
+	IKEModel* m_Model2;
 	XMFLOAT2 m_Angle = {};//弾の角度
 	float m_AddSpeed = {};//加速度
 
@@ -74,4 +76,6 @@ private:
 	int m_Timer = 0;
 
 	float m_Damage = {};
+
+	bool m_Change = false;
 };
