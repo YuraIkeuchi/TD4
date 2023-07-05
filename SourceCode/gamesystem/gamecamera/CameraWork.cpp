@@ -245,7 +245,6 @@ void CameraWork::SetBossDead_AfterThird() {
 }
 //フェード後の撃破アクション(4ボス)
 void CameraWork::SetBossDead_AfterFourth() {
-
 	RadEffect = 0.f;
 	if (FeedF) {
 		feed->FeedIn(Feed::FeedType::WHITE, 0.01f, FeedF);
@@ -635,7 +634,7 @@ void CameraWork::FourthBossAppear() {
 	Helper::GetInstance()->Clamp(m_Frame, 0.0f, 1.0f);
 	switch (m_AppearType) {
 	case APPEAR_START:
-		m_FrameMax = 120.0f;
+		m_FrameMax = 90.0f;
 		m_eyePos = {
 		Player::GetInstance()->GetPosition().x,
 		3.0f,
@@ -645,7 +644,7 @@ void CameraWork::FourthBossAppear() {
 		m_AfterEye = m_eyePos;
 		break;
 	case APPEAR_SECOND:
-		m_FrameMax = 120.0f;
+		m_FrameMax = 90.0f;
 		m_AfterTarget = {
 		30,
 		5,
@@ -653,7 +652,7 @@ void CameraWork::FourthBossAppear() {
 		};
 		break;
 	case APPEAR_THIRD:
-		m_FrameMax = 120.0f;
+		m_FrameMax = 90.0f;
 		m_AfterTarget = {
 		0,
 		5,
@@ -661,7 +660,7 @@ void CameraWork::FourthBossAppear() {
 		};
 		break;
 	case APPEAR_FOURTH:
-		m_FrameMax = 120.0f;
+		m_FrameMax = 90.0f;
 		m_AfterTarget = {
 		-30,
 		5,
@@ -669,7 +668,7 @@ void CameraWork::FourthBossAppear() {
 		};
 		break;
 	case APPEAR_FIVE:
-		m_FrameMax = 120.0f;
+		m_FrameMax = 90.0f;
 		m_AfterTarget = {
 		0,
 		5,

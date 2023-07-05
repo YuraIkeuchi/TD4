@@ -134,19 +134,14 @@ void FourthStageActor::BackDraw(DirectXCommon* dxCommon) {
 
 	IKEObject3d::PreDraw();
 	BackObj::GetInstance()->Draw(dxCommon);
-
-	if (camerawork->GetCameraState() != CameraState::CAMERA_BOSSAPPEAR &&
-		camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_AFTER_FIRST) {
-		if (camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_BEFORE && camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_AFTER_FIRST) {
-			ParticleEmitter::GetInstance()->BackDrawAll();
-		}
+	if ((m_SceneState == SceneState::MainState)&& !camerawork->GetFeedEnd()) {
+		loadobj->Draw(dxCommon);
 	}
-	loadobj->Draw(dxCommon);
-
 	ParticleEmitter::GetInstance()->DeathDrawAll();
 	//パーティクル描画
 	if (camerawork->GetCameraState() != CameraState::CAMERA_BOSSAPPEAR &&
 		camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_AFTER_FIRST) {
+		ParticleEmitter::GetInstance()->BackDrawAll();
 		ParticleEmitter::GetInstance()->FlontDrawAll();
 	}
 
@@ -155,7 +150,7 @@ void FourthStageActor::BackDraw(DirectXCommon* dxCommon) {
 		Player::GetInstance()->Draw(dxCommon);
 	}
 	enemymanager->Draw(dxCommon);
-	if (isVisible && m_SceneState == SceneState::IntroState) {
+	if (isVisible) {
 		IKEObject3d::PreDraw();
 		apple->Draw();
 		IKEObject3d::PostDraw();
@@ -191,9 +186,9 @@ void FourthStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void FourthStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	Player::GetInstance()->ImGuiDraw();
-	enemymanager->ImGuiDraw();
-	loadobj->ImGuiDraw();
+	//Player::GetInstance()->ImGuiDraw();
+	//enemymanager->ImGuiDraw();
+	//loadobj->ImGuiDraw();
 	//ImGui::Begin("test");
 	//ImGui::End();
 	//loadobj->ImGuiDraw();
@@ -223,6 +218,7 @@ void FourthStageActor::IntroUpdate(DebugCamera* camera) {
 	}
 
 	if (camerawork->GetAppearEndF()) {
+		isVisible = false;
 		m_SceneState = SceneState::MainState;
 		Player::GetInstance()->SetCanShot(true);
 		Player::GetInstance()->MoveStop(false);
@@ -319,25 +315,34 @@ void FourthStageActor::MainUpdate(DebugCamera* camera) {
 
 	if (enemymanager->BossDestroy()) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
-		SceneSave::GetInstance()->SetClearFlag(kFourthStage, true);
 		//フェード前
 		if (!camerawork->GetFeedEnd()) {
 			enemymanager->SetDeadThrow(true);
 			enemymanager->DeadUpdate();
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_BEFORE);
+			apple->SetPosition({ Player::GetInstance()->GetPosition().x+8.0f,10.0f,Player::GetInstance()->GetPosition().z });
 		}
 		//フェード後
 		else {
-			Player::GetInstance()->InitState({ 0.0f,0.0f,-5.0f });
 			PlayPostEffect = false;
+			isVisible = true;
+			XMFLOAT3 pos = apple->GetPosition();
+			pos.y -= 0.5f;
+			pos.y =clamp(pos.y,0.0f,100.0f);
+			apple->SetPosition(pos);
+			Player::GetInstance()->InitState({ 0.0f,0.0f,-5.0f });
 			enemymanager->SetDeadThrow(false);
 			enemymanager->DeadUpdate();
-			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_FIRST);
+			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_FOURTH);
 		}
+
 		if (camerawork->GetEndDeath()) {
 			sceneChanger_->ChangeStart();
-			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::ReverseType::NonReverse);
+			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
+
 		}
+
+		Player::GetInstance()->DeathUpdate();
 	} else {
 		Player::GetInstance()->Update();
 	}

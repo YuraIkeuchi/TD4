@@ -20,9 +20,9 @@ public:
 
 	void AppearAction() override;//ボス登場の固有の処理
 
-	void DeadAction() override {};//ボス撃破の固有の処理
+	void DeadAction() override;//ボス撃破の固有の処理
 
-	void DeadAction_Throw() override {};//ボス撃破の固有の処理 スロー
+	void DeadAction_Throw() override;//ボス撃破の固有の処理 スロー
 
 	void ImGui_Origin() override;//ボスそれぞれのImGui
 
