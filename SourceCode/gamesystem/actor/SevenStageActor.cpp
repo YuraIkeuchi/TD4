@@ -215,9 +215,9 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGui‚Ì•`‰æ
 void SevenStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	enemymanager->ImGuiDraw();
+	//enemymanager->ImGuiDraw();
 	Player::GetInstance()->ImGuiDraw();
-	//loadobj->ImGuiDraw();
+	loadobj->ImGuiDraw();
 }
 //“oêƒV[ƒ“
 void SevenStageActor::IntroUpdate(DebugCamera* camera) {

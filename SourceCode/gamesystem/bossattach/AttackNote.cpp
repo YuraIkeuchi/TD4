@@ -5,6 +5,7 @@
 #include "Helper.h"
 AttackNote::AttackNote() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::NOTE);
+	m_Model2 = ModelManager::GetInstance()->GetModel(ModelManager::Bullet);
 	m_Object.reset(new IKEObject3d());
 	m_Object->Initialize();
 	m_Object->SetModel(m_Model);
@@ -19,6 +20,10 @@ bool AttackNote::Initialize() {
 	m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Six/Sixboss.csv", "Speed")));
 	m_TargetTimer = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Six/Sixboss.csv", "Timer")));
 	m_Damage = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Six/Sixboss.csv", "BarrangeDamage")));
+
+	if (m_Change) {
+		m_Object->SetModel(m_Model2);
+	}
 	return true;
 }
 //ó‘Ô‘JˆÚ
