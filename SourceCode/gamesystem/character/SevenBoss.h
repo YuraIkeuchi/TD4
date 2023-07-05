@@ -1,9 +1,9 @@
 #pragma once
 #include "InterBoss.h"
 #include "Shake.h"
+#include "BossStunEffect.h"
 #include "Poltergeist.h"
 #include "AvatarBoss.h"
-#include "BossStunEffect.h"
 #include "AbsorptionEffect.h"
 class SevenBoss :
 	public InterBoss {
@@ -53,6 +53,10 @@ private:
 
 	//モンスターが消える範囲設定
 	void VanishCollide(vector<InterBullet*>bullet);
+
+	void DeleteObj();
+public:
+
 private:
 	//キャラの状態
 	enum CharaState
@@ -74,8 +78,9 @@ private:
 private:
 	vector<Poltergeist*> poltergeist;//ポルターガイスト
 	vector<InterBoss*> avatarboss;//偽物のボス
-	unique_ptr<BossStunEffect> bossstuneffect;
 	vector<AbsorptionEffect*> abseffect;//弾幕
+	unique_ptr<BossStunEffect> bossstuneffect;
+
 	int m_InterVal = {};
 
 	int m_MoveTimer = {};
@@ -106,4 +111,15 @@ private:
 
 	int m_RotTimer = {};
 	bool m_StartMani = false;
+
+	//CSV系
+	//各インターバルやリミット時間
+	vector<int>m_RandAct;
+
+	enum RandState {
+		RAND_POLTER,
+		RAND_BOUND,
+		RAND_AVATAR,
+		RAND_MANIPULATE
+	};
 };

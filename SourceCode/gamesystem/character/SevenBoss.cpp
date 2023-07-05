@@ -6,6 +6,7 @@
 #include "Helper.h"
 #include "Player.h"
 #include "Easing.h"
+#include "HungerGauge.h"
 //生成
 SevenBoss::SevenBoss() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::DJ);
@@ -43,7 +44,10 @@ void SevenBoss::SkipInitialize() {
 }
 //CSV
 void SevenBoss::CSVLoad() {
-	
+	auto ActSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "ACT_NUM")));
+	m_RandAct.resize(ActSize);
+	LoadCSV::LoadCsvParam_Int("Resources/csv/chara/boss/Seven/Sevenboss.csv", m_RandAct, "RandAct");
+
 	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "Magnification")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "hp1")));
 	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "HeartTarget")));
@@ -85,6 +89,7 @@ void SevenBoss::Action() {
 	Obj_SetParam();
 	//ボスの消える判定
 	VanishBoss();
+	DeleteObj();
 	//リミット制限
 	Helper::GetInstance()->Clamp(m_Position.x, -55.0f, 65.0f);
 	Helper::GetInstance()->Clamp(m_Position.z, -60.0f, 60.0f);
@@ -147,6 +152,11 @@ void SevenBoss::Action() {
 
 	bossstuneffect->SetBasePos(m_Position);
 	bossstuneffect->Update();
+
+	//HPが半分切ったら強化
+	if (m_HP < m_MaxHp / 2) {
+		isStrong = true;
+	}
 }
 //ポーズ
 void SevenBoss::Pause() {
@@ -197,31 +207,38 @@ void SevenBoss::InterValMove() {
 	const int l_LimitTimer = 100;
 	m_InterVal++;
 	mt19937 mt{ std::random_device{}() };
-	uniform_int_distribution<int> l_RandomMove(0, 2);
+	uniform_int_distribution<int> l_RandomMove(0, 100);
 	if (m_InterVal == l_LimitTimer) {
-		_charaState = STATE_MANIPULATE;
-		m_InterVal = {};
-		m_StartMani = true;
-		////行動を決めて次の行動に移る
-		//m_AttackRand = int(l_RandomMove(mt));
+		//行動を決めて次の行動に移る
+		m_AttackRand = int(l_RandomMove(mt));
 
-		//if (m_AttackRand == 0) {
-		//	_charaState = STATE_BOUND;
-		//	m_InterVal = {};
-		//}
-		//else if(m_AttackRand == 1) {
-		//	_charaState = STATE_POLTER;
-		//	m_InterVal = {};
-		//}
-		//else {
-		//	if (m_AvatarCount == 0) {
-		//		_charaState = STATE_AVATAR;
-		//		m_InterVal = {};
-		//	}
-		//	else {
-		//		m_InterVal = l_LimitTimer - 1;
-		//	}
-		//}
+		if (m_AttackRand < m_RandAct[RAND_POLTER]) {
+			_charaState = STATE_POLTER;
+			m_InterVal = {};
+		}
+		else if (m_AttackRand >= m_RandAct[RAND_POLTER] && m_AttackRand < m_RandAct[RAND_BOUND]) {
+			_charaState = STATE_BOUND;
+			m_InterVal = {};
+		}
+		else if (m_AttackRand >= m_RandAct[RAND_BOUND] && m_AttackRand < m_RandAct[RAND_AVATAR]) {
+			if (m_AvatarCount == 0) {
+				_charaState = STATE_AVATAR;
+				m_InterVal = {};
+			}
+			else {
+				m_InterVal = l_LimitTimer - 1;
+			}
+		}
+		else {
+			if (HungerGauge::GetInstance()->GetCatchCount() != 0) {
+				_charaState = STATE_MANIPULATE;
+				m_InterVal = {};
+				m_StartMani = true;
+			}
+			else {
+				m_InterVal = l_LimitTimer - 1;
+			}
+		}
 	}
 }
 //ポルターガイスト
@@ -531,5 +548,45 @@ void SevenBoss::VanishBoss() {
 	/*	m_Position = { Ease(In,Cubic,m_VanishFrame,m_Position.x,m_AfterPos.x),
 		m_Position.y,
 		Ease(In,Cubic,m_VanishFrame,m_Position.z,m_AfterPos.z) };*/
+	}
+}
+
+void SevenBoss::DeleteObj() {
+	if (m_DeleteObj) {
+		avatarboss.clear();
+		poltergeist.clear();
+		abseffect.clear();
+		m_Position = { 0.0f,3.0f,30.0f };
+		m_Rotation = { 0.0f,90.0f,0.0f };
+		m_Scale = { 0.1f,0.1f,0.1f };
+		m_Color = { 1.0f,1.0f,1.0f,1.0f };
+		_charaState = STATE_INTER;
+		m_InterVal = {};
+		m_MoveTimer = {};
+	
+		//攻撃回数
+		m_AttackCount = {};
+		//スタンしたかどうか
+		m_Stun = false;
+		//攻撃の乱数
+		m_AttackRand = {};
+
+		//敵が弾を避けるかどうか
+		m_Vanish = false;
+
+		_vanishState = VANISH_SET;
+		//透明化する時間
+		m_VanishFrame = {};
+		//透明化する確率
+		m_VanishTarget = {};
+		//糖度
+		m_AfterAlpha = {};
+		m_AfterPos = {};
+
+		m_RotTimer = {};
+		m_StartMani = false;
+		m_DeleteObj = false;
+
+
 	}
 }

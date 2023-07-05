@@ -33,14 +33,11 @@ void ModelManager::SecondInitialize()
 	LoadModel(Pedestal, "dodai");
 	LoadModel(Skydome, "skydome");
 	LoadModel(KIDO_OBJ, "kidokunobj");
-	LoadFBXModel(PLAYER, "kotoko");
 	LoadModel(DJ, "DJ");
 	LoadModel(CD, "CD");
 	LoadModel(SKIRT, "skirt");
 	LoadModel(NOTE, "NOTE");
-	LoadFBXModel(SIORI, "siori_idol");
-	LoadFBXModel(KIDO, "kidokun_idol");
-	LoadFBXModel(TIEYOSHI, "tieyosi_anime");
+
 	LoadModel(GLASS1, "glass1");
 	LoadModel(GLASS2, "glass2");
 	LoadModel(GLASS3, "glass3");
@@ -48,6 +45,10 @@ void ModelManager::SecondInitialize()
 	LoadModel(MILKCAP_BREAK, "milkCap_break");
 	LoadModel(CAP, "cap");
 
+	LoadFBXModel(PLAYER, "kotoko");
+	LoadFBXModel(SIORI, "siori_idol");
+	LoadFBXModel(KIDO, "kidokun_idol");
+	LoadFBXModel(TIEYOSHI, "tieyosi_anime");
 }
 
 void ModelManager::Finalize()

@@ -2,7 +2,6 @@
 #include "InterBoss.h"
 #include "Shake.h"
 #include "Poltergeist.h"
-
 class AvatarBoss :
 	public InterBoss {
 public:
@@ -51,7 +50,6 @@ private:
 	static const int POLTER_NUM = 2;
 private:
 	vector<Poltergeist*> poltergeist;//ポルターガイスト
-
 	int m_InterVal = {};
 
 	int m_MoveTimer = {};
