@@ -170,6 +170,7 @@ void FourthStageActor::FrontDraw(DirectXCommon* dxCommon) {
 void FourthStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	Player::GetInstance()->ImGuiDraw();
 	enemymanager->ImGuiDraw();
+	loadobj->ImGuiDraw();
 	//ImGui::Begin("test");
 	//ImGui::End();
 	//loadobj->ImGuiDraw();

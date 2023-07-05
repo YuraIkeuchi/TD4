@@ -78,6 +78,10 @@ private:
 	};
 	enum {
 		Photo_In,
+		Photo_In_Change,
+		Photo_In_Control,
+		Photo_In_Sub,
+		Photo_In_Ult,
 		Photo_Out_Top,
 		Photo_Out_Under,
 		SpriteMax,
@@ -85,10 +89,10 @@ private:
 	array<unique_ptr<IKESprite>, SpriteMax> photo = {};
 private:
 	int moveSpawn = 0;
-	int nowSpawn = 0;
+	int nowSpawn = 4;
 	commandState phase = commandState::WaitCommand;
 
-
+	int cases = 0;
 	float limitHp = 0.0f;
 
 	int stage_move = 0;
@@ -115,7 +119,8 @@ private:
 		100,
 		100,
 		60,
-		700
+		700,
+		500
 	};
 
 	float shutterTimeMax = 40.0f;

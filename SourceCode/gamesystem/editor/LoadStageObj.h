@@ -81,6 +81,9 @@ private:
 	bool CheckReferGhost();
 	//手に入れているゴーストを三体ほど消します
 	void SubHunger();
+
+	int GetGhostNumber();
+
 public:
 	static void SetEnemyManager(EnemyManager* m_EnemyManager) { LoadStageObj::m_EnemyManager = m_EnemyManager; }
 protected:
