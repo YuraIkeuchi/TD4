@@ -191,7 +191,7 @@ void FourthBoss::ImGui_Origin() {
 }
 
 void FourthBoss::EffecttexDraw(DirectXCommon* dxCommon) {
-	if (m_HP <= 0.0f) { return; }
+	if (m_HP < 0.0f) { return; }
 	IKETexture::PreDraw2(dxCommon, AlphaBlendType);
 	for (int i = 0; i < kPhotoSpotMax; i++) {
 		photoSpot[i]->Draw();
@@ -372,6 +372,7 @@ void FourthBoss::UltimateUpdate() {
 	if (limitHp >= m_HP && !isShutter && feedTimer == 0.0f) {
 		m_HP = limitHp;
 		phase = commandState::Explosion;
+		ActionTimer = 0;
 		return;
 	}
 	ParticleEmitter::GetInstance()->CameraEffect(80, spotPos[1], 4.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
@@ -414,6 +415,7 @@ void FourthBoss::UltimateUpdate() {
 }
 
 void FourthBoss::ExplosionUpdate() {
+	ActionTimer++;
 	m_Rotation.z = 30.0f;
 
 	float l_AddSize = 2.5f;
