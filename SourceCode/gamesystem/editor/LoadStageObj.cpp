@@ -1,4 +1,4 @@
-#include "LoadStageObj.h"
+﻿#include "LoadStageObj.h"
 #include "CsvLoader.h"
 #include "HungerGauge.h"
 #include "Collision.h"
@@ -166,7 +166,7 @@ void LoadStageObj::Draw(DirectXCommon* dxCommon) {
 void LoadStageObj::ImGuiDraw() {
 	//ゴースト
 
-	ImGui::End();
+	//ImGui::End();
 	//m_EnemyManager->ImGuiDraw();
 }
 //当たり判定(ゴースト)

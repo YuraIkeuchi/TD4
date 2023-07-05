@@ -108,6 +108,45 @@ void FourthBoss::AppearAction() {
 	Obj_SetParam();
 
 }
+void FourthBoss::DeadAction() {
+	const float l_AddAngle = 5.0f;
+	m_DeathTimer++;
+	m_Rotation.z = Ease(Out, Quad, m_DeathTimer / static_cast<float>(200), 0, 90);
+	const int l_BaseTarget = 50;
+	if (m_DeathTimer == 1) {
+		m_Position = { 0.0f,0.0f,0.0f };
+		m_Rotation = { 0.0f,90.f,0.0f };
+	} else if (m_DeathTimer >= 2 && m_DeathTimer < 300) {
+		//sin波によって上下に動く
+		//m_Angle += l_AddAngle;
+		//m_Angle2 = m_Angle * (3.14f / 180.0f);
+		//m_Position.x = (sin(m_Angle2) * 15.0f + 15.0f);
+		float l_AddSize = 2.5f;
+		const float RandScale = 3.0f;
+		float s_scale = 0.3f * l_AddSize;
+		float e_scale = (4.0f + (float)rand() / RAND_MAX * RandScale - RandScale / 2.0f) * l_AddSize;
+
+		//色
+		const float RandRed = 0.2f;
+		const float red = 0.2f + (float)rand() / RAND_MAX * RandRed;
+		const XMFLOAT4 s_color = { 0.9f, red, 0.1f, 1.0f }; //濃い赤
+		const XMFLOAT4 e_color = { 0, 0, 0, 1.0f }; //無色
+		mt19937 mt{ std::random_device{}() };
+		uniform_int_distribution<int> l_Randlife(10, 40);
+		int l_Life = int(l_Randlife(mt));
+		ParticleEmitter::GetInstance()->Explosion(l_Life, m_Position, l_AddSize, s_scale, e_scale, s_color, e_color);
+	}
+	for (int i = 0; i < kPhotoSpotMax; i++) {
+		photoSpot[i]->Update();
+	}
+	Obj_SetParam();
+}
+void FourthBoss::DeadAction_Throw() {
+	for (int i = 0; i < kPhotoSpotMax; i++) {
+		photoSpot[i]->Update();
+	}
+	Obj_SetParam();
+}
 //ポーズ
 void FourthBoss::Pause() {
 
@@ -115,43 +154,44 @@ void FourthBoss::Pause() {
 }
 
 void FourthBoss::ImGui_Origin() {
-	ImGui::Begin("BOSS");
-	ImGui::SliderInt("AI-Pattern", &cases, 0, 100);
-	ImGui::Text("isMiss %s", (isMiss ? "true" : "false"));
-	ImGui::SliderInt("Action", &ActionTimer, 0, 1000);
-	switch (phase) {
-	case FourthBoss::commandState::WaitCommand:
-		ImGui::Text("WAIT");
-		break;
-	case FourthBoss::commandState::MoveCommand:
-		ImGui::Text("MOVE");
-		break;
-	case FourthBoss::commandState::ControlCommand:
-		ImGui::Text("CONTROL");
-		break;
-	case FourthBoss::commandState::EnemySpawn:
-		ImGui::Text("ENEMYSPAWN");
-		break;
-	case FourthBoss::commandState::SubGauge:
-		ImGui::Text("SUBGAUGE");
-		break;
-	case FourthBoss::commandState::Ultimate:
-		ImGui::Text("ULTIMATE");
-		break;
-	case FourthBoss::commandState::Explosion:
-		ImGui::Text("Explosion");
-		break;
+	//ImGui::Begin("BOSS");
+	//ImGui::SliderInt("AI-Pattern", &cases, 0, 100);
+	//ImGui::Text("isMiss %s", (isMiss ? "true" : "false"));
+	//ImGui::SliderInt("Action", &ActionTimer, 0, 1000);
+	//switch (phase) {
+	//case FourthBoss::commandState::WaitCommand:
+	//	ImGui::Text("WAIT");
+	//	break;
+	//case FourthBoss::commandState::MoveCommand:
+	//	ImGui::Text("MOVE");
+	//	break;
+	//case FourthBoss::commandState::ControlCommand:
+	//	ImGui::Text("CONTROL");
+	//	break;
+	//case FourthBoss::commandState::EnemySpawn:
+	//	ImGui::Text("ENEMYSPAWN");
+	//	break;
+	//case FourthBoss::commandState::SubGauge:
+	//	ImGui::Text("SUBGAUGE");
+	//	break;
+	//case FourthBoss::commandState::Ultimate:
+	//	ImGui::Text("ULTIMATE");
+	//	break;
+	//case FourthBoss::commandState::Explosion:
+	//	ImGui::Text("Explosion");
+	//	break;
 
-	default:
-		assert(0);
-		break;
-	}
+	//default:
+	//	assert(0);
+	//	break;
+	//}
 
 
-	ImGui::End();
+	//ImGui::End();
 }
 
 void FourthBoss::EffecttexDraw(DirectXCommon* dxCommon) {
+	if (m_HP <= 0.0f) { return; }
 	IKETexture::PreDraw2(dxCommon, AlphaBlendType);
 	for (int i = 0; i < kPhotoSpotMax; i++) {
 		photoSpot[i]->Draw();
