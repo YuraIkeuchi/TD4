@@ -27,6 +27,18 @@ void FourthStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	backScreen_ = IKESprite::Create(ImageManager::PLAY, { 0,0 });
 	backScreen_->SetSize({ 1280.0f,720.0f });
 
+	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Food);
+	apple = make_unique<IKEObject3d>();
+	apple->Initialize();
+	apple->SetModel(m_Model);
+	apple->SetPosition({0,0,-15});
+	apple->SetScale({3, 3, 3});
+	photo[Photo_Out_Top] = IKESprite::Create(ImageManager::PHOTO_OUT, { 0,-360 });
+	photo[Photo_Out_Under] = IKESprite::Create(ImageManager::PHOTO_OUT, { 0,1080 });
+	for (int i = Photo_Out_Top; i <= Photo_Out_Under; i++) {
+		photo[i]->SetSize({ 1280,360 });
+	}
+
 	//各クラス
 	//プレイヤー
 	Player::GetInstance()->InitState({ 0.0f,5.0f,-70.0f });
@@ -74,6 +86,7 @@ void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 		sceneChanger_->Update();
 		camerawork->Update(camera);
 	}
+	if (isVisible) { apple->Update(); }
 	Menu::GetIns()->Upda();
 	ui->Update();
 	postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
@@ -142,6 +155,11 @@ void FourthStageActor::BackDraw(DirectXCommon* dxCommon) {
 		Player::GetInstance()->Draw(dxCommon);
 	}
 	enemymanager->Draw(dxCommon);
+	if (isVisible && m_SceneState == SceneState::IntroState) {
+		IKEObject3d::PreDraw();
+		apple->Draw();
+		IKEObject3d::PostDraw();
+	}
 
 	IKEObject3d::PostDraw();
 }
@@ -161,6 +179,11 @@ void FourthStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	}
 	if (m_SceneState == SceneState::IntroState) {
 			text_->SpriteDraw(dxCommon);
+			IKESprite::PreDraw();
+			for (int i = Photo_Out_Top; i <= Photo_Out_Under; i++) {
+				photo[i]->Draw();
+			}
+			IKESprite::PostDraw();
 	}
 	sceneChanger_->Draw();
 	Menu::GetIns()->Draw();
@@ -170,6 +193,7 @@ void FourthStageActor::FrontDraw(DirectXCommon* dxCommon) {
 void FourthStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	Player::GetInstance()->ImGuiDraw();
 	enemymanager->ImGuiDraw();
+	loadobj->ImGuiDraw();
 	//ImGui::Begin("test");
 	//ImGui::End();
 	//loadobj->ImGuiDraw();
@@ -212,39 +236,82 @@ void FourthStageActor::IntroUpdate(DebugCamera* camera) {
 	Player::GetInstance()->AppearUpdate();
 	enemymanager->AppearUpdate();
 	camerawork->Update(camera);
-
-	m_AppTimer++;
-
+	if (!isShutter) {
+		m_AppTimer++;
+	} else {
+		if (ShutterEffect()) {
+			if (m_AppTimer < 1000) {
+				isVisible = true;
+			}
+			stopTime++;
+			if (stopTime >= stopTimerMax) {
+				if (ShutterFeed()) {
+					ShutterReset();
+				}
+			}
+		}
+	}
 	//テキスト関係
 	text_->Display();
 	if (m_AppTimer == 1) {
 		text_->SelectText(TextManager::TALK_FIRST_T);
 		//text_->ChangeColor(0, { 1.0f,1.0f,1.0f,1.0f });
-	} else if (m_AppTimer == 150) {
+	} else if (m_AppTimer == 200) {
 		text_->SelectText(TextManager::TALK_SECOND_T);
-	} else if (m_AppTimer == 300) {
-		text_->SelectText(TextManager::TALK_THIRD_T);
-		text_->ChangeColor(0, { 1.0f,0.0f,0.0f,1.0f });
 	} else if (m_AppTimer == 400) {
+		text_->SelectText(TextManager::TALK_THIRD_T);
+		//text_->ChangeColor(0, { 1.0f,0.0f,0.0f,1.0f });
+	} else if (m_AppTimer == 600) {
 		text_->SelectText(TextManager::TALK_FOURTH_T);
 		//for (int i = 0; i < 3; i++) {
 		//	text_->ChangeColor(i, { 1.0f,1.0f,0.0f,1.0f });
 		//}
-	} else if (m_AppTimer == 500) {
+	} else if (m_AppTimer == 800) {
+		isShutter = true;
+		m_AppTimer++;
+	}
+	else if (m_AppTimer == 850) {
 		text_->SelectText(TextManager::TALK_FIVE_T);
 	}
-	else if (m_AppTimer == 600) {
+	else if (m_AppTimer == 1050) {
 		text_->SelectText(TextManager::TALK_SIX_T);
-	} else if (m_AppTimer == 700) {
+	} else if (m_AppTimer == 1250) {
 		text_->SelectText(TextManager::TALK_SEVEN_T);
-	} else if (m_AppTimer == 800) {
+	} else if (m_AppTimer == 1450) {
 		text_->SelectText(TextManager::TALK_EIGHT_T);
-	} else if (m_AppTimer == 900) {
+	} else if (m_AppTimer == 1650) {
 		text_->SelectText(TextManager::TALK_NINE_T);
-	} else if (m_AppTimer == 1000) {
+	} else if (m_AppTimer == 1850) {
 		text_->SelectText(TextManager::TALK_TEN_T);
-	} else if (m_AppTimer == 1100) {
+	} else if (m_AppTimer == 2050) {
+		isVisible = false;
+		shutterTimeMax = 60.0f;
+		stopTimerMax = 180.0f;
+		feedTimeMax = 10.0f;
 		text_->SelectText(TextManager::TALK_ELEVEN_T);
+	} else if (m_AppTimer == 2250) {
+		isShutter = true;
+		m_AppTimer++;
+	} else if (m_AppTimer == 2450) {
+		text_->SelectText(TextManager::TALK_XII_T);
+	} else if (m_AppTimer == 2650) {
+		text_->SelectText(TextManager::TALK_XIII_T);
+	} else if (m_AppTimer == 2850) {
+		text_->SelectText(TextManager::TALK_XIV_T);
+	} else if (m_AppTimer == 3050) {
+		text_->SelectText(TextManager::TALK_XV_T);
+	} else if (m_AppTimer == 3250) {
+		text_->SelectText(TextManager::TALK_XVI_T);
+	} else if (m_AppTimer == 3450) {
+		text_->SelectText(TextManager::TALK_XVII_T);
+	} else if (m_AppTimer == 3650) {
+		text_->SelectText(TextManager::TALK_XVII_T);
+	} else if (m_AppTimer == 3850) {
+		text_->SelectText(TextManager::TALK_XVIII_T);
+	} else if (m_AppTimer == 4050) {
+		text_->SelectText(TextManager::TALK_XVIV_T);
+	} else if(m_AppTimer == 4250) {
+		camerawork->SetCameraSkip(true);
 	}
 }
 
@@ -303,4 +370,45 @@ void FourthStageActor::MainUpdate(DebugCamera* camera) {
 }
 
 void FourthStageActor::FinishUpdate(DebugCamera* camera) {
+}
+bool FourthStageActor::ShutterEffect() {
+	shutterTime += 1.0f / shutterTimeMax;
+	shutterTime = clamp(shutterTime, 0.0f, 1.0f);
+
+	shutterHight[0] = Ease(Out, Quad, shutterTime, -360, 0);
+	shutterHight[1] = Ease(Out, Quad, shutterTime, 1080, 360);
+
+	photo[Photo_Out_Top]->SetPosition({ 0,shutterHight[0] });
+	photo[Photo_Out_Under]->SetPosition({ 0,shutterHight[1] });
+	if (shutterTime == 1.0f) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool FourthStageActor::ShutterFeed() {
+	feedTimer += 1.0f / feedTimeMax;
+	float color = Ease(Out, Linear, feedTimer, 1.0f, 0.0f);
+	photo[Photo_Out_Top]->SetColor({ 1,1,1, color });
+	photo[Photo_Out_Under]->SetColor({ 1,1,1,color });
+	feedTimer = clamp(feedTimer, 0.0f, 1.0f);
+	if (feedTimer == 1.0f) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+void FourthStageActor::ShutterReset() {
+	isShutter = false;
+	stopTime = 0;
+	shutterHight[0] = -360.0f;
+	shutterHight[1] = 1080.0f;
+	photo[Photo_Out_Top]->SetPosition({ 0,shutterHight[0] });
+	photo[Photo_Out_Under]->SetPosition({ 0,shutterHight[1] });
+	photo[Photo_Out_Top]->SetColor({ 1,1,1,1 });
+	photo[Photo_Out_Under]->SetColor({ 1,1,1,1 });
+	shutterTime = 0.0f;
+	feedTimer = 0.0f;
 }

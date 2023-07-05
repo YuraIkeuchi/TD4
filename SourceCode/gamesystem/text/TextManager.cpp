@@ -109,6 +109,14 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	CameraBossCreateWord(TALK_NINE_T, L"アポーも友達になろう！", L"ストポンもいるし", L"きっと仲よくなれるよ！");
 	CameraBossCreateWord(TALK_TEN_T, L"いいのかい？", L"ボクはここからうごかないから", L"まってるね！");
 	CameraBossCreateWord(TALK_ELEVEN_T, L"ストポンみつけて", L"あしたあいにくるね", L"またね！アポー！");
+	CameraBossCreateWord(TALK_XII_T, L"アポーおまたせ！", L"ストポンつれてきたよ！", L"");
+	CameraBossCreateWord(TALK_XIII_T, L"おう！おまえがアポーか！", L"コトコがセワになったみたいだな", L"ありがとな！");
+	CameraBossCreateWord(TALK_XIV_T, L"...", L"...", L"...");
+	CameraBossCreateWord(TALK_XV_T, L"...れた", L"ついにてにいれた！", L"このマホウのカメラ！！！");
+	CameraBossCreateWord(TALK_XVI_T, L"アポーじゃない！？", L"あなただれなの！", L"");
+	CameraBossCreateWord(TALK_XVII_T, L"オレノナハジャック！！", L"そんなへんななまえじぇねーよ！", L"ギャハハハ");
+	CameraBossCreateWord(TALK_XVIII_T, L"そんな...", L"それじゃもうアポーは...", L"");
+	CameraBossCreateWord(TALK_XVIV_T, L"ちょうどいいや", L"おまえらでためしてやるよ！！", L"おら！！かまえろ！！");
 
 
 	FourthCreateWord(TALK_FIRST, L"ようこそ!!!", L"Ladies And ", L"Gentlemen!!!");

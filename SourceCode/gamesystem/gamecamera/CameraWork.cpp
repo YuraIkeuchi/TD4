@@ -638,7 +638,7 @@ void CameraWork::FourthBossAppear() {
 		m_FrameMax = 120.0f;
 		m_eyePos = {
 		Player::GetInstance()->GetPosition().x,
-		0.0f,
+		3.0f,
 		Player::GetInstance()->GetPosition().z,
 		};
 		m_BeforeEye = m_eyePos;
