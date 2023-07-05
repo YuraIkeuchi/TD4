@@ -5,6 +5,7 @@
 #include "Menu.h"
 #include "SelectScene.h"
 #include "Helper.h"
+#include <HungerGauge.h>
 const XMVECTOR kSkyBlue{ 0.f,1.f,1.f,1.f };
 const XMVECTOR kPink{ 0.9f,0.6f,0.8f,1.f };
 
@@ -161,10 +162,6 @@ void FourthStageActor::BackDraw(DirectXCommon* dxCommon) {
 //ポストエフェクトがかからない
 void FourthStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	//パーティクル描画
-	if (!camerawork->GetFeedEnd() && m_SceneState == SceneState::MainState) {
-		ParticleEmitter::GetInstance()->FlontDrawAll();
-	}
-
 	ParticleEmitter::GetInstance()->DeathDrawAll();
 	//完全に前に書くスプライト
 	if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd()) {
@@ -320,16 +317,18 @@ void FourthStageActor::MainUpdate(DebugCamera* camera) {
 			enemymanager->SetDeadThrow(true);
 			enemymanager->DeadUpdate();
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_BEFORE);
-			apple->SetPosition({ Player::GetInstance()->GetPosition().x+8.0f,10.0f,Player::GetInstance()->GetPosition().z });
+			apple->SetPosition({ Player::GetInstance()->GetPosition().x,10.0f,Player::GetInstance()->GetPosition().z+5.0f });
 		}
 		//フェード後
 		else {
 			PlayPostEffect = false;
 			isVisible = true;
 			XMFLOAT3 pos = apple->GetPosition();
-			pos.y -= 0.5f;
+			pos.y -= 0.3f;
 			pos.y =clamp(pos.y,0.0f,100.0f);
 			apple->SetPosition(pos);
+			HungerGauge::GetInstance()->SetNowHunger(0);
+			HungerGauge::GetInstance()->Update();
 			Player::GetInstance()->InitState({ 0.0f,0.0f,-5.0f });
 			enemymanager->SetDeadThrow(false);
 			enemymanager->DeadUpdate();

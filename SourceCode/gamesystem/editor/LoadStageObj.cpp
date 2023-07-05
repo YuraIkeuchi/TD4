@@ -420,7 +420,6 @@ void LoadStageObj::ChangeGhost2Enemy() {
 	for (int i = 0; i < kStopGhorstMax; i++) {
 		if (!stopGhosts[i]) { continue; }
 		if (!stopGhosts[i]->GetIsRefer()) { continue; }
-		stopGhosts[i]->SetColor({ 0,0,0,1 });
 		stopGhosts[i]->SetVanish(true);
 		stopGhosts[i]->SetIsVerse(false, 80);
 		boss->SetJackPos(m_GhostPos, stopGhosts[i]->GetPosition());
@@ -434,7 +433,6 @@ void LoadStageObj::ChangeGhost2Hyper() {
 	if (boss->GetInstruction() != InterBoss::FourthBossInst::AllSummon) { return; }
 	for (Ghost*& ghost : stopGhosts) {
 		if (!ghost) { continue; }
-		ghost->SetColor({ 0,0,0,1 });
 		ghost->SetIsAllPostionCheck(true);
 	}
 	boss->SetInstruction(InterBoss::FourthBossInst::FinishMove);

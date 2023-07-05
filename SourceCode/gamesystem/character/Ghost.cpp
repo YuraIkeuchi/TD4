@@ -116,7 +116,7 @@ void Ghost::Particle() {
 	float s_scale = 3.0f;
 	float e_scale = 0.0f;
 	if (m_Alive) {
-		if (m_IsRefer&& _charaState < CharaState::STATE_JACK) {
+		if (m_IsRefer && _charaState < CharaState::STATE_JACK) {
 			flash += flashVel * flashAdd;
 			flash = clamp(flash,0.0f,1.0f);
 			if (flash==1.0f) {
@@ -138,8 +138,10 @@ void Ghost::Particle() {
 			m_Color = { 1.0f,0.0f,1.0f,1.0f };
 			m_Scale = { 0.6f,0.6f,0.6f };
 			//ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color2, e_color2);
-		} else {
-			//ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color3, e_color3);
+		} else if (_charaState == CharaState::STATE_HYPERJACK) {
+			m_Color = { 1.0f,1.0f,0.0f,1.0f };
+			m_Scale = { 0.6f,0.6f,0.6f };
+			//ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color2, e_color2);
 		}
 	}
 }
@@ -353,7 +355,7 @@ void Ghost::Jack() {
 	if (Player::GetInstance()->PlayerCollide(m_Position) &&
 		Player::GetInstance()->GetDamageInterVal() == 0) {
 		Player::GetInstance()->PlayerHit(m_Position);
-		Player::GetInstance()->RecvDamage(0.5f);
+		Player::GetInstance()->RecvDamage(1.0f);
 	}
 
 	if (m_Position.x < -55.0f || m_Position.x>65.0f ||
@@ -458,7 +460,7 @@ bool Ghost::CollideBullet(vector<InterBullet*>bullet) {
 			m_OBB2.SetParam_Scl({ 2.0f,2.0f,_bullet->GetScale().z + 3.0f });
 
 			if ((Collision::OBBCollision(m_OBB1, m_OBB2)) && (_bullet->GetAlive()) && (!m_Catch) && (m_Alive)) {
-				if (_charaState != STATE_NONE) { return false; }
+				if (_charaState > STATE_SPAWN) { return false; }
 				if (m_IsRefer)  {return false; }
 				m_Catch = true;
 				if (_bullet->GetBulletType() == BULLET_FORROW) {

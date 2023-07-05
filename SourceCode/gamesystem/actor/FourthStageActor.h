@@ -52,8 +52,6 @@ private:
 	IKEModel* m_Model = nullptr;
 	unique_ptr<IKEObject3d> apple = nullptr;
 	bool isVisible = false;
-	float Rads;
-	int textT;
 
 	int m_AppTimer = 0;
 
@@ -61,8 +59,8 @@ private:
 	unique_ptr<BossText> text_;
 	unique_ptr<IKESprite> backScreen_ = nullptr;
 
-	Spline* spline;
-	vector<XMFLOAT3> pointsList;
+	Spline* spline=nullptr;
+	vector<XMFLOAT3> pointsList = {};
 
 	enum class TextScene {
 		NON,
