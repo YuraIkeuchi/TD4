@@ -1,4 +1,4 @@
-#include "Ghost.h"
+﻿#include "Ghost.h"
 #include "Collision.h"
 #include "Easing.h"
 #include <random>
@@ -322,10 +322,14 @@ void Ghost::Manipulate() {
 
 void Ghost::DarkSide() {
 	if(Collide)m_DFollow =true;
+	//m_Color.x -= 0.05f;
+	m_Color.y -= 0.05f;
+	//m_Color.z -= 0.05f;
 	float l_Vel = 0.35f;//速度
-	Helper::GetInstance()->FollowMove(m_Position, bossPos, l_Vel);
-	m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position,bossPos, -PI_90);
-
+	if (Collision::GetLength(m_Position, bossPos) > 5) {
+		Helper::GetInstance()->FollowMove(m_Position, bossPos, l_Vel);
+		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, bossPos, -PI_90);
+	}
 
 }
 

@@ -20,6 +20,7 @@ private:
 	std::array<std::unique_ptr<IKESprite>, 4>ShotArea;
     std::array<float, 4>AreaAngle={};
     std::array<XMFLOAT3, BulSize>BulPos;
+    std::array<bool, BulSize>BulAlive;
     std::array<XMFLOAT3, BulSize>BulRot;
     std::array<float, BulSize>BulAlpha;
 
@@ -38,6 +39,8 @@ private:
     }_phase=Phase::NON;
     int PhaseCount = 0;
 
+    int DarkCount;
+
     static void (ShotAttack::* stateTable[])();
 
     void Phase_Idle();
@@ -51,6 +54,9 @@ private:
 
     void CollideGhost();
 public:
+    int GetDarkCount() { return DarkCount; }
+    int SetDarkCount(int count) { DarkCount = count; }
+
     //Phase GetPhase();
 };
 

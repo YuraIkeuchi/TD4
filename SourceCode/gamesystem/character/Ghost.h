@@ -61,6 +61,7 @@ private://ステート
 	//闇落ち
 	XMFLOAT3 bossPos;
 	bool Collide;
+	int DarkCount;
 	void DarkSide();
 	//洗脳
 	void Jack();

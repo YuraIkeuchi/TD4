@@ -113,25 +113,46 @@ void FiveBoss::Action()
 
 	if (_aPhase == ATTACK_NORMAL)ActionTimer++;
 
+	{
+		for (auto i = 0; i < ghosts.size(); i++) {
+			ghosts[i]->SetFivePos(m_Position);
+		}
+
+		for (auto i = 0; i < ghosts.size(); ++i) {
+			for (auto j = 0; j < ghosts.size(); ++j) {
+				XMFLOAT3 ghostpos = ghosts[i]->GetPosition();
+				XMFLOAT3 ghostpos2 = ghosts[j]->GetPosition();
+				if ((i == j)) { continue; }
+				if ((!ghosts[i]->GetAlive()) || (!ghosts[j]->GetAlive())) { continue; }
+				if ((!ghosts[i]->GetCollide()) || (!ghosts[j]->GetCollide())) { continue; }
+				if (Collision::SphereCollision(ghostpos, 1.5f, ghostpos2, 1.5f)) {
+					ghosts[i]->GhostCollision(ghostpos2);
+					ghosts[j]->GhostCollision(ghostpos);
+				}
+			}
+		}
+	}
 
 	mt19937 mt{ std::random_device{}() };
 	if (_aPhase == ATTACK_NORMAL && ActionTimer % 120 == 0) {
-		RandAction = 1;
+		RandAction = rand()%3+1;
 
-		if (RandAction == 1)
+		if (shot->GetDarkCount()<5)
 		{
 			shot->SetActionEnd(false);
 			_aPhase = ATTACK_SHOT;
 		}
-		if (RandAction == 2)
-		{
-			smash->SetActionEnd(false);
-			_aPhase = ATTACK_IMPACT;
-		}
-		if (RandAction == 3)
-		{
-			slash->SetActionEnd(false);
-			_aPhase = ATTACK_SLASH;
+		else {
+			if (RandAction == 2)
+			{
+				smash->SetActionEnd(false);
+				_aPhase = ATTACK_IMPACT;
+			}
+			if (shot->GetDarkCount() >= 5)
+			{
+				slash->SetActionEnd(false);
+				_aPhase = ATTACK_SLASH;
+			}
 		}
 	}
 	/*^^^^“–‚½‚è”»’è^^^^*/

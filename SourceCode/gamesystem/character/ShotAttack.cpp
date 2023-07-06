@@ -26,15 +26,19 @@ void ShotAttack::Upda()
 
 	
 	for (auto i = 0; i < boss->GetGhost().size(); i++) {
-		//
-		boss->GetGhost()[i]->SetFivePos(boss->GetPosition());
+		for (auto k = 0; k < 3; k++) {
+			//
+			boss->GetGhost()[i]->SetFivePos(boss->GetPosition());
 
-		if (Collision::GetLength(BulPos[0], boss->GetGhost()[i]->GetPosition()) < 5.f ||
-			Collision::GetLength(BulPos[1], boss->GetGhost()[i]->GetPosition()) < 5.f ||
-			Collision::GetLength(BulPos[2], boss->GetGhost()[i]->GetPosition()) < 5.f)
-		{
-			if (boss->GetGhost()[i]->JugNONE()) {
-				boss->GetGhost()[i]->SetCollide(true);
+			if (Collision::GetLength(BulPos[k], boss->GetGhost()[i]->GetPosition()) < 5.f)
+			{
+				if (!BulAlive[k])continue;
+				if (boss->GetGhost()[i]->JugNONE()) {
+					DarkCount++;
+					boss->GetGhost()[i]->SetCollide(true);
+				BulAlive[k] = false;
+				}
+				
 			}
 		}
 	}
@@ -64,6 +68,9 @@ void ShotAttack::Upda()
 
 	for(auto i=0;i<BulSize;i++)
 	{
+		if (!BulAlive[i])
+			BulAlpha[i] = 0.f;
+
 		ShotObj[i]->SetColor({ 1.f,1.f,1.f ,BulAlpha[i]});
 		ShotObj[i]->SetScale({ 1.f,1.f,1.f });
 		ShotObj[i]->SetRotation(BulRot[i]);
@@ -87,8 +94,10 @@ void ShotAttack::Upda()
 void ShotAttack::Draw(DirectXCommon* dxCommon)
 {
 	IKEObject3d::PreDraw();
-	for (auto i = 0; i < BulSize; i++)
+	for (auto i = 0; i < BulSize; i++) {
+		if (BulAlpha[i] <= 0.f)continue;
 		ShotObj[i]->Draw();
+	}
 	IKEObject3d::PostDraw();
 
 	
@@ -114,9 +123,10 @@ void ShotAttack::Phase_Idle()
 
 	m_Rotation = boss->GetRotation();
 	if (next) {
-		for (auto i = 0; i < BulSize; i++)
+		for (auto i = 0; i < BulSize; i++) {
+			BulAlive[i] = true;
 			BulPos[i] = boss->GetPosition();
-
+		}
 		_phase = Phase::SHOT;
 	}
 	}
@@ -159,6 +169,7 @@ void ShotAttack::Phase_End()
 {
 	for(auto i=0;i<BulSize;i++)
 	{
+		BulAlive[i] = true;
 		BulAlpha[i] = 1.f;
 		BulPos[i] = boss->GetPosition();
 	}
