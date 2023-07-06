@@ -177,7 +177,7 @@ void ShadowSlashAttack::Phase_ViewArea()
 	AreaAlpha[0] = 0.8f;
 	AreaAlpha[1] = 0.8f;
 	IdleCount++;
-	if (IdleCount > 120)_phase = IMPACTSLASH;
+	if (IdleCount > 180)_phase = IMPACTSLASH;
 }
 
 void ShadowSlashAttack::Phase_Impact()
@@ -215,8 +215,8 @@ void ShadowSlashAttack::Phase_Impact()
 
 void ShadowSlashAttack::Phase_Dest()
 {
-	Swords_W[0].Alpha -= 0.04f;
-	Swords_H[0].Alpha -= 0.04f;
+	Swords_W[0].Alpha -= 0.02f;
+	Swords_H[0].Alpha -= 0.02f;
 
 	for(auto i=1;i<SwordSize;i++)
 	{
