@@ -21,14 +21,10 @@ public:
         float Alpha;
         float EaseCount;
         float YSclRandMax;
-        XMVECTOR move;
-
-        XMMATRIX matRot;
-
     };
 
     //ÉÇÉfÉãÅAçUåÇó\ë™ÇÃîÕàÕ
-    static constexpr int SwordSize = 10;
+    static constexpr int SwordSize = 20;
     static constexpr int KotokoShadow = 4;
 
 	std::array<Sword, SwordSize>Swords_H;
@@ -57,6 +53,7 @@ public:
         NON,
         AREAVIEW,
         IMPACTSLASH,
+        NAILDEST,
         END
     }_phase = Phase::NON;
     int PhaseCount = 0;
@@ -69,6 +66,7 @@ public:
 
     void Phase_Impact();
 
+    void Phase_Dest();
 	void Phase_End();
 
 };

@@ -143,6 +143,7 @@ private:
 		ATTACK_SLASH,
 	}_aPhase=ATTACK_NORMAL;
 
+	void ActionSet(ActionPhase phase,InterAttack*attack);
 	int RandAction;
 	int ActionTimer;
 	inline void Shot() { shot->Upda(); }

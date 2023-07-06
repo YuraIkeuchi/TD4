@@ -79,6 +79,19 @@ void (FiveBoss::* FiveBoss::attackTable[])() = {
 
 };
 
+void FiveBoss::ActionSet(ActionPhase phase, InterAttack* attack)
+{
+	if (_aPhase == phase)
+	{
+		RandAction = 0;
+		if (attack->GetActionEnd())
+		{
+			ActionTimer++;
+			_aPhase = ATTACK_NORMAL;
+		}
+	}
+}
+
 void FiveBoss::Action()
 {
 	smash->SetBoss(this);
@@ -93,38 +106,29 @@ void FiveBoss::Action()
 	/// çUåÇÅ[ÇRWAY
 	/// </summary>
 
-		if (_aPhase == ATTACK_SHOT)
-		{
-			RandAction = 0;
-			if (shot->GetActionEnd())
-			{
-				ActionTimer++;
-				_aPhase = ATTACK_NORMAL;
-			}
-		}
-		if (_aPhase == ATTACK_IMPACT)
-		{
-			RandAction = 0;
-		if (smash->GetActionEnd())
-		{
-			ActionTimer++;
-			_aPhase = ATTACK_NORMAL;
-		}
-	}
+		
+		ActionSet(ATTACK_SHOT, shot);
+		ActionSet(ATTACK_IMPACT, smash);
+		ActionSet(ATTACK_SLASH, slash);
 
 		if (_aPhase == ATTACK_NORMAL)ActionTimer++;
 
 
 	mt19937 mt{ std::random_device{}() };
 	if (_aPhase == ATTACK_NORMAL&&ActionTimer%120==0) {
-		RandAction = rand() % 3;
+		RandAction = 3;//4;
 
 		if (RandAction==1)
 		{
-			slash->SetActionEnd(false);
-			_aPhase = ATTACK_SLASH;
+			shot->SetActionEnd(false);
+			_aPhase = ATTACK_SHOT;
 		}
 		if (RandAction==2)
+		{
+			smash->SetActionEnd(false);
+			_aPhase = ATTACK_IMPACT;
+		}
+		if (RandAction == 3)
 		{
 			slash->SetActionEnd(false);
 			_aPhase = ATTACK_SLASH;
