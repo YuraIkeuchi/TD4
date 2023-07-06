@@ -61,6 +61,7 @@ void ShadowSlashAttack::Upda()
 		if(i<2)Kotoko[i]->SetPosition(KotokoPos[0]);
 		else Kotoko[i]->SetPosition(KotokoPos[1]);
 
+		Kotoko[i]->SetColor({ 1,0,1,0.5f });
 		Kotoko[i]->SetScale({ 2,2,2 });
 		Kotoko[i]->Update();
 	}
@@ -197,8 +198,8 @@ void ShadowSlashAttack::Phase_Impact()
 
 	for(auto i=0;i<SwordSize;i++)
 	{
-		Swords_H[i].Alpha = 0.8f;
-		Swords_W[i].Alpha = 0.8f;
+		Swords_H[i].Alpha = 1.f;
+		Swords_W[i].Alpha = 1.f;
 
 		Helper::GetInstance()->Clamp(Swords_W[i].Scl.y, 0.f, Swords_W[i].YSclRandMax);
 		Helper::GetInstance()->Clamp(Swords_H[i].Scl.y, 0.f, Swords_H[i].YSclRandMax);

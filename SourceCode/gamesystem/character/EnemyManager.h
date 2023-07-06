@@ -75,6 +75,7 @@ private:
 	//シーンネーム
 	std::string m_SceneName;
 public:
+	void SetGhost(std::vector<Ghost*>ghosts) { boss->SetGhostList(ghosts); }
 	//敵の死亡処理
 	bool BossDestroy();
 	void SetDeadThrow(bool f) { boss->SetThrowUpdateF(f); }

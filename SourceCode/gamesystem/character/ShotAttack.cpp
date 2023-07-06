@@ -1,5 +1,6 @@
 #include "ShotAttack.h"
 
+#include "Collision.h"
 #include "Player.h"
 
 void ShotAttack::Init()
@@ -22,6 +23,38 @@ void (ShotAttack::* ShotAttack::stateTable[])() = {
 void ShotAttack::Upda()
 {
 	m_Position = boss->GetPosition();
+
+	
+	for (auto i = 0; i < boss->GetGhost().size(); i++) {
+		//
+		boss->GetGhost()[i]->SetFivePos(boss->GetPosition());
+
+		if (Collision::GetLength(BulPos[0], boss->GetGhost()[i]->GetPosition()) < 5.f ||
+			Collision::GetLength(BulPos[1], boss->GetGhost()[i]->GetPosition()) < 5.f ||
+			Collision::GetLength(BulPos[2], boss->GetGhost()[i]->GetPosition()) < 5.f)
+		{
+			if (boss->GetGhost()[i]->JugNONE()) {
+				boss->GetGhost()[i]->SetCollide(true);
+			}
+		}
+	}
+
+	{
+		for (auto i = 0; i < boss->GetGhost().size(); ++i) {
+			for (auto j = 0; j < boss->GetGhost().size(); ++j) {
+				XMFLOAT3 ghostpos = boss->GetGhost()[i]->GetPosition();
+				XMFLOAT3 ghostpos2 = boss->GetGhost()[j]->GetPosition();
+				if ((i == j)) { continue; }
+				if ((!boss->GetGhost()[i]->GetAlive()) || (!boss->GetGhost()[j]->GetAlive())) { continue; }
+				if ((!boss->GetGhost()[i]->GetCollide()) || (!boss->GetGhost()[j]->GetCollide())) { continue; }
+				if (Collision::SphereCollision(ghostpos, 1.5f, ghostpos2, 1.5f)) {
+					boss->GetGhost()[i]->GhostCollision(ghostpos2);
+					boss->GetGhost()[j]->GhostCollision(ghostpos);
+				}
+			}
+		}
+	}
+
 
 	if (_phase == Phase::NON&&!ActionEnd) {
 		_phase = Phase::SHOT;

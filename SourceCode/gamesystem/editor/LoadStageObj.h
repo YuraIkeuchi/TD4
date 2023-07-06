@@ -80,6 +80,8 @@ private:
 	//手に入れているゴーストを三体ほど消します
 	void SubHunger();
 public:
+	std::vector<Ghost*>GetGhost() { return ghosts; }
+	
 	static void SetEnemyManager(EnemyManager* m_EnemyManager) { LoadStageObj::m_EnemyManager = m_EnemyManager; }
 protected:
 	static EnemyManager* m_EnemyManager;
@@ -87,6 +89,7 @@ private:
 	//当たり判定
 	void Collide();
 private:
+	
 	LightGroup* lightgroup = nullptr;
 	std::vector<Ghost*> ghosts;
 	//

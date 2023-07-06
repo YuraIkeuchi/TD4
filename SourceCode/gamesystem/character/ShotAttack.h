@@ -1,6 +1,7 @@
 #pragma once
 #include "InterAttack.h"
 #include"IKESprite.h"
+#include "Ghost.h"
 class ShotAttack :
     public InterAttack
 {
@@ -48,6 +49,7 @@ private:
 
     void RottoPlayer();
 
+    void CollideGhost();
 public:
     //Phase GetPhase();
 };

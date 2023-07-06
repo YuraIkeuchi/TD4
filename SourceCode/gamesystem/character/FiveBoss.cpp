@@ -30,9 +30,9 @@ FiveBoss::FiveBoss()
 	smash->Init();
 	shot->Init();
 	slash->Init();
-	
+
 	normal->Init();
-normal->SetBoss(this);
+	normal->SetBoss(this);
 
 
 	noteeffect.reset(new NoteEffect());
@@ -74,8 +74,8 @@ void (FiveBoss::* FiveBoss::attackTable[])() = {
 	&FiveBoss::Pause,
 	&FiveBoss::Shot,
 	&FiveBoss::Normal,
-	& FiveBoss::Smash,
-	& FiveBoss::Slash,
+	&FiveBoss::Smash,
+	&FiveBoss::Slash,
 
 };
 
@@ -99,31 +99,31 @@ void FiveBoss::Action()
 	slash->SetBoss(this);
 	////状態移行(charastateに合わせる)
 	//if (m_HP > 0.0f) {
-		(this->*attackTable[_aPhase])();
+	(this->*attackTable[_aPhase])();
 	//}
 
 	/// <summary>
 	/// 攻撃ー３WAY
 	/// </summary>
 
-		
-		ActionSet(ATTACK_SHOT, shot);
-		ActionSet(ATTACK_IMPACT, smash);
-		ActionSet(ATTACK_SLASH, slash);
 
-		if (_aPhase == ATTACK_NORMAL)ActionTimer++;
+	ActionSet(ATTACK_SHOT, shot);
+	ActionSet(ATTACK_IMPACT, smash);
+	ActionSet(ATTACK_SLASH, slash);
+
+	if (_aPhase == ATTACK_NORMAL)ActionTimer++;
 
 
 	mt19937 mt{ std::random_device{}() };
-	if (_aPhase == ATTACK_NORMAL&&ActionTimer%120==0) {
-		RandAction = 3;//4;
+	if (_aPhase == ATTACK_NORMAL && ActionTimer % 120 == 0) {
+		RandAction = 1;
 
-		if (RandAction==1)
+		if (RandAction == 1)
 		{
 			shot->SetActionEnd(false);
 			_aPhase = ATTACK_SHOT;
 		}
-		if (RandAction==2)
+		if (RandAction == 2)
 		{
 			smash->SetActionEnd(false);
 			_aPhase = ATTACK_IMPACT;
@@ -152,7 +152,7 @@ void FiveBoss::Action()
 		isStrong = true;
 	}
 	//基礎パラメータ設定
-	
+
 	Fbx_SetParam();
 
 	//どっち使えばいいか分からなかったから保留

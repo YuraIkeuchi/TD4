@@ -249,6 +249,7 @@ float Helper::DirRotation(const XMFLOAT3& target, const XMFLOAT3& base, float ma
 	}
 	return itr;
 }
+
 //XMFLOATをXMVECTORに変換
 Helper::XMVECTOR Helper::ChangeFLOAT(const XMFLOAT3& pos) {
 	XMVECTOR l_Result;

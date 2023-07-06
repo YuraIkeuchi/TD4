@@ -535,6 +535,7 @@
       <Filter>gamesystem\charactor\Boss\Five</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\ShadowSlashAttack.cpp" />
+    <ClCompile Include="CollectGhost.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
@@ -1031,6 +1032,7 @@
       <Filter>gamesystem\charactor\Boss\Five</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\ShadowSlashAttack.h" />
+    <ClInclude Include="CollectGhost.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">

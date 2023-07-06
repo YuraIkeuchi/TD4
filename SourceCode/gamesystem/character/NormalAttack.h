@@ -1,5 +1,6 @@
 #pragma once
 #include "InterAttack.h"
+#include"Ghost.h"
 class NormalAttack :
     public InterAttack
 {

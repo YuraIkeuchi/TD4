@@ -64,8 +64,11 @@ void FiveStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 {
 	//関数ポインタで状態管理
 	if (!Menu::GetIns()->GetMenuOpen()) {
+		enemymanager->SetGhost(loadobj->GetGhost());
+
 		(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
 		sceneChanger_->Update();
+
 	}
 	//プレイヤー
 	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {

@@ -29,6 +29,7 @@ bool Ghost::Initialize() {
 	_followState = FollowState::Follow_NO;
 	return true;
 }
+
 //ó‘Ô‘JˆÚ
 /*CharaState‚ÌState•À‚Ñ‡‚É‡‚í‚¹‚é*/
 void (Ghost::* Ghost::stateTable[])() = {
@@ -36,6 +37,7 @@ void (Ghost::* Ghost::stateTable[])() = {
 	&Ghost::Spawm,
 	&Ghost::Search,//
 	&Ghost::Follow,//ˆÚ“®
+	&Ghost::DarkSide,
 	&Ghost::Jack,
 	&Ghost::HyperJack,
 	&Ghost::Vanish,
@@ -65,6 +67,12 @@ void Ghost::Update() {
 	//“–‚½‚è”»’èi’ej
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_ghost();
 	CollideBullet(_playerBulA);
+
+	//if(_charaState == CharaState::STATE_NONE)
+	//{
+		if(Collide)
+			_charaState = CharaState::STATE_DARKOTI;
+	
 }
 //•`‰æ
 void Ghost::Draw(DirectXCommon* dxCommon) {
@@ -158,6 +166,7 @@ void Ghost::BirthGhost() {
 		m_Catch = false;
 		m_Search = false;
 		m_Follow = false;
+		m_DFollow = false;
 		m_Absorption = false;
 		m_SearchTimer = 0;
 		m_SpawnTimer = 0;
@@ -215,6 +224,16 @@ void Ghost::Follow() {
 	Helper::GetInstance()->FollowMove(m_Position, l_playerPos, l_Vel);
 	m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, l_playerPos, -PI_90);
 }
+
+void Ghost::DarkSide() {
+	if(Collide)m_DFollow =true;
+	float l_Vel = 0.35f;//‘¬“x
+	Helper::GetInstance()->FollowMove(m_Position, bossPos, l_Vel);
+	m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position,bossPos, -PI_90);
+
+
+}
+
 //’Tõ
 void Ghost::Search() {
 	const int l_LimitTimer = 300;
@@ -365,6 +384,8 @@ bool Ghost::CollideBullet(vector<InterBullet*>bullet) {
 
 			if ((Collision::OBBCollision(m_OBB1, m_OBB2)) && (_bullet->GetAlive()) && (!m_Catch) && (m_Alive)) {
 				if (_charaState != STATE_NONE) { return false; }
+				if (_charaState == STATE_DARKOTI) { return false; }
+
 				if (m_IsRefer)  {return false; }
 				m_Catch = true;
 				if (_bullet->GetBulletType() == BULLET_FORROW) {

@@ -5,6 +5,7 @@
 #include "ObjCommon.h"
 #include "BreakEffect.h"
 #include "InterEnemy.h"
+#include"Ghost.h"
 using namespace std;         //  名前空間指定
 
 //ボスの基底クラス
@@ -126,6 +127,7 @@ public://gettersetter
 	int ActionNum;
 	void SetActionNum(int num) { ActionNum = num; }
 private:
+	std::vector<Ghost*> ghosts;
 	std::string SceneName;
 	vector<InterEffect*> effects;
 protected:
@@ -226,5 +228,15 @@ public:
 	void SetThrowUpdateF(bool f) { ThrowUpdateF = f; }
 
 	int m_BirthTarget = {};
+
+	inline void SetGhostList(std::vector<Ghost*>gsize)
+	{
+		ghosts.resize(gsize.size());
+		for(auto i=0;i<gsize.size();i++)
+		{
+			ghosts[i] = gsize[i];
+		}
+	};
+	std::vector<Ghost*>GetGhost() { return ghosts; }
 };
 
