@@ -11,6 +11,7 @@
 #include "NoteEffect.h"
 #include "ShotAttack.h"
 #include"SmashShotAttack.h"
+#include"ShadowSlashAttack.h"
 class Spline;
 
 class FiveBoss : 
@@ -131,14 +132,15 @@ private:
 	ShotAttack* shot;
 	NormalAttack* normal;
 	SmashShotAttack* smash;
-
+	ShadowSlashAttack* slash;
 	static void (FiveBoss::* attackTable[])();
 	enum ActionPhase
 	{
 		MOVE,
 		ATTACK_SHOT,
 		ATTACK_NORMAL,
-		ATTACK_IMPACT
+		ATTACK_IMPACT,
+		ATTACK_SLASH,
 	}_aPhase=ATTACK_NORMAL;
 
 	int RandAction;
@@ -146,6 +148,7 @@ private:
 	inline void Shot() { shot->Upda(); }
 	inline void Normal() { normal ->Upda(); }
 	inline void Smash() {smash->Upda(); }
+	inline void Slash() { slash->Upda(); }
 };
 
 

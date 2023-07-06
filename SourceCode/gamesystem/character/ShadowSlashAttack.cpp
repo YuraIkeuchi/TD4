@@ -1,0 +1,221 @@
+#include "ShadowSlashAttack.h"
+
+#include <random>
+
+#include "Helper.h"
+#include "ImageManager.h"
+#include "Player.h"
+
+void ShadowSlashAttack::Init()
+{
+	for (auto i = 0; i < SwordSize; i++) {
+		Swords_H[i].Obj.reset(new IKEObject3d());
+		Swords_H[i].Obj->Initialize();
+		Swords_H[i].Obj->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::NAIL));
+
+		Swords_W[i].Obj.reset(new IKEObject3d());
+		Swords_W[i].Obj->Initialize();
+		Swords_W[i].Obj->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::NAIL));
+
+	}
+	for (auto i = 0; i < KotokoShadow; i++)
+	{
+		Kotoko[i].reset(new IKEObject3d());
+		Kotoko[i]->Initialize();
+		Kotoko[i]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Sutopon));
+
+	}
+	ShotArea[0].reset(IKETexture::Create(ImageManager::SLASHAREA, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 }));
+	ShotArea[0]->TextureCreate();
+	ShotArea[1].reset(IKETexture::Create(ImageManager::SLASHAREA, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 }));
+	ShotArea[1]->TextureCreate();
+
+}
+
+void ShadowSlashAttack::Upda()
+{
+	//状態移行(charastateに合わせる)
+	(this->*stateTable[_phase])();
+
+	for(auto i=0;i<SwordSize;i++)
+	{
+		Swords_H[i].Obj->SetColor({ 1,1,1,Swords_H[i].Alpha });
+		Swords_H[i].Obj->SetScale(Swords_H[i].Scl);
+		Swords_H[i].Obj->SetRotation(Swords_H[i].Rot);
+		Swords_H[i].Obj->SetPosition(Swords_H[i].Pos);
+		Swords_H[i].Obj->Update();
+
+		Swords_W[i].Obj->SetColor({ 1,1,1,Swords_W[i].Alpha });
+		Swords_W[i].Obj->SetScale(Swords_W[i].Scl);
+		Swords_W[i].Obj->SetRotation(Swords_W[i].Rot);
+		Swords_W[i].Obj->SetPosition(Swords_W[i].Pos);
+		Swords_W[i].Obj->Update();
+
+	}
+
+
+
+	for(auto i=0;i<KotokoShadow;i++)
+	{
+		//座標セット
+		if(i<2)Kotoko[i]->SetPosition(KotokoPos[0]);
+		else Kotoko[i]->SetPosition(KotokoPos[1]);
+
+		Kotoko[i]->SetScale({ 2,2,2 });
+		Kotoko[i]->Update();
+	}
+
+	ShotArea[0]->SetPosition(KotokoPos[0]);
+	ShotArea[1]->SetPosition(KotokoPos[1]);
+
+	constexpr float AnchorY = 0.3f;
+	
+	for(auto i=0;i<2;i++)
+	{
+		Cinter[i] += 0.013f;
+		if (Cinter[i] > 1.0f)Cinter[i] = AnchorY;
+
+		ShotArea[i]->SetCinter(Cinter[i]);
+		ShotArea[i]->SetScale({ 2.f,30.f,1.f });
+		ShotArea[i]->SetColor({ 1,1,1,1 });
+		ShotArea[i]->SetClipF(true);
+		ShotArea[i]->Update();
+	}
+	//横
+	ShotArea[0]->SetRotation({ 90,0,180 });
+	Kotoko[0]->SetRotation({ 0,180,0 });
+	
+	//縦
+	ShotArea[1]->SetRotation({ 90,0,90 });
+	
+}
+
+void ShadowSlashAttack::Draw(DirectXCommon* dxCommon)
+{
+	IKEObject3d::PreDraw();
+	for(auto i=0;i<SwordSize;i++)
+	{
+		Swords_H[i].Obj->Draw();
+		Swords_W[i].Obj->Draw();
+	}
+	for(auto i=0;i<KotokoShadow;i++)
+		Kotoko[i]->Draw();
+	IKEObject3d::PostDraw();
+
+
+	IKETexture::PreDraw2(dxCommon, 0);
+	for (auto i = 0; i <2; i++)
+		ShotArea[i]->Draw();
+	IKETexture::PostDraw();
+}
+
+void ShadowSlashAttack::SpriteDraw()
+{
+	
+}
+
+void ShadowSlashAttack::Phase_Idle()
+{
+	KotokoPos[0].x = Player::GetInstance()->GetPosition().x;
+	KotokoPos[0].z = -60.f;
+
+	KotokoPos[1].x = -60.f;
+	KotokoPos[1].z = 30.f;
+
+	ImpactTexPos[0] = KotokoPos[0];
+	ImpactTexPos[1] = KotokoPos[1];
+
+	_phase = Phase::AREAVIEW;
+}
+
+void ShadowSlashAttack::Phase_ViewArea()
+{
+	_phase = Phase::IMPACTSLASH;
+
+	//縦範囲
+	for (auto i = 0; i < SwordSize; i++) {
+		mt19937 mt{ std::random_device{}() };
+		uniform_int_distribution<int> l_RandPos(-5, 5);
+
+		Swords_H[i].Pos.x = KotokoPos[0].x + (float)(l_RandPos(mt));
+		Swords_H[i].Pos.z = KotokoPos[0].z + static_cast<float>(i) * 6.f + (float)(l_RandPos(mt));
+		Swords_H[i].Pos.y = -20.f;
+		uniform_int_distribution<int> l_RandScl(2, 4);
+
+		uniform_int_distribution<int> l_RandRot(-60, 60);
+		Swords_H[i].Scl = { (float)l_RandScl(mt)*1.5f,(float)l_RandScl(mt),(float)l_RandScl(mt)*1.5f };
+		Swords_H[i].YSclRandMax = (float)l_RandScl(mt);
+		Swords_H[i].Rot = { (float)l_RandRot(mt)/2,0,(float)l_RandRot(mt)/2 };
+		Swords_H[i].Alpha = 1.f;
+	}
+
+	//横範囲
+	for (auto i = 0; i < SwordSize; i++) {
+		mt19937 mt{ std::random_device{}() };
+		uniform_int_distribution<int> l_RandPos(-5, 5);
+
+		Swords_W[i].Pos.x = KotokoPos[1].x + static_cast<float>(i) * 6.f+ (float)(l_RandPos(mt));
+		Swords_W[i].Pos.z = KotokoPos[1].z+(float)(l_RandPos(mt));
+		Swords_W[i].Pos.y = -20.f;
+		uniform_int_distribution<int> l_RandScl(2, 4);
+
+		uniform_int_distribution<int> l_RandRot(-60, 60);
+		Swords_W[i].Scl = { (float)l_RandScl(mt)*1.5f,(float)l_RandScl(mt),(float)l_RandScl(mt)*1.5f };
+		Swords_W[i].YSclRandMax = (float)l_RandScl(mt);
+		Swords_W[i].Rot = { (float)l_RandRot(mt) / 2,0,(float)l_RandRot(mt)/2 };
+		Swords_W[i].Alpha = 1.f;
+	}
+	IdleCount++;
+	//if (IdleCount > 120)_phase = IMPACTSLASH;
+}
+
+void ShadowSlashAttack::Phase_Impact()
+{
+	constexpr float AddScl = 0.3f;
+	
+	for(auto i=0;i<SwordSize;i++)
+	{
+		if (Swords_H[i].Pos.y > 0.f)continue;
+		Swords_H[i].move = { 0.f,0.1f, 0.f, 0.0f };
+		Swords_H[i].matRot = XMMatrixRotationZ(XMConvertToRadians(Swords_H[i].Rot.z));
+		Swords_H[i].move = XMVector3TransformNormal(Swords_H[i].move, Swords_H[i].matRot);
+
+		Swords_H[i].Pos.y += Swords_H[i].move.m128_f32[1] * 8.f;
+		Swords_H[i].Pos.x += Swords_H[i].move.m128_f32[0] * 8.f;
+
+
+		if (Swords_W[i].Pos.y > 0.f)continue;
+		Swords_W[i].move = { 0.f,0.1f, 0.f, 0.0f };
+		Swords_W[i].matRot = XMMatrixRotationZ(XMConvertToRadians(Swords_H[i].Rot.z));
+		Swords_W[i].move = XMVector3TransformNormal(Swords_W[i].move, Swords_H[i].matRot);
+
+		Swords_W[i].Pos.y += Swords_W[i].move.m128_f32[1] * 8.f;
+		Swords_W[i].Pos.x += Swords_W[i].move.m128_f32[0] * 8.f;
+
+	}
+
+	for(auto i=0;i<SwordSize;i++)
+	{
+		Helper::GetInstance()->Clamp(Swords_W[i].Scl.y, 0.f, Swords_W[i].YSclRandMax);
+		Helper::GetInstance()->Clamp(Swords_H[i].Scl.y, 0.f, Swords_H[i].YSclRandMax);
+	}
+		
+	
+}
+
+void ShadowSlashAttack::Phase_End()
+{
+	
+}
+
+
+
+void (ShadowSlashAttack::* ShadowSlashAttack::stateTable[])() = {
+	&ShadowSlashAttack::Phase_Idle,//待機
+	&ShadowSlashAttack::Phase_ViewArea,//移動
+	&ShadowSlashAttack::Phase_Impact,
+	&ShadowSlashAttack::Phase_End,//移動
+};
+
+
+

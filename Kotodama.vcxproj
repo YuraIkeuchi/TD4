@@ -208,6 +208,7 @@
     <ClCompile Include="SourceCode\gamesystem\character\PlayerAttach.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\SecondBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\SevenBoss.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\character\ShadowSlashAttack.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\ShotAttack.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\SixBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\SmashShotAttack.cpp" />
@@ -376,6 +377,7 @@
     <ClInclude Include="SourceCode\gamesystem\character\PlayerAttach.h" />
     <ClInclude Include="SourceCode\gamesystem\character\SecondBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\SevenBoss.h" />
+    <ClInclude Include="SourceCode\gamesystem\character\ShadowSlashAttack.h" />
     <ClInclude Include="SourceCode\gamesystem\character\ShotAttack.h" />
     <ClInclude Include="SourceCode\gamesystem\character\SixBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\SmashShotAttack.h" />

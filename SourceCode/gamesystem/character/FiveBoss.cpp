@@ -25,10 +25,11 @@ FiveBoss::FiveBoss()
 	shot = new ShotAttack();
 	normal = new NormalAttack();
 	smash = new SmashShotAttack();
+	slash = new ShadowSlashAttack();
 
 	smash->Init();
 	shot->Init();
-
+	slash->Init();
 	
 	normal->Init();
 normal->SetBoss(this);
@@ -74,12 +75,15 @@ void (FiveBoss::* FiveBoss::attackTable[])() = {
 	&FiveBoss::Shot,
 	&FiveBoss::Normal,
 	& FiveBoss::Smash,
+	& FiveBoss::Slash,
+
 };
 
 void FiveBoss::Action()
 {
 	smash->SetBoss(this);
 	shot->SetBoss(this);
+	slash->SetBoss(this);
 	////ó‘ÔˆÚs(charastate‚É‡‚í‚¹‚é)
 	//if (m_HP > 0.0f) {
 		(this->*attackTable[_aPhase])();
@@ -117,13 +121,13 @@ void FiveBoss::Action()
 
 		if (RandAction==1)
 		{
-			shot->SetActionEnd(false);
-			_aPhase = ATTACK_SHOT;
+			slash->SetActionEnd(false);
+			_aPhase = ATTACK_SLASH;
 		}
 		if (RandAction==2)
 		{
-			smash->SetActionEnd(false);
-			_aPhase = ATTACK_IMPACT;
+			slash->SetActionEnd(false);
+			_aPhase = ATTACK_SLASH;
 		}
 	}
 	/*^^^^“–‚½‚è”»’è^^^^*/
@@ -189,6 +193,7 @@ void FiveBoss::Draw(DirectXCommon* dxCommon)
 	//Obj_Draw();
 	smash->Draw(dxCommon);
 	shot->Draw(dxCommon);
+	slash->Draw(dxCommon);
 	Fbx_Draw(dxCommon);
 
 }
