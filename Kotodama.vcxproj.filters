@@ -540,6 +540,9 @@
     <ClCompile Include="SourceCode\gamesystem\bossattach\FireBoll.cpp">
       <Filter>gamesystem\bossattach\fireboll</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\bossattach\DamageBlock.cpp">
+      <Filter>gamesystem\bossattach\DamageBlock</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
@@ -1041,6 +1044,9 @@
     <ClInclude Include="SourceCode\gamesystem\bossattach\FireBoll.h">
       <Filter>gamesystem\bossattach\fireboll</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\DamageBlock.h">
+      <Filter>gamesystem\bossattach\DamageBlock</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
@@ -1425,6 +1431,9 @@
     </Filter>
     <Filter Include="gamesystem\bossattach\fireboll">
       <UniqueIdentifier>{f2e2ef89-8647-4042-a3b0-4bb2ae2cc72c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\bossattach\DamageBlock">
+      <UniqueIdentifier>{7835eaf6-a996-4cb0-ab22-214c75e5c5a0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

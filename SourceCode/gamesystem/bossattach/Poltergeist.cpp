@@ -115,9 +115,7 @@ void Poltergeist::Follow() {
 			m_Frame = {};
 			m_ThrowType = THROW_INTER;
 		}
-		
-		m_Position.x += m_Power.x;
-		m_Position.z += m_Power.y;
+	
 		m_Position.y = Ease(In, Cubic, m_Frame, m_Position.y, m_AfterPos.y);
 	}
 	//‘_‚¤•ûŒü‚ðŒˆ‚ß‚é

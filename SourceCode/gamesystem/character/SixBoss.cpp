@@ -1,5 +1,4 @@
 ﻿#include "SixBoss.h"
-
 #include <any>
 #include <random>
 #include "Collision.h"
