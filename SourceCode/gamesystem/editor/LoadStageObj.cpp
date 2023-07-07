@@ -510,7 +510,7 @@ void LoadStageObj::CollideBoss() {
 }
 //捕まえているゴーストを操る
 void LoadStageObj::Manipulate() {
-	const float l_AddFrame = 0.05f;
+	const float l_AddFrame = 0.2f;
 	for (auto i = 0; i < ghosts.size(); ++i) {
 		if (ghosts[i]->GetVanish()) { continue; }
 		if (!ghosts[i]->GetAlive()) { continue; }

@@ -6,6 +6,8 @@
 #include "AvatarBoss.h"
 #include "FireBoll.h"
 #include "AbsorptionEffect.h"
+#include "ConfuEffect.h"
+#include "DamageBlock.h"
 class SevenBoss :
 	public InterBoss {
 public:
@@ -42,6 +44,9 @@ private:
 	void BulletCatch();//弾を吸収
 	void FireAttack();//火の玉攻撃
 	void BirthFire();//炎生成
+	void Confu();//混乱
+	void BlockAttack();//ダメージブロックの生成
+	void BirthBlock();
 	void Stun();//スタン
 	void BirthExplosion();
 
@@ -75,6 +80,8 @@ private:
 		STATE_AVATAR,
 		STATE_MANIPULATE,
 		STATE_FIRE,
+		STATE_CONFU,
+		STATE_BLOCK,
 		STATE_CATCH,
 		STATE_STUN,
 	}_charaState;
@@ -85,11 +92,14 @@ private:
 	static const int POLTER_NUM = 4;
 	static const int FIRE_NUM = 4;
 	static const int AVATAR_NUM = 2;
+	static const int BLOCK_NUM = 6;
 private:
 	vector<Poltergeist*> poltergeist;//ポルターガイスト
 	vector<FireBoll*> fireboll;//火の玉
 	vector<InterBoss*> avatarboss;//偽物のボス
+	vector<DamageBlock*> damageblock;//ダメージブロック
 	vector<AbsorptionEffect*> abseffect;//弾幕
+	unique_ptr<ConfuEffect> confueffect;
 	unique_ptr<BossStunEffect> bossstuneffect;
 
 	int m_InterVal = {};
@@ -133,6 +143,8 @@ private:
 		RAND_AVATAR,
 		RAND_MANIPULATE,
 		RAND_FIRE,
+		RAND_CONFU,
+		RAND_BLOCK,
 	};
 
 	int m_ChangeTimer = {};
