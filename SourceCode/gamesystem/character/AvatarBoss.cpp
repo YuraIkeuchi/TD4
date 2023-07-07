@@ -53,6 +53,7 @@ void (AvatarBoss::* AvatarBoss::stateTable[])() = {
 	&AvatarBoss::InterValMove,//動きの合間
 	&AvatarBoss::Polter,//ポルターガイスト
 	&AvatarBoss::ThrowBound,//投げる
+	&AvatarBoss::FireAttack,
 };
 //行動
 void AvatarBoss::Action() {
@@ -153,7 +154,7 @@ void AvatarBoss::InterValMove() {
 	}
 	m_InterVal++;
 	mt19937 mt{ std::random_device{}() };
-	uniform_int_distribution<int> l_RandomMove(0, 1);
+	uniform_int_distribution<int> l_RandomMove(0, 2);
 	if (m_InterVal == l_LimitTimer) {
 		//行動を決めて次の行動に移る
 		m_AttackRand = int(l_RandomMove(mt));
@@ -162,8 +163,12 @@ void AvatarBoss::InterValMove() {
 			_charaState = STATE_BOUND;
 			m_InterVal = {};
 		}
-		else{
+		else if(m_AttackRand == 1) {
 			_charaState = STATE_POLTER;
+			m_InterVal = {};
+		}
+		else {
+			_charaState = STATE_FIRE;
 			m_InterVal = {};
 		}
 	}
@@ -196,6 +201,30 @@ void AvatarBoss::ThrowBound() {
 		m_Return = true;
 	}
 }
+//火の玉攻撃
+void AvatarBoss::FireAttack() {
+	const int l_LimitTimer = 200;
+	m_MoveTimer++;
+	if (m_MoveTimer == 1) {
+		BirthFire();
+	}
+	if (m_MoveTimer == l_LimitTimer) {
+		m_MoveTimer = {};
+		_charaState = STATE_INTER;
+		m_Return = true;
+	}
+}
+void AvatarBoss::BirthFire() {
+	//火の玉
+	for (int i = 0; i < POLTER_NUM; i++) {
+		FireBoll* newfire;
+		newfire = new FireBoll();
+		newfire->Initialize();
+		newfire->SetCircleSpeed(i * 90.0f);
+		fireboll.push_back(newfire);
+	}
+}
+
 //ポルターガイストの生成
 void AvatarBoss::BirthPolter(const std::string& PolterName) {
 	const int l_LimitTimer = 20;//障害物が動くまでの時間

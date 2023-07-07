@@ -2,6 +2,7 @@
 #include "InterBoss.h"
 #include "Shake.h"
 #include "Poltergeist.h"
+#include "FireBoll.h"
 class AvatarBoss :
 	public InterBoss {
 public:
@@ -33,7 +34,8 @@ private:
 	void InterValMove();//インターバル
 	void Polter();//ポルターガイスト
 	void ThrowBound();//バウンド弾
-
+	void FireAttack();//火の玉攻撃
+	void BirthFire();//炎生成
 	void BirthPolter(const std::string& PolterName);//ポルターガイストの生成
 		//ボスが戻る
 	void ReturnBoss();
@@ -45,13 +47,16 @@ private:
 		STATE_INTER,
 		STATE_POLTER,
 		STATE_BOUND,
+		STATE_FIRE,
 	}_charaState;
 
 	//関数ポインタ
 	static void(AvatarBoss::* stateTable[])();
 private:
 	static const int POLTER_NUM = 2;
+	static const int FIRE_NUM = 4;
 private:
+	vector<FireBoll*> fireboll;//火の玉
 	vector<Poltergeist*> poltergeist;//ポルターガイスト
 	int m_InterVal = {};
 
