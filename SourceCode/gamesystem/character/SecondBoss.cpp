@@ -9,7 +9,6 @@
 //生成
 SecondBoss::SecondBoss() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Tyuta);
-
 	m_Object.reset(new IKEObject3d());
 	m_Object->Initialize();
 	m_Object->SetModel(m_Model);
