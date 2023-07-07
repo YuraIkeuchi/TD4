@@ -66,6 +66,7 @@ void (SevenBoss::* SevenBoss::stateTable[])() = {
 	&SevenBoss::ThrowBound,//投げる
 	&SevenBoss::BirthAvatar,//偽物のボス
 	&SevenBoss::Manipulate,//ゴーストを操る
+	&SevenBoss::FireAttack,//炎を出す
 	&SevenBoss::BulletCatch,//弾を吸収
 	&SevenBoss::Stun,//スタン
 };
@@ -157,6 +158,24 @@ void SevenBoss::Action() {
 		}
 	}
 
+	//火の玉
+	for (FireBoll* newfire : fireboll) {
+		if (newfire != nullptr) {
+			newfire->Update();
+		}
+	}
+
+	//障害物の削除
+	for (int i = 0; i < fireboll.size(); i++) {
+		if (fireboll[i] == nullptr) {
+			continue;
+		}
+
+		if (!fireboll[i]->GetAlive()) {
+			fireboll.erase(cbegin(fireboll) + i);
+		}
+	}
+
 	bossstuneffect->SetBasePos(m_Position);
 	bossstuneffect->Update();
 
@@ -198,7 +217,12 @@ void SevenBoss::Draw(DirectXCommon* dxCommon) {
 				newboss->Draw(dxCommon);
 			}
 		}
-
+		//火の玉
+		for (FireBoll* newfire : fireboll) {
+			if (newfire != nullptr) {
+				newfire->Draw(dxCommon);
+			}
+		}
 		EffecttexDraw(dxCommon);
 	}
 }
@@ -209,6 +233,13 @@ void SevenBoss::ImGui_Origin() {
 	ImGui::Text("Alpha:%f", m_AfterAlpha);
 	ImGui::Text("Return:%d", m_Return);
 	ImGui::End();
+
+	//火の玉
+	for (FireBoll* newfire : fireboll) {
+		if (newfire != nullptr) {
+			newfire->ImGuiDraw();
+		}
+	}
 }
 //インターバル
 void SevenBoss::InterValMove() {
@@ -227,8 +258,9 @@ void SevenBoss::InterValMove() {
 	if (m_InterVal == l_LimitTimer) {
 		//行動を決めて次の行動に移る
 		m_AttackRand = int(l_RandomMove(mt));
-
-		if (m_AttackRand < m_RandAct[RAND_POLTER]) {
+		_charaState = STATE_FIRE;
+		m_InterVal = {};
+		/*if (m_AttackRand < m_RandAct[RAND_POLTER]) {
 			_charaState = STATE_POLTER;
 			m_InterVal = {};
 		}
@@ -254,7 +286,7 @@ void SevenBoss::InterValMove() {
 			else {
 				m_InterVal = l_LimitTimer - 1;
 			}
-		}	
+		}	*/
 		m_ChangeTimer = {};
 	}
 }
@@ -359,13 +391,44 @@ void SevenBoss::Manipulate() {
 		}
 	}
 }
+//火の玉攻撃
+void SevenBoss::FireAttack() {
+	const int l_LimitTimer = 200;
+	m_MoveTimer++;
+	if (m_MoveTimer == 1) {
+		BirthFire();
+	}
+	if (m_MoveTimer == l_LimitTimer) {
+		m_MoveTimer = {};
+		m_AttackCount++;
+
+		//二回攻撃したら吸収行動に移行する
+		if (m_AttackCount != 2) {
+			_charaState = STATE_INTER;
+			m_Return = true;
+		}
+		else {
+			_charaState = STATE_CATCH;
+		}
+	}
+}
+void SevenBoss::BirthFire() {
+	//火の玉
+	for (int i = 0; i < POLTER_NUM; i++) {
+		FireBoll* newfire;
+		newfire = new FireBoll();
+		newfire->Initialize();
+		newfire->SetCircleSpeed(i * 90.0f);
+		fireboll.push_back(newfire);
+	}
+}
 //ポルターガイストの生成
 void SevenBoss::BirthPolter(const std::string& PolterName) {
 	const int l_LimitTimer = 20;//障害物が動くまでの時間
 	const int l_LimitTimer2 = 50;//障害物が動くまでの時間2
 	if (PolterName == "Normal") {
 		for (int i = 0; i < POLTER_NUM; i++) {
-			//ノーツの発生
+			//障害物の発生
 			Poltergeist* newpolter;
 			newpolter = new Poltergeist();
 			newpolter->Initialize();
@@ -388,7 +451,7 @@ void SevenBoss::BirthPolter(const std::string& PolterName) {
 		}
 	}else if(PolterName == "Bound") {
 		for (int i = 0; i < POLTER_NUM; i++) {
-			//ノーツの発生
+			//障害物の発生
 			Poltergeist* newpolter;
 			newpolter = new Poltergeist();
 			newpolter->Initialize();

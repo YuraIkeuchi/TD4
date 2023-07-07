@@ -55,7 +55,5 @@ RandAct,80
 RandAct,100
 *---------------------------*
 
-//ラインの攻撃力
-LineDamage,0.5,
-//弾幕のダメージ
-BarrangeDamage,0.5,
+//火の玉の攻撃力
+FireDamage,1.0
