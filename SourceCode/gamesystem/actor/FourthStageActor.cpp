@@ -261,6 +261,7 @@ void FourthStageActor::IntroUpdate(DebugCamera* camera) {
 		//}
 	} else if (m_AppTimer == 800) {
 		isShutter = true;
+		text_->SelectText(TextManager::TALK_NULL);
 		m_AppTimer++;
 	}
 	else if (m_AppTimer == 850) {
@@ -284,6 +285,7 @@ void FourthStageActor::IntroUpdate(DebugCamera* camera) {
 		text_->SelectText(TextManager::TALK_ELEVEN_T);
 	} else if (m_AppTimer == 2250) {
 		isShutter = true;
+		text_->SelectText(TextManager::TALK_NULL);
 		m_AppTimer++;
 	} else if (m_AppTimer == 2450) {
 		text_->SelectText(TextManager::TALK_XII_T);

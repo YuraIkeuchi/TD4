@@ -112,6 +112,7 @@ public:
 		TALK_XVII_T,
 		TALK_XVIII_T,
 		TALK_XVIV_T,
+		TALK_NULL,
 	};
 
 	static TextManager* GetInstance();
