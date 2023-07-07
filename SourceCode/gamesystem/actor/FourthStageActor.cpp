@@ -87,8 +87,8 @@ void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 		(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
 		sceneChanger_->Update();
 		camerawork->Update(camera);
+		if (isVisible) { apple->Update(); }
 	}
-	if (isVisible) { apple->Update(); }
 	Menu::GetIns()->Upda();
 	ui->Update();
 	postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());

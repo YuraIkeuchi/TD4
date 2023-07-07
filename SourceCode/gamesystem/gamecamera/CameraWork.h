@@ -79,14 +79,10 @@ public:
 
 	bool GetFeedEnd() { return FeedEndF; }
 private:
-	bool FeedEndF;
-	int DeathTimer;
-	bool FeedF;
-	bool AppearEndF;
-	void SetBossDead();//撃破
-
-	//ゲームシーン以外で使うカメラ更新(this変数で変更可能)
-//	void SpecialUpdate();//更新
+	bool FeedEndF = false;
+	int DeathTimer = 0;
+	bool FeedF = false;;
+	bool AppearEndF = false;
 
 private://各ボスの登場カメラ
 	Spline* spline;
@@ -107,14 +103,13 @@ private://各ボスの登場カメラ
 	void SetCircleCameraEye(const XMFLOAT3 target);
 public:
 	bool Finish;
-	int Timer_first=1;
+	int Timer_first = 1;
 	bool StartSpl;
 	float RadEffect;
 	bool PlusRad;
 	float SplineSpeed;
 	float GetEffectPower() { return RadEffect; }
-	enum FirstBossCamState
-	{
+	enum FirstBossCamState {
 		ONE,
 		TWO,
 		THREE
@@ -122,7 +117,7 @@ public:
 	}_firstState;
 	//getter setter
 	bool Feed_Spline;
-	bool FinishAppear() { if (spline->GetIndex() >= static_cast<int>(static_cast<unsigned long long>(pointsList.size()) -1))return true; return false; }
+	bool FinishAppear() { if (spline->GetIndex() >= static_cast<int>(static_cast<unsigned long long>(pointsList.size()) - 1))return true; return false; }
 
 	void SetBoss(InterBoss* boss) { this->boss = boss; }
 
@@ -167,7 +162,7 @@ private:
 	unique_ptr<Shake> shake = nullptr;
 	//イージングの変数
 	float m_Frame = 0.0f;
-	float m_FrameMax=30.0f;
+	float m_FrameMax = 30.0f;
 	XMFLOAT3 m_BeforeEye = { 0.0f,0.0f,0.0f };
 	XMFLOAT3 m_AfterEye = { 0.0f,0.0f,0.0f };
 	XMFLOAT3 m_BeforeTarget = { 0.0f,0.0f,0.0f };
