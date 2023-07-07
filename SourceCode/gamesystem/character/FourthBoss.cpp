@@ -154,7 +154,7 @@ void FourthBoss::Pause() {
 }
 
 void FourthBoss::ImGui_Origin() {
-	ImGui::Begin("BOSS");
+	//ImGui::Begin("BOSS");
 	//ImGui::SliderInt("AI-Pattern", &cases, 0, 100);
 	//ImGui::Text("isMiss %s", (isMiss ? "true" : "false"));
 	//ImGui::SliderInt("Action", &ActionTimer, 0, 1000);
@@ -185,17 +185,17 @@ void FourthBoss::ImGui_Origin() {
 	//	assert(0);
 	//	break;
 	//}
-	ImGui::SliderFloat("Jpos0x", &jackPos[0].x, 0, 1000);
-	ImGui::SliderFloat("Jpos0y", &jackPos[0].y, 0, 1000);
-	ImGui::SliderFloat("Jpos0z", &jackPos[0].z, 0, 1000);
-	ImGui::SliderFloat("Jpos1x", &jackPos[1].x, 0, 1000);
-	ImGui::SliderFloat("Jpos1y", &jackPos[1].y, 0, 1000);
-	ImGui::SliderFloat("Jpos1z", &jackPos[1].z, 0, 1000);
-	ImGui::SliderFloat("Jpos2x", &jackPos[2].x, 0, 1000);
-	ImGui::SliderFloat("Jpos2y", &jackPos[2].y, 0, 1000);
-	ImGui::SliderFloat("Jpos2z", &jackPos[2].z, 0, 1000);
+	//ImGui::SliderFloat("Jpos0x", &jackPos[0].x, 0, 1000);
+	//ImGui::SliderFloat("Jpos0y", &jackPos[0].y, 0, 1000);
+	//ImGui::SliderFloat("Jpos0z", &jackPos[0].z, 0, 1000);
+	//ImGui::SliderFloat("Jpos1x", &jackPos[1].x, 0, 1000);
+	//ImGui::SliderFloat("Jpos1y", &jackPos[1].y, 0, 1000);
+	//ImGui::SliderFloat("Jpos1z", &jackPos[1].z, 0, 1000);
+	//ImGui::SliderFloat("Jpos2x", &jackPos[2].x, 0, 1000);
+	//ImGui::SliderFloat("Jpos2y", &jackPos[2].y, 0, 1000);
+	//ImGui::SliderFloat("Jpos2z", &jackPos[2].z, 0, 1000);
 
-	ImGui::End();
+	//ImGui::End();
 }
 
 void FourthBoss::EffecttexDraw(DirectXCommon* dxCommon) {
