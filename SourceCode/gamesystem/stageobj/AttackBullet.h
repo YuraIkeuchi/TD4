@@ -12,6 +12,8 @@ public:
 	/// ImGui描画
 	/// </summary>
 	void ImGui_Origin() override;
+
+	void Draw_Origin() override;
 private:
 	//弾の動く処理
 	void Action() override;
@@ -24,6 +26,9 @@ private:
 private:
 	static const int POWER_MAX = 4;
 private:
+	//共通変数(座標とか)
+	unique_ptr<IKEObject3d> m_Object2;
+	IKEModel* m_Model2;
 	//イージング後の位置
 	XMFLOAT3 m_AfterPos = {};
 	//円運動

@@ -529,8 +529,14 @@
       <Filter>gamesystem\effect\Absorption</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\InterAttack.cpp" />
+     <Filter>gamesystem\charactor\Boss\Five</Filter>
+    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\NormalAttack.cpp" />
+   <Filter>gamesystem\charactor\Boss\Five</Filter>
+    </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\ShotAttack.cpp" />
+ <Filter>gamesystem\charactor\Boss\Five</Filter>
+  </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\SmashShotAttack.cpp">
       <Filter>gamesystem\charactor\Boss\Five</Filter>
     </ClCompile>
@@ -1025,11 +1031,13 @@
     <ClInclude Include="SourceCode\gamesystem\effect\AbsorptionEffect.h">
       <Filter>gamesystem\effect\Absorption</Filter>
     </ClInclude>
+    <ClInclude Include="Fraction.h" />
     <ClInclude Include="SourceCode\gamesystem\character\InterAttack.h" />
     <ClInclude Include="SourceCode\gamesystem\character\NormalAttack.h" />
     <ClInclude Include="SourceCode\gamesystem\character\ShotAttack.h" />
-    <ClInclude Include="SourceCode\gamesystem\character\SmashShotAttack.h">
-      <Filter>gamesystem\charactor\Boss\Five</Filter>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\FireBoll.h">
+      <Filter>gamesystem\bossattach\fireboll</Filter>
+    
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\ShadowSlashAttack.h" />
     <ClInclude Include="CollectGhost.h" />
@@ -1414,6 +1422,9 @@
     </Filter>
     <Filter Include="gamesystem\effect\Absorption">
       <UniqueIdentifier>{d0388d6d-9d5c-459c-b23b-05c48a2c4aac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\bossattach\fireboll">
+      <UniqueIdentifier>{cd443883-80af-4d7c-a126-c8207f550b10}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -20,6 +20,7 @@ void ModelManager::SecondInitialize()
 {
 	LoadModel(Ground, "ground");
 	LoadModel(Bullet, "UVSphere");
+	LoadModel(Nucleus, "nucleus");
 	LoadModel(GhostBullet, "voice");
 	LoadModel(BulEnemy, "tri");
 	LoadModel(Tyuta, "tieyosi_idol");

@@ -24,6 +24,9 @@ bool GhostBullet::Initialize() {
 //ImGui描画
 void GhostBullet::ImGui_Origin() {
 }
+//オリジナル描画
+void GhostBullet::Draw_Origin() {
+}
 //弾の特有処理
 void GhostBullet::Action() {
 	//タイプによって色を一旦変えてる

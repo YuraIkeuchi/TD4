@@ -20,6 +20,9 @@ bool ViewBullet::Initialize() {
 //ImGui描画
 void ViewBullet::ImGui_Origin() {
 }
+//オリジナル描画
+void ViewBullet::Draw_Origin() {
+}
 //弾の特有処理
 void ViewBullet::Action() {
 	if (m_Alive) {

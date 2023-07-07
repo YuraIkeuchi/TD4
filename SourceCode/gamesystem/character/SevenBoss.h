@@ -4,6 +4,7 @@
 #include "BossStunEffect.h"
 #include "Poltergeist.h"
 #include "AvatarBoss.h"
+#include "FireBoll.h"
 #include "AbsorptionEffect.h"
 class SevenBoss :
 	public InterBoss {
@@ -39,6 +40,8 @@ private:
 	void BirthAvatar();//偽物のボス
 	void Manipulate();//操る
 	void BulletCatch();//弾を吸収
+	void FireAttack();//火の玉攻撃
+	void BirthFire();//炎生成
 	void Stun();//スタン
 	void BirthExplosion();
 
@@ -71,6 +74,7 @@ private:
 		STATE_BOUND,
 		STATE_AVATAR,
 		STATE_MANIPULATE,
+		STATE_FIRE,
 		STATE_CATCH,
 		STATE_STUN,
 	}_charaState;
@@ -79,9 +83,11 @@ private:
 	static void(SevenBoss::* stateTable[])();
 private:
 	static const int POLTER_NUM = 4;
+	static const int FIRE_NUM = 4;
 	static const int AVATAR_NUM = 2;
 private:
 	vector<Poltergeist*> poltergeist;//ポルターガイスト
+	vector<FireBoll*> fireboll;//火の玉
 	vector<InterBoss*> avatarboss;//偽物のボス
 	vector<AbsorptionEffect*> abseffect;//弾幕
 	unique_ptr<BossStunEffect> bossstuneffect;
