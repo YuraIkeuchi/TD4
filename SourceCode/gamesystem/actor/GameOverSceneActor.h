@@ -15,6 +15,8 @@ public:
 	void BackDraw(DirectXCommon* dxCommon);
 	void ImGuiDraw(DirectXCommon* dxCommon);
 	void FrontDraw();
+
+	string NextStageName();
 private://メンバ変数
 	string str = "";
 	//スプライト
