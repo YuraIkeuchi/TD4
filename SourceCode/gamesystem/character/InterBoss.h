@@ -134,7 +134,8 @@ public://gettersetter
 	int ActionNum;
 	void SetCircleSpeed(float CircleSpeed) { m_CircleSpeed = CircleSpeed; }
 	void SetTargetPos(XMFLOAT3 TargetPos) { m_TargetPos = TargetPos; }
-private:
+
+protected:
 	std::vector<Ghost*> ghosts;
 	std::string SceneName;
 	vector<InterEffect*> effects;
@@ -200,9 +201,7 @@ protected:
 	//円運動
 	float m_CircleScale = 30.0f;
 	float m_CircleSpeed = {};
-
-	int m_BirthTarget = {};
-
+	
 	bool m_DeleteObj = false;
 private:
 

@@ -1,6 +1,10 @@
 #include "ShotAttack.h"
 
+#include <random>
+
+#include"Easing.h"
 #include "Collision.h"
+#include "Helper.h"
 #include "Player.h"
 
 void ShotAttack::Init()
@@ -26,15 +30,18 @@ void ShotAttack::Upda()
 
 	
 	for (auto i = 0; i < boss->GetGhost().size(); i++) {
-		//
-		boss->GetGhost()[i]->SetFivePos(boss->GetPosition());
+		for (auto k = 0; k < 3; k++) {
+			//
+			boss->GetGhost()[i]->SetFivePos(boss->GetPosition());
 
-		if (Collision::GetLength(BulPos[0], boss->GetGhost()[i]->GetPosition()) < 5.f ||
-			Collision::GetLength(BulPos[1], boss->GetGhost()[i]->GetPosition()) < 5.f ||
-			Collision::GetLength(BulPos[2], boss->GetGhost()[i]->GetPosition()) < 5.f)
-		{
-			if (boss->GetGhost()[i]->JugNONE()) {
-				boss->GetGhost()[i]->SetCollide(true);
+			if (Collision::GetLength(BulPos[k], boss->GetGhost()[i]->GetPosition()) < 5.f)
+			{
+				if (!BulAlive[k])continue;
+				if (boss->GetGhost()[i]->JugNONE()) {
+					DarkCount++;
+					boss->GetGhost()[i]->SetCollide(true);
+				BulAlive[k] = false;
+				}
 			}
 		}
 	}
@@ -55,15 +62,15 @@ void ShotAttack::Upda()
 		}
 	}
 
-
-	if (_phase == Phase::NON&&!ActionEnd) {
-		_phase = Phase::SHOT;
-	}
+	
 		//状態移行(charastateに合わせる)
 	(this->*stateTable[_phase])();
 
 	for(auto i=0;i<BulSize;i++)
 	{
+		if (!BulAlive[i])
+			BulAlpha[i] = 0.f;
+
 		ShotObj[i]->SetColor({ 1.f,1.f,1.f ,BulAlpha[i]});
 		ShotObj[i]->SetScale({ 1.f,1.f,1.f });
 		ShotObj[i]->SetRotation(BulRot[i]);
@@ -87,8 +94,10 @@ void ShotAttack::Upda()
 void ShotAttack::Draw(DirectXCommon* dxCommon)
 {
 	IKEObject3d::PreDraw();
-	for (auto i = 0; i < BulSize; i++)
+	for (auto i = 0; i < BulSize; i++) {
+		if (BulAlpha[i] <= 0.f)continue;
 		ShotObj[i]->Draw();
+	}
 	IKEObject3d::PostDraw();
 
 	
@@ -107,16 +116,17 @@ void ShotAttack::SpriteDraw()
 void ShotAttack::Phase_Idle()
 {
 	AttackTimer++;
-	FollowPlayer();
+	FollowPlayerAct();
 
 	//次フェーズ
 	bool next = AttackTimer > 120;
 
 	m_Rotation = boss->GetRotation();
 	if (next) {
-		for (auto i = 0; i < BulSize; i++)
+		for (auto i = 0; i < BulSize; i++) {
+			BulAlive[i] = true;
 			BulPos[i] = boss->GetPosition();
-
+		}
 		_phase = Phase::SHOT;
 	}
 	}
@@ -152,21 +162,36 @@ void ShotAttack::Phase_Shot()
 		PhaseCount++;
 		_phase = END;
 	}
+	RotEaseTime = 0.f;
 
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_RandRot(-60, 60);
+
+	AddRot = (float)(l_RandRot(mt))+30.f;
 }
 
 void ShotAttack::Phase_End()
 {
 	for(auto i=0;i<BulSize;i++)
 	{
+		BulAlive[i] = true;
 		BulAlpha[i] = 1.f;
 		BulPos[i] = boss->GetPosition();
 	}
+	
+	
+		Helper::GetInstance()->FrameCheck(RotEaseTime, 0.05f);
+
 	boss->SetRotation({ boss->GetRotation().x,
-	OldRot.y + 90.f,
+	Ease(In,Quad,RotEaseTime,OldRot.y,OldRot.y+AddRot),
 	boss->GetRotation().z });
-	if (PhaseCount < 4)_phase = SHOT;
-	else ActionEnd = true;
+	AttackTimer = 0;
+	//if (PhaseCount < 4) {
+		if(RotEaseTime>=0.90f)
+		_phase = NON;
+	//}
+	
+	//else ActionEnd = true;
 }
 
 
@@ -179,3 +204,21 @@ void ShotAttack::RottoPlayer()
 }
 
 
+void ShotAttack::FollowPlayerAct()
+{
+	
+	XMVECTOR move = { 0.f,0.f, 0.1f, 0.0f };
+
+	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(boss->GetRotation().y));
+
+	move = XMVector3TransformNormal(move, matRot);
+
+	float SummonSpeed = 2.f;
+	m_Position = {
+					m_Position.x + move.m128_f32[0] * SummonSpeed,
+				m_Position.y,
+				m_Position.z + move.m128_f32[2] * SummonSpeed
+	};
+
+	boss->SetPosition(m_Position);
+}
