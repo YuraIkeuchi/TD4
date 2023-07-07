@@ -26,17 +26,8 @@ void GameOverSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	Input* input = Input::GetInstance();
 	if (input->TriggerButton(input->B) && !sceneChanger_->GetEasingStart()) {
 		sceneChanger_->ChangeStart();
-		if (SceneSave::GetInstance()->GetClearFlag(kFirstStage)) {
-			if (SceneSave::GetInstance()->GetClearFlag(kSecondStage)) {
-				
-			} else {
-				str = "SECONDSTAGE";
-				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Retry.wav", VolumManager::GetInstance()->GetSEVolum());
-			}
-		} else {
-			str = "FIRSTSTAGE";
-			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Retry.wav", VolumManager::GetInstance()->GetSEVolum());
-		}
+		str = NextStageName();
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Retry.wav", VolumManager::GetInstance()->GetSEVolum());
 		//Audio::GetInstance()->StopWave(AUDIO_LOAD);
 	}
 	if (input->TriggerButton(input->A) && !sceneChanger_->GetEasingStart()) {
@@ -87,6 +78,38 @@ void GameOverSceneActor::FrontDraw() {
 	ClearSprite->Draw();
 	IKESprite::PostDraw();
 	sceneChanger_->Draw();
+}
+string GameOverSceneActor::NextStageName() {
+	string str = "";
+	for (int i = 0; i < kMaxStage; i++) {
+		if (!SceneSave::GetInstance()->GetLoseFlag((SeceneCategory)i)) { continue; }
+		switch (i) {
+		case 1:
+			str = "FIRSTSTAGE";
+			break;
+		case 2:
+			str = "SECONDSTAGE";
+			break;
+		case 3:
+			str = "THIRDSTAGE";
+			break;
+		case 4:
+			str = "FOURTHSTAGE";
+			break;
+		case 5:
+			str = "FIVESTAGE";
+			break;
+		case 6:
+			str = "SIXSTAGE";
+			break;
+		case 7:
+			str = "SEVENSTAGE";
+			break;
+		default:
+			break;
+		}
+	}
+	return str;
 }
 //”w–Ê
 void GameOverSceneActor::BackDraw(DirectXCommon* dxCommon)

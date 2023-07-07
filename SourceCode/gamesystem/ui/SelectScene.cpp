@@ -193,7 +193,7 @@ void SelectScene::Upda()
 
 	ChangeEffect("FIRSTSTAGE", Stage::FIRST, FIRST);
 
-	ChangeEffect("SECONDSTAGE", Stage::SECOND, SECOND);
+	ChangeEffect("FIVESTAGE", Stage::SECOND, SECOND);
 
 	ChangeEffect("FOURTHSTAGE", Stage::FOUR, FOUR);
 

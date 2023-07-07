@@ -24,7 +24,7 @@ void NormalAttack::Upda()
 }
 
 
-void NormalAttack::Draw()
+void NormalAttack::Draw(DirectXCommon* dxCommon)
 {
 	
 }

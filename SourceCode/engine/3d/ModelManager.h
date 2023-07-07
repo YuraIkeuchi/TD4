@@ -39,7 +39,8 @@ public:
 		MILKCAP_BREAK,
 		CAP,
 		SKIRT,
-		NOTE
+		NOTE,
+		NAIL
 	};
 	//FBXの名前
 	enum FBXName {

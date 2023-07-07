@@ -33,6 +33,8 @@ public:
 	void SelectText(TextManager::Name_CameraBoss name, const XMVECTOR& color = { 1.f,1.f,1.f,1.f });
 	void SelectText(TextManager::Name_First name,const XMVECTOR& color={1.f,1.f,1.f,1.f});
 	void ChangeColor(int row, const XMVECTOR& color);
+	void ChangeColor(const XMVECTOR& color);
+
 public:
 	void SetTextState(const int TextState) { m_TextState = TextState; }
 private:

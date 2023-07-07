@@ -1,5 +1,6 @@
 #pragma once
 #include "InterAttack.h"
+#include"Ghost.h"
 class NormalAttack :
     public InterAttack
 {
@@ -8,7 +9,7 @@ public:
 
 	void Upda() override;
 
-	void Draw() override;
+	void Draw(DirectXCommon* dxCommon) override;
 
 	void SpriteDraw() override;
 private:

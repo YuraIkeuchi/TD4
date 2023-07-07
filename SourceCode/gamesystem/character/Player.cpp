@@ -300,6 +300,7 @@ void Player::Walk()
 			m_Position.z -= move.m128_f32[2] * m_AddSpeed;
 		}
 	}
+	if(_animeName!=AnimeName::ATTACK)
 	AnimationControl(AnimeName::WALK, true, 1);
 }
 //VECTOR
@@ -356,8 +357,11 @@ void Player::Bullet_Management() {
 		TriggerAttack = true;
 	}
 	if (TriggerAttack) {
-		if (!m_fbxObject->GetIsPlay())
+		if (m_fbxObject->GetCurrent()>=m_fbxObject->GetEndTime()-1) {
+			m_fbxObject->StopAnimation();
+			_animeName = AnimeName::IDLE;
 			TriggerAttack = false;
+		}
 	}
 
 	//弾を打った瞬間チャージ量分飢餓ゲージを減らす

@@ -58,6 +58,10 @@ private://ステート
 	void Follow();
 	//探索
 	void Search();
+	//闇落ち
+	XMFLOAT3 bossPos;
+	bool Collide;
+	void DarkSide();
 	//洗脳
 	void Jack();
 	//洗脳
@@ -72,6 +76,11 @@ private://ステート
 
 	void BirthBullet();
 public:
+	bool JugNONE() { if (_charaState == STATE_NONE)return true; else return false; }
+	bool GetCollide() { return Collide; }
+	void SetCollide(bool col) { Collide = col; }
+	void SetFivePos(XMFLOAT3 pos) { bossPos = pos; }
+
 	//ゴースト同士の当たり判定
 	void GhostCollision(const XMFLOAT3& pos);
 public://getter setter
@@ -80,6 +89,7 @@ public://getter setter
 	const bool& GetCatch() { return m_Catch; }
 	const bool& GetVanish() { return m_Vanish; }
 	const bool& GetFollow() { return m_Follow; }
+	const bool& GetDFollow() { return m_DFollow; }
 	const bool& GetAbsorption() { return m_Absorption; }
 	const bool& GetSearch() { return m_Search; }
 	const bool& GetIsVerse() { return isVerse; }
@@ -118,6 +128,7 @@ private:
 		STATE_SPAWN,
 		STATE_SEARCH,
 		STATE_FOLLOW,
+		STATE_DARKOTI,
 		STATE_JACK,
 		STATE_HYPERJACK,
 		STATE_MANIPULATE,
@@ -184,7 +195,7 @@ private:
 	float m_Limit = {};
 
 	bool m_Hit = false;
-
+	bool m_DFollow;
 	OBB m_OBB1 = {}, m_OBB2 = {};
 
 	//操られている

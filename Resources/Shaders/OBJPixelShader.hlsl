@@ -66,7 +66,7 @@ float2 offsetscroll = float2(offset.x,offset.y);
 		clip(v);
 
 
-		float CorrVal = 1.0f;
+		float CorrVal = 0.80f;
 		texcolor.rgb += bloom(smp, input.uv);
 		float SubAlpha = smoothstep(0, 1, input.uv.y);
 

@@ -24,12 +24,16 @@ FiveBoss::FiveBoss()
 
 	shot = new ShotAttack();
 	normal = new NormalAttack();
+	smash = new SmashShotAttack();
+	slash = new ShadowSlashAttack();
 
+	smash->Init();
 	shot->Init();
-	shot->SetBoss(this);
-	
+	slash->Init();
+
 	normal->Init();
-normal->SetBoss(this);
+	normal->SetBoss(this);
+
 
 	noteeffect.reset(new NoteEffect());
 	noteeffect->Initialize();
@@ -70,19 +74,66 @@ void (FiveBoss::* FiveBoss::attackTable[])() = {
 	&FiveBoss::Pause,
 	&FiveBoss::Shot,
 	&FiveBoss::Normal,
+	&FiveBoss::Smash,
+	&FiveBoss::Slash,
+
 };
+
+void FiveBoss::ActionSet(ActionPhase phase, InterAttack* attack)
+{
+	if (_aPhase == phase)
+	{
+		RandAction = 0;
+		if (attack->GetActionEnd())
+		{
+			ActionTimer++;
+			_aPhase = ATTACK_NORMAL;
+		}
+	}
+}
 
 void FiveBoss::Action()
 {
+	smash->SetBoss(this);
+	shot->SetBoss(this);
+	slash->SetBoss(this);
 	////状態移行(charastateに合わせる)
 	//if (m_HP > 0.0f) {
-		(this->*attackTable[_aPhase])();
+	(this->*attackTable[_aPhase])();
 	//}
-	if(Input::GetInstance()->TriggerButton(Input::Y))
-	{
-		_aPhase = ATTACK_SHOT;
-	}
 
+	/// <summary>
+	/// 攻撃ー３WAY
+	/// </summary>
+
+
+	ActionSet(ATTACK_SHOT, shot);
+	ActionSet(ATTACK_IMPACT, smash);
+	ActionSet(ATTACK_SLASH, slash);
+
+	if (_aPhase == ATTACK_NORMAL)ActionTimer++;
+
+
+	mt19937 mt{ std::random_device{}() };
+	if (_aPhase == ATTACK_NORMAL && ActionTimer % 120 == 0) {
+		RandAction = 1;
+
+		if (RandAction == 1)
+		{
+			shot->SetActionEnd(false);
+			_aPhase = ATTACK_SHOT;
+		}
+		if (RandAction == 2)
+		{
+			smash->SetActionEnd(false);
+			_aPhase = ATTACK_IMPACT;
+		}
+		if (RandAction == 3)
+		{
+			slash->SetActionEnd(false);
+			_aPhase = ATTACK_SLASH;
+		}
+	}
 	/*^^^^当たり判定^^^^*/
 	//弾とボスの当たり判定
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
@@ -101,7 +152,7 @@ void FiveBoss::Action()
 		isStrong = true;
 	}
 	//基礎パラメータ設定
-	
+
 	Fbx_SetParam();
 
 	//どっち使えばいいか分からなかったから保留
@@ -144,7 +195,9 @@ void FiveBoss::EffecttexDraw(DirectXCommon* dxCommon)
 void FiveBoss::Draw(DirectXCommon* dxCommon)
 {
 	//Obj_Draw();
-	shot->Draw();
+	smash->Draw(dxCommon);
+	shot->Draw(dxCommon);
+	slash->Draw(dxCommon);
 	Fbx_Draw(dxCommon);
 
 }

@@ -99,24 +99,24 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	SecondCreateWord(SELECT_JOY2, L"めのまえのやつをたおすヨロコビを", L"リカイしてくれるよね!!!", L"!!!!!!!!!!");
 
 	CameraBossCreateWord(TALK_FIRST_T, L"ストポンとはぐれちゃった...", L"どこにいっちゃっただろう", L"おなかもすいちゃったし");
-	CameraBossCreateWord(TALK_SECOND_T, L"な、なにかサガしているのかい？", L"もしかして", L"さっきのメガホンかな...");
-	CameraBossCreateWord(TALK_THIRD_T, L"そうなのかも！", L"でもおなかがすいて", L"もうウゴけない...");
-	CameraBossCreateWord(TALK_FOURTH_T, L"それならボクにマカせて！！", L"イチドトったら",L"いつでもだせるんだ！");
+	CameraBossCreateWord(TALK_SECOND_T, L"な、なにか探しているのかい？", L"もしかして", L"さっきのメガホンかな...");
+	CameraBossCreateWord(TALK_THIRD_T, L"そうなのかも！", L"でもおなかがすいて", L"もう動けない...");
+	CameraBossCreateWord(TALK_FOURTH_T, L"それならボクに任せて！！", L"一度撮ったら",L"いつでもだせるんだ！");
 	CameraBossCreateWord(TALK_FIVE_T, L"わーすごい！", L"ありがとう!", L"えーと...");
-	CameraBossCreateWord(TALK_SIX_T, L"ボクにはなまえがないんだ...", L"きづいたらここにいて", L"だからきにしないで");
-	CameraBossCreateWord(TALK_SEVEN_T, L"それならこれからはアポーね！", L"おカアさんが", L"りんごのエイゴ？をオシえてくれたの！");
-	CameraBossCreateWord(TALK_EIGHT_T, L"アポー...", L"とてもいいナマエだ", L"きにいったよ");
+	CameraBossCreateWord(TALK_SIX_T, L"ボクには名前がないんだ...", L"気づいたらここにいて", L"だから気にしないで");
+	CameraBossCreateWord(TALK_SEVEN_T, L"それならこれからはアポーね！", L"お母さんが", L"りんごのエイゴ？を教えてくれたの！");
+	CameraBossCreateWord(TALK_EIGHT_T, L"アポー...", L"とてもいい名前だ", L"気にいったよ");
 	CameraBossCreateWord(TALK_NINE_T, L"アポーも友達になろう！", L"ストポンもいるし", L"きっと仲よくなれるよ！");
-	CameraBossCreateWord(TALK_TEN_T, L"いいのかい？", L"ボクはここからうごかないから", L"まってるね！");
-	CameraBossCreateWord(TALK_ELEVEN_T, L"ストポン見つけて", L"あしたあいにくるね", L"またね！アポー！");
+	CameraBossCreateWord(TALK_TEN_T, L"いいのかい？", L"ボクはここから動かないから", L"待ってるね！");
+	CameraBossCreateWord(TALK_ELEVEN_T, L"ストポン見つけて", L"明日会いにくるね", L"またね！アポー！");
 	CameraBossCreateWord(TALK_XII_T, L"アポーおまたせ！", L"ストポンつれてきたよ！", L"");
-	CameraBossCreateWord(TALK_XIII_T, L"おう！おまえがアポーか！", L"コトコがセワになったみたいだな", L"ありがとな！");
+	CameraBossCreateWord(TALK_XIII_T, L"おう！おまえがアポーか！", L"コトコが世話になったみたいだな", L"ありがとな！");
 	CameraBossCreateWord(TALK_XIV_T, L"...", L"...", L"...");
-	CameraBossCreateWord(TALK_XV_T, L"...れた", L"ついに手にいれた！", L"このマホウのカメラ！！！");
-	CameraBossCreateWord(TALK_XVI_T, L"キノウとチガう！", L"アポーじゃない！？", L"あなただれなの！");
-	CameraBossCreateWord(TALK_XVII_T, L"オレノナハジャック！！", L"そんなへんななまえじぇねーよ！", L"ギャハハハ");
+	CameraBossCreateWord(TALK_XV_T, L"...れた", L"ついに手にいれた！", L"この魔法のカメラ！！！");
+	CameraBossCreateWord(TALK_XVI_T, L"昨日と違う！", L"アポーじゃない！？", L"あなた誰なの！");
+	CameraBossCreateWord(TALK_XVII_T, L"オレノナハジャック！！", L"そんな変な名前じゃねーよ！", L"ギャハハハ");
 	CameraBossCreateWord(TALK_XVIII_T, L"そんな...", L"それじゃもうアポーは...", L"");
-	CameraBossCreateWord(TALK_XVIV_T, L"ちょうどいいや", L"おまえらでためしてやるよ！！", L"おら！！かまえろ！！");
+	CameraBossCreateWord(TALK_XVIV_T, L"ちょうどいいや", L"おまえらで試してやるよ！！", L"おら！！かまえろ！！");
 	CameraBossCreateWord(TALK_NULL, L"", L"", L"");
 
 

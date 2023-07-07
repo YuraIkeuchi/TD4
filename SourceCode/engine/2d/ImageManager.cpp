@@ -103,7 +103,8 @@ void ImageManager::SecondLoadTex2D()
 
 	IKETexture::LoadTexture(STUN, L"Resources/2d/effect/stun.png");
 	IKETexture::LoadTexture(CATCH, L"Resources/2d/effect/effect1.png");
-
+	IKETexture::LoadTexture(SLASHAREA, L"Resources/2d/effect/DArea3.png");
+	IKETexture::LoadTexture(DARKBOM, L"Resources/2d/objicon/missileicon.png");
 }
 
 void ImageManager::LoadParticle()

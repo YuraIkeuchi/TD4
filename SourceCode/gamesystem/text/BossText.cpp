@@ -51,3 +51,8 @@ void BossText::Display()
 void BossText::ChangeColor(int row, const XMVECTOR& color) {
 	text_->SetOnceColor(row, color);
 }
+
+void BossText::ChangeColor(const XMVECTOR& color) {
+	text_->SetAllColor(color);
+
+}
