@@ -55,6 +55,11 @@ private:
 	void VanishCollide(vector<InterBullet*>bullet);
 
 	void DeleteObj();
+
+	//ランダムに動き
+	void RandMove();
+	//ボスが戻る
+	void ReturnBoss();
 public:
 
 private:
@@ -103,10 +108,10 @@ private:
 	}_vanishState;
 	//透明化する時間
 	float m_VanishFrame = {};
-	//透明化する確率
-	int m_VanishTarget = {};
 	//糖度
 	float m_AfterAlpha = {};
+	//透明化する確率
+	int m_VanishTarget = {};
 	XMFLOAT3 m_AfterPos = {};
 
 	int m_RotTimer = {};
@@ -122,4 +127,16 @@ private:
 		RAND_AVATAR,
 		RAND_MANIPULATE
 	};
+
+	int m_ChangeTimer = {};
+	float m_AddSpeed = {};
+	float m_AddScale = {};
+
+	bool m_Return = false;
+
+	enum ReturnState {
+		RETURN_SET,
+		RETURN_PLAY,
+		RETURN_END,
+	}_ReturnState;
 };

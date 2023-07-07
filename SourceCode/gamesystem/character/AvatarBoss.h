@@ -35,6 +35,9 @@ private:
 	void ThrowBound();//バウンド弾
 
 	void BirthPolter(const std::string& PolterName);//ポルターガイストの生成
+		//ボスが戻る
+	void ReturnBoss();
+public:
 private:
 	//キャラの状態
 	enum CharaState
@@ -59,4 +62,18 @@ private:
 
 	//イージング後の位置
 	XMFLOAT3 m_AfterPos = {};
+
+	bool m_Return = false;
+
+	enum ReturnState {
+		RETURN_SET,
+		RETURN_PLAY,
+		RETURN_END,
+	}_ReturnState;
+	//透明化する時間
+	float m_VanishFrame = {};
+	//糖度
+	float m_AfterAlpha = {};
+
+	float m_SaveSpeed = {};
 };
