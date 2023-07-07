@@ -116,6 +116,7 @@ void SevenBoss::Action() {
 	//‹U•¨‚Ìƒ{ƒX
 	for (InterBoss* newboss : avatarboss) {
 		if (newboss != nullptr) {
+			newboss->SetTargetPos(m_Position);
 			newboss->Update();
 		}
 	}
@@ -287,9 +288,11 @@ void SevenBoss::BirthAvatar() {
 			boss->Initialize();
 			if (i == 0) {
 				boss->SetPosition({ 20.0f,3.0f,10.0f });
+				boss->SetCircleSpeed(0.0f);
 			}
 			else {
 				boss->SetPosition({ -20.0f,3.0f,10.0f });
+				boss->SetCircleSpeed(180.0f);
 			}
 			avatarboss.push_back(boss);
 			m_AvatarCount++;

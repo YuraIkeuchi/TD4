@@ -56,4 +56,7 @@ private:
 
 	//攻撃の乱数
 	int m_AttackRand = {};
+
+	//イージング後の位置
+	XMFLOAT3 m_AfterPos = {};
 };

@@ -27,6 +27,7 @@ bool AvatarBoss::Initialize() {
 	m_Radius = 2.2f;
 
 	_charaState = STATE_INTER;
+	m_CircleScale = 15.0f;
 	//CSVロード
 	CSVLoad();
 	return true;
@@ -128,7 +129,9 @@ void AvatarBoss::ImGui_Origin() {
 }
 //インターバル
 void AvatarBoss::InterValMove() {
-	int l_LimitTimer = 100;
+	const float l_AddScale = 0.5f;
+	const float l_AddSpeed = 1.5f;
+	int l_LimitTimer = 400;
 	m_InterVal++;
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> l_RandomMove(0, 1);
@@ -145,6 +148,18 @@ void AvatarBoss::InterValMove() {
 			m_InterVal = {};
 		}
 	}
+
+
+	m_CircleSpeed += l_AddSpeed;
+
+	Helper::GetInstance()->CheckMax(m_CircleScale, 10.0f, -l_AddScale);
+
+	m_AfterPos = Helper::GetInstance()->CircleMove(m_TargetPos, m_CircleScale, m_CircleSpeed);
+	m_Position = {
+		Ease(In,Cubic,0.5f,m_Position.x,m_AfterPos.x),
+		m_Position.y,
+		Ease(In,Cubic,0.5f,m_Position.z,m_AfterPos.z),
+	};
 }
 //ポルターガイスト
 void AvatarBoss::Polter() {

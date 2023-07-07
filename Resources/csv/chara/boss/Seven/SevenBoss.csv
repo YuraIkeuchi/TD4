@@ -5,7 +5,7 @@ Magnification,0.5
 //0～100で大きければ大きいほど生成されにくいです。(0の場合は100%)
 HeartTarget,80
 //0～100で大きければ大きいほど弾を避けやすいです。(0の場合は100%)
-VanishTarget,100
+VanishTarget,50
 //動きを選択する時のインターバル
 ChoiceInterVal,40
 //弾の生存時間
