@@ -81,6 +81,10 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 		Audio::GetInstance()->StopWave(AUDIO_LOAD);
 		str = "SEVENSTAGE";
 	}
+	if (Input::GetInstance()->TriggerKey(DIK_0)) {
+		Audio::GetInstance()->StopWave(AUDIO_LOAD);
+		str = "GAMEOVER";
+	}
 	//一定時間でシーンが変わる
 	if (m_LoadTimer >= 200 && !SceneManager::GetInstance()->GetLoad()) {
 		SceneManager::GetInstance()->ChangeScene(str);

@@ -87,8 +87,8 @@ void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 		(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
 		sceneChanger_->Update();
 		camerawork->Update(camera);
+		if (isVisible) { apple->Update(); }
 	}
-	if (isVisible) { apple->Update(); }
 	Menu::GetIns()->Upda();
 	ui->Update();
 	postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
@@ -150,6 +150,11 @@ void FourthStageActor::BackDraw(DirectXCommon* dxCommon) {
 	if (camerawork->GetAppearEndF()) {
 		Player::GetInstance()->Draw(dxCommon);
 	}
+	if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd()) {
+		IKESprite::PreDraw();
+		ui->Draw();
+		IKESprite::PostDraw();
+	}
 	enemymanager->Draw(dxCommon);
 	if (isVisible) {
 		IKEObject3d::PreDraw();
@@ -164,11 +169,6 @@ void FourthStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	//パーティクル描画
 	ParticleEmitter::GetInstance()->DeathDrawAll();
 	//完全に前に書くスプライト
-	if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd()) {
-		IKESprite::PreDraw();
-		ui->Draw();
-		IKESprite::PostDraw();
-	}
 	if (m_SceneState == SceneState::IntroState) {
 		if (messagewindow_->DisplayCheck()) {
 			text_->SpriteDraw(dxCommon);

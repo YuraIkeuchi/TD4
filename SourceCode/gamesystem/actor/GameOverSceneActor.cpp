@@ -9,7 +9,10 @@
 void GameOverSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	//共通の初期化
 	BaseInitialize(dxCommon);
-
+	camerawork->SetEye({ 0,10,0 });
+	camerawork->SetTarget({ 0,0,0 });
+	camerawork->SetCameraState(CAMERA_NORMAL);
+	camerawork->Update(camera);
 	//オーディオ
 	//Audio::GetInstance()->LoadSound(3, "Resources/Sound/BGM/jto3s-8fzcz.wav");
 	//Audio::GetInstance()->LoopWave(3, VolumManager::GetInstance()->GetBGMVolum());
@@ -17,36 +20,32 @@ void GameOverSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
 
+	SutoponObj = make_unique<IKEObject3d>();
+	SutoponObj->Initialize();
+	SutoponObj->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Sutopon));
 	//タイトル
 	ClearSprite = IKESprite::Create(ImageManager::GAMEOVER, { 0.0f,0.0f });
 	ClearSprite->SetSize({1280.0f,720.0f});
+	ClearSprite->SetColor({0,0,0,1});
 }
 //更新
 void GameOverSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
-	if (input->TriggerButton(input->B) && !sceneChanger_->GetEasingStart()) {
+	if (input->TriggerButton(input->A)|| input->TriggerButton(input->B)) {
+		if (sceneChanger_->GetEasingStart()) { return; }
 		sceneChanger_->ChangeStart();
-		str = NextStageName();
-		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Retry.wav", VolumManager::GetInstance()->GetSEVolum());
-		//Audio::GetInstance()->StopWave(AUDIO_LOAD);
-	}
-	if (input->TriggerButton(input->A) && !sceneChanger_->GetEasingStart()) {
-		sceneChanger_->ChangeStart();
-		str = "TITLE";
-		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Over.wav", VolumManager::GetInstance()->GetSEVolum());
-		//Audio::GetInstance()->StopWave(AUDIO_LOAD);
-	}
-
-	sceneChanger_->ChangeScene(str, SceneChanger::Reverse);
-	sceneChanger_->Update();
-
-	lightgroup->Update();
-	//丸影
-	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-	lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ 0.0f,0.0f,0.0f }));
-	lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
-	lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
-
+		if (input->TriggerButton(input->A)) {
+			str = "TITLE";
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Over.wav", VolumManager::GetInstance()->GetSEVolum());
+		} else {
+			str = NextStageName();
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Retry.wav", VolumManager::GetInstance()->GetSEVolum());
+		}
+		m_SceneState = SceneState::FinishState;
+ 	}
+	camerawork->Update(camera);
+	SutoponObj->Update();
+	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
 }
 //描画
 void GameOverSceneActor::Draw(DirectXCommon* dxCommon) {
@@ -74,13 +73,23 @@ void GameOverSceneActor::Draw(DirectXCommon* dxCommon) {
 }
 //前面描画
 void GameOverSceneActor::FrontDraw() {
-	IKESprite::PreDraw();
-	ClearSprite->Draw();
-	IKESprite::PostDraw();
 	sceneChanger_->Draw();
 }
+void GameOverSceneActor::IntroUpdate(DebugCamera* camera) {
+
+
+}
+void GameOverSceneActor::MainUpdate(DebugCamera* camera) {
+
+
+
+}
+void GameOverSceneActor::FinishUpdate(DebugCamera* camera) {
+	sceneChanger_->ChangeScene(str, SceneChanger::Reverse);
+	sceneChanger_->Update();
+}
 string GameOverSceneActor::NextStageName() {
-	string str = "";
+	string str = "TUTORIAL";
 	for (int i = 0; i < kMaxStage; i++) {
 		if (!SceneSave::GetInstance()->GetLoseFlag((SeceneCategory)i)) { continue; }
 		switch (i) {
@@ -108,12 +117,21 @@ string GameOverSceneActor::NextStageName() {
 		default:
 			break;
 		}
+		SceneSave::GetInstance()->SetLoseFlag((SeceneCategory)i, false);
+		break;
 	}
 	return str;
 }
 //背面
 void GameOverSceneActor::BackDraw(DirectXCommon* dxCommon)
 {
+	IKESprite::PreDraw();
+	ClearSprite->Draw();
+	IKESprite::PostDraw();
+
+	IKEObject3d::PreDraw();
+	SutoponObj->Draw();
+	IKEObject3d::PostDraw();
 }
 //ImGui描画
 void GameOverSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {

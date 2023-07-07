@@ -1,6 +1,8 @@
 #pragma once
 #include "BaseActor.h"
 #include "IKESprite.h"
+#include "IKEObject3d.h"
+
 /// タイトルシーン
 class GameOverSceneActor : public BaseActor {
 public:
@@ -16,9 +18,17 @@ public:
 	void ImGuiDraw(DirectXCommon* dxCommon);
 	void FrontDraw();
 
+	void IntroUpdate(DebugCamera* camera) override;
+	void MainUpdate(DebugCamera* camera) override;
+	void FinishUpdate(DebugCamera* camera) override;
+
+
 	string NextStageName();
 private://メンバ変数
 	string str = "";
 	//スプライト
-	unique_ptr<IKESprite> ClearSprite;
+	unique_ptr<IKESprite> ClearSprite = nullptr;
+	unique_ptr<IKEObject3d> SutoponObj = nullptr;
+
+
 };
