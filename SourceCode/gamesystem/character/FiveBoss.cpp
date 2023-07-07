@@ -87,7 +87,7 @@ void FiveBoss::ActionSet(ActionPhase phase, InterAttack* attack)
 		if (attack->GetActionEnd())
 		{
 			ActionTimer++;
-			_aPhase = ATTACK_NORMAL;
+			_aPhase = ATTACK_SHOT;
 		}
 	}
 }
@@ -107,11 +107,11 @@ void FiveBoss::Action()
 	/// </summary>
 
 
-	ActionSet(ATTACK_SHOT, shot);
+	//ActionSet(ATTACK_SHOT, shot);
 	ActionSet(ATTACK_IMPACT, smash);
 	ActionSet(ATTACK_SLASH, slash);
 
-	if (_aPhase == ATTACK_NORMAL)ActionTimer++;
+	if (_aPhase == ATTACK_SHOT)ActionTimer++;
 
 	{
 		for (auto i = 0; i < ghosts.size(); i++) {
@@ -134,7 +134,7 @@ void FiveBoss::Action()
 	}
 
 	mt19937 mt{ std::random_device{}() };
-	if (_aPhase == ATTACK_NORMAL && ActionTimer % 120 == 0) {
+	if (_aPhase == ATTACK_SHOT && ActionTimer % 120 == 0) {
 		RandAction = rand()%3+1;
 
 		if (shot->GetDarkCount()<5)

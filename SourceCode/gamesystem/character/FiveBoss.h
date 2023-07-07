@@ -141,7 +141,7 @@ private:
 		ATTACK_NORMAL,
 		ATTACK_IMPACT,
 		ATTACK_SLASH,
-	}_aPhase=ATTACK_NORMAL;
+	}_aPhase=ATTACK_SHOT;
 
 	void ActionSet(ActionPhase phase,InterAttack*attack);
 	int RandAction;

@@ -27,7 +27,7 @@ private:
     std::array<XMVECTOR, BulSize>move;
     std::array<XMMATRIX, BulSize>matRot;
     int index = 0;
-
+    float RotEaseTime;
     XMFLOAT3 OldRot;
 
     //フェーズ
@@ -53,6 +53,8 @@ private:
     void RottoPlayer();
 
     void CollideGhost();
+
+    void FollowPlayerAct();
 public:
     int GetDarkCount() { return DarkCount; }
     int SetDarkCount(int count) { DarkCount = count; }

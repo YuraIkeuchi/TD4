@@ -1,6 +1,10 @@
 #include "ShotAttack.h"
 
+#include <random>
+
+#include"Easing.h"
 #include "Collision.h"
+#include "Helper.h"
 #include "Player.h"
 
 void ShotAttack::Init()
@@ -38,7 +42,6 @@ void ShotAttack::Upda()
 					boss->GetGhost()[i]->SetCollide(true);
 				BulAlive[k] = false;
 				}
-				
 			}
 		}
 	}
@@ -116,7 +119,7 @@ void ShotAttack::SpriteDraw()
 void ShotAttack::Phase_Idle()
 {
 	AttackTimer++;
-	FollowPlayer();
+	FollowPlayerAct();
 
 	//次フェーズ
 	bool next = AttackTimer > 120;
@@ -162,6 +165,7 @@ void ShotAttack::Phase_Shot()
 		PhaseCount++;
 		_phase = END;
 	}
+	RotEaseTime = 0.f;
 
 }
 
@@ -173,10 +177,18 @@ void ShotAttack::Phase_End()
 		BulAlpha[i] = 1.f;
 		BulPos[i] = boss->GetPosition();
 	}
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_RandRot(-60, 60);
+
+	Helper::GetInstance()->FrameCheck(RotEaseTime, 0.05f);
+
 	boss->SetRotation({ boss->GetRotation().x,
-	OldRot.y + 90.f,
+	Ease(In,Quad,RotEaseTime,OldRot.y,OldRot.y+l_RandRot(mt)),
 	boss->GetRotation().z });
-	if (PhaseCount < 4)_phase = SHOT;
+	if (PhaseCount < 4) {
+		if(RotEaseTime>=1.0f)
+		_phase = NON;
+	}
 	else ActionEnd = true;
 }
 
@@ -190,3 +202,21 @@ void ShotAttack::RottoPlayer()
 }
 
 
+void ShotAttack::FollowPlayerAct()
+{
+	FollowPlayer();
+	XMVECTOR move = { 0.f,0.f, 0.1f, 0.0f };
+
+	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(boss->GetRotation().y));
+
+	move = XMVector3TransformNormal(move, matRot);
+
+	float SummonSpeed = 2.f;
+	m_Position = {
+					m_Position.x + move.m128_f32[0] * SummonSpeed,
+				m_Position.y,
+				m_Position.z + move.m128_f32[2] * SummonSpeed
+	};
+
+	boss->SetPosition(m_Position);
+}
