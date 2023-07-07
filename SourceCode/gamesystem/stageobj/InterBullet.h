@@ -44,6 +44,7 @@ public:
 	//gettersetter
 	const bool& GetAlive() { return m_Alive; }
 	const bool& GetInArea() { return m_InArea; }
+	const bool& GetBossCatch() { return m_BossCatch; }
 	const int& GetBulletType() { return m_BulletType; }
 	const int& GetPowerState() { return m_PowerState; }
 	const float& GetPower() { return m_DamagePower; }

@@ -225,38 +225,36 @@ void SevenBoss::InterValMove() {
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> l_RandomMove(0, 100);
 	if (m_InterVal == l_LimitTimer) {
-		////行動を決めて次の行動に移る
-		//m_AttackRand = int(l_RandomMove(mt));
+		//行動を決めて次の行動に移る
+		m_AttackRand = int(l_RandomMove(mt));
 
-		//if (m_AttackRand < m_RandAct[RAND_POLTER]) {
-		//	_charaState = STATE_POLTER;
-		//	m_InterVal = {};
-		//}
-		//else if (m_AttackRand >= m_RandAct[RAND_POLTER] && m_AttackRand < m_RandAct[RAND_BOUND]) {
-		//	_charaState = STATE_BOUND;
-		//	m_InterVal = {};
-		//}
-		//else if (m_AttackRand >= m_RandAct[RAND_BOUND] && m_AttackRand < m_RandAct[RAND_AVATAR]) {
-		//	
-		//}
-		//else {
-		//	if (HungerGauge::GetInstance()->GetCatchCount() != 0) {
-		//		_charaState = STATE_MANIPULATE;
-		//		m_InterVal = {};
-		//		m_StartMani = true;
-		//	}
-		//	else {
-		//		m_InterVal = l_LimitTimer - 1;
-		//	}
-		//}
-		if (m_AvatarCount == 0) {
-			_charaState = STATE_AVATAR;
+		if (m_AttackRand < m_RandAct[RAND_POLTER]) {
+			_charaState = STATE_POLTER;
 			m_InterVal = {};
 		}
-		else {
-			m_InterVal = l_LimitTimer - 1;
+		else if (m_AttackRand >= m_RandAct[RAND_POLTER] && m_AttackRand < m_RandAct[RAND_BOUND]) {
+			_charaState = STATE_BOUND;
+			m_InterVal = {};
 		}
-	
+		else if (m_AttackRand >= m_RandAct[RAND_BOUND] && m_AttackRand < m_RandAct[RAND_AVATAR]) {
+			if (m_AvatarCount == 0) {
+				_charaState = STATE_AVATAR;
+				m_InterVal = {};
+			}
+			else {
+				m_InterVal = l_LimitTimer - 1;
+			}
+		}
+		else {
+			if (HungerGauge::GetInstance()->GetCatchCount() != 0) {
+				_charaState = STATE_MANIPULATE;
+				m_InterVal = {};
+				m_StartMani = true;
+			}
+			else {
+				m_InterVal = l_LimitTimer - 1;
+			}
+		}	
 		m_ChangeTimer = {};
 	}
 }
@@ -469,10 +467,12 @@ void SevenBoss::CatchBul(vector<InterBullet*> bullet)
 				bossstuneffect->SetAlive(true);
 				m_Stun = true;
 				m_AttackCount = {};
-				_bullet->SetAlive(false);
+				//弾の大きさによって与えるダメージが違う
+				m_HP -= _bullet->GetPower() * m_Magnification;
 				m_Absorption = false;
 				_charaState = STATE_STUN;
 				m_MoveTimer = {};
+				_bullet->SetAlive(false);
 			}
 		}
 	}

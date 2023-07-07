@@ -31,9 +31,9 @@ bool AttackBullet::Initialize() {
 }
 //ImGui•`‰æ
 void AttackBullet::ImGui_Origin() {
-	ImGui::Begin("Attack");
-	ImGui::Text("Power:%f", m_DamagePower);
-	ImGui::End();
+	//ImGui::Begin("Attack");
+	//ImGui::Text("Power:%f", m_DamagePower);
+	//ImGui::End();
 }
 //ƒIƒŠƒWƒiƒ‹•`‰æ
 void AttackBullet::Draw_Origin() {
