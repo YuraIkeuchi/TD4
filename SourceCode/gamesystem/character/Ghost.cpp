@@ -1,4 +1,4 @@
-#include "Ghost.h"
+﻿#include "Ghost.h"
 #include "Collision.h"
 #include "Easing.h"
 #include <random>
