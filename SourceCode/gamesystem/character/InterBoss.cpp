@@ -56,6 +56,11 @@ float InterBoss::HpPercent() {
 	return temp;
 }
 
+void InterBoss::AwakeUpdate() {
+	//OBJのステータスのセット
+	Obj_SetParam();
+}
+
 //弾との当たり判定
 void InterBoss::CollideBul(vector<InterBullet*> bullet,Type type)
 {

@@ -22,6 +22,20 @@ bool Poltergeist::Initialize() {
 	m_AfterPos.y = 5.0f;
 	m_ThrowType = THROW_SET;
 	m_AliveTimer = {};
+
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_distX(-5, 5);
+	uniform_int_distribution<int> l_distZ(-5, 5);
+	m_Power.x = float(l_distX(mt)) / 10.0f;
+	m_Power.y = float(l_distZ(mt)) / 10.0f;
+
+	if (m_Power.x == 0.0f) {
+		m_Power.x = 0.1f;
+	}
+
+	if (m_Power.y == 0.0f) {
+		m_Power.y = 0.1f;
+	}
 	return true;
 }
 //状態遷移
@@ -55,12 +69,18 @@ void Poltergeist::ImGuiDraw() {
 //パーティクル
 void Poltergeist::Particle() {
 	XMFLOAT4 s_color = { 0.0f,0.4f,1.0f,1.0f };
+	XMFLOAT4 s_color2 = { 0.4f,0.0f,1.0f,1.0f };
 	XMFLOAT4 e_color = { 1.0f,1.0f,1.0f,1.0f };
 	float s_scale = 2.0f;
 	float e_scale = 0.0f;
 	const int m_Life = 50;
 	if (m_Alive) {
-		ParticleEmitter::GetInstance()->FireEffect(m_Life, m_Position, s_scale, e_scale, s_color, e_color);
+		if (m_PolterType == TYPE_FOLLOW) {
+			ParticleEmitter::GetInstance()->FireEffect(m_Life, m_Position, s_scale, e_scale, s_color, e_color);
+		}
+		else {
+			ParticleEmitter::GetInstance()->FireEffect(m_Life, m_Position, s_scale, e_scale, s_color2, e_color);
+		}
 	}
 }
 
@@ -85,6 +105,7 @@ bool Poltergeist::Collide() {
 void Poltergeist::Follow() {
 	const float l_AddFrame = 0.01f;
 	const int l_BaseTimer = 40;
+
 	//弾のセット(だんだん浮かび逢ふがるような感じ)
 	if (m_ThrowType == THROW_SET) {
 		if (m_Frame < m_FrameMax) {
@@ -94,7 +115,9 @@ void Poltergeist::Follow() {
 			m_Frame = {};
 			m_ThrowType = THROW_INTER;
 		}
-
+		
+		m_Position.x += m_Power.x;
+		m_Position.z += m_Power.y;
 		m_Position.y = Ease(In, Cubic, m_Frame, m_Position.y, m_AfterPos.y);
 	}
 	//狙う方向を決める

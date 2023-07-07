@@ -31,8 +31,27 @@ public:
 
 
 private:
-	float Rads;
-	int textT;
+	bool ShutterEffect();
+	bool ShutterFeed();
+	void ShutterReset();
+
+	bool isShutter = false;
+	float shutterTime = 0.0f;
+	float shutterTimeMax = 30.0f;
+	float stopTime = 0.0f;
+	float stopTimerMax = 0.0f;
+	float feedTimeMax = 10.0f;
+	float feedTimer = 0.0f;
+	float shutterHight[2] = { 0,0 };
+	enum {
+		Photo_Out_Top,
+		Photo_Out_Under,
+		SpriteMax,
+	};
+	array<unique_ptr<IKESprite>, SpriteMax> photo = {};
+	IKEModel* m_Model = nullptr;
+	unique_ptr<IKEObject3d> apple = nullptr;
+	bool isVisible = false;
 
 	int m_AppTimer = 0;
 
@@ -40,11 +59,10 @@ private:
 	unique_ptr<BossText> text_;
 	unique_ptr<IKESprite> backScreen_ = nullptr;
 
-	Spline* spline;
-	vector<XMFLOAT3> pointsList;
+	Spline* spline=nullptr;
+	vector<XMFLOAT3> pointsList = {};
 
-	enum class TextScene
-	{
+	enum class TextScene {
 		NON,
 		TIEYOSHI_EXP,
 		STOPON_SPK,

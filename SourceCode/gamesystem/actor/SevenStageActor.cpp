@@ -88,15 +88,16 @@ void SevenStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	//プレイヤー
 	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
 		SceneSave::GetInstance()->SetClearFlag(kSevenStage, true);
-		lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-		lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, 0.0f, Player::GetInstance()->GetPosition().z }));
-		lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
-		lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
-	}
-	else {//ボス撃破ムービーの後は丸影消す
-		lightgroup->SetCircleShadowActive(0, false);
 	}
 
+	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
+	lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, 0.0f, Player::GetInstance()->GetPosition().z }));
+	lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
+	lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
+
+	if (enemymanager->BossDestroy()) {
+		lightgroup->SetCircleShadowActive(0, false);
+	}
 	//ボス
 	lightgroup->SetCircleShadowDir(1, XMVECTOR({ BosscircleShadowDir[0], BosscircleShadowDir[1], BosscircleShadowDir[2], 0 }));
 	lightgroup->SetCircleShadowCasterPos(1, XMFLOAT3({ enemymanager->GetBoss()->GetPosition().x, 	0.0f, 	enemymanager->GetBoss()->GetPosition().z }));
@@ -177,13 +178,17 @@ void SevenStageActor::BackDraw(DirectXCommon* dxCommon) {
 	//パーティクル描画
 	if (!camerawork->GetFeedEnd() && m_SceneState == SceneState::MainState) {
 		if (!enemymanager->BossDestroy()) {
-			ParticleEmitter::GetInstance()->BackDrawAll();
+			if (camerawork->GetCameraState() != CAMERA_BOSS_STRONG) {
+				ParticleEmitter::GetInstance()->BackDrawAll();
+			}
 		}
 	}
 	////各クラスの描画
 	if (!camerawork->GetFeedEnd()) {
 		Player::GetInstance()->Draw(dxCommon);
-		loadobj->Draw(dxCommon);
+		if (camerawork->GetCameraState() != CAMERA_BOSS_STRONG) {
+			loadobj->Draw(dxCommon);
+		}
 	}
 	enemymanager->Draw(dxCommon);
 	IKEObject3d::PostDraw();
@@ -192,7 +197,9 @@ void SevenStageActor::BackDraw(DirectXCommon* dxCommon) {
 void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	//パーティクル描画
 	if (!camerawork->GetFeedEnd() && m_SceneState == SceneState::MainState) {
-		ParticleEmitter::GetInstance()->FlontDrawAll();
+		if (camerawork->GetCameraState() != CAMERA_BOSS_STRONG) {
+			ParticleEmitter::GetInstance()->FlontDrawAll();
+		}
 	}
 
 	ParticleEmitter::GetInstance()->DeathDrawAll();
@@ -215,8 +222,9 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 //IMGuiの描画
 void SevenStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	enemymanager->ImGuiDraw();
-	Player::GetInstance()->ImGuiDraw();
-	//loadobj->ImGuiDraw();
+	/*Player::GetInstance()->ImGuiDraw();
+	loadobj->ImGuiDraw();*/
+	camerawork->ImGuiDraw();
 }
 //登場シーン
 void SevenStageActor::IntroUpdate(DebugCamera* camera) {
@@ -275,6 +283,21 @@ void SevenStageActor::IntroUpdate(DebugCamera* camera) {
 void SevenStageActor::MainUpdate(DebugCamera* camera) {
 	Input* input = Input::GetInstance();
 	ui->Update();
+	if (enemymanager->GetEnemyStrong() && !camerawork->GetCameraStrong()) {
+		if (!camerawork->GetFeedF()) {
+			camerawork->SetFeedF(true);
+			camerawork->SetCameraState(CAMERA_BOSS_STRONG);
+			camerawork->SetCameraStrong(true);
+		}
+	}
+
+	if (camerawork->GetCameraState() == CAMERA_BOSS_STRONG) {
+		enemymanager->DeleteObj();
+		if (camerawork->GetEndStrong()) {
+			enemymanager->SkipInitialize();
+			camerawork->SetCameraState(CAMERA_NORMAL);
+		}
+	}
 	//カメラワークのセット
 	if (enemymanager->BossDestroy())
 	{
@@ -305,11 +328,13 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 	}
 	else
 	{
+		if(camerawork->GetCameraState() == CAMERA_NORMAL)
 		Player::GetInstance()->Update();
 	}
 
 	if (PlayerDestroy()) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
+		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kSevenStage, true);
 		sceneChanger_->ChangeStart();
 		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::Reverse);
 	}
@@ -319,9 +344,13 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 
 	//各クラス更新
 	BackObj::GetInstance()->Update();
+	if (camerawork->GetCameraState() == CAMERA_NORMAL) {
+		enemymanager->BattleUpdate();
+	}
+	else {
+		enemymanager->Awake();
+	}
 
-
-	enemymanager->BattleUpdate();
 	loadobj->SevenUpdate();
 	ParticleEmitter::GetInstance()->Update();
 

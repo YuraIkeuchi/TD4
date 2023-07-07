@@ -111,6 +111,7 @@
   <ItemGroup>
     <ClCompile Include="CollectGhost.cpp" />
     <ClCompile Include="DarkBullet.cpp" />
+    <ClCompile Include="Fraction.cpp" />
     <ClCompile Include="SourceCode\engine\2d\DebugText.cpp" />
     <ClCompile Include="SourceCode\engine\2d\Feed.cpp" />
     <ClCompile Include="SourceCode\engine\2d\Font.cpp" />
@@ -274,6 +275,7 @@
   <ItemGroup>
     <ClInclude Include="CollectGhost.h" />
     <ClInclude Include="DarkBullet.h" />
+    <ClInclude Include="Fraction.h" />
     <ClInclude Include="SourceCode\engine\2d\DebugText.h" />
     <ClInclude Include="SourceCode\engine\2d\Feed.h" />
     <ClInclude Include="SourceCode\engine\2d\Font.h" />

@@ -12,9 +12,9 @@ Ghost::Ghost() {
 	m_Object->Initialize();
 	m_Object->SetModel(m_Model);
 }
-//‰Šú‰»
+//åˆæœŸåŒ–
 bool Ghost::Initialize() {
-	//—”w’è
+	//ä¹±æ•°æŒ‡å®š
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> l_distX(-50, 60);
 	uniform_int_distribution<int> l_distZ(-55, 55);
@@ -30,41 +30,42 @@ bool Ghost::Initialize() {
 	return true;
 }
 
-//ó‘Ô‘JˆÚ
-/*CharaState‚ÌState•À‚Ñ‡‚É‡‚í‚¹‚é*/
+//çŠ¶æ…‹é·ç§»
+/*CharaStateã®Stateä¸¦ã³é †ã«åˆã‚ã›ã‚‹*/
 void (Ghost::* Ghost::stateTable[])() = {
-	&Ghost::None,//‘Ò‹@
+	&Ghost::None,//å¾…æ©Ÿ
 	&Ghost::Spawm,
 	&Ghost::Search,//
-	&Ghost::Follow,//ˆÚ“®
+	&Ghost::Follow,//ç§»å‹•
 	&Ghost::DarkSide,
 	&Ghost::Jack,
 	&Ghost::HyperJack,
+	&Ghost::Manipulate,//æ“ã‚‹
 	&Ghost::Vanish,
 };
-//XV
+//æ›´æ–°
 void Ghost::Update() {
-	float l_AddScale = 1.5f;//OBB—p‚É­‚µ‘å‚«‚ß‚ÌƒXƒP[ƒ‹‚ğæ‚é
+	float l_AddScale = 1.5f;//OBBç”¨ã«å°‘ã—å¤§ãã‚ã®ã‚¹ã‚±ãƒ¼ãƒ«ã‚’å–ã‚‹
 	m_OldPos = m_Position;
 	m_OBBScale = { m_Scale.x + l_AddScale,m_Scale.y + l_AddScale, m_Scale.z + l_AddScale };
 	if (m_IsPostionCheck) { _charaState = CharaState::STATE_JACK; }
 	if (m_IsAllPostionCheck) { _charaState = CharaState::STATE_HYPERJACK; }
-	//ó‘ÔˆÚs(charastate‚É‡‚í‚¹‚é)
+	//çŠ¶æ…‹ç§»è¡Œ(charastateã«åˆã‚ã›ã‚‹)
 	(this->*stateTable[_charaState])();
-	//ƒ^ƒCƒv‚É‚æ‚Á‚ÄF‚ğˆê’U•Ï‚¦‚Ä‚é
+	//ã‚¿ã‚¤ãƒ—ã«ã‚ˆã£ã¦è‰²ã‚’ä¸€æ—¦å¤‰ãˆã¦ã‚‹
 	Obj_SetParam();
-	//H—¿¶¬
+	//é£Ÿæ–™ç”Ÿæˆ
 	BirthGhost();
-	//“–‚½‚è”»’è(ƒvƒŒƒCƒ„[)
+	//å½“ãŸã‚Šåˆ¤å®š(ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼)
 	PlayerCollision();
-	//H‚×•¨‚ğ‚Í‚±‚Ô
+	//é£Ÿã¹ç‰©ã‚’ã¯ã“ã¶
 	CarryFood();
 	Particle();
-	//Á‚¦‚é
+	//æ¶ˆãˆã‚‹
 	if (m_Vanish) {
 		_charaState = STATE_VANISH;
 	}
-	//“–‚½‚è”»’èi’ej
+	//å½“ãŸã‚Šåˆ¤å®šï¼ˆå¼¾ï¼‰
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_ghost();
 	CollideBullet(_playerBulA);
 
@@ -73,13 +74,37 @@ void Ghost::Update() {
 		if(Collide)
 			_charaState = CharaState::STATE_DARKOTI;
 	
+	//æ”»æ’ƒã®éŸ³ç¬¦
+	for (AttackNote* newnote : attacknotes) {
+		if (newnote != nullptr) {
+			newnote->Update();
+		}
+	}
+
+	//æ”»æ’ƒã®éŸ³ç¬¦ã®å‰Šé™¤
+	for (int i = 0; i < attacknotes.size(); i++) {
+		if (attacknotes[i] == nullptr) {
+			continue;
+		}
+
+		if (!attacknotes[i]->GetAlive()) {
+			attacknotes.erase(cbegin(attacknotes) + i);
+		}
+	}
 }
-//•`‰æ
+//æç”»
 void Ghost::Draw(DirectXCommon* dxCommon) {
 	//if (!m_Alive) { return; }
 	Obj_Draw();
+
+	//æ”»æ’ƒã®éŸ³ç¬¦
+	for (AttackNote* newnote : attacknotes) {
+		if (newnote != nullptr) {
+			newnote->Draw(dxCommon);
+		}
+	}
 }
-//ImGui•`‰æ
+//ImGuiæç”»
 void Ghost::ImGuiDraw() {
 	ImGui::Begin("Ghost");
 	ImGui::Text("Abso:%d", m_Absorption);
@@ -87,7 +112,7 @@ void Ghost::ImGuiDraw() {
 	ImGui::End();
 }
 
-//ƒp[ƒeƒBƒNƒ‹
+//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
 void Ghost::Particle() {
 	XMFLOAT4 s_color = { 1.0f,1.0f,1.0f,1.0f };
 	XMFLOAT4 e_color = { 1.0f,1.0f,1.0f,1.0f };
@@ -98,7 +123,7 @@ void Ghost::Particle() {
 	float s_scale = 3.0f;
 	float e_scale = 0.0f;
 	if (m_Alive) {
-		if (m_IsRefer&& _charaState < CharaState::STATE_JACK) {
+		if (m_IsRefer && _charaState < CharaState::STATE_JACK) {
 			flash += flashVel * flashAdd;
 			flash = clamp(flash,0.0f,1.0f);
 			if (flash==1.0f) {
@@ -110,22 +135,29 @@ void Ghost::Particle() {
 			m_Color = { 1.0f,flash,1.0f,1.0f};
 		}else if (_charaState == CharaState::STATE_NONE) {
 			m_Color = { 1.0f,1.0f,1.0f,0.7f };
-			m_Scale = { 0.5f,0.5f,0.5f };
-			//ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color, e_color);
+			m_Scale = { 0.6f,0.6f,0.6f };
 		} else if (_charaState == CharaState::STATE_FOLLOW) {
 			m_Color = { 1.0f,1.0f,1.0f,1.0f };
 			m_Scale = { 0.6f,0.6f,0.6f };
+			m_IsRefer = false;
+			ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color2, e_color2);
+		} else if (_charaState == CharaState::STATE_SEARCH) {
+			m_Color = { 1.0f,1.0f,1.0f,1.0f };
+			m_Scale = { 0.6f,0.6f,0.6f };
+			m_IsRefer = false;
 			ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color2, e_color2);
 		} else if (_charaState == CharaState::STATE_JACK) {
 			m_Color = { 1.0f,0.0f,1.0f,1.0f };
 			m_Scale = { 0.6f,0.6f,0.6f };
 			//ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color2, e_color2);
-		} else {
-			//ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color3, e_color3);
+		} else if (_charaState == CharaState::STATE_HYPERJACK) {
+			m_Color = { 1.0f,1.0f,0.0f,1.0f };
+			m_Scale = { 0.6f,0.6f,0.6f };
+			//ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color2, e_color2);
 		}
 	}
 }
-//“–‚½‚è”»’è(ƒvƒŒƒCƒ„[)
+//å½“ãŸã‚Šåˆ¤å®š(ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼)
 bool Ghost::PlayerCollision() {
 	if (Player::GetInstance()->PlayerCollide(m_Position) && (_charaState == CharaState::STATE_FOLLOW)) {
 		m_Position = m_OldPos;
@@ -136,21 +168,21 @@ bool Ghost::PlayerCollision() {
 
 	return true;
 }
-//“–‚½‚è”»’è(ƒS[ƒXƒg“¯m)
+//å½“ãŸã‚Šåˆ¤å®š(ã‚´ãƒ¼ã‚¹ãƒˆåŒå£«)
 void Ghost::GhostCollision(const XMFLOAT3& pos) {
 	m_Position.x += sin(atan2f((m_Position.x - pos.x), (m_Position.z - pos.z))) * 0.1f;
 	m_Position.z += cos(atan2f((m_Position.x - pos.x), (m_Position.z - pos.z))) * 0.1f;
 }
-//H—¿¶¬
+//é£Ÿæ–™ç”Ÿæˆ
 void Ghost::BirthGhost() {
 	if (!VerseCheck()) { return; }
 	if (m_Alive) { return; }
 	m_ResPornTimer++;
-	//•`‰æƒoƒO‹N‚«‚é‚©‚çæ‚ÉÀ•WƒZƒbƒg
+	//æç”»ãƒã‚°èµ·ãã‚‹ã‹ã‚‰å…ˆã«åº§æ¨™ã‚»ãƒƒãƒˆ
 	if (m_ResPornTimer == 20) {
 		_charaState = CharaState::STATE_SPAWN;
 		_searchState = SearchState::SEARCH_NO;
-		//—”w’è
+		//ä¹±æ•°æŒ‡å®š
 		mt19937 mt{ std::random_device{}() };
 		uniform_int_distribution<int> l_distX(-50, 60);
 		uniform_int_distribution<int> l_distZ(-55, 55);
@@ -171,7 +203,7 @@ void Ghost::BirthGhost() {
 		m_SearchTimer = 0;
 		m_SpawnTimer = 0;
 	}
-	//ˆê’èŠÔ‚Å¶¬‚³‚ê‚é
+	//ä¸€å®šæ™‚é–“ã§ç”Ÿæˆã•ã‚Œã‚‹
 	if (m_ResPornTimer == 100) {
 		m_Alive = true;
 		m_ResPornTimer = 0;
@@ -189,9 +221,9 @@ bool Ghost::VerseCheck() {
 		return false;
 	}
 }
-//‰½‚à‚È‚¢ó‘Ô
+//ä½•ã‚‚ãªã„çŠ¶æ…‹
 void Ghost::None() {
-	//•‚—Vó‘Ô
+	//æµ®éŠçŠ¶æ…‹
 	noneTimer += 0.05f;
 	float size = sinf(noneTimer) * 0.05f;
 	if (!m_Absorption) {
@@ -203,7 +235,7 @@ void Ghost::None() {
 		Absorption();
 	}
 }
-//¶‚Ü‚ê‚éó‘Ô
+//ç”Ÿã¾ã‚Œã‚‹çŠ¶æ…‹
 void Ghost::Spawm() {
 	m_SpawnTimer += 1.0f / kSpawnTimerMax;
 
@@ -217,35 +249,98 @@ void Ghost::Spawm() {
 		_charaState = CharaState::STATE_NONE;
 	}
 }
-//’Ç]
+//è¿½å¾“
 void Ghost::Follow() {
-	float l_Vel = 0.35f;//‘¬“x
+	float l_Vel = 0.35f;//é€Ÿåº¦
 	XMFLOAT3 l_playerPos = Player::GetInstance()->GetPosition();
-	Helper::GetInstance()->FollowMove(m_Position, l_playerPos, l_Vel);
-	m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, l_playerPos, -PI_90);
+	//æ“ã‚‰ã‚Œã¦ã„ã‚‹ã‹
+	if (!m_Manipulate) {
+		Helper::GetInstance()->FollowMove(m_Position, l_playerPos, l_Vel);
+		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, l_playerPos, -PI_90);
+	}
+	else {
+		_ManiState = MANI_SET;
+		_charaState = STATE_MANIPULATE;
+	}
+}
+//æ“ã‚Šæ”»æ’ƒ
+void Ghost::Manipulate() {
+	const float l_AddFrame = 0.01f;
+	const float l_AddRot = 10.0f;
+	const int l_Limit = 300;
+	m_Color = { Ease(In,Cubic,0.5f,m_Color.x,1.0f),
+	Ease(In,Cubic,0.5f,m_Color.y,0.0f),
+	Ease(In,Cubic,0.5f,m_Color.z,1.0f),
+	Ease(In,Cubic,0.5f,m_Color.w,0.7f),
+	};
+	//ç§»å‹•å…ˆã‚’æ±ºã‚ã‚‹
+	if (_ManiState == MANI_SET) {
+		//ä¹±æ•°æŒ‡å®š
+		mt19937 mt{ std::random_device{}() };
+		uniform_int_distribution<int> l_distX(-50, 60);
+		uniform_int_distribution<int> l_distZ(-55, 55);
+		m_AfterPos = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
+		m_AfterRotY = Helper::GetInstance()->DirRotation(m_Position, m_AfterPos, -PI_90);
+		_ManiState = MANI_MOVE;
+	}
+	//ç§»å‹•ã™ã‚‹
+	else if (_ManiState == MANI_MOVE) {
+		if (m_Frame < m_FrameMax) {
+			m_Frame += l_AddFrame;
+		}
+		else {
+			m_Frame = {};
+			m_Rotation.y = -90.0f;
+			_ManiState = MANI_ATTACK;
+		}
+
+		m_Position = { Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
+		Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
+		Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z),
+		};
+
+		m_Rotation.y = Ease(In, Cubic, m_Frame, m_Rotation.y, m_AfterRotY);
+	}
+	else if (_ManiState == MANI_ATTACK) {
+		m_Rotation.y += l_AddRot;
+		m_RotTimer++;
+
+		if (m_RotTimer % 20 == 0) {
+			BirthBullet();
+		}
+
+		if (m_RotTimer == l_Limit) {
+			m_RotTimer = {};
+			_ManiState = MANI_END;
+		}
+	}
+	else {
+		m_Manipulate = false;
+		m_Vanish = true;
+	}
 }
 
 void Ghost::DarkSide() {
 	if(Collide)m_DFollow =true;
-	float l_Vel = 0.35f;//‘¬“x
+	float l_Vel = 0.35f;//é€Ÿåº¦
 	Helper::GetInstance()->FollowMove(m_Position, bossPos, l_Vel);
 	m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position,bossPos, -PI_90);
 
 
 }
 
-//’Tõ
+//æ¢ç´¢
 void Ghost::Search() {
 	const int l_LimitTimer = 300;
 	const float l_Vel = 0.3f;
 	const float l_Vel2 = 0.5f;
 	XMFLOAT3 l_playerPos = Player::GetInstance()->GetPosition();
-	//ƒT[ƒ`ó‘Ô‚©‚çˆê’èŠÔ—§‚Â‚Æ‘¶İÁ‹
+	//ã‚µãƒ¼ãƒçŠ¶æ…‹ã‹ã‚‰ä¸€å®šæ™‚é–“ç«‹ã¤ã¨å­˜åœ¨æ¶ˆå»
 	m_SearchTimer++;
 	if (m_SearchTimer >= l_LimitTimer) {
 		m_Vanish = true;
 	}
-	//’Ç]
+	//è¿½å¾“
 	if (_searchState == SearchState::SEARCH_START) {
 		Helper::GetInstance()->FollowMove(m_Position, m_SearchPos, l_Vel2);
 		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, m_SearchPos, -PI_90);
@@ -260,7 +355,7 @@ void Ghost::Jack() {
 		m_angle = 0;
 		m_radius = 0;
 		mt19937 mt{ std::random_device{}() };
-		// 0ˆÈã9ˆÈ‰º‚Ì’l‚ğ“™Šm—¦‚Å”­¶‚³‚¹‚é
+		// 0ä»¥ä¸Š9ä»¥ä¸‹ã®å€¤ã‚’ç­‰ç¢ºç‡ã§ç™ºç”Ÿã•ã›ã‚‹
 		std::uniform_int_distribution<> dist(0, 1);
 		if (dist(mt) > 0) {
 			m_dir = addDir;
@@ -268,6 +363,11 @@ void Ghost::Jack() {
 			m_dir = subDir;
 		}
 		m_IsPostionCheck = false;
+	}
+	const int l_LimitTimer = 800;
+	m_SearchTimer++;
+	if (m_SearchTimer >= l_LimitTimer) {
+		m_Vanish = true;
 	}
 	m_angle += 0.04f;
 	m_radius += 0.08f * m_dir;
@@ -278,7 +378,7 @@ void Ghost::Jack() {
 	if (Player::GetInstance()->PlayerCollide(m_Position) &&
 		Player::GetInstance()->GetDamageInterVal() == 0) {
 		Player::GetInstance()->PlayerHit(m_Position);
-		Player::GetInstance()->RecvDamage(0.5f);
+		Player::GetInstance()->RecvDamage(1.0f);
 	}
 
 	if (m_Position.x < -55.0f || m_Position.x>65.0f ||
@@ -320,7 +420,7 @@ void Ghost::HyperJack() {
 	}
 }
 
-//ƒS[ƒXƒg‚ªÁ‚¦‚é
+//ã‚´ãƒ¼ã‚¹ãƒˆãŒæ¶ˆãˆã‚‹
 void Ghost::Vanish() {
 	const float l_AddFrame = 0.01f;
 	const float l_AfterScale = 0.0f;
@@ -341,20 +441,20 @@ void Ghost::Vanish() {
 		Ease(In,Cubic,m_Frame,m_Scale.z,l_AfterScale), };
 	}
 }
-//’TõƒXƒ^[ƒg
+//æ¢ç´¢ã‚¹ã‚¿ãƒ¼ãƒˆ
 void Ghost::StartSearch(const XMFLOAT3& pos) {
 	_searchState = SearchState::SEARCH_START;
 	m_Search = true;
 	m_SearchPos = pos;
 }
-//’TõI—¹
+//æ¢ç´¢çµ‚äº†
 void Ghost::EndSearch() {
 	_searchState = SearchState::SEARCH_END;
 }
-//H‚×•¨‚ğ‰^‚Ô
+//é£Ÿã¹ç‰©ã‚’é‹ã¶
 void Ghost::CarryFood() {
-	float l_Radius = 1.0f;//“–‚½‚è”»’è
-	float l_AddHunger = HungerGauge::m_Hungervalue;//‰ÁZ‚³‚ê‚é‹C‚ªƒQ[ƒW
+	float l_Radius = 1.0f;//å½“ãŸã‚Šåˆ¤å®š
+	float l_AddHunger = HungerGauge::m_Hungervalue;//åŠ ç®—ã•ã‚Œã‚‹æ°—ãŒã‚²ãƒ¼ã‚¸
 	float l_AddExtra = 2.5f;
 	XMFLOAT3 l_playerPos = Player::GetInstance()->GetPosition();
 	if ((_searchState == SearchState::SEARCH_END) && (!m_Vanish) && (m_Catch) && (m_Search)) {
@@ -369,13 +469,13 @@ void Ghost::CarryFood() {
 		}
 	}
 }
-//“–‚½‚è”»’è
+//å½“ãŸã‚Šåˆ¤å®š
 bool Ghost::CollideBullet(vector<InterBullet*>bullet) {
-	float l_AddHungerMax = HungerGauge::m_Hungervalue;//‰ÁZ‚³‚ê‚éÅ‘å‹Q‰ìƒQ[ƒW
+	float l_AddHungerMax = HungerGauge::m_Hungervalue;//åŠ ç®—ã•ã‚Œã‚‹æœ€å¤§é£¢é¤“ã‚²ãƒ¼ã‚¸
 	m_OBB1.SetParam_Pos(m_Position);
 	m_OBB1.SetParam_Rot(m_Object->GetMatrot());
 	m_OBB1.SetParam_Scl(m_OBBScale);
-	//’e‚ÌXV
+	//å¼¾ã®æ›´æ–°
 	for (InterBullet* _bullet : bullet) {
 		if (_bullet != nullptr && _bullet->GetAlive()) {
 			m_OBB2.SetParam_Pos(_bullet->GetPosition());
@@ -385,7 +485,7 @@ bool Ghost::CollideBullet(vector<InterBullet*>bullet) {
 			if ((Collision::OBBCollision(m_OBB1, m_OBB2)) && (_bullet->GetAlive()) && (!m_Catch) && (m_Alive)) {
 				if (_charaState != STATE_NONE) { return false; }
 				if (_charaState == STATE_DARKOTI) { return false; }
-
+				if (_charaState > STATE_SPAWN) { return false; }
 				if (m_IsRefer)  {return false; }
 				m_Catch = true;
 				if (_bullet->GetBulletType() == BULLET_FORROW) {
@@ -414,18 +514,36 @@ bool Ghost::CollideBullet(vector<InterBullet*>bullet) {
 void Ghost::GetRotation2Player() {
 	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
 
-	//Šp“x‚Ìæ“¾ ƒvƒŒƒCƒ„[‚ª“G‚Ìõ“GˆÊ’u‚É“ü‚Á‚½‚çŒü‚«‚ğƒvƒŒƒCƒ„[‚Ì•û‚É
+	//è§’åº¦ã®å–å¾— ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæ•µã®ç´¢æ•µä½ç½®ã«å…¥ã£ãŸã‚‰å‘ãã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ–¹ã«
 	XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
 	XMVECTOR PositionB = { m_Position.x,m_Position.y,m_Position.z };
-	//ƒvƒŒƒCƒ„[‚Æ“G‚ÌƒxƒNƒgƒ‹‚Ì’·‚³(·)‚ğ‹‚ß‚é
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨æ•µã®ãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•(å·®)ã‚’æ±‚ã‚ã‚‹
 	XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
 
 	RottoPlayer = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
 	m_Rotation.y = RottoPlayer * 60.0f + (PI_90 + PI_180);
 }
-//‹zû
+//å¸å
 void Ghost::Absorption() {
-	float l_Vel = 0.35f;//‘¬“x
+	float l_Vel = 0.35f;//é€Ÿåº¦
 	Helper::GetInstance()->FollowMove(m_Position,m_TargetPos, l_Vel);
 	m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, m_TargetPos, -PI_90);
+}
+//æ”»æ’ƒ
+void Ghost::BirthBullet() {
+	XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
+	XMMATRIX matRot = {};
+	matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
+	move = XMVector3TransformNormal(move, matRot);
+	XMFLOAT2 l_Angle;
+	l_Angle.x = move.m128_f32[0];
+	l_Angle.y = move.m128_f32[2];
+	//ãƒãƒ¼ãƒ„ã®ç™ºç”Ÿ
+	AttackNote* newnote;
+	newnote = new AttackNote();
+	newnote->SetChange(true);
+	newnote->Initialize();
+	newnote->SetPosition(m_Position);
+	newnote->SetAngle(l_Angle);
+	attacknotes.push_back(newnote);
 }

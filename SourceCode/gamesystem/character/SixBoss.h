@@ -128,10 +128,6 @@ private:
 	//二点の距離
 	float m_Length = {};
 
-	//円運動
-	float m_CircleScale = 30.0f;
-	float m_CircleSpeed = {};
-
 	//弾幕の種類
 	int m_BarraRand = {};
 

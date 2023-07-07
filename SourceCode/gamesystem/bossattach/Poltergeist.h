@@ -86,4 +86,6 @@ private:
 	float m_AddSpeed = {};//‰Á‘¬“x
 
 	int m_AliveTimer = {};
+
+	XMFLOAT2 m_Power = {};
 };

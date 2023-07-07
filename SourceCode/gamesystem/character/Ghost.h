@@ -1,6 +1,7 @@
 #pragma once
 #include "ObjCommon.h"
 #include "InterBullet.h"
+#include "AttackNote.h"
 #include "CollisionPrimitive.h"
 //ゴーストクラス
 class Ghost :
@@ -49,6 +50,8 @@ private://ステート
 	void None();
 	//吸収
 	void Absorption();
+	//操られている
+	void Manipulate();
 	//生まれる状態
 	void Spawm();
 	//追従
@@ -70,6 +73,8 @@ private://ステート
 	void CarryFood();
 	//
 	bool CollideBullet(vector<InterBullet*>bullet);
+
+	void BirthBullet();
 public:
 	bool JugNONE() { if (_charaState == STATE_NONE)return true; else return false; }
 	bool GetCollide() { return Collide; }
@@ -88,6 +93,7 @@ public://getter setter
 	const bool& GetAbsorption() { return m_Absorption; }
 	const bool& GetSearch() { return m_Search; }
 	const bool& GetIsVerse() { return isVerse; }
+	const bool& GetManipulate() { return m_Manipulate; }
 	const bool& GetIsPostionCheck() { return m_IsPostionCheck; }
 	const float& GetLimit() { return m_Limit; }
 	const int GetStateInst() { return (int)_charaState; }
@@ -97,6 +103,7 @@ public://getter setter
 	void SetIsHyperRefer(const bool isRefer) { this->m_IsHyperRefer = isRefer; }
 
 	void SetIsVerse(const bool isVerse, int verseCureTimer = 0) { this->isVerse = isVerse; m_VerseCureTimer = verseCureTimer; }
+	void SetManipulate(const bool Manipulate) { m_Manipulate = Manipulate; }
 	void SetCatch(const bool Catch) { m_Catch = Catch; }
 	void SetAbsorption(const bool Absorption) { m_Absorption = Absorption; }
 	void SetVanish(const bool Vanish) { m_Vanish = Vanish; }
@@ -106,6 +113,7 @@ public://getter setter
 	void SetTargetPos(const XMFLOAT3& TargetPos) { m_TargetPos = TargetPos; }
 	void SetLimit(const float Limit) { m_Limit = Limit; }
 private:
+	vector<AttackNote*> attacknotes;//弾幕
 	bool m_Alive = true;//生存フラグ
 	bool m_Catch = false;//捕獲フラグ
 	bool isVerse = true;//リスポーンフラグ
@@ -123,6 +131,7 @@ private:
 		STATE_DARKOTI,
 		STATE_JACK,
 		STATE_HYPERJACK,
+		STATE_MANIPULATE,
 		STATE_VANISH,
 	}_charaState = CharaState::STATE_NONE;
 
@@ -188,4 +197,19 @@ private:
 	bool m_Hit = false;
 	bool m_DFollow;
 	OBB m_OBB1 = {}, m_OBB2 = {};
+
+	//操られている
+	bool m_Manipulate = false;
+
+	enum ManiState {
+		MANI_SET,
+		MANI_MOVE,
+		MANI_ATTACK,
+		MANI_END,
+	}_ManiState;
+
+	XMFLOAT3 m_AfterPos = {};
+	float m_AfterRotY = {};
+
+	int m_RotTimer = {};
 };

@@ -6,6 +6,7 @@
 #include "BreakEffect.h"
 #include "InterEnemy.h"
 #include"Ghost.h"
+
 using namespace std;         //  名前空間指定
 
 //ボスの基底クラス
@@ -50,6 +51,7 @@ public:
 
 	virtual void EffecttexDraw(DirectXCommon* dxCommon) = 0;
 
+	void AwakeUpdate();
 protected:
 
 	virtual void Action() = 0;//ボス特有の処理
@@ -110,7 +112,12 @@ public://gettersetter
 	void SetAbsorption(bool Absorption) { m_Absorption = Absorption; };
 	bool GetAbsorption() { return m_Absorption; }
 
+	void SetManipulate(bool Manipulate) { m_Manipulate = Manipulate; };
+	bool GetManipulate() { return m_Manipulate; }
+
 	void SetFinishApp(bool FinishApp) { m_FinishApp = FinishApp; };
+
+	void SetDeleteObj(bool DeleteObj) { m_DeleteObj = DeleteObj; };
 
 	bool GetFinishAppear() { return m_FinishAppear; }
 
@@ -125,12 +132,15 @@ public://gettersetter
 	bool GetIsReferCheck() { return isReferCheck; }
 
 	int ActionNum;
-	void SetActionNum(int num) { ActionNum = num; }
+	void SetCircleSpeed(float CircleSpeed) { m_CircleSpeed = CircleSpeed; }
+	void SetTargetPos(XMFLOAT3 TargetPos) { m_TargetPos = TargetPos; }
 private:
 	std::vector<Ghost*> ghosts;
 	std::string SceneName;
 	vector<InterEffect*> effects;
 protected:
+	XMFLOAT3 m_TargetPos = {};
+	
 	//ダメージ食らったとの色変換
 	float ColChangeEaseT;
 	int ActionTimer;
@@ -184,6 +194,16 @@ protected:
 
 	//吸収してるか
 	bool m_Absorption = false;
+	//操る
+	bool m_Manipulate = false;
+
+	//円運動
+	float m_CircleScale = 30.0f;
+	float m_CircleSpeed = {};
+
+	int m_BirthTarget = {};
+
+	bool m_DeleteObj = false;
 private:
 
 	enum class ActionList {
@@ -238,5 +258,6 @@ public:
 		}
 	};
 	std::vector<Ghost*>GetGhost() { return ghosts; }
+
 };
 

@@ -106,6 +106,7 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 
 	if (PlayerDestroy()) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
+		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kSecondStage, true);
 		sceneChanger_->ChangeStart();
 		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::NonReverse);
 	}
@@ -162,13 +163,6 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 		//	camerawork->SetCameraState(CAMERA_NORMAL);
 		//}
 	}
-	if (PlayerDestroy()) {
-		std::string str = "GAMEOVER";
-		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
-		sceneChanger_->ChangeStart();
-		sceneChanger_->ChangeScene(str, SceneChanger::Reverse);
-	}
-
 	XMFLOAT3 Position = enemymanager->GetBoss()->GetPosition();
 	XMVECTOR tex2DPos = { Position.x, Position.y, Position.z };
 	tex2DPos = Helper::GetInstance()->PosDivi(tex2DPos, camera->GetViewMatrix(), false);

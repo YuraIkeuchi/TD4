@@ -51,6 +51,8 @@ private:
 	void CollideFood();
 	//ゴーストの吸収
 	void Absorption();
+	//捕まえているゴーストを操る
+	void Manipulate();
 	//ボスとゴーストの当たり判定
 	void CollideBoss();
 	//ゴーストが消える
@@ -79,6 +81,9 @@ private:
 	bool CheckReferGhost();
 	//手に入れているゴーストを三体ほど消します
 	void SubHunger();
+
+	int GetGhostNumber();
+	bool CheckCanSearchGhost(Ghost* ghost);
 public:
 	std::vector<Ghost*>GetGhost() { return ghosts; }
 	
@@ -121,5 +126,8 @@ private:
 	float m_Frame = 0.0f;
 
 	float m_LimitHunger = {};
+
+	bool m_Wide = false;
+	float m_WideArea = {};
 };
 

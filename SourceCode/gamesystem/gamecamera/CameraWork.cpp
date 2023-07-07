@@ -75,6 +75,7 @@ void (CameraWork::* CameraWork::stateTable[])() = {
 	&CameraWork::SetBossDead_AfterFive,//5ボスのやられたとき（フェード後）
 	&CameraWork::SetBossDead_AfterSix,//6ボスのやられたとき（フェード後）
 	&CameraWork::SetBossDead_AfterSeven,//7ボスのやられたとき（フェード後）
+	&CameraWork::StrongCamera,//ボス覚醒カメラ
 };
 //XV
 void CameraWork::Update(DebugCamera* camera) {
@@ -245,7 +246,6 @@ void CameraWork::SetBossDead_AfterThird() {
 }
 //フェード後の撃破アクション(4ボス)
 void CameraWork::SetBossDead_AfterFourth() {
-
 	RadEffect = 0.f;
 	if (FeedF) {
 		feed->FeedIn(Feed::FeedType::WHITE, 0.01f, FeedF);
@@ -337,10 +337,9 @@ void CameraWork::EditorCamera() {
 //ImGui
 void CameraWork::ImGuiDraw() {
 	ImGui::Begin("Camera");
-	ImGui::Text("CameraApp:%d", m_AppearType);
-	ImGui::Text("Scale,:%f", m_CameraScale);
-	ImGui::Text("Speed,:%f", m_CameraSpeed);
-	ImGui::Text("POSY:%f", m_eyePos.y);
+	ImGui::Text("Feed:%d", FeedF);
+	ImGui::Text("End:%d", FeedEndF);
+	ImGui::Text("Timer:%d", m_StrongTimer);
 	ImGui::End();
 }
 void CameraWork::SpecialUpdate() {
@@ -635,17 +634,17 @@ void CameraWork::FourthBossAppear() {
 	Helper::GetInstance()->Clamp(m_Frame, 0.0f, 1.0f);
 	switch (m_AppearType) {
 	case APPEAR_START:
-		m_FrameMax = 120.0f;
+		m_FrameMax = 90.0f;
 		m_eyePos = {
 		Player::GetInstance()->GetPosition().x,
-		0.0f,
+		3.0f,
 		Player::GetInstance()->GetPosition().z,
 		};
 		m_BeforeEye = m_eyePos;
 		m_AfterEye = m_eyePos;
 		break;
 	case APPEAR_SECOND:
-		m_FrameMax = 120.0f;
+		m_FrameMax = 90.0f;
 		m_AfterTarget = {
 		30,
 		5,
@@ -653,7 +652,7 @@ void CameraWork::FourthBossAppear() {
 		};
 		break;
 	case APPEAR_THIRD:
-		m_FrameMax = 120.0f;
+		m_FrameMax = 90.0f;
 		m_AfterTarget = {
 		0,
 		5,
@@ -661,7 +660,7 @@ void CameraWork::FourthBossAppear() {
 		};
 		break;
 	case APPEAR_FOURTH:
-		m_FrameMax = 120.0f;
+		m_FrameMax = 90.0f;
 		m_AfterTarget = {
 		-30,
 		5,
@@ -669,7 +668,7 @@ void CameraWork::FourthBossAppear() {
 		};
 		break;
 	case APPEAR_FIVE:
-		m_FrameMax = 120.0f;
+		m_FrameMax = 90.0f;
 		m_AfterTarget = {
 		0,
 		5,
@@ -871,4 +870,42 @@ void CameraWork::SetCircleCameraEye(const XMFLOAT3 target) {
 	m_eyePos.x = m_CameraCircleX;
 	m_eyePos.z = m_CameraCircleZ;
 	m_targetPos = target;
+}
+void CameraWork::StrongCamera() {
+	const int l_Timer = 200;
+	if (_StrongState == STRONG_ONE) {
+		if (FeedF) {
+			feed->FeedIn(Feed::FeedType::WHITE, 0.025f, FeedF);
+			if (feed->GetAlpha() >= 1.0f) {
+				_StrongState = STRONG_SECOND;
+			}
+		}
+	}
+	else if (_StrongState == STRONG_SECOND) {
+		m_eyePos = { 0.0f,20.0f,-20.0f };
+		m_targetPos = { 0.0f,0.0f,0.0f };
+		if (feed->GetAlpha() == 0.0f) {
+			m_StrongTimer++;
+		}
+		
+		if (m_StrongTimer == 10) {
+			FeedEndF = false;
+		}
+		if (m_StrongTimer == l_Timer) {
+			FeedF = true;
+			m_Finish = true;
+		}
+
+		if (FeedF) {
+			feed->FeedIn(Feed::FeedType::WHITE, 0.025f, FeedF);
+			if (feed->GetAlpha() >= 1.0f) {
+				if (m_Finish) {
+					_StrongState = STRONG_THIRD;
+					m_EndStrong = true;
+				}
+			}
+		}
+	}else{
+	}
+
 }

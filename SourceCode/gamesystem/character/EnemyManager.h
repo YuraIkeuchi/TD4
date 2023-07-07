@@ -48,6 +48,9 @@ public:
 	void FinishHeart();
 	//ボスの向き
 	void DirSet(int Dir);
+	//覚醒
+	void Awake();
+	void DeleteObj();
 public:
 	void HealHP(const float power);
 public://getter setter
@@ -55,7 +58,9 @@ public://getter setter
 	InterBoss* GetBoss() { return boss.get(); }
 	const XMFLOAT3& GetEnemyPosition() { return boss.get()->GetPosition(); }
 	const bool GetEnemyCheck() { return boss.get()->GetCheck(); }
+	const bool GetEnemyStrong() { return boss.get()->GetStrong(); }
 	const bool GetEnemyAbsorption() { return boss.get()->GetAbsorption(); }
+	const bool GetManipulate() { return boss.get()->GetManipulate(); }
 	const bool GetEnemyFinishAppear() { return boss.get()->GetFinishAppear(); }
 
 	const bool GetBirthHeart() { return boss.get()->GetBirthHeart(); }

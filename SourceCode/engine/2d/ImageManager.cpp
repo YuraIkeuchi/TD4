@@ -50,6 +50,11 @@ void ImageManager::SecondLoad2D()
 	IKESprite::LoadTexture(CLOSEKIDO, L"Resources/2d/objicon/closekido.png");
 	IKESprite::LoadTexture(CLOSEDJ, L"Resources/2d/objicon/closeDJ.png");
 	IKESprite::LoadTexture(PHOTO_IN, L"Resources/2d/effect/camera_soto.png");
+	IKESprite::LoadTexture(PHOTO_IN_Change, L"Resources/2d/effect/camera_soto_Chan.png");
+	IKESprite::LoadTexture(PHOTO_IN_Control, L"Resources/2d/effect/camera_soto_Cont.png");
+	IKESprite::LoadTexture(PHOTO_IN_Sub, L"Resources/2d/effect/camera_soto_sub.png");
+	IKESprite::LoadTexture(PHOTO_IN_Ult, L"Resources/2d/effect/camera_soto_Ult.png");
+
 	IKESprite::LoadTexture(PHOTO_OUT, L"Resources/2d/effect/camera_naka.png");
 	IKESprite::LoadTexture(CIRCLE, L"Resources/2d/objicon/circle.png");
 	IKESprite::LoadTexture(CIRCLECOVER, L"Resources/2d/objicon/circlecover.png");

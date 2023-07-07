@@ -31,7 +31,11 @@ FourthBoss::FourthBoss() {
 		photoSpot[i].reset(photoSpot_);
 	}
 
-	photo[Photo_In] = IKESprite::Create(ImageManager::PHOTO_IN, { 0,0 });
+	photo[Photo_In] = IKESprite::Create(ImageManager::PHOTO_IN, { 0,0 }, {1,1,1,0.5f});
+	photo[Photo_In_Change] = IKESprite::Create(ImageManager::PHOTO_IN_Change, { 0,0 }, { 1,1,1,0.5f });
+	photo[Photo_In_Control] = IKESprite::Create(ImageManager::PHOTO_IN_Control, { 0,0 }, { 1,1,1,0.5f });
+	photo[Photo_In_Sub] = IKESprite::Create(ImageManager::PHOTO_IN_Sub, { 0,0 }, { 1,1,1,0.5f });
+	photo[Photo_In_Ult] = IKESprite::Create(ImageManager::PHOTO_IN_Ult, { 0,0 }, { 1,1,1,0.5f });
 	photo[Photo_Out_Top] = IKESprite::Create(ImageManager::PHOTO_OUT, { 0,-360 });
 	photo[Photo_Out_Under] = IKESprite::Create(ImageManager::PHOTO_OUT, { 0,1080 });
 	for (int i = Photo_Out_Top; i <= Photo_Out_Under; i++) {
@@ -59,7 +63,7 @@ bool FourthBoss::Initialize() {
 	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "HeartTarget")));
 	shutterTimeMax = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "shutterTime")));
 	feedTimeMax = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "feedTime")));
-	ActionTimerMax[(size_t)commandState::WaitCommand]=static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Wait")));
+	ActionTimerMax[(size_t)commandState::WaitCommand] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Wait")));
 	ActionTimerMax[(size_t)commandState::MoveCommand] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Move")));
 	ActionTimerMax[(size_t)commandState::ControlCommand] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Control")));
 	ActionTimerMax[(size_t)commandState::EnemySpawn] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "EnemySpawn")));
@@ -104,6 +108,45 @@ void FourthBoss::AppearAction() {
 	Obj_SetParam();
 
 }
+void FourthBoss::DeadAction() {
+	const float l_AddAngle = 5.0f;
+	m_DeathTimer++;
+	m_Rotation.z = Ease(Out, Quad, m_DeathTimer / static_cast<float>(200), 0, 90);
+	const int l_BaseTarget = 50;
+	if (m_DeathTimer == 1) {
+		m_Position = { 0.0f,0.0f,0.0f };
+		m_Rotation = { 0.0f,90.f,0.0f };
+	} else if (m_DeathTimer >= 2 && m_DeathTimer < 300) {
+		//sin波によって上下に動く
+		//m_Angle += l_AddAngle;
+		//m_Angle2 = m_Angle * (3.14f / 180.0f);
+		//m_Position.x = (sin(m_Angle2) * 15.0f + 15.0f);
+		float l_AddSize = 2.5f;
+		const float RandScale = 3.0f;
+		float s_scale = 0.3f * l_AddSize;
+		float e_scale = (4.0f + (float)rand() / RAND_MAX * RandScale - RandScale / 2.0f) * l_AddSize;
+
+		//色
+		const float RandRed = 0.2f;
+		const float red = 0.2f + (float)rand() / RAND_MAX * RandRed;
+		const XMFLOAT4 s_color = { 0.9f, red, 0.1f, 1.0f }; //濃い赤
+		const XMFLOAT4 e_color = { 0, 0, 0, 1.0f }; //無色
+		mt19937 mt{ std::random_device{}() };
+		uniform_int_distribution<int> l_Randlife(10, 40);
+		int l_Life = int(l_Randlife(mt));
+		ParticleEmitter::GetInstance()->ExproEffectBoss(l_Life, m_Position, l_AddSize, s_scale, e_scale, s_color, e_color);
+	}
+	for (int i = 0; i < kPhotoSpotMax; i++) {
+		photoSpot[i]->Update();
+	}
+	Obj_SetParam();
+}
+void FourthBoss::DeadAction_Throw() {
+	for (int i = 0; i < kPhotoSpotMax; i++) {
+		photoSpot[i]->Update();
+	}
+	Obj_SetParam();
+}
 //ポーズ
 void FourthBoss::Pause() {
 
@@ -112,46 +155,71 @@ void FourthBoss::Pause() {
 
 void FourthBoss::ImGui_Origin() {
 	ImGui::Begin("BOSS");
-	ImGui::SliderInt("Action", &ActionTimer, 0, 1000);
-	switch (phase) {
-	case FourthBoss::commandState::WaitCommand:
-		ImGui::Text("WAIT");
-		break;
-	case FourthBoss::commandState::MoveCommand:
-		ImGui::Text("MOVE");
-		break;
-	case FourthBoss::commandState::ControlCommand:
-		ImGui::Text("CONTROL");
-		break;
-	case FourthBoss::commandState::EnemySpawn:
-		ImGui::Text("ENEMYSPAWN");
-		break;
-	case FourthBoss::commandState::SubGauge:
-		ImGui::Text("SUBGAUGE");
-		break;
-	case FourthBoss::commandState::Ultimate:
-		ImGui::Text("ULTIMATE");
-		break;
-	case FourthBoss::commandState::Explosion:
-		ImGui::Text("Explosion");
-		break;
+	//ImGui::SliderInt("AI-Pattern", &cases, 0, 100);
+	//ImGui::Text("isMiss %s", (isMiss ? "true" : "false"));
+	//ImGui::SliderInt("Action", &ActionTimer, 0, 1000);
+	//switch (phase) {
+	//case FourthBoss::commandState::WaitCommand:
+	//	ImGui::Text("WAIT");
+	//	break;
+	//case FourthBoss::commandState::MoveCommand:
+	//	ImGui::Text("MOVE");
+	//	break;
+	//case FourthBoss::commandState::ControlCommand:
+	//	ImGui::Text("CONTROL");
+	//	break;
+	//case FourthBoss::commandState::EnemySpawn:
+	//	ImGui::Text("ENEMYSPAWN");
+	//	break;
+	//case FourthBoss::commandState::SubGauge:
+	//	ImGui::Text("SUBGAUGE");
+	//	break;
+	//case FourthBoss::commandState::Ultimate:
+	//	ImGui::Text("ULTIMATE");
+	//	break;
+	//case FourthBoss::commandState::Explosion:
+	//	ImGui::Text("Explosion");
+	//	break;
 
-	default:
-		assert(0);
-		break;
-	}
+	//default:
+	//	assert(0);
+	//	break;
+	//}
+	ImGui::SliderFloat("Jpos0x", &jackPos[0].x, 0, 1000);
+	ImGui::SliderFloat("Jpos0y", &jackPos[0].y, 0, 1000);
+	ImGui::SliderFloat("Jpos0z", &jackPos[0].z, 0, 1000);
+	ImGui::SliderFloat("Jpos1x", &jackPos[1].x, 0, 1000);
+	ImGui::SliderFloat("Jpos1y", &jackPos[1].y, 0, 1000);
+	ImGui::SliderFloat("Jpos1z", &jackPos[1].z, 0, 1000);
+	ImGui::SliderFloat("Jpos2x", &jackPos[2].x, 0, 1000);
+	ImGui::SliderFloat("Jpos2y", &jackPos[2].y, 0, 1000);
+	ImGui::SliderFloat("Jpos2z", &jackPos[2].z, 0, 1000);
+
 	ImGui::End();
 }
 
 void FourthBoss::EffecttexDraw(DirectXCommon* dxCommon) {
+	if (m_HP < 0.0f) { return; }
 	IKETexture::PreDraw2(dxCommon, AlphaBlendType);
 	for (int i = 0; i < kPhotoSpotMax; i++) {
 		photoSpot[i]->Draw();
 	}
 	IKETexture::PostDraw();
 	IKESprite::PreDraw();
-	if (phase == commandState::MoveCommand && ActionTimer > 60 && shutterTime < 1.0f) {
+	if (phase == commandState::MoveCommand) {
 		photo[Photo_In]->Draw();
+	}
+	if (phase == commandState::EnemySpawn) {
+		photo[Photo_In_Change]->Draw();
+	}
+	if (phase == commandState::ControlCommand) {
+		photo[Photo_In_Control]->Draw();
+	}
+	if (phase == commandState::SubGauge) {
+		photo[Photo_In_Sub]->Draw();
+	}
+	if (phase == commandState::Ultimate) {
+		photo[Photo_In_Ult]->Draw();
 	}
 	for (int i = Photo_Out_Top; i <= Photo_Out_Under; i++) {
 		photo[i]->Draw();
@@ -172,11 +240,12 @@ void FourthBoss::SelectAction() {
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> l_RandAction(0, 100);
 	int l_case = l_RandAction(mt);
-	if (l_case < 10) {
+	cases = l_case;
+	if (l_case <= 10) {
 		ChangePos2Random();
 		isInstruction = FourthBossInst::None;
 		phase = commandState::MoveCommand;
-	} else if (l_case < 30) {
+	} else if (l_case <= 30) {
 		if (!EnemysIsActiveCheck()) {
 			isSearch = true;
 			isInstruction = FourthBossInst::ChangeGhost;
@@ -186,7 +255,7 @@ void FourthBoss::SelectAction() {
 			isInstruction = FourthBossInst::None;
 			phase = commandState::MoveCommand;
 		}
-	} else if (l_case < 60) {
+	} else if (l_case <= 68) {
 		if (isReferCheck) {
 			isSearch = true;
 			isInstruction = FourthBossInst::None;
@@ -196,10 +265,10 @@ void FourthBoss::SelectAction() {
 			isInstruction = FourthBossInst::None;
 			phase = commandState::MoveCommand;
 		}
-	} else if (l_case < 90) {
+	} else if (l_case < 92) {
 		isInstruction = FourthBossInst::None;
 		phase = commandState::SubGauge;
-	} else if (l_case < 95) {
+	} else if (l_case <= 100) {
 		isInstruction = FourthBossInst::None;
 		limitHp = m_HP * 0.7f;
 		phase = commandState::Ultimate;
@@ -238,7 +307,6 @@ void FourthBoss::ControlUpdate() {
 	if (isMiss) {
 		isInstruction = FourthBossInst::None;
 		phase = commandState::SubGauge;
-		isMiss = false;
 		return;
 	}
 	if (isSearch) { return; }
@@ -261,7 +329,6 @@ void FourthBoss::EnemySpawnUpdate() {
 	if (isMiss) {
 		isInstruction = FourthBossInst::None;
 		phase = commandState::SubGauge;
-		isMiss = false;
 		return;
 	}
 	if (isSearch) { return; }
@@ -303,6 +370,7 @@ void FourthBoss::SubGaugeUpdate() {
 		if (ShutterFeed()) {
 			ShutterReset();
 			ActionTimer = 0;
+			isMiss = false;
 			phase = commandState::WaitCommand;
 		}
 	}
@@ -312,6 +380,7 @@ void FourthBoss::UltimateUpdate() {
 	if (limitHp >= m_HP && !isShutter && feedTimer == 0.0f) {
 		m_HP = limitHp;
 		phase = commandState::Explosion;
+		ActionTimer = 0;
 		return;
 	}
 	ParticleEmitter::GetInstance()->CameraEffect(80, spotPos[1], 4.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
@@ -354,7 +423,8 @@ void FourthBoss::UltimateUpdate() {
 }
 
 void FourthBoss::ExplosionUpdate() {
-	m_Rotation.z =  30.0f;
+	ActionTimer++;
+	m_Rotation.z = 30.0f;
 
 	float l_AddSize = 2.5f;
 	const float RandScale = 3.0f;
@@ -372,7 +442,18 @@ void FourthBoss::ExplosionUpdate() {
 	uniform_int_distribution<int> l_Randlife(10, 40);
 	int l_Life = int(l_Randlife(mt));
 	ParticleEmitter::GetInstance()->Explosion(l_Life, m_Position, l_AddSize, s_scale, e_scale, s_color, e_color);
-
+	if (ActionTimer >= ActionTimerMax[(size_t)phase] && !isShutter) {
+		isShutter = true;
+	}
+	if (!isShutter) { return; }
+	if (ShutterEffect()) {
+		if (ShutterFeed()) {
+			ShutterReset();
+			m_Rotation.z = 0.0f;
+			ActionTimer = 0;
+			phase = commandState::WaitCommand;
+		}
+	}
 }
 
 bool FourthBoss::ShutterEffect() {

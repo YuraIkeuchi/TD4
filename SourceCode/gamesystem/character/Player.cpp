@@ -356,7 +356,6 @@ void Player::Bullet_Management() {
 		AnimationControl(AnimeName::ATTACK, false, 1);
 		TriggerAttack = true;
 	}
-
 	if (TriggerAttack) {
 		if (m_fbxObject->GetCurrent()>=m_fbxObject->GetEndTime()-1) {
 			m_fbxObject->StopAnimation();
