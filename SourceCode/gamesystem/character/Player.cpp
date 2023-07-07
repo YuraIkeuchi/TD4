@@ -352,7 +352,6 @@ void Player::Bullet_Management() {
 		}
 	}
 	if (Input::GetInstance()->TriggerButton(Input::B)) {
-		if (HungerGauge::GetInstance()->GetNowHunger() == 0.0f) { return; }
 		AnimationControl(AnimeName::ATTACK, false, 1);
 		TriggerAttack = true;
 	}
