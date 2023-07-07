@@ -65,7 +65,7 @@ void InterEnemy::ColPlayer()
 		if (isUnrival) {
 			Player::GetInstance()->RecvDamage(0);
 		} else {
-			Player::GetInstance()->RecvDamage(1.0f);
+			Player::GetInstance()->RecvDamage(0.75f);
 		}
 	}
 

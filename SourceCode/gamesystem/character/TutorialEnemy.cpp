@@ -62,27 +62,30 @@ void TutorialEnemy::Draw(DirectXCommon* dxCommon) {
 void TutorialEnemy::Born() {
 
 	isAlive = true;
-	m_Scale = { scale_,scale_ ,scale_ };
 	deathFrame = 0.0f;
 	m_Color.w = 1.0f;
+	commandTimer = 0.0f;
+	RottoPlayer = 0.0f;
+	commandState = CommandState::SpawnState;
+	waitTimer = 0.0f;
+	jumpCount = 1;
+	s_pos = {}, e_pos = {};
+	moveTimer = 0.6f;
+	scaleCount = 0.05f;
 	HP = 1;
 
 
 }
 //ImGui描画
 void TutorialEnemy::ImGuiDraw() {
-	ImGui::Begin("Enemy");
+	//ImGui::Begin("Enemy");
 	//ImGui::Text("time %f", t);
 	//ImGui::Text("RotOld %f", RottoPlayer);
 	//ImGui::Text("EnePosX:%f", m_Position.x);
 	//ImGui::Text("EnePosY:%f", m_Position.y);
 	//ImGui::Text("EnePosZ:%f", m_Position.z);
-	ImGui::Checkbox("isAlive", &isAlive);
-
-
-
-
-	ImGui::End();
+	//ImGui::Checkbox("isAlive", &isAlive);
+	//ImGui::End();
 }
 //開放
 void TutorialEnemy::Finalize() {
@@ -190,8 +193,6 @@ bool TutorialEnemy::Death() {
 	deathFrame += 1.0f / deathFrameMax;
 
 	m_Color.w = 0.0f;
-
-
 
 	XMFLOAT4 s_color = { 1.0f,0.0f,0.0f,1.0f };
 	XMFLOAT4 e_color = { 1.0f,0.5f,0.0f,0.0f };

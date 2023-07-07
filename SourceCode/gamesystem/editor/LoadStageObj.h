@@ -83,7 +83,7 @@ private:
 	void SubHunger();
 
 	int GetGhostNumber();
-
+	bool CheckCanSearchGhost(Ghost* ghost);
 public:
 	static void SetEnemyManager(EnemyManager* m_EnemyManager) { LoadStageObj::m_EnemyManager = m_EnemyManager; }
 protected:

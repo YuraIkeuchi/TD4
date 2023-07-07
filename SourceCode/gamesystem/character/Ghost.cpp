@@ -128,11 +128,16 @@ void Ghost::Particle() {
 			m_Color = { 1.0f,flash,1.0f,1.0f};
 		}else if (_charaState == CharaState::STATE_NONE) {
 			m_Color = { 1.0f,1.0f,1.0f,0.7f };
-			m_Scale = { 0.5f,0.5f,0.5f };
-			//ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color, e_color);
+			m_Scale = { 0.6f,0.6f,0.6f };
 		} else if (_charaState == CharaState::STATE_FOLLOW) {
 			m_Color = { 1.0f,1.0f,1.0f,1.0f };
 			m_Scale = { 0.6f,0.6f,0.6f };
+			m_IsRefer = false;
+			ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color2, e_color2);
+		} else if (_charaState == CharaState::STATE_SEARCH) {
+			m_Color = { 1.0f,1.0f,1.0f,1.0f };
+			m_Scale = { 0.6f,0.6f,0.6f };
+			m_IsRefer = false;
 			ParticleEmitter::GetInstance()->FireEffect(20, m_Position, s_scale, e_scale, s_color2, e_color2);
 		} else if (_charaState == CharaState::STATE_JACK) {
 			m_Color = { 1.0f,0.0f,1.0f,1.0f };

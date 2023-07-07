@@ -141,7 +141,7 @@ void FourthStageActor::BackDraw(DirectXCommon* dxCommon) {
 	ParticleEmitter::GetInstance()->DeathDrawAll();
 	//パーティクル描画
 	if (camerawork->GetCameraState() != CameraState::CAMERA_BOSSAPPEAR &&
-		camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_AFTER_FIRST) {
+		camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_AFTER_FOURTH) {
 		ParticleEmitter::GetInstance()->BackDrawAll();
 		ParticleEmitter::GetInstance()->FlontDrawAll();
 	}
@@ -183,12 +183,9 @@ void FourthStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void FourthStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	//Player::GetInstance()->ImGuiDraw();
-	//enemymanager->ImGuiDraw();
-	//loadobj->ImGuiDraw();
-	//ImGui::Begin("test");
-	//ImGui::End();
-	//loadobj->ImGuiDraw();
+	Player::GetInstance()->ImGuiDraw();
+	enemymanager->ImGuiDraw();
+	loadobj->ImGuiDraw();
 	//SceneSave::GetInstance()->ImGuiDraw();
 }
 
@@ -233,6 +230,7 @@ void FourthStageActor::IntroUpdate(DebugCamera* camera) {
 		m_AppTimer++;
 	} else {
 		if (ShutterEffect()) {
+			text_->SelectText(TextManager::TALK_NULL);
 			if (m_AppTimer < 1000) {
 				isVisible = true;
 			}
@@ -261,7 +259,6 @@ void FourthStageActor::IntroUpdate(DebugCamera* camera) {
 		//}
 	} else if (m_AppTimer == 800) {
 		isShutter = true;
-		text_->SelectText(TextManager::TALK_NULL);
 		m_AppTimer++;
 	}
 	else if (m_AppTimer == 850) {
@@ -280,12 +277,11 @@ void FourthStageActor::IntroUpdate(DebugCamera* camera) {
 	} else if (m_AppTimer == 2050) {
 		isVisible = false;
 		shutterTimeMax = 60.0f;
-		stopTimerMax = 180.0f;
+		stopTimerMax = 100.0f;
 		feedTimeMax = 10.0f;
 		text_->SelectText(TextManager::TALK_ELEVEN_T);
 	} else if (m_AppTimer == 2250) {
 		isShutter = true;
-		text_->SelectText(TextManager::TALK_NULL);
 		m_AppTimer++;
 	} else if (m_AppTimer == 2450) {
 		text_->SelectText(TextManager::TALK_XII_T);
@@ -319,7 +315,7 @@ void FourthStageActor::MainUpdate(DebugCamera* camera) {
 			enemymanager->SetDeadThrow(true);
 			enemymanager->DeadUpdate();
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_BEFORE);
-			apple->SetPosition({ Player::GetInstance()->GetPosition().x,10.0f,Player::GetInstance()->GetPosition().z+5.0f });
+			apple->SetPosition({ Player::GetInstance()->GetPosition().x+10.0f,10.0f,Player::GetInstance()->GetPosition().z });
 		}
 		//フェード後
 		else {

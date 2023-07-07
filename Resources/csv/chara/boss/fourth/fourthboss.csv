@@ -1,7 +1,7 @@
 pos,0
-hp1,40
+hp1,35
 //ダメージ倍率(値が小さければ小さいほど食らうダメージが少ない)
-Magnification,0.4
+Magnification,0.45
 //ハートが生成される確率
 //0～100で大きければ大きいほど生成されにくいです。(0の場合は100%)
 HeartTarget,80
@@ -15,7 +15,7 @@ feedTime,20
 //各アクションのクールタイム
 Wait,240
 Move,120
-Control,240
+Control,180
 EnemySpawn,120
 SubGauge,120
 Ultimate,700
