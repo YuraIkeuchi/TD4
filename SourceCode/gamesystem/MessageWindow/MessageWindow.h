@@ -27,6 +27,7 @@ public:
 	void DisplayCharacter(XMFLOAT4& color);
 
 	bool DisplayCheck();
+	void SetNotBlack() { notBlack = true; }
 private:
 	unique_ptr<IKESprite> window_;
 	unique_ptr<IKESprite> blackback_;
@@ -39,6 +40,8 @@ private:
 	XMFLOAT4 girl_color{ 1.5f,1.5f,1.5f,0.f };
 	XMFLOAT4 sutopon_color{ 1.f,1.f,1.f,0.f };
 
+
+	bool notBlack = false;
 	float maxframe = 20.f;
 	float nowframe = 0.f;
 	float frame = 0.f;

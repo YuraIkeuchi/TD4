@@ -33,15 +33,17 @@ void MessageWindow::Update(const XMFLOAT4& girlcolor, const XMFLOAT4& sutoponcol
 
 void MessageWindow::Draw()
 {
-	blackback_->Draw();
-	window_->Draw();
+	if (!notBlack) {
+		blackback_->Draw();
+		window_->Draw();
+	}
 	girl_->Draw();
 	sutopon_->Draw();
 }
 
 void MessageWindow::Display()
 {
-	if (nowframe >= 1) { return; }
+	if (nowframe >= 1.f) { return; }
 	frame++;
 	nowframe = frame / maxframe;
 	if (frame >= maxframe) {
