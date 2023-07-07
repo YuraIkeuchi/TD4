@@ -29,7 +29,7 @@ private:
     int index = 0;
     float RotEaseTime;
     XMFLOAT3 OldRot;
-
+    float AddRot;
     //フェーズ
     enum Phase
     {

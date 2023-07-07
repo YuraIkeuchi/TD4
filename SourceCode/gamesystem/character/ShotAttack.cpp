@@ -62,10 +62,7 @@ void ShotAttack::Upda()
 		}
 	}
 
-
-	if (_phase == Phase::NON&&!ActionEnd) {
-		_phase = Phase::SHOT;
-	}
+	
 		//ó‘ÔˆÚs(charastate‚É‡‚í‚¹‚é)
 	(this->*stateTable[_phase])();
 
@@ -167,6 +164,10 @@ void ShotAttack::Phase_Shot()
 	}
 	RotEaseTime = 0.f;
 
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_RandRot(-60, 60);
+
+	AddRot = (float)(l_RandRot(mt))+30.f;
 }
 
 void ShotAttack::Phase_End()
@@ -177,19 +178,20 @@ void ShotAttack::Phase_End()
 		BulAlpha[i] = 1.f;
 		BulPos[i] = boss->GetPosition();
 	}
-	mt19937 mt{ std::random_device{}() };
-	uniform_int_distribution<int> l_RandRot(-60, 60);
-
-	Helper::GetInstance()->FrameCheck(RotEaseTime, 0.05f);
+	
+	
+		Helper::GetInstance()->FrameCheck(RotEaseTime, 0.05f);
 
 	boss->SetRotation({ boss->GetRotation().x,
-	Ease(In,Quad,RotEaseTime,OldRot.y,OldRot.y+l_RandRot(mt)),
+	Ease(In,Quad,RotEaseTime,OldRot.y,OldRot.y+AddRot),
 	boss->GetRotation().z });
-	if (PhaseCount < 4) {
-		if(RotEaseTime>=1.0f)
+	AttackTimer = 0;
+	//if (PhaseCount < 4) {
+		if(RotEaseTime>=0.90f)
 		_phase = NON;
-	}
-	else ActionEnd = true;
+	//}
+	
+	//else ActionEnd = true;
 }
 
 
@@ -204,7 +206,7 @@ void ShotAttack::RottoPlayer()
 
 void ShotAttack::FollowPlayerAct()
 {
-	FollowPlayer();
+	
 	XMVECTOR move = { 0.f,0.f, 0.1f, 0.0f };
 
 	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(boss->GetRotation().y));

@@ -105,11 +105,11 @@ void FiveBoss::Action()
 	/// <summary>
 	/// UŒ‚[‚RWAY
 	/// </summary>
-
+	_aPhase = ATTACK_SHOT;
 
 	//ActionSet(ATTACK_SHOT, shot);
-	ActionSet(ATTACK_IMPACT, smash);
-	ActionSet(ATTACK_SLASH, slash);
+	//ActionSet(ATTACK_IMPACT, smash);
+	//ActionSet(ATTACK_SLASH, slash);
 
 	if (_aPhase == ATTACK_SHOT)ActionTimer++;
 
@@ -134,27 +134,27 @@ void FiveBoss::Action()
 	}
 
 	mt19937 mt{ std::random_device{}() };
-	if (_aPhase == ATTACK_SHOT && ActionTimer % 120 == 0) {
-		RandAction = rand()%3+1;
+	//if (_aPhase == ATTACK_SHOT && ActionTimer % 120 == 0) {
+	//	RandAction = rand()%3+1;
 
-		if (shot->GetDarkCount()<5)
-		{
-			shot->SetActionEnd(false);
-			_aPhase = ATTACK_SHOT;
-		}
-		else {
-			if (RandAction == 2)
-			{
-				smash->SetActionEnd(false);
-				_aPhase = ATTACK_IMPACT;
-			}
-			if (shot->GetDarkCount() >= 5)
-			{
-				slash->SetActionEnd(false);
-				_aPhase = ATTACK_SLASH;
-			}
-		}
-	}
+	//	if (shot->GetDarkCount()<5)
+	//	{
+	//		shot->SetActionEnd(false);
+	//		_aPhase = ATTACK_SHOT;
+	//	}
+	//	else {
+	//		if (RandAction == 2)
+	//		{
+	//			smash->SetActionEnd(false);
+	//			_aPhase = ATTACK_IMPACT;
+	//		}
+	//		if (shot->GetDarkCount() >= 5)
+	//		{
+	//			slash->SetActionEnd(false);
+	//			_aPhase = ATTACK_SLASH;
+	//		}
+	//	}
+	//}
 	/*^^^^“–‚½‚è”»’è^^^^*/
 	//’e‚Æƒ{ƒX‚Ì“–‚½‚è”»’è
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
