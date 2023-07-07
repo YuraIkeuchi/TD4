@@ -52,6 +52,10 @@ private:
 	void Hit();
 	//行動終わり
 	void EndMove();
+
+	void RockOn();
+
+	void Attack();
 private:
 	//CSV読み込み系
 	void CSVLoad();
@@ -67,13 +71,18 @@ private:
 	//キャラの状態
 	enum CharaState
 	{
-		STATE_INTER,
+		STATE_INTER = 0,
 		STATE_CHOICE,
 		STATE_ROCKON,
 		STATE_RAND,
 		STATE_HIT,
 		STATE_END
-	};
+	}_charstate;
+
+	enum RockonState {
+		STATE_AIM=0,
+		STATE_ATTACK,
+	}_rockonstate;
 
 	//停止時間
 	int m_StopTimer = 0;
@@ -82,8 +91,6 @@ private:
 
 	//関数ポインタ
 	static void(FirstBoss::* stateTable[])();
-
-	int _charaState = STATE_INTER;
 
 	//CSV系
 	int m_ChoiceInterval = {};
@@ -143,6 +150,17 @@ private:
 
 	//移動力
 	float m_FollowSpeed = {};
+
+	float timer_ = 0.f;
+	XMFLOAT3 m_Rotation = {};
+	float RottoPlayer = 0.0f;
+	float commandTimer = 0.0f;
+	float kLockOnTimeMax = 50.0f;
+	float rot = 0.0f;
+	int jumpCount = 1;
+	XMFLOAT3 s_pos = {}, e_pos = {};
+	float kJumpTimeMax = 60.0f;
+	const int kJumpCountMax = 3;
 };
 
 
