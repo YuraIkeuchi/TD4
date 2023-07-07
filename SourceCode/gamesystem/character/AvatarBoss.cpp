@@ -27,6 +27,7 @@ bool AvatarBoss::Initialize() {
 	m_Radius = 2.2f;
 
 	_charaState = STATE_INTER;
+	m_CircleScale = 15.0f;
 	//CSVロード
 	CSVLoad();
 	return true;
@@ -62,9 +63,12 @@ void AvatarBoss::Action() {
 	/*^^^^当たり判定^^^^*/
 	//弾とボスの当たり判定
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
-	CollideBul(_playerBulA, Type::CIRCLE);
 	//プレイヤーの当たり判定
-	ColPlayer();
+		//プレイヤーの当たり判定
+	if (m_Color.w > 0.9f) {
+		CollideBul(_playerBulA, Type::CIRCLE);
+		ColPlayer();
+	}
 	//OBJのステータスのセット
 	Obj_SetParam();
 	//リミット制限
@@ -128,7 +132,25 @@ void AvatarBoss::ImGui_Origin() {
 }
 //インターバル
 void AvatarBoss::InterValMove() {
-	int l_LimitTimer = 100;
+	const float l_AddScale = 0.5f;
+	const float l_AddSpeed = 1.5f;
+	int l_LimitTimer = 400;
+
+	if (!m_Return) {
+		m_CircleSpeed += l_AddSpeed;
+
+		Helper::GetInstance()->CheckMax(m_CircleScale, 10.0f, -l_AddScale);
+
+		m_AfterPos = Helper::GetInstance()->CircleMove(m_TargetPos, m_CircleScale, m_CircleSpeed);
+		m_Position = {
+			Ease(In,Cubic,0.5f,m_Position.x,m_AfterPos.x),
+			m_Position.y,
+			Ease(In,Cubic,0.5f,m_Position.z,m_AfterPos.z),
+		};
+	}
+	else {
+		ReturnBoss();//ボスが定位置に戻る
+	}
 	m_InterVal++;
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> l_RandomMove(0, 1);
@@ -150,20 +172,28 @@ void AvatarBoss::InterValMove() {
 void AvatarBoss::Polter() {
 	const int l_LimitTimer = 300;
 	m_MoveTimer++;
-	if (m_MoveTimer == l_LimitTimer) {
+	if (m_MoveTimer == 1) {
 		BirthPolter("Normal");
+	}
+	if (m_MoveTimer == l_LimitTimer) {
 		m_MoveTimer = {};
 		_charaState = STATE_INTER;
+		m_SaveSpeed = m_CircleSpeed;
+		m_Return = true;
 	}
 }
 //バウンド弾
 void AvatarBoss::ThrowBound() {
 	const int l_LimitTimer = 300;
 	m_MoveTimer++;
-	if (m_MoveTimer == l_LimitTimer) {
+	if (m_MoveTimer == 1) {
 		BirthPolter("Bound");
+	}
+	if (m_MoveTimer == l_LimitTimer) {
 		m_MoveTimer = {};
 		_charaState = STATE_INTER;
+		m_SaveSpeed = m_CircleSpeed;
+		m_Return = true;
 	}
 }
 //ポルターガイストの生成
@@ -216,4 +246,35 @@ void AvatarBoss::DeadAction() {
 //ボス撃破シーン(スロー)
 void AvatarBoss::DeadAction_Throw() {
 	Obj_SetParam();
+}
+void AvatarBoss::ReturnBoss() {
+	const float l_AddFrame = 0.05f;
+	if (_ReturnState == RETURN_SET) {
+		m_AfterAlpha = {};
+		if (m_VanishFrame < m_FrameMax) {
+			m_VanishFrame += l_AddFrame;
+		}
+		else {
+			_ReturnState = RETURN_PLAY;
+			m_VanishFrame = {};
+		}
+	}
+	else if (_ReturnState == RETURN_PLAY) {
+		m_CircleScale = 15.0f;
+		m_Position = Helper::GetInstance()->CircleMove(m_TargetPos, m_CircleScale, m_SaveSpeed);
+		_ReturnState = RETURN_END;
+		m_AfterAlpha = 1.0f;
+	}
+	else {
+		if (m_VanishFrame < m_FrameMax) {
+			m_VanishFrame += l_AddFrame;
+		}
+		else {
+			_ReturnState = RETURN_SET;
+			m_VanishFrame = {};
+			m_Return = false;
+		}
+	}
+
+	m_Color.w = Ease(In, Cubic, m_VanishFrame, m_Color.w, m_AfterAlpha);
 }

@@ -131,12 +131,14 @@ public://gettersetter
 	bool GetIsReferCheck() { return isReferCheck; }
 
 	int ActionNum;
-	void SetActionNum(int num) { ActionNum = num; }
+	void SetCircleSpeed(float CircleSpeed) { m_CircleSpeed = CircleSpeed; }
+	void SetTargetPos(XMFLOAT3 TargetPos) { m_TargetPos = TargetPos; }
 private:
 	std::string SceneName;
 	vector<InterEffect*> effects;
 protected:
-
+	XMFLOAT3 m_TargetPos = {};
+	
 	//ダメージ食らったとの色変換
 	float ColChangeEaseT;
 	int ActionTimer;
@@ -192,6 +194,14 @@ protected:
 	bool m_Absorption = false;
 	//操る
 	bool m_Manipulate = false;
+
+	//円運動
+	float m_CircleScale = 30.0f;
+	float m_CircleSpeed = {};
+
+	int m_BirthTarget = {};
+
+	bool m_DeleteObj = false;
 private:
 
 	enum class ActionList {
@@ -235,8 +245,5 @@ public:
 	bool GetDeathAction() { return DeathSceneF; }
 	void SetThrowUpdateF(bool f) { ThrowUpdateF = f; }
 
-	int m_BirthTarget = {};
-
-	bool m_DeleteObj = false;
 };
 
