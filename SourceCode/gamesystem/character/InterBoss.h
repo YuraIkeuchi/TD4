@@ -246,8 +246,7 @@ protected:
 public:
 	bool GetDeathAction() { return DeathSceneF; }
 	void SetThrowUpdateF(bool f) { ThrowUpdateF = f; }
-
-	int m_BirthTarget = {};
+	
 
 	inline void SetGhostList(std::vector<Ghost*>gsize)
 	{
