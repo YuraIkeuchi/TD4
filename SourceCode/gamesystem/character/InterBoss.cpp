@@ -69,7 +69,7 @@ void InterBoss::CollideBul(vector<InterBullet*> bullet,Type type)
 	if (ColChangeEaseT>0.f)return;
 
 	for (InterBullet* _bullet : bullet) {
-		if (_bullet != nullptr && _bullet->GetAlive()) {
+		if (_bullet != nullptr && _bullet->GetAlive() && !_bullet->GetBossCatch()) {
 			bool JudgColide;
 			if (type == Type::CIRCLE)JudgColide=Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, m_Radius, m_Position.x, m_Position.z, m_Radius);
 			if (type == Type::SPHERE)JudgColide=Collision::SphereCollision(_bullet->GetPosition(), m_Radius, m_Position, m_Radius);

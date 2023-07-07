@@ -22,7 +22,7 @@ DamageArea::DamageArea(const int Num) {
 	m_TexColor.resize(Num - 1);
 	m_TexAlive.resize(Num - 1);
 
-	model = ModelManager::GetInstance()->GetModel(ModelManager::Bullet);
+	model = ModelManager::GetInstance()->GetModel(ModelManager::NOTE);
 	for (size_t i = 0; i < obj.size(); i++) {
 		obj[i] = new IKEObject3d();
 		obj[i]->Initialize();
@@ -42,7 +42,7 @@ void DamageArea::Initialize() {
 
 	for (size_t i = 0; i < obj.size(); i++) {
 		m_Scale[i] = { 0.0f,0.0f,0.0f };
-		m_Color[i] = { 0.0f,1.0f,0.0f,1.0f };
+		m_Color[i] = { 1.0f,0.0f,1.0f,1.0f };
 		m_Rotation[i] = { 0.0f,0.0f,0.0f };
 		m_Alive[i] = true;
 	}
@@ -111,14 +111,6 @@ void DamageArea::Update() {
 }
 
 void DamageArea::Draw(DirectXCommon* dxCommon) {
-	IKEObject3d::PreDraw();
-	for (size_t i = 0; i < obj.size(); i++) {
-		if (obj[i] != nullptr && m_Alive[i]) {
-			obj[i]->Draw();
-		}
-	}
-	IKEObject3d::PostDraw();
-
 	IKETexture::PreDraw2(dxCommon, AlphaBlendType);
 	for (size_t i = 0; i < tex.size(); i++) {
 		if (tex[i] != nullptr) {
@@ -126,6 +118,13 @@ void DamageArea::Draw(DirectXCommon* dxCommon) {
 		}
 	}
 	IKETexture::PostDraw();
+	IKEObject3d::PreDraw();
+	for (size_t i = 0; i < obj.size(); i++) {
+		if (obj[i] != nullptr && m_Alive[i]) {
+			obj[i]->Draw();
+		}
+	}
+	IKEObject3d::PostDraw();
 }
 
 void DamageArea::ImGuiDraw() {

@@ -16,6 +16,7 @@ public:
 	enum ModelName {
 		Ground,
 		Bullet,
+		Nucleus,
 		GhostBullet,
 		BulEnemy,
 		Tyuta,

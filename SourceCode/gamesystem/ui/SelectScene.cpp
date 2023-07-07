@@ -221,6 +221,7 @@ void SelectScene::Upda()
 
 		Helper::GetInstance()->Clamp(IconColor[i], 0.3f, 1.f);
 	}
+
 	ViewTips();
 	for (auto i = 0; i < ObjNum; i++)
 	{
@@ -364,7 +365,7 @@ void SelectScene::RotPedestal()
 	}
 	else
 	{
-		if (Helper::GetInstance()->FrameCheck(IconRotAngle_EaseT, 0.02f))
+		if (Helper::GetInstance()->FrameCheck(IconRotAngle_EaseT, 0.05f))
 		{
 			TrigerSelect = NOINP;
 		}
@@ -431,7 +432,7 @@ void SelectScene::ChangeEffect(std::string name, Stage stage, UINT iconnum)
 	}
 
 	if (_stages == stage&& _stages != Stage::NON) {
-		TipsPosY[stage] -= 20.f;
+		TipsPosY[stage] -= 40.f;
 		BossIcon[stage]->SetAnchorPoint({ 0.5f,0.5f });
 		BossIcon[stage]->SetSize({ closeScl,closeScl });
 		BossIcon[stage]->SetPosition({ 1280 / 2,720 / 2 });
@@ -468,7 +469,7 @@ void SelectScene::ViewTips()
 	//TipsPosUpda(SEVEN);
 	//TipsPosUpda();
 
-constexpr float AddVal = 20.f;
+constexpr float AddVal = 40.f;
 
 for (auto i = 0; i < ObjNum; i++) {
 	if (TipsAct[i])

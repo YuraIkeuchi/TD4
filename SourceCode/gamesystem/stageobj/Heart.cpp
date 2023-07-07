@@ -78,11 +78,12 @@ void Heart::Particle() {
 bool Heart::PlayerCollision() {
 	if (!m_Alive) { return false; }
 	if (Player::GetInstance()->PlayerCollide(m_Position) && (_heartState == HeartState::HEART_SET)) {
+		if (Player::GetInstance()->GetHP() <= 0.0f) {
+			return false; }
 		m_Alive = false;
 		Player::GetInstance()->SetHP(Player::GetInstance()->GetHP() + 1.0f);
 		return true;
-	}
-	else {
+	} else {
 		return false;
 	}
 

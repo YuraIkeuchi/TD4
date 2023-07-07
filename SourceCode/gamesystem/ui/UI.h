@@ -38,8 +38,8 @@ private:
 		ChargeGauge,
 		UnderBossGauge,
 		BossGauge,
-		PlayerCircle,
 		CircleCover,
+		PlayerCircle,
 		ArrowBoss,
 		UiMax,
 	};
@@ -63,8 +63,10 @@ private:
 	XMFLOAT2 m_PlayerHpPos = { 15.f, 680.f };
 	XMFLOAT2 m_PlayerHpSize = { 300.f, 30.f };
 
-	XMFLOAT2 m_PlayerCireclePos = { WinApp::window_width-200 ,WinApp::window_height };
+	XMFLOAT2 m_PlayerCireclePos = { WinApp::window_width-100 ,WinApp::window_height };
 	XMFLOAT2 m_PlayerCircleSize = { 240.f,240.f };
+
+
 	float m_PlayerCircleRot = 0.f;
 	float m_limit = 0.f;
 	int bullet_type_ = 0;

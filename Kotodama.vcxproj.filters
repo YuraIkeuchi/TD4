@@ -536,6 +536,10 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\character\ShadowSlashAttack.cpp" />
     <ClCompile Include="CollectGhost.cpp" />
+    <ClCompile Include="Fraction.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\bossattach\FireBoll.cpp">
+      <Filter>gamesystem\bossattach\fireboll</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
@@ -1033,6 +1037,10 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\ShadowSlashAttack.h" />
     <ClInclude Include="CollectGhost.h" />
+    <ClInclude Include="Fraction.h" />
+    <ClInclude Include="SourceCode\gamesystem\bossattach\FireBoll.h">
+      <Filter>gamesystem\bossattach\fireboll</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
@@ -1414,6 +1422,9 @@
     </Filter>
     <Filter Include="gamesystem\effect\Absorption">
       <UniqueIdentifier>{d0388d6d-9d5c-459c-b23b-05c48a2c4aac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\bossattach\fireboll">
+      <UniqueIdentifier>{f2e2ef89-8647-4042-a3b0-4bb2ae2cc72c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
