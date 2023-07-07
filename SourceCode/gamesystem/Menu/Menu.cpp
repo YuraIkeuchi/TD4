@@ -117,6 +117,7 @@ void Menu::Draw()
 
 void Menu::Home_()
 {
+	CoolTime = 0;
 	OpenHomeCount++;
 	if(OpenHomeCount>30)
 	{
@@ -184,7 +185,8 @@ void Menu::Home_()
 void Menu::ResetBattle_()
 {
 	//if (!Open_Reset())return;
-
+	CoolTime = 0;
+	if(CoolTime>60)
 	SceneManager::GetInstance()->ChangeScene("SELECT");
 
 	tasks[ResetBattle].ActFlag = true;

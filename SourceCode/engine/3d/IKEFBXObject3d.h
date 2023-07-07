@@ -173,6 +173,9 @@ public: //’è”
 	XMMATRIX WorldMat;
 	FbxTime SetCurrent() { return currentTime = startTime; }
 	bool GetIsPlay() { return isPlay; }
+	FbxTime GetCurrent() { return currentTime; }
+
+	FbxTime GetEndTime() { return endTime; }
 	//ƒ{[ƒ“‚ÌÅ‘å”
 	static const int MAX_BONES = 90;
 	int BoneNumber = 0;

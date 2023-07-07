@@ -109,6 +109,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CollectGhost.cpp" />
     <ClCompile Include="DarkBullet.cpp" />
     <ClCompile Include="Fraction.cpp" />
     <ClCompile Include="SourceCode\engine\2d\DebugText.cpp" />
@@ -209,8 +210,10 @@
     <ClCompile Include="SourceCode\gamesystem\character\PlayerAttach.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\SecondBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\SevenBoss.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\character\ShadowSlashAttack.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\ShotAttack.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\SixBoss.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\character\SmashShotAttack.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\ThirdBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\TutorialEnemy.cpp" />
     <ClCompile Include="SourceCode\gamesystem\editor\Editor.cpp" />
@@ -270,6 +273,7 @@
     <ClCompile Include="SourceCode\gamesystem\ui\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CollectGhost.h" />
     <ClInclude Include="DarkBullet.h" />
     <ClInclude Include="Fraction.h" />
     <ClInclude Include="SourceCode\engine\2d\DebugText.h" />
@@ -377,8 +381,10 @@
     <ClInclude Include="SourceCode\gamesystem\character\PlayerAttach.h" />
     <ClInclude Include="SourceCode\gamesystem\character\SecondBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\SevenBoss.h" />
+    <ClInclude Include="SourceCode\gamesystem\character\ShadowSlashAttack.h" />
     <ClInclude Include="SourceCode\gamesystem\character\ShotAttack.h" />
     <ClInclude Include="SourceCode\gamesystem\character\SixBoss.h" />
+    <ClInclude Include="SourceCode\gamesystem\character\SmashShotAttack.h" />
     <ClInclude Include="SourceCode\gamesystem\character\ThirdBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\TutorialEnemy.h" />
     <ClInclude Include="SourceCode\gamesystem\editor\Editor.h" />

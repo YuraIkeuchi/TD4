@@ -5,6 +5,7 @@
 #include "ObjCommon.h"
 #include "BreakEffect.h"
 #include "InterEnemy.h"
+#include"Ghost.h"
 
 using namespace std;         //  名前空間指定
 
@@ -134,6 +135,7 @@ public://gettersetter
 	void SetCircleSpeed(float CircleSpeed) { m_CircleSpeed = CircleSpeed; }
 	void SetTargetPos(XMFLOAT3 TargetPos) { m_TargetPos = TargetPos; }
 private:
+	std::vector<Ghost*> ghosts;
 	std::string SceneName;
 	vector<InterEffect*> effects;
 protected:
@@ -244,6 +246,18 @@ protected:
 public:
 	bool GetDeathAction() { return DeathSceneF; }
 	void SetThrowUpdateF(bool f) { ThrowUpdateF = f; }
+
+	int m_BirthTarget = {};
+
+	inline void SetGhostList(std::vector<Ghost*>gsize)
+	{
+		ghosts.resize(gsize.size());
+		for(auto i=0;i<gsize.size();i++)
+		{
+			ghosts[i] = gsize[i];
+		}
+	};
+	std::vector<Ghost*>GetGhost() { return ghosts; }
 
 };
 
