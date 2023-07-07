@@ -241,11 +241,11 @@ void FourthBoss::SelectAction() {
 	uniform_int_distribution<int> l_RandAction(0, 100);
 	int l_case = l_RandAction(mt);
 	cases = l_case;
-	if (l_case < 10) {
+	if (l_case <= 10) {
 		ChangePos2Random();
 		isInstruction = FourthBossInst::None;
 		phase = commandState::MoveCommand;
-	} else if (l_case < 30) {
+	} else if (l_case <= 30) {
 		if (!EnemysIsActiveCheck()) {
 			isSearch = true;
 			isInstruction = FourthBossInst::ChangeGhost;
@@ -255,7 +255,7 @@ void FourthBoss::SelectAction() {
 			isInstruction = FourthBossInst::None;
 			phase = commandState::MoveCommand;
 		}
-	} else if (l_case < 60) {
+	} else if (l_case <= 68) {
 		if (isReferCheck) {
 			isSearch = true;
 			isInstruction = FourthBossInst::None;
@@ -265,10 +265,10 @@ void FourthBoss::SelectAction() {
 			isInstruction = FourthBossInst::None;
 			phase = commandState::MoveCommand;
 		}
-	} else if (l_case < 90) {
+	} else if (l_case < 92) {
 		isInstruction = FourthBossInst::None;
 		phase = commandState::SubGauge;
-	} else if (l_case < 95) {
+	} else if (l_case <= 100) {
 		isInstruction = FourthBossInst::None;
 		limitHp = m_HP * 0.7f;
 		phase = commandState::Ultimate;
@@ -281,12 +281,7 @@ void FourthBoss::SelectAction() {
 void FourthBoss::WaitUpdate() {
 	ActionTimer++;
 	if (ActionTimer >= ActionTimerMax[(size_t)phase]) {
-		//SelectAction();
-		if (!EnemysIsActiveCheck()) {
-			isSearch = true;
-			isInstruction = FourthBossInst::ChangeGhost;
-			phase = commandState::EnemySpawn;
-		}
+		SelectAction();
 		ActionTimer = 0;
 	}
 }
