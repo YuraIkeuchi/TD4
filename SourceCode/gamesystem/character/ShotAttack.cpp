@@ -165,9 +165,9 @@ void ShotAttack::Phase_Shot()
 	RotEaseTime = 0.f;
 
 	mt19937 mt{ std::random_device{}() };
-	uniform_int_distribution<int> l_RandRot(-60, 60);
+	uniform_int_distribution<int> l_RandRot(-100, 100);
 
-	AddRot = (float)(l_RandRot(mt))+30.f;
+	AddRot = (float)(l_RandRot(mt))+60.f;
 }
 
 void ShotAttack::Phase_End()

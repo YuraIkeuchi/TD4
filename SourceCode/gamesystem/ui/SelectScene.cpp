@@ -463,12 +463,8 @@ void SelectScene::ViewTips()
 	TipsPosUpda(SECOND);
 	TipsPosUpda(THIRD);
 	TipsPosUpda(FOUR);
-
-	//TipsPosUpda(FIVE);
 	TipsPosUpda(SIX);
-	//TipsPosUpda(SEVEN);
-	//TipsPosUpda();
-
+	
 constexpr float AddVal = 40.f;
 
 for (auto i = 0; i < ObjNum; i++) {

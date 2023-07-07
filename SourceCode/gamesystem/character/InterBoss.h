@@ -78,7 +78,9 @@ protected:
 	bool SummonF;
 	bool SummobnStop;
 	int SummonCool;
-	bool SearchF;// = Collision::GetLength(m_Position, l_player) < 25.f;
+	bool SearchF;
+	int m_BirthTarget=0;
+	// = Collision::GetLength(m_Position, l_player) < 25.f;
 private:
 	XMFLOAT3 EffectFirstPos;
 public://gettersetter

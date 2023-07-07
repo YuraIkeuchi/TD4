@@ -251,13 +251,14 @@ void SecondStageActor::BackDraw(DirectXCommon* dxCommon) {
 		ParticleEmitter::GetInstance()->FlontDrawAll();
 	}
 
+	IKEObject3d::PostDraw();
+
+
 	////各クラスの描画
 	if (camerawork->GetAppearEndF()) {
 		Player::GetInstance()->Draw(dxCommon);
 	}
 	enemymanager->Draw(dxCommon);
-
-	IKEObject3d::PostDraw();
 }
 //ポストエフェクトがかからない
 void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
