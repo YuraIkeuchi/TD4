@@ -134,7 +134,7 @@ void SevenBoss::Action() {
 			continue;
 		}
 
-		if (avatarboss[i]->GetHP() <= 0.0f) {
+		if (avatarboss[i]->GetHP() < 1.0f) {
 			avatarboss.erase(cbegin(avatarboss) + i);
 			m_AvatarCount--;
 		}
@@ -191,7 +191,9 @@ void SevenBoss::Pause() {
 void SevenBoss::EffecttexDraw(DirectXCommon* dxCommon)
 {
 	if (m_HP < 0.0f)return;
-	bossstuneffect->Draw(dxCommon);
+	if (_charaState == STATE_STUN) {
+		bossstuneffect->Draw(dxCommon);
+	}
 
 	//吸収エフェクト
 	for (AbsorptionEffect* neweffect : abseffect) {
@@ -260,7 +262,7 @@ void SevenBoss::InterValMove() {
 		m_AttackRand = int(l_RandomMove(mt));
 		_charaState = STATE_FIRE;
 		m_InterVal = {};
-		/*if (m_AttackRand < m_RandAct[RAND_POLTER]) {
+		if (m_AttackRand < m_RandAct[RAND_POLTER]) {
 			_charaState = STATE_POLTER;
 			m_InterVal = {};
 		}
@@ -277,7 +279,7 @@ void SevenBoss::InterValMove() {
 				m_InterVal = l_LimitTimer - 1;
 			}
 		}
-		else {
+		else if(m_AttackRand >= m_RandAct[RAND_AVATAR] && m_AttackRand < m_RandAct[RAND_MANIPULATE]) {
 			if (HungerGauge::GetInstance()->GetCatchCount() != 0) {
 				_charaState = STATE_MANIPULATE;
 				m_InterVal = {};
@@ -286,7 +288,11 @@ void SevenBoss::InterValMove() {
 			else {
 				m_InterVal = l_LimitTimer - 1;
 			}
-		}	*/
+		}
+		else {
+			_charaState = STATE_FIRE;
+			m_InterVal = {};
+		}
 		m_ChangeTimer = {};
 	}
 }

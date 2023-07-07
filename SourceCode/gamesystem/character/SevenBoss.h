@@ -131,7 +131,8 @@ private:
 		RAND_POLTER,
 		RAND_BOUND,
 		RAND_AVATAR,
-		RAND_MANIPULATE
+		RAND_MANIPULATE,
+		RAND_FIRE,
 	};
 
 	int m_ChangeTimer = {};
