@@ -38,6 +38,8 @@ public:
 	void ImGuiDraw();
 	//“Á—L‚ÌImGui
 	virtual void ImGui_Origin() = 0;
+
+	virtual void Draw_Origin() = 0;
 public:
 	//gettersetter
 	const bool& GetAlive() { return m_Alive; }

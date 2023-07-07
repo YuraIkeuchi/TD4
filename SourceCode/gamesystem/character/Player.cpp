@@ -584,7 +584,7 @@ void Player::BirthShot(const std::string& bulletName, bool Super) {
 			newbullet = new AttackBullet();
 			newbullet->Initialize();
 			newbullet->SetPosition(viewbullet->GetPosition());
-			newbullet->SetScale({ 1.5f,1.5f,1.5f });
+			//newbullet->SetScale({ 1.5f,1.5f,1.5f });
 			newbullet->SetPowerState(m_ChargeType);
 			newbullet->SetAngle(l_Angle);
 			attackbullets.push_back(newbullet);
