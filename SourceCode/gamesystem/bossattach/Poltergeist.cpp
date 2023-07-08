@@ -189,11 +189,11 @@ void Poltergeist::Bound() {
 		m_Position.z += m_Angle.y * m_AddSpeed;
 
 		//”½ŽËˆ—
-		if (Helper::GetInstance()->CheckNotValueRange(m_Position.x, -60.0f, 70.0f)) {
+		if (Helper::GetInstance()->CheckNotValueRange(m_Position.x, -65.0f, 75.0f)) {
 			m_Angle.x *= -1.0f;
 		}
 
-		if (Helper::GetInstance()->CheckNotValueRange(m_Position.z, -65.0f, 65.0f)) {
+		if (Helper::GetInstance()->CheckNotValueRange(m_Position.z, -70.0f, 70.0f)) {
 			m_Angle.y *= -1.0f;
 		}
 
