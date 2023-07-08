@@ -23,7 +23,7 @@ SevenBoss::SevenBoss() {
 }
 //初期化
 bool SevenBoss::Initialize() {
-	m_Position = { 0.0f,3.0f,30.0f };
+	m_Position = { 0.0f,5.0f,30.0f };
 	m_Rotation = { 0.0f,270.0f,0.0f };
 	m_Scale = { 1.0f,1.0f,1.0f };
 	m_Color = { 1.0f,0.0f,0.0f,1.0f };
@@ -40,7 +40,7 @@ bool SevenBoss::Initialize() {
 }
 //スキップ時の初期化
 void SevenBoss::SkipInitialize() {
-	m_Position = { 0.0f,3.0f,30.0f };
+	m_Position = { 0.0f,5.0f,30.0f };
 	m_Rotation = { 0.0f,270.0f,0.0f };
 	m_Scale = { 1.0f,1.0f,1.0f };
 	m_Color = { 1.0f,0.0f,0.0f,1.0f };

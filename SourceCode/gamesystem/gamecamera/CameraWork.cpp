@@ -337,9 +337,7 @@ void CameraWork::EditorCamera() {
 //ImGui
 void CameraWork::ImGuiDraw() {
 	ImGui::Begin("Camera");
-	ImGui::Text("Speed:%f", m_CameraSpeed);
-	ImGui::Text("Near:%d", m_NearBoss);
-	ImGui::Text("Frame:%f", m_Frame);
+	ImGui::Text("TargetZ:%f", m_targetPos.z);
 	ImGui::End();
 }
 void CameraWork::SpecialUpdate() {
@@ -778,44 +776,34 @@ Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
 }
 //7個目のボス
 void CameraWork::SevenBossAppear() {
-	if (spline->GetIndex() >= pointsList.size() - 2) {
-		RadEffect -= 0.2f;
-	} else if (spline->GetIndex() >= pointsList.size()) {
-		RadEffect += 0.2f;
-		SplineSpeed = 180.0f;
-	} else {
-		SplineSpeed = 180.f;
+	const float l_AddFrame = 0.01f;
+	if (m_AppearType == APPEAR_START) {
+		if (m_LastTimer == 1) {
+			m_eyePos = { 0.0f,5.0f,20.0f };
+			m_targetPos = { 0.0f,5.0f,0.0f };
+		}
+
+		if (m_LastTimer == 250) {
+			m_Frame = {};
+			m_AppearType = APPEAR_SECOND;
+			m_AfterTarget = boss->GetPosition();
+			m_AfterEye = { -5.0f,0.0f,-5.0f };
+		}
 	}
-	if (!Finish) {
-
-		spline->Upda(m_eyePos, SplineSpeed);
-	}
-	Helper::GetInstance()->Clamp(RadEffect, 0.f, 15.f);
-
-	if (spline->GetIndex() >= pointsList.size() - 1) {
-
-		if (Helper::GetInstance()->FrameCheck(m_Frame, 0.01f)) {
-			AppearEndF = true;
-			m_CameraState = CAMERA_NORMAL;
+	else if (m_AppearType == APPEAR_SECOND) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 			m_Frame = 1.0f;
 		}
-		m_AfterEye = { Player::GetInstance()->GetPosition().x,45.0f,Player::GetInstance()->GetPosition().z - 20.0f };
-		m_AfterTarget = Player::GetInstance()->GetPosition();
-		m_targetPos = {
-Ease(In,Cubic,m_Frame,boss->GetPosition().x,m_AfterTarget.x),
-Ease(In,Cubic,m_Frame,boss->GetPosition().y,m_AfterTarget.y),
-Ease(In,Cubic,m_Frame,boss->GetPosition().z,m_AfterTarget.z),
-		};
-
 		m_eyePos = {
 Ease(In,Cubic,m_Frame,m_eyePos.x,m_AfterEye.x),
 Ease(In,Cubic,m_Frame,m_eyePos.y,m_AfterEye.y),
 Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
 		};
-
-		Finish = true;
-	} else {
-		m_targetPos = { boss->GetPosition() };
+		m_targetPos = {
+Ease(In,Cubic,m_Frame,m_targetPos.x,m_AfterTarget.x),
+Ease(In,Cubic,m_Frame,m_targetPos.y,m_AfterTarget.y),
+Ease(In,Cubic,m_Frame,m_targetPos.z,m_AfterTarget.z),
+		};
 	}
 }
 //円運動の際のカメラ位置更新
