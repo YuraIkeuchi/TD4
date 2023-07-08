@@ -549,4 +549,7 @@ void LoadStageObj::Manipulate() {
 }
 void LoadStageObj::AwakeInit() {
 	hearts.clear();
+	for (auto i = 0; i < ghosts.size(); ++i) {
+		ghosts[i]->SetVanish(true);
+	}
 }

@@ -100,7 +100,7 @@ private://各ボスの登場カメラ
 	//円運動のカメラセットの際のやつ
 	void SetCircleCameraTarget();
 	//円運動のカメラセットの際のやつ
-	void SetCircleCameraEye(const XMFLOAT3 target);
+	void SetCircleCameraEye(const XMFLOAT3& target,const XMFLOAT3& basepos);
 public:
 	bool Finish;
 	int Timer_first = 1;
@@ -222,4 +222,5 @@ private:
 
 	bool m_EndStrong = false;
 	bool m_Finish = false;
+	bool m_NearBoss = false;
 };

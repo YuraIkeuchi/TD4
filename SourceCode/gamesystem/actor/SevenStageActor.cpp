@@ -205,7 +205,7 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	ParticleEmitter::GetInstance()->DeathDrawAll();
 	//完全に前に書くスプライト
 	IKESprite::PreDraw();
-	if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd()) {
+	if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd() && camerawork->GetCameraState() == CAMERA_NORMAL) {
 		ui->Draw();
 	}
 	if (m_SceneState == SceneState::IntroState) {
@@ -337,6 +337,8 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 	{
 		if(camerawork->GetCameraState() == CAMERA_NORMAL)
 		Player::GetInstance()->Update();
+		else 
+		Player::GetInstance()->DeathUpdate();
 	}
 
 	if (PlayerDestroy()) {

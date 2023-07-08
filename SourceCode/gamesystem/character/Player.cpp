@@ -746,4 +746,6 @@ void Player::AwakeInit() {
 	//大きさ
 	m_ChargePower = {};
 	m_ChargeType = POWER_NONE;
+	HungerGauge::GetInstance()->SetCatchCount(0);
+	HungerGauge::GetInstance()->SetNowHunger(0.0f);
 }
