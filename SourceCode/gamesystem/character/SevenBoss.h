@@ -32,6 +32,8 @@ public:
 	void EffecttexDraw(DirectXCommon* dxCommon) override;
 
 	void Draw(DirectXCommon* dxCommon) override;//描画
+
+	void InitAwake() override;//ボスの覚醒
 private:
 	void CSVLoad();
 	
@@ -61,8 +63,6 @@ private:
 
 	//モンスターが消える範囲設定
 	void VanishCollide(vector<InterBullet*>bullet);
-
-	void DeleteObj();
 
 	//ランダムに動き
 	void RandMove();

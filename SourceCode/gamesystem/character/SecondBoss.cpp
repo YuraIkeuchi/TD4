@@ -1088,3 +1088,7 @@ void SecondBoss::DeathEffect()
 	ParticleEmitter::GetInstance()->DeathEffectBoss(l_Life, { m_Position.x,m_Position.y - 4.f,m_Position.z }, l_AddSize, s_scale, e_scale, s_color, e_color);
 
 }
+
+void SecondBoss::InitAwake() {
+
+}

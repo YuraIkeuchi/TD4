@@ -31,6 +31,7 @@ private:
 
 	void ImGui_Origin() override;
 
+	void InitAwake() override;//ボスの覚醒
 	//エフェクト
 	void EffecttexDraw(DirectXCommon* dxCommon) override;
 	//基本移動

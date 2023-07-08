@@ -269,3 +269,7 @@ void FirstBoss::Attack()
 		commandTimer = 0.0f;
 	}
 }
+
+void FirstBoss::InitAwake() {
+
+}

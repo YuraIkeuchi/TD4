@@ -878,6 +878,7 @@ void CameraWork::StrongCamera() {
 			feed->FeedIn(Feed::FeedType::WHITE, 0.025f, FeedF);
 			if (feed->GetAlpha() >= 1.0f) {
 				_StrongState = STRONG_SECOND;
+				m_ChangeStrong = true;
 			}
 		}
 	}

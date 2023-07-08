@@ -28,6 +28,8 @@ public:
 	void EffecttexDraw(DirectXCommon* dxCommon) override;
 
 	void Draw(DirectXCommon* dxCommon) override;//ï`âÊ
+
+	void InitAwake() override;//É{ÉXÇÃäoê¡
 private:
 	void CSVLoad();
 

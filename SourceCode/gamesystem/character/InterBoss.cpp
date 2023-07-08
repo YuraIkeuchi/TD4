@@ -50,13 +50,16 @@ void InterBoss::ImGuiDraw() {
 }
 
 float InterBoss::HpPercent() {
-
 	float temp = m_HP / m_MaxHp;
 	Helper::GetInstance()->Clamp(temp, 0.0f, 1.0f);
 	return temp;
 }
 
 void InterBoss::AwakeUpdate() {
+	InitAwake();
+	if (m_AwakeInit) {
+		m_Rotation.y += 5.0f;
+	}
 	//OBJのステータスのセット
 	Obj_SetParam();
 }

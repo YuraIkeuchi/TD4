@@ -547,3 +547,6 @@ void LoadStageObj::Manipulate() {
 		HungerGauge::GetInstance()->SetNowHunger(Ease(In, Cubic, m_Frame, HungerGauge::GetInstance()->GetNowHunger(), 0.0f));
 	}
 }
+void LoadStageObj::AwakeInit() {
+	hearts.clear();
+}

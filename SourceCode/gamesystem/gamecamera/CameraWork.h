@@ -140,6 +140,8 @@ public:
 
 	bool GetEndStrong() { return m_EndStrong; }
 
+	bool GetChangeStrong() { return m_ChangeStrong; }
+
 	int GetAppearType() { return m_AppearType; }
 
 	//
@@ -207,6 +209,8 @@ private:
 	bool m_CameraSkip = false;
 
 	bool m_CameraStrong = false;
+
+	bool m_ChangeStrong = false;
 
 	enum StrongState {
 		STRONG_ONE,

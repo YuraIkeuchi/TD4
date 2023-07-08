@@ -731,3 +731,19 @@ float Player::GetPercentage() {
 	Helper::GetInstance()->Clamp(temp, 0.0f, 1.0f);
 	return temp;
 }
+//覚醒シーンの初期化
+void Player::AwakeInit() {
+	m_Position = {0.0f,0.0f,300.0f};
+	m_Rotation = { 0.0f,0.0f,0.0f };
+	m_Scale = { 1.2f,0.8f,1.2f };
+	m_Color = { 1.0f,1.0f,1.0f,1.0f };
+	m_InterVal = 0;
+	m_DamageInterVal = 0;
+	m_BulletType = BULLET_FORROW;
+	m_BoundPower = { 0.0f,0.0f };
+	m_Confu = false;
+	m_ConfuTimer = 0;
+	//大きさ
+	m_ChargePower = {};
+	m_ChargeType = POWER_NONE;
+}
