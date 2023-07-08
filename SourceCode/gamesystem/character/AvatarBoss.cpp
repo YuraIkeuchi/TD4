@@ -183,6 +183,7 @@ void AvatarBoss::InterValMove() {
 	const float l_AddSpeed = 1.5f;
 	int l_LimitTimer = 400;
 
+	//基本的には本体の周りを円運動する
 	if (!m_Return) {
 		m_CircleSpeed += l_AddSpeed;
 
@@ -194,6 +195,12 @@ void AvatarBoss::InterValMove() {
 			m_Position.y,
 			Ease(In,Cubic,0.5f,m_Position.z,m_AfterPos.z),
 		};
+
+		//一定の距離が開いたら定位置に戻す
+		if (Helper::GetInstance()->ChechLength(m_Position, m_TargetPos) >= 25.0f) {
+			m_SaveSpeed = m_CircleSpeed;
+			m_Return = true;
+		}
 	}
 	else {
 		ReturnBoss();//ボスが定位置に戻る
@@ -392,4 +399,8 @@ void AvatarBoss::ReturnBoss() {
 	}
 
 	m_Color.w = Ease(In, Cubic, m_VanishFrame, m_Color.w, m_AfterAlpha);
+}
+
+void AvatarBoss::InitAwake() {
+
 }

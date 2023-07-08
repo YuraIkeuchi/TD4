@@ -205,7 +205,7 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	ParticleEmitter::GetInstance()->DeathDrawAll();
 	//完全に前に書くスプライト
 	IKESprite::PreDraw();
-	if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd()) {
+	if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd() && camerawork->GetCameraState() == CAMERA_NORMAL) {
 		ui->Draw();
 	}
 	if (m_SceneState == SceneState::IntroState) {
@@ -283,6 +283,7 @@ void SevenStageActor::IntroUpdate(DebugCamera* camera) {
 void SevenStageActor::MainUpdate(DebugCamera* camera) {
 	Input* input = Input::GetInstance();
 	ui->Update();
+	//覚醒シーンに入る
 	if (enemymanager->GetEnemyStrong() && !camerawork->GetCameraStrong()) {
 		if (!camerawork->GetFeedF()) {
 			camerawork->SetFeedF(true);
@@ -292,9 +293,15 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 	}
 
 	if (camerawork->GetCameraState() == CAMERA_BOSS_STRONG) {
-		enemymanager->DeleteObj();
+		//一回目のフェードの後に位置を初期化する
+		if (camerawork->GetChangeStrong()) {
+			Player::GetInstance()->AwakeInit();
+			enemymanager->DeleteObj();
+			loadobj->AwakeInit();
+		}
+		//二回目のフェードが終わるとバトルモードに戻る
 		if (camerawork->GetEndStrong()) {
-			enemymanager->SkipInitialize();
+			Player::GetInstance()->SetPosition({ 0.0f,0.0f,-5.0f });
 			camerawork->SetCameraState(CAMERA_NORMAL);
 		}
 	}
@@ -330,6 +337,8 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 	{
 		if(camerawork->GetCameraState() == CAMERA_NORMAL)
 		Player::GetInstance()->Update();
+		else 
+		Player::GetInstance()->DeathUpdate();
 	}
 
 	if (PlayerDestroy()) {

@@ -64,6 +64,8 @@ protected:
 
 	virtual void ImGui_Origin() = 0;//ボスそれぞれのImGui
 
+	virtual void InitAwake() = 0;//覚醒シーンの初期化
+
 private:
 	void BirthEffect();
 public:
@@ -205,6 +207,8 @@ protected:
 	float m_CircleSpeed = {};
 	
 	bool m_DeleteObj = false;
+
+	bool m_AwakeInit = false;
 private:
 
 	enum class ActionList {

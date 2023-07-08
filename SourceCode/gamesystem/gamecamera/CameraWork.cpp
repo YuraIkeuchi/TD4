@@ -337,9 +337,9 @@ void CameraWork::EditorCamera() {
 //ImGui
 void CameraWork::ImGuiDraw() {
 	ImGui::Begin("Camera");
-	ImGui::Text("Feed:%d", FeedF);
-	ImGui::Text("End:%d", FeedEndF);
-	ImGui::Text("Timer:%d", m_StrongTimer);
+	ImGui::Text("Speed:%f", m_CameraSpeed);
+	ImGui::Text("Near:%d", m_NearBoss);
+	ImGui::Text("Frame:%f", m_Frame);
 	ImGui::End();
 }
 void CameraWork::SpecialUpdate() {
@@ -355,22 +355,6 @@ void CameraWork::FirstBossAppear() {
 	XMVECTOR move = { 0.f,0.f, 0.1f, 0.0f };
 	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(boss->GetRotation().y + 60));
 	move = XMVector3TransformNormal(move, matRot);
-
-	/*ほりゅう*/
-	//if (_firstState == ONE) {
-	//	m_eyePos = { boss->GetPosition().x + move.m128_f32[0] * 300.f,boss->GetPosition().y,boss->GetPosition().z + move.m128_f32[2] * 300.f };
-	//	if (Timer_first == 90) { _firstState = TWO; }
-	//	else Timer_first++;
-	//}
-
-	//if (_firstState == TWO) {
-	//	m_eyePos = { boss->GetPosition().x + move.m128_f32[0] * -300.f,boss->GetPosition().y,boss->GetPosition().z + move.m128_f32[2] * -300.f };
-	//	
-	//	if (Timer_first == 180)_firstState = THREE;
-	//	else Timer_first++;
-	//}
-
-
 	if (spline->GetIndex() >= pointsList.size() - 2) {
 		RadEffect -= 0.2f;
 	} else if (spline->GetIndex() >= pointsList.size()) {
@@ -412,9 +396,6 @@ Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
 	}
 }
 
-
-
-
 void CameraWork::FirstBossDead_AfterFeed() {
 
 }
@@ -424,21 +405,6 @@ void CameraWork::SecondBossAppear() {
 	XMVECTOR move = { 0.f,0.f, 0.1f, 0.0f };
 	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(boss->GetRotation().y + 60));
 	move = XMVector3TransformNormal(move, matRot);
-
-	/*ほりゅう*/
-	//if (_firstState == ONE) {
-	//	m_eyePos = { boss->GetPosition().x + move.m128_f32[0] * 300.f,boss->GetPosition().y,boss->GetPosition().z + move.m128_f32[2] * 300.f };
-	//	if (Timer_first == 90) { _firstState = TWO; }
-	//	else Timer_first++;
-	//}
-
-	//if (_firstState == TWO) {
-	//	m_eyePos = { boss->GetPosition().x + move.m128_f32[0] * -300.f,boss->GetPosition().y,boss->GetPosition().z + move.m128_f32[2] * -300.f };
-	//	
-	//	if (Timer_first == 180)_firstState = THREE;
-	//	else Timer_first++;
-	//}
-
 
 	if (spline->GetIndex() >= pointsList.size() - 2) {
 		RadEffect -= 0.2f;
@@ -862,28 +828,53 @@ void CameraWork::SetCircleCameraTarget() {
 	m_targetPos.z = m_CameraCircleZ;
 }
 //円運動の際のカメラ位置更新
-void CameraWork::SetCircleCameraEye(const XMFLOAT3 target) {
+void CameraWork::SetCircleCameraEye(const XMFLOAT3& target, const XMFLOAT3& basepos) {
 	//円運動の計算
 	m_CameraRadius = m_CameraSpeed * m_PI / 180.0f;
 	m_CameraCircleX = cosf(m_CameraRadius) * m_CameraScale;
 	m_CameraCircleZ = sinf(m_CameraRadius) * m_CameraScale;
-	m_eyePos.x = m_CameraCircleX;
-	m_eyePos.z = m_CameraCircleZ;
+	m_eyePos.x = m_CameraCircleX + basepos.x;
+	m_eyePos.z = m_CameraCircleZ + basepos.z;
 	m_targetPos = target;
 }
+//覚醒時のカメラ
 void CameraWork::StrongCamera() {
+	float l_AddFrame = 0.01f;
 	const int l_Timer = 200;
+	//フェード後は円運動をする
 	if (_StrongState == STRONG_ONE) {
+		m_CameraScale = 20.0f;
+		m_CameraSpeed = 0.0f;
 		if (FeedF) {
 			feed->FeedIn(Feed::FeedType::WHITE, 0.025f, FeedF);
 			if (feed->GetAlpha() >= 1.0f) {
 				_StrongState = STRONG_SECOND;
+				m_ChangeStrong = true;
 			}
 		}
 	}
 	else if (_StrongState == STRONG_SECOND) {
-		m_eyePos = { 0.0f,20.0f,-20.0f };
-		m_targetPos = { 0.0f,0.0f,0.0f };
+		m_targetPos = boss->GetPosition();
+		m_eyePos.y = 20.0f;
+		if (!m_NearBoss) {
+			if (feed->GetAlpha() == 0.0f) {
+				if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+					m_Frame = {};
+					m_NearBoss = true;
+				}
+			}
+			m_CameraSpeed = Ease(In, Cubic, m_Frame, m_CameraSpeed, 360.0f);
+		}
+		else {
+			if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+				m_Frame = 1.0f;
+				FeedF = true;
+				m_Finish = true;
+			}
+			m_CameraScale = Ease(In, Cubic, m_Frame, m_CameraScale, 5.0f);
+			RadEffect = Ease(In,Cubic,m_Frame,RadEffect,20.0f);
+		}
+		SetCircleCameraEye(boss->GetPosition(),boss->GetPosition());
 		if (feed->GetAlpha() == 0.0f) {
 			m_StrongTimer++;
 		}
@@ -891,21 +882,18 @@ void CameraWork::StrongCamera() {
 		if (m_StrongTimer == 10) {
 			FeedEndF = false;
 		}
-		if (m_StrongTimer == l_Timer) {
-			FeedF = true;
-			m_Finish = true;
-		}
-
 		if (FeedF) {
 			feed->FeedIn(Feed::FeedType::WHITE, 0.025f, FeedF);
 			if (feed->GetAlpha() >= 1.0f) {
 				if (m_Finish) {
+					m_Frame = {};
+					m_StrongTimer = {};
+					m_NearBoss = false;
+					RadEffect = 0;
 					_StrongState = STRONG_THIRD;
 					m_EndStrong = true;
 				}
 			}
 		}
-	}else{
 	}
-
 }

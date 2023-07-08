@@ -44,6 +44,7 @@ public:
 	void ImGuiDraw();
 	//ライトのセット
 	void LightSet(LightGroup* light);
+	void AwakeInit();
 private:
 	//食料の検索
 	void SearchFood();

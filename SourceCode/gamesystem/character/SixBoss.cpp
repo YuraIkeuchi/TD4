@@ -529,3 +529,7 @@ void SixBoss::DeathParticle() {
 		ParticleEmitter::GetInstance()->DeathEffect(50, { m_Position.x,(m_Position.y - 1.0f),m_Position.z }, s_scale, e_scale, s_color, e_color, l_velocity);
 	}
 }
+
+void SixBoss::InitAwake() {
+
+}

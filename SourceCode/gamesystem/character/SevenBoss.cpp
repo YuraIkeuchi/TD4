@@ -99,7 +99,6 @@ void SevenBoss::Action() {
 	Obj_SetParam();
 	//ボスの消える判定
 	VanishBoss();
-	DeleteObj();
 	//リミット制限
 	Helper::GetInstance()->Clamp(m_Position.x, -55.0f, 65.0f);
 	Helper::GetInstance()->Clamp(m_Position.z, -60.0f, 60.0f);
@@ -261,7 +260,8 @@ void SevenBoss::Draw(DirectXCommon* dxCommon) {
 //ImGui
 void SevenBoss::ImGui_Origin() {
 	ImGui::Begin("Seven");
-	ImGui::Text("VanishCount:%d", m_VanishTarget);
+	ImGui::Text("POSX:%f", m_Position.x);
+	ImGui::Text("POSZ:%f", m_Position.z);
 	ImGui::End();
 
 	////ダメージブロック
@@ -712,17 +712,6 @@ void SevenBoss::VanishCollide(vector<InterBullet*> bullet)
 					m_VanishFrame = {};
 					m_AfterAlpha = {};
 					_vanishState = VANISH_SET;
-					////消えた後少し移動する
-					//m_RandPos.x = float(l_RandomPosX(mt));
-					//m_RandPos.y = float(l_RandomPosZ(mt));
-					//if (int(l_RandomDirX(mt)) == 1) {
-					//	m_RandPos.x *= -1.0f;
-					//}
-					//if (int(l_RandomDirZ(mt)) == 1) {
-					//	m_RandPos.y *= -1.0f;
-					//}
-
-					//m_AfterPos = { m_Position.x + m_RandPos.x,m_Position.y,m_Position.z + m_RandPos.y };
 				}
 			}
 		}
@@ -754,9 +743,7 @@ void SevenBoss::VanishBoss() {
 			}
 		}
 		m_Color.w = Ease(In, Cubic, m_VanishFrame, m_Color.w, m_AfterAlpha);
-	/*	m_Position = { Ease(In,Cubic,m_VanishFrame,m_Position.x,m_AfterPos.x),
-		m_Position.y,
-		Ease(In,Cubic,m_VanishFrame,m_Position.z,m_AfterPos.z) };*/
+
 	}
 }
 //ランダムの動き
@@ -775,12 +762,6 @@ void SevenBoss::RandMove() {
 		m_AddScale = float(l_RandScale(mt)) / l_Division;
 		
 		m_AddSpeed = 0.5f;
-	/*	if (int(l_RandDir(mt)) == 0) {
-			
-		}
-		else {
-			m_AddSpeed = -0.3f;
-		}*/
 		m_ChangeTimer = {};
 	}
 	
@@ -827,39 +808,37 @@ void SevenBoss::ReturnBoss() {
 
 	m_Color.w = Ease(In, Cubic, m_VanishFrame, m_Color.w, m_AfterAlpha);
 }
-//OBJの削除
-void SevenBoss::DeleteObj() {
-	if (m_DeleteObj) {
+//覚醒シーン後の初期化
+void SevenBoss::InitAwake() {
+	if (m_DeleteObj && !m_AwakeInit) {
 		avatarboss.clear();
 		poltergeist.clear();
 		abseffect.clear();
+		damageblock.clear();
 		m_Position = { 0.0f,3.0f,30.0f };
 		m_Rotation = { 0.0f,90.0f,0.0f };
 		m_Scale = { 0.1f,0.1f,0.1f };
 		m_Color = { 1.0f,1.0f,1.0f,1.0f };
-		_charaState = STATE_INTER;
 		m_InterVal = {};
 		m_MoveTimer = {};
-	
 		//攻撃回数
 		m_AttackCount = {};
 		//スタンしたかどうか
 		m_Stun = false;
-		//攻撃の乱数
-		m_AttackRand = {};
-
 		//敵が弾を避けるかどうか
 		m_Vanish = false;
-
 		_vanishState = VANISH_SET;
 		//透明化する時間
 		m_VanishFrame = {};
 		//糖度
 		m_AfterAlpha = {};
 		m_AfterPos = {};
-
+		_charaState = STATE_INTER;
+		_ReturnState = RETURN_SET;
+		m_CircleSpeed = 90.0f;
 		m_RotTimer = {};
 		m_StartMani = false;
 		m_DeleteObj = false;
+		m_AwakeInit = true;
 	}
 }
