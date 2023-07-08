@@ -17,6 +17,9 @@ SevenBoss::SevenBoss() {
 
 	bossstuneffect.reset(new BossStunEffect());
 	bossstuneffect->Initialize();
+
+	confueffect.reset(new ConfuEffect());
+	confueffect->Initialize();
 }
 //初期化
 bool SevenBoss::Initialize() {
@@ -24,8 +27,6 @@ bool SevenBoss::Initialize() {
 	m_Rotation = { 0.0f,90.0f,0.0f };
 	m_Scale = { 0.3f,0.3f,0.3f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
-	//m_Rotation.y = -90.f;
-
 	ActionTimer = 1;
 
 	m_Radius = 2.2f;
@@ -67,6 +68,8 @@ void (SevenBoss::* SevenBoss::stateTable[])() = {
 	&SevenBoss::BirthAvatar,//偽物のボス
 	&SevenBoss::Manipulate,//ゴーストを操る
 	&SevenBoss::FireAttack,//炎を出す
+	&SevenBoss::Confu,//混乱
+	&SevenBoss::BlockAttack,//ダメージの攻撃
 	&SevenBoss::BulletCatch,//弾を吸収
 	&SevenBoss::Stun,//スタン
 };
@@ -96,7 +99,6 @@ void SevenBoss::Action() {
 	Obj_SetParam();
 	//ボスの消える判定
 	VanishBoss();
-	DeleteObj();
 	//リミット制限
 	Helper::GetInstance()->Clamp(m_Position.x, -55.0f, 65.0f);
 	Helper::GetInstance()->Clamp(m_Position.z, -60.0f, 60.0f);
@@ -165,7 +167,7 @@ void SevenBoss::Action() {
 		}
 	}
 
-	//障害物の削除
+	//火の玉の削除
 	for (int i = 0; i < fireboll.size(); i++) {
 		if (fireboll[i] == nullptr) {
 			continue;
@@ -176,8 +178,28 @@ void SevenBoss::Action() {
 		}
 	}
 
+	//ダメージブロック
+	for (DamageBlock* newblock : damageblock) {
+		if (newblock != nullptr) {
+			newblock->Update();
+		}
+	}
+	//ダメージブロックの削除
+	for (int i = 0; i < damageblock.size(); i++) {
+		if (damageblock[i] == nullptr) {
+			continue;
+		}
+
+		if (!damageblock[i]->GetAlive()) {
+			damageblock.erase(cbegin(damageblock) + i);
+		}
+	}
+
 	bossstuneffect->SetBasePos(m_Position);
 	bossstuneffect->Update();
+
+	confueffect->SetBasePos(Player::GetInstance()->GetPosition());
+	confueffect->Update();
 
 	//HPが半分切ったら強化
 	if (m_HP < m_MaxHp / 2) {
@@ -191,6 +213,7 @@ void SevenBoss::Pause() {
 void SevenBoss::EffecttexDraw(DirectXCommon* dxCommon)
 {
 	if (m_HP < 0.0f)return;
+	confueffect->Draw(dxCommon);
 	if (_charaState == STATE_STUN) {
 		bossstuneffect->Draw(dxCommon);
 	}
@@ -225,23 +248,28 @@ void SevenBoss::Draw(DirectXCommon* dxCommon) {
 				newfire->Draw(dxCommon);
 			}
 		}
+		//ダメージブロック
+		for (DamageBlock* newblock : damageblock) {
+			if (newblock != nullptr) {
+				newblock->Draw(dxCommon);
+			}
+		}
 		EffecttexDraw(dxCommon);
 	}
 }
 //ImGui
 void SevenBoss::ImGui_Origin() {
 	ImGui::Begin("Seven");
-	ImGui::Text("ReturnState:%d", int(_ReturnState));
-	ImGui::Text("Alpha:%f", m_AfterAlpha);
-	ImGui::Text("Return:%d", m_Return);
+	ImGui::Text("POSX:%f", m_Position.x);
+	ImGui::Text("POSZ:%f", m_Position.z);
 	ImGui::End();
 
-	//火の玉
-	for (FireBoll* newfire : fireboll) {
-		if (newfire != nullptr) {
-			newfire->ImGuiDraw();
-		}
-	}
+	////ダメージブロック
+	//for (DamageBlock* newblock : damageblock) {
+	//	if (newblock != nullptr) {
+	//		newblock->ImGuiDraw();
+	//	}
+	//}
 }
 //インターバル
 void SevenBoss::InterValMove() {
@@ -260,8 +288,6 @@ void SevenBoss::InterValMove() {
 	if (m_InterVal == l_LimitTimer) {
 		//行動を決めて次の行動に移る
 		m_AttackRand = int(l_RandomMove(mt));
-		_charaState = STATE_FIRE;
-		m_InterVal = {};
 		if (m_AttackRand < m_RandAct[RAND_POLTER]) {
 			_charaState = STATE_POLTER;
 			m_InterVal = {};
@@ -289,8 +315,16 @@ void SevenBoss::InterValMove() {
 				m_InterVal = l_LimitTimer - 1;
 			}
 		}
-		else {
+		else if (m_AttackRand >= m_RandAct[RAND_MANIPULATE] && m_AttackRand < m_RandAct[RAND_FIRE]) {
 			_charaState = STATE_FIRE;
+			m_InterVal = {};
+		}
+		else if (m_AttackRand >= m_RandAct[RAND_FIRE] && m_AttackRand < m_RandAct[RAND_CONFU]) {
+			_charaState = STATE_CONFU;
+			m_InterVal = {};
+		}
+		else {
+			_charaState = STATE_BLOCK;
 			m_InterVal = {};
 		}
 		m_ChangeTimer = {};
@@ -420,12 +454,88 @@ void SevenBoss::FireAttack() {
 }
 void SevenBoss::BirthFire() {
 	//火の玉
-	for (int i = 0; i < POLTER_NUM; i++) {
+	for (int i = 0; i < FIRE_NUM; i++) {
 		FireBoll* newfire;
 		newfire = new FireBoll();
 		newfire->Initialize();
 		newfire->SetCircleSpeed(i * 90.0f);
 		fireboll.push_back(newfire);
+	}
+}
+//プレイヤー混乱
+void SevenBoss::Confu() {
+	m_MoveTimer++;
+	const int l_LimitConfu = 80;
+	const int l_EndConfu = 120;
+	int l_ConfuTimer = {};
+
+	if (m_MoveTimer == l_LimitConfu) {
+		confueffect->SetAlive(true);
+		Player::GetInstance()->SetConfu(true);
+		if (isStrong) {
+			l_ConfuTimer = 600;
+		}
+		else {
+			l_ConfuTimer = 300;
+		}
+		Player::GetInstance()->SetConfuTimer(l_ConfuTimer);
+	}
+	else if (m_MoveTimer == l_EndConfu) {
+		m_MoveTimer = {};
+		m_AttackCount++;
+
+		//二回攻撃したら吸収行動に移行する
+		if (m_AttackCount != 2) {
+			_charaState = STATE_INTER;
+			m_Return = true;
+		}
+		else {
+			_charaState = STATE_CATCH;
+		}
+	}
+}
+//ダメージのブロック
+void SevenBoss::BlockAttack() {
+
+	const int l_LimitTimer = 200;
+	m_MoveTimer++;
+	if (m_MoveTimer == 1) {
+		BirthBlock();
+	}
+	if (m_MoveTimer == l_LimitTimer) {
+		m_MoveTimer = {};
+		m_AttackCount++;
+		//二回攻撃したら吸収行動に移行する
+		if (m_AttackCount != 2) {
+			_charaState = STATE_INTER;
+			m_Return = true;
+		}
+		else {
+			_charaState = STATE_CATCH;
+		}
+	}
+}
+//ブロックの生成
+void SevenBoss::BirthBlock() {
+	float l_SetPosX = {};
+	float l_SetPosZ = {};
+	int l_RandDir = {};
+	//ランダムで進行方向決める
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_RandomDir(0, 3);
+	uniform_int_distribution<int> l_RandomX(-55, 45);
+	uniform_int_distribution<int> l_RandomZ(-60, 40);
+	l_SetPosX = float(l_RandomX(mt));
+	l_SetPosZ = float(l_RandomZ(mt));
+	l_RandDir = int(l_RandomDir(mt));
+
+	for (int i = 0; i < BLOCK_NUM; i++) {
+		DamageBlock* newblock;
+		newblock = new DamageBlock();
+		newblock->Initialize();
+		newblock->SetAttackDir(l_RandDir);
+		newblock->InitPos(i,{l_SetPosX,0.0f,l_SetPosZ});
+		damageblock.push_back(newblock);
 	}
 }
 //ポルターガイストの生成
@@ -442,16 +552,16 @@ void SevenBoss::BirthPolter(const std::string& PolterName) {
 			newpolter->SetPolterType(TYPE_FOLLOW);
 			newpolter->SetTargetTimer(i * l_LimitTimer);
 			if (i == 0) {
-				newpolter->SetPosition({ m_Position.x + 3.0f,m_Position.y - 10.0f,m_Position.z });
+				newpolter->SetPosition({ m_Position.x + 2.0f,m_Position.y - 10.0f,m_Position.z });
 			}
 			else if (i == 1) {
-				newpolter->SetPosition({ m_Position.x - 3.0f,m_Position.y - 10.0f,m_Position.z });
+				newpolter->SetPosition({ m_Position.x - 2.0f,m_Position.y - 10.0f,m_Position.z });
 			}
 			else if (i == 2) {
-				newpolter->SetPosition({ m_Position.x,m_Position.y - 10.0f,m_Position.z + 3.0f});
+				newpolter->SetPosition({ m_Position.x,m_Position.y - 10.0f,m_Position.z + 2.0f});
 			}
 			else {
-				newpolter->SetPosition({ m_Position.x,m_Position.y - 10.0f,m_Position.z - 3.0f });
+				newpolter->SetPosition({ m_Position.x,m_Position.y - 10.0f,m_Position.z - 2.0f });
 			}
 			poltergeist.push_back(newpolter);
 		}
@@ -578,7 +688,7 @@ void SevenBoss::BirthParticle() {
 //ボスの消える判定
 void SevenBoss::VanishCollide(vector<InterBullet*> bullet)
 {
-	int l_RandCount = 0;
+	int l_RandCount = {};
 	XMFLOAT2 m_RandPos = {};
 	int l_RandDir = {};
 	const float l_VanishRadius = m_Radius + 5.0f;
@@ -602,17 +712,6 @@ void SevenBoss::VanishCollide(vector<InterBullet*> bullet)
 					m_VanishFrame = {};
 					m_AfterAlpha = {};
 					_vanishState = VANISH_SET;
-					////消えた後少し移動する
-					//m_RandPos.x = float(l_RandomPosX(mt));
-					//m_RandPos.y = float(l_RandomPosZ(mt));
-					//if (int(l_RandomDirX(mt)) == 1) {
-					//	m_RandPos.x *= -1.0f;
-					//}
-					//if (int(l_RandomDirZ(mt)) == 1) {
-					//	m_RandPos.y *= -1.0f;
-					//}
-
-					//m_AfterPos = { m_Position.x + m_RandPos.x,m_Position.y,m_Position.z + m_RandPos.y };
 				}
 			}
 		}
@@ -644,9 +743,7 @@ void SevenBoss::VanishBoss() {
 			}
 		}
 		m_Color.w = Ease(In, Cubic, m_VanishFrame, m_Color.w, m_AfterAlpha);
-	/*	m_Position = { Ease(In,Cubic,m_VanishFrame,m_Position.x,m_AfterPos.x),
-		m_Position.y,
-		Ease(In,Cubic,m_VanishFrame,m_Position.z,m_AfterPos.z) };*/
+
 	}
 }
 //ランダムの動き
@@ -665,12 +762,6 @@ void SevenBoss::RandMove() {
 		m_AddScale = float(l_RandScale(mt)) / l_Division;
 		
 		m_AddSpeed = 0.5f;
-	/*	if (int(l_RandDir(mt)) == 0) {
-			
-		}
-		else {
-			m_AddSpeed = -0.3f;
-		}*/
 		m_ChangeTimer = {};
 	}
 	
@@ -717,43 +808,37 @@ void SevenBoss::ReturnBoss() {
 
 	m_Color.w = Ease(In, Cubic, m_VanishFrame, m_Color.w, m_AfterAlpha);
 }
-//OBJの削除
-void SevenBoss::DeleteObj() {
-	if (m_DeleteObj) {
+//覚醒シーン後の初期化
+void SevenBoss::InitAwake() {
+	if (m_DeleteObj && !m_AwakeInit) {
 		avatarboss.clear();
 		poltergeist.clear();
 		abseffect.clear();
+		damageblock.clear();
 		m_Position = { 0.0f,3.0f,30.0f };
 		m_Rotation = { 0.0f,90.0f,0.0f };
 		m_Scale = { 0.1f,0.1f,0.1f };
 		m_Color = { 1.0f,1.0f,1.0f,1.0f };
-		_charaState = STATE_INTER;
 		m_InterVal = {};
 		m_MoveTimer = {};
-	
 		//攻撃回数
 		m_AttackCount = {};
 		//スタンしたかどうか
 		m_Stun = false;
-		//攻撃の乱数
-		m_AttackRand = {};
-
 		//敵が弾を避けるかどうか
 		m_Vanish = false;
-
 		_vanishState = VANISH_SET;
 		//透明化する時間
 		m_VanishFrame = {};
-		//透明化する確率
-		m_VanishTarget = {};
 		//糖度
 		m_AfterAlpha = {};
 		m_AfterPos = {};
-
+		_charaState = STATE_INTER;
+		_ReturnState = RETURN_SET;
+		m_CircleSpeed = 90.0f;
 		m_RotTimer = {};
 		m_StartMani = false;
 		m_DeleteObj = false;
-
-
+		m_AwakeInit = true;
 	}
 }

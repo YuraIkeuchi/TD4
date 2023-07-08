@@ -100,7 +100,7 @@ private://各ボスの登場カメラ
 	//円運動のカメラセットの際のやつ
 	void SetCircleCameraTarget();
 	//円運動のカメラセットの際のやつ
-	void SetCircleCameraEye(const XMFLOAT3 target);
+	void SetCircleCameraEye(const XMFLOAT3& target,const XMFLOAT3& basepos);
 public:
 	bool Finish;
 	int Timer_first = 1;
@@ -139,6 +139,8 @@ public:
 	bool GetAppearEndF() { return AppearEndF; }
 
 	bool GetEndStrong() { return m_EndStrong; }
+
+	bool GetChangeStrong() { return m_ChangeStrong; }
 
 	int GetAppearType() { return m_AppearType; }
 
@@ -208,6 +210,8 @@ private:
 
 	bool m_CameraStrong = false;
 
+	bool m_ChangeStrong = false;
+
 	enum StrongState {
 		STRONG_ONE,
 		STRONG_SECOND,
@@ -218,4 +222,5 @@ private:
 
 	bool m_EndStrong = false;
 	bool m_Finish = false;
+	bool m_NearBoss = false;
 };

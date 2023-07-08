@@ -91,6 +91,8 @@ public:
 	void ReBound();
 	//
 	float GetPercentage();
+	//覚醒シーンの初期化
+	void AwakeInit();
 public:
 	//gettersetter
 	const int& GetBulletType() { return m_BulletType; }

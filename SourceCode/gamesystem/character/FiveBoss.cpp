@@ -222,3 +222,8 @@ void FiveBoss::Draw(DirectXCommon* dxCommon)
 	Fbx_Draw(dxCommon);
 
 }
+
+
+void FiveBoss::InitAwake() {
+
+}

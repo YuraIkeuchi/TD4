@@ -510,7 +510,7 @@ void LoadStageObj::CollideBoss() {
 }
 //捕まえているゴーストを操る
 void LoadStageObj::Manipulate() {
-	const float l_AddFrame = 0.05f;
+	const float l_AddFrame = 0.2f;
 	for (auto i = 0; i < ghosts.size(); ++i) {
 		if (ghosts[i]->GetVanish()) { continue; }
 		if (!ghosts[i]->GetAlive()) { continue; }
@@ -545,5 +545,11 @@ void LoadStageObj::Manipulate() {
 		}
 		HungerGauge::GetInstance()->SetCatchCount(0);
 		HungerGauge::GetInstance()->SetNowHunger(Ease(In, Cubic, m_Frame, HungerGauge::GetInstance()->GetNowHunger(), 0.0f));
+	}
+}
+void LoadStageObj::AwakeInit() {
+	hearts.clear();
+	for (auto i = 0; i < ghosts.size(); ++i) {
+		ghosts[i]->SetVanish(true);
 	}
 }

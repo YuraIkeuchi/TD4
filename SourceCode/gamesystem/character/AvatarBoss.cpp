@@ -53,7 +53,8 @@ void (AvatarBoss::* AvatarBoss::stateTable[])() = {
 	&AvatarBoss::InterValMove,//動きの合間
 	&AvatarBoss::Polter,//ポルターガイスト
 	&AvatarBoss::ThrowBound,//投げる
-	&AvatarBoss::FireAttack,
+	&AvatarBoss::FireAttack,//火の玉
+	&AvatarBoss::BlockAttack,//範囲攻撃
 };
 //行動
 void AvatarBoss::Action() {
@@ -94,6 +95,39 @@ void AvatarBoss::Action() {
 		}
 	}
 
+	//火の玉
+	for (FireBoll* newfire : fireboll) {
+		if (newfire != nullptr) {
+			newfire->Update();
+		}
+	}
+
+	//火の玉の削除
+	for (int i = 0; i < fireboll.size(); i++) {
+		if (fireboll[i] == nullptr) {
+			continue;
+		}
+
+		if (!fireboll[i]->GetAlive()) {
+			fireboll.erase(cbegin(fireboll) + i);
+		}
+	}
+	//ダメージブロック
+	for (DamageBlock* newblock : damageblock) {
+		if (newblock != nullptr) {
+			newblock->Update();
+		}
+	}
+	//ダメージブロックの削除
+	for (int i = 0; i < damageblock.size(); i++) {
+		if (damageblock[i] == nullptr) {
+			continue;
+		}
+
+		if (!damageblock[i]->GetAlive()) {
+			damageblock.erase(cbegin(damageblock) + i);
+		}
+	}
 	m_Color.w = Ease(In, Cubic, 0.5f, m_Color.w, 1.0f);
 }
 //ポーズ
@@ -114,6 +148,18 @@ void AvatarBoss::Draw(DirectXCommon* dxCommon) {
 		for (Poltergeist* newpolter : poltergeist) {
 			if (newpolter != nullptr) {
 				newpolter->Draw(dxCommon);
+			}
+		}
+		//火の玉
+		for (FireBoll* newfire : fireboll) {
+			if (newfire != nullptr) {
+				newfire->Draw(dxCommon);
+			}
+		}
+		//ダメージブロック
+		for (DamageBlock* newblock : damageblock) {
+			if (newblock != nullptr) {
+				newblock->Draw(dxCommon);
 			}
 		}
 	}
@@ -137,6 +183,7 @@ void AvatarBoss::InterValMove() {
 	const float l_AddSpeed = 1.5f;
 	int l_LimitTimer = 400;
 
+	//基本的には本体の周りを円運動する
 	if (!m_Return) {
 		m_CircleSpeed += l_AddSpeed;
 
@@ -148,13 +195,19 @@ void AvatarBoss::InterValMove() {
 			m_Position.y,
 			Ease(In,Cubic,0.5f,m_Position.z,m_AfterPos.z),
 		};
+
+		//一定の距離が開いたら定位置に戻す
+		if (Helper::GetInstance()->ChechLength(m_Position, m_TargetPos) >= 25.0f) {
+			m_SaveSpeed = m_CircleSpeed;
+			m_Return = true;
+		}
 	}
 	else {
 		ReturnBoss();//ボスが定位置に戻る
 	}
 	m_InterVal++;
 	mt19937 mt{ std::random_device{}() };
-	uniform_int_distribution<int> l_RandomMove(0, 2);
+	uniform_int_distribution<int> l_RandomMove(0, 3);
 	if (m_InterVal == l_LimitTimer) {
 		//行動を決めて次の行動に移る
 		m_AttackRand = int(l_RandomMove(mt));
@@ -167,8 +220,12 @@ void AvatarBoss::InterValMove() {
 			_charaState = STATE_POLTER;
 			m_InterVal = {};
 		}
-		else {
+		else if(m_AttackRand == 2) {
 			_charaState = STATE_FIRE;
+			m_InterVal = {};
+		}
+		else {
+			_charaState = STATE_BLOCK;
 			m_InterVal = {};
 		}
 	}
@@ -203,7 +260,7 @@ void AvatarBoss::ThrowBound() {
 }
 //火の玉攻撃
 void AvatarBoss::FireAttack() {
-	const int l_LimitTimer = 200;
+	const int l_LimitTimer = 300;
 	m_MoveTimer++;
 	if (m_MoveTimer == 1) {
 		BirthFire();
@@ -216,7 +273,7 @@ void AvatarBoss::FireAttack() {
 }
 void AvatarBoss::BirthFire() {
 	//火の玉
-	for (int i = 0; i < POLTER_NUM; i++) {
+	for (int i = 0; i < FIRE_NUM; i++) {
 		FireBoll* newfire;
 		newfire = new FireBoll();
 		newfire->Initialize();
@@ -224,7 +281,43 @@ void AvatarBoss::BirthFire() {
 		fireboll.push_back(newfire);
 	}
 }
+//ダメージのブロック
+void AvatarBoss::BlockAttack() {
 
+	const int l_LimitTimer = 300;
+	m_MoveTimer++;
+	if (m_MoveTimer == 1) {
+		BirthBlock();
+	}
+	if (m_MoveTimer == l_LimitTimer) {
+		m_MoveTimer = {};
+		_charaState = STATE_INTER;
+		m_Return = true;
+	}
+}
+//ブロックの生成
+void AvatarBoss::BirthBlock() {
+	float l_SetPosX = {};
+	float l_SetPosZ = {};
+	int l_RandDir = {};
+	//ランダムで進行方向決める
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_RandomDir(0, 3);
+	uniform_int_distribution<int> l_RandomX(-55, 45);
+	uniform_int_distribution<int> l_RandomZ(-60, 40);
+	l_SetPosX = float(l_RandomX(mt));
+	l_SetPosZ = float(l_RandomZ(mt));
+	l_RandDir = int(l_RandomDir(mt));
+
+	for (int i = 0; i < BLOCK_NUM; i++) {
+		DamageBlock* newblock;
+		newblock = new DamageBlock();
+		newblock->Initialize();
+		newblock->SetAttackDir(l_RandDir);
+		newblock->InitPos(i, { l_SetPosX,0.0f,l_SetPosZ });
+		damageblock.push_back(newblock);
+	}
+}
 //ポルターガイストの生成
 void AvatarBoss::BirthPolter(const std::string& PolterName) {
 	const int l_LimitTimer = 20;//障害物が動くまでの時間
@@ -239,10 +332,10 @@ void AvatarBoss::BirthPolter(const std::string& PolterName) {
 			newpolter->SetPolterType(TYPE_FOLLOW);
 			newpolter->SetTargetTimer(i * l_LimitTimer);
 			if (i == 0) {
-				newpolter->SetPosition({ m_Position.x + 3.0f,m_Position.y - 10.0f,m_Position.z });
+				newpolter->SetPosition({ m_Position.x + 2.0f,m_Position.y - 10.0f,m_Position.z });
 			}
 			else if (i == 1) {
-				newpolter->SetPosition({ m_Position.x - 3.0f,m_Position.y - 10.0f,m_Position.z });
+				newpolter->SetPosition({ m_Position.x - 2.0f,m_Position.y - 10.0f,m_Position.z });
 			}
 			poltergeist.push_back(newpolter);
 		}
@@ -306,4 +399,8 @@ void AvatarBoss::ReturnBoss() {
 	}
 
 	m_Color.w = Ease(In, Cubic, m_VanishFrame, m_Color.w, m_AfterAlpha);
+}
+
+void AvatarBoss::InitAwake() {
+
 }

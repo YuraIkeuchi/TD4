@@ -33,6 +33,8 @@ public:
 	void EffecttexDraw(DirectXCommon* dxCommon) override;
 
 	void Draw(DirectXCommon* dxCommon) override;//描画
+
+	void InitAwake() override;//ボスの覚醒
 private:
 	//インターバル
 	void InterValMove();

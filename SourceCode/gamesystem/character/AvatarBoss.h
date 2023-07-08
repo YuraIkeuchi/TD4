@@ -3,6 +3,7 @@
 #include "Shake.h"
 #include "Poltergeist.h"
 #include "FireBoll.h"
+#include "DamageBlock.h"
 class AvatarBoss :
 	public InterBoss {
 public:
@@ -27,6 +28,8 @@ public:
 	void EffecttexDraw(DirectXCommon* dxCommon) override;
 
 	void Draw(DirectXCommon* dxCommon) override;//描画
+
+	void InitAwake() override;//ボスの覚醒
 private:
 	void CSVLoad();
 
@@ -36,6 +39,8 @@ private:
 	void ThrowBound();//バウンド弾
 	void FireAttack();//火の玉攻撃
 	void BirthFire();//炎生成
+	void BlockAttack();//ダメージブロックの生成
+	void BirthBlock();
 	void BirthPolter(const std::string& PolterName);//ポルターガイストの生成
 		//ボスが戻る
 	void ReturnBoss();
@@ -48,6 +53,7 @@ private:
 		STATE_POLTER,
 		STATE_BOUND,
 		STATE_FIRE,
+		STATE_BLOCK
 	}_charaState;
 
 	//関数ポインタ
@@ -55,9 +61,11 @@ private:
 private:
 	static const int POLTER_NUM = 2;
 	static const int FIRE_NUM = 4;
+	static const int BLOCK_NUM = 3;
 private:
 	vector<FireBoll*> fireboll;//火の玉
 	vector<Poltergeist*> poltergeist;//ポルターガイスト
+	vector<DamageBlock*> damageblock;//ダメージブロック
 	int m_InterVal = {};
 
 	int m_MoveTimer = {};

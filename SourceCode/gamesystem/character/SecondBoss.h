@@ -24,6 +24,8 @@ public:
 	void ImGui_Origin() override;
 
 	void Draw(DirectXCommon* dxCommon) override;//描画
+
+	void InitAwake() override;//ボスの覚醒
 private:
 	struct SummonEnemy
 	{

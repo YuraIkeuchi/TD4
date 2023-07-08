@@ -537,3 +537,8 @@ void FourthBoss::ChangePos2Rand() {
 bool FourthBoss::IsPinch() {
 	return 	m_HP < (m_MaxHp * 0.66f);
 }
+
+
+void FourthBoss::InitAwake() {
+
+}
