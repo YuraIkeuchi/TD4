@@ -8,7 +8,7 @@
 #include "Easing.h"
 //生成
 AvatarBoss::AvatarBoss() {
-	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::DJ);
+	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Ghost);
 
 	m_Object.reset(new IKEObject3d());
 	m_Object->Initialize();
@@ -17,9 +17,9 @@ AvatarBoss::AvatarBoss() {
 //初期化
 bool AvatarBoss::Initialize() {
 	m_Position = { 0.0f,3.0f,30.0f };
-	m_Rotation = { 0.0f,90.0f,0.0f };
-	m_Scale = { 0.1f,0.1f,0.1f };
-	m_Color = { 1.0f,1.0f,1.0f,0.0f };
+	m_Rotation = { 0.0f,270.0f,0.0f };
+	m_Scale = { 0.7f,0.7f,0.7f };
+	m_Color = { 1.0f,0.7f,0.0f,0.0f };
 	//m_Rotation.y = -90.f;
 
 	ActionTimer = 1;
@@ -35,9 +35,9 @@ bool AvatarBoss::Initialize() {
 //スキップ時の初期化
 void AvatarBoss::SkipInitialize() {
 	m_Position = { 0.0f,3.0f,30.0f };
-	m_Rotation = { 0.0f,90.0f,0.0f };
-	m_Scale = { 0.1f,0.1f,0.1f };
-	m_Color = { 0.0f,0.0f,1.0f,0.0f };
+	m_Rotation = { 0.0f,270.0f,0.0f };
+	m_Scale = { 0.7f,0.7f,0.7f };
+	m_Color = { 1.0f,0.7f,0.0f,0.0f };
 }
 //CSV
 void AvatarBoss::CSVLoad() {
@@ -73,10 +73,6 @@ void AvatarBoss::Action() {
 	}
 	//OBJのステータスのセット
 	Obj_SetParam();
-	//リミット制限
-	Helper::GetInstance()->Clamp(m_Position.x, -55.0f, 65.0f);
-	Helper::GetInstance()->Clamp(m_Position.z, -60.0f, 60.0f);
-
 	//障害物
 	for (Poltergeist* newpolter : poltergeist) {
 		if (newpolter != nullptr) {

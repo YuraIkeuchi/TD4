@@ -29,9 +29,6 @@ private:
 	void MainUpdate(DebugCamera* camera)override;		//バトルシーン
 	void FinishUpdate(DebugCamera* camera)override;		//撃破シーン
 
-	void MoveSpotLight();
-	void SpotSet(XMFLOAT3& Pos, const XMFLOAT3& AfterPos, const float AddFrame);
-
 private:
 	static const int SPOT_NUM = 4;
 private:

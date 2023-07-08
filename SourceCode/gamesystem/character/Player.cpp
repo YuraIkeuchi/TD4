@@ -749,3 +749,29 @@ void Player::AwakeInit() {
 	HungerGauge::GetInstance()->SetCatchCount(0);
 	HungerGauge::GetInstance()->SetNowHunger(0.0f);
 }
+void Player::LastAppearUpdate(int Timer) {
+	if (_LastState == LAST_SET) {
+		if (Timer == 1) {
+			AnimationControl(AnimeName::WALK, true, 1);
+			m_Position = { -4.0f,0.0f,-40.0f };
+			_LastState = LAST_WALK;
+		}
+	}
+	else if (_LastState == LAST_WALK) {
+		m_Position.z += 0.2f;
+		
+		if (Helper::GetInstance()->CheckMin(m_Position.z, 5.0f, 0.025f)) {
+			_LastState = LAST_STOP;
+			m_fbxObject->StopAnimation();
+		}
+	}
+	else {
+
+	}
+	playerattach->AppearUpdate(Timer);
+	//基礎パラメータ設定
+	Fbx_SetParam();
+
+	//どっち使えばいいか分からなかったから保留
+	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+}

@@ -147,6 +147,8 @@ public:
 	//
 	void SetCameraState(const int CameraState) { m_CameraState = CameraState; }
 
+	void SetLastTimer(const int LastTimer) { m_LastTimer = LastTimer; }
+
 	//シーンネームの取得
 	void SetSceneName(std::string name) { SceneName = name; }
 
@@ -223,4 +225,7 @@ private:
 	bool m_EndStrong = false;
 	bool m_Finish = false;
 	bool m_NearBoss = false;
+
+	//ラスボスのカメラ時間
+	int m_LastTimer = 0;
 };

@@ -121,10 +121,30 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 
 
 	FourthCreateWord(TALK_FIRST, L"ようこそ!!!", L"Ladies And ", L"Gentlemen!!!");
-	FourthCreateWord(TALK_SECOND, L"キミもオレがながす", L"イカしてるメロディーを", L"ききたいんだろ");
+	FourthCreateWord(TALK_SECOND, L"キミもオレがながす", L"イカしてるメロディーを", L"ききたいんだろ!!!");
 	FourthCreateWord(TALK_THIRD, L"そこにCDがあるかぎり!", L"オレはオトをとめない!!!", L"");
 	FourthCreateWord(TALK_FOURTH, L"オレをテラセ!!!!!!", L"スポットライト!!!!!!", L"このオレを!!!!!!");
 	FourthCreateWord(TALK_FIVE, L"さあ!!!", L"ショータイムのはじまりだ!!!", L"");
+
+	LastCreateWord(LAST_TALK_FIRST, L"いったい誰がゴースト達を", L"操って襲いかからせたのかと思ったけど", L"やっぱり・・・");
+	LastCreateWord(LAST_TALK_SECOND, L"やっぱりお前だったんだな!", L"", L"");
+	LastCreateWord(LAST_TALK_THIRD, L"ストポン?", L"キミのしってる子?", L"");
+	LastCreateWord(LAST_TALK_FOURTH, L"こいつは俺の弟だ", L"あいかわらずナマイキな面しやがって", L"");
+	LastCreateWord(LAST_TALK_FIVE, L"ひさしぶりにいさん・・・", L"そのクサイしゃべりかたも", L"変わってないねー");
+	LastCreateWord(LAST_TALK_SIX, L"おい!", L"なんでゴーストを操って", L"俺に襲いかかった!?");
+	LastCreateWord(LAST_TALK_SEVEN, L"それはね・・・", L"", L"");
+	LastCreateWord(LAST_TALK_EIGHT, L"にいさんが嫌いだからだよ!", L"", L"");
+	LastCreateWord(LAST_TALK_NINE, L"こんな出来の悪いやつが", L"あにだなんてほんとにうんざりだ!", L"ほんとに嫌い!");
+	LastCreateWord(LAST_TALK_TEN, L"だからね悪いやつはね・・・", L"ボクがけしてあげるよ!!!", L"");
+	LastCreateWord(LAST_TALK_ELEVEN, L"悪いなコトコ・・・", L"キョウダイ喧嘩にまきこんじまってよ", L"だが・・・");
+	LastCreateWord(LAST_TALK_TWELVE, L"じぶんの運を恨んでくれ!", L"協力しろ!!!", L"");
+	LastCreateWord(LAST_TALK_THIRTEEN, L"そんなぼーっとしてるやつに", L"何ができるのかねぇ", L"まぁ・・・");
+	LastCreateWord(LAST_TALK_FOURTEEN, L"二人まとめて", L"ボクが直々に始末してあげるよ!!!", L"");
+	LastCreateWord(LAST_TALK_FIFETEEN, L"俺もお前が", L"吠え面をかくのが", L"楽しみだ!");
+	LastCreateWord(LAST_TALK_SIXTEEN, L"コトコ!", L"これが俺とお前の", L"サイゴのたたかいだ!!!");
+	LastCreateWord(LAST_TALK_SEVENTEEN, L"全力でいくぞ!!!", L"", L"");
+	LastCreateWord(LAST_TALK_EIGHTTEEN, L"まぁせいぜいがんばりなよ・・・", L"", L"");
+	//ラスボス
 	//コンヴァージョン初期化
 	Create(dxcomon);
 
@@ -304,6 +324,24 @@ void TextManager::SetCameraBossConversation(Name_CameraBoss name) {
 	CreateCon(conversation_, itr->second);
 
 }
+//名前から文字列を呼び出しセットする
+void TextManager::SetLastConversation(Name_Last name)
+{
+	std::map<TextManager::Name_Last, Word>::iterator itr = wordlist_last.find(name);
+
+	if (old_fourth != itr->first) {
+		for (int i = 0; i < 3; i++) {
+			flag[i] = true;
+			next_f[i] = false;
+		}
+	}
+
+	old_last = itr->first;
+
+	GetWordSize(itr->second);
+
+	CreateCon(conversation_, itr->second);
+}
 
 //名前と文字列セットで保存
 void TextManager::CreateWord(Name name, wchar_t* tex1, wchar_t* tex2, wchar_t* tex3)
@@ -329,12 +367,19 @@ void TextManager::SecondCreateWord(Name_Second name, wchar_t* tex1, wchar_t* tex
 	wordlist_second.insert(std::make_pair(name, temp));
 }
 
-//名前と文字列セットで保存(2個目のボス)
+//名前と文字列セットで保存(4個目のボス)
 void TextManager::FourthCreateWord(Name_Fourth name, wchar_t* tex1, wchar_t* tex2, wchar_t* tex3)
 {
 	Word temp = SetWord(tex1, tex2, tex3);
 
 	wordlist_fourth.insert(std::make_pair(name, temp));
+}
+//名前と文字列セットで保存(ラスボス)
+void TextManager::LastCreateWord(Name_Last name, wchar_t* tex1, wchar_t* tex2, wchar_t* tex3)
+{
+	Word temp = SetWord(tex1, tex2, tex3);
+
+	wordlist_last.insert(std::make_pair(name, temp));
 }
 void TextManager::CameraBossCreateWord(Name_CameraBoss name, wchar_t* tex1, wchar_t* tex2, wchar_t* tex3) {
 	Word temp = SetWord(tex1, tex2, tex3);

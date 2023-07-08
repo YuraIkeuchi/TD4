@@ -9,7 +9,7 @@
 #include "HungerGauge.h"
 //生成
 SevenBoss::SevenBoss() {
-	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::DJ);
+	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Ghost);
 
 	m_Object.reset(new IKEObject3d());
 	m_Object->Initialize();
@@ -23,10 +23,10 @@ SevenBoss::SevenBoss() {
 }
 //初期化
 bool SevenBoss::Initialize() {
-	m_Position = { 0.0f,3.0f,30.0f };
-	m_Rotation = { 0.0f,90.0f,0.0f };
-	m_Scale = { 0.3f,0.3f,0.3f };
-	m_Color = { 1.0f,1.0f,1.0f,1.0f };
+	m_Position = { 0.0f,5.0f,30.0f };
+	m_Rotation = { 0.0f,270.0f,0.0f };
+	m_Scale = { 1.0f,1.0f,1.0f };
+	m_Color = { 1.0f,0.0f,0.0f,1.0f };
 	ActionTimer = 1;
 
 	m_Radius = 2.2f;
@@ -40,10 +40,10 @@ bool SevenBoss::Initialize() {
 }
 //スキップ時の初期化
 void SevenBoss::SkipInitialize() {
-	m_Position = { 0.0f,3.0f,30.0f };
-	m_Rotation = { 0.0f,90.0f,0.0f };
-	m_Scale = { 0.1f,0.1f,0.1f };
-	m_Color = { 1.0f,1.0f,1.0f,1.0f };
+	m_Position = { 0.0f,5.0f,30.0f };
+	m_Rotation = { 0.0f,270.0f,0.0f };
+	m_Scale = { 1.0f,1.0f,1.0f };
+	m_Color = { 1.0f,0.0f,0.0f,1.0f };
 }
 //CSV
 void SevenBoss::CSVLoad() {
@@ -775,6 +775,7 @@ void SevenBoss::RandMove() {
 		m_Position.y,
 		Ease(In,Cubic,0.5f,m_Position.z,m_AfterPos.z),
 	};
+	m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, Player::GetInstance()->GetPosition(), -PI_90);
 }
 void SevenBoss::ReturnBoss() {
 	const float l_AddFrame = 0.05f;
@@ -792,6 +793,7 @@ void SevenBoss::ReturnBoss() {
 		m_CircleScale = 30.0f;
 		m_CircleSpeed = {};
 		m_Position = Helper::GetInstance()->CircleMove(Player::GetInstance()->GetPosition(), m_CircleScale, m_CircleSpeed);
+		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, Player::GetInstance()->GetPosition(), -PI_90);
 		_ReturnState = RETURN_END;
 		m_AfterAlpha = 1.0f;
 	}
