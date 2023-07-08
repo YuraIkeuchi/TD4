@@ -787,7 +787,7 @@ void CameraWork::SevenBossAppear() {
 			m_Frame = {};
 			m_AppearType = APPEAR_SECOND;
 			m_AfterTarget = boss->GetPosition();
-			m_AfterEye = { -5.0f,0.0f,-5.0f };
+			m_AfterEye = { -10.0f,3.0f,-5.0f };
 		}
 	}
 	else if (m_AppearType == APPEAR_SECOND) {
