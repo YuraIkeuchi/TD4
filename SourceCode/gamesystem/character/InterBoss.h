@@ -209,6 +209,8 @@ protected:
 	bool m_DeleteObj = false;
 
 	bool m_AwakeInit = false;
+
+	int m_AppearTimer = {};
 private:
 
 	enum class ActionList {

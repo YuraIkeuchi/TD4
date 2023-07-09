@@ -48,6 +48,7 @@ private:
 	enum AppearState {
 		APPEAR_SET,
 		APPEAR_WALK,
+		APPEAR_WALK2,
 		APPEAR_STOP,
 	}_AppearState;
 };

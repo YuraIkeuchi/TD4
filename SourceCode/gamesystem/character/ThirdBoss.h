@@ -193,9 +193,6 @@ private:
 
 	int m_AppearState = APPEAR_START;
 
-	int m_AppearTimer = {};
-
-
 	//すべてのインターバル系
 	vector<int>m_StampInterval;
 	vector<int>m_RandomInterval;

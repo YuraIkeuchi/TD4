@@ -777,33 +777,114 @@ Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
 //7個目のボス
 void CameraWork::SevenBossAppear() {
 	const float l_AddFrame = 0.01f;
-	if (m_AppearType == APPEAR_START) {
+	if (_LastState == LAST_SET) {
 		if (m_LastTimer == 1) {
 			m_eyePos = { 0.0f,5.0f,20.0f };
 			m_targetPos = { 0.0f,5.0f,0.0f };
 		}
 
-		if (m_LastTimer == 250) {
+		if (m_LastTimer == 150) {
 			m_Frame = {};
-			m_AppearType = APPEAR_SECOND;
-			m_AfterTarget = boss->GetPosition();
+			_LastState = LAST_BOSS;
+			m_AfterTarget = { boss->GetPosition().x,5.0f,boss->GetPosition().z };
 			m_AfterEye = { -10.0f,3.0f,-5.0f };
 		}
 	}
-	else if (m_AppearType == APPEAR_SECOND) {
+	else if (_LastState == LAST_BOSS) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = 1.0f;
+			if (m_LastTimer == 300) {
+				m_AfterTarget = { 0.0f,3.0f,10.0f };
+				m_AfterEye = { -5.0f,3.0f,15.0f };
+				m_Frame = {};
+				_LastState = LAST_PLAYER;
+			}
+			else if (m_LastTimer == 900) {
+				m_AfterTarget = { boss->GetPosition().x,5.0f,boss->GetPosition().z };
+				m_AfterEye = { .0f,6.0f,5.0f };
+				m_Frame = {};
+				_LastState = LAST_UPBOSS;
+			}
+		}
+		SetEaseCamera();
+	}
+	else if (_LastState == LAST_PLAYER) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = 1.0f;
+			if (m_LastTimer == 600) {
+				m_Frame = {};
+				_LastState = LAST_BOSS;
+				m_AfterTarget = { boss->GetPosition().x,5.0f,boss->GetPosition().z };
+				m_AfterEye = { -10.0f,3.0f,-5.0f };
+			}
+			else if (m_LastTimer == 2100) {
+				m_Frame = {};
+				_LastState = LAST_BATTLE;
+				m_AfterTarget = { 0.0f,5.0f,20.0f };
+				m_AfterEye = { -15.0f,5.0f,20.0f };
+			}
+		}
+		SetEaseCamera();
+	}
+	else if (_LastState == LAST_UPBOSS) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = 1.0f;
+			if (m_LastTimer == 1050) {
+				m_AfterTarget = { boss->GetPosition().x,5.0f,boss->GetPosition().z };
+				m_AfterEye = { 0.0f,6.0f,15.0f };
+				m_Frame = {};
+				_LastState = LAST_ZOOMBOSS;
+			}
+		}
+		SetEaseCamera();
+	}
+	else if (_LastState == LAST_ZOOMBOSS) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = 1.0f;
+			if (m_LastTimer == 1250) {
+				m_AfterTarget = { boss->GetPosition().x,5.0f,boss->GetPosition().z };
+				m_AfterEye = { .0f,6.0f,0.0f };
+				m_Frame = {};
+				_LastState = LAST_FARBOSS;
+			}
+			else if (m_LastTimer == 1800) {
+				m_AfterTarget = { 0.0f,3.0f,10.0f };
+				m_AfterEye = { -5.0f,3.0f,15.0f };
+				m_Frame = {};
+				_LastState = LAST_PLAYER;
+			}
+		}
+		SetEaseCamera();
+	}
+	else if (_LastState == LAST_FARBOSS) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = 1.0f;
+			if (m_LastTimer == 1380) {
+				m_AfterTarget = { boss->GetPosition().x,5.0f,boss->GetPosition().z };
+				m_AfterEye = { 0.0f,6.0f,15.0f };
+				m_Frame = {};
+				_LastState = LAST_ZOOMBOSS;
+			}
+		}
+		SetEaseCamera();
+	}
+	else if (_LastState == LAST_BATTLE) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = 1.0f;
+			if (m_LastTimer == 2700) {
+				m_Frame = {};
+				_LastState = LAST_BATTLE2;
+				m_AfterTarget = { 0.0f,5.0f,20.0f };
+				m_AfterEye = { -10.0f,5.0f,20.0f };
+			}
+		}
+		SetEaseCamera();
+	}
+	else {
 		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 			m_Frame = 1.0f;
 		}
-		m_eyePos = {
-Ease(In,Cubic,m_Frame,m_eyePos.x,m_AfterEye.x),
-Ease(In,Cubic,m_Frame,m_eyePos.y,m_AfterEye.y),
-Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
-		};
-		m_targetPos = {
-Ease(In,Cubic,m_Frame,m_targetPos.x,m_AfterTarget.x),
-Ease(In,Cubic,m_Frame,m_targetPos.y,m_AfterTarget.y),
-Ease(In,Cubic,m_Frame,m_targetPos.z,m_AfterTarget.z),
-		};
+		SetEaseCamera();
 	}
 }
 //円運動の際のカメラ位置更新
@@ -884,4 +965,16 @@ void CameraWork::StrongCamera() {
 			}
 		}
 	}
+}
+void CameraWork::SetEaseCamera() {
+	m_eyePos = {
+Ease(In,Cubic,m_Frame,m_eyePos.x,m_AfterEye.x),
+Ease(In,Cubic,m_Frame,m_eyePos.y,m_AfterEye.y),
+Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
+	};
+	m_targetPos = {
+Ease(In,Cubic,m_Frame,m_targetPos.x,m_AfterTarget.x),
+Ease(In,Cubic,m_Frame,m_targetPos.y,m_AfterTarget.y),
+Ease(In,Cubic,m_Frame,m_targetPos.z,m_AfterTarget.z),
+	};
 }

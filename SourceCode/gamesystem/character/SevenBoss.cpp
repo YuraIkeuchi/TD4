@@ -25,7 +25,7 @@ SevenBoss::SevenBoss() {
 bool SevenBoss::Initialize() {
 	m_Position = { 0.0f,5.0f,30.0f };
 	m_Rotation = { 0.0f,270.0f,0.0f };
-	m_Scale = { 1.0f,1.0f,1.0f };
+	m_Scale = { 1.5f,1.5f,1.5f };
 	m_Color = { 1.0f,0.0f,0.0f,1.0f };
 	ActionTimer = 1;
 
@@ -42,7 +42,7 @@ bool SevenBoss::Initialize() {
 void SevenBoss::SkipInitialize() {
 	m_Position = { 0.0f,5.0f,30.0f };
 	m_Rotation = { 0.0f,270.0f,0.0f };
-	m_Scale = { 1.0f,1.0f,1.0f };
+	m_Scale = { 1.5f,1.5f,1.5f };
 	m_Color = { 1.0f,0.0f,0.0f,1.0f };
 }
 //CSV
@@ -618,6 +618,15 @@ void SevenBoss::Stun() {
 }
 //登場シーン
 void SevenBoss::AppearAction() {
+	//sin波によって上下に動く
+	m_SinAngle += 2.0f;
+	m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
+	m_Position.y = (sin(m_SinAngle2) * 1.0f + 5.0f);
+	m_AppearTimer++;
+	if (m_AppearTimer >= 2250) {
+		if (Helper::GetInstance()->CheckMax(m_Position.z, 25.0f, -0.05f)) {
+		}
+	}
 	Obj_SetParam();
 }
 //ボス撃破シーン

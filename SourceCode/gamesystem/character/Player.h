@@ -163,6 +163,7 @@ private://各クラス
 	enum LastState {
 		LAST_SET,
 		LAST_WALK,
+		LAST_SECOND_WALK,
 		LAST_STOP,
 	}_LastState;
 public:
