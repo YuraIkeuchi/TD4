@@ -211,6 +211,8 @@ protected:
 	bool m_AwakeInit = false;
 
 	int m_AppearTimer = {};
+
+	int m_DeadTimer = {};
 private:
 
 	enum class ActionList {

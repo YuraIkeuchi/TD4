@@ -151,6 +151,7 @@ public:
 	void SetCameraState(const int CameraState) { m_CameraState = CameraState; }
 
 	void SetLastTimer(const int LastTimer) { m_LastTimer = LastTimer; }
+	void SetEndTimer(const int EndTimer) { m_EndTimer = EndTimer; }
 
 	//シーンネームの取得
 	void SetSceneName(std::string name) { SceneName = name; }
@@ -231,6 +232,9 @@ private:
 
 	//ラスボスのカメラ時間
 	int m_LastTimer = 0;
+
+	//撃破時間
+	int m_EndTimer = 0;
 
 	enum LastState {
 		LAST_SET,

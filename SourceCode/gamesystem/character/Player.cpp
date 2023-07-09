@@ -791,3 +791,14 @@ void Player::LastAppearUpdate(int Timer) {
 	//どっち使えばいいか分からなかったから保留
 	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 }
+void Player::LastDeadUpdate(int Timer) {
+	index = 15;
+	m_fbxObject->GetBoneIndexMat(index, skirtmat);
+	skirtobj->FollowUpdate(skirtmat);
+	playerattach->AppearUpdate(Timer);
+	//基礎パラメータ設定
+	Fbx_SetParam();
+
+	//どっち使えばいいか分からなかったから保留
+	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+}

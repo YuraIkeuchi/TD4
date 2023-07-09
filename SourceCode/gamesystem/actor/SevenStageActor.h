@@ -44,14 +44,8 @@ private:
 	float BosscircleShadowAtten[3] = { 0.5f,0.6f,0.0f };
 	float BosscircleShadowFactorAngle[2] = { 0.0f, 2.0f };
 
-
-	//ž™‚Ì“I‚ÉŽg‚¤
-	float m_Angle[SPOT_NUM] = {};
-	float m_Angle2[SPOT_NUM] = {};
-
-	float m_AddPos = {};
-
 	int m_AppTimer = 0;
+	int m_EndTimer = 0;
 
 
 	enum AppState {
