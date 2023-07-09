@@ -91,6 +91,7 @@ void PlayerAttach::AppearUpdate(int Timer) {
 	if (_AppearState == APPEAR_SET) {
 		if (Timer == 1) {
 			m_Position = { 0.0f,3.0f,-35.0f };
+			m_Rotation = { 0.0f,90.0f,0.0f };
 			_AppearState = APPEAR_WALK;
 		}
 	}
@@ -104,8 +105,15 @@ void PlayerAttach::AppearUpdate(int Timer) {
 			_AppearState = APPEAR_STOP;
 		}
 	}
+	else if(_AppearState == APPEAR_WALK2) {
+		if (Helper::GetInstance()->CheckMin(m_Position.z, 15.0f, 0.025f)) {
+			_AppearState = APPEAR_STOP;
+		}
+	}
 	else {
-
+		if (Timer == 2500) {
+			_AppearState = APPEAR_WALK2;
+		}
 	}
 	Obj_SetParam();
 }

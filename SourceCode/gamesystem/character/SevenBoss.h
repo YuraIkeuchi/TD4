@@ -101,7 +101,8 @@ private:
 	vector<AbsorptionEffect*> abseffect;//’e–‹
 	unique_ptr<ConfuEffect> confueffect;
 	unique_ptr<BossStunEffect> bossstuneffect;
-
+	float m_SinAngle = {};
+	float m_SinAngle2 = {};
 	int m_InterVal = {};
 
 	int m_MoveTimer = {};

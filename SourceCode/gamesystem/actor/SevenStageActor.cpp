@@ -68,7 +68,7 @@ void SevenStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	}
 
 	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-	lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, 0.0f, Player::GetInstance()->GetPosition().z }));
+	lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, -2.0f, Player::GetInstance()->GetPosition().z }));
 	lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
 	lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
 
@@ -196,11 +196,8 @@ void SevenStageActor::IntroUpdate(DebugCamera* camera) {
 		camerawork->SetCameraState(CAMERA_NORMAL);
 		enemymanager->SkipInitialize();
 	}
-	text_->Display();
-	m_AppTimer++;
-	if (m_AppTimer == 240) {
-		text_->SelectText(TextManager::LAST_TALK_SECOND);
-	}
+	//テキスト読み
+	TextRead();
 	//各クラス更新
 	Player::GetInstance()->LastAppearUpdate(m_AppTimer);
 	BackObj::GetInstance()->Update();
@@ -308,4 +305,66 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 //撃破シーン
 void SevenStageActor::FinishUpdate(DebugCamera* camera) {
 	Input* input = Input::GetInstance();
+}
+//テキスト関係
+void SevenStageActor::TextRead() {
+	text_->Display();
+	m_AppTimer++;
+	if (m_AppTimer == 240) {
+		text_->SelectText(TextManager::LAST_TALK_SECOND);
+	}
+	else if (m_AppTimer == 350) {
+		text_->SelectText(TextManager::LAST_TALK_THIRD);
+	}
+	else if (m_AppTimer == 500) {
+		text_->SelectText(TextManager::LAST_TALK_FOURTH);
+	}
+	else if (m_AppTimer == 650) {
+		text_->SelectText(TextManager::LAST_TALK_FIVE);
+	}
+	else if (m_AppTimer == 800) {
+		text_->SelectText(TextManager::LAST_TALK_SIX);
+	}
+	else if (m_AppTimer == 950) {
+		text_->SelectText(TextManager::LAST_TALK_SEVEN);
+	}
+	else if (m_AppTimer == 1100) {
+		text_->SelectText(TextManager::LAST_TALK_EIGHT);
+	}
+	else if (m_AppTimer == 1250) {
+		text_->SelectText(TextManager::LAST_TALK_NINE);
+	}
+	else if (m_AppTimer == 1400) {
+		text_->SelectText(TextManager::LAST_TALK_TEN);
+	}
+	else if (m_AppTimer == 1550) {
+		text_->SelectText(TextManager::LAST_TALK_ELEVEN);
+	}
+	else if (m_AppTimer == 1700) {
+		text_->SelectText(TextManager::LAST_TALK_TWELVE);
+	}
+	else if (m_AppTimer == 1850) {
+		text_->SelectText(TextManager::LAST_TALK_THIRTEEN);
+	}
+	else if (m_AppTimer == 2000) {
+		text_->SelectText(TextManager::LAST_TALK_FOURTEEN);
+	}
+	else if (m_AppTimer == 2150) {
+		text_->SelectText(TextManager::LAST_TALK_FIFETEEN);
+	}
+	else if (m_AppTimer == 2300) {
+		text_->SelectText(TextManager::LAST_TALK_SIXTEEN);
+	}
+	else if (m_AppTimer == 2450) {
+		text_->SelectText(TextManager::LAST_TALK_SEVENTEEN);
+	}
+	else if (m_AppTimer == 2600) {
+		text_->SelectText(TextManager::LAST_TALK_EIGHTTEEN);
+	}
+	else if (m_AppTimer == 2750) {
+		text_->SelectText(TextManager::LAST_TALK_NINETEEN);
+	}
+	else if (m_AppTimer == 2950) {
+		camerawork->SetCameraSkip(true);
+	}
 }

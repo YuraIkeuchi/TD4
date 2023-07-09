@@ -101,6 +101,9 @@ private://各ボスの登場カメラ
 	void SetCircleCameraTarget();
 	//円運動のカメラセットの際のやつ
 	void SetCircleCameraEye(const XMFLOAT3& target,const XMFLOAT3& basepos);
+
+private:
+	void SetEaseCamera();
 public:
 	bool Finish;
 	int Timer_first = 1;
@@ -228,4 +231,15 @@ private:
 
 	//ラスボスのカメラ時間
 	int m_LastTimer = 0;
+
+	enum LastState {
+		LAST_SET,
+		LAST_BOSS,
+		LAST_PLAYER,
+		LAST_UPBOSS,
+		LAST_ZOOMBOSS,
+		LAST_FARBOSS,
+		LAST_BATTLE,
+		LAST_BATTLE2
+	}_LastState;
 };
