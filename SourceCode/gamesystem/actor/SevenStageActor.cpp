@@ -167,7 +167,7 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	}
 	if ((m_SceneState == SceneState::IntroState) || (m_SceneState == SceneState::MainState && camerawork->GetChangeStrong())) {
 		text_->SpriteDraw(dxCommon);
-	}
+	}sceneChanger_->Draw();
 	IKESprite::PostDraw();
 	IKESprite::PreDraw();
 	//blackwindow->Draw();
