@@ -8,6 +8,8 @@
 #include "Shake.h"
 #include "ConfuEffect.h"
 #include "NoteEffect.h"
+#include"Fraction.h"
+
 
 class Spline;
 enum BottleState {
@@ -17,6 +19,16 @@ enum BottleState {
 class FirstBoss :
 	public InterBoss
 {
+private:
+	enum AttackFase {
+		AttackBefore=0,
+		AttackAfter,
+	}fase_;
+
+	enum JumpFase {
+		JumpBefore=0,
+		JumpAfter,
+	}jump_;
 public:
 	FirstBoss();
 
@@ -56,6 +68,12 @@ private:
 	void RockOn();
 
 	void Attack();
+
+	void FaceToOrientation();
+
+	void CreateFraction(const XMFLOAT3& FractionPos);
+
+	void Crush();
 private:
 	//CSV読み込み系
 	void CSVLoad();
@@ -68,6 +86,9 @@ private:
 	//各クラス
 	unique_ptr<ConfuEffect> confueffect;
 	unique_ptr<NoteEffect> noteeffect;
+	std::list<std::unique_ptr<Fraction>> fraction_;
+	vector<XMFLOAT3> m_Area;
+
 	//キャラの状態
 	enum CharaState
 	{
@@ -152,7 +173,6 @@ private:
 	float m_FollowSpeed = {};
 
 	float timer_ = 0.f;
-	XMFLOAT3 m_Rotation = {};
 	float RottoPlayer = 0.0f;
 	float commandTimer = 0.0f;
 	float kLockOnTimeMax = 50.0f;
@@ -161,6 +181,10 @@ private:
 	XMFLOAT3 s_pos = {}, e_pos = {};
 	float kJumpTimeMax = 60.0f;
 	const int kJumpCountMax = 3;
+
+	float fraction_timer_ = 0.f;
+
+	int attack_count_ = 0;
 };
 
 

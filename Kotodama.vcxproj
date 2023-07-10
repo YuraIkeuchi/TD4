@@ -110,7 +110,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DarkBullet.cpp" />
-    <ClCompile Include="Fraction.cpp" />
     <ClCompile Include="SourceCode\engine\2d\DebugText.cpp" />
     <ClCompile Include="SourceCode\engine\2d\Feed.cpp" />
     <ClCompile Include="SourceCode\engine\2d\Font.cpp" />
@@ -187,6 +186,7 @@
     <ClCompile Include="SourceCode\gamesystem\bossattach\ConfuCD.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\DamageArea.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\DebuffCD.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\bossattach\Fraction.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\InterStamp.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\JoyStamp.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\InterCD.cpp" />
@@ -271,7 +271,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DarkBullet.h" />
-    <ClInclude Include="Fraction.h" />
     <ClInclude Include="SourceCode\engine\2d\DebugText.h" />
     <ClInclude Include="SourceCode\engine\2d\Feed.h" />
     <ClInclude Include="SourceCode\engine\2d\Font.h" />
@@ -355,6 +354,7 @@
     <ClInclude Include="SourceCode\gamesystem\bossattach\ConfuCD.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\DamageArea.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\DebuffCD.h" />
+    <ClInclude Include="SourceCode\gamesystem\bossattach\Fraction.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\InterStamp.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\JoyStamp.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\InterCD.h" />
