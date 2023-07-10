@@ -58,7 +58,7 @@ float InterBoss::HpPercent() {
 void InterBoss::AwakeUpdate() {
 	InitAwake();
 	if (m_AwakeInit) {
-		m_Rotation.y += 5.0f;
+		//m_Rotation.y += 5.0f;
 	}
 	//OBJのステータスのセット
 	Obj_SetParam();

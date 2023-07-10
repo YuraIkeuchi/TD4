@@ -138,6 +138,9 @@ public:
 		LAST_TALK_TWENTY,
 		LAST_TALK_TWENTYONE,
 		LAST_TALK_TWENTYSECOND,
+		AWAKE_FIRST,
+		AWAKE_SECOND,
+		AWAKE_THIRD,
 	};
 
 	static TextManager* GetInstance();

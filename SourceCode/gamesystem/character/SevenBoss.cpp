@@ -826,10 +826,10 @@ void SevenBoss::InitAwake() {
 		poltergeist.clear();
 		abseffect.clear();
 		damageblock.clear();
-		m_Position = { 0.0f,3.0f,30.0f };
-		m_Rotation = { 0.0f,90.0f,0.0f };
-		m_Scale = { 0.1f,0.1f,0.1f };
-		m_Color = { 1.0f,1.0f,1.0f,1.0f };
+		m_Position = { 0.0f,5.0f,30.0f };
+		m_Rotation = { 0.0f,270.0f,0.0f };
+		m_Scale = { 1.5f,1.5f,1.5f };
+		m_Color = { 1.0f,0.0f,0.0f,1.0f };
 		m_InterVal = {};
 		m_MoveTimer = {};
 		//çUåÇâÒêî

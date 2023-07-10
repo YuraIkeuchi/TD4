@@ -30,6 +30,7 @@ private:
 	void FinishUpdate(DebugCamera* camera)override;		//åÇîjÉVÅ[Éì
 	
 	void TextRead();
+	void AwakeText();
 private:
 	static const int SPOT_NUM = 4;
 private:
@@ -46,7 +47,7 @@ private:
 
 	int m_AppTimer = 0;
 	int m_EndTimer = 0;
-
+	int m_AwakeTimer = 0;
 
 	enum AppState {
 		APP_START,
