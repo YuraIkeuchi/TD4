@@ -92,6 +92,7 @@ private:
 	static const int POLTER_NUM = 4;
 	static const int FIRE_NUM = 4;
 	static const int AVATAR_NUM = 2;
+	static const int STRONG_AVATAR_NUM = 4;
 	static const int BLOCK_NUM = 6;
 private:
 	vector<Poltergeist*> poltergeist;//ポルターガイスト

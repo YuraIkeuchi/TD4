@@ -413,19 +413,43 @@ void SevenBoss::BirthAvatar() {
 	}
 	m_MoveTimer++;
 	if (m_MoveTimer == l_LimitTimer) {
-		for (int i = 0; i < AVATAR_NUM; i++) {
-			InterBoss* boss;
-			boss = new AvatarBoss();
-			boss->Initialize();
-			boss->SetPosition(m_Position);
-			if (i == 0) {
-				boss->SetCircleSpeed(0.0f);
+		if (!isStrong) {
+			for (int i = 0; i < AVATAR_NUM; i++) {
+				InterBoss* boss;
+				boss = new AvatarBoss();
+				boss->Initialize();
+				boss->SetPosition(m_Position);
+				if (i == 0) {
+					boss->SetCircleSpeed(0.0f);
+				}
+				else {
+					boss->SetCircleSpeed(180.0f);
+				}
+				avatarboss.push_back(boss);
+				m_AvatarCount++;
 			}
-			else {
-				boss->SetCircleSpeed(180.0f);
+		}
+		else {
+			for (int i = 0; i < STRONG_AVATAR_NUM; i++) {
+				InterBoss* boss;
+				boss = new AvatarBoss();
+				boss->Initialize();
+				boss->SetPosition(m_Position);
+				if (i == 0) {
+					boss->SetCircleSpeed(0.0f);
+				}
+				else if(i == 1) {
+					boss->SetCircleSpeed(90.0f);
+				}
+				else if (i == 2) {
+					boss->SetCircleSpeed(180.0f);
+				}
+				else {
+					boss->SetCircleSpeed(270.0f);
+				}
+				avatarboss.push_back(boss);
+				m_AvatarCount++;
 			}
-			avatarboss.push_back(boss);
-			m_AvatarCount++;
 		}
 		m_AttackCount++;
 		m_MoveTimer = {};
