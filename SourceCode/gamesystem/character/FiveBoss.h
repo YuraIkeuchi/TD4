@@ -148,10 +148,20 @@ private:
 	void ActionSet(ActionPhase phase,InterAttack*attack);
 	int RandAction;
 	int ActionTimer;
+	size_t bonesize;
+	std::vector<XMFLOAT3> bonepos;;
+	std::vector<XMMATRIX> bonemat;;
+	std::vector<XMFLOAT4> s_color;
+	std::vector<XMFLOAT4>e_color;
+	std::vector<float> s_scale;
+	std::vector<float> e_scale;
+	std::vector<int> m_Life;
 	inline void Shot() { shot->Upda(); }
 	inline void Normal() { normal ->Upda(); }
 	inline void Smash() {smash->Upda(); }
 	inline void Slash() { slash->Upda(); }
+
+	void MatTranstoPos(XMMATRIX trans, XMFLOAT3& m_Pos);
 };
 
 

@@ -56,6 +56,15 @@ bool FiveBoss::Initialize()
 	_charaState = STATE_INTER;
 	m_AreaState = AREA_SET;*/
 	//CSVƒ[ƒh
+	bonesize =  m_fbxObject->GetBoneSize();
+	//{
+	bonepos.resize(19);
+	bonemat.resize(19);
+	s_color.resize(19);
+	e_color.resize(19);
+	s_scale.resize(19);
+	e_scale.resize(19);
+	m_Life.resize(19);
 	CSVLoad();
 	return true;
 }
@@ -176,9 +185,29 @@ void FiveBoss::Action()
 
 	Fbx_SetParam();
 
+	if (bonesize == 0) {
+	
+	}
+	for (auto i = 0; i < 19; i++) {
+	}
+
+		
 	//‚Ç‚Á‚¿Žg‚¦‚Î‚¢‚¢‚©•ª‚©‚ç‚È‚©‚Á‚½‚©‚ç•Û—¯
 	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+for (auto i = 0; i < 19; i++)
+		{
+			m_fbxObject->GetBoneIndexMat(i, bonemat[i]);
+		MatTranstoPos(bonemat[i], bonepos[i]);
+	
+			s_color[i] = { 1.0f,0.4f,1.0f,0.50f };
+			e_color[i] = { 0.0f,0.0f,0.0f,0.0f };
+			s_scale[i] = 2.0f;
+			e_scale[i] = 0.0f;
+			m_Life[i] = 50;
 
+			ParticleEmitter::GetInstance()->FireEffect(m_Life[i],bonepos[i], s_scale[i], e_scale[i], s_color[i], e_color[i]);
+
+		}
 }
 
 void FiveBoss::AppearAction()
@@ -223,7 +252,12 @@ void FiveBoss::Draw(DirectXCommon* dxCommon)
 
 }
 
-
+void FiveBoss::MatTranstoPos(XMMATRIX trans,XMFLOAT3& m_Pos)
+{
+	m_Pos.x = trans.r[3].m128_f32[0]; // GetPosition().x;
+	m_Pos.y = trans.r[3].m128_f32[1];
+	m_Pos.z = trans.r[3].m128_f32[2];
+}
 void FiveBoss::InitAwake() {
 
 }
