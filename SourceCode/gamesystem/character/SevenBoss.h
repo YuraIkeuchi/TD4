@@ -159,4 +159,11 @@ private:
 		RETURN_PLAY,
 		RETURN_END,
 	}_ReturnState;
+
+	//CSV系
+	//各インターバルやリミット時間
+	//強化前
+	vector<int>m_Limit;
+	//強化後
+	vector<int>m_StrongLimit;
 };
