@@ -136,7 +136,6 @@ void SevenBoss::Action() {
 	//偽物のボス
 	for (InterBoss* newboss : avatarboss) {
 		if (newboss != nullptr) {
-			newboss->SetTargetPos(m_Position);
 			newboss->Update();
 		}
 	}
@@ -215,6 +214,7 @@ void SevenBoss::Action() {
 	//HPが半分切ったら強化
 	if (m_HP < m_MaxHp / 2) {
 		isStrong = true;
+		AVATAR_NUM = 4;
 	}
 }
 //ポーズ
@@ -274,13 +274,12 @@ void SevenBoss::ImGui_Origin() {
 	ImGui::Text("POSX:%f", m_Position.x);
 	ImGui::Text("POSZ:%f", m_Position.z);
 	ImGui::End();
-
-	////ダメージブロック
-	//for (DamageBlock* newblock : damageblock) {
-	//	if (newblock != nullptr) {
-	//		newblock->ImGuiDraw();
-	//	}
-	//}
+	//偽物のボス
+	for (InterBoss* newboss : avatarboss) {
+		if (newboss != nullptr) {
+			newboss->ImGuiDraw();
+		}
+	}
 }
 //インターバル
 void SevenBoss::InterValMove() {
@@ -413,43 +412,13 @@ void SevenBoss::BirthAvatar() {
 	}
 	m_MoveTimer++;
 	if (m_MoveTimer == l_LimitTimer) {
-		if (!isStrong) {
-			for (int i = 0; i < AVATAR_NUM; i++) {
-				InterBoss* boss;
-				boss = new AvatarBoss();
-				boss->Initialize();
-				boss->SetPosition(m_Position);
-				if (i == 0) {
-					boss->SetCircleSpeed(0.0f);
-				}
-				else {
-					boss->SetCircleSpeed(180.0f);
-				}
-				avatarboss.push_back(boss);
-				m_AvatarCount++;
-			}
-		}
-		else {
-			for (int i = 0; i < STRONG_AVATAR_NUM; i++) {
-				InterBoss* boss;
-				boss = new AvatarBoss();
-				boss->Initialize();
-				boss->SetPosition(m_Position);
-				if (i == 0) {
-					boss->SetCircleSpeed(0.0f);
-				}
-				else if(i == 1) {
-					boss->SetCircleSpeed(90.0f);
-				}
-				else if (i == 2) {
-					boss->SetCircleSpeed(180.0f);
-				}
-				else {
-					boss->SetCircleSpeed(270.0f);
-				}
-				avatarboss.push_back(boss);
-				m_AvatarCount++;
-			}
+		for (int i = 0; i < AVATAR_NUM; i++) {
+			InterBoss* boss;
+			boss = new AvatarBoss();
+			boss->SetAvatarType(i * 1);
+			boss->Initialize();
+			avatarboss.push_back(boss);
+			m_AvatarCount++;
 		}
 		m_AttackCount++;
 		m_MoveTimer = {};
@@ -478,7 +447,7 @@ void SevenBoss::Manipulate() {
 		if (m_MoveTimer == 50) {
 			m_Manipulate = true;
 		}
-		else if (m_MoveTimer == 52) {
+		else if (m_MoveTimer == 51) {
 			m_Manipulate = false;
 		}
 
@@ -951,6 +920,7 @@ void SevenBoss::InitAwake() {
 		m_RotTimer = {};
 		m_StartMani = false;
 		m_DeleteObj = false;
+		m_AvatarCount = {};
 		m_AwakeInit = true;
 	}
 }
