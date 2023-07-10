@@ -140,7 +140,9 @@ void SevenStageActor::BackDraw(DirectXCommon* dxCommon) {
 	}
 	////各クラスの描画
 	if (!camerawork->GetFeedEnd()) {
-		Player::GetInstance()->Draw(dxCommon);
+		if (!camerawork->GetChangeStrong()) {
+			Player::GetInstance()->Draw(dxCommon);
+		}
 		if (camerawork->GetCameraState() != CAMERA_BOSS_STRONG) {
 			loadobj->Draw(dxCommon);
 		}
@@ -163,7 +165,7 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd() && camerawork->GetCameraState() == CAMERA_NORMAL) {
 		ui->Draw();
 	}
-	if (m_SceneState == SceneState::IntroState) {
+	if ((m_SceneState == SceneState::IntroState) || (m_SceneState == SceneState::MainState && camerawork->GetChangeStrong())) {
 		text_->SpriteDraw(dxCommon);
 	}
 	IKESprite::PostDraw();
@@ -177,10 +179,8 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 //IMGuiの描画
 void SevenStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	ImGui::Begin("Seven");
-	ImGui::Text("Timer:%d", m_AppTimer);
+	ImGui::Text("Timer:%d", m_AwakeTimer);
 	ImGui::End();
-	Player::GetInstance()->ImGuiDraw();
-	camerawork->ImGuiDraw();
 }
 //登場シーン
 void SevenStageActor::IntroUpdate(DebugCamera* camera) {
@@ -225,6 +225,9 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 			Player::GetInstance()->AwakeInit();
 			enemymanager->DeleteObj();
 			loadobj->AwakeInit();
+			text_->Display();
+			m_AwakeTimer++;
+			AwakeText();
 		}
 		//二回目のフェードが終わるとバトルモードに戻る
 		if (camerawork->GetEndStrong()) {
@@ -366,5 +369,17 @@ void SevenStageActor::TextRead() {
 	}
 	else if (m_AppTimer == 2950) {
 		camerawork->SetCameraSkip(true);
+	}
+}
+//覚醒時のテキスト
+void SevenStageActor::AwakeText() {
+	if (m_AwakeTimer == 1) {
+		text_->SelectText(TextManager::AWAKE_FIRST);
+	}
+	else if (m_AwakeTimer == 200) {
+		text_->SelectText(TextManager::AWAKE_SECOND);
+	}
+	else if (m_AwakeTimer == 400) {
+		text_->SelectText(TextManager::AWAKE_THIRD);
 	}
 }

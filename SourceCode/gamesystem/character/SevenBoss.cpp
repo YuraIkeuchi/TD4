@@ -341,7 +341,7 @@ void SevenBoss::Polter() {
 		m_MoveTimer = {};
 		m_AttackCount++;
 		//“ñ‰ñUŒ‚‚µ‚½‚ç‹zûs“®‚ÉˆÚs‚·‚é
-		if (m_AttackCount != 2) {
+		if (m_AttackCount != 4) {
 			_charaState = STATE_INTER;
 			m_Return = true;
 		}
@@ -362,7 +362,7 @@ void SevenBoss::ThrowBound() {
 		m_AttackCount++;
 
 		//“ñ‰ñUŒ‚‚µ‚½‚ç‹zûs“®‚ÉˆÚs‚·‚é
-		if (m_AttackCount != 2) {
+		if (m_AttackCount != 4) {
 			_charaState = STATE_INTER;
 			m_Return = true;
 		}
@@ -393,7 +393,7 @@ void SevenBoss::BirthAvatar() {
 		m_AttackCount++;
 		m_MoveTimer = {};
 		//“ñ‰ñUŒ‚‚µ‚½‚ç‹zûs“®‚ÉˆÚs‚·‚é
-		if (m_AttackCount != 2) {
+		if (m_AttackCount != 4) {
 			_charaState = STATE_INTER;
 			m_Return = true;
 		}
@@ -421,7 +421,7 @@ void SevenBoss::Manipulate() {
 			m_AttackCount++;
 
 			//“ñ‰ñUŒ‚‚µ‚½‚ç‹zûs“®‚ÉˆÚs‚·‚é
-			if (m_AttackCount != 2) {
+			if (m_AttackCount != 4) {
 				_charaState = STATE_INTER;
 				m_Return = true;
 			}
@@ -443,7 +443,7 @@ void SevenBoss::FireAttack() {
 		m_AttackCount++;
 
 		//“ñ‰ñUŒ‚‚µ‚½‚ç‹zûs“®‚ÉˆÚs‚·‚é
-		if (m_AttackCount != 2) {
+		if (m_AttackCount != 4) {
 			_charaState = STATE_INTER;
 			m_Return = true;
 		}
@@ -485,7 +485,7 @@ void SevenBoss::Confu() {
 		m_AttackCount++;
 
 		//“ñ‰ñUŒ‚‚µ‚½‚ç‹zûs“®‚ÉˆÚs‚·‚é
-		if (m_AttackCount != 2) {
+		if (m_AttackCount != 4) {
 			_charaState = STATE_INTER;
 			m_Return = true;
 		}
@@ -506,7 +506,7 @@ void SevenBoss::BlockAttack() {
 		m_MoveTimer = {};
 		m_AttackCount++;
 		//“ñ‰ñUŒ‚‚µ‚½‚ç‹zûs“®‚ÉˆÚs‚·‚é
-		if (m_AttackCount != 2) {
+		if (m_AttackCount != 4) {
 			_charaState = STATE_INTER;
 			m_Return = true;
 		}
@@ -826,10 +826,10 @@ void SevenBoss::InitAwake() {
 		poltergeist.clear();
 		abseffect.clear();
 		damageblock.clear();
-		m_Position = { 0.0f,3.0f,30.0f };
-		m_Rotation = { 0.0f,90.0f,0.0f };
-		m_Scale = { 0.1f,0.1f,0.1f };
-		m_Color = { 1.0f,1.0f,1.0f,1.0f };
+		m_Position = { 0.0f,5.0f,30.0f };
+		m_Rotation = { 0.0f,270.0f,0.0f };
+		m_Scale = { 1.5f,1.5f,1.5f };
+		m_Color = { 1.0f,0.0f,0.0f,1.0f };
 		m_InterVal = {};
 		m_MoveTimer = {};
 		//UŒ‚‰ñ”

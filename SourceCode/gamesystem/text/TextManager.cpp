@@ -145,6 +145,9 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	LastCreateWord(LAST_TALK_SEVENTEEN, L"俺もお前が", L"吠え面をかくのが", L"楽しみだ!");
 	LastCreateWord(LAST_TALK_EIGHTTEEN, L"コトコ!", L"これが俺とお前の", L"サイゴのたたかいだ!!!");
 	LastCreateWord(LAST_TALK_NINETEEN, L"全力でいくぞ!!!", L"", L"");
+	LastCreateWord(AWAKE_FIRST, L"ありゃー", L"いがいとやるじゃんにいさん", L"まぁ・・・");
+	LastCreateWord(AWAKE_SECOND, L"そろそろあそびはおわりかなぁ", L"じゃあ!", L"");
+	LastCreateWord(AWAKE_THIRD, L"にげるならいまのうちだよ!!!", L"", L"");
 	//ラスボス
 	//コンヴァージョン初期化
 	Create(dxcomon);

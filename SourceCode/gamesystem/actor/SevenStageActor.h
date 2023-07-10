@@ -30,6 +30,7 @@ private:
 	void FinishUpdate(DebugCamera* camera)override;		//撃破シーン
 	
 	void TextRead();
+	void AwakeText();
 private:
 	static const int SPOT_NUM = 4;
 private:
@@ -44,15 +45,9 @@ private:
 	float BosscircleShadowAtten[3] = { 0.5f,0.6f,0.0f };
 	float BosscircleShadowFactorAngle[2] = { 0.0f, 2.0f };
 
-
-	//棘の的に使う
-	float m_Angle[SPOT_NUM] = {};
-	float m_Angle2[SPOT_NUM] = {};
-
-	float m_AddPos = {};
-
 	int m_AppTimer = 0;
-
+	int m_EndTimer = 0;
+	int m_AwakeTimer = 0;
 
 	enum AppState {
 		APP_START,

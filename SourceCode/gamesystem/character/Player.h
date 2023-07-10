@@ -31,6 +31,8 @@ public:
 	void DeathUpdate();
 	//ラスボス登場シーンの動き
 	void LastAppearUpdate(int Timer);
+	//ラスボス撃破シーンの動き
+	void LastDeadUpdate(int Timer);
 	//キャラの状態
 	enum CharaState
 	{
