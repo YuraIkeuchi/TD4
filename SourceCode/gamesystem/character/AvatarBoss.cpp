@@ -14,6 +14,7 @@ AvatarBoss::AvatarBoss() {
 	m_Object->Initialize();
 	m_Object->SetModel(m_Model);
 }
+
 //初期化
 bool AvatarBoss::Initialize() {
 	m_Position = { 0.0f,3.0f,30.0f };
@@ -30,6 +31,20 @@ bool AvatarBoss::Initialize() {
 	m_CircleScale = 15.0f;
 	//CSVロード
 	CSVLoad();
+
+	//アバタータイプによって指定位置が変わる
+	if (m_AvatarType == AVATAR_ONE || m_AvatarType == AVATAR_SECOND) {
+		m_Position = { 0.0f,3.0f,0.0f };
+		m_TargetPos = { 0.0f,3.0f,0.0f };
+	}
+	else if (m_AvatarType == AVATAR_THIRD) {
+		m_Position = { 45.0f,3.0f,40.0f };
+		m_TargetPos = { 45.0f,3.0f,40.0f };
+	}
+	else {
+		m_Position = { -35.0f,3.0f,-40.0f };
+		m_TargetPos = { -35.0f,3.0f,-40.0f };
+	}
 	return true;
 }
 //スキップ時の初期化
@@ -48,7 +63,6 @@ void AvatarBoss::CSVLoad() {
 
 	m_MaxHp = m_HP;
 }
-
 void (AvatarBoss::* AvatarBoss::stateTable[])() = {
 	&AvatarBoss::InterValMove,//動きの合間
 	&AvatarBoss::Polter,//ポルターガイスト
@@ -56,12 +70,21 @@ void (AvatarBoss::* AvatarBoss::stateTable[])() = {
 	&AvatarBoss::FireAttack,//火の玉
 	&AvatarBoss::BlockAttack,//範囲攻撃
 };
+void (AvatarBoss::* AvatarBoss::avatarTable[])() = {
+	&AvatarBoss::AvatarNormal,//ふつうの円運動
+	&AvatarBoss::AvatarAround,//外周
+	&AvatarBoss::AvatarRight,//右上
+	&AvatarBoss::AvatarLeft,//左下
+};
 //行動
 void AvatarBoss::Action() {
 	//状態移行(charastateに合わせる)
 	if (m_HP > 0.0f) {
 		(this->*stateTable[_charaState])();
 	}
+	//リミット制限
+	Helper::GetInstance()->Clamp(m_Position.x, -55.0f, 65.0f);
+	Helper::GetInstance()->Clamp(m_Position.z, -60.0f, 60.0f);
 	/*^^^^当たり判定^^^^*/
 	//弾とボスの当たり判定
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
@@ -162,16 +185,6 @@ void AvatarBoss::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui
 void AvatarBoss::ImGui_Origin() {
-	ImGui::Begin("Avatar");
-	ImGui::Text("Inter:%d", m_InterVal);
-	ImGui::Text("Move:%d", m_MoveTimer);
-	ImGui::End();
-
-	for (Poltergeist* newpolter : poltergeist) {
-		if (newpolter != nullptr) {
-			newpolter->ImGuiDraw();
-		}
-	}
 }
 //インターバル
 void AvatarBoss::InterValMove() {
@@ -179,28 +192,7 @@ void AvatarBoss::InterValMove() {
 	const float l_AddSpeed = 1.5f;
 	int l_LimitTimer = 400;
 
-	//基本的には本体の周りを円運動する
-	if (!m_Return) {
-		m_CircleSpeed += l_AddSpeed;
-
-		Helper::GetInstance()->CheckMax(m_CircleScale, 10.0f, -l_AddScale);
-
-		m_AfterPos = Helper::GetInstance()->CircleMove(m_TargetPos, m_CircleScale, m_CircleSpeed);
-		m_Position = {
-			Ease(In,Cubic,0.5f,m_Position.x,m_AfterPos.x),
-			m_Position.y,
-			Ease(In,Cubic,0.5f,m_Position.z,m_AfterPos.z),
-		};
-
-		//一定の距離が開いたら定位置に戻す
-		if (Helper::GetInstance()->ChechLength(m_Position, m_TargetPos) >= 25.0f) {
-			m_SaveSpeed = m_CircleSpeed;
-			m_Return = true;
-		}
-	}
-	else {
-		ReturnBoss();//ボスが定位置に戻る
-	}
+	(this->*avatarTable[m_AvatarType])();
 	m_InterVal++;
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> l_RandomMove(0, 3);
@@ -365,36 +357,56 @@ void AvatarBoss::DeadAction() {
 void AvatarBoss::DeadAction_Throw() {
 	Obj_SetParam();
 }
-void AvatarBoss::ReturnBoss() {
-	const float l_AddFrame = 0.05f;
-	if (_ReturnState == RETURN_SET) {
-		m_AfterAlpha = {};
-		if (m_VanishFrame < m_FrameMax) {
-			m_VanishFrame += l_AddFrame;
-		}
-		else {
-			_ReturnState = RETURN_PLAY;
-			m_VanishFrame = {};
-		}
-	}
-	else if (_ReturnState == RETURN_PLAY) {
-		m_CircleScale = 15.0f;
-		m_Position = Helper::GetInstance()->CircleMove(m_TargetPos, m_CircleScale, m_SaveSpeed);
-		_ReturnState = RETURN_END;
-		m_AfterAlpha = 1.0f;
-	}
-	else {
-		if (m_VanishFrame < m_FrameMax) {
-			m_VanishFrame += l_AddFrame;
-		}
-		else {
-			_ReturnState = RETURN_SET;
-			m_VanishFrame = {};
-			m_Return = false;
-		}
-	}
+void AvatarBoss::AvatarNormal() {
+	const float l_AddSpeed = 1.0f;
+	m_CircleSpeed += l_AddSpeed;
+	m_CircleScale = 20.0f;
 
-	m_Color.w = Ease(In, Cubic, m_VanishFrame, m_Color.w, m_AfterAlpha);
+	m_AfterPos = Helper::GetInstance()->CircleMove(m_TargetPos, m_CircleScale, m_CircleSpeed);
+	m_Position = {
+		Ease(In,Cubic,0.5f,m_Position.x,m_AfterPos.x),
+		m_Position.y,
+		Ease(In,Cubic,0.5f,m_Position.z,m_AfterPos.z),
+	};
+}
+
+void AvatarBoss::AvatarAround() {
+	const float l_AddSpeed = 1.0f;
+	m_CircleSpeed += l_AddSpeed;
+	m_CircleScale = 50.0f;
+
+	m_AfterPos = Helper::GetInstance()->CircleMove(m_TargetPos, m_CircleScale, m_CircleSpeed);
+	m_Position = {
+		Ease(In,Cubic,0.5f,m_Position.x,m_AfterPos.x),
+		m_Position.y,
+		Ease(In,Cubic,0.5f,m_Position.z,m_AfterPos.z),
+	};
+}
+
+void AvatarBoss::AvatarRight() {
+	const float l_AddSpeed = 1.0f;
+	m_CircleSpeed += l_AddSpeed;
+	m_CircleScale = 15.0f;
+
+	m_AfterPos = Helper::GetInstance()->CircleMove(m_TargetPos, m_CircleScale, m_CircleSpeed);
+	m_Position = {
+		Ease(In,Cubic,0.5f,m_Position.x,m_AfterPos.x),
+		m_Position.y,
+		Ease(In,Cubic,0.5f,m_Position.z,m_AfterPos.z),
+	};
+}
+
+void AvatarBoss::AvatarLeft() {
+	const float l_AddSpeed = 1.0f;
+	m_CircleSpeed += l_AddSpeed;
+	m_CircleScale = 15.0f;
+
+	m_AfterPos = Helper::GetInstance()->CircleMove(m_TargetPos, m_CircleScale, m_CircleSpeed);
+	m_Position = {
+		Ease(In,Cubic,0.5f,m_Position.x,m_AfterPos.x),
+		m_Position.y,
+		Ease(In,Cubic,0.5f,m_Position.z,m_AfterPos.z),
+	};
 }
 
 void AvatarBoss::InitAwake() {

@@ -130,6 +130,8 @@ public://gettersetter
 
 	void SetDirEmo(int DirEmo) { m_DirEmo = DirEmo; };
 
+	void SetAvatarType(int AvatarType) { m_AvatarType = AvatarType; };
+
 	void SetJackPos(const int num, XMFLOAT3 pos) { jackPos[num] = pos; };
 
 	void SetIsReferCheck(bool isReferCheck) { this->isReferCheck = isReferCheck; };
@@ -213,6 +215,8 @@ protected:
 	int m_AppearTimer = {};
 
 	int m_DeadTimer = {};
+
+	int m_AvatarType = {};
 private:
 
 	enum class ActionList {

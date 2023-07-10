@@ -178,9 +178,10 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGui‚Ì•`‰æ
 void SevenStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	ImGui::Begin("Seven");
-	ImGui::Text("Timer:%d", m_AwakeTimer);
-	ImGui::End();
+	//ImGui::Begin("Seven");
+	//ImGui::Text("Timer:%d", m_AwakeTimer);
+	//ImGui::End();
+	enemymanager->ImGuiDraw();
 }
 //“oêƒV[ƒ“
 void SevenStageActor::IntroUpdate(DebugCamera* camera) {

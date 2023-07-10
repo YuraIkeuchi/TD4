@@ -84,6 +84,8 @@ public:
 
 	//ƒS[ƒXƒg“¯m‚Ì“–‚½‚è”»’è
 	void GhostCollision(const XMFLOAT3& pos);
+
+	void DeleteBullet();
 public://getter setter
 	const bool& GetAlive() { return m_Alive; }
 	const bool& GetIsRefer() { return m_IsRefer; }

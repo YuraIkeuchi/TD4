@@ -551,3 +551,6 @@ void Ghost::BirthBullet() {
 	newnote->SetAngle(l_Angle);
 	attacknotes.push_back(newnote);
 }
+void Ghost::DeleteBullet() {
+	attacknotes.clear();
+}

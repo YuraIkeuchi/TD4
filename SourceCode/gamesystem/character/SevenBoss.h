@@ -91,8 +91,6 @@ private:
 private:
 	static const int POLTER_NUM = 4;
 	static const int FIRE_NUM = 4;
-	static const int AVATAR_NUM = 2;
-	static const int STRONG_AVATAR_NUM = 4;
 	static const int BLOCK_NUM = 6;
 private:
 	vector<Poltergeist*> poltergeist;//ポルターガイスト
@@ -160,6 +158,9 @@ private:
 		RETURN_PLAY,
 		RETURN_END,
 	}_ReturnState;
+
+	//分身ボスの数
+	int AVATAR_NUM = 2;
 
 	//CSV系
 	//各インターバルやリミット時間

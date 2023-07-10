@@ -179,7 +179,7 @@ void Poltergeist::Bound() {
 			m_ThrowType = THROW_PLAY;
 		}
 
-		m_Position = Helper::GetInstance()->CircleMove(m_BasePos, m_CircleScale, m_CircleSpeed);
+		m_Position = Helper::GetInstance()->CircleMove({ m_BasePos.x,m_Position.y,m_BasePos.z }, m_CircleScale, m_CircleSpeed);
 	}
 	//“K“–‚É“Š‚°‚é
 	else {

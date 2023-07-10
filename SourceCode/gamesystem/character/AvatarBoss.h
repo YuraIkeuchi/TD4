@@ -42,8 +42,12 @@ private:
 	void BlockAttack();//ダメージブロックの生成
 	void BirthBlock();
 	void BirthPolter(const std::string& PolterName);//ポルターガイストの生成
-		//ボスが戻る
-	void ReturnBoss();
+
+	//アバターのタイプ
+	void AvatarNormal();
+	void AvatarAround();
+	void AvatarRight();
+	void AvatarLeft();
 public:
 private:
 	//キャラの状態
@@ -58,6 +62,7 @@ private:
 
 	//関数ポインタ
 	static void(AvatarBoss::* stateTable[])();
+	static void(AvatarBoss::* avatarTable[])();
 private:
 	static const int POLTER_NUM = 2;
 	static const int FIRE_NUM = 4;
@@ -89,4 +94,11 @@ private:
 	float m_AfterAlpha = {};
 
 	float m_SaveSpeed = {};
+
+	enum AvatarType {
+		AVATAR_ONE,
+		AVATAR_SECOND,
+		AVATAR_THIRD,
+		AVATAR_FOURTH
+	};
 };
