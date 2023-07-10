@@ -97,10 +97,6 @@ void PlayerAttach::AppearUpdate(int Timer) {
 	}
 	else if (_AppearState == APPEAR_WALK) {
 		m_Position.z += 0.2f;
-		//sinîgÇ…ÇÊÇ¡Çƒè„â∫Ç…ìÆÇ≠
-		m_SinAngle += 7.0f;
-		m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
-		m_Position.y = (sin(m_SinAngle2) * 2.0f + 3.0f);
 		if (Helper::GetInstance()->CheckMin(m_Position.z, 10.0f, 0.025f)) {
 			_AppearState = APPEAR_STOP;
 		}
@@ -115,5 +111,13 @@ void PlayerAttach::AppearUpdate(int Timer) {
 			_AppearState = APPEAR_WALK2;
 		}
 	}
+	//sinîgÇ…ÇÊÇ¡Çƒè„â∫Ç…ìÆÇ≠
+	m_SinAngle += 7.0f;
+	m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
+	m_Position.y = (sin(m_SinAngle2) * 0.5f + 3.0f);
+
 	Obj_SetParam();
+}
+void PlayerAttach::LastDeadUpdate(int Timer) {
+
 }

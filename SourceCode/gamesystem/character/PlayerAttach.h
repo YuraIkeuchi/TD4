@@ -28,6 +28,8 @@ public:
 	void BirthObj();
 	//“oêƒV[ƒ“‚Ì“®‚«
 	void AppearUpdate(int Timer);
+	//Œ‚”jS‚Ì“®‚«
+	void LastDeadUpdate(int Timer);
 public:
 	//gettersetter
 	void SetAlive(const bool Alive) { m_Alive = Alive; }
