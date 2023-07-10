@@ -32,7 +32,7 @@ void SevenStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	//enemymanager->Initialize(dxCommon);
 	text_ = make_unique<BossText>();
 	text_->Initialize(dxCommon);
-	text_->SelectText(TextManager::TALK_FIRST);
+	text_->SelectText(TextManager::LAST_TALK_FIRST);
 	camerawork->SetBoss(enemymanager->GetBoss());
 	camerawork->SetCameraState(CAMERA_BOSSAPPEAR);
 	camerawork->SetSceneName("SEVENSTAGE");
@@ -55,29 +55,6 @@ void SevenStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 
 	lightgroup->SetCircleShadowActive(0, true);
 	lightgroup->SetCircleShadowActive(1, true);
-
-	//丸影のためのやつ
-	lightgroup->SetDirLightActive(0, false);
-	lightgroup->SetDirLightActive(1, false);
-	lightgroup->SetDirLightActive(2, false);
-	for (int i = 0; i < SPOT_NUM; i++) {
-		lightgroup->SetSpotLightActive(i, true);
-	}
-
-	spotLightPos[0] = { 30,  10, 60 };
-	spotLightPos[1] = { 30,  10,  0 };
-	spotLightPos[2] = { -30, 10, 60 };
-	spotLightPos[3] = { -30, 10,  0 };
-
-	spotLightDir[0] = { 0, -1, 0 };
-	spotLightDir[1] = { 0, -1, 0 };
-	spotLightDir[2] = { 0, -1, 0 };
-	spotLightDir[3] = { 0, -1, 0 };
-
-	spotLightColor[0] = { 1, 1, 1 };
-	spotLightColor[1] = { 1, 1, 1 };
-	spotLightColor[2] = { 1, 1, 1 };
-	spotLightColor[3] = { 1, 1, 1 };
 }
 //更新
 void SevenStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -91,7 +68,7 @@ void SevenStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	}
 
 	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-	lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, 0.0f, Player::GetInstance()->GetPosition().z }));
+	lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, -2.0f, Player::GetInstance()->GetPosition().z }));
 	lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
 	lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
 
@@ -113,28 +90,6 @@ void SevenStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		SceneManager::GetInstance()->ChangeScene("SELECT");
 	}*/
 
-
-	//スポットライトの動き
-	MoveSpotLight();
-	if (_AppState == APP_END) {
-		//丸影のためのやつ
-		lightgroup->SetDirLightActive(0, true);
-		lightgroup->SetDirLightActive(1, true);
-		lightgroup->SetDirLightActive(2, true);
-		for (int i = 0; i < SPOT_NUM; i++) {
-			lightgroup->SetSpotLightActive(i, false);
-		}
-	}
-
-	///スポットライト
-	for (int i = 0; i < SPOT_NUM; i++) {
-		lightgroup->SetSpotLightDir(i, XMVECTOR({ spotLightDir[i].x,spotLightDir[i].y,spotLightDir[i].z,0 }));
-		lightgroup->SetSpotLightPos(i, spotLightPos[i]);
-		lightgroup->SetSpotLightColor(i, spotLightColor[i]);
-		lightgroup->SetSpotLightAtten(i, XMFLOAT3(spotLightAtten));
-		lightgroup->SetSpotLightFactorAngle(i, XMFLOAT2(spotLightFactorAngle));
-	}
-	lightgroup->Update();
 	Menu::GetIns()->Upda();
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 }
@@ -221,9 +176,10 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void SevenStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	enemymanager->ImGuiDraw();
-	/*Player::GetInstance()->ImGuiDraw();
-	loadobj->ImGuiDraw();*/
+	ImGui::Begin("Seven");
+	ImGui::Text("Timer:%d", m_AppTimer);
+	ImGui::End();
+	Player::GetInstance()->ImGuiDraw();
 	camerawork->ImGuiDraw();
 }
 //登場シーン
@@ -240,44 +196,15 @@ void SevenStageActor::IntroUpdate(DebugCamera* camera) {
 		camerawork->SetCameraState(CAMERA_NORMAL);
 		enemymanager->SkipInitialize();
 	}
-
+	//テキスト読み
+	TextRead();
 	//各クラス更新
+	Player::GetInstance()->LastAppearUpdate(m_AppTimer);
 	BackObj::GetInstance()->Update();
 	ParticleEmitter::GetInstance()->Update();
-	Player::GetInstance()->AppearUpdate();
 	enemymanager->AppearUpdate();
-
+	camerawork->SetLastTimer(m_AppTimer);
 	camerawork->Update(camera);
-
-	m_AppTimer++;
-	if (m_AppTimer == 400) {
-		_AppState = APP_NOTICE;
-	}
-	else if (m_AppTimer == 580) {
-		_AppState = APP_VANISH;
-	}
-
-	//テキスト関係
-	text_->Display();
-	if (m_AppTimer == 1) {
-		text_->SelectText(TextManager::TALK_FIRST);
-	}
-	else if (m_AppTimer == 150) {
-		text_->SelectText(TextManager::TALK_SECOND);
-	}
-	else if (m_AppTimer == 300) {
-		text_->SelectText(TextManager::TALK_THIRD);
-		text_->ChangeColor(0, { 1.0f,0.0f,0.0f,1.0f });
-	}
-	else if (m_AppTimer == 400) {
-		text_->SelectText(TextManager::TALK_FOURTH);
-		for (int i = 0; i < 3; i++) {
-			text_->ChangeColor(i, { 1.0f,1.0f,0.0f,1.0f });
-		}
-	}
-	else if (m_AppTimer == 500) {
-		text_->SelectText(TextManager::TALK_FIVE);
-	}
 }
 //バトルシーン
 void SevenStageActor::MainUpdate(DebugCamera* camera) {
@@ -379,54 +306,65 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 void SevenStageActor::FinishUpdate(DebugCamera* camera) {
 	Input* input = Input::GetInstance();
 }
-//スポットライトの動き
-void SevenStageActor::MoveSpotLight() {
-	const float l_AddAngle = 5.0f;
-	const float l_AddFrame = 0.5f;
-	const float l_DirMax = 2.0f;
-	const float l_DirMin = -2.0f;
-	const float l_PosMax = 100.0f;
-	const float l_PosMin = -100.0f;
-	//sin波によって上下に動く
-	if (_AppState == APP_START) {
-		for (int i = 0; i < SPOT_NUM; i++) {
-			m_Angle[i] += (l_AddAngle - (0.5f * i));
-			m_Angle2[i] = m_Angle[i] * (3.14f / 180.0f);
-		}
-
-		spotLightDir[0].x = (sin(m_Angle2[0]) * 6.0f + (-2.0f));
-		spotLightDir[0].z = (sin(m_Angle2[0]) * 6.0f + (-2.0f));
-		spotLightDir[1].x = (sin(m_Angle2[1]) * 6.0f + (-2.0f));
-		spotLightDir[1].z = (sin(m_Angle2[1]) * 6.0f + (2.0f));
-		spotLightDir[2].x = (sin(m_Angle2[2]) * 6.0f + (2.0f));
-		spotLightDir[2].z = (sin(m_Angle2[2]) * 6.0f + (-2.0f));
-		spotLightDir[3].x = (sin(m_Angle2[3]) * 6.0f + (2.0f));
-		spotLightDir[3].z = (sin(m_Angle2[3]) * 6.0f + (2.0f));
-
+//テキスト関係
+void SevenStageActor::TextRead() {
+	text_->Display();
+	m_AppTimer++;
+	if (m_AppTimer == 240) {
+		text_->SelectText(TextManager::LAST_TALK_SECOND);
 	}
-	else if (_AppState == APP_NOTICE) {
-		SpotSet(spotLightDir[0], { l_DirMin,{},l_DirMin }, l_AddFrame);
-		SpotSet(spotLightDir[1], { l_DirMin,{},l_DirMax }, l_AddFrame);
-		SpotSet(spotLightDir[2], { l_DirMax,{},l_DirMin }, l_AddFrame);
-		SpotSet(spotLightDir[3], { l_DirMax,{},l_DirMax }, l_AddFrame);
+	else if (m_AppTimer == 350) {
+		text_->SelectText(TextManager::LAST_TALK_THIRD);
 	}
-	else if (_AppState == APP_VANISH) {
-		//角度
-		SpotSet(spotLightDir[0], {}, l_AddFrame);
-		SpotSet(spotLightDir[1], {}, l_AddFrame);
-		SpotSet(spotLightDir[2], {}, l_AddFrame);
-		SpotSet(spotLightDir[3], {}, l_AddFrame);
-		//座標
-		SpotSet(spotLightPos[0], { l_PosMax,spotLightPos[0].y,l_PosMax }, l_AddFrame);
-		SpotSet(spotLightPos[1], { l_PosMax,spotLightPos[1].y,l_PosMin }, l_AddFrame);
-		SpotSet(spotLightPos[2], { l_PosMin,spotLightPos[2].y,l_PosMax }, l_AddFrame);
-		SpotSet(spotLightPos[3], { l_PosMin,spotLightPos[3].y,l_PosMin }, l_AddFrame);
+	else if (m_AppTimer == 500) {
+		text_->SelectText(TextManager::LAST_TALK_FOURTH);
 	}
-}
-//スポットライト
-void SevenStageActor::SpotSet(XMFLOAT3& Pos, const XMFLOAT3& AfterPos, const float AddFrame) {
-	Pos = { Ease(In,Cubic,AddFrame,Pos.x,AfterPos.x),
-		Pos.y,
-		Ease(In,Cubic,AddFrame,Pos.z,AfterPos.z),
-	};
+	else if (m_AppTimer == 650) {
+		text_->SelectText(TextManager::LAST_TALK_FIVE);
+	}
+	else if (m_AppTimer == 800) {
+		text_->SelectText(TextManager::LAST_TALK_SIX);
+	}
+	else if (m_AppTimer == 950) {
+		text_->SelectText(TextManager::LAST_TALK_SEVEN);
+	}
+	else if (m_AppTimer == 1100) {
+		text_->SelectText(TextManager::LAST_TALK_EIGHT);
+	}
+	else if (m_AppTimer == 1250) {
+		text_->SelectText(TextManager::LAST_TALK_NINE);
+	}
+	else if (m_AppTimer == 1400) {
+		text_->SelectText(TextManager::LAST_TALK_TEN);
+	}
+	else if (m_AppTimer == 1550) {
+		text_->SelectText(TextManager::LAST_TALK_ELEVEN);
+	}
+	else if (m_AppTimer == 1700) {
+		text_->SelectText(TextManager::LAST_TALK_TWELVE);
+	}
+	else if (m_AppTimer == 1850) {
+		text_->SelectText(TextManager::LAST_TALK_THIRTEEN);
+	}
+	else if (m_AppTimer == 2000) {
+		text_->SelectText(TextManager::LAST_TALK_FOURTEEN);
+	}
+	else if (m_AppTimer == 2150) {
+		text_->SelectText(TextManager::LAST_TALK_FIFETEEN);
+	}
+	else if (m_AppTimer == 2300) {
+		text_->SelectText(TextManager::LAST_TALK_SIXTEEN);
+	}
+	else if (m_AppTimer == 2450) {
+		text_->SelectText(TextManager::LAST_TALK_SEVENTEEN);
+	}
+	else if (m_AppTimer == 2600) {
+		text_->SelectText(TextManager::LAST_TALK_EIGHTTEEN);
+	}
+	else if (m_AppTimer == 2750) {
+		text_->SelectText(TextManager::LAST_TALK_NINETEEN);
+	}
+	else if (m_AppTimer == 2950) {
+		camerawork->SetCameraSkip(true);
+	}
 }

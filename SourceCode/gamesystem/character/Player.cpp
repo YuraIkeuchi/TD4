@@ -749,3 +749,45 @@ void Player::AwakeInit() {
 	HungerGauge::GetInstance()->SetCatchCount(0);
 	HungerGauge::GetInstance()->SetNowHunger(0.0f);
 }
+void Player::LastAppearUpdate(int Timer) {
+	if (_LastState == LAST_SET) {
+		if (Timer == 1) {
+			AnimationControl(AnimeName::WALK, true, 1);
+			m_Position = { 3.0f,-2.0f,-40.0f };
+			_LastState = LAST_WALK;
+		}
+	}
+	else if (_LastState == LAST_WALK) {
+		m_Position.z += 0.2f;
+		
+		if (Helper::GetInstance()->CheckMin(m_Position.z, 3.0f, 0.025f)) {
+			_LastState = LAST_STOP;
+			AnimationControl(AnimeName::IDLE, true, 1);
+		}
+
+	/*	if (Timer == 2550) {
+			AnimationControl(AnimeName::WALK, true, 1);
+			_LastState = LAST_SECOND_WALK;
+		}*/
+	}
+	else if(_LastState == LAST_SECOND_WALK) {
+		if (Helper::GetInstance()->CheckMin(m_Position.z, 15.0f, 0.025f)) {
+			_LastState = LAST_STOP;
+			AnimationControl(AnimeName::IDLE, true, 1);
+		}
+	}
+	else {
+		/*if (Timer == 330) {
+			_LastState = LAST_SECOND_WALK;
+		}*/
+	}
+	index = 15;
+	m_fbxObject->GetBoneIndexMat(index, skirtmat);
+	skirtobj->FollowUpdate(skirtmat);
+	playerattach->AppearUpdate(Timer);
+	//基礎パラメータ設定
+	Fbx_SetParam();
+
+	//どっち使えばいいか分からなかったから保留
+	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+}

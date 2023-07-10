@@ -29,6 +29,8 @@ public:
 	void AppearUpdate();
 	//ボス撃破シーンの動き
 	void DeathUpdate();
+	//ラスボス登場シーンの動き
+	void LastAppearUpdate(int Timer);
 	//キャラの状態
 	enum CharaState
 	{
@@ -156,6 +158,14 @@ private://各クラス
 	//CSV系
 	//弾の強さのリミット
 	vector<float>m_PowerLimit;
+
+	//ラスボスのときの動き
+	enum LastState {
+		LAST_SET,
+		LAST_WALK,
+		LAST_SECOND_WALK,
+		LAST_STOP,
+	}_LastState;
 public:
 	vector<InterBullet*>GetBulllet_ghost() { return ghostbullets; }
 	vector<InterBullet*>GetBulllet_attack() { return attackbullets; }

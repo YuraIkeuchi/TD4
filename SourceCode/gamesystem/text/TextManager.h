@@ -115,6 +115,31 @@ public:
 		TALK_NULL,
 	};
 
+	enum Name_Last {
+		LAST_TALK_FIRST,
+		LAST_TALK_SECOND,
+		LAST_TALK_THIRD,
+		LAST_TALK_FOURTH,
+		LAST_TALK_FIVE,
+		LAST_TALK_SIX,
+		LAST_TALK_SEVEN,
+		LAST_TALK_EIGHT,
+		LAST_TALK_NINE,
+		LAST_TALK_TEN,
+		LAST_TALK_ELEVEN,
+		LAST_TALK_TWELVE,
+		LAST_TALK_THIRTEEN,
+		LAST_TALK_FOURTEEN,
+		LAST_TALK_FIFETEEN,
+		LAST_TALK_SIXTEEN,
+		LAST_TALK_SEVENTEEN,
+		LAST_TALK_EIGHTTEEN,
+		LAST_TALK_NINETEEN,
+		LAST_TALK_TWENTY,
+		LAST_TALK_TWENTYONE,
+		LAST_TALK_TWENTYSECOND,
+	};
+
 	static TextManager* GetInstance();
 
 	//
@@ -142,6 +167,8 @@ public:
 
 	void SetFourthConversation(Name_Fourth name = TALK_FIRST);
 
+	void SetLastConversation(Name_Last name = LAST_TALK_FIRST);
+
 	void SetCameraBossConversation(Name_CameraBoss name = TALK_FIRST_T);
 
 	void GetWordSize(Word word);
@@ -154,6 +181,7 @@ private:
 	void CreateWord(Name_First name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
 	void SecondCreateWord(Name_Second name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
 	void FourthCreateWord(Name_Fourth name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
+	void LastCreateWord(Name_Last name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
 	void CameraBossCreateWord(Name_CameraBoss name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
 	//
 	Word SetWord(wchar_t* tex1, wchar_t* tex2, wchar_t* tex3);
@@ -167,6 +195,7 @@ private:
 	std::map<TextManager::Name_Second, Word> wordlist_second;
 	std::map<TextManager::Name_CameraBoss, Word> wordlist_cameraBoss;
 	std::map<TextManager::Name_Fourth, Word> wordlist_fourth;
+	std::map<TextManager::Name_Last, Word> wordlist_last;
 
 	Conversation conversation_ = {};
 	Conversation old_conversation_ = {};
@@ -190,5 +219,6 @@ private:
 	Name_Second old_second = ANGER_TALK;
 	Name_Fourth old_fourth = TALK_FIRST;
 	Name_CameraBoss old_cameraBoss = TALK_FIRST_T;
+	Name_Last old_last = LAST_TALK_FIRST;
 };
 

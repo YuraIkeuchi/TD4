@@ -28,10 +28,8 @@ private:
 	void IntroUpdate(DebugCamera* camera)override;		//登場シーン
 	void MainUpdate(DebugCamera* camera)override;		//バトルシーン
 	void FinishUpdate(DebugCamera* camera)override;		//撃破シーン
-
-	void MoveSpotLight();
-	void SpotSet(XMFLOAT3& Pos, const XMFLOAT3& AfterPos, const float AddFrame);
-
+	
+	void TextRead();
 private:
 	static const int SPOT_NUM = 4;
 private:

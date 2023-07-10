@@ -36,11 +36,7 @@ void PlayerAttach::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui
 void PlayerAttach::ImGuiDraw() {
-	ImGui::Begin("Attach");
-	ImGui::Text("ScaleX:%f", m_Scale.x);
-	ImGui::Text("Timer:%d", m_AliveTimer);
-	ImGui::Text("Alive:%d", m_Alive);
-	ImGui::End();
+
 }
 void PlayerAttach::Particle() {
 	XMFLOAT4 s_color = { 1.0f,0.0f,0.0f,1.0f };
@@ -88,4 +84,36 @@ void PlayerAttach::BirthObj() {
 		Ease(In,Cubic,0.75f,m_Scale.y,l_AfterScale),
 		Ease(In,Cubic,0.75f,m_Scale.z,l_AfterScale),
 	};
+}
+void PlayerAttach::AppearUpdate(int Timer) {
+	m_Scale = { 0.7f,0.7f,0.7f };
+	m_Color = { 1.0f,1.0f,1.0f,1.0f };
+	if (_AppearState == APPEAR_SET) {
+		if (Timer == 1) {
+			m_Position = { 0.0f,3.0f,-35.0f };
+			m_Rotation = { 0.0f,90.0f,0.0f };
+			_AppearState = APPEAR_WALK;
+		}
+	}
+	else if (_AppearState == APPEAR_WALK) {
+		m_Position.z += 0.2f;
+		//sin”g‚É‚æ‚Á‚Äã‰º‚É“®‚­
+		m_SinAngle += 7.0f;
+		m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
+		m_Position.y = (sin(m_SinAngle2) * 2.0f + 3.0f);
+		if (Helper::GetInstance()->CheckMin(m_Position.z, 10.0f, 0.025f)) {
+			_AppearState = APPEAR_STOP;
+		}
+	}
+	else if(_AppearState == APPEAR_WALK2) {
+		if (Helper::GetInstance()->CheckMin(m_Position.z, 15.0f, 0.025f)) {
+			_AppearState = APPEAR_STOP;
+		}
+	}
+	else {
+		if (Timer == 2500) {
+			_AppearState = APPEAR_WALK2;
+		}
+	}
+	Obj_SetParam();
 }
