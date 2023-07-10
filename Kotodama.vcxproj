@@ -417,6 +417,7 @@
     <ClInclude Include="SourceCode\gamesystem\scene\FiveStage.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\FourthStage.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\Framework.h" />
+    <ClInclude Include="SourceCode\gamesystem\scene\GameoverScene.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\IkeGame.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\IntroductionScene.h" />
     <ClInclude Include="SourceCode\gamesystem\scene\LoadScene.h" />

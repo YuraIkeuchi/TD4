@@ -1047,6 +1047,9 @@
     <ClInclude Include="SourceCode\gamesystem\bossattach\DamageBlock.h">
       <Filter>gamesystem\bossattach\DamageBlock</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\GameoverScene.h">
+      <Filter>gamesystem\scene\GameOver</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">

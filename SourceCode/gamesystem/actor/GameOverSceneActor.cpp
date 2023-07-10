@@ -17,6 +17,7 @@ void GameOverSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	//Audio::GetInstance()->LoadSound(3, "Resources/Sound/BGM/jto3s-8fzcz.wav");
 	//Audio::GetInstance()->LoopWave(3, VolumManager::GetInstance()->GetBGMVolum());
 	//シーンチェンジャー
+	PlayPostEffect = false;
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
 
@@ -26,7 +27,7 @@ void GameOverSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	//タイトル
 	ClearSprite = IKESprite::Create(ImageManager::GAMEOVER, { 0.0f,0.0f });
 	ClearSprite->SetSize({1280.0f,720.0f});
-	ClearSprite->SetColor({0,0,0,1});
+	ClearSprite->SetColor({1,1,1,1});
 }
 //更新
 void GameOverSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -51,23 +52,18 @@ void GameOverSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 void GameOverSceneActor::Draw(DirectXCommon* dxCommon) {
 	//ポストエフェクトをかけるか
 	if (PlayPostEffect) {
-		postEffect->PreDrawScene(dxCommon->GetCmdList());
-		BackDraw(dxCommon);
-		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
-		postEffect->Draw(dxCommon->GetCmdList());
-		FrontDraw();
+		//postEffect->Draw(dxCommon->GetCmdList());
+		BackDraw(dxCommon);FrontDraw();
 		ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 	else {
-		postEffect->PreDrawScene(dxCommon->GetCmdList());
-		postEffect->Draw(dxCommon->GetCmdList());
-		postEffect->PostDrawScene(dxCommon->GetCmdList());
-		dxCommon->PreDraw();
+	dxCommon->PreDraw();
 		ImGuiDraw(dxCommon);
-		BackDraw(dxCommon);
 		FrontDraw();
+		BackDraw(dxCommon);
+		
 		dxCommon->PostDraw();
 	}
 }
@@ -125,13 +121,14 @@ string GameOverSceneActor::NextStageName() {
 //背面
 void GameOverSceneActor::BackDraw(DirectXCommon* dxCommon)
 {
+	
+	IKEObject3d::PreDraw();
+	SutoponObj->Draw();
+	IKEObject3d::PostDraw();
 	IKESprite::PreDraw();
 	ClearSprite->Draw();
 	IKESprite::PostDraw();
 
-	IKEObject3d::PreDraw();
-	SutoponObj->Draw();
-	IKEObject3d::PostDraw();
 }
 //ImGui描画
 void GameOverSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
