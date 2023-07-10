@@ -4,7 +4,10 @@
 #include "BossStunEffect.h"
 #include "Poltergeist.h"
 #include "AvatarBoss.h"
+#include "FireBoll.h"
 #include "AbsorptionEffect.h"
+#include "ConfuEffect.h"
+#include "DamageBlock.h"
 class SevenBoss :
 	public InterBoss {
 public:
@@ -29,6 +32,8 @@ public:
 	void EffecttexDraw(DirectXCommon* dxCommon) override;
 
 	void Draw(DirectXCommon* dxCommon) override;//描画
+
+	void InitAwake() override;//ボスの覚醒
 private:
 	void CSVLoad();
 	
@@ -39,6 +44,11 @@ private:
 	void BirthAvatar();//偽物のボス
 	void Manipulate();//操る
 	void BulletCatch();//弾を吸収
+	void FireAttack();//火の玉攻撃
+	void BirthFire();//炎生成
+	void Confu();//混乱
+	void BlockAttack();//ダメージブロックの生成
+	void BirthBlock();
 	void Stun();//スタン
 	void BirthExplosion();
 
@@ -54,7 +64,10 @@ private:
 	//モンスターが消える範囲設定
 	void VanishCollide(vector<InterBullet*>bullet);
 
-	void DeleteObj();
+	//ランダムに動き
+	void RandMove();
+	//ボスが戻る
+	void ReturnBoss();
 public:
 
 private:
@@ -66,6 +79,9 @@ private:
 		STATE_BOUND,
 		STATE_AVATAR,
 		STATE_MANIPULATE,
+		STATE_FIRE,
+		STATE_CONFU,
+		STATE_BLOCK,
 		STATE_CATCH,
 		STATE_STUN,
 	}_charaState;
@@ -74,13 +90,19 @@ private:
 	static void(SevenBoss::* stateTable[])();
 private:
 	static const int POLTER_NUM = 4;
+	static const int FIRE_NUM = 4;
 	static const int AVATAR_NUM = 2;
+	static const int BLOCK_NUM = 6;
 private:
 	vector<Poltergeist*> poltergeist;//ポルターガイスト
+	vector<FireBoll*> fireboll;//火の玉
 	vector<InterBoss*> avatarboss;//偽物のボス
+	vector<DamageBlock*> damageblock;//ダメージブロック
 	vector<AbsorptionEffect*> abseffect;//弾幕
+	unique_ptr<ConfuEffect> confueffect;
 	unique_ptr<BossStunEffect> bossstuneffect;
-
+	float m_SinAngle = {};
+	float m_SinAngle2 = {};
 	int m_InterVal = {};
 
 	int m_MoveTimer = {};
@@ -103,10 +125,10 @@ private:
 	}_vanishState;
 	//透明化する時間
 	float m_VanishFrame = {};
-	//透明化する確率
-	int m_VanishTarget = {};
 	//糖度
 	float m_AfterAlpha = {};
+	//透明化する確率
+	int m_VanishTarget = {};
 	XMFLOAT3 m_AfterPos = {};
 
 	int m_RotTimer = {};
@@ -120,6 +142,21 @@ private:
 		RAND_POLTER,
 		RAND_BOUND,
 		RAND_AVATAR,
-		RAND_MANIPULATE
+		RAND_MANIPULATE,
+		RAND_FIRE,
+		RAND_CONFU,
+		RAND_BLOCK,
 	};
+
+	int m_ChangeTimer = {};
+	float m_AddSpeed = {};
+	float m_AddScale = {};
+
+	bool m_Return = false;
+
+	enum ReturnState {
+		RETURN_SET,
+		RETURN_PLAY,
+		RETURN_END,
+	}_ReturnState;
 };

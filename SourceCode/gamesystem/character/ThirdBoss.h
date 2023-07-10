@@ -31,6 +31,7 @@ private:
 
 	void ImGui_Origin() override;
 
+	void InitAwake() override;//ボスの覚醒
 	//エフェクト
 	void EffecttexDraw(DirectXCommon* dxCommon) override;
 	//基本移動
@@ -191,9 +192,6 @@ private:
 	};
 
 	int m_AppearState = APPEAR_START;
-
-	int m_AppearTimer = {};
-
 
 	//すべてのインターバル系
 	vector<int>m_StampInterval;

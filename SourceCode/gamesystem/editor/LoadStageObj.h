@@ -44,6 +44,7 @@ public:
 	void ImGuiDraw();
 	//ライトのセット
 	void LightSet(LightGroup* light);
+	void AwakeInit();
 private:
 	//食料の検索
 	void SearchFood();
@@ -83,8 +84,10 @@ private:
 	void SubHunger();
 
 	int GetGhostNumber();
-
+	bool CheckCanSearchGhost(Ghost* ghost);
 public:
+	std::vector<Ghost*>GetGhost() { return ghosts; }
+	
 	static void SetEnemyManager(EnemyManager* m_EnemyManager) { LoadStageObj::m_EnemyManager = m_EnemyManager; }
 protected:
 	static EnemyManager* m_EnemyManager;
@@ -92,6 +95,7 @@ private:
 	//当たり判定
 	void Collide();
 private:
+	
 	LightGroup* lightgroup = nullptr;
 	std::vector<Ghost*> ghosts;
 	//

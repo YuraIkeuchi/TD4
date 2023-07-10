@@ -54,6 +54,9 @@ public: //メンバ関数
 	void AllDelete();
 	//爆発　ボス
 	void DeathEffectBoss(const int life, const XMFLOAT3& pos, const float size, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor);
+	//爆発　ボス
+	void ExproEffectBoss(const int life, const XMFLOAT3& pos, const float size, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor);
+
 private: //メンバ関数
 	/// <summary>
 	/// テクスチャ読み込み

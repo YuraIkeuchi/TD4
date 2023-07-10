@@ -12,6 +12,8 @@ public:
 	/// ImGui•`‰æ
 	/// </summary>
 	void ImGui_Origin() override;
+
+	void Draw_Origin() override;
 private:
 	//’e‚Ì“®‚­ˆ—
 	void Action() override;

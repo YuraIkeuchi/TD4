@@ -28,7 +28,7 @@ float4 RadBlur(float2 retPos, float2 offset)
 #define WINWIDTH 780
 float4 main(VSOutput input) : SV_TARGET
 {
-	// float4 texcolor = tex0.Sample(smp,input.uv);
+	 float4 texcolor = tex0.Sample(smp,input.uv);
 	////// //default
 	//////// return float4(texcolor.rgb, 1);
 	// //‚Ú‚©‚µ

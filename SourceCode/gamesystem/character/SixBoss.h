@@ -33,6 +33,8 @@ public:
 	void EffecttexDraw(DirectXCommon* dxCommon) override;
 
 	void Draw(DirectXCommon* dxCommon) override;//描画
+
+	void InitAwake() override;//ボスの覚醒
 private:
 	//インターバル
 	void InterValMove();
@@ -127,10 +129,6 @@ private:
 	float m_Angle2 = 0.0f;
 	//二点の距離
 	float m_Length = {};
-
-	//円運動
-	float m_CircleScale = 30.0f;
-	float m_CircleSpeed = {};
 
 	//弾幕の種類
 	int m_BarraRand = {};

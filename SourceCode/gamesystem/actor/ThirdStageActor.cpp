@@ -15,7 +15,7 @@ void ThirdStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	Audio::GetInstance()->LoopWave(AUDIO_BATTLE, VolumManager::GetInstance()->GetBGMVolum() + 1.0f);
 
 	//ポストエフェクト
-	PlayPostEffect = true;
+	PlayPostEffect = false;
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
 
@@ -331,6 +331,7 @@ void ThirdStageActor::MainUpdate(DebugCamera* camera) {
 
 	if (PlayerDestroy()) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
+		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kThirdStage, true);
 		sceneChanger_->ChangeStart();
 		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::Reverse);
 	}

@@ -35,7 +35,8 @@ void CameraWork::SplineSet() {
 			spline->Init(pointsList, static_cast<int>(pointsList.size()));
 		}
 #pragma endregion
-	} else if (SceneName == "FIVESTAGE" || SceneName == "SIXSTAGE" || SceneName == "SEVENSTAGE") {
+	}
+	else if (SceneName == "FIVESTAGE" || SceneName == "SIXSTAGE") {
 #pragma region First
 		{
 			if (pointsList.size() == 0) {
@@ -60,6 +61,25 @@ void CameraWork::SplineSet() {
 			spline->Init(pointsList, static_cast<int>(pointsList.size()));
 		}
 #pragma endregion
+	}
+	else if (SceneName == "SEVENSTAGE") {
+#pragma region First
+		{
+			if (pointsList.size() == 0) {
+				pointsList.emplace_back(XMFLOAT3{ 0,50,0 });
+				pointsList.emplace_back(XMFLOAT3{ 30,40,30 });
+				pointsList.emplace_back(XMFLOAT3{ 0,30,60 });
+				pointsList.emplace_back(XMFLOAT3{ -30,25,30 });
+				pointsList.emplace_back(XMFLOAT3{ 0, 20,10 });
+				pointsList.emplace_back(XMFLOAT3{ 30,40,30 });
+				pointsList.emplace_back(XMFLOAT3{ 0,30,60 });
+				pointsList.emplace_back(XMFLOAT3{ -30,25,30 });
+				pointsList.emplace_back(XMFLOAT3{ 0, 20,-20 });
+				pointsList.emplace_back(XMFLOAT3{ 0, 20,-20 });
+			}
+			spline = new Spline();
+			spline->Init(pointsList, static_cast<int>(pointsList.size()));
+		}
 	}
 }
 /*CharaStateのState並び順に合わせる*/
@@ -337,9 +357,7 @@ void CameraWork::EditorCamera() {
 //ImGui
 void CameraWork::ImGuiDraw() {
 	ImGui::Begin("Camera");
-	ImGui::Text("Feed:%d", FeedF);
-	ImGui::Text("End:%d", FeedEndF);
-	ImGui::Text("Timer:%d", m_StrongTimer);
+	ImGui::Text("TargetZ:%f", m_targetPos.z);
 	ImGui::End();
 }
 void CameraWork::SpecialUpdate() {
@@ -355,22 +373,6 @@ void CameraWork::FirstBossAppear() {
 	XMVECTOR move = { 0.f,0.f, 0.1f, 0.0f };
 	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(boss->GetRotation().y + 60));
 	move = XMVector3TransformNormal(move, matRot);
-
-	/*ほりゅう*/
-	//if (_firstState == ONE) {
-	//	m_eyePos = { boss->GetPosition().x + move.m128_f32[0] * 300.f,boss->GetPosition().y,boss->GetPosition().z + move.m128_f32[2] * 300.f };
-	//	if (Timer_first == 90) { _firstState = TWO; }
-	//	else Timer_first++;
-	//}
-
-	//if (_firstState == TWO) {
-	//	m_eyePos = { boss->GetPosition().x + move.m128_f32[0] * -300.f,boss->GetPosition().y,boss->GetPosition().z + move.m128_f32[2] * -300.f };
-	//	
-	//	if (Timer_first == 180)_firstState = THREE;
-	//	else Timer_first++;
-	//}
-
-
 	if (spline->GetIndex() >= pointsList.size() - 2) {
 		RadEffect -= 0.2f;
 	} else if (spline->GetIndex() >= pointsList.size()) {
@@ -412,9 +414,6 @@ Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
 	}
 }
 
-
-
-
 void CameraWork::FirstBossDead_AfterFeed() {
 
 }
@@ -424,21 +423,6 @@ void CameraWork::SecondBossAppear() {
 	XMVECTOR move = { 0.f,0.f, 0.1f, 0.0f };
 	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(boss->GetRotation().y + 60));
 	move = XMVector3TransformNormal(move, matRot);
-
-	/*ほりゅう*/
-	//if (_firstState == ONE) {
-	//	m_eyePos = { boss->GetPosition().x + move.m128_f32[0] * 300.f,boss->GetPosition().y,boss->GetPosition().z + move.m128_f32[2] * 300.f };
-	//	if (Timer_first == 90) { _firstState = TWO; }
-	//	else Timer_first++;
-	//}
-
-	//if (_firstState == TWO) {
-	//	m_eyePos = { boss->GetPosition().x + move.m128_f32[0] * -300.f,boss->GetPosition().y,boss->GetPosition().z + move.m128_f32[2] * -300.f };
-	//	
-	//	if (Timer_first == 180)_firstState = THREE;
-	//	else Timer_first++;
-	//}
-
 
 	if (spline->GetIndex() >= pointsList.size() - 2) {
 		RadEffect -= 0.2f;
@@ -812,44 +796,115 @@ Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
 }
 //7個目のボス
 void CameraWork::SevenBossAppear() {
-	if (spline->GetIndex() >= pointsList.size() - 2) {
-		RadEffect -= 0.2f;
-	} else if (spline->GetIndex() >= pointsList.size()) {
-		RadEffect += 0.2f;
-		SplineSpeed = 180.0f;
-	} else {
-		SplineSpeed = 180.f;
+	const float l_AddFrame = 0.01f;
+	if (_LastState == LAST_SET) {
+		if (m_LastTimer == 1) {
+			m_eyePos = { 0.0f,5.0f,20.0f };
+			m_targetPos = { 0.0f,5.0f,0.0f };
+		}
+
+		if (m_LastTimer == 150) {
+			m_Frame = {};
+			_LastState = LAST_BOSS;
+			m_AfterTarget = { boss->GetPosition().x,5.0f,boss->GetPosition().z };
+			m_AfterEye = { -10.0f,3.0f,-5.0f };
+		}
 	}
-	if (!Finish) {
-
-		spline->Upda(m_eyePos, SplineSpeed);
+	else if (_LastState == LAST_BOSS) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = 1.0f;
+			if (m_LastTimer == 300) {
+				m_AfterTarget = { 0.0f,3.0f,10.0f };
+				m_AfterEye = { -5.0f,3.0f,15.0f };
+				m_Frame = {};
+				_LastState = LAST_PLAYER;
+			}
+			else if (m_LastTimer == 900) {
+				m_AfterTarget = { boss->GetPosition().x,5.0f,boss->GetPosition().z };
+				m_AfterEye = { .0f,6.0f,5.0f };
+				m_Frame = {};
+				_LastState = LAST_UPBOSS;
+			}
+		}
+		SetEaseCamera();
 	}
-	Helper::GetInstance()->Clamp(RadEffect, 0.f, 15.f);
-
-	if (spline->GetIndex() >= pointsList.size() - 1) {
-
-		if (Helper::GetInstance()->FrameCheck(m_Frame, 0.01f)) {
-			AppearEndF = true;
-			m_CameraState = CAMERA_NORMAL;
+	else if (_LastState == LAST_PLAYER) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = 1.0f;
+			if (m_LastTimer == 600) {
+				m_Frame = {};
+				_LastState = LAST_BOSS;
+				m_AfterTarget = { boss->GetPosition().x,5.0f,boss->GetPosition().z };
+				m_AfterEye = { -10.0f,3.0f,-5.0f };
+			}
+			else if (m_LastTimer == 2100) {
+				m_Frame = {};
+				_LastState = LAST_BATTLE;
+				m_AfterTarget = { 0.0f,5.0f,20.0f };
+				m_AfterEye = { -15.0f,5.0f,20.0f };
+			}
+		}
+		SetEaseCamera();
+	}
+	else if (_LastState == LAST_UPBOSS) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = 1.0f;
+			if (m_LastTimer == 1050) {
+				m_AfterTarget = { boss->GetPosition().x,5.0f,boss->GetPosition().z };
+				m_AfterEye = { 0.0f,6.0f,15.0f };
+				m_Frame = {};
+				_LastState = LAST_ZOOMBOSS;
+			}
+		}
+		SetEaseCamera();
+	}
+	else if (_LastState == LAST_ZOOMBOSS) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = 1.0f;
+			if (m_LastTimer == 1250) {
+				m_AfterTarget = { boss->GetPosition().x,5.0f,boss->GetPosition().z };
+				m_AfterEye = { .0f,6.0f,0.0f };
+				m_Frame = {};
+				_LastState = LAST_FARBOSS;
+			}
+			else if (m_LastTimer == 1800) {
+				m_AfterTarget = { 0.0f,3.0f,10.0f };
+				m_AfterEye = { -5.0f,3.0f,15.0f };
+				m_Frame = {};
+				_LastState = LAST_PLAYER;
+			}
+		}
+		SetEaseCamera();
+	}
+	else if (_LastState == LAST_FARBOSS) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = 1.0f;
+			if (m_LastTimer == 1380) {
+				m_AfterTarget = { boss->GetPosition().x,5.0f,boss->GetPosition().z };
+				m_AfterEye = { 0.0f,6.0f,15.0f };
+				m_Frame = {};
+				_LastState = LAST_ZOOMBOSS;
+			}
+		}
+		SetEaseCamera();
+	}
+	else if (_LastState == LAST_BATTLE) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = 1.0f;
+			if (m_LastTimer == 2700) {
+				m_Frame = {};
+				_LastState = LAST_BATTLE2;
+				m_AfterTarget = { 0.0f,5.0f,20.0f };
+				m_AfterEye = { -10.0f,5.0f,20.0f };
+			}
+		}
+		SetEaseCamera();
+	}
+	else {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 			m_Frame = 1.0f;
 		}
-		m_AfterEye = { Player::GetInstance()->GetPosition().x,45.0f,Player::GetInstance()->GetPosition().z - 20.0f };
-		m_AfterTarget = Player::GetInstance()->GetPosition();
-		m_targetPos = {
-Ease(In,Cubic,m_Frame,boss->GetPosition().x,m_AfterTarget.x),
-Ease(In,Cubic,m_Frame,boss->GetPosition().y,m_AfterTarget.y),
-Ease(In,Cubic,m_Frame,boss->GetPosition().z,m_AfterTarget.z),
-		};
-
-		m_eyePos = {
-Ease(In,Cubic,m_Frame,m_eyePos.x,m_AfterEye.x),
-Ease(In,Cubic,m_Frame,m_eyePos.y,m_AfterEye.y),
-Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
-		};
-
-		Finish = true;
-	} else {
-		m_targetPos = { boss->GetPosition() };
+		SetEaseCamera();
 	}
 }
 //円運動の際のカメラ位置更新
@@ -862,50 +917,86 @@ void CameraWork::SetCircleCameraTarget() {
 	m_targetPos.z = m_CameraCircleZ;
 }
 //円運動の際のカメラ位置更新
-void CameraWork::SetCircleCameraEye(const XMFLOAT3 target) {
+void CameraWork::SetCircleCameraEye(const XMFLOAT3& target, const XMFLOAT3& basepos) {
 	//円運動の計算
 	m_CameraRadius = m_CameraSpeed * m_PI / 180.0f;
 	m_CameraCircleX = cosf(m_CameraRadius) * m_CameraScale;
 	m_CameraCircleZ = sinf(m_CameraRadius) * m_CameraScale;
-	m_eyePos.x = m_CameraCircleX;
-	m_eyePos.z = m_CameraCircleZ;
+	m_eyePos.x = m_CameraCircleX + basepos.x;
+	m_eyePos.z = m_CameraCircleZ + basepos.z;
 	m_targetPos = target;
 }
+//覚醒時のカメラ
 void CameraWork::StrongCamera() {
+	float l_AddFrame = 0.01f;
 	const int l_Timer = 200;
+	//フェード後は円運動をする
 	if (_StrongState == STRONG_ONE) {
+		m_CameraScale = 20.0f;
+		m_CameraSpeed = 0.0f;
 		if (FeedF) {
 			feed->FeedIn(Feed::FeedType::WHITE, 0.025f, FeedF);
 			if (feed->GetAlpha() >= 1.0f) {
 				_StrongState = STRONG_SECOND;
+				m_ChangeStrong = true;
 			}
 		}
 	}
 	else if (_StrongState == STRONG_SECOND) {
-		m_eyePos = { 0.0f,20.0f,-20.0f };
-		m_targetPos = { 0.0f,0.0f,0.0f };
 		if (feed->GetAlpha() == 0.0f) {
 			m_StrongTimer++;
 		}
-		
+
 		if (m_StrongTimer == 10) {
 			FeedEndF = false;
 		}
-		if (m_StrongTimer == l_Timer) {
-			FeedF = true;
-			m_Finish = true;
+		m_targetPos = boss->GetPosition();
+		SplineSpeed = 180.0f;
+		spline->Upda(m_eyePos, SplineSpeed);
+		if (!Finish) {
+
+			spline->Upda(m_eyePos, SplineSpeed);
+		}
+
+		if (spline->GetIndex() >= pointsList.size() - 1) {
+
+			if (Helper::GetInstance()->FrameCheck(m_Frame, 0.01f)) {
+				m_Frame = 1.0f;
+				FeedF = true;
+				m_Finish = true;
+			}
+			m_AfterEye = { 0.0f,5.0f, 20.0f};
+			m_AfterTarget = boss->GetPosition();
+			RadEffect = Ease(In, Cubic, m_Frame, RadEffect, 20.0f);
+			SetEaseCamera();
 		}
 
 		if (FeedF) {
 			feed->FeedIn(Feed::FeedType::WHITE, 0.025f, FeedF);
 			if (feed->GetAlpha() >= 1.0f) {
 				if (m_Finish) {
+					m_Frame = {};
+					m_StrongTimer = {};
+					m_NearBoss = false;
+					RadEffect = 0;
 					_StrongState = STRONG_THIRD;
 					m_EndStrong = true;
+					m_ChangeStrong = false;
 				}
 			}
 		}
-	}else{
 	}
+}
 
+void CameraWork::SetEaseCamera() {
+	m_eyePos = {
+Ease(In,Cubic,m_Frame,m_eyePos.x,m_AfterEye.x),
+Ease(In,Cubic,m_Frame,m_eyePos.y,m_AfterEye.y),
+Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
+	};
+	m_targetPos = {
+Ease(In,Cubic,m_Frame,m_targetPos.x,m_AfterTarget.x),
+Ease(In,Cubic,m_Frame,m_targetPos.y,m_AfterTarget.y),
+Ease(In,Cubic,m_Frame,m_targetPos.z,m_AfterTarget.z),
+	};
 }

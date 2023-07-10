@@ -407,6 +407,7 @@ void IKEFBXObject3d::FollowUpdate(bool Loop, int Speed, bool& Stop)
 	//定数バッファへデータ転送
 	ConstBufferDataSkin* constMapSkin = nullptr;
 	result = constBuffSkin->Map(0, nullptr, (void**)&constMapSkin);
+	BoneSize = bones.size();
 	for (int i = 0; i < bones.size(); i++) {
 		//今の姿勢
 		XMMATRIX matCurrentPose;

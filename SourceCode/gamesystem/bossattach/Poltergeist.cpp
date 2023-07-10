@@ -22,6 +22,20 @@ bool Poltergeist::Initialize() {
 	m_AfterPos.y = 5.0f;
 	m_ThrowType = THROW_SET;
 	m_AliveTimer = {};
+
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_distX(-5, 5);
+	uniform_int_distribution<int> l_distZ(-5, 5);
+	m_Power.x = float(l_distX(mt)) / 10.0f;
+	m_Power.y = float(l_distZ(mt)) / 10.0f;
+
+	if (m_Power.x == 0.0f) {
+		m_Power.x = 0.1f;
+	}
+
+	if (m_Power.y == 0.0f) {
+		m_Power.y = 0.1f;
+	}
 	return true;
 }
 //ó‘Ô‘JˆÚ
@@ -91,6 +105,7 @@ bool Poltergeist::Collide() {
 void Poltergeist::Follow() {
 	const float l_AddFrame = 0.01f;
 	const int l_BaseTimer = 40;
+
 	//’e‚ÌƒZƒbƒg(‚¾‚ñ‚¾‚ñ•‚‚©‚Ñˆ§‚Ó‚ª‚é‚æ‚¤‚ÈŠ´‚¶)
 	if (m_ThrowType == THROW_SET) {
 		if (m_Frame < m_FrameMax) {
@@ -100,7 +115,7 @@ void Poltergeist::Follow() {
 			m_Frame = {};
 			m_ThrowType = THROW_INTER;
 		}
-
+	
 		m_Position.y = Ease(In, Cubic, m_Frame, m_Position.y, m_AfterPos.y);
 	}
 	//‘_‚¤•ûŒü‚ğŒˆ‚ß‚é
@@ -174,11 +189,11 @@ void Poltergeist::Bound() {
 		m_Position.z += m_Angle.y * m_AddSpeed;
 
 		//”½Ëˆ—
-		if (Helper::GetInstance()->CheckNotValueRange(m_Position.x, -60.0f, 70.0f)) {
+		if (Helper::GetInstance()->CheckNotValueRange(m_Position.x, -65.0f, 75.0f)) {
 			m_Angle.x *= -1.0f;
 		}
 
-		if (Helper::GetInstance()->CheckNotValueRange(m_Position.z, -65.0f, 65.0f)) {
+		if (Helper::GetInstance()->CheckNotValueRange(m_Position.z, -70.0f, 70.0f)) {
 			m_Angle.y *= -1.0f;
 		}
 

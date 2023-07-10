@@ -48,6 +48,8 @@ public:
 
 	void ImGui_Origin() override;//ボスそれぞれのImGui
 
+	void InitAwake() override;//ボスの覚醒
+
 	void EffecttexDraw(DirectXCommon* dxCommon) override;
 
 	void Draw(DirectXCommon* dxCommon) override;//描画

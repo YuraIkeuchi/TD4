@@ -99,32 +99,56 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	SecondCreateWord(SELECT_JOY2, L"めのまえのやつをたおすヨロコビを", L"リカイしてくれるよね!!!", L"!!!!!!!!!!");
 
 	CameraBossCreateWord(TALK_FIRST_T, L"ストポンとはぐれちゃった...", L"どこにいっちゃっただろう", L"おなかもすいちゃったし");
-	CameraBossCreateWord(TALK_SECOND_T, L"な、なにかサガしているのかい？", L"もしかして", L"さっきのメガホンかな...");
-	CameraBossCreateWord(TALK_THIRD_T, L"そうなのかも！", L"でもおなかがすいて", L"もうウゴけない...");
-	CameraBossCreateWord(TALK_FOURTH_T, L"それならボクにマカせて！！", L"イチドトったら",L"いつでもだせるんだ！");
+	CameraBossCreateWord(TALK_SECOND_T, L"な、なにか探しているのかい？", L"もしかして", L"さっきのメガホンかな...");
+	CameraBossCreateWord(TALK_THIRD_T, L"そうなのかも！", L"でもおなかがすいて", L"もう動けない...");
+	CameraBossCreateWord(TALK_FOURTH_T, L"それならボクに任せて！！", L"一度撮ったら",L"いつでもだせるんだ！");
 	CameraBossCreateWord(TALK_FIVE_T, L"わーすごい！", L"ありがとう!", L"えーと...");
-	CameraBossCreateWord(TALK_SIX_T, L"ボクにはなまえがないんだ...", L"きづいたらここにいて", L"だからきにしないで");
-	CameraBossCreateWord(TALK_SEVEN_T, L"それならこれからはアポーね！", L"おカアさんが", L"りんごのエイゴ？をオシえてくれたの！");
-	CameraBossCreateWord(TALK_EIGHT_T, L"アポー...", L"とてもいいナマエだ", L"きにいったよ");
+	CameraBossCreateWord(TALK_SIX_T, L"ボクには名前がないんだ...", L"気づいたらここにいて", L"だから気にしないで");
+	CameraBossCreateWord(TALK_SEVEN_T, L"それならこれからはアポーね！", L"お母さんが", L"りんごのエイゴ？を教えてくれたの！");
+	CameraBossCreateWord(TALK_EIGHT_T, L"アポー...", L"とてもいい名前だ", L"気にいったよ");
 	CameraBossCreateWord(TALK_NINE_T, L"アポーも友達になろう！", L"ストポンもいるし", L"きっと仲よくなれるよ！");
-	CameraBossCreateWord(TALK_TEN_T, L"いいのかい？", L"ボクはここからうごかないから", L"まってるね！");
-	CameraBossCreateWord(TALK_ELEVEN_T, L"ストポン見つけて", L"あしたあいにくるね", L"またね！アポー！");
+	CameraBossCreateWord(TALK_TEN_T, L"いいのかい？", L"ボクはここから動かないから", L"待ってるね！");
+	CameraBossCreateWord(TALK_ELEVEN_T, L"ストポン見つけて", L"明日会いにくるね", L"またね！アポー！");
 	CameraBossCreateWord(TALK_XII_T, L"アポーおまたせ！", L"ストポンつれてきたよ！", L"");
-	CameraBossCreateWord(TALK_XIII_T, L"おう！おまえがアポーか！", L"コトコがセワになったみたいだな", L"ありがとな！");
+	CameraBossCreateWord(TALK_XIII_T, L"おう！おまえがアポーか！", L"コトコが世話になったみたいだな", L"ありがとな！");
 	CameraBossCreateWord(TALK_XIV_T, L"...", L"...", L"...");
-	CameraBossCreateWord(TALK_XV_T, L"...れた", L"ついに手にいれた！", L"このマホウのカメラ！！！");
-	CameraBossCreateWord(TALK_XVI_T, L"キノウとチガう！", L"アポーじゃない！？", L"あなただれなの！");
-	CameraBossCreateWord(TALK_XVII_T, L"オレノナハジャック！！", L"そんなへんななまえじぇねーよ！", L"ギャハハハ");
+	CameraBossCreateWord(TALK_XV_T, L"...れた", L"ついに手にいれた！", L"この魔法のカメラ！！！");
+	CameraBossCreateWord(TALK_XVI_T, L"昨日と違う！", L"アポーじゃない！？", L"あなた誰なの！");
+	CameraBossCreateWord(TALK_XVII_T, L"オレノナハジャック！！", L"そんな変な名前じゃねーよ！", L"ギャハハハ");
 	CameraBossCreateWord(TALK_XVIII_T, L"そんな...", L"それじゃもうアポーは...", L"");
-	CameraBossCreateWord(TALK_XVIV_T, L"ちょうどいいや", L"おまえらでためしてやるよ！！", L"おら！！かまえろ！！");
+	CameraBossCreateWord(TALK_XVIV_T, L"ちょうどいいや", L"おまえらで試してやるよ！！", L"おら！！かまえろ！！");
 	CameraBossCreateWord(TALK_NULL, L"", L"", L"");
 
 
 	FourthCreateWord(TALK_FIRST, L"ようこそ!!!", L"Ladies And ", L"Gentlemen!!!");
-	FourthCreateWord(TALK_SECOND, L"キミもオレがながす", L"イカしてるメロディーを", L"ききたいんだろ");
+	FourthCreateWord(TALK_SECOND, L"キミもオレがながす", L"イカしてるメロディーを", L"ききたいんだろ!!!");
 	FourthCreateWord(TALK_THIRD, L"そこにCDがあるかぎり!", L"オレはオトをとめない!!!", L"");
 	FourthCreateWord(TALK_FOURTH, L"オレをテラセ!!!!!!", L"スポットライト!!!!!!", L"このオレを!!!!!!");
 	FourthCreateWord(TALK_FIVE, L"さあ!!!", L"ショータイムのはじまりだ!!!", L"");
+
+	LastCreateWord(LAST_TALK_FIRST, L"いったい誰がゴースト達を", L"操って襲いかからせたのかと思ったけど", L"やっぱり・・・");
+	LastCreateWord(LAST_TALK_SECOND, L"やっぱりお前だったんだな!", L"", L"");
+	LastCreateWord(LAST_TALK_THIRD, L"ストポン?", L"キミのしってる子?", L"");
+	LastCreateWord(LAST_TALK_FOURTH, L"こいつは俺の弟だ", L"あいかわらずナマイキな面しやがって", L"");
+	LastCreateWord(LAST_TALK_FIVE, L"そのしゃべりかたは", L"もしかしてにいさんかなぁ", L"ださいみためだねー");
+	LastCreateWord(LAST_TALK_SIX, L"おい!", L"なんでゴーストを操って", L"俺に襲いかかった!?");
+	LastCreateWord(LAST_TALK_SEVEN, L"それはね・・・", L"", L"");
+	LastCreateWord(LAST_TALK_EIGHT, L"にいさんが嫌いだからだよ!", L"", L"");
+	LastCreateWord(LAST_TALK_NINE, L"こんな出来の悪いやつが・・・", L"あにだなんて・・・", L"");
+	LastCreateWord(LAST_TALK_TEN, L"ほんとにうんざりだ!!!", L"", L"");
+	LastCreateWord(LAST_TALK_ELEVEN, L"だからね悪いやつはね・・・", L"", L"");
+	LastCreateWord(LAST_TALK_TWELVE, L"ボクがけしてあげるよ!!!", L"", L"");
+	LastCreateWord(LAST_TALK_THIRTEEN, L"悪いなコトコ・・・", L"キョウダイ喧嘩にまきこんじまってよ", L"だが・・・");
+	LastCreateWord(LAST_TALK_FOURTEEN, L"じぶんの運を恨んでくれ!", L"協力しろ!!!", L"");
+	LastCreateWord(LAST_TALK_FIFETEEN, L"そんなぼーっとしてるやつに", L"何ができるのかねぇ", L"まぁ・・・");
+	LastCreateWord(LAST_TALK_SIXTEEN, L"二人まとめて", L"ボクが直々に始末してあげるよ!!!", L"");
+	LastCreateWord(LAST_TALK_SEVENTEEN, L"俺もお前が", L"吠え面をかくのが", L"楽しみだ!");
+	LastCreateWord(LAST_TALK_EIGHTTEEN, L"コトコ!", L"これが俺とお前の", L"サイゴのたたかいだ!!!");
+	LastCreateWord(LAST_TALK_NINETEEN, L"全力でいくぞ!!!", L"", L"");
+	LastCreateWord(AWAKE_FIRST, L"ありゃー", L"いがいとやるじゃんにいさん", L"まぁ・・・");
+	LastCreateWord(AWAKE_SECOND, L"そろそろあそびはおわりかなぁ", L"じゃあ!", L"");
+	LastCreateWord(AWAKE_THIRD, L"にげるならいまのうちだよ!!!", L"", L"");
+	//ラスボス
 	//コンヴァージョン初期化
 	Create(dxcomon);
 
@@ -304,6 +328,24 @@ void TextManager::SetCameraBossConversation(Name_CameraBoss name) {
 	CreateCon(conversation_, itr->second);
 
 }
+//名前から文字列を呼び出しセットする
+void TextManager::SetLastConversation(Name_Last name)
+{
+	std::map<TextManager::Name_Last, Word>::iterator itr = wordlist_last.find(name);
+
+	if (old_fourth != itr->first) {
+		for (int i = 0; i < 3; i++) {
+			flag[i] = true;
+			next_f[i] = false;
+		}
+	}
+
+	old_last = itr->first;
+
+	GetWordSize(itr->second);
+
+	CreateCon(conversation_, itr->second);
+}
 
 //名前と文字列セットで保存
 void TextManager::CreateWord(Name name, wchar_t* tex1, wchar_t* tex2, wchar_t* tex3)
@@ -329,12 +371,19 @@ void TextManager::SecondCreateWord(Name_Second name, wchar_t* tex1, wchar_t* tex
 	wordlist_second.insert(std::make_pair(name, temp));
 }
 
-//名前と文字列セットで保存(2個目のボス)
+//名前と文字列セットで保存(4個目のボス)
 void TextManager::FourthCreateWord(Name_Fourth name, wchar_t* tex1, wchar_t* tex2, wchar_t* tex3)
 {
 	Word temp = SetWord(tex1, tex2, tex3);
 
 	wordlist_fourth.insert(std::make_pair(name, temp));
+}
+//名前と文字列セットで保存(ラスボス)
+void TextManager::LastCreateWord(Name_Last name, wchar_t* tex1, wchar_t* tex2, wchar_t* tex3)
+{
+	Word temp = SetWord(tex1, tex2, tex3);
+
+	wordlist_last.insert(std::make_pair(name, temp));
 }
 void TextManager::CameraBossCreateWord(Name_CameraBoss name, wchar_t* tex1, wchar_t* tex2, wchar_t* tex3) {
 	Word temp = SetWord(tex1, tex2, tex3);

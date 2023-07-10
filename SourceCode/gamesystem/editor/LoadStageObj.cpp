@@ -165,8 +165,11 @@ void LoadStageObj::Draw(DirectXCommon* dxCommon) {
 //ImGui
 void LoadStageObj::ImGuiDraw() {
 	//ゴースト
-
-	//ImGui::End();
+	int num = GetGhostNumber();
+	ImGui::Begin("LoadObj");
+	ImGui::SliderInt("FreeGhostNum", &num, 0, 10);
+	ImGui::Text("isReferGhost:%s", (CheckReferGhost() ? "true" : "false"));
+	ImGui::End();
 	//m_EnemyManager->ImGuiDraw();
 }
 //当たり判定(ゴースト)
@@ -342,6 +345,7 @@ void LoadStageObj::LockVerseGhost() {
 			break;
 		}
 		for (auto i = 0; i < ghosts.size(); i++) {
+			if (!ghosts[i]->GetAlive()) { continue; }
 			if (ghosts[i]->GetIsRefer()) { continue; }
 			//キャラステート変える際に気をつけてください
 			if (ghosts[i]->GetStateInst() >= 2) { continue; }
@@ -369,7 +373,7 @@ void LoadStageObj::LockAllGhost() {
 	for (auto i = 0; i < ghosts.size(); i++) {
 		if (ghosts[i]->GetIsRefer()) { continue; }
 		//キャラステート変える際に気をつけてください
-		if (ghosts[i]->GetStateInst() >= 3) { continue; }
+		if (ghosts[i]->GetStateInst() >= 2) { continue; }
 		stopGhosts[nowStopGhorst] = ghosts[i];
 		ghosts[i]->SetIsRefer(true);
 		nowStopGhorst++;
@@ -380,7 +384,7 @@ void LoadStageObj::LockAllGhost() {
 void LoadStageObj::ReferGhorstReseted() {
 	for (Ghost*& ghost : stopGhosts) {
 		if (!ghost) { continue; }
-		if (ghost->GetStateInst()==4) { continue; }
+		if (ghost->GetStateInst() >= 4) { continue; }
 		ghost->SetIsRefer(false);
 	}
 }
@@ -419,10 +423,11 @@ void LoadStageObj::ChangeGhost2Enemy() {
 	int m_GhostPos = 0;
 	for (int i = 0; i < kStopGhorstMax; i++) {
 		if (!stopGhosts[i]) { continue; }
+		if (!stopGhosts[i]->GetAlive()) { continue; }
 		if (!stopGhosts[i]->GetIsRefer()) { continue; }
 		stopGhosts[i]->SetVanish(true);
 		stopGhosts[i]->SetIsVerse(false, 80);
-		boss->SetJackPos(m_GhostPos, stopGhosts[i]->GetPosition());
+		boss->SetJackPos(i, stopGhosts[i]->GetPosition());
 		m_GhostPos++;
 	}
 	boss->SetInstruction(InterBoss::FourthBossInst::SpawnEnemy);
@@ -464,7 +469,7 @@ int LoadStageObj::GetGhostNumber() {
 		if (!ghosts[i]) { continue; }
 		if (!ghosts[i]->GetAlive()) { continue; }
 		if (ghosts[i]->GetIsRefer()) { continue; }
-		if (ghosts[i]->GetStateInst()>=2) { continue; }
+		if (ghosts[i]->GetStateInst() >= 2) { continue; }
 		num++;
 	}
 	return num;
@@ -505,7 +510,7 @@ void LoadStageObj::CollideBoss() {
 }
 //捕まえているゴーストを操る
 void LoadStageObj::Manipulate() {
-	const float l_AddFrame = 0.05f;
+	const float l_AddFrame = 0.2f;
 	for (auto i = 0; i < ghosts.size(); ++i) {
 		if (ghosts[i]->GetVanish()) { continue; }
 		if (!ghosts[i]->GetAlive()) { continue; }
@@ -534,12 +539,17 @@ void LoadStageObj::Manipulate() {
 	if (m_SubHunger) {
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
-		}
-		else {
+		} else {
 			m_Frame = {};
 			m_SubHunger = false;
 		}
 		HungerGauge::GetInstance()->SetCatchCount(0);
 		HungerGauge::GetInstance()->SetNowHunger(Ease(In, Cubic, m_Frame, HungerGauge::GetInstance()->GetNowHunger(), 0.0f));
+	}
+}
+void LoadStageObj::AwakeInit() {
+	hearts.clear();
+	for (auto i = 0; i < ghosts.size(); ++i) {
+		ghosts[i]->SetVanish(true);
 	}
 }

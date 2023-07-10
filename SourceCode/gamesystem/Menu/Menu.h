@@ -55,6 +55,7 @@ private:
 	float SclingSpeed=55.f,CorrSpeed=0.48f;
 	int MenuResetTimer = 0;
 	int MenuRestartTimer = 0;
+	int CoolTime;
 	/**
 	 * \brief 操作説明テクスチャ
 	 */

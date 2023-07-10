@@ -300,6 +300,7 @@ void Player::Walk()
 			m_Position.z -= move.m128_f32[2] * m_AddSpeed;
 		}
 	}
+	if(_animeName!=AnimeName::ATTACK)
 	AnimationControl(AnimeName::WALK, true, 1);
 }
 //VECTOR
@@ -351,13 +352,16 @@ void Player::Bullet_Management() {
 			}
 		}
 	}
-	if(Input::GetInstance()->TriggerButton(Input::B))
-		AnimationControl(AnimeName::ATTACK,false, 1);
+	if (Input::GetInstance()->TriggerButton(Input::B)) {
+		AnimationControl(AnimeName::ATTACK, false, 1);
 		TriggerAttack = true;
-
+	}
 	if (TriggerAttack) {
-		if (!m_fbxObject->GetIsPlay())
+		if (m_fbxObject->GetCurrent()>=m_fbxObject->GetEndTime()-1) {
+			m_fbxObject->StopAnimation();
+			_animeName = AnimeName::IDLE;
 			TriggerAttack = false;
+		}
 	}
 
 	//弾を打った瞬間チャージ量分飢餓ゲージを減らす
@@ -584,7 +588,7 @@ void Player::BirthShot(const std::string& bulletName, bool Super) {
 			newbullet = new AttackBullet();
 			newbullet->Initialize();
 			newbullet->SetPosition(viewbullet->GetPosition());
-			newbullet->SetScale({ 1.5f,1.5f,1.5f });
+			//newbullet->SetScale({ 1.5f,1.5f,1.5f });
 			newbullet->SetPowerState(m_ChargeType);
 			newbullet->SetAngle(l_Angle);
 			attackbullets.push_back(newbullet);
@@ -726,4 +730,75 @@ float Player::GetPercentage() {
 	float temp = m_ChargePower / 50.0f;
 	Helper::GetInstance()->Clamp(temp, 0.0f, 1.0f);
 	return temp;
+}
+//覚醒シーンの初期化
+void Player::AwakeInit() {
+	m_Position = {0.0f,0.0f,300.0f};
+	m_Rotation = { 0.0f,0.0f,0.0f };
+	m_Scale = { 1.2f,0.8f,1.2f };
+	m_Color = { 1.0f,1.0f,1.0f,1.0f };
+	m_InterVal = 0;
+	m_DamageInterVal = 0;
+	m_BulletType = BULLET_FORROW;
+	m_BoundPower = { 0.0f,0.0f };
+	m_Confu = false;
+	m_ConfuTimer = 0;
+	//大きさ
+	m_ChargePower = {};
+	m_ChargeType = POWER_NONE;
+	HungerGauge::GetInstance()->SetCatchCount(0);
+	HungerGauge::GetInstance()->SetNowHunger(0.0f);
+}
+void Player::LastAppearUpdate(int Timer) {
+	if (_LastState == LAST_SET) {
+		if (Timer == 1) {
+			AnimationControl(AnimeName::WALK, true, 1);
+			m_Position = { 3.0f,-2.0f,-40.0f };
+			_LastState = LAST_WALK;
+		}
+	}
+	else if (_LastState == LAST_WALK) {
+		m_Position.z += 0.2f;
+		
+		if (Helper::GetInstance()->CheckMin(m_Position.z, 3.0f, 0.025f)) {
+			_LastState = LAST_STOP;
+			AnimationControl(AnimeName::IDLE, true, 1);
+		}
+
+	/*	if (Timer == 2550) {
+			AnimationControl(AnimeName::WALK, true, 1);
+			_LastState = LAST_SECOND_WALK;
+		}*/
+	}
+	else if(_LastState == LAST_SECOND_WALK) {
+		if (Helper::GetInstance()->CheckMin(m_Position.z, 15.0f, 0.025f)) {
+			_LastState = LAST_STOP;
+			AnimationControl(AnimeName::IDLE, true, 1);
+		}
+	}
+	else {
+		/*if (Timer == 330) {
+			_LastState = LAST_SECOND_WALK;
+		}*/
+	}
+	index = 15;
+	m_fbxObject->GetBoneIndexMat(index, skirtmat);
+	skirtobj->FollowUpdate(skirtmat);
+	playerattach->AppearUpdate(Timer);
+	//基礎パラメータ設定
+	Fbx_SetParam();
+
+	//どっち使えばいいか分からなかったから保留
+	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+}
+void Player::LastDeadUpdate(int Timer) {
+	index = 15;
+	m_fbxObject->GetBoneIndexMat(index, skirtmat);
+	skirtobj->FollowUpdate(skirtmat);
+	playerattach->AppearUpdate(Timer);
+	//基礎パラメータ設定
+	Fbx_SetParam();
+
+	//どっち使えばいいか分からなかったから保留
+	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 }

@@ -10,7 +10,8 @@
 #include "NormalAttack.h"
 #include "NoteEffect.h"
 #include "ShotAttack.h"
-
+#include"SmashShotAttack.h"
+#include"ShadowSlashAttack.h"
 class Spline;
 
 class FiveBoss : 
@@ -34,6 +35,8 @@ public:
 	void DeadAction_Throw() override;//ボス撃破の固有の処理 スロー
 
 	void ImGui_Origin() override;//ボスそれぞれのImGui
+
+	void InitAwake() override;//ボスの覚醒
 
 	void EffecttexDraw(DirectXCommon* dxCommon) override;
 
@@ -130,16 +133,35 @@ private:
 	float m_FollowSpeed = {};
 	ShotAttack* shot;
 	NormalAttack* normal;
-
+	SmashShotAttack* smash;
+	ShadowSlashAttack* slash;
 	static void (FiveBoss::* attackTable[])();
 	enum ActionPhase
 	{
 		MOVE,
 		ATTACK_SHOT,
 		ATTACK_NORMAL,
-	}_aPhase=ATTACK_NORMAL;
+		ATTACK_IMPACT,
+		ATTACK_SLASH,
+	}_aPhase=ATTACK_SHOT;
+
+	void ActionSet(ActionPhase phase,InterAttack*attack);
+	int RandAction;
+	int ActionTimer;
+	size_t bonesize;
+	std::vector<XMFLOAT3> bonepos;;
+	std::vector<XMMATRIX> bonemat;;
+	std::vector<XMFLOAT4> s_color;
+	std::vector<XMFLOAT4>e_color;
+	std::vector<float> s_scale;
+	std::vector<float> e_scale;
+	std::vector<int> m_Life;
 	inline void Shot() { shot->Upda(); }
 	inline void Normal() { normal ->Upda(); }
+	inline void Smash() {smash->Upda(); }
+	inline void Slash() { slash->Upda(); }
+
+	void MatTranstoPos(XMMATRIX trans, XMFLOAT3& m_Pos);
 };
 
 

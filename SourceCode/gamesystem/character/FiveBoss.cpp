@@ -24,12 +24,16 @@ FiveBoss::FiveBoss()
 
 	shot = new ShotAttack();
 	normal = new NormalAttack();
+	smash = new SmashShotAttack();
+	slash = new ShadowSlashAttack();
 
+	smash->Init();
 	shot->Init();
-	shot->SetBoss(this);
-	
+	slash->Init();
+
 	normal->Init();
-normal->SetBoss(this);
+	normal->SetBoss(this);
+
 
 	noteeffect.reset(new NoteEffect());
 	noteeffect->Initialize();
@@ -52,6 +56,15 @@ bool FiveBoss::Initialize()
 	_charaState = STATE_INTER;
 	m_AreaState = AREA_SET;*/
 	//CSVロード
+	bonesize =  m_fbxObject->GetBoneSize();
+	//{
+	bonepos.resize(19);
+	bonemat.resize(19);
+	s_color.resize(19);
+	e_color.resize(19);
+	s_scale.resize(19);
+	e_scale.resize(19);
+	m_Life.resize(19);
 	CSVLoad();
 	return true;
 }
@@ -70,19 +83,87 @@ void (FiveBoss::* FiveBoss::attackTable[])() = {
 	&FiveBoss::Pause,
 	&FiveBoss::Shot,
 	&FiveBoss::Normal,
+	&FiveBoss::Smash,
+	&FiveBoss::Slash,
+
 };
+
+void FiveBoss::ActionSet(ActionPhase phase, InterAttack* attack)
+{
+	if (_aPhase == phase)
+	{
+		RandAction = 0;
+		if (attack->GetActionEnd())
+		{
+			ActionTimer++;
+			_aPhase = ATTACK_SHOT;
+		}
+	}
+}
 
 void FiveBoss::Action()
 {
+	smash->SetBoss(this);
+	shot->SetBoss(this);
+	slash->SetBoss(this);
 	////状態移行(charastateに合わせる)
 	//if (m_HP > 0.0f) {
-		(this->*attackTable[_aPhase])();
+	(this->*attackTable[_aPhase])();
 	//}
-	if(Input::GetInstance()->TriggerButton(Input::Y))
+
+	/// <summary>
+	/// 攻撃ー３WAY
+	/// </summary>
+	_aPhase = ATTACK_SHOT;
+
+	//ActionSet(ATTACK_SHOT, shot);
+	//ActionSet(ATTACK_IMPACT, smash);
+	//ActionSet(ATTACK_SLASH, slash);
+
+	if (_aPhase == ATTACK_SHOT)ActionTimer++;
+
 	{
-		_aPhase = ATTACK_SHOT;
+		for (auto i = 0; i < ghosts.size(); i++) {
+			ghosts[i]->SetFivePos(m_Position);
+		}
+
+		for (auto i = 0; i < ghosts.size(); ++i) {
+			for (auto j = 0; j < ghosts.size(); ++j) {
+				XMFLOAT3 ghostpos = ghosts[i]->GetPosition();
+				XMFLOAT3 ghostpos2 = ghosts[j]->GetPosition();
+				if ((i == j)) { continue; }
+				if ((!ghosts[i]->GetAlive()) || (!ghosts[j]->GetAlive())) { continue; }
+				if ((!ghosts[i]->GetCollide()) || (!ghosts[j]->GetCollide())) { continue; }
+				if (Collision::SphereCollision(ghostpos, 1.5f, ghostpos2, 1.5f)) {
+					ghosts[i]->GhostCollision(ghostpos2);
+					ghosts[j]->GhostCollision(ghostpos);
+				}
+			}
+		}
 	}
 
+	mt19937 mt{ std::random_device{}() };
+	//if (_aPhase == ATTACK_SHOT && ActionTimer % 120 == 0) {
+	//	RandAction = rand()%3+1;
+
+	//	if (shot->GetDarkCount()<5)
+	//	{
+	//		shot->SetActionEnd(false);
+	//		_aPhase = ATTACK_SHOT;
+	//	}
+	//	else {
+	//		if (RandAction == 2)
+	//		{
+	//			smash->SetActionEnd(false);
+	//			_aPhase = ATTACK_IMPACT;
+	//		}
+	//		if (shot->GetDarkCount() >= 5)
+	//		{
+	//			slash->SetActionEnd(false);
+	//			_aPhase = ATTACK_SLASH;
+	//		}
+	//	}
+	//}
 	/*^^^^当たり判定^^^^*/
 	//弾とボスの当たり判定
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
@@ -101,12 +182,32 @@ void FiveBoss::Action()
 		isStrong = true;
 	}
 	//基礎パラメータ設定
-	
+
 	Fbx_SetParam();
 
+	if (bonesize == 0) {
+	
+	}
+	for (auto i = 0; i < 19; i++) {
+	}
+
+		
 	//どっち使えばいいか分からなかったから保留
 	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+for (auto i = 0; i < 19; i++)
+		{
+			m_fbxObject->GetBoneIndexMat(i, bonemat[i]);
+		MatTranstoPos(bonemat[i], bonepos[i]);
+	
+			s_color[i] = { 1.0f,0.4f,1.0f,0.50f };
+			e_color[i] = { 0.0f,0.0f,0.0f,0.0f };
+			s_scale[i] = 2.0f;
+			e_scale[i] = 0.0f;
+			m_Life[i] = 50;
 
+			ParticleEmitter::GetInstance()->FireEffect(m_Life[i],bonepos[i], s_scale[i], e_scale[i], s_color[i], e_color[i]);
+
+		}
 }
 
 void FiveBoss::AppearAction()
@@ -144,7 +245,19 @@ void FiveBoss::EffecttexDraw(DirectXCommon* dxCommon)
 void FiveBoss::Draw(DirectXCommon* dxCommon)
 {
 	//Obj_Draw();
-	shot->Draw();
+	smash->Draw(dxCommon);
+	shot->Draw(dxCommon);
+	slash->Draw(dxCommon);
 	Fbx_Draw(dxCommon);
+
+}
+
+void FiveBoss::MatTranstoPos(XMMATRIX trans,XMFLOAT3& m_Pos)
+{
+	m_Pos.x = trans.r[3].m128_f32[0]; // GetPosition().x;
+	m_Pos.y = trans.r[3].m128_f32[1];
+	m_Pos.z = trans.r[3].m128_f32[2];
+}
+void FiveBoss::InitAwake() {
 
 }

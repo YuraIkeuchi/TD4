@@ -79,14 +79,10 @@ public:
 
 	bool GetFeedEnd() { return FeedEndF; }
 private:
-	bool FeedEndF;
-	int DeathTimer;
-	bool FeedF;
-	bool AppearEndF;
-	void SetBossDead();//撃破
-
-	//ゲームシーン以外で使うカメラ更新(this変数で変更可能)
-//	void SpecialUpdate();//更新
+	bool FeedEndF = false;
+	int DeathTimer = 0;
+	bool FeedF = false;;
+	bool AppearEndF = false;
 
 private://各ボスの登場カメラ
 	Spline* spline;
@@ -104,17 +100,19 @@ private://各ボスの登場カメラ
 	//円運動のカメラセットの際のやつ
 	void SetCircleCameraTarget();
 	//円運動のカメラセットの際のやつ
-	void SetCircleCameraEye(const XMFLOAT3 target);
+	void SetCircleCameraEye(const XMFLOAT3& target,const XMFLOAT3& basepos);
+
+private:
+	void SetEaseCamera();
 public:
 	bool Finish;
-	int Timer_first=1;
+	int Timer_first = 1;
 	bool StartSpl;
 	float RadEffect;
 	bool PlusRad;
 	float SplineSpeed;
 	float GetEffectPower() { return RadEffect; }
-	enum FirstBossCamState
-	{
+	enum FirstBossCamState {
 		ONE,
 		TWO,
 		THREE
@@ -122,7 +120,7 @@ public:
 	}_firstState;
 	//getter setter
 	bool Feed_Spline;
-	bool FinishAppear() { if (spline->GetIndex() >= static_cast<int>(static_cast<unsigned long long>(pointsList.size()) -1))return true; return false; }
+	bool FinishAppear() { if (spline->GetIndex() >= static_cast<int>(static_cast<unsigned long long>(pointsList.size()) - 1))return true; return false; }
 
 	void SetBoss(InterBoss* boss) { this->boss = boss; }
 
@@ -145,10 +143,15 @@ public:
 
 	bool GetEndStrong() { return m_EndStrong; }
 
+	bool GetChangeStrong() { return m_ChangeStrong; }
+
 	int GetAppearType() { return m_AppearType; }
 
 	//
 	void SetCameraState(const int CameraState) { m_CameraState = CameraState; }
+
+	void SetLastTimer(const int LastTimer) { m_LastTimer = LastTimer; }
+	void SetEndTimer(const int EndTimer) { m_EndTimer = EndTimer; }
 
 	//シーンネームの取得
 	void SetSceneName(std::string name) { SceneName = name; }
@@ -167,7 +170,7 @@ private:
 	unique_ptr<Shake> shake = nullptr;
 	//イージングの変数
 	float m_Frame = 0.0f;
-	float m_FrameMax=30.0f;
+	float m_FrameMax = 30.0f;
 	XMFLOAT3 m_BeforeEye = { 0.0f,0.0f,0.0f };
 	XMFLOAT3 m_AfterEye = { 0.0f,0.0f,0.0f };
 	XMFLOAT3 m_BeforeTarget = { 0.0f,0.0f,0.0f };
@@ -213,6 +216,8 @@ private:
 
 	bool m_CameraStrong = false;
 
+	bool m_ChangeStrong = false;
+
 	enum StrongState {
 		STRONG_ONE,
 		STRONG_SECOND,
@@ -223,4 +228,22 @@ private:
 
 	bool m_EndStrong = false;
 	bool m_Finish = false;
+	bool m_NearBoss = false;
+
+	//ラスボスのカメラ時間
+	int m_LastTimer = 0;
+
+	//撃破時間
+	int m_EndTimer = 0;
+
+	enum LastState {
+		LAST_SET,
+		LAST_BOSS,
+		LAST_PLAYER,
+		LAST_UPBOSS,
+		LAST_ZOOMBOSS,
+		LAST_FARBOSS,
+		LAST_BATTLE,
+		LAST_BATTLE2
+	}_LastState;
 };

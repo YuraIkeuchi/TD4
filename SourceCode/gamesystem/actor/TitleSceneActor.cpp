@@ -19,7 +19,7 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	TitleSprite = IKESprite::Create(ImageManager::TITLE, { 0.0f,0.0f });
 	TitleWordSprite= IKESprite::Create(ImageManager::TITLEWORD, pos);
 	TitleWordSprite->SetSize(size);
-	PlayPostEffect = true;
+	PlayPostEffect = false;
 	Menu::GetIns()->Init();
 }
 //更新

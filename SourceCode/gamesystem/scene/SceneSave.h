@@ -8,7 +8,8 @@ enum SeceneCategory {
 	kFourthStage,
 	kFiveStage,
 	kSixStage,
-	kSevenStage
+	kSevenStage,
+	kMaxStage
 };
 
 
@@ -22,15 +23,15 @@ public:
 
 	bool GetClearFlag(SeceneCategory sceneCategory);
 
+	void SetLoseFlag(SeceneCategory sceneCategory, const bool flag);
+
+	bool GetLoseFlag(SeceneCategory sceneCategory);
+
 	void ImGuiDraw();
 private:
-	static bool m_TutorialStageClear;
-	static bool m_FirstStageClear;
-	static bool m_SecondStageClear;
-	static bool m_ThirdStageClear;
-	static bool m_FourthStageClear;
-	static bool m_FiveStageClear;
-	static bool m_SixStageClear;
-	static bool m_SevenStageClear;
+
+	static bool m_StageClear[(size_t)kMaxStage];
+
+	static bool m_StageLose[(size_t)kMaxStage];
 };
 

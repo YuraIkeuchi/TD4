@@ -15,7 +15,7 @@ void SixStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Lig
 	Audio::GetInstance()->LoopWave(AUDIO_BATTLE, VolumManager::GetInstance()->GetBGMVolum() + 1.0f);
 
 	//ポストエフェクト
-	PlayPostEffect = true;
+	PlayPostEffect = false;
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
 
@@ -310,6 +310,7 @@ void SixStageActor::MainUpdate(DebugCamera* camera) {
 
 	if (PlayerDestroy()) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
+		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kSixStage, true);
 		sceneChanger_->ChangeStart();
 		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::Reverse);
 	}

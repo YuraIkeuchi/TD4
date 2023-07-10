@@ -337,6 +337,7 @@ void FirstBoss::Attack()
 	}
 }
 
+
 void FirstBoss::FaceToOrientation()
 {
 	XMFLOAT3 l_player = Player::GetInstance()->GetPosition();
@@ -355,5 +356,10 @@ void FirstBoss::CreateFraction(const XMFLOAT3& FractionPos)
 	fraction->Init(FractionPos);
 	fraction->Drop();
 	fraction_.push_back(std::move(fraction));
+}
+
+
+void FirstBoss::InitAwake() {
+
 }
 

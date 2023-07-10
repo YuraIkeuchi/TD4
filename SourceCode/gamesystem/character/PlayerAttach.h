@@ -26,12 +26,16 @@ public:
 	void Particle();
 	//’e‚ÌoŒ»
 	void BirthObj();
+	//“oêƒV[ƒ“‚Ì“®‚«
+	void AppearUpdate(int Timer);
+	//Œ‚”jS‚Ì“®‚«
+	void LastDeadUpdate(int Timer);
 public:
 	//gettersetter
 	void SetAlive(const bool Alive) { m_Alive = Alive; }
 	void SetAngle(const XMFLOAT2& Angle) { m_Angle = Angle; }
 	//void SetAfterRot(const float AfterRotY) { m_AfterRotY = AfterRotY; }
-public:
+private:
 	XMFLOAT2 m_Angle = {};//’e‚ÌŠp“x
 	//float m_AfterScale = 0.0f;
 	float m_AddSpeed = {};//‰Á‘¬“x
@@ -42,4 +46,11 @@ public:
 	float m_SinAngle = {};
 	float m_SinAngle2 = {};
 	float m_Frame = 0.0f;
+
+	enum AppearState {
+		APPEAR_SET,
+		APPEAR_WALK,
+		APPEAR_WALK2,
+		APPEAR_STOP,
+	}_AppearState;
 };

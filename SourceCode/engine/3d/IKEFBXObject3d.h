@@ -148,6 +148,7 @@ protected: //メンバ変数
 	XMMATRIX matWorld;
 	//モデル
 	IKEFBXModel* model = nullptr;
+	size_t BoneSize;
 	bool ChangeColor = false; //色変更
 
 	bool ShadeSet = true;
@@ -173,6 +174,9 @@ public: //定数
 	XMMATRIX WorldMat;
 	FbxTime SetCurrent() { return currentTime = startTime; }
 	bool GetIsPlay() { return isPlay; }
+	FbxTime GetCurrent() { return currentTime; }
+	size_t GetBoneSize() { return BoneSize; }
+	FbxTime GetEndTime() { return endTime; }
 	//ボーンの最大数
 	static const int MAX_BONES = 90;
 	int BoneNumber = 0;

@@ -5,6 +5,7 @@
 #include "ObjCommon.h"
 #include "BreakEffect.h"
 #include "InterEnemy.h"
+#include"Ghost.h"
 
 using namespace std;         //  名前空間指定
 
@@ -63,6 +64,8 @@ protected:
 
 	virtual void ImGui_Origin() = 0;//ボスそれぞれのImGui
 
+	virtual void InitAwake() = 0;//覚醒シーンの初期化
+
 private:
 	void BirthEffect();
 public:
@@ -77,7 +80,9 @@ protected:
 	bool SummonF;
 	bool SummobnStop;
 	int SummonCool;
-	bool SearchF;// = Collision::GetLength(m_Position, l_player) < 25.f;
+	bool SearchF;
+	int m_BirthTarget=0;
+	// = Collision::GetLength(m_Position, l_player) < 25.f;
 private:
 	XMFLOAT3 EffectFirstPos;
 public://gettersetter
@@ -131,12 +136,16 @@ public://gettersetter
 	bool GetIsReferCheck() { return isReferCheck; }
 
 	int ActionNum;
-	void SetActionNum(int num) { ActionNum = num; }
-private:
+	void SetCircleSpeed(float CircleSpeed) { m_CircleSpeed = CircleSpeed; }
+	void SetTargetPos(XMFLOAT3 TargetPos) { m_TargetPos = TargetPos; }
+
+protected:
+	std::vector<Ghost*> ghosts;
 	std::string SceneName;
 	vector<InterEffect*> effects;
 protected:
-
+	XMFLOAT3 m_TargetPos = {};
+	
 	//ダメージ食らったとの色変換
 	float ColChangeEaseT;
 	int ActionTimer;
@@ -192,6 +201,18 @@ protected:
 	bool m_Absorption = false;
 	//操る
 	bool m_Manipulate = false;
+
+	//円運動
+	float m_CircleScale = 30.0f;
+	float m_CircleSpeed = {};
+	
+	bool m_DeleteObj = false;
+
+	bool m_AwakeInit = false;
+
+	int m_AppearTimer = {};
+
+	int m_DeadTimer = {};
 private:
 
 	enum class ActionList {
@@ -234,9 +255,17 @@ protected:
 public:
 	bool GetDeathAction() { return DeathSceneF; }
 	void SetThrowUpdateF(bool f) { ThrowUpdateF = f; }
+	
 
-	int m_BirthTarget = {};
+	inline void SetGhostList(std::vector<Ghost*>gsize)
+	{
+		ghosts.resize(gsize.size());
+		for(auto i=0;i<gsize.size();i++)
+		{
+			ghosts[i] = gsize[i];
+		}
+	};
+	std::vector<Ghost*>GetGhost() { return ghosts; }
 
-	bool m_DeleteObj = false;
 };
 

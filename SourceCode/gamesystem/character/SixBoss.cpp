@@ -1,5 +1,4 @@
 ﻿#include "SixBoss.h"
-
 #include <any>
 #include <random>
 #include "Collision.h"
@@ -529,4 +528,8 @@ void SixBoss::DeathParticle() {
 	for (int i = 0; i < 3; ++i) {
 		ParticleEmitter::GetInstance()->DeathEffect(50, { m_Position.x,(m_Position.y - 1.0f),m_Position.z }, s_scale, e_scale, s_color, e_color, l_velocity);
 	}
+}
+
+void SixBoss::InitAwake() {
+
 }

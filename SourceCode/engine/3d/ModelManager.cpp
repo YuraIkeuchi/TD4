@@ -20,6 +20,7 @@ void ModelManager::SecondInitialize()
 {
 	LoadModel(Ground, "ground");
 	LoadModel(Bullet, "UVSphere");
+	LoadModel(Nucleus, "nucleus");
 	LoadModel(GhostBullet, "voice");
 	LoadModel(BulEnemy, "tri");
 	LoadModel(Tyuta, "tieyosi_idol");
@@ -44,6 +45,7 @@ void ModelManager::SecondInitialize()
 	LoadModel(MILKCAP_NORMAL, "milkCap_normal");
 	LoadModel(MILKCAP_BREAK, "milkCap_break");
 	LoadModel(CAP, "cap");
+	LoadModel(NAIL, "Nail");
 
 	LoadFBXModel(PLAYER, "kotoko");
 	LoadFBXModel(SIORI, "siori_idol");

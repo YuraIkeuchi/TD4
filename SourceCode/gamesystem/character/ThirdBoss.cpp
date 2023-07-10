@@ -415,7 +415,7 @@ void ThirdBoss::RandomStamp() {
 	else if (m_RandomType == RANDOM_ATTACK) {
 		l_AddFrame = 0.05f;
 		m_AfterPos.y = 6.0f;
-		const int l_MoveMax = 10;
+		const int l_MoveMax = 5;
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
 
@@ -1006,4 +1006,8 @@ void ThirdBoss::DeathParticle() {
 	for (int i = 0; i < 3; ++i) {
 		ParticleEmitter::GetInstance()->DeathEffect(50, { m_Position.x,(m_Position.y - 1.0f),m_Position.z }, s_scale, e_scale, s_color, e_color, l_velocity);
 	}
+}
+
+void ThirdBoss::InitAwake() {
+
 }
