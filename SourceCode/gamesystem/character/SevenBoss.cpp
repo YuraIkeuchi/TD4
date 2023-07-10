@@ -341,7 +341,7 @@ void SevenBoss::Polter() {
 		m_MoveTimer = {};
 		m_AttackCount++;
 		//“ñ‰ñUŒ‚‚µ‚½‚ç‹zûs“®‚ÉˆÚs‚·‚é
-		if (m_AttackCount != 2) {
+		if (m_AttackCount != 4) {
 			_charaState = STATE_INTER;
 			m_Return = true;
 		}
@@ -362,7 +362,7 @@ void SevenBoss::ThrowBound() {
 		m_AttackCount++;
 
 		//“ñ‰ñUŒ‚‚µ‚½‚ç‹zûs“®‚ÉˆÚs‚·‚é
-		if (m_AttackCount != 2) {
+		if (m_AttackCount != 4) {
 			_charaState = STATE_INTER;
 			m_Return = true;
 		}
@@ -393,7 +393,7 @@ void SevenBoss::BirthAvatar() {
 		m_AttackCount++;
 		m_MoveTimer = {};
 		//“ñ‰ñUŒ‚‚µ‚½‚ç‹zûs“®‚ÉˆÚs‚·‚é
-		if (m_AttackCount != 2) {
+		if (m_AttackCount != 4) {
 			_charaState = STATE_INTER;
 			m_Return = true;
 		}
@@ -421,7 +421,7 @@ void SevenBoss::Manipulate() {
 			m_AttackCount++;
 
 			//“ñ‰ñUŒ‚‚µ‚½‚ç‹zûs“®‚ÉˆÚs‚·‚é
-			if (m_AttackCount != 2) {
+			if (m_AttackCount != 4) {
 				_charaState = STATE_INTER;
 				m_Return = true;
 			}
@@ -443,7 +443,7 @@ void SevenBoss::FireAttack() {
 		m_AttackCount++;
 
 		//“ñ‰ñUŒ‚‚µ‚½‚ç‹zûs“®‚ÉˆÚs‚·‚é
-		if (m_AttackCount != 2) {
+		if (m_AttackCount != 4) {
 			_charaState = STATE_INTER;
 			m_Return = true;
 		}
@@ -485,7 +485,7 @@ void SevenBoss::Confu() {
 		m_AttackCount++;
 
 		//“ñ‰ñUŒ‚‚µ‚½‚ç‹zûs“®‚ÉˆÚs‚·‚é
-		if (m_AttackCount != 2) {
+		if (m_AttackCount != 4) {
 			_charaState = STATE_INTER;
 			m_Return = true;
 		}
@@ -506,7 +506,7 @@ void SevenBoss::BlockAttack() {
 		m_MoveTimer = {};
 		m_AttackCount++;
 		//“ñ‰ñUŒ‚‚µ‚½‚ç‹zûs“®‚ÉˆÚs‚·‚é
-		if (m_AttackCount != 2) {
+		if (m_AttackCount != 4) {
 			_charaState = STATE_INTER;
 			m_Return = true;
 		}

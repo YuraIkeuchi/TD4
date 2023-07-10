@@ -415,7 +415,7 @@ void ThirdBoss::RandomStamp() {
 	else if (m_RandomType == RANDOM_ATTACK) {
 		l_AddFrame = 0.05f;
 		m_AfterPos.y = 6.0f;
-		const int l_MoveMax = 10;
+		const int l_MoveMax = 5;
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
 
