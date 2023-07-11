@@ -156,6 +156,8 @@ private:
 	std::vector<float> s_scale;
 	std::vector<float> e_scale;
 	std::vector<int> m_Life;
+
+	int JudgAttack;
 	inline void Shot() { shot->Upda(); }
 	inline void Normal() { normal ->Upda(); }
 	inline void Smash() {smash->Upda(); }

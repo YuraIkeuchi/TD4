@@ -39,8 +39,9 @@ void ShotAttack::Upda()
 			{
 				if (!BulAlive[k])continue;
 				if (boss->GetGhost()[i]->JugNONE()) {
-					DarkCount++;
+					DarkCount++;boss->SetGhostSize(boss->GetGhostSize() + 1);
 					boss->GetGhost()[i]->SetCollide(true);
+					
 				BulAlive[k] = false;
 				}
 			}
@@ -65,7 +66,16 @@ void ShotAttack::Upda()
 			}
 		}
 	}
-
+	if (_phase != SHOT&&boss->GetGhostSize()>0)
+	{
+		//ダメージを喰らい攻撃可能なら
+		if (boss->GetRecv())
+		{
+			_phase = NON;
+			ActionEnd = true;
+			IdleRecv = true;
+		}
+	}
 	
 		//状態移行(charastateに合わせる)
 	(this->*stateTable[_phase])();
@@ -86,10 +96,12 @@ void ShotAttack::Upda()
 	//攻撃終了時の初期化周り
 	if(ActionEnd)
 	{
+		RotEaseTime = 0;
 		for(auto i=0;i<BulSize;i++)
 		BulAlpha[i] = 1.f;
 		PhaseCount = 0;
 		AttackTimer = 0;
+		boss->SetRecv(false);
 		_phase = NON;
 
 	}
@@ -122,24 +134,35 @@ void ShotAttack::Phase_Idle()
 	AttackTimer++;
 	FollowPlayerAct();
 
+	bool next = Collision::GetLength(boss->GetGhost()[TargetGhost]->GetPosition(), boss->GetPosition()) < 15;
 	//次フェーズ
-	bool next = AttackTimer > 120;
 
 	m_Rotation = boss->GetRotation();
-	if (next) {
-		for (auto i = 0; i < BulSize; i++) {
-			BulAlive[i] = true;
-			BulPos[i] = boss->GetPosition();
-		}
+	if (TargetGhost == 0) {
+		AttackTimer++;
+		if (AttackTimer > 120)
+		{for (auto i = 0; i < BulSize; i++) {
+				BulAlive[i] = true;
+				BulPos[i] = boss->GetPosition();
+			}
+			mt19937 mt{ std::random_device{}() };
+			uniform_int_distribution<int> l_Rand(0, (int)boss->GetGhost().size() - 1);
+			TargetGhost = l_Rand(mt);
 
-		mt19937 mt{ std::random_device{}() };
-		uniform_int_distribution<int> l_Rand(0, (int)boss->GetGhost().size() - 1);
+			_phase = Phase::SHOT;
+		}
+	} else
+	{
+		if (next) {
+			mt19937 mt{ std::random_device{}() };
+		uniform_int_distribution<int> l_Rand(1, (int)boss->GetGhost().size() - 1);
 		TargetGhost = l_Rand(mt);
 
 		_phase = Phase::SHOT;
+		}
+		
 	}
-	}
-
+}
 void ShotAttack::Phase_Shot()
 {
 	//弾の向きをプレイヤーに
@@ -173,28 +196,30 @@ void ShotAttack::Phase_Shot()
 	}
 	RotEaseTime = 0.f;
 
-	mt19937 mt{ std::random_device{}() };
-	uniform_int_distribution<int> l_RandRot(-100, 100);
-
-	XMVECTOR PositionB = { boss->GetPosition().x,
-		boss->GetPosition().y,
-		boss->GetPosition().z,
-	};
-
-	XMVECTOR PositionA = {boss->GetGhost()[TargetGhost]->GetPosition().x
-		,boss->GetGhost()[TargetGhost]->GetPosition().y,
-		boss->GetGhost()[TargetGhost]->GetPosition().z};
-	//プレイヤーと敵のベクトルの長さ(差)を求める
-	XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
-	
-	
-	RottoGhost = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
 	
 
 }
 
 void ShotAttack::Phase_End()
 {
+	if (RotEaseTime == 0.f) {
+		mt19937 mt{ std::random_device{}() };
+		uniform_int_distribution<int> l_RandRot(-100, 100);
+
+		XMVECTOR PositionB = { boss->GetPosition().x,
+			boss->GetPosition().y,
+			boss->GetPosition().z,
+		};
+
+		XMVECTOR PositionA = { boss->GetGhost()[TargetGhost]->GetPosition().x
+			,boss->GetGhost()[TargetGhost]->GetPosition().y,
+			boss->GetGhost()[TargetGhost]->GetPosition().z };
+		//プレイヤーと敵のベクトルの長さ(差)を求める
+		XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
+
+
+		RottoGhost = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
+	}
 	for(auto i=0;i<BulSize;i++)
 	{
 		BulAlive[i] = true;
@@ -203,14 +228,14 @@ void ShotAttack::Phase_End()
 	}
 	
 	
-		Helper::GetInstance()->FrameCheck(RotEaseTime, 0.05f);
+		Helper::GetInstance()->FrameCheck(RotEaseTime, 0.04f);
 
 	boss->SetRotation({ boss->GetRotation().x,
-	Ease(In,Quad,RotEaseTime,OldRot.y,RottoGhost*50+180),
+	Ease(In,Quad,RotEaseTime,OldRot.y,RottoGhost*60+180),
 	boss->GetRotation().z });
 	AttackTimer = 0;
 	//if (PhaseCount < 4) {
-		if(RotEaseTime>=0.94f)
+		if(RotEaseTime>=1.f)
 		_phase = NON;
 	//}
 	

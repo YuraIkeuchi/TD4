@@ -31,6 +31,7 @@ private:
     XMFLOAT3 OldRot;
     int TargetGhost;
     float RottoGhost;
+    bool IdleRecv;
     //std::vector<XMVECTOR>PositionB;
     float AddRot;
     //フェーズ
@@ -61,7 +62,8 @@ private:
 public:
     int GetDarkCount() { return DarkCount; }
     int SetDarkCount(int count) { DarkCount = count; }
-
+    bool GetIdleDam() { return IdleRecv; }
+    void SetIdleDam(bool f) { IdleRecv=f; }
     //Phase GetPhase();
 };
 

@@ -62,6 +62,7 @@ private://ステート
 	XMFLOAT3 bossPos;
 	bool Collide;
 	int DarkCount;
+	bool stateSpawn;
 	void DarkSide();
 	//洗脳
 	void Jack();
@@ -77,6 +78,8 @@ private://ステート
 
 	void BirthBullet();
 public:
+	bool GetStateSpawn() { return stateSpawn; }
+	void SetStateSpawn(bool state) { stateSpawn=state; }
 	bool JugNONE() { if (_charaState == STATE_NONE)return true; else return false; }
 	bool GetCollide() { return Collide; }
 	void SetCollide(bool col) { Collide = col; }

@@ -45,14 +45,14 @@ bool FiveBoss::Initialize()
 {
 	m_Position = { 0.0f,3.0f,30.0f };
 	m_Rotation = { 0.0f,90.0f,0.0f };
+	m_Radius = 5.2f;
 	m_Scale = { 1.2f,0.8f,1.2f };
 	m_Color = { 0.0f,1.0f,0.0f,1.0f };
 	//m_Rotation.y = -90.f;
-
+_aPhase = ATTACK_SHOT;
 	/*ActionTimer = 1;
 
-	m_Radius = 5.2f;
-
+		
 	_charaState = STATE_INTER;
 	m_AreaState = AREA_SET;*/
 	//CSVÉçÅ[Éh
@@ -65,6 +65,8 @@ bool FiveBoss::Initialize()
 	s_scale.resize(19);
 	e_scale.resize(19);
 	m_Life.resize(19);
+
+	m_HP = 10;
 	CSVLoad();
 	return true;
 }
@@ -96,6 +98,7 @@ void FiveBoss::ActionSet(ActionPhase phase, InterAttack* attack)
 		if (attack->GetActionEnd())
 		{
 			ActionTimer++;
+			shot->SetActionEnd(false);
 			_aPhase = ATTACK_SHOT;
 		}
 	}
@@ -114,11 +117,10 @@ void FiveBoss::Action()
 	/// <summary>
 	/// çUåÇÅ[ÇRWAY
 	/// </summary>
-	_aPhase = ATTACK_SHOT;
 
 	//ActionSet(ATTACK_SHOT, shot);
-	//ActionSet(ATTACK_IMPACT, smash);
-	//ActionSet(ATTACK_SLASH, slash);
+	ActionSet(ATTACK_IMPACT, smash);
+	ActionSet(ATTACK_SLASH, slash);
 
 	if (_aPhase == ATTACK_SHOT)ActionTimer++;
 
@@ -144,6 +146,14 @@ void FiveBoss::Action()
 		}
 	}
 
+	for(auto i=0;i<ghosts.size();i++)
+	{
+		if(ghosts[i]->GetStateSpawn())
+		{
+			GhostSize--;
+			ghosts[i]->SetStateSpawn(false);
+		}
+	}
 	mt19937 mt{ std::random_device{}() };
 	//if (_aPhase == ATTACK_SHOT && ActionTimer % 120 == 0) {
 	//	RandAction = rand()%3+1;
@@ -166,6 +176,27 @@ void FiveBoss::Action()
 	//		}
 	//	}
 	//}
+	JudgAttack = 100;
+
+	bool PhaseAttack = JudgAttack > 60;
+	if (shot->GetIdleDam()) {
+		//í èÌçUåÇ
+		if (GhostSize == 1)
+		{
+			shot->SetActionEnd(true);
+			shot->SetIdleDam(false);
+			smash->SetActionEnd(false);
+			_aPhase = ATTACK_IMPACT;
+		} else if (GhostSize == 2)
+		{
+			shot->SetActionEnd(true);
+			shot->SetIdleDam(false);
+			slash->SetActionEnd(false);
+			_aPhase = ATTACK_SLASH;
+		}
+	}
+
+	
 	/*^^^^ìñÇΩÇËîªíË^^^^*/
 	//íeÇ∆É{ÉXÇÃìñÇΩÇËîªíË
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();

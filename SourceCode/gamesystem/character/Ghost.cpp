@@ -332,7 +332,7 @@ void Ghost::DarkSide() {
 		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, bossPos, -PI_90);
 	}
 	m_DarkC++;
-	if (m_DarkC > 180)
+	if (m_DarkC > 300)
 	{
 
 		m_Scale.x -= 0.1f;
@@ -345,6 +345,7 @@ void Ghost::DarkSide() {
 			m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
 
 			Collide = false;
+			stateSpawn = true;
 			_charaState = CharaState::STATE_SPAWN;
 		}
 	}
