@@ -95,6 +95,7 @@ private:
 
 	float m_SaveSpeed = {};
 
+	float m_AddSpeed = {};
 	enum AvatarType {
 		AVATAR_ONE,
 		AVATAR_SECOND,

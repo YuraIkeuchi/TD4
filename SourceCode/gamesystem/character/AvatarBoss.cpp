@@ -17,7 +17,7 @@ AvatarBoss::AvatarBoss() {
 
 //初期化
 bool AvatarBoss::Initialize() {
-	m_Position = { 0.0f,3.0f,30.0f };
+	m_Position = { 0.0f,3.0f,0.0f };
 	m_Rotation = { 0.0f,270.0f,0.0f };
 	m_Scale = { 0.7f,0.7f,0.7f };
 	m_Color = { 1.0f,0.7f,0.0f,0.0f };
@@ -32,18 +32,22 @@ bool AvatarBoss::Initialize() {
 	//CSVロード
 	CSVLoad();
 
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_RandomSpeed(10, 20);
+
+	m_AddSpeed = float(l_RandomSpeed(mt)) / 10;
 	//アバタータイプによって指定位置が変わる
-	if (m_AvatarType == AVATAR_ONE || m_AvatarType == AVATAR_SECOND) {
-		m_Position = { 0.0f,3.0f,0.0f };
-		m_TargetPos = { 0.0f,3.0f,0.0f };
+	if (m_AvatarType == AVATAR_ONE) {
+		m_TargetPos = { 0.0f,3.0f,40.0f };
+	}
+	else if (m_AvatarType == AVATAR_SECOND) {
+		m_TargetPos = { 0.0f,3.0f,-40.0f };
 	}
 	else if (m_AvatarType == AVATAR_THIRD) {
-		m_Position = { 45.0f,3.0f,40.0f };
-		m_TargetPos = { 45.0f,3.0f,40.0f };
+		m_TargetPos = { 45.0f,3.0f,0.0f };
 	}
 	else {
-		m_Position = { -35.0f,3.0f,-40.0f };
-		m_TargetPos = { -35.0f,3.0f,-40.0f };
+		m_TargetPos = { -35.0f,3.0f,0.0f };
 	}
 	return true;
 }
@@ -147,7 +151,7 @@ void AvatarBoss::Action() {
 			damageblock.erase(cbegin(damageblock) + i);
 		}
 	}
-	m_Color.w = Ease(In, Cubic, 0.5f, m_Color.w, 1.0f);
+	m_Color.w = Ease(In, Cubic, 0.4f, m_Color.w, 1.0f);
 }
 //ポーズ
 void AvatarBoss::Pause() {
@@ -358,8 +362,7 @@ void AvatarBoss::DeadAction_Throw() {
 	Obj_SetParam();
 }
 void AvatarBoss::AvatarNormal() {
-	const float l_AddSpeed = 1.0f;
-	m_CircleSpeed += l_AddSpeed;
+	m_CircleSpeed += m_AddSpeed;
 	m_CircleScale = 20.0f;
 
 	m_AfterPos = Helper::GetInstance()->CircleMove(m_TargetPos, m_CircleScale, m_CircleSpeed);
@@ -369,11 +372,9 @@ void AvatarBoss::AvatarNormal() {
 		Ease(In,Cubic,0.5f,m_Position.z,m_AfterPos.z),
 	};
 }
-
 void AvatarBoss::AvatarAround() {
-	const float l_AddSpeed = 1.0f;
-	m_CircleSpeed += l_AddSpeed;
-	m_CircleScale = 50.0f;
+	m_CircleSpeed += m_AddSpeed;
+	m_CircleScale = 20.0f;
 
 	m_AfterPos = Helper::GetInstance()->CircleMove(m_TargetPos, m_CircleScale, m_CircleSpeed);
 	m_Position = {
@@ -382,11 +383,9 @@ void AvatarBoss::AvatarAround() {
 		Ease(In,Cubic,0.5f,m_Position.z,m_AfterPos.z),
 	};
 }
-
 void AvatarBoss::AvatarRight() {
-	const float l_AddSpeed = 1.0f;
-	m_CircleSpeed += l_AddSpeed;
-	m_CircleScale = 15.0f;
+	m_CircleSpeed += m_AddSpeed;
+	m_CircleScale = 20.0f;
 
 	m_AfterPos = Helper::GetInstance()->CircleMove(m_TargetPos, m_CircleScale, m_CircleSpeed);
 	m_Position = {
@@ -395,11 +394,9 @@ void AvatarBoss::AvatarRight() {
 		Ease(In,Cubic,0.5f,m_Position.z,m_AfterPos.z),
 	};
 }
-
 void AvatarBoss::AvatarLeft() {
-	const float l_AddSpeed = 1.0f;
-	m_CircleSpeed += l_AddSpeed;
-	m_CircleScale = 15.0f;
+	m_CircleSpeed += m_AddSpeed;
+	m_CircleScale = 20.0f;
 
 	m_AfterPos = Helper::GetInstance()->CircleMove(m_TargetPos, m_CircleScale, m_CircleSpeed);
 	m_Position = {
@@ -408,7 +405,6 @@ void AvatarBoss::AvatarLeft() {
 		Ease(In,Cubic,0.5f,m_Position.z,m_AfterPos.z),
 	};
 }
-
 void AvatarBoss::InitAwake() {
 
 }

@@ -303,7 +303,7 @@ void SevenBoss::InterValMove() {
 	if (m_InterVal == l_LimitTimer) {
 		//s“®‚ğŒˆ‚ß‚ÄŸ‚Ìs“®‚ÉˆÚ‚é
 		m_AttackRand = int(l_RandomMove(mt));
-		if (m_AttackRand < m_RandAct[RAND_POLTER]) {
+	/*	if (m_AttackRand < m_RandAct[RAND_POLTER]) {
 			_charaState = STATE_POLTER;
 			m_InterVal = {};
 		}
@@ -321,14 +321,7 @@ void SevenBoss::InterValMove() {
 			}
 		}
 		else if(m_AttackRand >= m_RandAct[RAND_AVATAR] && m_AttackRand < m_RandAct[RAND_MANIPULATE]) {
-			if (HungerGauge::GetInstance()->GetCatchCount() != 0) {
-				_charaState = STATE_MANIPULATE;
-				m_InterVal = {};
-				m_StartMani = true;
-			}
-			else {
-				m_InterVal = l_LimitTimer - 1;
-			}
+			
 		}
 		else if (m_AttackRand >= m_RandAct[RAND_MANIPULATE] && m_AttackRand < m_RandAct[RAND_FIRE]) {
 			_charaState = STATE_FIRE;
@@ -341,6 +334,14 @@ void SevenBoss::InterValMove() {
 		else {
 			_charaState = STATE_BLOCK;
 			m_InterVal = {};
+		}*/
+		if (HungerGauge::GetInstance()->GetCatchCount() != 0) {
+			_charaState = STATE_MANIPULATE;
+			m_InterVal = {};
+			m_StartMani = true;
+		}
+		else {
+			m_InterVal = l_LimitTimer - 1;
 		}
 		m_ChangeTimer = {};
 	}
@@ -444,6 +445,11 @@ void SevenBoss::Manipulate() {
 	}
 	if (m_StartMani) {
 		m_MoveTimer++;
+		if (m_MoveTimer == 45) {
+			confueffect->SetAlive(true);
+			confueffect->SetColor({ 1.0f,0.0f,1.0f,1.0f });
+		}
+		//¬—‚ÌuŠÔ
 		if (m_MoveTimer == 50) {
 			m_Manipulate = true;
 		}
@@ -521,6 +527,7 @@ void SevenBoss::Confu() {
 	}
 	if (m_MoveTimer == l_LimitConfu) {
 		confueffect->SetAlive(true);
+		confueffect->SetColor({ 1.0f,1.0f,1.0f,1.0f });
 		Player::GetInstance()->SetConfu(true);
 		if (isStrong) {
 			l_ConfuTimer = 600;
@@ -895,6 +902,7 @@ void SevenBoss::InitAwake() {
 		avatarboss.clear();
 		poltergeist.clear();
 		abseffect.clear();
+		fireboll.clear();
 		damageblock.clear();
 		m_Position = { 0.0f,5.0f,30.0f };
 		m_Rotation = { 0.0f,270.0f,0.0f };

@@ -37,6 +37,7 @@ public:
 
 	void SetAlive(const bool Alive) { m_Alive = Alive; }
 	void SetBasePos(const XMFLOAT3& BasePos) { m_BasePos = BasePos; }
+	void SetColor(const XMFLOAT4& Color) { m_Color = Color; }
 private:
 	unique_ptr<IKESprite> EmiSprite;
 	array<unique_ptr<IKETexture>, STUN_MAX> stuntex;
