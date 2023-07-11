@@ -30,6 +30,7 @@ void ShotAttack::Upda()
 
 	
 	for (auto i = 0; i < boss->GetGhost().size(); i++) {
+		if (boss->GetGhost()[i]->GetState() == Ghost::STATE_DARKOTI)continue;
 		for (auto k = 0; k < 3; k++) {
 			//
 			boss->GetGhost()[i]->SetFivePos(boss->GetPosition());
@@ -52,6 +53,9 @@ void ShotAttack::Upda()
 				XMFLOAT3 ghostpos = boss->GetGhost()[i]->GetPosition();
 				XMFLOAT3 ghostpos2 = boss->GetGhost()[j]->GetPosition();
 				if ((i == j)) { continue; }
+				if (boss->GetGhost()[i]->GetState() != Ghost::STATE_DARKOTI)continue;
+				if (boss->GetGhost()[j]->GetState() != Ghost::STATE_DARKOTI)continue;
+
 				if ((!boss->GetGhost()[i]->GetAlive()) || (!boss->GetGhost()[j]->GetAlive())) { continue; }
 				if ((!boss->GetGhost()[i]->GetCollide()) || (!boss->GetGhost()[j]->GetCollide())) { continue; }
 				if (Collision::SphereCollision(ghostpos, 1.5f, ghostpos2, 1.5f)) {
@@ -127,6 +131,11 @@ void ShotAttack::Phase_Idle()
 			BulAlive[i] = true;
 			BulPos[i] = boss->GetPosition();
 		}
+
+		mt19937 mt{ std::random_device{}() };
+		uniform_int_distribution<int> l_Rand(0, (int)boss->GetGhost().size() - 1);
+		TargetGhost = l_Rand(mt);
+
 		_phase = Phase::SHOT;
 	}
 	}
@@ -167,7 +176,21 @@ void ShotAttack::Phase_Shot()
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> l_RandRot(-100, 100);
 
-	AddRot = (float)(l_RandRot(mt))+60.f;
+	XMVECTOR PositionB = { boss->GetPosition().x,
+		boss->GetPosition().y,
+		boss->GetPosition().z,
+	};
+
+	XMVECTOR PositionA = {boss->GetGhost()[TargetGhost]->GetPosition().x
+		,boss->GetGhost()[TargetGhost]->GetPosition().y,
+		boss->GetGhost()[TargetGhost]->GetPosition().z};
+	//プレイヤーと敵のベクトルの長さ(差)を求める
+	XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
+	
+	
+	RottoGhost = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
+	
+
 }
 
 void ShotAttack::Phase_End()
@@ -183,11 +206,11 @@ void ShotAttack::Phase_End()
 		Helper::GetInstance()->FrameCheck(RotEaseTime, 0.05f);
 
 	boss->SetRotation({ boss->GetRotation().x,
-	Ease(In,Quad,RotEaseTime,OldRot.y,OldRot.y+AddRot),
+	Ease(In,Quad,RotEaseTime,OldRot.y,RottoGhost*50+180),
 	boss->GetRotation().z });
 	AttackTimer = 0;
 	//if (PhaseCount < 4) {
-		if(RotEaseTime>=0.90f)
+		if(RotEaseTime>=0.94f)
 		_phase = NON;
 	//}
 	

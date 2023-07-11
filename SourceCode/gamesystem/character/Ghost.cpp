@@ -240,6 +240,7 @@ void Ghost::Spawm() {
 	m_SpawnTimer += 1.0f / kSpawnTimerMax;
 
 	m_Rotation.y = Ease(In, Quad, m_SpawnTimer, -(PI_360 + PI_90), -PI_90);
+	m_DarkC = 0;
 
 	float scale = Ease(Out, Elastic, m_SpawnTimer, 0.0f, 0.5f);
 	m_Scale = { scale,scale,scale };
@@ -330,7 +331,27 @@ void Ghost::DarkSide() {
 		Helper::GetInstance()->FollowMove(m_Position, bossPos, l_Vel);
 		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, bossPos, -PI_90);
 	}
+	m_DarkC++;
+	if (m_DarkC > 180)
+	{
 
+		m_Scale.x -= 0.1f;
+		m_Scale.y -= 0.1f;
+		m_Scale.z -= 0.1f;
+		if (m_Scale.x <= 0.f) {
+			mt19937 mt{ std::random_device{}() };
+			uniform_int_distribution<int> l_distX(-50, 60);
+			uniform_int_distribution<int> l_distZ(-55, 55);
+			m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
+
+			Collide = false;
+			_charaState = CharaState::STATE_SPAWN;
+		}
+	}
+	Helper::GetInstance()->Clamp(m_Scale.x, 0.f, 5.f);
+
+	Helper::GetInstance()->Clamp(m_Scale.y, 0.f, 5.f);
+	Helper::GetInstance()->Clamp(m_Scale.z, 0.f, 5.f);
 }
 
 //探索

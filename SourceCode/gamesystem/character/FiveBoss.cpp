@@ -124,6 +124,8 @@ void FiveBoss::Action()
 
 	{
 		for (auto i = 0; i < ghosts.size(); i++) {
+			if (ghosts[i]->GetState() != Ghost::STATE_DARKOTI)continue;
+
 			ghosts[i]->SetFivePos(m_Position);
 		}
 

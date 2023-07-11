@@ -29,6 +29,9 @@ private:
     int index = 0;
     float RotEaseTime;
     XMFLOAT3 OldRot;
+    int TargetGhost;
+    float RottoGhost;
+    //std::vector<XMVECTOR>PositionB;
     float AddRot;
     //フェーズ
     enum Phase

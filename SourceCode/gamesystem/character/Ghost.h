@@ -122,7 +122,7 @@ private:
 	int m_ResPornTimer = 0;//•œŠˆ‚ÌŠÔ
 	XMFLOAT3 m_FollowPos = {};//’Ç]æ
 	XMFLOAT3 m_OBBScale = {};//OBB—p‚Ì‘å‚«‚³
-private:
+public:
 	//ƒLƒƒƒ‰‚Ìó‘Ô
 	enum CharaState {
 		STATE_NONE,
@@ -136,6 +136,7 @@ private:
 		STATE_VANISH,
 	}_charaState = CharaState::STATE_NONE;
 
+	CharaState GetState() { return _charaState; }
 private:
 	unique_ptr<IKEModel> model_follow = nullptr;
 	unique_ptr<IKEModel> model_seach = nullptr;
@@ -213,4 +214,6 @@ private:
 	float m_AfterRotY = {};
 
 	int m_RotTimer = {};
+
+	int m_DarkC;
 };
