@@ -130,24 +130,24 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	LastCreateWord(LAST_TALK_SECOND, L"やっぱりお前だったんだな!", L"", L"");
 	LastCreateWord(LAST_TALK_THIRD, L"ストポン?", L"キミのしってる子?", L"");
 	LastCreateWord(LAST_TALK_FOURTH, L"こいつは俺の弟だ", L"あいかわらずナマイキな面しやがって", L"");
-	LastCreateWord(LAST_TALK_FIVE, L"そのしゃべりかたは", L"もしかしてにいさんかなぁ", L"ださいみためだねー");
+	LastCreateWord(LAST_TALK_FIVE, L"その喋り方は", L"もしかして兄さんかなぁ", L"ださい見た目だねー");
 	LastCreateWord(LAST_TALK_SIX, L"おい!", L"なんでゴーストを操って", L"俺に襲いかかった!?");
 	LastCreateWord(LAST_TALK_SEVEN, L"それはね・・・", L"", L"");
-	LastCreateWord(LAST_TALK_EIGHT, L"にいさんが嫌いだからだよ!", L"", L"");
-	LastCreateWord(LAST_TALK_NINE, L"こんな出来の悪いやつが・・・", L"あにだなんて・・・", L"");
+	LastCreateWord(LAST_TALK_EIGHT, L"兄さんが嫌いだからだよ!", L"", L"");
+	LastCreateWord(LAST_TALK_NINE, L"こんな出来の悪いやつが・・・", L"兄だなんて・・・", L"");
 	LastCreateWord(LAST_TALK_TEN, L"ほんとにうんざりだ!!!", L"", L"");
 	LastCreateWord(LAST_TALK_ELEVEN, L"だからね悪いやつはね・・・", L"", L"");
-	LastCreateWord(LAST_TALK_TWELVE, L"ボクがけしてあげるよ!!!", L"", L"");
-	LastCreateWord(LAST_TALK_THIRTEEN, L"悪いなコトコ・・・", L"キョウダイ喧嘩にまきこんじまってよ", L"だが・・・");
-	LastCreateWord(LAST_TALK_FOURTEEN, L"じぶんの運を恨んでくれ!", L"協力しろ!!!", L"");
+	LastCreateWord(LAST_TALK_TWELVE, L"ボクが消してあげるよ!!!", L"", L"");
+	LastCreateWord(LAST_TALK_THIRTEEN, L"悪いなコトコ・・・", L"兄弟喧嘩にまきこんじまってよ", L"だが・・・");
+	LastCreateWord(LAST_TALK_FOURTEEN, L"自分の運を恨んでくれ!", L"協力しろ!!!", L"");
 	LastCreateWord(LAST_TALK_FIFETEEN, L"そんなぼーっとしてるやつに", L"何ができるのかねぇ", L"まぁ・・・");
 	LastCreateWord(LAST_TALK_SIXTEEN, L"二人まとめて", L"ボクが直々に始末してあげるよ!!!", L"");
 	LastCreateWord(LAST_TALK_SEVENTEEN, L"俺もお前が", L"吠え面をかくのが", L"楽しみだ!");
 	LastCreateWord(LAST_TALK_EIGHTTEEN, L"コトコ!", L"これが俺とお前の", L"サイゴのたたかいだ!!!");
 	LastCreateWord(LAST_TALK_NINETEEN, L"全力でいくぞ!!!", L"", L"");
-	LastCreateWord(AWAKE_FIRST, L"ありゃー", L"いがいとやるじゃんにいさん", L"まぁ・・・");
-	LastCreateWord(AWAKE_SECOND, L"そろそろあそびはおわりかなぁ", L"じゃあ!", L"");
-	LastCreateWord(AWAKE_THIRD, L"にげるならいまのうちだよ!!!", L"", L"");
+	LastCreateWord(AWAKE_FIRST, L"ありゃー", L"意外とやるじゃん兄さん", L"まぁ・・・");
+	LastCreateWord(AWAKE_SECOND, L"そろそろ遊びは終わりかなぁ", L"じゃあ!", L"");
+	LastCreateWord(AWAKE_THIRD, L"逃げるなら今のうちだよ!!!", L"", L"");
 	//ラスボス
 	//コンヴァージョン初期化
 	Create(dxcomon);

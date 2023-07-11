@@ -268,10 +268,10 @@ void Ghost::Manipulate() {
 	const float l_AddFrame = 0.01f;
 	const float l_AddRot = 10.0f;
 	const int l_Limit = 300;
-	m_Color = { Ease(In,Cubic,0.5f,m_Color.x,1.0f),
-	Ease(In,Cubic,0.5f,m_Color.y,0.0f),
-	Ease(In,Cubic,0.5f,m_Color.z,1.0f),
-	Ease(In,Cubic,0.5f,m_Color.w,0.7f),
+	m_Color = { Ease(In,Cubic,0.3f,m_Color.x,1.0f),
+	Ease(In,Cubic,0.3f,m_Color.y,0.0f),
+	Ease(In,Cubic,0.3f,m_Color.z,1.0f),
+	Ease(In,Cubic,0.3f,m_Color.w,0.7f),
 	};
 	//移動先を決める
 	if (_ManiState == MANI_SET) {
