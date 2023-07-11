@@ -531,6 +531,7 @@
     <ClCompile Include="SourceCode\gamesystem\character\InterAttack.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\NormalAttack.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\ShotAttack.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\bossattach\Fraction.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\SmashShotAttack.cpp">
       <Filter>gamesystem\charactor\Boss\Five</Filter>
     </ClCompile>
@@ -1035,6 +1036,7 @@
     <ClInclude Include="SourceCode\gamesystem\character\InterAttack.h" />
     <ClInclude Include="SourceCode\gamesystem\character\NormalAttack.h" />
     <ClInclude Include="SourceCode\gamesystem\character\ShotAttack.h" />
+    <ClInclude Include="SourceCode\gamesystem\bossattach\Fraction.h" />
     <ClInclude Include="SourceCode\gamesystem\character\SmashShotAttack.h">
       <Filter>gamesystem\charactor\Boss\Five</Filter>
     </ClInclude>

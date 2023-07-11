@@ -14,7 +14,7 @@ FireBoll::FireBoll() {
 }
 
 bool FireBoll::Initialize() {
-	m_Position = { 500.0f,5.0f,0.0f };
+	m_Position = { 500.0f,8.0f,0.0f };
 	m_Scale = { 0.6f,0.6f,0.6f };
 	m_Color = { 1.0f,1.0f,1.0f,0.0f };
 
@@ -76,9 +76,9 @@ void FireBoll::Move() {
 	}else if (_MoveState == MOVE_PLAY) {
 		m_MoveTimer++;
 		m_CircleSpeed += l_AddSpeed;
-		m_Position = Helper::GetInstance()->CircleMove(l_PlayerPos, m_CircleScale, m_CircleSpeed);
+		m_Position = Helper::GetInstance()->CircleMove({ l_PlayerPos.x,5.0f,l_PlayerPos.z }, m_CircleScale, m_CircleSpeed);
 		if (m_MoveTimer == 100) {
-			m_TargetPos = l_PlayerPos;
+			m_TargetPos = { l_PlayerPos.x,5.0f,l_PlayerPos.z };
 			_MoveState = MOVE_OMEN;
 			m_MoveTimer = {};
 			m_Frame = {};
