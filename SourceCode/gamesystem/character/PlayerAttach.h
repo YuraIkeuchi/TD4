@@ -47,10 +47,18 @@ private:
 	float m_SinAngle2 = {};
 	float m_Frame = 0.0f;
 
+	//登場シーン
 	enum AppearState {
 		APPEAR_SET,
 		APPEAR_WALK,
 		APPEAR_WALK2,
 		APPEAR_STOP,
 	}_AppearState;
+
+	//撃破シーンの変数
+	enum DeathState {
+		DEATH_SET,
+		DEATH_MOVE,
+	}_DeathState;
+	XMFLOAT3 m_AfterPos = {};
 };

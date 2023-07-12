@@ -143,11 +143,25 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	LastCreateWord(LAST_TALK_FIFETEEN, L"そんなぼーっとしてるやつに", L"何ができるのかねぇ", L"まぁ・・・");
 	LastCreateWord(LAST_TALK_SIXTEEN, L"二人まとめて", L"ボクが直々に始末してあげるよ!!!", L"");
 	LastCreateWord(LAST_TALK_SEVENTEEN, L"俺もお前が", L"吠え面をかくのが", L"楽しみだ!");
-	LastCreateWord(LAST_TALK_EIGHTTEEN, L"コトコ!", L"これが俺とお前の", L"サイゴのたたかいだ!!!");
+	LastCreateWord(LAST_TALK_EIGHTTEEN, L"コトコ!", L"これが俺とお前の", L"サイゴの戦いだ!!!");
 	LastCreateWord(LAST_TALK_NINETEEN, L"全力でいくぞ!!!", L"", L"");
+	//覚醒
 	LastCreateWord(AWAKE_FIRST, L"ありゃー", L"意外とやるじゃん兄さん", L"まぁ・・・");
 	LastCreateWord(AWAKE_SECOND, L"そろそろ遊びは終わりかなぁ", L"じゃあ!", L"");
 	LastCreateWord(AWAKE_THIRD, L"逃げるなら今のうちだよ!!!", L"", L"");
+	//倒した後
+	LastCreateWord(DEATH_FIRST, L"ウボァァァァァァァァァ", L"ァァァァァァァァァ", L"ァァァァァァァァァ！");
+	LastCreateWord(DEATH_SECOND, L"な、なんでボクが負けそうに・・・?", L"まさかボクが兄さんに負ける!?", L"");
+	LastCreateWord(DEATH_THIRD, L"違う!", L"そんなはずはない!!", L"ありえない!!!");
+	LastCreateWord(DEATH_FOURTH, L"そうだ・・・", L"あの隣にいる女のせいだ・・・", L"あいつから倒せば・・・");
+	LastCreateWord(DEATH_FIVE, L"ごめんね!", L"キミに恨みはないけど・・・!", L"");
+	LastCreateWord(DEATH_SIX, L"さきに!", L"消えてもらうよ!!!", L"");
+	LastCreateWord(DEATH_SEVEN, L"待て!!!", L"", L"");
+	LastCreateWord(DEATH_EIGHT, L"!?", L"・・・何かな兄さん?", L"");
+	LastCreateWord(DEATH_NINE, L"弟!", L"もうこんな戦いやめないか・・・", L"");
+	LastCreateWord(DEATH_TEN, L"もしかして怖気付いたのかな兄さん?", L"そんな情けないこといって", L"");
+	LastCreateWord(DEATH_ELEVEN, L"違う!", L"俺はお前を消したいわけじゃない!!", L"");
+	LastCreateWord(DEATH_TWELVE, L"!?", L"・・・何かな兄さん?", L"");
 	//ラスボス
 	//コンヴァージョン初期化
 	Create(dxcomon);

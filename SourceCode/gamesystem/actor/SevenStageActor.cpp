@@ -138,11 +138,12 @@ void SevenStageActor::BackDraw(DirectXCommon* dxCommon) {
 			}
 		}
 	}
+
+	if (!camerawork->GetChangeStrong()) {
+		Player::GetInstance()->Draw(dxCommon);
+	}
 	////各クラスの描画
 	if (!camerawork->GetFeedEnd()) {
-		if (!camerawork->GetChangeStrong()) {
-			Player::GetInstance()->Draw(dxCommon);
-		}
 		if (camerawork->GetCameraState() != CAMERA_BOSS_STRONG) {
 			loadobj->Draw(dxCommon);
 		}
@@ -165,7 +166,8 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd() && camerawork->GetCameraState() == CAMERA_NORMAL) {
 		ui->Draw();
 	}
-	if ((m_SceneState == SceneState::IntroState) || (m_SceneState == SceneState::MainState && camerawork->GetChangeStrong())) {
+	if ((m_SceneState == SceneState::IntroState) ||
+		(m_SceneState == SceneState::MainState && (camerawork->GetChangeStrong() || camerawork->GetCameraState() == CAMERA_BOSSDEAD_AFTER_SEVEN))) {
 		text_->SpriteDraw(dxCommon);
 	}sceneChanger_->Draw();
 	IKESprite::PostDraw();
@@ -182,6 +184,8 @@ void SevenStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	ImGui::Text("Timer:%d", m_EndTimer);
 	ImGui::End();
 	enemymanager->ImGuiDraw();
+	camerawork->ImGuiDraw();
+	Player::GetInstance()->ImGuiDraw();
 }
 //登場シーン
 void SevenStageActor::IntroUpdate(DebugCamera* camera) {
@@ -249,14 +253,15 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 		//フェード後
 		else
 		{
+			text_->Display();
 			m_EndTimer++;
 			PlayPostEffect = false;
-			Player::GetInstance()->InitState({ 0.0f,0.0f,-5.0f });
 			enemymanager->SetDeadThrow(false);
 			enemymanager->DeadUpdate();
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_SEVEN);
 			camerawork->SetEndTimer(m_EndTimer);
 			Player::GetInstance()->LastDeadUpdate(m_EndTimer);
+			DeathText();
 		}
 
 		if (camerawork->GetEndDeath()) {
@@ -385,5 +390,32 @@ void SevenStageActor::AwakeText() {
 	}
 	else if (m_AwakeTimer == 400) {
 		text_->SelectText(TextManager::AWAKE_THIRD);
+	}
+}
+//ボス撃破時のエフェクト
+void SevenStageActor::DeathText() {
+	if (m_EndTimer == 1) {
+		text_->SelectText(TextManager::DEATH_FIRST);
+	}
+	else if (m_EndTimer == 200) {
+		text_->SelectText(TextManager::DEATH_SECOND);
+	}
+	else if (m_EndTimer == 350) {
+		text_->SelectText(TextManager::DEATH_THIRD);
+	}
+	else if (m_EndTimer == 500) {
+		text_->SelectText(TextManager::DEATH_FOURTH);
+	}
+	else if (m_EndTimer == 650) {
+		text_->SelectText(TextManager::DEATH_FIVE);
+	}
+	else if (m_EndTimer == 800) {
+		text_->SelectText(TextManager::DEATH_SIX);
+	}
+	else if (m_EndTimer == 900) {
+		text_->SelectText(TextManager::DEATH_SEVEN);
+	}
+	else if (m_EndTimer == 1100) {
+		text_->SelectText(TextManager::DEATH_EIGHT);
 	}
 }

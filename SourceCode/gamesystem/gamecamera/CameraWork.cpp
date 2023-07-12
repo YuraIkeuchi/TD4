@@ -210,7 +210,6 @@ void CameraWork::SetBossDead_Before() {
 	m_targetPos.y = boss->GetPosition().y;
 	m_targetPos.z = boss->GetPosition().z;
 }
-
 //フェード後の撃破アクション(1ボス)
 void CameraWork::SetBossDead_AfterFirst() {
 	RadEffect = 0;
@@ -328,15 +327,50 @@ void CameraWork::SetBossDead_AfterSix() {
 }
 //フェード後の撃破アクション(7ボス)
 void CameraWork::SetBossDead_AfterSeven() {
+	const float l_AddFrame = 0.01f;
 	RadEffect = 0.f;
 	if (FeedF) {
 		feed->FeedIn(Feed::FeedType::WHITE, 0.01f, FeedF);
 	}
-	if (SceneName == "FIRSTSTAGE") {
-		FirstBossDead_AfterFeed();
+	
+	//カメラ位置固定
+	if (_DeathCamera == DEATH_SET) {
+		m_eyePos = { -10.0f,5.0f,-5.0f };
+		m_targetPos = { 0.0f,5.0f,20.0f };
+		if (m_EndTimer == 150) {
+			_DeathCamera = DEATH_BOSS_UP;
+			m_Frame = {};
+			m_AfterEye = { -3.0f,5.0f,10.0f };
+			m_AfterTarget = { 0.0f,5.0f,30.0f };
+		}
 	}
-	m_eyePos = { -10.0f,5.0f,-5.0f };
-	m_targetPos = { 0.0f,5.0f,20.0f };
+	else if (_DeathCamera == DEATH_BOSS_UP) {			//ボスの前に持ってくる
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = 1.0f;
+		}
+
+		if (m_EndTimer == 450) {				//プレイヤーを見る
+			m_AfterEye = { 0.0f,5.0f,10.0f };
+			m_AfterTarget = { 0.0f,5.0f,-30.0f };
+			_DeathCamera = DEATH_PLAYER;
+			m_Frame = {};
+		}
+		SetEaseCamera();
+	}
+	else if(_DeathCamera == DEATH_PLAYER) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = 1.0f;
+		}
+		if (m_EndTimer == 800) {
+			m_Frame = {};
+			_DeathCamera = DEATH_FAR_PLAYER;
+		}
+		SetEaseCamera();
+	}
+	else {
+		m_eyePos = { boss->GetPosition().x,5.0f,boss->GetPosition().z - 12.0f };
+		m_targetPos = { 0.0f,5.0f,-70.0f };
+	}
 }
 //エディタのカメラ
 void CameraWork::EditorCamera() {
@@ -348,6 +382,9 @@ void CameraWork::EditorCamera() {
 void CameraWork::ImGuiDraw() {
 	ImGui::Begin("Camera");
 	ImGui::Text("TargetZ:%f", m_targetPos.z);
+	ImGui::Text("End:%d", m_EndTimer);
+	ImGui::Text("Change:%d", m_ChangeStrong);
+	ImGui::Text("FeedEnd:%d", FeedEndF);
 	ImGui::End();
 }
 void CameraWork::SpecialUpdate() {
