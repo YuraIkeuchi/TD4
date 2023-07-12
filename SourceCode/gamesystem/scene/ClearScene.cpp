@@ -11,7 +11,6 @@ void ClearScene::Initialize(DirectXCommon* dxCommon) {
 }
 //XV
 void ClearScene::Update(DirectXCommon* dxCommon) {
-	lightGroup->Update();
 	actor->Update(dxCommon, camera, lightGroup);
 }
 //•`‰æ

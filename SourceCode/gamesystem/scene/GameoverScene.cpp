@@ -12,7 +12,6 @@ void GameoverScene::Initialize(DirectXCommon* dxCommon) {
 }
 //XV
 void GameoverScene::Update(DirectXCommon* dxCommon) {
-	lightGroup->Update();
 	actor->Update(dxCommon, camera, lightGroup);
 }
 //•`‰æ

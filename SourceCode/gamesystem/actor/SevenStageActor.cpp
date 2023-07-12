@@ -262,11 +262,15 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 			camerawork->SetEndTimer(m_EndTimer);
 			Player::GetInstance()->LastDeadUpdate(m_EndTimer);
 			DeathText();
+
+			if (Input::GetInstance()->TriggerButton(Input::A)) {
+				camerawork->SetEndDeath(true);
+			}
 		}
 
 		if (camerawork->GetEndDeath()) {
 			sceneChanger_->ChangeStart();
-			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
+			sceneChanger_->ChangeScene("ENDROLL", SceneChanger::NonReverse);
 
 		}
 

@@ -247,3 +247,7 @@ void InterBoss::DeathAction()
 
 	DeathSceneF = true;
 }
+
+void InterBoss::EndRollUpdate() {
+	EndRollAction();
+}

@@ -528,3 +528,8 @@ void SixBoss::DeathParticle() {
 void SixBoss::InitAwake() {
 
 }
+
+void SixBoss::EndRollAction() {
+	//OBJのステータスのセット
+	Obj_SetParam();
+}

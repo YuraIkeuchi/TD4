@@ -415,3 +415,7 @@ void FirstBoss::InitAwake() {
 
 }
 
+void FirstBoss::EndRollAction() {
+	//OBJのステータスのセット
+	Obj_SetParam();
+}

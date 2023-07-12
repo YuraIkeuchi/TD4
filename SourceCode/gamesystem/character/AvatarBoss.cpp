@@ -510,3 +510,7 @@ void AvatarBoss::AvatarLeft() {
 void AvatarBoss::InitAwake() {
 
 }
+void AvatarBoss::EndRollAction() {
+	//OBJのステータスのセット
+	Obj_SetParam();
+}

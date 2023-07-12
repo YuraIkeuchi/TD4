@@ -12,7 +12,6 @@ void LoadScene::Initialize(DirectXCommon* dxCommon) {
 }
 //XV
 void LoadScene::Update(DirectXCommon* dxCommon) {
-	lightGroup->Update();
 	actor->Update(dxCommon, camera, lightGroup);
 }
 //•`‰æ

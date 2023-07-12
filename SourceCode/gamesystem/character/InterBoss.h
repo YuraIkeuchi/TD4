@@ -38,7 +38,8 @@ public:
 	void AppearUpdate();
 	//ボス撃破シーンの更新
 	void DeadUpdate();
-
+	//エンドロールの更新
+	void EndRollUpdate();
 	virtual void SkipInitialize() = 0;
 	/// <summary>
 	/// ポーズのとき
@@ -55,6 +56,8 @@ public:
 protected:
 
 	virtual void Action() = 0;//ボス特有の処理
+
+	virtual void EndRollAction() = 0;//エンドロールの処理
 
 	virtual void AppearAction() = 0;//ボス登場の固有の処理
 

@@ -986,3 +986,7 @@ void SevenBoss::InitAwake() {
 		m_AwakeInit = true;
 	}
 }
+void SevenBoss::EndRollAction() {
+	//OBJのステータスのセット
+	Obj_SetParam();
+}

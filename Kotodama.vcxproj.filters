@@ -543,6 +543,15 @@
     <ClCompile Include="SourceCode\gamesystem\bossattach\DamageBlock.cpp">
       <Filter>gamesystem\bossattach\DamageBlock</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\actor\EndRollActor.cpp">
+      <Filter>gamesystem\actor\EndRoll</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\stageobj\EndRollObj.cpp">
+      <Filter>gamesystem\stageobj\EndRoll</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\scene\EndRollScene.cpp">
+      <Filter>gamesystem\scene\EndRoll</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
@@ -1050,6 +1059,15 @@
     <ClInclude Include="SourceCode\gamesystem\bossattach\DamageBlock.h">
       <Filter>gamesystem\bossattach\DamageBlock</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\actor\EndRollActor.h">
+      <Filter>gamesystem\actor\EndRoll</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\stageobj\EndRollObj.h">
+      <Filter>gamesystem\stageobj\EndRoll</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\scene\EndRollScene.h">
+      <Filter>gamesystem\scene\EndRoll</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
@@ -1437,6 +1455,15 @@
     </Filter>
     <Filter Include="gamesystem\bossattach\DamageBlock">
       <UniqueIdentifier>{7835eaf6-a996-4cb0-ab22-214c75e5c5a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\actor\EndRoll">
+      <UniqueIdentifier>{5b69fce5-8103-43e3-9b8f-575410ec7418}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\stageobj\EndRoll">
+      <UniqueIdentifier>{97bf035e-76f9-4b34-b273-f0b483c059d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\EndRoll">
+      <UniqueIdentifier>{cc3076ca-66ef-4952-b4dc-38fbeb169a69}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

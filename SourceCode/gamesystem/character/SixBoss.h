@@ -35,6 +35,8 @@ public:
 	void Draw(DirectXCommon* dxCommon) override;//描画
 
 	void InitAwake() override;//ボスの覚醒
+
+	void EndRollAction() override;//エンドロールの更新
 private:
 	//インターバル
 	void InterValMove();
