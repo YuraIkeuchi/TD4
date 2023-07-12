@@ -73,14 +73,14 @@ float4 main(VSOutput input) : SV_TARGET
 	// //ボーダー柄
 	float4 colortex0 = tex0.Sample(smp, input.uv);
 	float4 colortex1 = tex0.Sample(smp, input.uv);
-	float uzu = min(max(1.0 - (lens / 0), 0.0), 1.0) * 0;
+	float uzu = min(max(1.0f - (lens / 0.0f), 0.0f), 1.0f) * 0.0f;
 	float x = cpos.x * cos(uzu) - cpos.y * sin(uzu);
 	float y = cpos.x * sin(uzu) + cpos.y * cos(uzu);
 	float2 retPos = (float2(x, y) + vCenter) / ScreenSize;
 
 
-	float2 ViewportOffset = (float2(0.5, 0.5) / float2(WINWIDTH, WINHEIGHT));
-	float2 center = float2(smoothstep(0, WINWIDTH, RadCenter.x), smoothstep(0, WINHEIGHT,RadCenter.y));
+	float2 ViewportOffset = (float2(0.5f, 0.5f) / float2(WINWIDTH, WINHEIGHT));
+	float2 center = float2(smoothstep(0.0f, WINWIDTH, RadCenter.x), smoothstep(0.0f, WINHEIGHT,RadCenter.y));
 	float2 dir = center - input.uv;
 	float len = length(dir);
 	float2 offset = normalize(dir) * ViewportOffset;
@@ -88,20 +88,20 @@ float4 main(VSOutput input) : SV_TARGET
 
 
 	const int winH = 720, winW = 1280;
-	float CenterX = input.svpos.x - winW/2;
-	float CenterY = input.svpos.y -winH/2;
+	float CenterX = input.svpos.x - winW/2.0f;
+	float CenterY = input.svpos.y -winH/2.0f;
 
-	float2 LeftUp = { CenterX - CloseIconRad / 2,CenterY-CloseIconRad/2 };
-	float2 LeftDown = { CenterX - CloseIconRad / 2, CenterY + CloseIconRad / 2 };
+	float2 LeftUp = { CenterX - CloseIconRad / 2.0f,CenterY-CloseIconRad/2.0f };
+	float2 LeftDown = { CenterX - CloseIconRad / 2.0f, CenterY + CloseIconRad / 2.0f };
 
-	float2 RightUp= { CenterX + CloseIconRad / 2, CenterY - CloseIconRad / 2 };
-	float2 RightDown= { CenterX + CloseIconRad / 2, CenterY + CloseIconRad / 2 };
+	float2 RightUp= { CenterX + CloseIconRad / 2.0f, CenterY - CloseIconRad / 2.0f };
+	float2 RightDown= { CenterX + CloseIconRad / 2.0f, CenterY + CloseIconRad / 2.0f };
 
 
 
 	float v[4];
-	v[0] = (CenterX+(winW - winH) > CloseIconRad) ? -1 : 1;
-	v[1] = (CenterX - (winW - winH) <-CloseIconRad) ? -1 : 1;
+	v[0] = (CenterX+(winW - winH) > CloseIconRad) ? -1.0f : 1.0f;
+	v[1] = (CenterX - (winW - winH) <-CloseIconRad) ? -1.0f : 1;
 	v[2] = (CenterY > CloseIconRad-(winW-winH)) ? -1 : 1;
 	v[3] = (CenterY <-(CloseIconRad - (winW - winH))) ? -1 : 1;
 

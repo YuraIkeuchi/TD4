@@ -53,7 +53,9 @@ public:
 	void ChangeGameOver();
 
 
-	void  ChangeFeedStart() { feedin_start = false; }
+	void  ChangeFeedStart() {
+		feedin_start = false; feedin_frame= 0.f;
+	}
 	//const bool& GetEasingStart() { return feedin_start; }
 
 	/// <summary>
