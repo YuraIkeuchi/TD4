@@ -29,6 +29,11 @@ private:
 		JumpBefore=0,
 		JumpAfter,
 	}jump_;
+
+	enum MoveFase {
+		Move=0,
+		Stop,
+	}move_;
 public:
 	FirstBoss();
 
@@ -182,11 +187,14 @@ private:
 	int jumpCount = 1;
 	XMFLOAT3 s_pos = {}, e_pos = {};
 	float kJumpTimeMax = 60.0f;
+	float kMoveTimeMax = 180.f;
 	const int kJumpCountMax = 3;
 
 	float fraction_timer_ = 0.f;
 
 	int attack_count_ = 0;
+
+	int jump_count_ = 0;
 };
 
 
