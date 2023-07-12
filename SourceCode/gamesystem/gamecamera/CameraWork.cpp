@@ -367,9 +367,38 @@ void CameraWork::SetBossDead_AfterSeven() {
 		}
 		SetEaseCamera();
 	}
-	else {
+	else if(_DeathCamera == DEATH_FAR_PLAYER) {
 		m_eyePos = { boss->GetPosition().x,5.0f,boss->GetPosition().z - 12.0f };
 		m_targetPos = { 0.0f,5.0f,-70.0f };
+
+		if (m_EndTimer == 950) {
+			m_Frame = {};
+			_DeathCamera = DEATH_LOOK_BOSS;
+			m_AfterEye = { -15.0f,5.0f,-50.0f };
+			m_AfterTarget = { 0.0f,5.0f,-50.0f};
+		}
+	}
+	else if(_DeathCamera == DEATH_LOOK_BOSS) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = 1.0f;
+		}
+		SetEaseCamera();
+		if (m_EndTimer == 1950) {
+			m_Frame = {};
+			_DeathCamera = DEATH_END;
+			m_AfterEye = { -300.0f,5.0f,-50.0f };
+			m_AfterTarget = { 0.0f,5.0f,-50.0f };
+		}
+	}
+	else {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = 1.0f;
+		}
+
+		SetEaseCamera();
+		if (m_Frame > 0.02f) {
+			m_EndDeath = true;
+		}
 	}
 }
 //エディタのカメラ
@@ -382,9 +411,9 @@ void CameraWork::EditorCamera() {
 void CameraWork::ImGuiDraw() {
 	ImGui::Begin("Camera");
 	ImGui::Text("TargetZ:%f", m_targetPos.z);
-	ImGui::Text("End:%d", m_EndTimer);
-	ImGui::Text("Change:%d", m_ChangeStrong);
-	ImGui::Text("FeedEnd:%d", FeedEndF);
+	ImGui::Text("EyeX:%f", m_eyePos.x);
+	ImGui::Text("EyeY:%f", m_eyePos.y);
+	ImGui::Text("EyeZ:%f", m_eyePos.z);
 	ImGui::End();
 }
 void CameraWork::SpecialUpdate() {

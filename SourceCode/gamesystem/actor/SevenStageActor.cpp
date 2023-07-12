@@ -415,7 +415,34 @@ void SevenStageActor::DeathText() {
 	else if (m_EndTimer == 900) {
 		text_->SelectText(TextManager::DEATH_SEVEN);
 	}
-	else if (m_EndTimer == 1100) {
+	else if (m_EndTimer == 1000) {
 		text_->SelectText(TextManager::DEATH_EIGHT);
+	}
+	else if (m_EndTimer == 1100) {
+		text_->SelectText(TextManager::DEATH_NINE);
+	}
+	else if (m_EndTimer == 1200) {
+		text_->SelectText(TextManager::DEATH_TEN);
+	}
+	else if (m_EndTimer == 1300) {
+		text_->SelectText(TextManager::DEATH_ELEVEN);
+	}
+	else if (m_EndTimer == 1400) {
+		text_->SelectText(TextManager::DEATH_TWELVE);
+	}
+	else if (m_EndTimer == 1500) {
+		text_->SelectText(TextManager::DEATH_THIRTEEN);
+	}
+	else if (m_EndTimer == 1600) {
+		text_->SelectText(TextManager::DEATH_FOURTEEN);
+	}
+	else if (m_EndTimer == 1700) {
+		text_->SelectText(TextManager::DEATH_FIFTEEN);
+	}
+	else if (m_EndTimer == 1800) {
+		text_->SelectText(TextManager::DEATH_SIXTEEN);
+	}
+	else if (m_EndTimer == 1900) {
+		text_->SelectText(TextManager::DEATH_SEVENTEEN);
 	}
 }

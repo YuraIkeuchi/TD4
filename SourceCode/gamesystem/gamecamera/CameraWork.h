@@ -252,5 +252,7 @@ private:
 		DEATH_BOSS_UP,
 		DEATH_PLAYER,
 		DEATH_FAR_PLAYER,
+		DEATH_LOOK_BOSS,
+		DEATH_END
 	}_DeathCamera = DEATH_SET;
 };

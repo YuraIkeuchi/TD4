@@ -731,7 +731,7 @@ void SevenBoss::DeadAction() {
 			}
 		}
 	}
-	else {
+	else if(_DeathState == DEATH_ATTACK) {
 		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 			m_Frame = 1.0f;
 		}
@@ -740,13 +740,28 @@ void SevenBoss::DeadAction() {
 		m_Position.y,
 		Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z),
 		};
-	}
-	//sin波によって上下に動く
-	m_SinAngle += 2.0f;
-	m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
-	m_Position.y = (sin(m_SinAngle2) * 1.0f + 5.0f);
 
-	
+		if (m_DeathTimer == 1000) {
+			m_Frame = {};
+			_DeathState = DEATH_TALK;
+		}
+	}
+	else if (_DeathState == DEATH_TALK) {
+		//sin波によって上下に動く
+		m_SinAngle += 2.0f;
+		m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
+		m_Position.y = (sin(m_SinAngle2) * 1.0f + 5.0f);
+
+		if (m_DeathTimer == 1100 || m_DeathTimer == 1300 || m_DeathTimer == 1500 || m_DeathTimer == 1700) {
+			_DeathState = DEATH_NO_TALK;
+		}
+	}
+	else {
+		if (m_DeathTimer == 1200 || m_DeathTimer == 1400 || m_DeathTimer == 1600 || m_DeathTimer == 1800) {
+			_DeathState = DEATH_TALK;
+		}
+	}
+
 	Obj_SetParam();
 }
 //ボス撃破シーン(スロー)
