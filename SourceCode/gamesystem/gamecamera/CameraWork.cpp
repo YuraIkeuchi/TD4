@@ -335,18 +335,8 @@ void CameraWork::SetBossDead_AfterSeven() {
 	if (SceneName == "FIRSTSTAGE") {
 		FirstBossDead_AfterFeed();
 	}
-	m_eyePos.x = Player::GetInstance()->GetPosition().x;
-	m_eyePos.y = Player::GetInstance()->GetPosition().y + 3.0f;
-	m_eyePos.z = Player::GetInstance()->GetPosition().z - 20.0f;
-
-
-	m_targetPos = { boss->GetPosition().x,boss->GetPosition().y,boss->GetPosition().z };
-
-	DeathTimer++;
-
-	if (DeathTimer == 350) {
-		m_EndDeath = true;
-	}
+	m_eyePos = { -10.0f,5.0f,-5.0f };
+	m_targetPos = { 0.0f,5.0f,20.0f };
 }
 //エディタのカメラ
 void CameraWork::EditorCamera() {
@@ -932,6 +922,7 @@ void CameraWork::StrongCamera() {
 	const int l_Timer = 200;
 	//フェード後は円運動をする
 	if (_StrongState == STRONG_ONE) {
+		m_Frame = {};
 		m_CameraScale = 20.0f;
 		m_CameraSpeed = 0.0f;
 		if (FeedF) {

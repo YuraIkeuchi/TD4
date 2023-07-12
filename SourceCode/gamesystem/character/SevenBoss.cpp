@@ -271,15 +271,16 @@ void SevenBoss::Draw(DirectXCommon* dxCommon) {
 //ImGui
 void SevenBoss::ImGui_Origin() {
 	ImGui::Begin("Seven");
-	ImGui::Text("POSX:%f", m_Position.x);
-	ImGui::Text("POSZ:%f", m_Position.z);
+	ImGui::Text("Death:%d", m_DeathTimer);
+	ImGui::Text("Bound:%f", m_BoundPower);
+	ImGui::Text("HP:%f", m_HP);
 	ImGui::End();
-	//偽物のボス
-	for (InterBoss* newboss : avatarboss) {
-		if (newboss != nullptr) {
-			newboss->ImGuiDraw();
-		}
-	}
+	////偽物のボス
+	//for (InterBoss* newboss : avatarboss) {
+	//	if (newboss != nullptr) {
+	//		newboss->ImGuiDraw();
+	//	}
+	//}
 }
 //インターバル
 void SevenBoss::InterValMove() {
@@ -705,7 +706,30 @@ void SevenBoss::AppearAction() {
 }
 //ボス撃破シーン
 void SevenBoss::DeadAction() {
+	m_DeathTimer++;
+	if (m_DeathTimer == 1) {
+		m_Position = { 0.0f,5.0f,-10.0f };
+		m_Rotation = { 0.0f,270.0f,0.0f };
+		m_BoundPower = 1.0f;
+	}
+	else if (m_DeathTimer == 100) {
+		m_Bound = true;
+	}
 
+	if (m_Bound) {
+		m_BoundPower = Ease(In,Cubic,0.3f,m_BoundPower,0.0f);
+		m_Position.z += m_BoundPower;
+
+		if (m_BoundPower <= 0.1f) {
+			m_Bound = false;
+		}
+	}
+	//sin波によって上下に動く
+	m_SinAngle += 2.0f;
+	m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
+	m_Position.y = (sin(m_SinAngle2) * 1.0f + 5.0f);
+
+	
 	Obj_SetParam();
 }
 //ボス撃破シーン(スロー)
@@ -926,6 +950,7 @@ void SevenBoss::InitAwake() {
 		m_StartMani = false;
 		m_DeleteObj = false;
 		m_AvatarCount = {};
+		m_SinAngle = {};
 		m_AwakeInit = true;
 	}
 }

@@ -178,9 +178,9 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void SevenStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	//ImGui::Begin("Seven");
-	//ImGui::Text("Timer:%d", m_AwakeTimer);
-	//ImGui::End();
+	ImGui::Begin("Seven");
+	ImGui::Text("Timer:%d", m_EndTimer);
+	ImGui::End();
 	enemymanager->ImGuiDraw();
 }
 //登場シーン
@@ -249,11 +249,14 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 		//フェード後
 		else
 		{
+			m_EndTimer++;
 			PlayPostEffect = false;
 			Player::GetInstance()->InitState({ 0.0f,0.0f,-5.0f });
 			enemymanager->SetDeadThrow(false);
 			enemymanager->DeadUpdate();
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_SEVEN);
+			camerawork->SetEndTimer(m_EndTimer);
+			Player::GetInstance()->LastDeadUpdate(m_EndTimer);
 		}
 
 		if (camerawork->GetEndDeath()) {

@@ -792,10 +792,13 @@ void Player::LastAppearUpdate(int Timer) {
 	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 }
 void Player::LastDeadUpdate(int Timer) {
+	if (Timer == 1) {
+		m_Position = { 0.0f,-2.0f,-20.0f };
+	}
 	index = 15;
 	m_fbxObject->GetBoneIndexMat(index, skirtmat);
 	skirtobj->FollowUpdate(skirtmat);
-	playerattach->AppearUpdate(Timer);
+	playerattach->LastDeadUpdate(Timer);
 	//基礎パラメータ設定
 	Fbx_SetParam();
 

@@ -205,10 +205,6 @@ void AvatarBoss::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui
 void AvatarBoss::ImGui_Origin() {
-	ImGui::Begin("Avatar");
-	ImGui::Text("Alpha:%f", m_Alpha);
-	ImGui::Text("AfterAlpha:%f", m_AfterAlpha);
-	ImGui::End();
 }
 //インターバル
 void AvatarBoss::InterValMove() {

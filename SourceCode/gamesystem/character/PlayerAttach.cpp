@@ -119,5 +119,7 @@ void PlayerAttach::AppearUpdate(int Timer) {
 	Obj_SetParam();
 }
 void PlayerAttach::LastDeadUpdate(int Timer) {
-
+	if (Timer == 1) {
+		m_Position = { 5.0f,-2.0f,-20.0f };
+	}
 }
