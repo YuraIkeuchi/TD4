@@ -510,7 +510,7 @@ void LoadStageObj::CollideBoss() {
 }
 //捕まえているゴーストを操る
 void LoadStageObj::Manipulate() {
-	const float l_AddFrame = 0.2f;
+	const float l_AddFrame = 0.5f;
 	for (auto i = 0; i < ghosts.size(); ++i) {
 		if (ghosts[i]->GetVanish()) { continue; }
 		if (!ghosts[i]->GetAlive()) { continue; }
@@ -523,7 +523,7 @@ void LoadStageObj::Manipulate() {
 		}
 		float l_dir = Helper::GetInstance()->ChechLength(l_ghostpos, m_EnemyManager->GetEnemyPosition());
 		if (m_Wide) {
-			m_WideArea += 50.0f;
+			m_WideArea += 100.0f;
 
 			if (m_WideArea > l_dir) {
 				ghosts[i]->SetManipulate(true);
@@ -551,5 +551,6 @@ void LoadStageObj::AwakeInit() {
 	hearts.clear();
 	for (auto i = 0; i < ghosts.size(); ++i) {
 		ghosts[i]->SetVanish(true);
+		ghosts[i]->DeleteBullet();
 	}
 }

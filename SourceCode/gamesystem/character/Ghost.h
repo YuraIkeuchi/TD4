@@ -62,6 +62,7 @@ private://ステート
 	XMFLOAT3 bossPos;
 	bool Collide;
 	int DarkCount;
+	bool stateSpawn;
 	void DarkSide();
 	//洗脳
 	void Jack();
@@ -77,6 +78,8 @@ private://ステート
 
 	void BirthBullet();
 public:
+	bool GetStateSpawn() { return stateSpawn; }
+	void SetStateSpawn(bool state) { stateSpawn=state; }
 	bool JugNONE() { if (_charaState == STATE_NONE)return true; else return false; }
 	bool GetCollide() { return Collide; }
 	void SetCollide(bool col) { Collide = col; }
@@ -84,6 +87,8 @@ public:
 
 	//ゴースト同士の当たり判定
 	void GhostCollision(const XMFLOAT3& pos);
+
+	void DeleteBullet();
 public://getter setter
 	const bool& GetAlive() { return m_Alive; }
 	const bool& GetIsRefer() { return m_IsRefer; }
@@ -122,7 +127,7 @@ private:
 	int m_ResPornTimer = 0;//復活の時間
 	XMFLOAT3 m_FollowPos = {};//追従先
 	XMFLOAT3 m_OBBScale = {};//OBB用の大きさ
-private:
+public:
 	//キャラの状態
 	enum CharaState {
 		STATE_NONE,
@@ -136,6 +141,7 @@ private:
 		STATE_VANISH,
 	}_charaState = CharaState::STATE_NONE;
 
+	CharaState GetState() { return _charaState; }
 private:
 	unique_ptr<IKEModel> model_follow = nullptr;
 	unique_ptr<IKEModel> model_seach = nullptr;
@@ -213,4 +219,6 @@ private:
 	float m_AfterRotY = {};
 
 	int m_RotTimer = {};
+
+	int m_DarkC;
 };

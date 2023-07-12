@@ -108,6 +108,9 @@ void EnemyManager::TutorialDraw(DirectXCommon* dxCommon) {
 //ImGui
 void EnemyManager::ImGuiDraw() {
 	boss->ImGuiDraw();
+	ImGui::Begin("ghostsize");
+	ImGui::Text("size%d", boss->GetGhostSize());
+	ImGui::End();
 	/*if (m_SceneName == "TUTORIAL") {
 		tutorialenemy[0]->ImGuiDraw();
 	}*/

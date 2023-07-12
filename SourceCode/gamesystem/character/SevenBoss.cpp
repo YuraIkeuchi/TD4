@@ -29,7 +29,7 @@ bool SevenBoss::Initialize() {
 	m_Color = { 1.0f,0.0f,0.0f,1.0f };
 	ActionTimer = 1;
 
-	m_Radius = 2.2f;
+	m_Radius = 3.0f;
 	m_AfterAlpha = 1.0f;
 	_charaState = STATE_INTER;
 	_ReturnState = RETURN_SET;
@@ -50,6 +50,17 @@ void SevenBoss::CSVLoad() {
 	auto ActSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "ACT_NUM")));
 	m_RandAct.resize(ActSize);
 	LoadCSV::LoadCsvParam_Int("Resources/csv/chara/boss/Seven/Sevenboss.csv", m_RandAct, "RandAct");
+
+	auto LimitSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "LIMIT_NUM")));
+
+	m_Limit.resize(LimitSize);
+	LoadCSV::LoadCsvParam_Int("Resources/csv/chara/boss/Seven/Sevenboss.csv", m_Limit, "Interval");
+
+	auto StrongLimitSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "STRONG_LIMIT_NUM")));
+
+	m_StrongLimit.resize(StrongLimitSize);
+	LoadCSV::LoadCsvParam_Int("Resources/csv/chara/boss/Seven/Sevenboss.csv", m_StrongLimit, "StrongInterval");
+
 
 	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "Magnification")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "hp1")));
@@ -125,7 +136,6 @@ void SevenBoss::Action() {
 	//偽物のボス
 	for (InterBoss* newboss : avatarboss) {
 		if (newboss != nullptr) {
-			newboss->SetTargetPos(m_Position);
 			newboss->Update();
 		}
 	}
@@ -204,6 +214,7 @@ void SevenBoss::Action() {
 	//HPが半分切ったら強化
 	if (m_HP < m_MaxHp / 2) {
 		isStrong = true;
+		AVATAR_NUM = 4;
 	}
 }
 //ポーズ
@@ -263,20 +274,24 @@ void SevenBoss::ImGui_Origin() {
 	ImGui::Text("POSX:%f", m_Position.x);
 	ImGui::Text("POSZ:%f", m_Position.z);
 	ImGui::End();
-
-	////ダメージブロック
-	//for (DamageBlock* newblock : damageblock) {
-	//	if (newblock != nullptr) {
-	//		newblock->ImGuiDraw();
-	//	}
-	//}
+	//偽物のボス
+	for (InterBoss* newboss : avatarboss) {
+		if (newboss != nullptr) {
+			newboss->ImGuiDraw();
+		}
+	}
 }
 //インターバル
 void SevenBoss::InterValMove() {
-	const int l_LimitTimer = 500;
+	int l_LimitTimer = {};
+	//強化しているかどうかで時間が変わる
+	if (!isStrong) {
+		l_LimitTimer = m_Limit[STATE_INTER];
+	}
+	else {
+		l_LimitTimer = m_StrongLimit[STATE_INTER];
+	}
 	m_InterVal++;
-
-	
 	if (!m_Return) {
 		RandMove();//一定フレームで動くで
 	}
@@ -286,45 +301,43 @@ void SevenBoss::InterValMove() {
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> l_RandomMove(0, 100);
 	if (m_InterVal == l_LimitTimer) {
-		//行動を決めて次の行動に移る
-		m_AttackRand = int(l_RandomMove(mt));
-		if (m_AttackRand < m_RandAct[RAND_POLTER]) {
-			_charaState = STATE_POLTER;
-			m_InterVal = {};
-		}
-		else if (m_AttackRand >= m_RandAct[RAND_POLTER] && m_AttackRand < m_RandAct[RAND_BOUND]) {
-			_charaState = STATE_BOUND;
-			m_InterVal = {};
-		}
-		else if (m_AttackRand >= m_RandAct[RAND_BOUND] && m_AttackRand < m_RandAct[RAND_AVATAR]) {
-			if (m_AvatarCount == 0) {
-				_charaState = STATE_AVATAR;
+		if (m_AvatarCount != 0) {
+			//行動を決めて次の行動に移る
+			m_AttackRand = int(l_RandomMove(mt));
+
+			if (m_AttackRand < m_RandAct[RAND_POLTER]) {
+				_charaState = STATE_POLTER;
+				m_InterVal = {};
+			}
+			else if (m_AttackRand >= m_RandAct[RAND_POLTER] && m_AttackRand < m_RandAct[RAND_BOUND]) {
+				_charaState = STATE_BOUND;
+				m_InterVal = {};
+			}
+			else if (m_AttackRand >= m_RandAct[RAND_BOUND] && m_AttackRand < m_RandAct[RAND_MANIPULATE]) {
+				if (HungerGauge::GetInstance()->GetCatchCount() != 0) {
+					_charaState = STATE_MANIPULATE;
+					m_InterVal = {};
+					m_StartMani = true;
+				}
+				else {
+					m_InterVal = l_LimitTimer - 1;
+				}
+			}
+			else if (m_AttackRand >= m_RandAct[RAND_MANIPULATE] && m_AttackRand < m_RandAct[RAND_FIRE]) {
+				_charaState = STATE_FIRE;
+				m_InterVal = {};
+			}
+			else if (m_AttackRand >= m_RandAct[RAND_FIRE] && m_AttackRand < m_RandAct[RAND_CONFU]) {
+				_charaState = STATE_CONFU;
 				m_InterVal = {};
 			}
 			else {
-				m_InterVal = l_LimitTimer - 1;
-			}
-		}
-		else if(m_AttackRand >= m_RandAct[RAND_AVATAR] && m_AttackRand < m_RandAct[RAND_MANIPULATE]) {
-			if (HungerGauge::GetInstance()->GetCatchCount() != 0) {
-				_charaState = STATE_MANIPULATE;
+				_charaState = STATE_BLOCK;
 				m_InterVal = {};
-				m_StartMani = true;
 			}
-			else {
-				m_InterVal = l_LimitTimer - 1;
-			}
-		}
-		else if (m_AttackRand >= m_RandAct[RAND_MANIPULATE] && m_AttackRand < m_RandAct[RAND_FIRE]) {
-			_charaState = STATE_FIRE;
-			m_InterVal = {};
-		}
-		else if (m_AttackRand >= m_RandAct[RAND_FIRE] && m_AttackRand < m_RandAct[RAND_CONFU]) {
-			_charaState = STATE_CONFU;
-			m_InterVal = {};
 		}
 		else {
-			_charaState = STATE_BLOCK;
+			_charaState = STATE_AVATAR;
 			m_InterVal = {};
 		}
 		m_ChangeTimer = {};
@@ -332,7 +345,14 @@ void SevenBoss::InterValMove() {
 }
 //ポルターガイスト
 void SevenBoss::Polter() {
-	const int l_LimitTimer = 200;
+	int l_LimitTimer = {};
+	//強化によって変わる
+	if (!isStrong) {
+		l_LimitTimer = m_Limit[STATE_POLTER];
+	}
+	else {
+		l_LimitTimer = m_StrongLimit[STATE_POLTER];
+	}
 	m_MoveTimer++;
 	if (m_MoveTimer == 1) {
 		BirthPolter("Normal");
@@ -352,7 +372,14 @@ void SevenBoss::Polter() {
 }
 //バウンド弾
 void SevenBoss::ThrowBound() {
-	const int l_LimitTimer = 200;
+	int l_LimitTimer = {};
+	//強化によって変わる
+	if (!isStrong) {
+		l_LimitTimer = m_Limit[STATE_BOUND];
+	}
+	else {
+		l_LimitTimer = m_StrongLimit[STATE_BOUND];
+	}
 	m_MoveTimer++;
 	if (m_MoveTimer == 1) {
 		BirthPolter("Bound");
@@ -373,20 +400,21 @@ void SevenBoss::ThrowBound() {
 }
 //偽物のボスを生む
 void SevenBoss::BirthAvatar() {
-	const int l_LimitTimer = 100;
+	int l_LimitTimer = {};
+	//強化によって変わる
+	if (!isStrong) {
+		l_LimitTimer = m_Limit[STATE_AVATAR];
+	}
+	else {
+		l_LimitTimer = m_StrongLimit[STATE_AVATAR];
+	}
 	m_MoveTimer++;
 	if (m_MoveTimer == l_LimitTimer) {
 		for (int i = 0; i < AVATAR_NUM; i++) {
 			InterBoss* boss;
 			boss = new AvatarBoss();
+			boss->SetAvatarType(i * 1);
 			boss->Initialize();
-			boss->SetPosition(m_Position);
-			if (i == 0) {
-				boss->SetCircleSpeed(0.0f);
-			}
-			else {
-				boss->SetCircleSpeed(180.0f);
-			}
 			avatarboss.push_back(boss);
 			m_AvatarCount++;
 		}
@@ -404,13 +432,25 @@ void SevenBoss::BirthAvatar() {
 }
 //捕まえているゴーストを操る
 void SevenBoss::Manipulate() {
-	const int l_LimitTimer = 200;
+	int l_LimitTimer = {};
+	//強化によって変わる
+	if (!isStrong) {
+		l_LimitTimer = m_Limit[STATE_MANIPULATE];
+	}
+	else {
+		l_LimitTimer = m_StrongLimit[STATE_MANIPULATE];
+	}
 	if (m_StartMani) {
 		m_MoveTimer++;
+		if (m_MoveTimer == 45) {
+			confueffect->SetAlive(true);
+			confueffect->SetColor({ 1.0f,0.0f,1.0f,1.0f });
+		}
+		//混乱の瞬間
 		if (m_MoveTimer == 50) {
 			m_Manipulate = true;
 		}
-		else if (m_MoveTimer == 52) {
+		else if (m_MoveTimer == 51) {
 			m_Manipulate = false;
 		}
 
@@ -433,7 +473,14 @@ void SevenBoss::Manipulate() {
 }
 //火の玉攻撃
 void SevenBoss::FireAttack() {
-	const int l_LimitTimer = 200;
+	int l_LimitTimer = {};
+	//強化によって変わる
+	if (!isStrong) {
+		l_LimitTimer = m_Limit[STATE_FIRE];
+	}
+	else {
+		l_LimitTimer = m_StrongLimit[STATE_FIRE];
+	}
 	m_MoveTimer++;
 	if (m_MoveTimer == 1) {
 		BirthFire();
@@ -466,11 +513,18 @@ void SevenBoss::BirthFire() {
 void SevenBoss::Confu() {
 	m_MoveTimer++;
 	const int l_LimitConfu = 80;
-	const int l_EndConfu = 120;
 	int l_ConfuTimer = {};
-
+	int l_EndTimer = {};
+	//強化によって変わる
+	if (!isStrong) {
+		l_EndTimer = m_Limit[STATE_CONFU];
+	}
+	else {
+		l_EndTimer = m_StrongLimit[STATE_CONFU];
+	}
 	if (m_MoveTimer == l_LimitConfu) {
 		confueffect->SetAlive(true);
+		confueffect->SetColor({ 1.0f,1.0f,1.0f,1.0f });
 		Player::GetInstance()->SetConfu(true);
 		if (isStrong) {
 			l_ConfuTimer = 600;
@@ -480,7 +534,7 @@ void SevenBoss::Confu() {
 		}
 		Player::GetInstance()->SetConfuTimer(l_ConfuTimer);
 	}
-	else if (m_MoveTimer == l_EndConfu) {
+	else if (m_MoveTimer == l_EndTimer) {
 		m_MoveTimer = {};
 		m_AttackCount++;
 
@@ -496,8 +550,14 @@ void SevenBoss::Confu() {
 }
 //ダメージのブロック
 void SevenBoss::BlockAttack() {
-
-	const int l_LimitTimer = 200;
+	int l_LimitTimer = {};
+	//強化によって変わる
+	if (!isStrong) {
+		l_LimitTimer = m_Limit[STATE_BLOCK];
+	}
+	else {
+		l_LimitTimer = m_StrongLimit[STATE_BLOCK];
+	}
 	m_MoveTimer++;
 	if (m_MoveTimer == 1) {
 		BirthBlock();
@@ -583,7 +643,14 @@ void SevenBoss::BirthPolter(const std::string& PolterName) {
 }
 //弾を吸収
 void SevenBoss::BulletCatch() {
-	const int l_LimitTimer = 500;
+	int l_LimitTimer = {};
+	//強化によって変わる
+	if (!isStrong) {
+		l_LimitTimer = m_Limit[STATE_CATCH];
+	}
+	else {
+		l_LimitTimer = m_StrongLimit[STATE_CATCH];
+	}
 	//弾とボスの当たり判定
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
 	CatchBul(_playerBulA);
@@ -604,7 +671,14 @@ void SevenBoss::BulletCatch() {
 }
 //スタンした時
 void SevenBoss::Stun() {
-	const int l_LimitTimer = 500;
+	int l_LimitTimer = {};
+	//強化によって変わる
+	if (!isStrong) {
+		l_LimitTimer = m_Limit[STATE_STUN];
+	}
+	else {
+		l_LimitTimer = m_StrongLimit[STATE_STUN];
+	}
 	m_MoveTimer++;
 	m_Absorption = false;
 	if (m_MoveTimer == l_LimitTimer) {
@@ -825,6 +899,7 @@ void SevenBoss::InitAwake() {
 		avatarboss.clear();
 		poltergeist.clear();
 		abseffect.clear();
+		fireboll.clear();
 		damageblock.clear();
 		m_Position = { 0.0f,5.0f,30.0f };
 		m_Rotation = { 0.0f,270.0f,0.0f };
@@ -850,6 +925,7 @@ void SevenBoss::InitAwake() {
 		m_RotTimer = {};
 		m_StartMani = false;
 		m_DeleteObj = false;
+		m_AvatarCount = {};
 		m_AwakeInit = true;
 	}
 }

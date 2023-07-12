@@ -19,7 +19,7 @@ bool Poltergeist::Initialize() {
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "Speed")));
 	m_Alive = true;
-	m_AfterPos.y = 5.0f;
+	m_AfterPos.y = 6.0f;
 	m_ThrowType = THROW_SET;
 	m_AliveTimer = {};
 
@@ -179,7 +179,7 @@ void Poltergeist::Bound() {
 			m_ThrowType = THROW_PLAY;
 		}
 
-		m_Position = Helper::GetInstance()->CircleMove(m_BasePos, m_CircleScale, m_CircleSpeed);
+		m_Position = Helper::GetInstance()->CircleMove({ m_BasePos.x,m_Position.y,m_BasePos.z }, m_CircleScale, m_CircleSpeed);
 	}
 	//“K“–‚É“Š‚°‚é
 	else {
