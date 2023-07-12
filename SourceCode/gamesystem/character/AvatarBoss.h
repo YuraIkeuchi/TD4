@@ -4,6 +4,7 @@
 #include "Poltergeist.h"
 #include "FireBoll.h"
 #include "DamageBlock.h"
+#include "IKETexture.h"
 class AvatarBoss :
 	public InterBoss {
 public:
@@ -42,7 +43,8 @@ private:
 	void BlockAttack();//ダメージブロックの生成
 	void BirthBlock();
 	void BirthPolter(const std::string& PolterName);//ポルターガイストの生成
-
+	void Vanish();
+	void BirthExplosion();
 	//アバターのタイプ
 	void AvatarNormal();
 	void AvatarAround();
@@ -57,7 +59,8 @@ private:
 		STATE_POLTER,
 		STATE_BOUND,
 		STATE_FIRE,
-		STATE_BLOCK
+		STATE_BLOCK,
+		STATE_VANISH,
 	}_charaState;
 
 	//関数ポインタ
@@ -68,6 +71,7 @@ private:
 	static const int FIRE_NUM = 4;
 	static const int BLOCK_NUM = 3;
 private:
+	unique_ptr<IKETexture> tex;
 	vector<FireBoll*> fireboll;//火の玉
 	vector<Poltergeist*> poltergeist;//ポルターガイスト
 	vector<DamageBlock*> damageblock;//ダメージブロック
@@ -83,6 +87,8 @@ private:
 
 	bool m_Return = false;
 
+	bool m_Tackle = false;
+
 	enum ReturnState {
 		RETURN_SET,
 		RETURN_PLAY,
@@ -90,10 +96,6 @@ private:
 	}_ReturnState;
 	//透明化する時間
 	float m_VanishFrame = {};
-	//糖度
-	float m_AfterAlpha = {};
-
-	float m_SaveSpeed = {};
 
 	float m_AddSpeed = {};
 	enum AvatarType {
@@ -102,4 +104,25 @@ private:
 		AVATAR_THIRD,
 		AVATAR_FOURTH
 	};
+
+	enum VanishType {
+		VANISH_SET,
+		VANISH_ATTACK,
+		VANISH_EXPLO,
+		VANISH_END,
+	}_VanishType;
+
+	float m_Frame = {};
+
+	int m_AttackCount = {};
+
+	//テクスチャ関連
+	XMFLOAT3 m_TexPos = {};
+	XMFLOAT3 m_TexRot = {};
+	XMFLOAT3 m_TexScale = {};
+	XMFLOAT4 m_TexColor = { 1.0f,1.0f,1.0f,0.0f };
+	float m_Alpha = 0.0f;
+	float m_AfterAlpha = 0.0f;
+
+	bool m_TexAlive = false;
 };

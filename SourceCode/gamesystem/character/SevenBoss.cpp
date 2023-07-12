@@ -301,47 +301,44 @@ void SevenBoss::InterValMove() {
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> l_RandomMove(0, 100);
 	if (m_InterVal == l_LimitTimer) {
-		//行動を決めて次の行動に移る
-		m_AttackRand = int(l_RandomMove(mt));
-	/*	if (m_AttackRand < m_RandAct[RAND_POLTER]) {
-			_charaState = STATE_POLTER;
-			m_InterVal = {};
-		}
-		else if (m_AttackRand >= m_RandAct[RAND_POLTER] && m_AttackRand < m_RandAct[RAND_BOUND]) {
-			_charaState = STATE_BOUND;
-			m_InterVal = {};
-		}
-		else if (m_AttackRand >= m_RandAct[RAND_BOUND] && m_AttackRand < m_RandAct[RAND_AVATAR]) {
-			if (m_AvatarCount == 0) {
-				_charaState = STATE_AVATAR;
+		if (m_AvatarCount != 0) {
+			//行動を決めて次の行動に移る
+			m_AttackRand = int(l_RandomMove(mt));
+
+			if (m_AttackRand < m_RandAct[RAND_POLTER]) {
+				_charaState = STATE_POLTER;
+				m_InterVal = {};
+			}
+			else if (m_AttackRand >= m_RandAct[RAND_POLTER] && m_AttackRand < m_RandAct[RAND_BOUND]) {
+				_charaState = STATE_BOUND;
+				m_InterVal = {};
+			}
+			else if (m_AttackRand >= m_RandAct[RAND_BOUND] && m_AttackRand < m_RandAct[RAND_MANIPULATE]) {
+				if (HungerGauge::GetInstance()->GetCatchCount() != 0) {
+					_charaState = STATE_MANIPULATE;
+					m_InterVal = {};
+					m_StartMani = true;
+				}
+				else {
+					m_InterVal = l_LimitTimer - 1;
+				}
+			}
+			else if (m_AttackRand >= m_RandAct[RAND_MANIPULATE] && m_AttackRand < m_RandAct[RAND_FIRE]) {
+				_charaState = STATE_FIRE;
+				m_InterVal = {};
+			}
+			else if (m_AttackRand >= m_RandAct[RAND_FIRE] && m_AttackRand < m_RandAct[RAND_CONFU]) {
+				_charaState = STATE_CONFU;
 				m_InterVal = {};
 			}
 			else {
-				m_InterVal = l_LimitTimer - 1;
+				_charaState = STATE_BLOCK;
+				m_InterVal = {};
 			}
 		}
-		else if(m_AttackRand >= m_RandAct[RAND_AVATAR] && m_AttackRand < m_RandAct[RAND_MANIPULATE]) {
-			
-		}
-		else if (m_AttackRand >= m_RandAct[RAND_MANIPULATE] && m_AttackRand < m_RandAct[RAND_FIRE]) {
-			_charaState = STATE_FIRE;
-			m_InterVal = {};
-		}
-		else if (m_AttackRand >= m_RandAct[RAND_FIRE] && m_AttackRand < m_RandAct[RAND_CONFU]) {
-			_charaState = STATE_CONFU;
-			m_InterVal = {};
-		}
 		else {
-			_charaState = STATE_BLOCK;
+			_charaState = STATE_AVATAR;
 			m_InterVal = {};
-		}*/
-		if (HungerGauge::GetInstance()->GetCatchCount() != 0) {
-			_charaState = STATE_MANIPULATE;
-			m_InterVal = {};
-			m_StartMani = true;
-		}
-		else {
-			m_InterVal = l_LimitTimer - 1;
 		}
 		m_ChangeTimer = {};
 	}
