@@ -90,7 +90,6 @@ void SelectSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 
 	sceneChanger_->Update();
 
-	SelectScene::GetIns()->SceneChange(sceneChanger_.get());
 	SelectScene::GetIns()->Upda();
 	camerawork->SetEye({ SelectScene::GetIns()->GetPedestalPos().x,
 						SelectScene::GetIns()->GetPedestalPos().y + 20.f,

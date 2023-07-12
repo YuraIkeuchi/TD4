@@ -124,7 +124,7 @@ void GameOverSceneActor::MainUpdate(DebugCamera* camera) {
 	} else {
 		heartframe += 1.0f / 60.0f;
 		heartframe = clamp(heartframe, 0.f, 1.f);
-
+ 
 		alphas[0] += 1.0f / 15.f;
 		for (auto i = 0; i < alphas.size(); i++) {
 			if (i != 0 && alphas[i - 1] >= 1.f) {

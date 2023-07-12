@@ -189,9 +189,9 @@ void FourthStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void FourthStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	Player::GetInstance()->ImGuiDraw();
-	enemymanager->ImGuiDraw();
-	loadobj->ImGuiDraw();
+	//Player::GetInstance()->ImGuiDraw();
+	//enemymanager->ImGuiDraw();
+	//loadobj->ImGuiDraw();
 	//SceneSave::GetInstance()->ImGuiDraw();
 }
 
