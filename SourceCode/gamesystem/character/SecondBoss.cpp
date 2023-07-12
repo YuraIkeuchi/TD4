@@ -1092,3 +1092,9 @@ void SecondBoss::DeathEffect()
 void SecondBoss::InitAwake() {
 
 }
+
+
+void SecondBoss::EndRollAction() {
+	//OBJのステータスのセット
+	Obj_SetParam();
+}

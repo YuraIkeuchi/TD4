@@ -542,3 +542,7 @@ bool FourthBoss::IsPinch() {
 void FourthBoss::InitAwake() {
 
 }
+void FourthBoss::EndRollAction() {
+	//OBJのステータスのセット
+	Obj_SetParam();
+}

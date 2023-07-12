@@ -138,6 +138,7 @@ public:
 	void SetCameraStrong(const bool CameraStrong) { m_CameraStrong = CameraStrong; }
 
 	bool GetEndDeath() { return m_EndDeath; }
+	void SetEndDeath(const bool EndDeath) { m_EndDeath = EndDeath; }
 
 	bool GetAppearEndF() { return AppearEndF; }
 

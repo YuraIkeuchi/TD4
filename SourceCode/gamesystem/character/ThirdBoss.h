@@ -34,6 +34,9 @@ private:
 	void InitAwake() override;//ボスの覚醒
 	//エフェクト
 	void EffecttexDraw(DirectXCommon* dxCommon) override;
+
+	void EndRollAction() override;//エンドロールの更新
+private:
 	//基本移動
 	void Move();
 	//攻撃(スタンプ攻撃)

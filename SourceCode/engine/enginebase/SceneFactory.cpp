@@ -14,6 +14,7 @@
 #include "EditorScene.h"
 #include "TutorialScene.h"
 #include"SelectStageScene.h"
+#include "EndRollScene.h"
 BaseScene* SceneFactory::CreateScene(const std::string& sceneName) {
 	//éüÇÃÉVÅ[ÉìÇÃçÏê¨
 	BaseScene* newScene = nullptr;
@@ -61,6 +62,9 @@ BaseScene* SceneFactory::CreateScene(const std::string& sceneName) {
 	}
 	else if (sceneName == "SELECT") {
 		newScene = new SelectStageScene();
+	}
+	else if (sceneName == "ENDROLL") {
+		newScene = new EndRollScene();
 	}
 	return newScene;
 }

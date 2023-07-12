@@ -31,6 +31,8 @@ public:
 	void EffecttexDraw(DirectXCommon* dxCommon) override;
 
 	void Draw(DirectXCommon* dxCommon) override;//描画
+
+	void EndRollAction() override;//エンドロールの更新
 private:
 	enum class commandState : int {
 		WaitCommand = 0,

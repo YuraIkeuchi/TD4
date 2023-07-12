@@ -1011,3 +1011,9 @@ void ThirdBoss::DeathParticle() {
 void ThirdBoss::InitAwake() {
 
 }
+
+void ThirdBoss::EndRollAction() {
+	Fbx_SetParam();
+	//どっち使えばいいか分からなかったから保留
+	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+}

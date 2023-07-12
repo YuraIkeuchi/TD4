@@ -20,6 +20,7 @@ void ClearSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	ClearSprite = IKESprite::Create(ImageManager::GAMECLEAR, { 0.0f,0.0f });
 	ClearSprite->SetColor({1.2f,1.2f,1.2f,1.0f});
 	ClearSprite->SetSize({ 1280.0f,720.0f });
+
 }
 //çXêV
 void ClearSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
