@@ -563,7 +563,8 @@ void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 		sceneChanger_->ChangeStart();
 		SceneSave::GetInstance()->SetClearFlag(kTutorialStage, true);
 		Audio::GetInstance()->StopWave(AUDIO_LOAD);
-
+		Player::GetInstance()->SetCanShot(true);
+		Player::GetInstance()->MoveStop(false);
 		sceneChanger_->ChangeScene("FIRSTSTAGE", SceneChanger::NonReverse);
 	}
 
@@ -674,7 +675,7 @@ void TutorialSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void TutorialSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	Player::GetInstance()->ImGuiDraw();
+	//Player::GetInstance()->ImGuiDraw();
 	//loadobj->ImGuiDraw();
 	//enemymanager->ImGuiDraw();
 	//camerawork->ImGuiDraw();

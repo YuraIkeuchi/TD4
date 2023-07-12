@@ -10,16 +10,13 @@
 
 using namespace DirectX;
 using namespace std;
-class SelectScene
-{
+class SelectScene {
 public:
 	static SelectScene* GetIns();
-	SelectScene(){};
-	~SelectScene(){};
+	SelectScene() {};
+	~SelectScene() {};
 
-	enum Stage
-	{
-		
+	enum Stage {
 		FIRST,
 		SECOND,
 		THIRD,
@@ -27,8 +24,8 @@ public:
 		FIVE,
 		SIX,
 		SEVEN,
-		NON,
-	}_stages = NON;
+		MAX,
+	}_stages = MAX;
 public:
 	/**
 	 * \brief 初期化
@@ -49,9 +46,6 @@ public:
 	/**
 	 * \brief 諸々リセット
 	 */
-	void ResetParam();
-	//
-	void SceneChange( SceneChanger* schange);
 
 	void CloseIconView(bool closeF);
 
@@ -64,72 +58,59 @@ public:
 
 	void TipsPosUpda(Stage stage);
 private:
-	//
-	bool SelectF;
 	//土台
-	unique_ptr<IKEObject3d>Pedestal=nullptr;
-	XMFLOAT3 PedestalRot={0,0,0};
+	unique_ptr<IKEObject3d>Pedestal = nullptr;
+	XMFLOAT3 PedestalRot = { 0,0,0 };
 
 	//オブジェクト数（ステージ数）
 	static constexpr int ObjNum = 7;
 
 	array<unique_ptr<IKEObject3d>, ObjNum>StageObjs = { nullptr };
-	array<unique_ptr<IKESprite>, ObjNum>StageObj={nullptr};
-	array<XMFLOAT3, ObjNum>StageObjPos;
-	array<float, ObjNum>TipsPosY;
-	array<bool, ObjNum>TipsAct;
-	array<XMFLOAT3, ObjNum>StageObjRot;
-	array<float, ObjNum>StageObjRotAngle;
-	array<float, ObjNum>StageObjEaseT;
-	array<float, ObjNum>IconColor;
-	float IconRotAngle_EaseT;
-	array<float,ObjNum> NowRotAngle;
+	array<unique_ptr<IKESprite>, ObjNum>StageObj = { nullptr };
+	array<XMFLOAT3, ObjNum>StageObjPos = {};
+	array<float, ObjNum>TipsPosY = {};
+	array<bool, ObjNum>TipsAct = {};
+	array<XMFLOAT3, ObjNum>StageObjRot = {};
+	array<float, ObjNum>StageObjRotAngle = {};
+	array<float, ObjNum>StageObjEaseT = {};
+	array<float, ObjNum>IconColor = {};
+	array<float, ObjNum> NowRotAngle = {};
+	float IconRotAngle_EaseT = 0.0f;
 
-	enum Select
-	{
+	enum Select {
 		NOINP,
-		RB,LB
-	}TrigerSelect=NOINP;
-
-	int SelIndex=0;
-
-	unique_ptr<IKEObject3d>BackSkyDome;
-	float SkydomeRotY = 0;
+		RB, LB
+	}TrigerSelect = NOINP;
 private:
-	array<unique_ptr<IKESprite>, 2>ButtonNav_RBLB;
-	array<unique_ptr<IKESprite>, 2>ButtonNav_Challenge_Cancel;
+	unique_ptr<IKEObject3d>BackSkyDome = nullptr;
+
+	array<unique_ptr<IKESprite>, 2>ButtonNav_RBLB = {};
+	array<unique_ptr<IKESprite>, 2>ButtonNav_Challenge_Cancel = {};
+	array<unique_ptr<IKESprite>, ObjNum>StageName = {};
+	array<unique_ptr<IKESprite>, ObjNum>BossIcon = {};
+
 	array<XMFLOAT2, 2>ButtonNav_Challenge_CancelScl;
 	array<float, 2>ButtonNav_Challenge_CancelColAlpha;
-	bool JudgChal,JudgCancel;
+	array<XMFLOAT2, 2>ButtonNav_Pos = { };
 
-	array<unique_ptr<IKESprite>, ObjNum>StageName;
-	array<unique_ptr<IKESprite>, ObjNum>BossIcon;
 private:
-	//回転アングル
-	float AngleRot;
-	//
-	int index;
-	//決定用
-	bool YESorNOflag;
-
 	bool ChangeF = false;
+	bool JudgChal = false;
+	bool sin = false;
+	bool CloseF = false;
 
+	int SelIndex = 0;
+
+	float SkydomeRotY = 0;
 	float closeScl = 6500.f;
 	float closeRad = 1500.f;
-	bool k;
-	bool sin = false;
 	float SclingSpeed = 55.f, CorrSpeed = 0.48f;
-	bool CloseF;
-	void SetStage(bool judg,string sceneName);
 
 	void RotPedestal();
-
-	void ChangeEffect(std::string name,Stage stage,UINT iconnum);
+	void ChangeEffect(std::string name, Stage stage, UINT iconnum);
 public:
 	float GetCloseIconRad() { return closeRad; }
 	float GetCloseScl() { return closeScl; }
 	XMFLOAT3 GetPedestalPos() { return Pedestal->GetPosition(); }
-	int GetNowIndex() { return index; }
-	bool GetSelect() { return SelectF; }
 };
 
