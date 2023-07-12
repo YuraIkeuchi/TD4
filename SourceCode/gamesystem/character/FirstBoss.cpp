@@ -202,16 +202,40 @@ void FirstBoss::Choice()
 //ロックオン突進
 void FirstBoss::RockOnAttack()
 {
-	fraction_timer_ += 0.01f;
-	if (fraction_timer_ > 0.f) {
-		
+	if (fase_ == AttackFase::AttackBefore) {
+		if (jump_ == JumpFase::JumpBefore) {
+			m_Position.y = s_pos.y;
+			e_pos.y = 3;
+			commandTimer += 1.0f / kMoveTimeMax;
+			Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);
+			m_Position = { 0.f,Ease(Out, Quart, commandTimer, s_pos.y, e_pos.y),0.f };
+			if (m_Position.y >= 3) {
+				jump_ = JumpFase::JumpAfter;
+			}
+		}
+		if (jump_ == JumpFase::JumpAfter) {
+			m_Position.y = s_pos.y;
+			e_pos.y = 0;
+			commandTimer += 1.0f / kMoveTimeMax;
+			Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);
+			m_Position = { 0.f,Ease(Out, Quart, commandTimer, s_pos.y, e_pos.y),0.f };
+			if (m_Position.y <= 0) {
+				jump_ = JumpFase::JumpBefore;
+				jumpCount += 1;
+			}
+		}
+		if (jumpCount >= 2) {
+			fase_ = AttackFase::AttackAfter;
+		}
 	}
 
+
+	if (fase_ != AttackFase::AttackAfter) { return; }
 	RockOn();
 
 	Attack();
 }
-//ランダム攻撃
+//動いてる途中に落とす
 void FirstBoss::RandAttack()
 {
 	m_Color = { 0.f,1.f,1.f,1.f };
@@ -222,16 +246,32 @@ void FirstBoss::RandAttack()
 		_charstate = CharaState::STATE_INTER;
 	}
 }
-//当たり屋?
+//中央行ってから拡散
 void FirstBoss::Hit()
 {
 	if (fase_ == AttackFase::AttackBefore) {
-		if(jump_==JumpFase::JumpBefore){
+		if (move_ == MoveFase::Move) {
+			commandTimer += 1.0f / kMoveTimeMax;
+			Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);
+			s_pos = m_Position;
+			e_pos = { 0.f,0.f,0.f };
+			m_Position = {
+		Ease(Out, Quart, commandTimer, s_pos.x, e_pos.x),
+		0.0f,
+		Ease(Out, Quart, commandTimer, s_pos.z, e_pos.z),
+			};
+			if (m_Position.x == 0.f && m_Position.z == 0) {
+				move_ = MoveFase::Stop;
+				commandTimer = 0.f;
+			}
+		}
+		if (move_ != MoveFase::Stop) { return; }
+		if (jump_ == JumpFase::JumpBefore) {
 			commandTimer += 1.0f / kJumpTimeMax;
 			Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);
 			//m_Position.y= Ease(In, Quad, commandTimer, 1.0f, 0.0f);
 			m_Position.y += 0.5f;
-			m_Rotation.x= Ease(In, Quad, commandTimer, 0.0f, 360.0f);
+			m_Rotation.x = Ease(In, Quad, commandTimer, 0.0f, 360.0f);
 			if (m_Rotation.x < 360) { return; }
 			jump_ = JumpFase::JumpAfter;
 			m_Rotation.x = 0.f;
@@ -241,7 +281,7 @@ void FirstBoss::Hit()
 				m_Position.y -= 2.f;
 			}
 			else if (m_Position.y <= 0) {
-			fase_ = AttackFase::AttackAfter;
+				fase_ = AttackFase::AttackAfter;
 			}
 		}
 	}
@@ -263,28 +303,40 @@ void FirstBoss::Hit()
 
 		//乱数指定
 		uniform_int_distribution<int> l_RandState(0, 40);
-		int ans = (l_RandState(mt)) % 4;
-		if (ans == 0) {
-			CreateFraction(AreaOne);
-		}
-		else if (ans == 1) {
-			CreateFraction(AreaTwo);
-		}
-		else if (ans == 2) {
-			CreateFraction(AreaThree);
-		}
-		else if (ans == 3) {
-			CreateFraction(AreaFour);
-		}
+		if (attack_count_ < 3) {
+			int ans = (l_RandState(mt)) % 4;
+			if (ans == 0) {
+				CreateFraction(AreaOne);
+			}
+			else if (ans == 1) {
+				CreateFraction(AreaTwo);
+			}
+			else if (ans == 2) {
+				CreateFraction(AreaThree);
+			}
+			else if (ans == 3) {
+				CreateFraction(AreaFour);
 
-		m_Color = { 1.f,1.f,0.f,1.f };
-		m_StopTimer++;
-		//一定時間立ったらランダムで行動選択
-		if (m_StopTimer > m_ChoiceInterval) {
-			m_StopTimer = 0;
-			_charstate = CharaState::STATE_INTER;
+			}
+			attack_count_ += 1;
+			m_Color = { 1.f,1.f,0.f,1.f };
+			_charstate = CharaState::STATE_HIT;
 			fase_ = AttackFase::AttackBefore;
 			commandTimer = 0.f;
+			move_ = MoveFase::Move;
+		}
+
+		if (attack_count_ >= 3) {
+			m_StopTimer++;
+			//一定時間立ったらランダムで行動選択
+			if (m_StopTimer > m_ChoiceInterval) {
+				m_StopTimer = 0;
+				_charstate = CharaState::STATE_INTER;
+				fase_ = AttackFase::AttackBefore;
+				commandTimer = 0.f;
+				move_ = MoveFase::Move;
+				attack_count_ = 0;
+			}
 		}
 	}
 }
@@ -297,7 +349,7 @@ void FirstBoss::EndMove()
 void FirstBoss::RockOn()
 {
 	if (_rockonstate != RockonState::STATE_AIM) { return; }
-	
+
 	commandTimer += 1.0f / kLockOnTimeMax;
 	Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);
 	m_Color = { 1.f,0.f,1.f,1.f };
@@ -322,7 +374,7 @@ void FirstBoss::Attack()
 
 	m_Position = {
 	Ease(Out, Quart, commandTimer, s_pos.x, e_pos.x),
-	5.0f,
+	0.0f,
 	Ease(Out, Quart, commandTimer, s_pos.z, e_pos.z),
 	};
 	if (commandTimer == 1.0f) {
