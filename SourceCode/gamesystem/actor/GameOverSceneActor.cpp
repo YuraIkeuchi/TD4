@@ -26,6 +26,15 @@ void GameOverSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	SutoponObj = make_unique<IKEObject3d>();
 	SutoponObj->Initialize();
 	SutoponObj->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Sutopon));
+	
+	FrontSprite[0]=IKESprite::Create(ImageManager::GAMEOVER_1,{0,0});
+	FrontSprite[1]=IKESprite::Create(ImageManager::GAMEOVER_2,{0,0});
+	FrontSprite[2]=IKESprite::Create(ImageManager::GAMEOVER_3,{0,0});
+	for (auto i = 0; i < FrontSprite.size(); i++) {
+		FrontSprite[i]->SetSize({ 1280,720 });
+
+		FrontSprite[i]->SetColor({ 1,1,1,0 });
+	}
 	//ƒ^ƒCƒgƒ‹
 	ClearSprite = IKESprite::Create(ImageManager::GAMEOVER, { 0.0f,0.0f });
 	ClearSprite->SetSize({ 1280.0f,720.0f });
@@ -54,15 +63,15 @@ void GameOverSceneActor::Draw(DirectXCommon* dxCommon) {
 	if (PlayPostEffect) {
 		dxCommon->PreDraw();
 		//postEffect->Draw(dxCommon->GetCmdList());
-		BackDraw(dxCommon); FrontDraw();
+		BackDraw(dxCommon);
+		FrontDraw();
 		ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	} else {
 		dxCommon->PreDraw();
 		ImGuiDraw(dxCommon);
-		FrontDraw();
 		BackDraw(dxCommon);
-
+		FrontDraw();
 		dxCommon->PostDraw();
 	}
 }
@@ -91,6 +100,7 @@ void GameOverSceneActor::IntroUpdate(DebugCamera* camera) {
 			SutoponObj->SetScale({ 1,1,1 });
 			SutoponObj->Update();
 			frame = 0.0f;
+			heartframe = 0.0f;
 			m_SceneState = SceneState::MainState;
 		}
 	}
@@ -111,11 +121,19 @@ void GameOverSceneActor::MainUpdate(DebugCamera* camera) {
 	if (frame<1.0f) {
 		XMFLOAT3 pos = SutoponObj->GetPosition();
 		ParticleEmitter::GetInstance()->FireEffect(120, pos, 3.0f, 0.5f, { 1.0f,0.0f,1.0f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
+	} else {
+		heartframe += 1.0f / 60.0f;
+		heartframe = clamp(heartframe, 0.f, 1.f);
+
+		alphas[0] += 1.0f / 15.f;
+		for (auto i = 0; i < alphas.size(); i++) {
+			if (i != 0 && alphas[i - 1] >= 1.f) {
+				alphas[i] += 1.0f / 15.f;
+			}
+			alphas[i] = clamp(alphas[i], 0.f, 1.f);
+			FrontSprite[i]->SetColor({1,1,1,alphas[i] });
+		}
 	}
-
-
-
-
 	ParticleEmitter::GetInstance()->Update();
 
 }
@@ -167,6 +185,12 @@ void GameOverSceneActor::BackDraw(DirectXCommon* dxCommon) {
 	SutoponObj->Draw();
 	IKEObject3d::PostDraw();
 	ParticleEmitter::GetInstance()->FlontDrawAll();
+	IKESprite::PreDraw();
+	for (auto i = 0; i < alphas.size(); i++) {
+		FrontSprite[i]->Draw();
+	}
+	IKESprite::PostDraw();
+
 }
 //ImGui•`‰æ
 void GameOverSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {

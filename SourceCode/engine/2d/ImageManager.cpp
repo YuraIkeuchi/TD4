@@ -30,6 +30,10 @@ void ImageManager::StartLoad2D()
 void ImageManager::SecondLoad2D()
 {
 	IKESprite::LoadTexture(GAMEOVER, L"Resources/2d/sceneback/over.png");
+	IKESprite::LoadTexture(GAMEOVER_1, L"Resources/2d/sceneback/over_1.png");
+	IKESprite::LoadTexture(GAMEOVER_2, L"Resources/2d/sceneback/over_2.png");
+	IKESprite::LoadTexture(GAMEOVER_3, L"Resources/2d/sceneback/over_3.png");
+
 	IKESprite::LoadTexture(GAMECLEAR, L"Resources/2d/sceneback/clear.png");
 	IKESprite::LoadTexture(MASTERCLEAR, L"Resources/2d/sceneback/lastclear.png");
 	IKESprite::LoadTexture(BOX, L"Resources/2d/objicon/box.png");

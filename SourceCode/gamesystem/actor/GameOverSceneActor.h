@@ -28,6 +28,9 @@ private://メンバ変数
 	string str = "";
 	//スプライト
 	unique_ptr<IKESprite> ClearSprite = nullptr;
+	
+	array<unique_ptr<IKESprite>, 3>FrontSprite = { };
+	array<float, 3> alphas = {};
 	unique_ptr<IKEObject3d> SutoponObj = nullptr;
 	XMFLOAT3 m_eye = { 0,10,20 };
 	float frame = 0.0f;
