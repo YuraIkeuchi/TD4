@@ -140,7 +140,6 @@ private:
 	enum RandState {
 		RAND_POLTER,
 		RAND_BOUND,
-		RAND_AVATAR,
 		RAND_MANIPULATE,
 		RAND_FIRE,
 		RAND_CONFU,
