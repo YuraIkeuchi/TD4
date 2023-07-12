@@ -29,6 +29,10 @@ private://メンバ変数
 	//スプライト
 	unique_ptr<IKESprite> ClearSprite = nullptr;
 	unique_ptr<IKEObject3d> SutoponObj = nullptr;
-
-
+	XMFLOAT3 m_eye = { 0,10,20 };
+	float frame = 0.0f;
+	float heartframe = 0.0f;
+	const float kFrameMax = 120.0f;
+	float radius = 0.f;
+	float sca = 0.0f;
 };

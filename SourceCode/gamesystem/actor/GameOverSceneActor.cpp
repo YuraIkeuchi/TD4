@@ -12,7 +12,7 @@ void GameOverSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	camerawork->SetEye({ 0,10,0 });
 	camerawork->SetTarget({ 0,0,0 });
 	camerawork->SetCameraState(CAMERA_NORMAL);
-	camerawork->Update(camera);
+	camerawork->DefUpda(camera);
 	//オーディオ
 	//Audio::GetInstance()->LoadSound(3, "Resources/Sound/BGM/jto3s-8fzcz.wav");
 	//Audio::GetInstance()->LoopWave(3, VolumManager::GetInstance()->GetBGMVolum());
@@ -20,19 +20,21 @@ void GameOverSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	PlayPostEffect = false;
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
+	m_SceneState = SceneState::IntroState;
+
 
 	SutoponObj = make_unique<IKEObject3d>();
 	SutoponObj->Initialize();
 	SutoponObj->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Sutopon));
 	//タイトル
 	ClearSprite = IKESprite::Create(ImageManager::GAMEOVER, { 0.0f,0.0f });
-	ClearSprite->SetSize({1280.0f,720.0f});
-	ClearSprite->SetColor({1,1,1,1});
+	ClearSprite->SetSize({ 1280.0f,720.0f });
+	ClearSprite->SetColor({ 1,1,1,1 });
 }
 //更新
 void GameOverSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	Input* input = Input::GetInstance();
-	if (input->TriggerButton(input->A)|| input->TriggerButton(input->B)) {
+	if (input->TriggerButton(input->A) || input->TriggerButton(input->B)) {
 		if (sceneChanger_->GetEasingStart()) { return; }
 		sceneChanger_->ChangeStart();
 		if (input->TriggerButton(input->A)) {
@@ -43,9 +45,7 @@ void GameOverSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Retry.wav", VolumManager::GetInstance()->GetSEVolum());
 		}
 		m_SceneState = SceneState::FinishState;
- 	}
-	camerawork->Update(camera);
-	SutoponObj->Update();
+	}
 	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
 }
 //描画
@@ -54,16 +54,15 @@ void GameOverSceneActor::Draw(DirectXCommon* dxCommon) {
 	if (PlayPostEffect) {
 		dxCommon->PreDraw();
 		//postEffect->Draw(dxCommon->GetCmdList());
-		BackDraw(dxCommon);FrontDraw();
+		BackDraw(dxCommon); FrontDraw();
 		ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
-	}
-	else {
-	dxCommon->PreDraw();
+	} else {
+		dxCommon->PreDraw();
 		ImGuiDraw(dxCommon);
 		FrontDraw();
 		BackDraw(dxCommon);
-		
+
 		dxCommon->PostDraw();
 	}
 }
@@ -72,12 +71,52 @@ void GameOverSceneActor::FrontDraw() {
 	sceneChanger_->Draw();
 }
 void GameOverSceneActor::IntroUpdate(DebugCamera* camera) {
+	frame += 1.0f / kFrameMax;
+	frame = clamp(frame,0.f,1.f);
+	radius = Ease(Out, Quad, frame, 0.f, 720.0f);
+	m_eye.x = sinf(radius * (XM_PI / 180.0f)) * 20.f;
+	m_eye.y = Ease(Out, Quad, frame, 20.0f, 0.0f);
+	m_eye.z = cosf(radius * (XM_PI / 180.0f)) * 20.f;
+	camerawork->SetEye(m_eye);
+	camerawork->DefUpda(camera);
 
+	sca += 0.2f;
+	float scale=1.0f+sinf(sca)*0.05f;
+	SutoponObj->SetScale({scale,scale ,scale });
+	SutoponObj->Update();
+	if (frame >= 1.0f) {
+		heartframe += 1.0f / 60.0f;
+		heartframe = clamp(heartframe, 0.f, 1.f);
+		if (heartframe >= 1.0f) {
+			SutoponObj->SetScale({ 1,1,1 });
+			SutoponObj->Update();
+			frame = 0.0f;
+			m_SceneState = SceneState::MainState;
+		}
+	}
 
 }
 void GameOverSceneActor::MainUpdate(DebugCamera* camera) {
+	frame += 1.0f / kFrameMax;
+	frame = clamp(frame, 0.f, 1.f);
+
+	float scale = Ease(Out, Sine, frame, 1.f, 0.0f);
+	SutoponObj->SetScale({ scale,scale,scale });
+	XMFLOAT3 rot=SutoponObj->GetRotation();
+	rot.x+=3.f;
+	rot.y+=3.f;
+	SutoponObj->SetRotation(rot);
+	SutoponObj->Update();
+	
+	if (frame<1.0f) {
+		XMFLOAT3 pos = SutoponObj->GetPosition();
+		ParticleEmitter::GetInstance()->FireEffect(120, pos, 3.0f, 0.5f, { 1.0f,0.0f,1.0f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
+	}
 
 
+
+
+	ParticleEmitter::GetInstance()->Update();
 
 }
 void GameOverSceneActor::FinishUpdate(DebugCamera* camera) {
@@ -119,16 +158,15 @@ string GameOverSceneActor::NextStageName() {
 	return str;
 }
 //背面
-void GameOverSceneActor::BackDraw(DirectXCommon* dxCommon)
-{
-	
-	IKEObject3d::PreDraw();
-	SutoponObj->Draw();
-	IKEObject3d::PostDraw();
+void GameOverSceneActor::BackDraw(DirectXCommon* dxCommon) {
 	IKESprite::PreDraw();
 	ClearSprite->Draw();
 	IKESprite::PostDraw();
 
+	IKEObject3d::PreDraw();
+	SutoponObj->Draw();
+	IKEObject3d::PostDraw();
+	ParticleEmitter::GetInstance()->FlontDrawAll();
 }
 //ImGui描画
 void GameOverSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
