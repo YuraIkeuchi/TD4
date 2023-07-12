@@ -219,6 +219,7 @@ void Player::ImGuiDraw() {
 	for (int i = 0; i < attackbullets.size(); i++) {
 		attackbullets[i]->ImGuiDraw();
 	}
+	playerattach->ImGuiDraw();
 	//ImGui::Begin("Player");
 	//ImGui::SliderInt("index", &index, 0, 20);
 	//ImGui::Text("Charge:%f", m_ChargePower);
@@ -748,6 +749,7 @@ void Player::AwakeInit() {
 	m_ChargeType = POWER_NONE;
 	HungerGauge::GetInstance()->SetCatchCount(0);
 	HungerGauge::GetInstance()->SetNowHunger(0.0f);
+	BulletDelete();
 }
 void Player::LastAppearUpdate(int Timer) {
 	if (_LastState == LAST_SET) {
@@ -792,10 +794,17 @@ void Player::LastAppearUpdate(int Timer) {
 	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 }
 void Player::LastDeadUpdate(int Timer) {
+	BulletDelete();
+	if (Timer == 1) {
+		m_Color = { 1.0f, 1.0f, 1.0f, 1.0f };
+		m_Position = { 0.0f,0.0f,-70.0f };
+		m_Rotation = { 0.0f,0.0f,0.0f };
+		AnimationControl(AnimeName::IDLE, true, 1);
+	}
 	index = 15;
 	m_fbxObject->GetBoneIndexMat(index, skirtmat);
 	skirtobj->FollowUpdate(skirtmat);
-	playerattach->AppearUpdate(Timer);
+	playerattach->LastDeadUpdate(Timer);
 	//基礎パラメータ設定
 	Fbx_SetParam();
 

@@ -246,4 +246,11 @@ private:
 		LAST_BATTLE,
 		LAST_BATTLE2
 	}_LastState;
+
+	enum DeathCamera {
+		DEATH_SET,
+		DEATH_BOSS_UP,
+		DEATH_PLAYER,
+		DEATH_FAR_PLAYER,
+	}_DeathCamera = DEATH_SET;
 };

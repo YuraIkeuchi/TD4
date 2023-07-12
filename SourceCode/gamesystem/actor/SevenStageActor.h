@@ -31,8 +31,8 @@ private:
 	
 	void TextRead();
 	void AwakeText();
+	void DeathText();
 private:
-	static const int SPOT_NUM = 4;
 private:
 	float Rads;
 	int textT;

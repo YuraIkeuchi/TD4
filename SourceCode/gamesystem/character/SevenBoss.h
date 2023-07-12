@@ -107,6 +107,8 @@ private:
 	int m_MoveTimer = {};
 	int m_AvatarCount = {};
 
+	float m_Frame = {};
+
 	//UŒ‚‰ñ”
 	int m_AttackCount = {};
 	//ƒXƒ^ƒ“‚µ‚½‚©‚Ç‚¤‚©
@@ -167,4 +169,13 @@ private:
 	vector<int>m_Limit;
 	//‹­‰»Œã
 	vector<int>m_StrongLimit;
+
+	//Œ‚”jƒV[ƒ“ŠÖŒW
+	float m_BoundPower = {};
+	bool m_Bound = false;
+
+	enum DeathState {
+		DEATH_SET,
+		DEATH_ATTACK,
+	}_DeathState;
 };
