@@ -135,7 +135,7 @@ void PlayerAttach::LastDeadUpdate(int Timer) {
 			_DeathState = DEATH_MOVE;
 		}
 	}
-	else {
+	else if(_DeathState == DEATH_MOVE) {
 		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 			m_Frame = 1.0f;
 		}
@@ -145,11 +145,26 @@ void PlayerAttach::LastDeadUpdate(int Timer) {
 	Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
 	Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z),
 		};
+
+		if (Timer == 1100) {
+			_DeathState = DEATH_TALK;
+		}
+	}
+	else if (_DeathState == DEATH_TALK) {
+		if (Timer == 1200 || Timer == 1400 || Timer == 1600 || Timer == 1800) {
+			_DeathState = DEATH_NO_TALK;
+		}
+
+		//sinîgÇ…ÇÊÇ¡Çƒè„â∫Ç…ìÆÇ≠
+		m_SinAngle += 3.0f;
+		m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
+		m_Position.y = (sin(m_SinAngle2) * 0.5f + 3.0f);
+	}
+	else {
+		if (Timer == 1300 || Timer == 1500 || Timer == 1700) {
+			_DeathState = DEATH_TALK;
+		}
 	}
 
-	//sinîgÇ…ÇÊÇ¡Çƒè„â∫Ç…ìÆÇ≠
-	m_SinAngle += 3.0f;
-	m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
-	m_Position.y = (sin(m_SinAngle2) * 0.5f + 3.0f);
 	Obj_SetParam();
 }

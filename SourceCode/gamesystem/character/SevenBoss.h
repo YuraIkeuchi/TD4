@@ -177,5 +177,7 @@ private:
 	enum DeathState {
 		DEATH_SET,
 		DEATH_ATTACK,
+		DEATH_TALK,
+		DEATH_NO_TALK,
 	}_DeathState;
 };

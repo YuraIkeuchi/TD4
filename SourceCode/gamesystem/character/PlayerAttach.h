@@ -59,6 +59,8 @@ private:
 	enum DeathState {
 		DEATH_SET,
 		DEATH_MOVE,
+		DEATH_TALK,
+		DEATH_NO_TALK,
 	}_DeathState;
 	XMFLOAT3 m_AfterPos = {};
 };
