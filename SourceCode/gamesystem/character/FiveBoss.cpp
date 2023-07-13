@@ -297,6 +297,7 @@ void FiveBoss::InitAwake() {
 
 
 void FiveBoss::EndRollAction() {
+
 	Fbx_SetParam();
 	//‚Ç‚Á‚¿Žg‚¦‚Î‚¢‚¢‚©•ª‚©‚ç‚È‚©‚Á‚½‚©‚ç•Û—¯
 	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
