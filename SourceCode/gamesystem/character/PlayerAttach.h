@@ -28,8 +28,10 @@ public:
 	void BirthObj();
 	//登場シーンの動き
 	void AppearUpdate(int Timer);
-	//撃破心の動き
+	//撃破シーンの動き
 	void LastDeadUpdate(int Timer);
+	//エンドロールの動き
+	void EndRollUpdate(int Timer);
 public:
 	//gettersetter
 	void SetAlive(const bool Alive) { m_Alive = Alive; }

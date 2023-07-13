@@ -176,10 +176,9 @@ void SixBoss::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui
 void SixBoss::ImGui_Origin() {
-	//CDの更新
-	for (int i = 0; i < cd.size(); i++) {
-		cd[i]->ImGuiDraw();
-	}
+	ImGui::Begin("Six");
+	ImGui::Text("End:%d", m_EndTimer);
+	ImGui::End();
 }
 //インターバル
 void SixBoss::InterValMove() {
@@ -530,6 +529,11 @@ void SixBoss::InitAwake() {
 }
 
 void SixBoss::EndRollAction() {
+	m_EndTimer++;
+	if (m_EndTimer == 1) {
+		m_Position = { 3.0f,2.0f,5.0f };
+		m_Rotation = { 0.0f,0.0f,0.0f };
+	}
 	//OBJのステータスのセット
 	Obj_SetParam();
 }

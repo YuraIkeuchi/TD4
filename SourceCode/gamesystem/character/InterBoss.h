@@ -213,13 +213,16 @@ protected:
 	
 	bool m_DeleteObj = false;
 
+	//覚醒初期化
 	bool m_AwakeInit = false;
-
+	//出現シーンのタイマー
 	int m_AppearTimer = {};
-
+	//死亡シーンのタイマー
 	int m_DeadTimer = {};
-
+	//分身のタイプ
 	int m_AvatarType = {};
+	//エンドロールのタイマー
+	int m_EndTimer = {};
 private:
 
 	enum class ActionList {

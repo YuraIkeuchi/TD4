@@ -221,14 +221,9 @@ void ThirdBoss::DamAction()
 }
 //ImGui
 void ThirdBoss::ImGui_Origin() {
-	for (ShockWave* wave : shockwaves) {
-		if (wave != nullptr) {
-			wave->ImGuiDraw();
-		}
-	}
-	/*ImGui::Begin("Third");
-	ImGui::Text("Timer:%d", m_AppearTimer);
-	ImGui::End();*/
+	ImGui::Begin("Third");
+	ImGui::Text("End:%d", m_EndTimer);
+	ImGui::End();
 }
 //移動
 void ThirdBoss::Move() {
@@ -1013,6 +1008,11 @@ void ThirdBoss::InitAwake() {
 }
 
 void ThirdBoss::EndRollAction() {
+	m_EndTimer++;
+	if (m_EndTimer == 1) {
+		m_Position = { -3.0f,2.0f,3.0f };
+		m_Rotation = { 0.0f,0.0f,0.0f };
+	}
 	Fbx_SetParam();
 	//どっち使えばいいか分からなかったから保留
 	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);

@@ -545,6 +545,7 @@ void LoadStageObj::Manipulate() {
 		}
 		HungerGauge::GetInstance()->SetCatchCount(0);
 		HungerGauge::GetInstance()->SetNowHunger(Ease(In, Cubic, m_Frame, HungerGauge::GetInstance()->GetNowHunger(), 0.0f));
+		HungerGauge::GetInstance()->SetHungerMax(Ease(In, Cubic, m_Frame, HungerGauge::GetInstance()->GetHungerMax(), 0.0f));
 	}
 }
 void LoadStageObj::AwakeInit() {

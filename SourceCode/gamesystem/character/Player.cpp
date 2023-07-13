@@ -216,16 +216,9 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 void Player::ImGuiDraw() {
 	HungerGauge::GetInstance()->ImGuiDraw();
 
-	for (int i = 0; i < attackbullets.size(); i++) {
-		attackbullets[i]->ImGuiDraw();
-	}
 	playerattach->ImGuiDraw();
-	//ImGui::Begin("Player");
-	//ImGui::SliderInt("index", &index, 0, 20);
-	//ImGui::Text("Charge:%f", m_ChargePower);
-	//ImGui::Text("ChargeType:%d", m_ChargeType);
-	//ImGui::End();
-
+	ImGui::Begin("Player");
+	ImGui::End();
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
@@ -805,6 +798,25 @@ void Player::LastDeadUpdate(int Timer) {
 	m_fbxObject->GetBoneIndexMat(index, skirtmat);
 	skirtobj->FollowUpdate(skirtmat);
 	playerattach->LastDeadUpdate(Timer);
+	//基礎パラメータ設定
+	Fbx_SetParam();
+
+	//どっち使えばいいか分からなかったから保留
+	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+}
+void Player::EndRollUpdate(int Timer) {
+	if (Timer == 1) {
+		m_Scale = { 0.8f,0.4f,0.8f };
+		m_Color = { 1.0f, 1.0f, 1.0f, 1.0f };
+		m_Position = { 0.0f,0.0f,-25.0f };
+		m_Rotation = { 0.0f,180.0f,0.0f };
+		AnimationControl(AnimeName::IDLE, true, 1);
+	}
+
+	index = 15;
+	m_fbxObject->GetBoneIndexMat(index, skirtmat);
+	skirtobj->FollowUpdate(skirtmat);
+	playerattach->EndRollUpdate(Timer);
 	//基礎パラメータ設定
 	Fbx_SetParam();
 

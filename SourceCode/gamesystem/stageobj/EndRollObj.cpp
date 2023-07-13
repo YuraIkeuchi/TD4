@@ -1,6 +1,6 @@
 #include "EndRollObj.h"
 #include "Helper.h"
-
+#include "Player.h"
 EndRollObj::EndRollObj() {
 	//各ボスのインスタンス生成
 	boss[BIN].reset(new FirstBoss());
@@ -23,6 +23,9 @@ EndRollObj::EndRollObj() {
 
 	boss[LAST].reset(new SevenBoss());
 	boss[LAST]->Initialize();
+
+	//各クラス
+	Player::GetInstance()->InitState({ 0.0f,5.0f,-5.0f });
 }
 //初期化
 void EndRollObj::Initialize() {
@@ -47,5 +50,9 @@ void EndRollObj::SpriteDraw() {
 }
 //Imgui
 void EndRollObj::ImGuiDraw() {
+	for (size_t i = 0; i < boss.size(); i++) {
+		boss[i]->ImGuiDraw();
+	}
 
+	Player::GetInstance()->ImGuiDraw();
 }

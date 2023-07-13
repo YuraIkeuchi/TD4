@@ -65,7 +65,7 @@ private:
 	float m_Alpha = {};
 	float m_CommonScale = {};
 	float m_AfterAlpha = 1.0f;
-	float m_AfterScale = 1.0f;
+	float m_AfterScale = 1.3f;
 
 	int m_StayTimer = 0;
 	int m_VanishLimit = {};
