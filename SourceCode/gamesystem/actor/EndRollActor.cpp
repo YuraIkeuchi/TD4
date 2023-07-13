@@ -9,7 +9,9 @@
 void EndRollActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	//共通の初期化
 	BaseInitialize(dxCommon);
-	camerawork->SetEye({ 0,10,0 });
+	//このシーンだけセピアカラーつかう
+	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/SepiaPS.hlsl");
+	camerawork->SetEye({ 0,0,-20 });
 	camerawork->SetTarget({ 0,0,0 });
 	camerawork->SetCameraState(CAMERA_NORMAL);
 	camerawork->DefUpda(camera);
@@ -21,26 +23,17 @@ void EndRollActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
 	m_SceneState = SceneState::IntroState;
-	BackObj::GetInstance()->Initialize();
+	
 	endobj = make_unique<EndRollObj>();
 	endobj->Initialize();
+	BackObj::GetInstance()->Initialize();
 }
 //更新
 void EndRollActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
-
-	//各クラス更新
+	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
 	BackObj::GetInstance()->Update();
 	endobj->Update();
-	camerawork->DefUpda(camera);
 	sceneChanger_->Update();
-
-	lightgroup->Update();
-
-	if (Input::GetInstance()->TriggerButton(Input::A)) {
-
-		sceneChanger_->ChangeStart();
-		sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
-	}
 }
 //描画
 void EndRollActor::Draw(DirectXCommon* dxCommon) {
@@ -66,28 +59,34 @@ void EndRollActor::FrontDraw() {
 	sceneChanger_->Draw();
 }
 void EndRollActor::IntroUpdate(DebugCamera* camera) {
+	camerawork->DefUpda(camera);
 
 }
 void EndRollActor::MainUpdate(DebugCamera* camera) {
-	
+
 }
 void EndRollActor::FinishUpdate(DebugCamera* camera) {
-
+	//sceneChanger_->ChangeScene(str, SceneChanger::Reverse);
+	//sceneChanger_->Update();
 }
 
 //背面
 void EndRollActor::BackDraw(DirectXCommon* dxCommon) {
+	IKESprite::PreDraw();
+	//ClearSprite->Draw();
+	IKESprite::PostDraw();
+
 	IKEObject3d::PreDraw();
-	endobj->Draw(dxCommon);
 	BackObj::GetInstance()->Draw(dxCommon);
+	endobj->Draw(dxCommon);
 	IKEObject3d::PostDraw();
+	ParticleEmitter::GetInstance()->FlontDrawAll();
+	IKESprite::PreDraw();
+	IKESprite::PostDraw();
+
 }
 //ImGui描画
 void EndRollActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	//SceneSave::GetInstance()->ImGuiDraw();
-	ImGui::Begin("End");
-	ImGui::Text("a");
-	ImGui::End();
 }
 //解放
 void EndRollActor::Finalize() {

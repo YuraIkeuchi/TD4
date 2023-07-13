@@ -1,5 +1,7 @@
 #pragma once
 #include "BaseActor.h"
+#include "IKESprite.h"
+#include "IKEObject3d.h"
 #include "EndRollObj.h"
 /// タイトルシーン
 class EndRollActor : public BaseActor {
