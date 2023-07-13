@@ -56,10 +56,10 @@ private:
 	//};
 
 
-	XMFLOAT2 m_GaugePos = { 430,570 };
-	XMFLOAT2 m_GaugePosMini = { 430+30.0f,600 };
+	XMFLOAT2 m_GaugePos = { 430,610.f };
+	XMFLOAT2 m_GaugePosMini = { 430+44.0f,597+40.0f };
 	XMFLOAT2 m_GaugeSize = { 512.f * 0.8f, 128.f * 0.8f };
-	XMFLOAT2 m_GaugeSizeMini = { 512.f*0.6f,128.f * 0.5f };
+	XMFLOAT2 m_GaugeSizeMini = { 419,49 };
 
 	XMFLOAT2 m_PlayerHpPos = { 15.f, 610.f };
 	XMFLOAT2 m_PlayerHpSize = { 512.f * 0.8f, 128.f*0.8f};
@@ -91,4 +91,3 @@ private:
 	//ボスの表示
 	void SeachBoss();
 };
-

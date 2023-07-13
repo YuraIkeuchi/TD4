@@ -45,7 +45,7 @@ void ImageManager::SecondLoad2D()
 	IKESprite::LoadTexture(UnderGauge, L"Resources/2d/objicon/hangarGauge.png");
 	IKESprite::LoadTexture(Gauge, L"Resources/2d/objicon/Gauge.png");
 	IKESprite::LoadTexture(TopGauge, L"Resources/2d/objicon/TopGauge.png");
-
+	IKESprite::LoadTexture(EXGauge, L"Resources/2d/objicon/EXGauge.png");
 	IKESprite::LoadTexture(MENU_HOME, L"Resources/2d/sceneback/MenuH.png");
 	IKESprite::LoadTexture(MENU_RESET, L"Resources/2d/sceneback/MenuT.png");
 	IKESprite::LoadTexture(MENU_RULE, L"Resources/2d/sceneback/MenuR.png");

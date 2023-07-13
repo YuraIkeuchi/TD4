@@ -43,6 +43,7 @@ public:
 		UnderGauge,
 		Gauge,
 		TopGauge,
+		EXGauge,
 		GIRL,
 		SUTOPON,
 		FEED,
