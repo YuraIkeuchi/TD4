@@ -9,7 +9,7 @@ void InterAttack::FollowPlayer()
 	XMVECTOR PositionA = { l_player.x,l_player.y,l_player.z };
 	XMVECTOR PositionB = { boss->GetPosition().x,
 		boss->GetPosition().y,
-	boss->GetPosition().z};
+	boss->GetPosition().z };
 
 	//プレイヤーと敵のベクトルの長さ(差)を求める
 	XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;

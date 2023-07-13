@@ -1,7 +1,5 @@
 #include "ShotAttack.h"
-
 #include <random>
-
 #include"Easing.h"
 #include "Collision.h"
 #include "Helper.h"
@@ -28,21 +26,24 @@ void ShotAttack::Upda()
 {
 	m_Position = boss->GetPosition();
 
-	
 	for (auto i = 0; i < boss->GetGhost().size(); i++) {
 		if (boss->GetGhost()[i]->GetState() == Ghost::STATE_DARKOTI)continue;
+		if (boss->GetGhost()[i]->GetScale().x <= 0.f)continue;
 		for (auto k = 0; k < 3; k++) {
-			//
+
 			boss->GetGhost()[i]->SetFivePos(boss->GetPosition());
 
 			if (Collision::GetLength(BulPos[k], boss->GetGhost()[i]->GetPosition()) < 5.f)
 			{
 				if (!BulAlive[k])continue;
 				if (boss->GetGhost()[i]->JugNONE()) {
-					DarkCount++;boss->SetGhostSize(boss->GetGhostSize() + 1);
+					DarkCount++;
+					boss->SetGhostSize(boss->GetGhostSize() + 1);
+					CanRand = rand() % 100;
 					boss->GetGhost()[i]->SetCollide(true);
-					
-				BulAlive[k] = false;
+
+					BulAlive[k] = false;
+
 				}
 			}
 		}
@@ -66,7 +67,7 @@ void ShotAttack::Upda()
 			}
 		}
 	}
-	if (_phase != SHOT&&boss->GetGhostSize()>0)
+	if (_phase != SHOT && boss->GetGhostSize() > 0)
 	{
 		//ダメージを喰らい攻撃可能なら
 		if (boss->GetRecv())
@@ -76,16 +77,16 @@ void ShotAttack::Upda()
 			IdleRecv = true;
 		}
 	}
-	
-		//状態移行(charastateに合わせる)
+
+	//状態移行(charastateに合わせる)
 	(this->*stateTable[_phase])();
 
-	for(auto i=0;i<BulSize;i++)
+	for (auto i = 0; i < BulSize; i++)
 	{
 		if (!BulAlive[i])
 			BulAlpha[i] = 0.f;
 
-		ShotObj[i]->SetColor({ 1.f,1.f,1.f ,BulAlpha[i]});
+		ShotObj[i]->SetColor({ 1.f,1.f,1.f ,BulAlpha[i] });
 		ShotObj[i]->SetScale({ 1.f,1.f,1.f });
 		ShotObj[i]->SetRotation(BulRot[i]);
 		ShotObj[i]->SetPosition(BulPos[i]);
@@ -94,11 +95,11 @@ void ShotAttack::Upda()
 	boss->SetPosition(m_Position);
 
 	//攻撃終了時の初期化周り
-	if(ActionEnd)
+	if (ActionEnd)
 	{
 		RotEaseTime = 0;
-		for(auto i=0;i<BulSize;i++)
-		BulAlpha[i] = 1.f;
+		for (auto i = 0; i < BulSize; i++)
+			BulAlpha[i] = 1.f;
 		PhaseCount = 0;
 		AttackTimer = 0;
 		boss->SetRecv(false);
@@ -112,11 +113,12 @@ void ShotAttack::Draw(DirectXCommon* dxCommon)
 	IKEObject3d::PreDraw();
 	for (auto i = 0; i < BulSize; i++) {
 		if (BulAlpha[i] <= 0.f)continue;
+		if (!BulAlive[i])continue;
 		ShotObj[i]->Draw();
 	}
 	IKEObject3d::PostDraw();
 
-	
+
 }
 
 void ShotAttack::SpriteDraw()
@@ -141,10 +143,11 @@ void ShotAttack::Phase_Idle()
 	if (TargetGhost == 0) {
 		AttackTimer++;
 		if (AttackTimer > 120)
-		{for (auto i = 0; i < BulSize; i++) {
-				BulAlive[i] = true;
+		{
+			for (auto i = 0; i < BulSize; i++) {
 				BulPos[i] = boss->GetPosition();
 			}
+
 			mt19937 mt{ std::random_device{}() };
 			uniform_int_distribution<int> l_Rand(0, (int)boss->GetGhost().size() - 1);
 			TargetGhost = l_Rand(mt);
@@ -153,14 +156,15 @@ void ShotAttack::Phase_Idle()
 		}
 	} else
 	{
-		if (next) {
+		AttackTimer++;
+		if (next || AttackTimer > 120) {
 			mt19937 mt{ std::random_device{}() };
-		uniform_int_distribution<int> l_Rand(1, (int)boss->GetGhost().size() - 1);
-		TargetGhost = l_Rand(mt);
+			uniform_int_distribution<int> l_Rand(1, (int)boss->GetGhost().size() - 1);
+			TargetGhost = l_Rand(mt);
 
-		_phase = Phase::SHOT;
+			_phase = Phase::SHOT;
 		}
-		
+
 	}
 }
 void ShotAttack::Phase_Shot()
@@ -173,30 +177,32 @@ void ShotAttack::Phase_Shot()
 	for (auto i = 0; i < BulSize; i++)
 	{
 		move[i] = { 0.f,0.f,0.1f,0.f };
-		matRot[i] = XMMatrixRotationY(XMConvertToRadians(boss->GetRotation().y -0.f+ (static_cast<float>(i * 30.f - 30.f))));
+		matRot[i] = XMMatrixRotationY(XMConvertToRadians(boss->GetRotation().y - 0.f + (static_cast<float>(i * 30.f - 30.f))));
 		move[i] = XMVector3TransformNormal(move[i], matRot[i]);
 
 	}
 	for (auto i = 0; i < BulSize; i++)
 	{
-		if(BulAlpha[i]>=1.f)BulPos[i] = boss->GetPosition();
-	//進行スピード
+		BulAlive[i] = true;
+		if (BulAlpha[i] >= 1.f)BulPos[i] = boss->GetPosition();
+		//進行スピード
 		BulPos[i].x += move[i].m128_f32[0] * SummonSpeed;
 		BulPos[i].z += move[i].m128_f32[2] * SummonSpeed;
 		//弾を薄く
 		BulAlpha[i] -= 0.01f;
-		
+
 	}
 
-	if (
+	if (BulAlpha[1] <= 0.f&&
+		BulAlpha[2] <= 0.f&&
 		BulAlpha[0] <= 0.f) {
-		OldRot=boss->GetRotation();
+		OldRot = boss->GetRotation();
 		PhaseCount++;
 		_phase = END;
 	}
 	RotEaseTime = 0.f;
 
-	
+
 
 }
 
@@ -220,25 +226,25 @@ void ShotAttack::Phase_End()
 
 		RottoGhost = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
 	}
-	for(auto i=0;i<BulSize;i++)
+	for (auto i = 0; i < BulSize; i++)
 	{
 		BulAlive[i] = true;
 		BulAlpha[i] = 1.f;
 		BulPos[i] = boss->GetPosition();
 	}
-	
-	
-		Helper::GetInstance()->FrameCheck(RotEaseTime, 0.04f);
+
+
+	Helper::GetInstance()->FrameCheck(RotEaseTime, 0.04f);
 
 	boss->SetRotation({ boss->GetRotation().x,
-	Ease(In,Quad,RotEaseTime,OldRot.y,RottoGhost*60+180),
+	Ease(In,Quad,RotEaseTime,OldRot.y,RottoGhost * 60 + 180),
 	boss->GetRotation().z });
 	AttackTimer = 0;
 	//if (PhaseCount < 4) {
-		if(RotEaseTime>=1.f)
+	if (RotEaseTime >= 1.f)
 		_phase = NON;
 	//}
-	
+
 	//else ActionEnd = true;
 }
 
@@ -247,21 +253,21 @@ void ShotAttack::RottoPlayer()
 {
 	//FollowPlayer();
 
-	
-	
+
+
 }
 
 
 void ShotAttack::FollowPlayerAct()
 {
-	
+
 	XMVECTOR move = { 0.f,0.f, 0.1f, 0.0f };
 
 	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(boss->GetRotation().y));
 
 	move = XMVector3TransformNormal(move, matRot);
 
-	float SummonSpeed = 2.f;
+	float SummonSpeed = 4.f;
 	m_Position = {
 					m_Position.x + move.m128_f32[0] * SummonSpeed,
 				m_Position.y,

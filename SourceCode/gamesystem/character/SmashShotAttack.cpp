@@ -48,8 +48,8 @@ void SmashShotAttack::Upda()
 
 		BulRotZ[i] += 2.f;
 		ShotArea[i]->SetPosition(ImpactTexPos[i]);
-		ShotArea[i]->SetRotation({ 90,0,BulRotZ[i]});
-		ShotArea[i]->SetScale({ AreaScl[i],AreaScl[i],1.f});
+		ShotArea[i]->SetRotation({ 90,0,BulRotZ[i] });
+		ShotArea[i]->SetScale({ AreaScl[i],AreaScl[i],1.f });
 		ShotArea[i]->SetColor({ 1,1,1,AreaAlpha[i] });
 		ShotArea[i]->Update();
 	}
@@ -82,7 +82,7 @@ void SmashShotAttack::Draw(DirectXCommon* dxCommon)
 
 void SmashShotAttack::SpriteDraw()
 {
-	
+
 }
 
 
@@ -111,7 +111,7 @@ void SmashShotAttack::Phase_Shot()
 	//向いた方向に進む
 	constexpr float SummonSpeed = 4.f;
 
-	
+
 
 	constexpr float MaxY = 20.f;
 
@@ -121,12 +121,11 @@ void SmashShotAttack::Phase_Shot()
 		//弾を上乱射
 		if (BulPos[i - 1].y > 5.f) {
 			Helper::GetInstance()->FrameCheck(BulEaseCount[i], 0.015f);
-		
+
 			BulPos[i].y += 0.5f;
-			BulPos[i].x = Ease(In, Quad, BulEaseCount[i], boss->GetPosition().x, boss->GetPosition().x+PosXVal[i]);
-			BulPos[i].z = Ease(In, Quad, BulEaseCount[i], boss->GetPosition().z, boss->GetPosition().z+PosZVal[i]);
-		}
-		else
+			BulPos[i].x = Ease(In, Quad, BulEaseCount[i], boss->GetPosition().x, boss->GetPosition().x + PosXVal[i]);
+			BulPos[i].z = Ease(In, Quad, BulEaseCount[i], boss->GetPosition().z, boss->GetPosition().z + PosZVal[i]);
+		} else
 		{
 			mt19937 mt{ std::random_device{}() };
 			uniform_int_distribution<int> l_RandomMove(-10, 10);
@@ -137,7 +136,7 @@ void SmashShotAttack::Phase_Shot()
 	}
 	//フェーズ移行
 	if (BulPos[BulSize - 1].y > MaxY) {
-	
+
 		for (auto i = 0; i < BulSize; i++) {
 
 			mt19937 mt{ std::random_device{}() };
@@ -151,7 +150,7 @@ void SmashShotAttack::Phase_Shot()
 			ImpactTexPos[i].z = Player::GetInstance()->GetPosition().z + (float)(l_RandPosZ(mt));
 		}
 		ImpactTexPos[0] = { Player::GetInstance()->GetPosition() };
-			_phase = IMPACT;
+		_phase = IMPACT;
 	}
 
 	for (auto i = 0; i < BulSize; i++) {
@@ -160,7 +159,7 @@ void SmashShotAttack::Phase_Shot()
 			BulPos[i] = boss->GetPosition();
 		}
 	}
-	
+
 	{
 		XMFLOAT4 s_color[BulSize];
 		XMFLOAT4 e_color[BulSize];
@@ -171,8 +170,8 @@ void SmashShotAttack::Phase_Shot()
 		for (auto i = 0; i < BulSize; i++)
 		{
 			if (BulPos[i].y < 0.f)continue;
-			s_color[i] = { 0.0f,0.4f,1.0f,1.0f };
-			e_color[i] = { 1.0f,1.0f,1.0f,1.0f };
+			s_color[i] = { 0.8f,0.4f,1.0f,1.0f };
+			e_color[i] = { 0.40f,0.0f,0.50f,1.0f };
 			s_scale[i] = 2.0f;
 			e_scale[i] = 0.0f;
 			m_Life[i] = 50;
@@ -215,7 +214,7 @@ void SmashShotAttack::Phase_Impact()
 
 	AreaScl[0] += 0.05f;
 	if (BulPos[0].y >= 0.f)
-	AreaAlpha[0] += 0.02f;
+		AreaAlpha[0] += 0.02f;
 
 
 	if (AreaScl[BulSize - 1] >= 1.f) {
@@ -226,8 +225,8 @@ void SmashShotAttack::Phase_Impact()
 	}
 	for (auto i = 1; i < BulSize; i++)
 	{
-		if(BulPos[i].y>=0.f)
-		AreaAlpha[i] += 0.02f;
+		if (BulPos[i].y >= 0.f)
+			AreaAlpha[i] += 0.02f;
 		if (AreaScl[i - 1] > 0.1f)AreaScl[i] += 0.05f;
 
 		if (BulPos[i - 1].y <= 40.f)BulPos[i].y--;
@@ -241,7 +240,7 @@ void SmashShotAttack::Phase_Impact()
 		Helper::GetInstance()->Clamp(BulAlpha[i], 0.f, 1.f);
 		Helper::GetInstance()->Clamp(AreaScl[i], 0.f, 1.f);
 	}
-	
+
 	{
 		XMFLOAT4 s_color[BulSize];
 		XMFLOAT4 e_color[BulSize];
@@ -249,14 +248,14 @@ void SmashShotAttack::Phase_Impact()
 		float e_scale[BulSize];
 		int m_Life[BulSize];
 
-		for(auto i=0;i<BulSize;i++)
+		for (auto i = 0; i < BulSize; i++)
 		{
 			if (BulPos[i].y < 0.f)continue;
-			s_color[i] = { 0.0f,0.4f,1.0f,1.0f };
-			e_color[i]= { 1.0f,1.0f,1.0f,1.0f };
-			s_scale[i]= 2.0f;
+			s_color[i] = { 0.8f,0.3f,1.0f,1.0f };
+			e_color[i] = { 0.3f,0.0f,0.4f,1.0f };
+			s_scale[i] = 2.0f;
 			e_scale[i] = 0.0f;
-			m_Life[i]= 50;
+			m_Life[i] = 50;
 
 			ParticleEmitter::GetInstance()->FireEffect(m_Life[i], BulPos[i], s_scale[i], e_scale[i], s_color[i], e_color[i]);
 
@@ -287,19 +286,19 @@ void SmashShotAttack::BomParticle()
 		if (BulPos[i].y < -5.f)continue;
 		red[i] = 0.2f + (float)rand() / RAND_MAX * RandRed;
 		RandScale[i] = 3.0f;
-		l_AddSize[i]= 2.5f;
+		l_AddSize[i] = 2.5f;
 		s_scale[i] = 0.3f * l_AddSize[i];
 		e_scale[i] = (4.0f + (float)rand() / RAND_MAX * RandScale[i] - RandScale[i] / 2.0f) * l_AddSize[i];
 
-		s_color[i] = { 0.1f, red[i], 0.9f, 1.0f}; //濃い赤
-		e_color[i]= { 0, 0, 0, 1.0f }; //無色
-		
+		s_color[i] = { 0.8f, 0.f, 0.9f, 1.0f }; //濃い赤
+		e_color[i] = { 0.5f, 0, 0.5f, 1.0f }; //無色
+
 		//乱数指定
 		mt19937 mt{ std::random_device{}() };
 		uniform_int_distribution<int> l_Randlife(10, 40);
 		l_Life[i] = int(l_Randlife(mt));
 
-		ParticleEmitter::GetInstance()->Explosion(l_Life[i],BulPos[i], l_AddSize[i], s_scale[i], e_scale[i], s_color[i], e_color[i]);
+		ParticleEmitter::GetInstance()->Explosion(l_Life[i], BulPos[i], l_AddSize[i], s_scale[i], e_scale[i], s_color[i], e_color[i]);
 
 	}
 
@@ -310,8 +309,8 @@ void SmashShotAttack::BomParticle()
 			AreaAlpha[i] -= AlphaSub;
 		}
 	}
-	
-	if(AreaAlpha[BulSize-1]<=0.f)
+
+	if (AreaAlpha[BulSize - 1] <= 0.f)
 	{
 		_phase = END;
 	}

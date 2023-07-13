@@ -1,7 +1,7 @@
 #include "NormalAttack.h"
 void NormalAttack::Init()
 {
-	
+
 }
 
 void NormalAttack::Upda()
@@ -18,7 +18,7 @@ void NormalAttack::Upda()
 					m_Position.x + move.m128_f32[0] * SummonSpeed,
 				m_Position.y,
 				m_Position.z + move.m128_f32[2] * SummonSpeed
-			};
+	};
 
 	boss->SetPosition(m_Position);
 }
@@ -26,12 +26,12 @@ void NormalAttack::Upda()
 
 void NormalAttack::Draw(DirectXCommon* dxCommon)
 {
-	
+
 }
 
 void NormalAttack::SpriteDraw()
 {
-	
+
 }
 
 

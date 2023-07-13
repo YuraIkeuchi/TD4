@@ -9,13 +9,13 @@ using namespace DirectX;
 class InterAttack
 {
 public:
-	virtual void Init()=0;
+	virtual void Init() = 0;
 
-	virtual void Upda()=0;
+	virtual void Upda() = 0;
 
-	virtual void Draw(DirectXCommon* dxCommon)=0;
+	virtual void Draw(DirectXCommon* dxCommon) = 0;
 
-	virtual void SpriteDraw()=0;
+	virtual void SpriteDraw() = 0;
 
 public:
 	bool GetActionEnd() { return ActionEnd; }
@@ -23,16 +23,20 @@ public:
 	void SetActionEnd(bool f) { ActionEnd = f; }
 	void SetBoss(InterBoss* boss) { this->boss = boss; };
 protected:
-	InterBoss* boss=nullptr;
+	InterBoss* boss = nullptr;
 
-	int AttackTimer=0;
+	int AttackTimer = 0;
 
 	float FollowAngle;
 
 	bool ActionEnd;
 
-	XMFLOAT3 m_Position,m_Rotation;
-protected:
+	XMFLOAT3 m_Position, m_Rotation;
+
+	int CanRand;
+public:
 	void FollowPlayer();
+	int GetCanRand() { return CanRand; }
+	void SetCanRand(int num) { CanRand = num; }
 };
 

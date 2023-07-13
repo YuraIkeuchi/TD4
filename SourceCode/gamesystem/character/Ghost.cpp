@@ -322,7 +322,7 @@ void Ghost::Manipulate() {
 }
 
 void Ghost::DarkSide() {
-	if(Collide)m_DFollow =true;
+	if (Collide)m_DFollow = true;
 	//m_Color.x -= 0.05f;
 	m_Color.y -= 0.05f;
 	//m_Color.z -= 0.05f;
@@ -331,23 +331,27 @@ void Ghost::DarkSide() {
 		Helper::GetInstance()->FollowMove(m_Position, bossPos, l_Vel);
 		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, bossPos, -PI_90);
 	}
-	m_DarkC++;
-	if (m_DarkC > 300)
-	{
 
+	if (DarkOtiClean)
+	{
 		m_Scale.x -= 0.1f;
 		m_Scale.y -= 0.1f;
 		m_Scale.z -= 0.1f;
-		if (m_Scale.x <= 0.f) {
-			mt19937 mt{ std::random_device{}() };
-			uniform_int_distribution<int> l_distX(-50, 60);
-			uniform_int_distribution<int> l_distZ(-55, 55);
-			m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
 
-			Collide = false;
-			stateSpawn = true;
-			_charaState = CharaState::STATE_SPAWN;
-		}
+	}
+	if (m_Scale.x <= 0.f) {
+		m_DarkC = 0;
+		m_DFollow = false;
+		Collide = false;
+		DarkOtiClean = false;
+		mt19937 mt{ std::random_device{}() };
+		uniform_int_distribution<int> l_distX(-50, 60);
+		uniform_int_distribution<int> l_distZ(-55, 55);
+		m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
+
+		Collide = false;
+		stateSpawn = true;
+		_charaState = CharaState::STATE_NONE;
 	}
 	Helper::GetInstance()->Clamp(m_Scale.x, 0.f, 5.f);
 

@@ -34,14 +34,18 @@ private:
     bool IdleRecv;
     //std::vector<XMVECTOR>PositionB;
     float AddRot;
-    //フェーズ
+public:
+	//フェーズ
     enum Phase
     {
         NON,
         SHOT,
         END
     }_phase=Phase::NON;
-    int PhaseCount = 0;
+    Phase GetPhase() { return _phase; }
+
+private:
+	int PhaseCount = 0;
 
     int DarkCount;
 
