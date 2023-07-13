@@ -126,9 +126,13 @@ void FiveBoss::Action()
 	//if (m_HP > 0.0f) {
 	if(GhostSize<6)
 	(this->*attackTable[_aPhase])();
+
+	
 	//}
 	if (Input::GetInstance()->TriggerButton(Input::X))
 		knock->setKnockF(true);
+	if (Input::GetInstance()->TriggerButton(Input::Y))
+		guard->SetGuardStart(true);
 		//guard->SetGuardStart(true);
 
 	knock->Upda();
@@ -208,7 +212,7 @@ void FiveBoss::Action()
 			_aPhase = ATTACK_SLASH;
 		}
 	}
-
+	Helper::GetInstance()->Clamp(GhostSize, 0, 5);
 
 	/*^^^^“–‚½‚è”»’è^^^^*/
 	//’e‚Æƒ{ƒX‚Ì“–‚½‚è”»’è

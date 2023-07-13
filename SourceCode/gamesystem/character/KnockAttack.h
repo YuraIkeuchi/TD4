@@ -26,7 +26,7 @@ private:
 
     void ImpactAction();
 public:
-    void setKnockF(bool f) { KnockF = f; }
+    inline void setKnockF(bool f) { KnockF = f; TexAlpha = 1.f; TexAlpha2 = 1.f; }
     bool GetKnockF() { return KnockF; }
 
 };

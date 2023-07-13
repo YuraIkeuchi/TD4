@@ -204,7 +204,6 @@
     <ClCompile Include="SourceCode\gamesystem\character\FiveBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\FourthBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\Ghost.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\character\GuardAction - コピー.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\GuardAction.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\InterAttack.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\InterBoss.cpp" />
@@ -384,7 +383,6 @@
     <ClInclude Include="SourceCode\gamesystem\character\FiveBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\FourthBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\Ghost.h" />
-    <ClInclude Include="SourceCode\gamesystem\character\GuardAction - コピー.h" />
     <ClInclude Include="SourceCode\gamesystem\character\GuardAction.h" />
     <ClInclude Include="SourceCode\gamesystem\character\InterAttack.h" />
     <ClInclude Include="SourceCode\gamesystem\character\InterBoss.h" />

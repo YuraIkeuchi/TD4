@@ -267,7 +267,7 @@ void ShotAttack::FollowPlayerAct()
 
 	move = XMVector3TransformNormal(move, matRot);
 
-	float SummonSpeed = 4.f;
+	float SummonSpeed = 6.f;
 	m_Position = {
 					m_Position.x + move.m128_f32[0] * SummonSpeed,
 				m_Position.y,

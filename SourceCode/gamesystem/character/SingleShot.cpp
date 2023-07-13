@@ -63,7 +63,7 @@ void SingleShot::Draw(DirectXCommon* dxCommon)
 	for (auto i = 0; i < BulSize; i++) {
 		if (BulAlpha[i] <= 0.f)continue;
 		if (!ShotAlive[i])continue;;
-		ShotObj[i]->Draw();
+		//ShotObj[i]->Draw();
 	}
 	IKEObject3d::PostDraw();
 
@@ -157,15 +157,35 @@ void SingleShot::Phase_Shot()
 		move[i] = XMVector3TransformNormal(move[i], matRot[i]);
 
 	}
+	XMFLOAT4 s_color[BulSize];
+	XMFLOAT4 e_color[BulSize];
+	float s_scale[BulSize];
+	float e_scale[BulSize];
+	int m_Life[BulSize];
+
 	for (auto i = 0; i < BulSize; i++)
 	{
 		if (!ShotAlive[i])continue;
 		if (BulAlpha[i] >= 1.f)BulPos[i] = boss->GetPosition();
+		if (Collision::GetLength(BulPos[i], Player::GetInstance()->GetPosition()) < 5.f) {
+			Player::GetInstance()->PlayerHit(m_Position);
+			Player::GetInstance()->RecvDamage(1);
+
+		}
+
 		//進行スピード
 		BulPos[i].x += move[i].m128_f32[0] * SummonSpeed;
 		BulPos[i].z += move[i].m128_f32[2] * SummonSpeed;
 		//弾を薄く
 		BulAlpha[i] -= 0.01f;
+
+		s_color[i] = { 0.8f,0.4f,1.0f,1.0f };
+		e_color[i] = { 0.40f,0.0f,0.50f,1.0f };
+		s_scale[i] = 2.0f;
+		e_scale[i] = 0.0f;
+		m_Life[i] = 50;
+
+		ParticleEmitter::GetInstance()->FireEffect(m_Life[i], BulPos[i], s_scale[i], e_scale[i], s_color[i], e_color[i]);
 
 	}
 
