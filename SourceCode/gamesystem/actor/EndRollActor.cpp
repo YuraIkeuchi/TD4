@@ -11,8 +11,8 @@ void EndRollActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	BaseInitialize(dxCommon);
 	//このシーンだけセピアカラーつかう
 	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/SepiaPS.hlsl");
-	camerawork->SetEye({ 0,10,-30 });
-	camerawork->SetTarget({ 0,10,0 });
+	camerawork->SetEye({ 0,5,-30 });
+	camerawork->SetTarget({ 0,5,0 });
 	camerawork->SetCameraState(CAMERA_NORMAL);
 	camerawork->DefUpda(camera);
 	//オーディオ

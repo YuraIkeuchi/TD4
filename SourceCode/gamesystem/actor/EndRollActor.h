@@ -40,7 +40,7 @@ private://ƒƒ“ƒo•Ï”
 	float shutterTime = 0.0f;
 	float shutterTimeMax = 30.0f;
 	float stopTime = 0.0f;
-	float stopTimerMax = 0.0f;
+	float stopTimerMax = 20.0f;
 	float feedTimeMax = 10.0f;
 	float feedTimer = 0.0f;
 	float shutterHight[2] = { 0,0 };

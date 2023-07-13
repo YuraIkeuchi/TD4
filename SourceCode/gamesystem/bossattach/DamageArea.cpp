@@ -28,6 +28,7 @@ DamageArea::DamageArea(const int Num) {
 		obj[i]->Initialize();
 		obj[i]->SetModel(model);
 		obj[i]->SetPosition({ 0.0f,-500.0f,0.0f });
+		obj[i]->SetBillboard(true);
 	}
 
 	for (size_t i = 0; i < tex.size(); i++) {

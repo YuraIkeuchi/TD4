@@ -739,7 +739,7 @@ void SevenBoss::DeadAction() {
 	}
 	else if (_DeathState == DEATH_TALK) {
 		//sinîgÇ…ÇÊÇ¡Çƒè„â∫Ç…ìÆÇ≠
-		m_SinAngle += 2.0f;
+		m_SinAngle += 6.0f;
 		m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
 		m_Position.y = (sin(m_SinAngle2) * 1.0f + 5.0f);
 

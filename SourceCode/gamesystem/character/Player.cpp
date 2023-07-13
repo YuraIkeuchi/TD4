@@ -806,16 +806,17 @@ void Player::LastDeadUpdate(int Timer) {
 }
 void Player::EndRollUpdate(int Timer) {
 	if (Timer == 1) {
+		m_Scale = { 0.8f,0.4f,0.8f };
 		m_Color = { 1.0f, 1.0f, 1.0f, 1.0f };
-		m_Position = { 0.0f,0.0f,-15.0f };
-		m_Rotation = { 0.0f,0.0f,0.0f };
+		m_Position = { 0.0f,0.0f,-25.0f };
+		m_Rotation = { 0.0f,180.0f,0.0f };
 		AnimationControl(AnimeName::IDLE, true, 1);
 	}
 
 	index = 15;
 	m_fbxObject->GetBoneIndexMat(index, skirtmat);
 	skirtobj->FollowUpdate(skirtmat);
-	playerattach->LastDeadUpdate(Timer);
+	playerattach->EndRollUpdate(Timer);
 	//基礎パラメータ設定
 	Fbx_SetParam();
 

@@ -168,3 +168,16 @@ void PlayerAttach::LastDeadUpdate(int Timer) {
 
 	Obj_SetParam();
 }
+void PlayerAttach::EndRollUpdate(int Timer) {
+	if (Timer == 1) {
+		m_Scale = { 0.4f,0.4f,0.4f };
+		m_Color = { 1.0f,1.0f,1.0f,1.0f };
+		m_Position = { 3.0f,4.0f,-24.0f };
+	}
+
+	//sinîgÇ…ÇÊÇ¡Çƒè„â∫Ç…ìÆÇ≠
+	m_SinAngle += 3.0f;
+	m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
+	m_Position.y = (sin(m_SinAngle2) * 0.5f + 4.0f);
+	Obj_SetParam();
+}
