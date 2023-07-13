@@ -47,5 +47,7 @@ void EndRollObj::SpriteDraw() {
 }
 //Imgui
 void EndRollObj::ImGuiDraw() {
-
+	for (size_t i = 0; i < boss.size(); i++) {
+		boss[i]->ImGuiDraw();
+	}
 }

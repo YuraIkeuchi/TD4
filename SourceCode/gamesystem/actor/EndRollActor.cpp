@@ -2,16 +2,16 @@
 #include "SceneManager.h"
 #include <Easing.h>
 #include "ImageManager.h"
-#include "VariableCommon.h"
 #include "Audio.h"
 #include "BackObj.h"
+#include "Helper.h"
 //初期化
 void EndRollActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	//共通の初期化
 	BaseInitialize(dxCommon);
 	//このシーンだけセピアカラーつかう
 	postEffect->CreateGraphicsPipeline(L"Resources/Shaders/PostEffectTestVS.hlsl", L"Resources/Shaders/SepiaPS.hlsl");
-	camerawork->SetEye({ 0,0,-20 });
+	camerawork->SetEye({ 0,0,-30 });
 	camerawork->SetTarget({ 0,0,0 });
 	camerawork->SetCameraState(CAMERA_NORMAL);
 	camerawork->DefUpda(camera);
@@ -34,16 +34,22 @@ void EndRollActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGro
 	BackObj::GetInstance()->Update();
 	endobj->Update();
 	sceneChanger_->Update();
+
+	postEffect->SetSepia(m_Sepia);
 }
 //描画
 void EndRollActor::Draw(DirectXCommon* dxCommon) {
 	//ポストエフェクトをかけるか
 	if (PlayPostEffect) {
-		dxCommon->PreDraw();
-		//postEffect->Draw(dxCommon->GetCmdList());
+		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
-		FrontDraw();
+		postEffect->PostDrawScene(dxCommon->GetCmdList());
+
+		dxCommon->PreDraw();
+		postEffect->Draw(dxCommon->GetCmdList());
 		ImGuiDraw(dxCommon);
+		FrontDraw();
+		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 	else {
@@ -60,14 +66,30 @@ void EndRollActor::FrontDraw() {
 }
 void EndRollActor::IntroUpdate(DebugCamera* camera) {
 	camerawork->DefUpda(camera);
+	m_EndTimer++;
 
+	if (m_EndTimer == 100) {
+		m_SceneState = SceneState::MainState;
+		PlayPostEffect = true;
+	}
 }
 void EndRollActor::MainUpdate(DebugCamera* camera) {
-
+	float l_AddFrame = 0.005f;
+	float l_AddColor = 0.01f;
+	float l_EndSepia = 0.1f;
+	camerawork->DefUpda(camera);
+	//セピアカラーになる
+	if (PlayPostEffect) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = {};
+		}
+		m_Sepia = Ease(In, Cubic, m_Frame, m_Sepia, l_EndSepia);
+	}
 }
 void EndRollActor::FinishUpdate(DebugCamera* camera) {
 	//sceneChanger_->ChangeScene(str, SceneChanger::Reverse);
 	//sceneChanger_->Update();
+	camerawork->DefUpda(camera);
 }
 
 //背面
@@ -87,6 +109,7 @@ void EndRollActor::BackDraw(DirectXCommon* dxCommon) {
 }
 //ImGui描画
 void EndRollActor::ImGuiDraw(DirectXCommon* dxCommon) {
+	endobj->ImGuiDraw();
 }
 //解放
 void EndRollActor::Finalize() {

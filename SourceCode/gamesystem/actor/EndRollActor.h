@@ -24,4 +24,10 @@ public:
 
 private://メンバ変数
 	unique_ptr<EndRollObj> endobj;
+	//ポストエフェクトの値
+	float m_Sepia = 0.0f;
+	//フレーム
+	float m_Frame = 0.0f;
+
+	int m_EndTimer = {};
 };

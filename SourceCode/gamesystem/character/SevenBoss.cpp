@@ -271,17 +271,8 @@ void SevenBoss::Draw(DirectXCommon* dxCommon) {
 //ImGui
 void SevenBoss::ImGui_Origin() {
 	ImGui::Begin("Seven");
-	ImGui::Text("Death:%d", int(_DeathState));
-	ImGui::Text("Bound:%f", m_BoundPower);
-	ImGui::Text("POSZ:%f", m_Position.z);
-	ImGui::Text("Frame:%f", m_Frame);
+	ImGui::Text("End:%d", m_EndTimer);
 	ImGui::End();
-	////偽物のボス
-	//for (InterBoss* newboss : avatarboss) {
-	//	if (newboss != nullptr) {
-	//		newboss->ImGuiDraw();
-	//	}
-	//}
 }
 //インターバル
 void SevenBoss::InterValMove() {
@@ -987,6 +978,11 @@ void SevenBoss::InitAwake() {
 	}
 }
 void SevenBoss::EndRollAction() {
+	m_EndTimer++;
+	if (m_EndTimer == 1) {
+		m_Position = { -10.0f,2.0f,0.0f };
+		m_Rotation = { 0.0f,0.0f,0.0f };
+	}
 	//OBJのステータスのセット
 	Obj_SetParam();
 }
