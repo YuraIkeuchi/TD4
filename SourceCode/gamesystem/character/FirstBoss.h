@@ -25,10 +25,10 @@ private:
 		AttackAfter,
 	}fase_;
 
-	enum JumpFase {
-		JumpBefore=0,
-		JumpAfter,
-	}jump_;
+	enum ActionFase {
+		Before=0,
+		After,
+	}act_;
 
 	enum MoveFase {
 		Move=0,
@@ -186,7 +186,8 @@ private:
 	float commandTimer = 0.0f;
 	float kLockOnTimeMax = 50.0f;
 	float rot = 0.0f;
-	int jumpCount = 1;
+	int jumpCount = 0;
+	int waitCount = 0;
 	XMFLOAT3 s_pos = {}, e_pos = {};
 	float kJumpTimeMax = 60.0f;
 	float kMoveTimeMax = 180.f;

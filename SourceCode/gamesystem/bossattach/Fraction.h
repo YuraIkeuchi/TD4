@@ -3,6 +3,7 @@
 #include"BreakEffect.h"
 #include"IKEObject3d.h"
 #include"IKEModel.h"
+#include"InterBullet.h"
 
 class Fraction 
 {
@@ -19,7 +20,7 @@ public:
 
     void Init(const XMFLOAT3& BossPos);
     
-    void Update();
+    void Update(vector<InterBullet*> bullet);
 
     void Draw(DirectXCommon* dxCommon);
 
@@ -29,7 +30,7 @@ public:
 
     void Drop();
 
-    void ColPlayer();
+    void ColPlayer(vector<InterBullet*> bullet);
 private:
    
     unique_ptr<IKEObject3d> m_Object;

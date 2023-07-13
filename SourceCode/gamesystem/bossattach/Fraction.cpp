@@ -1,7 +1,7 @@
 #include "Fraction.h"
 #include"Player.h"
 #include"Collision.h"
-
+#include"InterBullet.h"
 
 
 Fraction::~Fraction()
@@ -33,9 +33,9 @@ void Fraction::Drop()
 }
 
 
-void Fraction::Update()
+void Fraction::Update(vector<InterBullet*> bullet)
 {
-	ColPlayer();
+	ColPlayer(bullet);
 
 	Obj_Set();
 }
@@ -47,7 +47,7 @@ void Fraction::Draw(DirectXCommon* dxCommon)
 	IKEObject3d::PostDraw();
 }
 
-void Fraction::ColPlayer()
+void Fraction::ColPlayer(vector<InterBullet*> bullet)
 {
 	//ƒ‰ƒbƒVƒ…’†”»’è‚ ‚è
 	if (Collision::CircleCollision(m_Position.x, m_Position.z, m_Radius, Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z, 1.f) &&
@@ -56,4 +56,14 @@ void Fraction::ColPlayer()
 		Player::GetInstance()->RecvDamage(1.0f);
 		Player::GetInstance()->PlayerHit(m_Position);
 	}
+	
+	for (InterBullet* _bullet : bullet) {
+		bool JudgColide;
+		JudgColide = Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, m_Radius, m_Position.x, m_Position.z, m_Radius);
+		if (JudgColide) {
+			_bullet->SetAlive(false);
+			Isdelete = true;
+		}
+	}
+	
 }

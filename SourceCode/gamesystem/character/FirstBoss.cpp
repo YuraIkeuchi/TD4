@@ -81,7 +81,7 @@ void FirstBoss::Action()
 	//OBJのステータスのセット
 	Obj_SetParam();
 	for (std::unique_ptr<Fraction>& fraction : fraction_) {
-		fraction->Update();
+		fraction->Update(_playerBulA);
 	}
 	fraction_.remove_if([](std::unique_ptr<Fraction>& fraction) {
 		return fraction->IsDelete();
@@ -171,7 +171,7 @@ void FirstBoss::InterValMove()
 void FirstBoss::Choice()
 {
 	fase_ = AttackFase::AttackBefore;
-	jump_ = JumpFase::JumpBefore;
+	act_ = ActionFase::Before;
 	int l_RandState = 0;
 	//乱数指定
 	mt19937 mt{ std::random_device{}() };
@@ -203,33 +203,25 @@ void FirstBoss::Choice()
 void FirstBoss::RockOnAttack()
 {
 	if (fase_ == AttackFase::AttackBefore) {
-		if (jump_ == JumpFase::JumpBefore) {
-			m_Position.y = s_pos.y;
-			e_pos.y = 3;
-			commandTimer += 1.0f / kMoveTimeMax;
-			Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);
-			m_Position = { 0.f,Ease(Out, Quart, commandTimer, s_pos.y, e_pos.y),0.f };
-			if (m_Position.y >= 3) {
-				jump_ = JumpFase::JumpAfter;
+		if (act_ == ActionFase::Before) {
+			m_Position.y += 1.f;
+			if (m_Position.y >= 15) {
+				act_ = ActionFase::After;
 			}
 		}
-		if (jump_ == JumpFase::JumpAfter) {
-			m_Position.y = s_pos.y;
-			e_pos.y = 0;
-			commandTimer += 1.0f / kMoveTimeMax;
-			Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);
-			m_Position = { 0.f,Ease(Out, Quart, commandTimer, s_pos.y, e_pos.y),0.f };
+		if (act_ == ActionFase::After) {
+			m_Position.y -= 1.f;
 			if (m_Position.y <= 0) {
-				jump_ = JumpFase::JumpBefore;
-				jumpCount += 1;
+				act_ = ActionFase::Before;
+				waitCount += 1;
 			}
 		}
-		if (jumpCount >= 2) {
+		if (waitCount >= 1) {
 			fase_ = AttackFase::AttackAfter;
+			waitCount = 0;
+			commandTimer = 0.f;
 		}
 	}
-
-
 	if (fase_ != AttackFase::AttackAfter) { return; }
 	RockOn();
 
@@ -238,12 +230,39 @@ void FirstBoss::RockOnAttack()
 //動いてる途中に落とす
 void FirstBoss::RandAttack()
 {
-	m_Color = { 0.f,1.f,1.f,1.f };
-	m_Rotation.x += 10.f;
-	if (m_Rotation.x >= 100) {
-		CreateFraction(m_Position);
-		m_Rotation.x = 0;
-		_charstate = CharaState::STATE_INTER;
+	if (act_ == ActionFase::Before) {
+		commandTimer += 1.0f / 30;
+		Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);
+		float s_rot = 0.f;
+		float e_rot = 90.f;
+		m_Rotation = {
+			Ease(Out, Quart, commandTimer, s_rot, e_rot),
+			0.f,
+			0.f,
+		};
+		if (m_Rotation.x >= 90) {
+			act_ = ActionFase::After;
+			commandTimer = 0;
+		}
+	}
+	else {
+		commandTimer += 1.0f / 30;
+		Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);
+		float s_rot = 90.f;
+		float e_rot = 0.f;
+		m_Rotation = {
+			Ease(Out, Quart, commandTimer, s_rot, e_rot),
+			0.f,
+			0.f,
+		};
+		if (m_Rotation.x <= 0) {
+			CreateFraction(m_Position);
+			commandTimer = 0.f;
+			m_Rotation.x = 0;
+			_charstate = CharaState::STATE_INTER;
+			act_ = ActionFase::Before;
+			commandTimer = 0;
+		}
 	}
 }
 //中央行ってから拡散
@@ -266,17 +285,17 @@ void FirstBoss::Hit()
 			}
 		}
 		if (move_ != MoveFase::Stop) { return; }
-		if (jump_ == JumpFase::JumpBefore) {
+		if (act_ == ActionFase::Before) {
 			commandTimer += 1.0f / kJumpTimeMax;
 			Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);
 			//m_Position.y= Ease(In, Quad, commandTimer, 1.0f, 0.0f);
 			m_Position.y += 0.5f;
 			m_Rotation.x = Ease(In, Quad, commandTimer, 0.0f, 360.0f);
 			if (m_Rotation.x < 360) { return; }
-			jump_ = JumpFase::JumpAfter;
+			act_ = ActionFase::After;
 			m_Rotation.x = 0.f;
 		}
-		else if (jump_ == JumpFase::JumpAfter) {
+		else if (act_ == ActionFase::After) {
 			if (m_Position.y >= 0) {
 				m_Position.y -= 2.f;
 			}
@@ -319,7 +338,6 @@ void FirstBoss::Hit()
 
 			}
 			attack_count_ += 1;
-			m_Color = { 1.f,1.f,0.f,1.f };
 			_charstate = CharaState::STATE_HIT;
 			fase_ = AttackFase::AttackBefore;
 			commandTimer = 0.f;
@@ -352,7 +370,6 @@ void FirstBoss::RockOn()
 
 	commandTimer += 1.0f / kLockOnTimeMax;
 	Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);
-	m_Color = { 1.f,0.f,1.f,1.f };
 	if (commandTimer == 1.0f) {
 		commandTimer = 0.0f;
 		jumpCount++;
@@ -382,7 +399,7 @@ void FirstBoss::Attack()
 			_rockonstate = RockonState::STATE_AIM;
 		}
 		else {
-			jumpCount = 1;
+			jumpCount = 0;
 			_charstate = CharaState::STATE_INTER;
 		}
 		commandTimer = 0.0f;
