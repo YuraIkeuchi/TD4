@@ -12,47 +12,52 @@ UI::~UI() {
 
 //初期化
 void UI::Initialize() {
-	for (int i = HeartOne; i < UnderStatusGaugeMax; i++) {
-		sprites[i] = CreateUi(ImageManager::WHITE, m_PlayerHpPos, m_PlayerHpSize, { 1.5f, 1.5f, 1.5f,1 });
+	sprites[HeartOne] = CreateUi(ImageManager::PlayerHPGauge, m_PlayerHpPos, m_PlayerHpSize, { 1.5f, 1.5f, 1.5f,1 });
+	TexList.emplace_back(std::move(sprites[HeartOne]));
+	for (int i = HeartTwo; i < UnderStatusGaugeMax; i++) {
+		sprites[i] = CreateUi(ImageManager::WHITE, { m_PlayerHpPos.x + 95.0f,m_PlayerHpPos.y + 47.0f }, m_PlayerHpSize, { 1.5f, 1.5f, 1.5f,1 });
 		TexList.emplace_back(std::move(sprites[i]));
 	}
 	{//ゲージ下敷き
-		sprites[UnderStatusGaugeMax] = CreateUi(ImageManager::UnderGauge, m_GaugePos, m_GaugeSize, { 1.5f, 1.5f, 1.5f,0.5f });
-		sprites[UnderStatusGaugeMax].Tex->SetAnchorPoint({ 0,0.5f });
+		sprites[UnderStatusGaugeMax] = CreateUi(ImageManager::UnderGauge, m_GaugePos, m_GaugeSize, { 1.5f, 1.5f, 1.5f,1.f });
+		sprites[UnderStatusGaugeMax].Tex->SetAnchorPoint({ 0,0.0f });
+		sprites[UnderStatusGaugeMax].IsVisible = false;
 		TexList.emplace_back(std::move(sprites[UnderStatusGaugeMax]));
 	}
-	{//ゲージ下敷き
-		sprites[UnderStatusGauge] = CreateUi(ImageManager::UnderGauge, m_GaugePos, m_GaugeSize, { 1.5f, 1.5f, 1.5f,1 });
-		sprites[UnderStatusGauge].Tex->SetAnchorPoint({ 0,0.5f });
-		TexList.emplace_back(std::move(sprites[UnderStatusGauge]));
-	}
 	{//ゲージ
-		sprites[ExtraGauge] = CreateUi(ImageManager::Gauge, m_GaugePos, m_GaugeSizeMini, { 1.5f, 1.5f, 1.5f,1 });
-		sprites[ExtraGauge].Tex->SetAnchorPoint({ 0,0.5f });
+		sprites[ExtraGauge] = CreateUi(ImageManager::WHITE, m_GaugePosMini, m_GaugeSizeMini, { 1.5f, 1.5f, 1.5f,1 });
+		sprites[ExtraGauge].Tex->SetAnchorPoint({ 0,0.f });
+		sprites[ExtraGauge].IsVisible = false;
 		TexList.emplace_back(std::move(sprites[ExtraGauge]));
 	}
 	{//ゲージ
-		sprites[StatusGauge] = CreateUi(ImageManager::Gauge, m_GaugePos, m_GaugeSizeMini, { 1.5f, 1.5f, 1.5f,1 });
-		sprites[StatusGauge].Tex->SetAnchorPoint({ 0,0.5f });
+		sprites[StatusGauge] = CreateUi(ImageManager::WHITE, m_GaugePosMini, m_GaugeSizeMini, { 1.5f, 1.5f, 1.5f,0.5f });
+		sprites[StatusGauge].Tex->SetAnchorPoint({ 0,0.f });
+		sprites[StatusGauge].IsVisible = false;
 		TexList.emplace_back(std::move(sprites[StatusGauge]));
 	}
 	{//ゲージ
 		sprites[ChargeGauge] = CreateUi(ImageManager::Gauge, m_GaugePos, m_GaugeSizeMini, { 1.5f, 1.5f, 1.5f,1 });
 		sprites[ChargeGauge].Tex->SetAnchorPoint({ 0,0.5f });
+		sprites[ChargeGauge].IsVisible = false;
 		TexList.emplace_back(std::move(sprites[ChargeGauge]));
 	}
 	{//ゲージ
-		sprites[UnderBossGauge] = CreateUi(ImageManager::WHITE, { 880,0 }, { 400,40 }, { 1.5f, 1.5f, 1.5f,1 });
-		sprites[UnderBossGauge].Tex->SetAnchorPoint({ 0,0.f });
+		sprites[UnderBossGauge] = CreateUi(ImageManager::BossHPGauge, { WinApp::window_width-10,10 }, m_PlayerHpSize, { 1.5f, 1.5f, 1.5f,1 });
+		sprites[UnderBossGauge].Tex->SetAnchorPoint({ 1.0f,0.f });
 		TexList.emplace_back(std::move(sprites[UnderBossGauge]));
 	}
 	{//ゲージ
-		sprites[BossGauge] = CreateUi(ImageManager::WHITE, { 880,0 }, { 400,40 }, { 0.f, 1.f, 0.f,1 });
+		sprites[MiddleBossGauge] = CreateUi(ImageManager::WHITE, { 900,30 }, { 350,40 }, { 1.f, 1.f, 0.f,1 });
+		sprites[MiddleBossGauge].Tex->SetAnchorPoint({ 0,0.f });
+		TexList.emplace_back(std::move(sprites[MiddleBossGauge]));
+
+		sprites[BossGauge] = CreateUi(ImageManager::WHITE, { 900,30 }, { 350,40 }, { 1.f, 0.f, 0.f,1 });
 		sprites[BossGauge].Tex->SetAnchorPoint({ 0,0.f });
 		TexList.emplace_back(std::move(sprites[BossGauge]));
 	}
 	{
-		sprites[CircleCover] = CreateUi(ImageManager::CIRCLECOVER, { m_PlayerCireclePos.x,m_PlayerCireclePos.y-40.f }, { 400.f,400.f }, { 1.f,1.f,1.f,1.f });
+		sprites[CircleCover] = CreateUi(ImageManager::CIRCLECOVER, { m_PlayerCireclePos.x,m_PlayerCireclePos.y - 40.f }, { 400.f,400.f }, { 1.f,1.f,1.f,1.f });
 		sprites[CircleCover].Tex->SetAnchorPoint({ 0.5,0.5f });
 		TexList.emplace_back(std::move(sprites[CircleCover]));
 	}
@@ -63,7 +68,7 @@ void UI::Initialize() {
 	}
 	//ボスの位置
 	{
-		sprites[ArrowBoss] = CreateUi(ImageManager::BOSS_ARROW,{}, {62.0f,62.0f}, {1.f,1.f,1.f,1.f});
+		sprites[ArrowBoss] = CreateUi(ImageManager::BOSS_ARROW, {}, { 62.0f,62.0f }, { 1.f,1.f,1.f,1.f });
 		sprites[ArrowBoss].Tex->SetAnchorPoint({ 0.5,0.5f });
 		TexList.emplace_back(std::move(sprites[ArrowBoss]));
 		TexList[ArrowBoss].IsVisible = false;
@@ -74,37 +79,33 @@ void UI::Initialize() {
 void UI::Update() {
 	//Gauge処理
 	if (HungerGauge::GetInstance()->GetCatchCount() == 0) {
-		TexList[UnderStatusGauge].IsVisible = false;
+		//TexList[UnderStatusGauge].IsVisible = false;
 		TexList[StatusGauge].IsVisible = false;
 		TexList[ExtraGauge].IsVisible = false;
 		TexList[ChargeGauge].IsVisible = false;
-	}
-	else {
+	} else {
 		TexList[StatusGauge].Size = { HungerGauge::GetInstance()->GetPercentage() * m_GaugeSizeMini.x,m_GaugeSizeMini.y };
 		TexList[ExtraGauge].Size = { HungerGauge::GetInstance()->GetPercentageExtra() * m_GaugeSizeMini.x,m_GaugeSizeMini.y };
 		TexList[ChargeGauge].Size = { Player::GetInstance()->GetPercentage() * m_GaugeSizeMini.x,m_GaugeSizeMini.y };
-		TexList[UnderStatusGauge].Size = { (HungerGauge::GetInstance()->GetHungerMax() / 5.f) * m_GaugeSize.x / 10.f,m_GaugeSize.y };
-		TexList[UnderStatusGauge].IsVisible = true;
+		//TexList[UnderStatusGauge].Size = { (HungerGauge::GetInstance()->GetHungerMax() / 5.f) * m_GaugeSize.x / 10.f,m_GaugeSize.y };
+		//TexList[UnderStatusGauge].IsVisible = true;
 		TexList[StatusGauge].IsVisible = true;
 		TexList[ExtraGauge].IsVisible = true;
 		TexList[ChargeGauge].IsVisible = true;
 		TexList[ExtraGauge].Color = { 0.0f,1.0f,1.0f,1.0f };
 		if (Player::GetInstance()->GetChargeType() == 0) {
 			TexList[ChargeGauge].Color = { 1.0f,1.0f,0.2f,1.0f };
-		}
-		else if (Player::GetInstance()->GetChargeType() == 1) {
+		} else if (Player::GetInstance()->GetChargeType() == 1) {
 			TexList[ChargeGauge].Color = { 1.0f,0.6f,0.0f,1.0f };
-		}
-		else if (Player::GetInstance()->GetChargeType() == 2) {
+		} else if (Player::GetInstance()->GetChargeType() == 2) {
 			TexList[ChargeGauge].Color = { 1.0f,0.3f,0.0f,1.0f };
-		}
-		else {
+		} else {
 			TexList[ChargeGauge].Color = { 1.0f,0.0f,0.0f,1.0f };
 		}
 	}
 	//ライフ処理
-	TexList[HeartThree].Size = { (Player::GetInstance()->GetHP() / Player::GetInstance()->GetMaxHP()) * m_PlayerHpSize.x,m_PlayerHpSize.y };
-	TexList[HeartThree].Color = { 0,1,0,1 };
+	TexList[HeartThree].Size = { (Player::GetInstance()->GetHP() / Player::GetInstance()->GetMaxHP()) * m_PlayerHpSize.x * 0.68f ,m_PlayerHpSize.y * 0.34f };
+	TexList[HeartThree].Color = { 0,1,0,1.0f };
 	TexList[HeartTwo].Size = {
 		Ease(In,Quad,0.3f,TexList[HeartTwo].Size.x,TexList[HeartThree].Size.x),
 		Ease(In,Quad,0.3f,TexList[HeartTwo].Size.y,TexList[HeartThree].Size.y),
@@ -119,16 +120,14 @@ void UI::Update() {
 		if (skip == true) {
 			m_limit = 360.f;
 		}
-	}
-	else if (bullet_type_ == Bullettype::BULLET_SEARCH) {
+	} else if (bullet_type_ == Bullettype::BULLET_SEARCH) {
 		m_limit = 120.f;
 		if (skip == true) {
-			m_limit=-240.f;
+			m_limit = -240.f;
 		}
-	}
-	else if (bullet_type_ == Bullettype::BULLET_ATTACK) {
+	} else if (bullet_type_ == Bullettype::BULLET_ATTACK) {
 		m_limit = 240.f;
-		
+
 	}
 	int ans = bullet_type_ - oldbullet_type_;
 	if (m_limit == -240) {
@@ -145,8 +144,7 @@ void UI::Update() {
 				if (m_PlayerCircleRot > 360.f) {
 					m_PlayerCircleRot = 0.f;
 				}
-			}
-			else if(skip==true) {
+			} else if (skip == true) {
 				m_PlayerCircleRot -= 30.f;
 				if (m_PlayerCircleRot < -240.f) {
 					m_PlayerCircleRot = 120.f;
@@ -154,15 +152,13 @@ void UI::Update() {
 					Player::GetInstance()->SetSkip(skip);
 				}
 			}
-		}
-		else if (ans == -1 || ans == 2) {
+		} else if (ans == -1 || ans == 2) {
 			if (skip == false) {
 				m_PlayerCircleRot -= 30.f;
 				if (m_PlayerCircleRot < 0.f) {
 					m_PlayerCircleRot = 360;
 				}
-			}
-			else if (skip == true) {
+			} else if (skip == true) {
 				m_PlayerCircleRot += 30.f;
 				if (m_PlayerCircleRot > 360.f) {
 					m_PlayerCircleRot = 0.f;
@@ -171,25 +167,27 @@ void UI::Update() {
 				}
 			}
 		}
-	}
-	else {
+	} else {
 		oldbullet_type_ = bullet_type_;
 	}
-	
-	
+
+
 
 	if (boss) {
-		TexList[BossGauge].Size = { boss->HpPercent() * 400.f,40.f };
-	}
-	else {
+		TexList[BossGauge].Size = { boss->HpPercent() * m_GaugeSizeMini.x * 0.9f ,m_PlayerHpSize.y * 0.34f };
+		TexList[MiddleBossGauge].Size = {
+		Ease(In,Quad,0.3f,TexList[MiddleBossGauge].Size.x,TexList[BossGauge].Size.x),
+		Ease(In,Quad,0.3f,TexList[MiddleBossGauge].Size.y,TexList[BossGauge].Size.y),
+		};
+	} else {
 		TexList[UnderBossGauge].IsVisible = false;
+		TexList[MiddleBossGauge].IsVisible = false;
 		TexList[BossGauge].IsVisible = false;
-
 	}
 
 	//ボスの探索
-	if(boss)
-	SeachBoss();
+	if (boss)
+		SeachBoss();
 
 	for (auto i = 0; i < TexList.size(); i++) {
 		if (TexList[i].Tex == nullptr)continue;
@@ -240,8 +238,7 @@ void UI::SeachBoss() {
 	m_Circle.y = (cos(-l_Radius) * 150.0f) + WinApp::window_height / 2; //*0.2251f;
 	if (l_LookLength < Helper::GetInstance()->ChechLength({ l_PlaPos.x,0.0f,l_PlaPos.z }, { l_bossPos.x,0.0f,l_bossPos.z })) {
 		TexList[ArrowBoss].IsVisible = true;
-	}
-	else {
+	} else {
 		TexList[ArrowBoss].IsVisible = false;
 	}
 	TexList[ArrowBoss].Rotation = (l_Radius * (PI_180 / XM_PI)) + PI_180;//-radius * PI / 180.0f);
