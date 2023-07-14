@@ -223,6 +223,14 @@ protected:
 	int m_AvatarType = {};
 	//エンドロールのタイマー
 	int m_EndTimer = {};
+
+
+	enum EndState {
+		END_SET,
+		END_WALK,
+		END_DIR_CAMERA,
+	}_EndState = END_SET;
+
 private:
 
 	enum class ActionList {

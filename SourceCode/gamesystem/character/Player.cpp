@@ -826,6 +826,21 @@ void Player::EndRollUpdate(int Timer) {
 	}
 	else if (_EndState == END_DIR_CAMERA) {
 		Helper::GetInstance()->CheckMax(m_Rotation.y, 180.0f, -l_AddRotY);
+		if (Timer == 310) {
+			_EndState = END_DIR_RIGHT;
+		}
+	}
+	else if (_EndState == END_DIR_RIGHT) {
+		m_Rotation.y = Ease(In, Cubic, 0.5f, m_Rotation.y, 90.0f);
+		if (Timer == 400 || Timer == 630) {
+			_EndState = END_DIR_LEFT;
+		}
+	}
+	else {
+		m_Rotation.y = Ease(In, Cubic, 0.5f, m_Rotation.y, 270.0f);
+		if (Timer == 500) {
+			_EndState = END_DIR_RIGHT;
+		}
 	}
 
 	index = 15;

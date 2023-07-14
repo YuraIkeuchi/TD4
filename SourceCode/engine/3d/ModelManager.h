@@ -41,6 +41,7 @@ public:
 		SKIRT,
 		NOTE,
 		NAIL,
+		LASTBOSS,
 		UPBOX,
 		WIDTH1,
 		WIDTH2,

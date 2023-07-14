@@ -36,6 +36,8 @@ public:
 	void ImGuiDraw();//ImGui‚Ì•`‰æ
 
 	void DeathMove(const int Timer,const int TargetTimer);
+
+	void EndMove(const int TargetTimer);
 protected:
 
 	virtual void Action() = 0;//ƒ{ƒX“Á—L‚Ìˆ—
@@ -115,4 +117,12 @@ protected:
 	}_AudioState = AUDIO_SET;
 
 	bool m_AudioPlay = false;
+
+	enum EndState {
+		END_SET,
+		END_MOVE,
+		END_FINISH
+	}_EndState;
+
+	int m_EndTimer = {};
 };

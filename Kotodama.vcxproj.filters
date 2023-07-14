@@ -978,9 +978,6 @@
     <ClInclude Include="SourceCode\gamesystem\bossattach\DamageArea.h">
       <Filter>gamesystem\bossattach\DamageArea</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\bossattach\InterCD.h">
-      <Filter>gamesystem\bossattach\CD\Common</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\bossattach\ConfuCD.h">
       <Filter>gamesystem\bossattach\CD\Various</Filter>
     </ClInclude>
@@ -1081,6 +1078,8 @@
     <ClInclude Include="SourceCode\gamesystem\scene\EndRollScene.h">
       <Filter>gamesystem\scene\EndRoll</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\bossattach\InterCD.h">
+      <Filter>gamesystem\bossattach\CD\Common</Filter>
     <ClInclude Include="SourceCode\gamesystem\character\SingleShot.h">
       <Filter>gamesystem\charactor\Boss\Five</Filter>
     </ClInclude>

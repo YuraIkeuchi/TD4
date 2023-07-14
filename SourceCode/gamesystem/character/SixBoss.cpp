@@ -179,6 +179,9 @@ void SixBoss::ImGui_Origin() {
 	ImGui::Begin("Six");
 	ImGui::Text("End:%d", m_EndTimer);
 	ImGui::End();
+	for (size_t i = 0; i < cd.size(); i++) {
+		cd[i]->ImGuiDraw();
+	}
 }
 //インターバル
 void SixBoss::InterValMove() {
@@ -529,10 +532,43 @@ void SixBoss::InitAwake() {
 }
 
 void SixBoss::EndRollAction() {
+	const float l_AddFrame = 0.01f;
 	m_EndTimer++;
-	if (m_EndTimer == 1) {
-		m_Position = { -50.0f,2.0f,5.0f };
-		m_Rotation = { 0.0f,0.0f,0.0f };
+	if (_EndState == END_SET) {
+		if (m_EndTimer == 1) {
+			m_Position = { 50.0f,20.0f,3.0f };
+			m_Rotation = { 180.0f,90.0f,-90.0f };
+			m_Scale = { 0.2f,0.2f,0.2f };
+		}
+		else if (m_EndTimer == 700) {
+			_EndState = END_WALK;
+			m_AfterPos = { 25.0f,1.5f,5.0f };
+		}
+	}
+	else if (_EndState == END_WALK) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			_EndState = END_DIR_CAMERA;
+			m_Frame = {};
+			m_AfterRot.z = -180.0f;
+		}
+
+		m_Position = {
+			Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
+			Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
+			Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z)
+		};
+	}
+	else {
+		for (int i = 0; i < cd.size(); i++) {
+			cd[i]->EndMove((100 + (10 * i)));
+		}
+		Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame);
+		m_Rotation.z = Ease(In, Cubic, m_Frame, m_Rotation.z, m_AfterRot.z);
+
+		//sin波によって上下に動く
+		m_Angle += 6.0f;
+		m_Angle2 = m_Angle * (3.14f / 180.0f);
+		m_Position.y = (sin(m_Angle2) * 0.5f + 2.0f);
 	}
 	//OBJのステータスのセット
 	Obj_SetParam();

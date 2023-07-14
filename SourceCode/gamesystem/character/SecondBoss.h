@@ -300,4 +300,8 @@ private:
 	float cinter;
 
 	int SummonPriority, CirclePriority;
+
+	float m_SinAngle = {};
+	float m_SinAngle2 = {};
+	float m_Frame = {};
 };
