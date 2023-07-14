@@ -1043,17 +1043,23 @@ void ThirdBoss::EndRollAction() {
 		};
 	}
 	else {
-		if (m_EndTimer % 100 == 0) {
-			m_AfterRot.y = m_Rotation.y + 180.0f;
-			m_Rot = true;
+		if (m_EndTimer == 1670) {
+			m_EndStop = true;
 		}
 
-		if (m_Rot) {
-			if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame2)) {
-				m_Frame = {};
-				m_Rot = false;
+		if (!m_EndStop) {
+			if (m_EndTimer % 100 == 0) {
+				m_AfterRot.y = m_Rotation.y + 180.0f;
+				m_Rot = true;
 			}
-			m_Rotation.y = Ease(In, Cubic, m_Frame, m_Rotation.y, m_AfterRot.y);
+
+			if (m_Rot) {
+				if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame2)) {
+					m_Frame = {};
+					m_Rot = false;
+				}
+				m_Rotation.y = Ease(In, Cubic, m_Frame, m_Rotation.y, m_AfterRot.y);
+			}
 		}
 	}
 	Fbx_SetParam();

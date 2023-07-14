@@ -177,6 +177,8 @@ private://各クラス
 		END_DIR_CAMERA,
 		END_DIR_RIGHT,
 		END_DIR_LEFT,
+		END_DIR_BACK,
+		END_DIR_FRONT,
 	}_EndState = END_SET;
 public:
 	vector<InterBullet*>GetBulllet_ghost() { return ghostbullets; }

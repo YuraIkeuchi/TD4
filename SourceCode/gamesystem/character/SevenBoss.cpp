@@ -272,6 +272,7 @@ void SevenBoss::Draw(DirectXCommon* dxCommon) {
 void SevenBoss::ImGui_Origin() {
 	ImGui::Begin("Seven");
 	ImGui::Text("End:%d", m_EndTimer);
+	ImGui::Text("PosY:%f", m_Position.y);
 	ImGui::End();
 
 	//火の玉
@@ -929,7 +930,7 @@ void SevenBoss::ReturnBoss() {
 	else if (_ReturnState == RETURN_PLAY) {
 		m_CircleScale = 30.0f;
 		m_CircleSpeed = {};
-		m_Position = Helper::GetInstance()->CircleMove(Player::GetInstance()->GetPosition(), m_CircleScale, m_CircleSpeed);
+		m_Position = Helper::GetInstance()->CircleMove({ Player::GetInstance()->GetPosition().x,m_Position.y,Player::GetInstance()->GetPosition().z}, m_CircleScale, m_CircleSpeed);
 		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, Player::GetInstance()->GetPosition(), -PI_90);
 		_ReturnState = RETURN_END;
 		m_AfterAlpha = 1.0f;
@@ -956,9 +957,8 @@ void SevenBoss::InitAwake() {
 		fireboll.clear();
 		damageblock.clear();
 		m_Position = { 0.0f,5.0f,30.0f };
-		m_Rotation = { 0.0f,270.0f,0.0f };
+		m_Rotation = { 0.0f,180.0f,0.0f };
 		m_Scale = { 1.5f,1.5f,1.5f };
-		m_Color = { 1.0f,0.0f,0.0f,1.0f };
 		m_InterVal = {};
 		m_MoveTimer = {};
 		//攻撃回数
@@ -985,10 +985,37 @@ void SevenBoss::InitAwake() {
 	}
 }
 void SevenBoss::EndRollAction() {
+	const float l_AddFrame = 0.01f;
 	m_EndTimer++;
-	if (m_EndTimer == 1) {
-		m_Position = { 0.0f,5.0f,20.0f };
-		m_Rotation = { 0.0f,0.0f,0.0f };
+	if (_EndState == END_SET) {
+		if (m_EndTimer == 1) {
+			m_Position = { 0.0f,5.0f,15.0f };
+			m_Rotation = { 0.0f,180.0f,0.0f };
+			m_Color = { 1.0f,1.0f,1.0f,0.0f };
+		}
+		else if (m_EndTimer == 900) {
+			_EndState = END_WALK;
+		}
+	}
+	else if (_EndState == END_WALK) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			_EndState = END_DIR_CAMERA;
+			m_Frame = {};
+		}
+
+		m_Color.w = Ease(In, Cubic, m_Frame, m_Color.w, 1.0f);
+	}
+	else {
+		if (m_EndTimer == 1670) {
+			m_EndStop = true;
+		}
+	}
+
+	//sin波によって上下に動く
+	if (!m_EndStop) {
+		m_SinAngle += 6.0f;
+		m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
+		m_Position.y = (sin(m_SinAngle2) * 0.5f + 5.0f);
 	}
 	//OBJのステータスのセット
 	Obj_SetParam();

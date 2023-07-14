@@ -231,6 +231,7 @@ protected:
 		END_DIR_CAMERA,
 	}_EndState = END_SET;
 
+	bool m_EndStop = false;
 private:
 
 	enum class ActionList {
