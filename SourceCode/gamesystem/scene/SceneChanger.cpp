@@ -100,6 +100,27 @@ bool SceneChanger::ChangeScene(const std::string& sceneName, const ReverseType _
 	return false;
 }
 
+bool SceneChanger::ChangeSceneLose(const std::string& sceneName) {
+	if (!easing_start) { return false; }
+	if (ease_frame > 1.0f) {
+		SceneManager::GetInstance()->ChangeScene(sceneName);
+		return true;
+	} else {
+		ease_frame += 1.0f / end_frame;
+	}
+	float rot = 0;
+	rot = Ease(InOut, Quint, ease_frame, 0, 360.f);
+	DirectX::XMFLOAT2 size{};
+	size.x = Ease(InOut, Quint, ease_frame, 0, (float)base_size);
+	size.y = Ease(InOut, Quint, ease_frame, 0, (float)base_size);
+	for (std::unique_ptr<IKESprite>& sprite : sprites) {
+		sprite->SetColor({0,0,0,1});
+		sprite->SetRotation(rot);
+		sprite->SetSize({ size.x,size.y });
+	}
+	return false;
+}
+
 bool SceneChanger::ChangeSceneExtra(const std::string& sceneName, const ReverseType _reverse) {
 	if (!easing_start) { return false; }
 	//if (ease_frame > 1.0f) {

@@ -381,7 +381,7 @@ void FourthStageActor::MainUpdate(DebugCamera* camera) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kFourthStage,true);
 		sceneChanger_->ChangeStart();
-		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::Reverse);
+		sceneChanger_->ChangeSceneLose("GAMEOVER");
 	}
 	//音楽の音量が変わる
 	VolumManager::GetInstance()->Update();
