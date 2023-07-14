@@ -1,5 +1,8 @@
 #pragma once
 #include "ObjCommon.h"
+#include "IKETexture.h"
+#include "BreakEffect.h"
+#include "InterBullet.h"
 //火の玉クラス
 class FireBoll :
 	public ObjCommon {
@@ -29,18 +32,31 @@ public:
 	/// </summary>
 	void ImGuiDraw();
 
+private:
 	bool Collide();	//当たり判定
 
 	void Move();
 
 	void BirthParticle();
+
+	void CollideBul(vector<InterBullet*>bullet);
+
+	//エフェクト発生
+	void BirthEffect();
 public:
 	//gettersetter
 	const bool& GetAlive() { return m_Alive; }
 
 	void SetCircleSpeed(const float CircleSpeed) { m_CircleSpeed = CircleSpeed; }
+	void SetLimitTimer(const int LimitTimer) { m_LimitTimer = LimitTimer; }
 private:
-	bool m_Alive = 0.0f;
+	vector<InterEffect*> effects;
+	unique_ptr<IKETexture> tex;
+	XMFLOAT4 m_TexColor = { 1.0f,1.0f,1.0f,0.0f };
+	XMFLOAT3 m_TexPos = {};
+	XMFLOAT3 m_AfterPos = {};
+	bool m_TexAlive = false;
+	bool m_Alive = false;
 	int m_MoveTimer = {};
 	float m_CircleSpeed = {};
 	float m_CircleScale = {};
@@ -54,4 +70,8 @@ private:
 		MOVE_ATTACK,
 		MOVE_END,
 	}_MoveState;
+
+	int m_LimitTimer = 200;
+
+	float m_HP = 3.0f;
 };

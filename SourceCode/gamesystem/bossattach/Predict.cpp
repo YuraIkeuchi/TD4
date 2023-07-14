@@ -3,11 +3,11 @@
 #include "Easing.h"
 #include "Player.h"
 void Predict::Initialize(const XMFLOAT3& pos) {
-	tex = IKETexture::Create(ImageManager::MARK, { 0,0,0 }, { 12,12,12 }, { 1,1,1,0.6f });
+	tex.reset(IKETexture::Create(ImageManager::DARKBOM, { 0,0,0 }, { 12,12,12 }, { 1,1,1,0.6f }));
 	tex->TextureCreate();
 	m_Position = pos;
 	tex->SetRotation({ 90.0f, 0.0f, 0.0f });
-	tex->SetScale({ 1.0f,1.0f,1.0f });
+	tex->SetScale({ 1.5f,1.5f,1.5f });
 	tex->SetColor(m_Color);
 	m_Alive = true;
 }

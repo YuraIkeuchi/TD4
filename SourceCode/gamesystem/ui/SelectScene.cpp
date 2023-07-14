@@ -110,9 +110,9 @@ void SelectScene::Init() {
 	BossIcon[SECOND] = IKESprite::Create(ImageManager::CLOSESYTOPON, { 0,0 });
 	BossIcon[THIRD] = IKESprite::Create(ImageManager::CLOSEKIDO, { 0,0 });
 	BossIcon[FOUR] = IKESprite::Create(ImageManager::CLOSECAMERA, { 0,0 });
-	BossIcon[FIVE] = IKESprite::Create(ImageManager::BOX, { 0,0 });
+	BossIcon[FIVE] = IKESprite::Create(ImageManager::DARKBOM, { 0,0 });
 	BossIcon[SIX] = IKESprite::Create(ImageManager::CLOSEDJ, { 0,0 });
-	BossIcon[SEVEN] = IKESprite::Create(ImageManager::BOX, { 0,0 });
+	BossIcon[SEVEN] = IKESprite::Create(ImageManager::DARKBOM, { 0,0 });
 
 	for (int i = 0; i < MAX; i++) {
 		BossIcon[i]->SetAnchorPoint({ 0.5f,0.5f });

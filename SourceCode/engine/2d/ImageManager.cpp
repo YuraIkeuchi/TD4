@@ -36,7 +36,6 @@ void ImageManager::SecondLoad2D()
 
 	IKESprite::LoadTexture(GAMECLEAR, L"Resources/2d/sceneback/clear.png");
 	IKESprite::LoadTexture(MASTERCLEAR, L"Resources/2d/sceneback/lastclear.png");
-	IKESprite::LoadTexture(BOX, L"Resources/2d/objicon/box.png");
 	IKESprite::LoadTexture(CUBE, L"Resources/2d/objicon/cube.png");
 	IKESprite::LoadTexture(NON, L"Resources/2d/objicon/non.png");
 	IKESprite::LoadTexture(HEART, L"Resources/2d/objicon/PlayerHeart.png");
@@ -89,7 +88,6 @@ void ImageManager::SecondLoadTex2D()
 	IKETexture::LoadTexture(IMPACT2, L"Resources/2d/effect/inpact2.png");
 	IKETexture::LoadTexture(ANGER, L"Resources/2d/objicon/AngerStamp.png");
 	IKETexture::LoadTexture(JOY, L"Resources/2d/objicon/JoyStamp.png");
-	IKETexture::LoadTexture(MARK, L"Resources/2d/objicon/box.png");
 	IKETexture::LoadTexture(DAMAGEAREA, L"Resources/2d/effect/DArea.png");
 	IKETexture::LoadTexture(DAMAGEAREA2, L"Resources/2d/effect/DArea2.png");
 	IKETexture::LoadTexture(GROUND, L"Resources/2d/SceneBack/Ground.png");
