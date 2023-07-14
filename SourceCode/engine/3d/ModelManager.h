@@ -40,7 +40,8 @@ public:
 		CAP,
 		SKIRT,
 		NOTE,
-		NAIL
+		NAIL,
+		LASTBOSS
 	};
 	//FBXの名前
 	enum FBXName {

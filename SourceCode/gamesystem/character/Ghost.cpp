@@ -358,8 +358,8 @@ void Ghost::DarkSide() {
 //探索
 void Ghost::Search() {
 	const int l_LimitTimer = 300;
-	const float l_Vel = 0.3f;
-	const float l_Vel2 = 0.5f;
+	const float l_Vel = 0.8f;
+	const float l_Vel2 = 0.8f;
 	XMFLOAT3 l_playerPos = Player::GetInstance()->GetPosition();
 	//サーチ状態から一定時間立つと存在消去
 	m_SearchTimer++;

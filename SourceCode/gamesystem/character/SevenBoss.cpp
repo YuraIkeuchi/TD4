@@ -9,7 +9,7 @@
 #include "HungerGauge.h"
 //生成
 SevenBoss::SevenBoss() {
-	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Ghost);
+	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::LASTBOSS);
 
 	m_Object.reset(new IKEObject3d());
 	m_Object->Initialize();
@@ -24,9 +24,9 @@ SevenBoss::SevenBoss() {
 //初期化
 bool SevenBoss::Initialize() {
 	m_Position = { 0.0f,5.0f,30.0f };
-	m_Rotation = { 0.0f,270.0f,0.0f };
+	m_Rotation = { 0.0f,180.0f,0.0f };
 	m_Scale = { 1.5f,1.5f,1.5f };
-	m_Color = { 1.0f,0.0f,0.0f,1.0f };
+	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	ActionTimer = 1;
 
 	m_Radius = 3.0f;
@@ -41,9 +41,9 @@ bool SevenBoss::Initialize() {
 //スキップ時の初期化
 void SevenBoss::SkipInitialize() {
 	m_Position = { 0.0f,5.0f,30.0f };
-	m_Rotation = { 0.0f,270.0f,0.0f };
+	m_Rotation = { 0.0f,180.0f,0.0f };
 	m_Scale = { 1.5f,1.5f,1.5f };
-	m_Color = { 1.0f,0.0f,0.0f,1.0f };
+	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 }
 //CSV
 void SevenBoss::CSVLoad() {
@@ -710,7 +710,7 @@ void SevenBoss::DeadAction() {
 	if (_DeathState == DEATH_SET) {
 		if (m_DeathTimer == 1) {
 			m_Position = { 0.0f,5.0f,-10.0f };
-			m_Rotation = { 0.0f,270.0f,0.0f };
+			m_Rotation = { 0.0f,180.0f,0.0f };
 			m_BoundPower = 1.0f;
 		}
 		else if (m_DeathTimer == 20) {
@@ -912,7 +912,7 @@ void SevenBoss::RandMove() {
 		m_Position.y,
 		Ease(In,Cubic,0.5f,m_Position.z,m_AfterPos.z),
 	};
-	m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, Player::GetInstance()->GetPosition(), -PI_90);
+	m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, Player::GetInstance()->GetPosition(), -PI_180);
 }
 void SevenBoss::ReturnBoss() {
 	const float l_AddFrame = 0.05f;
@@ -987,7 +987,7 @@ void SevenBoss::InitAwake() {
 void SevenBoss::EndRollAction() {
 	m_EndTimer++;
 	if (m_EndTimer == 1) {
-		m_Position = { 50.0f,2.0f,0.0f };
+		m_Position = { 0.0f,5.0f,20.0f };
 		m_Rotation = { 0.0f,0.0f,0.0f };
 	}
 	//OBJのステータスのセット
