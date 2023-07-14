@@ -241,15 +241,15 @@ void FirstBoss::Choice()
 		m_FollowSpeed = 1.0f;
 		m_AfterPos.y = 30.0f;
 		////RandStateが30以下ならそれに応じた移動にする、
-		if (l_RandState < 10) {
+		if (l_RandState < 12) {
 			_charstate = CharaState::STATE_RAND;
 		}
-		else if (10 <= l_RandState && l_RandState < 20) {
+		else if (12 <= l_RandState && l_RandState < 26) {
 			_charstate = CharaState::STATE_ROCKON;
 			bounce_ = Bounce::UP;
 			_rockonstate = RockonState::STATE_AIM;
 		}
-		else if (20 <= l_RandState && l_RandState <= 30) {
+		else if (26 <= l_RandState && l_RandState <= 30) {
 			_charstate = CharaState::STATE_HIT;
 		}
 	}
@@ -508,7 +508,7 @@ void FirstBoss::Bounce()
 	bounceTimer += 1.0f / 60;
 	Helper::GetInstance()->Clamp(bounceTimer, 0.0f, 1.0f);
 	if (bounce_ == Bounce::UP) {
-		XMFLOAT3 e_scl{ 5.3f,15.3f,5.3f };
+		XMFLOAT3 e_scl{ 10.3f,15.3f,10.3f };
 		m_Scale = {
 	Ease(In, Quart, bounceTimer, s_scl.x, e_scl.x),
 	Ease(In, Quart, bounceTimer, s_scl.y, e_scl.y),
@@ -535,7 +535,6 @@ void FirstBoss::Bounce()
 
 void FirstBoss::Areia()
 {
-
 	m_TexPos = {
 	m_TexPos.x = (m_Position.x + e_pos.x) / 2,
 	0.0f,
@@ -551,7 +550,6 @@ void FirstBoss::Areia()
 
 	m_TexRot.y = Helper::GetInstance()->DirRotation(m_Position, e_pos, -PI_180);
 }
-
 
 void FirstBoss::InitAwake() {
 
