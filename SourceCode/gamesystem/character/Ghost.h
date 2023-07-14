@@ -63,6 +63,7 @@ private://ステート
 	bool Collide;
 	int DarkCount;
 	bool stateSpawn;
+	bool DarkOtiClean;
 	void DarkSide();
 	//洗脳
 	void Jack();
@@ -140,6 +141,9 @@ public:
 		STATE_MANIPULATE,
 		STATE_VANISH,
 	}_charaState = CharaState::STATE_NONE;
+
+	bool GetCleanghost() { return DarkOtiClean; }
+	void SetCleanGhost(bool f) { DarkOtiClean = f; }
 
 	CharaState GetState() { return _charaState; }
 private:

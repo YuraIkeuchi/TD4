@@ -68,24 +68,24 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	}
 		sceneChanger_->Update();
 
-	////プレイヤー
-	//if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
-	//	SceneSave::GetInstance()->SetClearFlag(kFirstStage, true);
-	//	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-	//	lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, 0.0f, Player::GetInstance()->GetPosition().z }));
-	//	lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
-	//	lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
-	//}
-	//else {//ボス撃破ムービーの後は丸影消す
-	//	lightgroup->SetCircleShadowActive(0, false);
-	//}
+	//プレイヤー
+	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
+		SceneSave::GetInstance()->SetClearFlag(kFirstStage, true);
+		lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
+		lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, 0.0f, Player::GetInstance()->GetPosition().z }));
+		lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
+		lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
+	}
+	else {//ボス撃破ムービーの後は丸影消す
+		lightgroup->SetCircleShadowActive(0, false);
+	}
 
-	////ボス
-	//lightgroup->SetCircleShadowDir(1, XMVECTOR({ BosscircleShadowDir[0], BosscircleShadowDir[1], BosscircleShadowDir[2], 0 }));
-	//lightgroup->SetCircleShadowCasterPos(1, XMFLOAT3({ enemymanager->GetBoss()->GetPosition().x, 	0.0f, 	enemymanager->GetBoss()->GetPosition().z }));
-	//lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
-	//lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
-	//lightgroup->Update();
+	//ボス
+	lightgroup->SetCircleShadowDir(1, XMVECTOR({ BosscircleShadowDir[0], BosscircleShadowDir[1], BosscircleShadowDir[2], 0 }));
+	lightgroup->SetCircleShadowCasterPos(1, XMFLOAT3({ enemymanager->GetBoss()->GetPosition().x, 	0.0f, 	enemymanager->GetBoss()->GetPosition().z }));
+	lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
+	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
+	lightgroup->Update();
 
 	Menu::GetIns()->Upda();
 	postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
@@ -127,9 +127,9 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon)
 	ParticleEmitter::GetInstance()->DeathDrawAll();
 	//完全に前に書くスプライト
 	IKESprite::PreDraw();
-	//if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd()) {
+	if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd()) {
 		ui->Draw();
-	//}
+	}
 	if (m_SceneState == SceneState::IntroState) {
 		if ((camerawork->GetAppearType() == APPEAR_SEVEN) || (camerawork->GetAppearType() == APPEAR_EIGHT)) {
 			text_->SpriteDraw(dxCommon);
@@ -257,7 +257,7 @@ void FirstStageActor::MainUpdate(DebugCamera* camera)
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kFirstStage, true);
 		sceneChanger_->ChangeStart();
-		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::Reverse);
+		sceneChanger_->ChangeSceneLose("GAMEOVER");
 	}
 
 	//音楽の音量が変わる

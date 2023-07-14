@@ -8,6 +8,11 @@
 class Fraction 
 {
 private:
+    enum PopState {
+        Before=0,
+        After,
+    }pop_;
+private:
     // DirectX::Çè»ó™
     using XMFLOAT2 = DirectX::XMFLOAT2;
     using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -28,7 +33,11 @@ public:
 
     void Obj_Set();
 
-    void Drop();
+    void Pop();
+
+    void Spatter();
+
+    void Drop(const XMFLOAT3& dropposiition);
 
     void ColPlayer(vector<InterBullet*> bullet);
 private:
@@ -39,10 +48,14 @@ private:
     XMFLOAT3 m_Position{};
     XMFLOAT3 m_Rotation{};
     XMFLOAT4 m_Color{ 1.f,1.f,1.f,1.f };
+    XMFLOAT3 pop_pos_{};
 
+    XMFLOAT3 drop_pos_{};
 
     bool Isdelete = false;
+    bool drop_F = false;
+    float commandTimer = 0.0f;
 
-    float m_Radius = 2.f;
+    float m_Radius = 3.f;
 };
 
