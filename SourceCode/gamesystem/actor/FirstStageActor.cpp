@@ -48,12 +48,23 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	loadobj->LightSet(lightgroup);
 	LoadStageObj::SetEnemyManager(enemymanager.get());
 
+	quarter_hp_ = enemymanager->GetHp() / 4;
+
 	m_SceneState = SceneState::IntroState;
 
 	lightgroup->SetCircleShadowActive(0, true);
 	lightgroup->SetCircleShadowActive(1, true);
 
 	Menu::GetIns()->Init();
+
+	//メッセージウィンドウ生成
+	messagewindow_ = make_unique<MessageWindow>();
+	messagewindow_->Initialize();
+	messagewindow_->Display();
+
+	text_ = make_unique<BossText>();
+	text_->Initialize(dxCommon);
+	text_->SelectText(TextManager::ANGER_TALK);
 }
 
 void FirstStageActor::Finalize()
@@ -62,6 +73,9 @@ void FirstStageActor::Finalize()
 
 void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
+	CheckHp();
+	TalkUpdate();
+
 	if (!Menu::GetIns()->GetMenuOpen()) {
 		//関数ポインタで状態管理
 		(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
@@ -127,6 +141,10 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon)
 	ParticleEmitter::GetInstance()->DeathDrawAll();
 	//完全に前に書くスプライト
 	IKESprite::PreDraw();
+	if (tolk_F==true) {
+		messagewindow_->Draw();
+	}
+
 	if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd()) {
 		ui->Draw();
 	}
@@ -220,6 +238,7 @@ void FirstStageActor::MainUpdate(DebugCamera* camera)
 {
 	Input* input = Input::GetInstance();
 	ui->Update();
+	if (tolk_F != false) { return; }
 	//カメラワークのセット
 	if (enemymanager->BossDestroy())
 	{
@@ -248,6 +267,7 @@ void FirstStageActor::MainUpdate(DebugCamera* camera)
 
 		Player::GetInstance()->DeathUpdate();
 	}
+	
 	else
 	{
 		Player::GetInstance()->Update();
@@ -285,4 +305,24 @@ void FirstStageActor::MainUpdate(DebugCamera* camera)
 void FirstStageActor::FinishUpdate(DebugCamera* camera)
 {
 	Input* input = Input::GetInstance();
+}
+
+void FirstStageActor::CheckHp()
+{
+	boss_hp_ = enemymanager->GetHp();
+	if (boss_hp_ <= quarter_hp_) {
+		tolk_F = true;
+	}
+	else {
+		tolk_F = false;
+	}
+}
+
+void FirstStageActor::TalkUpdate()
+{
+	if (tolk_F != true) { return; }
+	
+	messagewindow_->Update(girl_color_, sutopon_color_);
+	
+	quarter_hp_ = 0.f;
 }

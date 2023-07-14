@@ -13,6 +13,7 @@ void (FirstBoss::* FirstBoss::stateTable[])() = {
 	&FirstBoss::RockOnAttack,
 	&FirstBoss::RandAttack,
 	&FirstBoss::Hit,
+	&FirstBoss::Invincible,
 };
 
 FirstBoss::FirstBoss()
@@ -50,6 +51,7 @@ bool FirstBoss::Initialize()
 	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/Firstboss.csv", "HeartTarget")));
 	m_Radius = 5.2f;
 	m_MaxHp = m_HP;
+	half_hp_ = m_HP / 4;
 	_charstate = CharaState::STATE_INTER;
 
 	m_TexColor = { 1.0f,1.0f,1.0f,0.0f };
@@ -105,6 +107,9 @@ void FirstBoss::Action()
 	//弾とボスの当たり判定
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
 	CollideBul(_playerBulA, Type::CIRCLE);
+	if (half_hp_ >= m_HP) {
+		m_Magnification = 0.2f;
+	}
 	//プレイヤーの当たり判定
 	ColPlayer();
 	//OBJのステータスのセット
@@ -215,10 +220,10 @@ void FirstBoss::InterValMove()
 	m_Position.y = Ease(In, Quart, commandTimer, s_posY, e_posY);
 
 
-	ActionTimer++;
-	if (ActionTimer >= 180.f && m_Position.y <= 1) {
+	m_ActionTimer += 1.0f / 60;
+	if (m_ActionTimer >= 1.f && m_Position.y <= 1) {
 		_charstate = STATE_CHOICE;
-		ActionTimer = 0;
+		m_ActionTimer = 0;
 		commandTimer = 0.f;
 	}
 }
@@ -549,6 +554,10 @@ void FirstBoss::Areia()
 	tex->SetColor({ m_TexColor.x,m_TexColor.y,m_TexColor.z,1 });
 
 	m_TexRot.y = Helper::GetInstance()->DirRotation(m_Position, e_pos, -PI_180);
+}
+
+void FirstBoss::Invincible()
+{
 }
 
 void FirstBoss::InitAwake() {

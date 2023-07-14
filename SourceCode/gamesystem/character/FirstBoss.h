@@ -91,6 +91,8 @@ private:
 	void Bounce();
 
 	void Areia();
+	// INVINCIBLE
+	void Invincible();
 
 	void Crush();
 private:
@@ -98,6 +100,10 @@ private:
 	void CSVLoad();
 	//死んだときのパーティクル
 	void DeathParticle();
+public:
+
+	float GetHp() { return m_HP; }
+
 private:
 	static const int BULLET_NUM = 4;
 	static const int CD_NUM = 4;
@@ -117,6 +123,7 @@ private:
 		STATE_ROCKON,
 		STATE_RAND,
 		STATE_HIT,
+		STATE_INVINCIBLE,
 		STATE_END
 	}_charstate;
 
@@ -223,9 +230,11 @@ private:
 	XMFLOAT4 m_TexColor = { 1.0f,1.0f,1.0f,0.0f };
 	float m_Alpha = 0.0f;
 	float m_AfterAlpha = 1.0f;
+	float m_ActionTimer = 0.f;
 	bool Display = false;
 
 	float beforeTimer = 0.f;
+	float half_hp_{};
 };
 
 
