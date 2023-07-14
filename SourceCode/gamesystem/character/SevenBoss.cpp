@@ -273,6 +273,13 @@ void SevenBoss::ImGui_Origin() {
 	ImGui::Begin("Seven");
 	ImGui::Text("End:%d", m_EndTimer);
 	ImGui::End();
+
+	//火の玉
+	for (FireBoll* newfire : fireboll) {
+		if (newfire != nullptr) {
+			newfire->ImGuiDraw();
+		}
+	}
 }
 //インターバル
 void SevenBoss::InterValMove() {
@@ -498,7 +505,7 @@ void SevenBoss::BirthFire() {
 		FireBoll* newfire;
 		newfire = new FireBoll();
 		newfire->Initialize();
-		newfire->SetCircleSpeed(i * 90.0f);
+		newfire->SetCircleSpeed(i * 45.0f);
 		fireboll.push_back(newfire);
 	}
 }
@@ -891,7 +898,7 @@ void SevenBoss::RandMove() {
 		uniform_int_distribution<int> l_RandDir(0, 1);
 		m_AddScale = float(l_RandScale(mt)) / l_Division;
 		
-		m_AddSpeed = 0.5f;
+		m_AddSpeed = 1.0f;
 		m_ChangeTimer = {};
 	}
 	
@@ -980,7 +987,7 @@ void SevenBoss::InitAwake() {
 void SevenBoss::EndRollAction() {
 	m_EndTimer++;
 	if (m_EndTimer == 1) {
-		m_Position = { -10.0f,2.0f,0.0f };
+		m_Position = { 50.0f,2.0f,0.0f };
 		m_Rotation = { 0.0f,0.0f,0.0f };
 	}
 	//OBJのステータスのセット

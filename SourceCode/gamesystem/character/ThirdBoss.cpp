@@ -16,10 +16,10 @@ ThirdBoss::ThirdBoss() {
 
 	shake = make_unique< Shake>();
 
-	mark.reset(IKETexture::Create(ImageManager::MARK, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 }));
+	mark.reset(IKETexture::Create(ImageManager::DARKBOM, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 }));
 	mark->TextureCreate();
 	mark->SetRotation({ 90.0f,0.0f,0.0f });
-	mark->SetScale({ 3.5f,3.5f,3.5f });
+	mark->SetScale({ 4.5f,4.5f,4.5f });
 	mark->SetColor(m_MarkColor);
 
 #pragma region Third
@@ -1010,7 +1010,7 @@ void ThirdBoss::InitAwake() {
 void ThirdBoss::EndRollAction() {
 	m_EndTimer++;
 	if (m_EndTimer == 1) {
-		m_Position = { -3.0f,2.0f,3.0f };
+		m_Position = { 50.0f,2.0f,3.0f };
 		m_Rotation = { 0.0f,0.0f,0.0f };
 	}
 	Fbx_SetParam();

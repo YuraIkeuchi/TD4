@@ -76,7 +76,7 @@ void EndRollActor::IntroUpdate(DebugCamera* camera) {
 	camerawork->DefUpda(camera);
 	m_EndTimer++;
 
-	if (m_EndTimer == 100) {
+	if (m_EndTimer == 500) {
 		isShutter = true;
 	}
 

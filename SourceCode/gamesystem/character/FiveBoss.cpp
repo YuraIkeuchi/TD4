@@ -299,7 +299,7 @@ void FiveBoss::InitAwake() {
 void FiveBoss::EndRollAction() {
 	m_EndTimer++;
 	if (m_EndTimer == 1) {
-		m_Position = { 2.0f,2.0f,0.0f };
+		m_Position = { 50.0f,2.0f,0.0f };
 		m_Rotation = { 0.0f,90.0f,0.0f };
 	}
 	Fbx_SetParam();
