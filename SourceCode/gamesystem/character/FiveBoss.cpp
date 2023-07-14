@@ -322,7 +322,7 @@ void FiveBoss::InitAwake() {
 }
 void FiveBoss::EndRollAction()
 {
-	const float l_AddFrame = 0.05f;
+	const float l_AddFrame = 0.01f;
 	m_EndTimer++;
 	if (_EndState2 == END_SET2) {
 		m_Position = { 10.0f,5.0f,-25.0f };
