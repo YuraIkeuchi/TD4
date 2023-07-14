@@ -65,6 +65,15 @@ void FirstBoss::Pause()
 
 void FirstBoss::Action()
 {
+	if (bottlestate_ == BottleState::NORMAL) {
+		m_Model = ModelManager::GetInstance()->GetModel(ModelManager::MILKCAP_NORMAL);
+		m_Object->SetModel(m_Model);
+	}
+	else {
+		m_Model = ModelManager::GetInstance()->GetModel(ModelManager::MILKCAP_BREAK);
+		m_Object->SetModel(m_Model);
+	}
+
 	//状態移行(charastateに合わせる)
 	if (m_HP > 0.0f) {
 		(this->*stateTable[_charstate])();
@@ -354,6 +363,7 @@ void FirstBoss::Hit()
 				commandTimer = 0.f;
 				move_ = MoveFase::Move;
 				attack_count_ = 0;
+				bottlestate_ = BottleState::FRACTION;
 			}
 		}
 	}
