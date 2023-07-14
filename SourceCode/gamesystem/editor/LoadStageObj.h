@@ -130,5 +130,7 @@ private:
 
 	bool m_Wide = false;
 	float m_WideArea = {};
+
+	float m_HealPower = {};
 };
 

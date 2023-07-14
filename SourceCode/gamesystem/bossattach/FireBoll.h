@@ -73,5 +73,5 @@ private:
 
 	int m_LimitTimer = 200;
 
-	float m_HP = 3.0f;
+	float m_HP = 1.0f;
 };

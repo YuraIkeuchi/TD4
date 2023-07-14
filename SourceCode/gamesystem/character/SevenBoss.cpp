@@ -272,6 +272,7 @@ void SevenBoss::Draw(DirectXCommon* dxCommon) {
 void SevenBoss::ImGui_Origin() {
 	ImGui::Begin("Seven");
 	ImGui::Text("End:%d", m_EndTimer);
+	ImGui::Text("PosY:%f", m_Position.y);
 	ImGui::End();
 
 	//âŒÇÃã 
@@ -929,7 +930,7 @@ void SevenBoss::ReturnBoss() {
 	else if (_ReturnState == RETURN_PLAY) {
 		m_CircleScale = 30.0f;
 		m_CircleSpeed = {};
-		m_Position = Helper::GetInstance()->CircleMove(Player::GetInstance()->GetPosition(), m_CircleScale, m_CircleSpeed);
+		m_Position = Helper::GetInstance()->CircleMove({ Player::GetInstance()->GetPosition().x,m_Position.y,Player::GetInstance()->GetPosition().z}, m_CircleScale, m_CircleSpeed);
 		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, Player::GetInstance()->GetPosition(), -PI_90);
 		_ReturnState = RETURN_END;
 		m_AfterAlpha = 1.0f;
@@ -956,9 +957,8 @@ void SevenBoss::InitAwake() {
 		fireboll.clear();
 		damageblock.clear();
 		m_Position = { 0.0f,5.0f,30.0f };
-		m_Rotation = { 0.0f,270.0f,0.0f };
+		m_Rotation = { 0.0f,180.0f,0.0f };
 		m_Scale = { 1.5f,1.5f,1.5f };
-		m_Color = { 1.0f,0.0f,0.0f,1.0f };
 		m_InterVal = {};
 		m_MoveTimer = {};
 		//çUåÇâÒêî
