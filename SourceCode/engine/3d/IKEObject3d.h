@@ -46,6 +46,7 @@ public: // サブクラス
 		XMFLOAT3 cameraPos; // カメラ座標（ワールド座標）
 		float pad;//パディング
 		XMFLOAT4 color;//色情報
+		float uvval;
 	};
 
 private: // 定数
@@ -157,6 +158,8 @@ public: // メンバ関数
 
 	//座標の設定
 	void SetPosition(const XMFLOAT3& position) { this->position = position; }
+
+	void SetUvScrollY(float uvs) { uv = uvs; }
 
 	void SetRotation(const XMFLOAT3& rotation) { this->rotation = rotation; }
 	//スケールの設定
@@ -278,11 +281,11 @@ protected: // メンバ変数
 	DirectX::XMMATRIX matrix = {};
 private:
 	XMMATRIX matScale, matRot, matTrans;
-
+	float uv;
 public:
 	//コライダー
 	BaseCollider* collider = nullptr;
-	private:
+private:
 	//接地フラグ
 	bool onGround = true;
 	//落下ベクトル
@@ -294,7 +297,7 @@ public:
 private:
 	std::string modelname;
 public:
-	 void SetModeName(std::string name) { modelname= name; }
-	 std::string GetModelName() { return modelname; }
+	void SetModeName(std::string name) { modelname = name; }
+	std::string GetModelName() { return modelname; }
 };
 

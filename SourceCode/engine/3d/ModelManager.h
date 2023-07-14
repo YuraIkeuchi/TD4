@@ -40,7 +40,14 @@ public:
 		CAP,
 		SKIRT,
 		NOTE,
-		NAIL
+		NAIL,
+		LASTBOSS,
+		UPBOX,
+		WIDTH1,
+		WIDTH2,
+		WIDTH3,
+		WIDTH4,
+		DOWNBOX
 	};
 	//FBXの名前
 	enum FBXName {

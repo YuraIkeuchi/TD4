@@ -9,7 +9,7 @@
 #include "ImageManager.h"
 //生成
 AvatarBoss::AvatarBoss() {
-	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Ghost);
+	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::LASTBOSS);
 
 	m_Object.reset(new IKEObject3d());
 	m_Object->Initialize();
@@ -23,9 +23,9 @@ AvatarBoss::AvatarBoss() {
 //初期化
 bool AvatarBoss::Initialize() {
 	m_Position = { 0.0f,3.0f,0.0f };
-	m_Rotation = { 0.0f,270.0f,0.0f };
+	m_Rotation = { 0.0f,180.0f,0.0f };
 	m_Scale = { 0.7f,0.7f,0.7f };
-	m_Color = { 1.0f,0.7f,0.0f,0.0f };
+	m_Color = { 1.0f,1.0f,1.0f,0.0f };
 	//m_Rotation.y = -90.f;
 
 	ActionTimer = 1;
@@ -63,9 +63,9 @@ bool AvatarBoss::Initialize() {
 //スキップ時の初期化
 void AvatarBoss::SkipInitialize() {
 	m_Position = { 0.0f,3.0f,30.0f };
-	m_Rotation = { 0.0f,270.0f,0.0f };
+	m_Rotation = { 0.0f,180.0f,0.0f };
 	m_Scale = { 0.7f,0.7f,0.7f };
-	m_Color = { 1.0f,0.7f,0.0f,0.0f };
+	m_Color = { 1.0f,1.0f,1.0f,0.0f };
 }
 //CSV
 void AvatarBoss::CSVLoad() {
@@ -80,7 +80,6 @@ void (AvatarBoss::* AvatarBoss::stateTable[])() = {
 	&AvatarBoss::InterValMove,//動きの合間
 	&AvatarBoss::Polter,//ポルターガイスト
 	&AvatarBoss::ThrowBound,//投げる
-	&AvatarBoss::FireAttack,//火の玉
 	&AvatarBoss::BlockAttack,//範囲攻撃
 	&AvatarBoss::Vanish,//ボス消える
 };
@@ -128,23 +127,6 @@ void AvatarBoss::Action() {
 		}
 	}
 
-	//火の玉
-	for (FireBoll* newfire : fireboll) {
-		if (newfire != nullptr) {
-			newfire->Update();
-		}
-	}
-
-	//火の玉の削除
-	for (int i = 0; i < fireboll.size(); i++) {
-		if (fireboll[i] == nullptr) {
-			continue;
-		}
-
-		if (!fireboll[i]->GetAlive()) {
-			fireboll.erase(cbegin(fireboll) + i);
-		}
-	}
 	//ダメージブロック
 	for (DamageBlock* newblock : damageblock) {
 		if (newblock != nullptr) {
@@ -187,12 +169,6 @@ void AvatarBoss::Draw(DirectXCommon* dxCommon) {
 				newpolter->Draw(dxCommon);
 			}
 		}
-		//火の玉
-		for (FireBoll* newfire : fireboll) {
-			if (newfire != nullptr) {
-				newfire->Draw(dxCommon);
-			}
-		}
 		//ダメージブロック
 		for (DamageBlock* newblock : damageblock) {
 			if (newblock != nullptr) {
@@ -215,7 +191,7 @@ void AvatarBoss::InterValMove() {
 	(this->*avatarTable[m_AvatarType])();
 	m_InterVal++;
 	mt19937 mt{ std::random_device{}() };
-	uniform_int_distribution<int> l_RandomMove(0, 3);
+	uniform_int_distribution<int> l_RandomMove(0, 2);
 	if (m_InterVal == l_LimitTimer) {
 		if (m_AttackCount != l_LimitAttack) {
 			//行動を決めて次の行動に移る
@@ -229,11 +205,6 @@ void AvatarBoss::InterValMove() {
 			else if (m_AttackRand == 1) {
 				m_AttackCount++;
 				_charaState = STATE_POLTER;
-				m_InterVal = {};
-			}
-			else if (m_AttackRand == 2) {
-				m_AttackCount++;
-				_charaState = STATE_FIRE;
 				m_InterVal = {};
 			}
 			else {
@@ -274,29 +245,6 @@ void AvatarBoss::ThrowBound() {
 		m_MoveTimer = {};
 		_charaState = STATE_INTER;
 		m_Return = true;
-	}
-}
-//火の玉攻撃
-void AvatarBoss::FireAttack() {
-	const int l_LimitTimer = 200;
-	m_MoveTimer++;
-	if (m_MoveTimer == 1) {
-		BirthFire();
-	}
-	if (m_MoveTimer == l_LimitTimer) {
-		m_MoveTimer = {};
-		_charaState = STATE_INTER;
-		m_Return = true;
-	}
-}
-void AvatarBoss::BirthFire() {
-	//火の玉
-	for (int i = 0; i < FIRE_NUM; i++) {
-		FireBoll* newfire;
-		newfire = new FireBoll();
-		newfire->Initialize();
-		newfire->SetCircleSpeed(i * 90.0f);
-		fireboll.push_back(newfire);
 	}
 }
 //ダメージのブロック

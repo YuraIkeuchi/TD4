@@ -359,7 +359,7 @@ void PlaceMap::CollideMap()
 UINT PlaceMap::ChangeSprite()
 {
 	if (_icon == Icon::BOX)
-		return ImageManager::BOX;
+		return ImageManager::CUBE;
 	if (_icon == Icon::CUBE)
 		return ImageManager::CUBE;
 

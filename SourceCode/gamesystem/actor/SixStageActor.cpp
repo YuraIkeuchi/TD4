@@ -312,7 +312,7 @@ void SixStageActor::MainUpdate(DebugCamera* camera) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kSixStage, true);
 		sceneChanger_->ChangeStart();
-		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::Reverse);
+		sceneChanger_->ChangeSceneLose("GAMEOVER");
 	}
 
 	//音楽の音量が変わる

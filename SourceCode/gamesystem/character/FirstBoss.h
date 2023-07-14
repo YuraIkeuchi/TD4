@@ -217,6 +217,8 @@ private:
 	int attack_count_ = 0;
 
 	int jump_count_ = 0;
+	float m_SinAngle = {};
+	float m_SinAngle2 = {};
 
 	float s_posY{};
 	float e_posY{};

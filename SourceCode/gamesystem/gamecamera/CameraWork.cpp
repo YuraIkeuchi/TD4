@@ -1022,7 +1022,7 @@ void CameraWork::StrongCamera() {
 				FeedF = true;
 				m_Finish = true;
 			}
-			m_AfterEye = { 0.0f,5.0f, 20.0f};
+			m_AfterEye = { 0.0f,5.0f, 15.0f};
 			m_AfterTarget = boss->GetPosition();
 			RadEffect = Ease(In, Cubic, m_Frame, RadEffect, 20.0f);
 			SetEaseCamera();

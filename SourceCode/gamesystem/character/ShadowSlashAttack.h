@@ -27,23 +27,23 @@ public:
     static constexpr int SwordSize = 20;
     static constexpr int KotokoShadow = 4;
 
-	std::array<Sword, SwordSize>Swords_H;
+    std::array<Sword, SwordSize>Swords_H;
     std::array<Sword, SwordSize>Swords_W;
 
 
-	std::array<std::unique_ptr<IKEObject3d>, SwordSize>ShotObj;
+    std::array<std::unique_ptr<IKEObject3d>, SwordSize>ShotObj;
     std::array<std::unique_ptr<IKEObject3d>, KotokoShadow>Kotoko;
     std::array<XMFLOAT3, 2>KotokoPos;
 
-	std::array<std::unique_ptr<IKETexture>, 2>ShotArea;
+    std::array<std::unique_ptr<IKETexture>, 2>ShotArea;
     std::array<float, 2>AreaScl;
     std::array<float, 2>AreaAlpha;
-    std::array<XMFLOAT3,2>ImpactTexPos;
+    std::array<XMFLOAT3, 2>ImpactTexPos;
 
     std::array<XMVECTOR, SwordSize>move;
     std::array<XMMATRIX, SwordSize>matRot;
     int index = 0;
-    std::array<float,2> Cinter;
+    std::array<float, 2> Cinter;
     int IdleCount;
     XMFLOAT3 OldRot;
 
@@ -67,7 +67,7 @@ public:
     void Phase_Impact();
 
     void Phase_Dest();
-	void Phase_End();
+    void Phase_End();
 
 };
 

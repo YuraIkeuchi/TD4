@@ -18,6 +18,7 @@ void LoadStageObj::GhostLoad() {
 	Rot.resize(Size);
 	Scl.resize(Size);
 
+	m_HealPower = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "HealPower")));
 }
 //食べ物ロード
 void LoadStageObj::FoodLoad(const std::string& sceneName) {
@@ -167,8 +168,7 @@ void LoadStageObj::ImGuiDraw() {
 	//ゴースト
 	int num = GetGhostNumber();
 	ImGui::Begin("LoadObj");
-	ImGui::SliderInt("FreeGhostNum", &num, 0, 10);
-	ImGui::Text("isReferGhost:%s", (CheckReferGhost() ? "true" : "false"));
+	ImGui::Text("Heal:%f", m_HealPower);
 	ImGui::End();
 	//m_EnemyManager->ImGuiDraw();
 }
@@ -430,6 +430,7 @@ void LoadStageObj::ChangeGhost2Enemy() {
 		boss->SetJackPos(i, stopGhosts[i]->GetPosition());
 		m_GhostPos++;
 	}
+	ReferGhorstReseted();
 	boss->SetInstruction(InterBoss::FourthBossInst::SpawnEnemy);
 }
 
@@ -504,7 +505,7 @@ void LoadStageObj::CollideBoss() {
 		float l_dir = Helper::GetInstance()->ChechLength(l_ghostpos, m_EnemyManager->GetEnemyPosition());
 		if (l_dir < l_Radius) {
 			ghosts[i]->SetVanish(true);
-			m_EnemyManager->HealHP(0.5f);
+			m_EnemyManager->HealHP(m_HealPower);
 		}
 	}
 }

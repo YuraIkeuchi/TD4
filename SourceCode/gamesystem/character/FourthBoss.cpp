@@ -251,9 +251,15 @@ void FourthBoss::SelectAction() {
 			isInstruction = FourthBossInst::ChangeGhost;
 			phase = commandState::EnemySpawn;
 		} else {
-			ChangePos2Random();
-			isInstruction = FourthBossInst::None;
-			phase = commandState::MoveCommand;
+			if (isReferCheck) {
+				isSearch = true;
+				isInstruction = FourthBossInst::None;
+				phase = commandState::ControlCommand;
+			} else {
+				ChangePos2Random();
+				isInstruction = FourthBossInst::None;
+				phase = commandState::MoveCommand;
+			}
 		}
 	} else if (l_case <= 68) {
 		if (isReferCheck) {
@@ -261,9 +267,14 @@ void FourthBoss::SelectAction() {
 			isInstruction = FourthBossInst::None;
 			phase = commandState::ControlCommand;
 		} else {
-			ChangePos2Random();
-			isInstruction = FourthBossInst::None;
-			phase = commandState::MoveCommand;
+			if (!EnemysIsActiveCheck()) {
+				isSearch = true;
+				isInstruction = FourthBossInst::ChangeGhost;
+				phase = commandState::EnemySpawn;
+			} else {
+				isInstruction = FourthBossInst::None;
+				phase = commandState::SubGauge;
+			}
 		}
 	} else if (l_case < 92) {
 		isInstruction = FourthBossInst::None;
@@ -544,9 +555,23 @@ void FourthBoss::InitAwake() {
 }
 void FourthBoss::EndRollAction() {
 	m_EndTimer++;
-	if (m_EndTimer == 1) {
-		m_Position = { -5.0f,2.0f,0.0f };
-		m_Rotation = { 0.0f,0.0f,0.0f };
+	if (_EndState == END_SET) {
+		if (m_EndTimer == 1) {
+			m_Position = { -30.0f,40.0f,15.0f };
+			m_Rotation = { 0.0f,90.0f,0.0f };
+		}
+		else if (m_EndTimer == 600) {
+			_EndState = END_WALK;
+		}
+	}
+	else if (_EndState == END_WALK) {
+		m_AddPower -= m_Gravity;
+		if (Helper::GetInstance()->CheckMax(m_Position.y, 0.0f, m_AddPower)) {
+			_EndState = END_DIR_CAMERA;
+		}
+	}
+	else {
+
 	}
 	//OBJのステータスのセット
 	Obj_SetParam();

@@ -95,6 +95,7 @@ void DamageBlock::Move() {
 		};
 	}
 
+	m_Alpha = Ease(In, Cubic, m_Frame, m_Alpha, m_AfterAlpha);
 	m_TexPos = {
 	m_TexPos.x = (m_Position.x + m_AfterPos.x) / 2,
 	0.0f,

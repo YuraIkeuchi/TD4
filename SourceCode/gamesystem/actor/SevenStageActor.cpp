@@ -180,12 +180,14 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGui‚Ì•`‰æ
 void SevenStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	ImGui::Begin("Seven");
+	enemymanager->ImGuiDraw();
+	loadobj->ImGuiDraw();
+	/*ImGui::Begin("Seven");
 	ImGui::Text("Timer:%d", m_EndTimer);
 	ImGui::End();
-	enemymanager->ImGuiDraw();
+
 	camerawork->ImGuiDraw();
-	Player::GetInstance()->ImGuiDraw();
+	Player::GetInstance()->ImGuiDraw();*/
 }
 //“oêƒV[ƒ“
 void SevenStageActor::IntroUpdate(DebugCamera* camera) {
@@ -288,7 +290,7 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kSevenStage, true);
 		sceneChanger_->ChangeStart();
-		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::Reverse);
+		sceneChanger_->ChangeSceneLose("GAMEOVER");
 	}
 
 	//‰¹Šy‚Ì‰¹—Ê‚ª•Ï‚í‚é

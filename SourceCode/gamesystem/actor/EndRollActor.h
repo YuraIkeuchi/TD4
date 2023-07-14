@@ -50,5 +50,5 @@ private://ƒƒ“ƒo•Ï”
 		SpriteMax,
 	};
 	array<unique_ptr<IKESprite>, SpriteMax> photo = {};
-
+	bool m_Change = false;
 };

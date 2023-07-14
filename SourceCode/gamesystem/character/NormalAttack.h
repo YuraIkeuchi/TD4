@@ -2,7 +2,7 @@
 #include "InterAttack.h"
 #include"Ghost.h"
 class NormalAttack :
-    public InterAttack
+	public InterAttack
 {
 public:
 	void Init() override;
@@ -13,6 +13,6 @@ public:
 
 	void SpriteDraw() override;
 private:
-	
+
 };
 

@@ -12,9 +12,12 @@
 #include "ShotAttack.h"
 #include"SmashShotAttack.h"
 #include"ShadowSlashAttack.h"
+#include"GuardAction.h"
+#include"SingleShot.h"
+#include "KnockAttack.h"
 class Spline;
 
-class FiveBoss : 
+class FiveBoss :
 	public InterBoss
 {
 public:
@@ -28,6 +31,7 @@ public:
 
 	void Action() override;//行動
 
+	void EndRollAction() override;
 	void AppearAction() override;//ボス登場の固有の処理
 
 	void DeadAction() override;//ボス撃破の固有の処理
@@ -41,10 +45,8 @@ public:
 	void EffecttexDraw(DirectXCommon* dxCommon) override;
 
 	void Draw(DirectXCommon* dxCommon) override;//描画
-
-	void EndRollAction() override;//エンドロールの更新
 private:
-
+	void SetEasePos();
 private:
 	//CSV読み込み系
 	void CSVLoad();
@@ -131,12 +133,31 @@ private:
 		LIMIT_BARRA,
 	};
 
+	enum EndState2 {
+		END_SET2,
+		END_RIGHT,
+		END_LEFT,
+		END_TOP,
+		END_MOVE2,
+	}_EndState2;
+
+	enum ViewType {
+		VIEW_MOVE,
+		VIEW_RETURN,
+	}_ViewType = VIEW_MOVE;
+
+	int m_ViewTimer = {};
+
+	bool m_View = false;
 	//移動力
 	float m_FollowSpeed = {};
 	ShotAttack* shot;
 	NormalAttack* normal;
 	SmashShotAttack* smash;
 	ShadowSlashAttack* slash;
+	SingleShot* single;
+	GuardAction* guard;
+	KnockAttack* knock;
 	static void (FiveBoss::* attackTable[])();
 	enum ActionPhase
 	{
@@ -145,9 +166,10 @@ private:
 		ATTACK_NORMAL,
 		ATTACK_IMPACT,
 		ATTACK_SLASH,
-	}_aPhase=ATTACK_SHOT;
+		ATTACK_SINGLESHOT
+	}_aPhase = ATTACK_SHOT;
 
-	void ActionSet(ActionPhase phase,InterAttack*attack);
+	void ActionSet(ActionPhase phase, InterAttack* attack);
 	int RandAction;
 	int ActionTimer;
 	size_t bonesize;
@@ -161,10 +183,10 @@ private:
 
 	int JudgAttack;
 	inline void Shot() { shot->Upda(); }
-	inline void Normal() { normal ->Upda(); }
-	inline void Smash() {smash->Upda(); }
+	inline void Normal() { normal->Upda(); }
+	inline void Smash() { smash->Upda(); }
 	inline void Slash() { slash->Upda(); }
-
+	inline void Single() { single->Upda(); }
 	void MatTranstoPos(XMMATRIX trans, XMFLOAT3& m_Pos);
 };
 

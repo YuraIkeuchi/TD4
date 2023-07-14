@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "VariableCommon.h"
 #include "CsvLoader.h"
+#include "Easing.h"
 #include <random>
 
 #include "Input.h"
@@ -26,19 +27,25 @@ FiveBoss::FiveBoss()
 	normal = new NormalAttack();
 	smash = new SmashShotAttack();
 	slash = new ShadowSlashAttack();
+	single = new SingleShot();
+	guard = new GuardAction();
+	knock = new KnockAttack();
 
 	smash->Init();
 	shot->Init();
 	slash->Init();
-
+	single->Init();
+	guard->Init();
 	normal->Init();
-	normal->SetBoss(this);
+	knock->Init();
 
+
+	normal->SetBoss(this);
 
 	noteeffect.reset(new NoteEffect());
 	noteeffect->Initialize();
 
-	m_HP = 50;
+	m_HP = 10;
 }
 
 bool FiveBoss::Initialize()
@@ -49,14 +56,15 @@ bool FiveBoss::Initialize()
 	m_Scale = { 1.2f,0.8f,1.2f };
 	m_Color = { 0.0f,1.0f,0.0f,1.0f };
 	//m_Rotation.y = -90.f;
-_aPhase = ATTACK_SHOT;
+	GhostSize = 0;
+	_aPhase = ATTACK_SHOT;
 	/*ActionTimer = 1;
 
-		
+	
 	_charaState = STATE_INTER;
 	m_AreaState = AREA_SET;*/
 	//CSVロード
-	bonesize =  m_fbxObject->GetBoneSize();
+	bonesize = m_fbxObject->GetBoneSize();
 	//{
 	bonepos.resize(19);
 	bonemat.resize(19);
@@ -87,7 +95,7 @@ void (FiveBoss::* FiveBoss::attackTable[])() = {
 	&FiveBoss::Normal,
 	&FiveBoss::Smash,
 	&FiveBoss::Slash,
-
+	&FiveBoss::Single
 };
 
 void FiveBoss::ActionSet(ActionPhase phase, InterAttack* attack)
@@ -98,6 +106,8 @@ void FiveBoss::ActionSet(ActionPhase phase, InterAttack* attack)
 		if (attack->GetActionEnd())
 		{
 			ActionTimer++;
+			shot->SetCanRand(0);
+
 			shot->SetActionEnd(false);
 			_aPhase = ATTACK_SHOT;
 		}
@@ -109,18 +119,40 @@ void FiveBoss::Action()
 	smash->SetBoss(this);
 	shot->SetBoss(this);
 	slash->SetBoss(this);
+	single->SetBoss(this);
+	guard->SetBoss(this);
+	knock->SetBoss(this);
+
 	////状態移行(charastateに合わせる)
 	//if (m_HP > 0.0f) {
+	if(GhostSize<6)
 	(this->*attackTable[_aPhase])();
+
+	
 	//}
+	if (Input::GetInstance()->TriggerButton(Input::X))
+		knock->setKnockF(true);
+	if (Input::GetInstance()->TriggerButton(Input::Y))
+		guard->SetGuardStart(true);
+		//guard->SetGuardStart(true);
+
+	knock->Upda();
+	guard->Upda();
 
 	/// <summary>
 	/// 攻撃ー３WAY
 	/// </summary>
-
-	//ActionSet(ATTACK_SHOT, shot);
+	for (auto i = 0; i < ghosts.size(); i++)
+	{
+		if (slash->GetActionEnd() && GhostSize >= 5)
+			ghosts[i]->SetCleanGhost(true);
+		else
+			ghosts[i]->SetCleanGhost(false);
+	}
+	////ActionSet(ATTACK_SHOT, shot);
 	ActionSet(ATTACK_IMPACT, smash);
 	ActionSet(ATTACK_SLASH, slash);
+	ActionSet(ATTACK_SINGLESHOT, single);
 
 	if (_aPhase == ATTACK_SHOT)ActionTimer++;
 
@@ -146,48 +178,34 @@ void FiveBoss::Action()
 		}
 	}
 
-	for(auto i=0;i<ghosts.size();i++)
+	for (auto i = 0; i < ghosts.size(); i++)
 	{
-		if(ghosts[i]->GetStateSpawn())
+		if (ghosts[i]->GetStateSpawn())
 		{
 			GhostSize--;
+			ghosts[i]->SetCollide(false);
+			ghosts[i]->SetCleanGhost(false);
 			ghosts[i]->SetStateSpawn(false);
 		}
 	}
 	mt19937 mt{ std::random_device{}() };
-	//if (_aPhase == ATTACK_SHOT && ActionTimer % 120 == 0) {
-	//	RandAction = rand()%3+1;
 
-	//	if (shot->GetDarkCount()<5)
-	//	{
-	//		shot->SetActionEnd(false);
-	//		_aPhase = ATTACK_SHOT;
-	//	}
-	//	else {
-	//		if (RandAction == 2)
-	//		{
-	//			smash->SetActionEnd(false);
-	//			_aPhase = ATTACK_IMPACT;
-	//		}
-	//		if (shot->GetDarkCount() >= 5)
-	//		{
-	//			slash->SetActionEnd(false);
-	//			_aPhase = ATTACK_SLASH;
-	//		}
-	//	}
-	//}
-	JudgAttack = 100;
-
-	bool PhaseAttack = JudgAttack > 60;
-	if (shot->GetIdleDam()) {
+	//single->Upda();
+	if (shot->GetCanRand() > 0&& shot->GetPhase()==ShotAttack::Phase::END) {
 		//通常攻撃
-		if (GhostSize == 1)
+		if (GhostSize > 0 && GhostSize < 4)
+		{
+			shot->SetActionEnd(true);
+			shot->SetIdleDam(false);
+			single->SetActionEnd(false);
+			_aPhase = ATTACK_SINGLESHOT;
+		} else if (GhostSize == 4)
 		{
 			shot->SetActionEnd(true);
 			shot->SetIdleDam(false);
 			smash->SetActionEnd(false);
 			_aPhase = ATTACK_IMPACT;
-		} else if (GhostSize == 2)
+		} else if (GhostSize == 5)
 		{
 			shot->SetActionEnd(true);
 			shot->SetIdleDam(false);
@@ -195,8 +213,8 @@ void FiveBoss::Action()
 			_aPhase = ATTACK_SLASH;
 		}
 	}
+	Helper::GetInstance()->Clamp(GhostSize, 0, 5);
 
-	
 	/*^^^^当たり判定^^^^*/
 	//弾とボスの当たり判定
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
@@ -219,28 +237,28 @@ void FiveBoss::Action()
 	Fbx_SetParam();
 
 	if (bonesize == 0) {
-	
+
 	}
 	for (auto i = 0; i < 19; i++) {
 	}
 
-		
+
 	//どっち使えばいいか分からなかったから保留
 	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
-for (auto i = 0; i < 19; i++)
-		{
-			m_fbxObject->GetBoneIndexMat(i, bonemat[i]);
+	for (auto i = 0; i < 19; i++)
+	{
+		m_fbxObject->GetBoneIndexMat(i, bonemat[i]);
 		MatTranstoPos(bonemat[i], bonepos[i]);
-	
-			s_color[i] = { 1.0f,0.4f,1.0f,0.50f };
-			e_color[i] = { 0.0f,0.0f,0.0f,0.0f };
-			s_scale[i] = 2.0f;
-			e_scale[i] = 0.0f;
-			m_Life[i] = 50;
 
-			ParticleEmitter::GetInstance()->FireEffect(m_Life[i],bonepos[i], s_scale[i], e_scale[i], s_color[i], e_color[i]);
+		s_color[i] = { 1.0f,0.4f,1.0f,0.50f };
+		e_color[i] = { 0.0f,0.0f,0.0f,0.0f };
+		s_scale[i] = 2.0f;
+		e_scale[i] = 0.0f;
+		m_Life[i] = 50;
 
-		}
+		//ParticleEmitter::GetInstance()->FireEffect(m_Life[i],bonepos[i], s_scale[i], e_scale[i], s_color[i], e_color[i]);
+
+	}
 }
 
 void FiveBoss::AppearAction()
@@ -265,6 +283,10 @@ void FiveBoss::DeathParticle()
 
 void FiveBoss::ImGui_Origin()
 {
+	ImGui::Begin("Five");
+	ImGui::Text("Frame:%f", m_Frame);
+	ImGui::Text("PosX:%f", m_Position.x);
+	ImGui::End();
 }
 
 void FiveBoss::EffecttexDraw(DirectXCommon* dxCommon)
@@ -279,13 +301,17 @@ void FiveBoss::Draw(DirectXCommon* dxCommon)
 {
 	//Obj_Draw();
 	smash->Draw(dxCommon);
+	single->Draw(dxCommon);
+
 	shot->Draw(dxCommon);
+	knock->Draw(dxCommon);
 	slash->Draw(dxCommon);
-	Fbx_Draw(dxCommon);
+
+	Fbx_Draw(dxCommon); guard->Draw(dxCommon);
 
 }
 
-void FiveBoss::MatTranstoPos(XMMATRIX trans,XMFLOAT3& m_Pos)
+void FiveBoss::MatTranstoPos(XMMATRIX trans, XMFLOAT3& m_Pos)
 {
 	m_Pos.x = trans.r[3].m128_f32[0]; // GetPosition().x;
 	m_Pos.y = trans.r[3].m128_f32[1];
@@ -294,15 +320,101 @@ void FiveBoss::MatTranstoPos(XMMATRIX trans,XMFLOAT3& m_Pos)
 void FiveBoss::InitAwake() {
 
 }
-
-
-void FiveBoss::EndRollAction() {
+void FiveBoss::EndRollAction()
+{
+	const float l_AddFrame = 0.01f;
 	m_EndTimer++;
-	if (m_EndTimer == 1) {
-		m_Position = { 2.0f,2.0f,0.0f };
-		m_Rotation = { 0.0f,90.0f,0.0f };
+	if (_EndState2 == END_SET2) {
+		m_Position = { 10.0f,5.0f,-25.0f };
+		m_Rotation = { 0.0f,180.0f,270.0f };
+		m_Scale = { 0.8f,0.4f,0.8f };
+		m_fbxObject->PlayAnimation(0);
+		if (m_EndTimer == 980) {
+			_EndState2 = END_RIGHT;
+			m_AfterPos = { 7.0f,5.0f,-25.0f };
+			m_View = true;
+			_ViewType = VIEW_MOVE;
+		}
 	}
+	else if (_EndState2 == END_RIGHT) {
+		if (m_View) {
+			if (_ViewType == VIEW_MOVE) {
+				if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+					m_Frame = {};
+					m_AfterPos = { 10.0f,5.0f,-25.0f };
+					_ViewType = VIEW_RETURN;
+				}
+			}
+			else {
+				if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+					m_Frame = {};
+					_ViewType = VIEW_MOVE;
+					m_Position = { -10.0f,5.0f,-25.0f };
+					m_AfterPos = { -7.0f,5.0f,-25.0f };
+					_EndState2 = END_LEFT;
+				}
+			}
+			SetEasePos();
+		}
+	}
+	else if (_EndState2 == END_LEFT) {
+		m_Rotation = { 0.0f,180.0f,90.0f };
+		if (m_View) {
+			if (_ViewType == VIEW_MOVE) {
+				if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+					m_Frame = {};
+					m_AfterPos = { -10.0f,5.0f,-25.0f };
+					_ViewType = VIEW_RETURN;
+				}
+			}
+			else {
+				if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+					m_Frame = {};
+					_ViewType = VIEW_MOVE;
+					m_Position = { -3.0f,15.0f,-25.0f };
+					m_AfterPos = { -3.0f,10.0f,-25.0f };
+					_EndState2 = END_TOP;
+				}
+			}
+			SetEasePos();
+		}
+	}
+	else if (_EndState2 == END_TOP) {
+		m_Rotation = { 0.0f,180.0f,180.0f };
+		if (m_View) {
+			if (_ViewType == VIEW_MOVE) {
+				if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+					m_Frame = {};
+					m_AfterPos = { -3.0f,15.0f,-25.0f };
+					_ViewType = VIEW_RETURN;
+				}
+			}
+			else {
+				if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+				}
+			}
+			SetEasePos();
+		}
+
+		if (m_EndTimer == 1670) {
+			_EndState2 = END_MOVE2;
+			m_fbxObject->StopAnimation();
+		}
+	}
+	else {
+		m_Rotation = { 0.0f,180.0f,0.0f };
+		m_Position = { -3.0f,0.0f,-25.0f };
+	}
+
 	Fbx_SetParam();
 	//どっち使えばいいか分からなかったから保留
 	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+}
+
+void FiveBoss::SetEasePos() {
+	m_Position = {
+Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
+Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
+	Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z)
+	};
 }

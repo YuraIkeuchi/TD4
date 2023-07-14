@@ -42,9 +42,9 @@ void InterCD::Draw(DirectXCommon* dxCommon) {
 	Obj_Draw();
 }
 void InterCD::ImGuiDraw() {
-	//ImGui::Begin("CD");
-	//ImGui::Text("Count:%d", m_BoundCount);
-	//ImGui::End();
+	ImGui::Begin("CD");
+	ImGui::Text("POSY:%f", m_Position.y);
+	ImGui::End();
 	ImGui_Origin();
 }
 
@@ -134,5 +134,28 @@ void InterCD::DeathMove(const int Timer, const int TargetTimer) {
 	}
 
 	AudioAction();
+	Obj_SetParam();
+}
+
+void InterCD::EndMove(const int TargetTimer) {
+	m_EndTimer++;
+	if (_EndState == END_SET) {
+		if (m_EndTimer == 1) {
+			m_Position = { 25.0f,50.0f,5.0f };
+			m_Scale = { 0.6f,0.6f,0.6f };
+		}
+		else if (m_EndTimer == TargetTimer) {
+			_EndState = END_MOVE;
+		}
+	}
+	else if (_EndState == END_MOVE) {
+		//”ò‚Ô‚æ‚¤‚ÈŠ´‚¶‚É‚·‚é‚½‚ßd—Í‚ð“ü‚ê‚é
+		m_BoundPower.y -= m_Gravity;
+		Helper::GetInstance()->Float3AddFloat3(m_Position, m_BoundPower);
+		if (Helper::GetInstance()->CheckMax(m_Position.y, 2.0f, m_BoundPower.y)) {
+			m_Position.x = 500.0f;
+			m_BoundPower = {};
+		}
+	}
 	Obj_SetParam();
 }

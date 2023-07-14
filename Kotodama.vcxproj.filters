@@ -528,14 +528,7 @@
     <ClCompile Include="SourceCode\gamesystem\effect\AbsorptionEffect.cpp">
       <Filter>gamesystem\effect\Absorption</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\InterAttack.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\character\NormalAttack.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\character\ShotAttack.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\Fraction.cpp" />
-    <ClCompile Include="SourceCode\gamesystem\character\SmashShotAttack.cpp">
-      <Filter>gamesystem\charactor\Boss\Five</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\gamesystem\character\ShadowSlashAttack.cpp" />
     <ClCompile Include="CollectGhost.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\FireBoll.cpp">
       <Filter>gamesystem\bossattach\fireboll</Filter>
@@ -551,6 +544,30 @@
     </ClCompile>
     <ClCompile Include="SourceCode\gamesystem\scene\EndRollScene.cpp">
       <Filter>gamesystem\scene\EndRoll</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\SingleShot.cpp">
+      <Filter>gamesystem\charactor\Boss\Five</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\SmashShotAttack.cpp">
+      <Filter>gamesystem\charactor\Boss\Five</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\GuardAction.cpp">
+      <Filter>gamesystem\charactor\Boss\Five</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\InterAttack.cpp">
+      <Filter>gamesystem\charactor\Boss\Five</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\NormalAttack.cpp">
+      <Filter>gamesystem\charactor\Boss\Five</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\ShotAttack.cpp">
+      <Filter>gamesystem\charactor\Boss\Five</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\ShadowSlashAttack.cpp">
+      <Filter>gamesystem\charactor\Boss\Five</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\KnockAttack.cpp">
+      <Filter>gamesystem\charactor\Boss\Five\NewFilter1</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1041,14 +1058,10 @@
     <ClInclude Include="SourceCode\gamesystem\effect\AbsorptionEffect.h">
       <Filter>gamesystem\effect\Absorption</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\InterAttack.h" />
-    <ClInclude Include="SourceCode\gamesystem\character\NormalAttack.h" />
-    <ClInclude Include="SourceCode\gamesystem\character\ShotAttack.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\Fraction.h" />
     <ClInclude Include="SourceCode\gamesystem\character\SmashShotAttack.h">
       <Filter>gamesystem\charactor\Boss\Five</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\ShadowSlashAttack.h" />
     <ClInclude Include="CollectGhost.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\FireBoll.h">
       <Filter>gamesystem\bossattach\fireboll</Filter>
@@ -1067,6 +1080,27 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\scene\EndRollScene.h">
       <Filter>gamesystem\scene\EndRoll</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\SingleShot.h">
+      <Filter>gamesystem\charactor\Boss\Five</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\GuardAction.h">
+      <Filter>gamesystem\charactor\Boss\Five</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\InterAttack.h">
+      <Filter>gamesystem\charactor\Boss\Five</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\NormalAttack.h">
+      <Filter>gamesystem\charactor\Boss\Five</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\ShotAttack.h">
+      <Filter>gamesystem\charactor\Boss\Five</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\ShadowSlashAttack.h">
+      <Filter>gamesystem\charactor\Boss\Five</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\KnockAttack.h">
+      <Filter>gamesystem\charactor\Boss\Five\NewFilter1</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1464,6 +1498,9 @@
     </Filter>
     <Filter Include="gamesystem\scene\EndRoll">
       <UniqueIdentifier>{cc3076ca-66ef-4952-b4dc-38fbeb169a69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\charactor\Boss\Five\NewFilter1">
+      <UniqueIdentifier>{ebc72d52-0c3c-42a4-b9da-1f1a8008e2f1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -128,6 +128,7 @@ void PlayerAttach::LastDeadUpdate(int Timer) {
 	const float l_AddFrame = 0.01f;
 	if (_DeathState == DEATH_SET) {
 		if (Timer == 1) {
+			m_Rotation = { 0.0f,90.0f,0.0f };
 			m_Position = { 100.0f,3.0f,-60.0f };
 		}
 		else if (Timer == 810) {
@@ -156,7 +157,7 @@ void PlayerAttach::LastDeadUpdate(int Timer) {
 		}
 
 		//sinîgÇ…ÇÊÇ¡Çƒè„â∫Ç…ìÆÇ≠
-		m_SinAngle += 3.0f;
+		m_SinAngle += 6.0f;
 		m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
 		m_Position.y = (sin(m_SinAngle2) * 0.5f + 3.0f);
 	}
@@ -169,15 +170,44 @@ void PlayerAttach::LastDeadUpdate(int Timer) {
 	Obj_SetParam();
 }
 void PlayerAttach::EndRollUpdate(int Timer) {
-	if (Timer == 1) {
-		m_Scale = { 0.4f,0.4f,0.4f };
-		m_Color = { 1.0f,1.0f,1.0f,1.0f };
-		m_Position = { 3.0f,4.0f,-24.0f };
+	const float l_AddPosX = 0.2f;
+	const float l_AddFrame = 0.01f;
+	if (_EndState == END_SET) {
+		if (Timer == 1) {
+			m_Scale = { 0.4f,0.4f,0.4f };
+			m_Color = { 1.0f,1.0f,1.0f,1.0f };
+			m_Position = { 50.0f,3.0f,-24.0f };
+			m_Rotation = { 0.0f,0.0f,0.0f };
+			_EndState = END_WALK;
+		}
+	}
+	else if (_EndState == END_WALK) {
+		Helper::GetInstance()->CheckMax(m_Position.x, 4.0f, -l_AddPosX);
+		if (Timer == 1670) {
+			m_EndStop = true;
+		}
+		if (!m_EndStop) {
+			if (Timer % 200 == 0) {
+				m_Rot = true;
+				m_AfterRot = m_Rotation.y + 360.0f;
+			}
+
+			if (m_Rot) {
+				if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+					m_Frame = {};
+					m_Rotation.y = 0.0f;
+					m_Rot = false;
+				}
+				m_Rotation.y = Ease(In, Cubic, m_Frame, m_Rotation.y, m_AfterRot);
+			}
+		}
 	}
 
 	//sinîgÇ…ÇÊÇ¡Çƒè„â∫Ç…ìÆÇ≠
-	m_SinAngle += 3.0f;
-	m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
-	m_Position.y = (sin(m_SinAngle2) * 0.5f + 4.0f);
+	if (!m_EndStop) {
+		m_SinAngle += 3.0f;
+		m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
+		m_Position.y = (sin(m_SinAngle2) * 0.5f + 3.0f);
+	}
 	Obj_SetParam();
 }

@@ -65,4 +65,16 @@ private:
 		DEATH_NO_TALK,
 	}_DeathState;
 	XMFLOAT3 m_AfterPos = {};
+
+
+	enum EndState {
+		END_SET,
+		END_WALK,
+		END_DIR_CAMERA,
+	}_EndState = END_SET;
+
+	bool m_Rot = false;
+	float m_AfterRot = {};
+
+	bool m_EndStop = false;
 };

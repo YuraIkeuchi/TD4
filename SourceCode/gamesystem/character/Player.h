@@ -170,6 +170,16 @@ private://各クラス
 		LAST_SECOND_WALK,
 		LAST_STOP,
 	}_LastState;
+
+	enum EndState {
+		END_SET,
+		END_WALK,
+		END_DIR_CAMERA,
+		END_DIR_RIGHT,
+		END_DIR_LEFT,
+		END_DIR_BACK,
+		END_DIR_FRONT,
+	}_EndState = END_SET;
 public:
 	vector<InterBullet*>GetBulllet_ghost() { return ghostbullets; }
 	vector<InterBullet*>GetBulllet_attack() { return attackbullets; }

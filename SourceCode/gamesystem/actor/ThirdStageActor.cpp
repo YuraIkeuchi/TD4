@@ -333,7 +333,7 @@ void ThirdStageActor::MainUpdate(DebugCamera* camera) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kThirdStage, true);
 		sceneChanger_->ChangeStart();
-		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::Reverse);
+		sceneChanger_->ChangeSceneLose("GAMEOVER");
 	}
 
 	//音楽の音量が変わる

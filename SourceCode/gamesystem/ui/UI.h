@@ -32,11 +32,11 @@ private:
 		HeartTwo,
 		HeartThree,
 		UnderStatusGaugeMax,
-		UnderStatusGauge,
 		ExtraGauge,
 		StatusGauge,
 		ChargeGauge,
 		UnderBossGauge,
+		MiddleBossGauge,
 		BossGauge,
 		CircleCover,
 		PlayerCircle,
@@ -56,12 +56,13 @@ private:
 	//};
 
 
-	XMFLOAT2 m_GaugePos = { 340,665.f };
-	XMFLOAT2 m_GaugeSize = { 600.f,50.f };
-	XMFLOAT2 m_GaugeSizeMini = { 600.f,40.f };
+	XMFLOAT2 m_GaugePos = { 430,610.f };
+	XMFLOAT2 m_GaugePosMini = { 430+44.0f,597+40.0f };
+	XMFLOAT2 m_GaugeSize = { 512.f * 0.8f, 128.f * 0.8f };
+	XMFLOAT2 m_GaugeSizeMini = { 419,49 };
 
-	XMFLOAT2 m_PlayerHpPos = { 15.f, 680.f };
-	XMFLOAT2 m_PlayerHpSize = { 300.f, 30.f };
+	XMFLOAT2 m_PlayerHpPos = { 15.f, 610.f };
+	XMFLOAT2 m_PlayerHpSize = { 512.f * 0.8f, 128.f*0.8f};
 
 	XMFLOAT2 m_PlayerCireclePos = { WinApp::window_width-100 ,WinApp::window_height };
 	XMFLOAT2 m_PlayerCircleSize = { 240.f,240.f };
@@ -90,4 +91,3 @@ private:
 	//ボスの表示
 	void SeachBoss();
 };
-

@@ -36,14 +36,16 @@ void ImageManager::SecondLoad2D()
 
 	IKESprite::LoadTexture(GAMECLEAR, L"Resources/2d/sceneback/clear.png");
 	IKESprite::LoadTexture(MASTERCLEAR, L"Resources/2d/sceneback/lastclear.png");
-	IKESprite::LoadTexture(BOX, L"Resources/2d/objicon/box.png");
 	IKESprite::LoadTexture(CUBE, L"Resources/2d/objicon/cube.png");
 	IKESprite::LoadTexture(NON, L"Resources/2d/objicon/non.png");
 	IKESprite::LoadTexture(HEART, L"Resources/2d/objicon/PlayerHeart.png");
-	IKESprite::LoadTexture(UnderGauge, L"Resources/2d/objicon/UnderGauge.png");
+	IKESprite::LoadTexture(PlayerHPGauge, L"Resources/2d/objicon/playerHPGauge.png");
+	IKESprite::LoadTexture(BossHPGauge, L"Resources/2d/objicon/bossHPGauge.png");
+
+	IKESprite::LoadTexture(UnderGauge, L"Resources/2d/objicon/hangarGauge.png");
 	IKESprite::LoadTexture(Gauge, L"Resources/2d/objicon/Gauge.png");
 	IKESprite::LoadTexture(TopGauge, L"Resources/2d/objicon/TopGauge.png");
-
+	IKESprite::LoadTexture(EXGauge, L"Resources/2d/objicon/EXGauge.png");
 	IKESprite::LoadTexture(MENU_HOME, L"Resources/2d/sceneback/MenuH.png");
 	IKESprite::LoadTexture(MENU_RESET, L"Resources/2d/sceneback/MenuT.png");
 	IKESprite::LoadTexture(MENU_RULE, L"Resources/2d/sceneback/MenuR.png");
@@ -89,7 +91,6 @@ void ImageManager::SecondLoadTex2D()
 	IKETexture::LoadTexture(IMPACT2, L"Resources/2d/effect/inpact2.png");
 	IKETexture::LoadTexture(ANGER, L"Resources/2d/objicon/AngerStamp.png");
 	IKETexture::LoadTexture(JOY, L"Resources/2d/objicon/JoyStamp.png");
-	IKETexture::LoadTexture(MARK, L"Resources/2d/objicon/box.png");
 	IKETexture::LoadTexture(DAMAGEAREA, L"Resources/2d/effect/DArea.png");
 	IKETexture::LoadTexture(DAMAGEAREA2, L"Resources/2d/effect/DArea2.png");
 	IKETexture::LoadTexture(GROUND, L"Resources/2d/SceneBack/Ground.png");

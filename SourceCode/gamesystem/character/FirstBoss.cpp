@@ -565,10 +565,36 @@ void FirstBoss::InitAwake() {
 }
 
 void FirstBoss::EndRollAction() {
+	const float l_AddPosX = 0.4f;
+	const float l_AddFrame = 0.01f;
 	m_EndTimer++;
-	if (m_EndTimer == 1) {
-		m_Position = { 0.0f,2.0f,0.0f };
-		m_Rotation = { 0.0f,0.0f,0.0f };
+	if (_EndState == END_SET) {
+		if (m_EndTimer == 1) {
+			m_Position = { 55.0f,2.0f,10.0f };
+			m_Rotation = { 0.0f,180.0f,0.0f };
+		}
+		else if (m_EndTimer == 290) {
+			_EndState = END_WALK;
+		}
+	}
+	else if (_EndState == END_WALK) {
+		if (Helper::GetInstance()->CheckMax(m_Position.x, 10.0f, -l_AddPosX)) {
+			_EndState = END_DIR_CAMERA;
+		}
+	}
+	else {
+		Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame);
+		m_Rotation.y = Ease(In, Cubic, m_Frame, m_Rotation.y, 90.0f);
+
+		if (m_EndTimer == 1670) {
+			m_EndStop = true;
+		}
+	}
+	//sin波によって上下に動く
+	if (!m_EndStop) {
+		m_SinAngle += 6.0f;
+		m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
+		m_Position.y = (sin(m_SinAngle2) * 0.5f + 2.0f);
 	}
 	//OBJのステータスのセット
 	Obj_SetParam();

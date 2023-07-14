@@ -92,7 +92,7 @@ private:
 	static void(SevenBoss::* stateTable[])();
 private:
 	static const int POLTER_NUM = 4;
-	static const int FIRE_NUM = 4;
+	static const int FIRE_NUM = 8;
 	static const int BLOCK_NUM = 6;
 private:
 	vector<Poltergeist*> poltergeist;//ポルターガイスト

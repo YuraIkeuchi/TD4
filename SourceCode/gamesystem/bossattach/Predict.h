@@ -1,5 +1,6 @@
 #pragma once
 #include "IKETexture.h"
+#include <memory>
 class Predict {
 private:
 	// DirectX::Çè»ó™
@@ -19,11 +20,11 @@ private:
 public:
 	bool GetAlive() { return m_Alive; }
 private:
-	IKETexture* tex = nullptr;
+	std::unique_ptr<IKETexture> tex;
 	XMFLOAT3 m_Position = { 0.0f,0.0f,0.0f };
 	XMFLOAT3 m_Rotation = { 0.0f,0.0f,0.0f };
 	XMFLOAT4 m_Color = { 1.0f,1.0f,1.0f,1.0f };
-	XMFLOAT3 m_Scale = { 1.0f,1.0f,1.0f };
+	XMFLOAT3 m_Scale = { 1.5f,1.5f,1.5f };
 	bool m_Alive = true;
 	float m_Frame = 0.0f;
 };

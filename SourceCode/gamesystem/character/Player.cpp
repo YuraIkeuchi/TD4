@@ -805,14 +805,59 @@ void Player::LastDeadUpdate(int Timer) {
 	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 }
 void Player::EndRollUpdate(int Timer) {
-	if (Timer == 1) {
-		m_Scale = { 0.8f,0.4f,0.8f };
-		m_Color = { 1.0f, 1.0f, 1.0f, 1.0f };
-		m_Position = { 0.0f,0.0f,-25.0f };
-		m_Rotation = { 0.0f,180.0f,0.0f };
-		AnimationControl(AnimeName::IDLE, true, 1);
+	const float l_AddPosX = 0.2f;
+	const float l_AddRotY = 2.0f;
+	if (_EndState == END_SET) {
+		if (Timer == 1) {
+			m_Scale = { 0.8f,0.4f,0.8f };
+			m_Color = { 1.0f, 1.0f, 1.0f, 1.0f };
+			m_Position = { 20.0f,0.0f,-25.0f };
+			m_Rotation = { 0.0f,270.0f,0.0f };
+			AnimationControl(AnimeName::WALK, true, 1);
+			_EndState = END_WALK;
+			//
+		}
+	}
+	else if (_EndState == END_WALK) {
+		if (Helper::GetInstance()->CheckMax(m_Position.x, 0.0f, -l_AddPosX)) {
+			_EndState = END_DIR_CAMERA;
+			AnimationControl(AnimeName::IDLE, true, 1);
+		}
+	}
+	else if (_EndState == END_DIR_CAMERA) {
+		Helper::GetInstance()->CheckMax(m_Rotation.y, 180.0f, -l_AddRotY);
+		if (Timer == 310) {
+			_EndState = END_DIR_RIGHT;
+		}
+	}
+	else if (_EndState == END_DIR_RIGHT) {
+		m_Rotation.y = Ease(In, Cubic, 0.5f, m_Rotation.y, 90.0f);
+		if (Timer == 400 || Timer == 630) {
+			_EndState = END_DIR_LEFT;
+		}
+		else if (Timer == 900) {
+			_EndState = END_DIR_BACK;
+		}
+	}
+	else if(_EndState == END_DIR_LEFT) {
+		m_Rotation.y = Ease(In, Cubic, 0.5f, m_Rotation.y, 270.0f);
+		if (Timer == 500 || Timer == 730) {
+			_EndState = END_DIR_RIGHT;
+		}
+	}
+	else if (_EndState == END_DIR_BACK) {
+		m_Rotation.y = Ease(In, Cubic, 0.5f, m_Rotation.y, 0.0f);
+		if (Timer == 1000) {
+			_EndState = END_DIR_FRONT;
+		}
+	}
+	else {
+		m_Rotation.y = Ease(In, Cubic, 0.5f, m_Rotation.y, 180.0f);
 	}
 
+	if (Timer == 1670) {
+		m_fbxObject->StopAnimation();
+	}
 	index = 15;
 	m_fbxObject->GetBoneIndexMat(index, skirtmat);
 	skirtobj->FollowUpdate(skirtmat);

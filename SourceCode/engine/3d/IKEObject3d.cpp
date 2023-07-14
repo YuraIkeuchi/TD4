@@ -22,9 +22,9 @@ ID3D12GraphicsCommandList* IKEObject3d::cmdList = nullptr;
 IKEObject3d::PipelineSet IKEObject3d::pipelineSet;
 XMMATRIX IKEObject3d::matView{};
 XMMATRIX IKEObject3d::matProjection{};
-XMFLOAT3 IKEObject3d::eye = {0, 3.0f, -10.0f};
-XMFLOAT3 IKEObject3d::target = {0, 0, 0};
-XMFLOAT3 IKEObject3d::up = {0, 1, 0};
+XMFLOAT3 IKEObject3d::eye = { 0, 3.0f, -10.0f };
+XMFLOAT3 IKEObject3d::target = { 0, 0, 0 };
+XMFLOAT3 IKEObject3d::up = { 0, 1, 0 };
 XMMATRIX IKEObject3d::matBillboard = XMMatrixIdentity();
 XMMATRIX IKEObject3d::matBillboardY = XMMatrixIdentity();
 Camera* IKEObject3d::camera = nullptr;
@@ -32,7 +32,7 @@ LightGroup* IKEObject3d::lightGroup = nullptr;
 
 
 bool IKEObject3d::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList, int window_width,
-                                   int window_height, Camera* camera)
+	int window_height, Camera* camera)
 {
 	// nullptrチェック
 	assert(device);
@@ -119,8 +119,8 @@ void IKEObject3d::CreateGraphicsPipeline()
 		errstr.resize(errorBlob->GetBufferSize());
 
 		std::copy_n(static_cast<char*>(errorBlob->GetBufferPointer()),
-		            errorBlob->GetBufferSize(),
-		            errstr.begin());
+			errorBlob->GetBufferSize(),
+			errstr.begin());
 		errstr += "\n";
 		// エラー内容を出力ウィンドウに表示
 		OutputDebugStringA(errstr.c_str());
@@ -144,8 +144,8 @@ void IKEObject3d::CreateGraphicsPipeline()
 		errstr.resize(errorBlob->GetBufferSize());
 
 		std::copy_n(static_cast<char*>(errorBlob->GetBufferPointer()),
-		            errorBlob->GetBufferSize(),
-		            errstr.begin());
+			errorBlob->GetBufferSize(),
+			errstr.begin());
 		errstr += "\n";
 		// エラー内容を出力ウィンドウに表示
 		OutputDebugStringA(errstr.c_str());
@@ -239,15 +239,15 @@ void IKEObject3d::CreateGraphicsPipeline()
 	// ルートシグネチャの設定
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
 	rootSignatureDesc.Init_1_0(_countof(rootparams), rootparams, 1, &samplerDesc,
-	                           D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
 	ComPtr<ID3DBlob> rootSigBlob;
 	// バージョン自動判定のシリアライズ
 	result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSigBlob,
-	                                               &errorBlob);
+		&errorBlob);
 	// ルートシグネチャの生成
 	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
-	                                     IID_PPV_ARGS(&pipelineSet.rootsignature));
+		IID_PPV_ARGS(&pipelineSet.rootsignature));
 	if (FAILED(result))
 	{
 		assert(0);
@@ -328,6 +328,7 @@ void IKEObject3d::Update()
 	constMap->world = matWorld;
 	constMap->cameraPos = cameraPos;
 	constMap->color = color;
+	constMap->uvval = uv;
 	constBuffB0->Unmap(0, nullptr);
 	//当たり判定更新
 	if (collider)
@@ -358,6 +359,7 @@ void IKEObject3d::FollowUpdate(XMMATRIX matworld)
 	constMap->world = matWorld * matworld;
 	constMap->cameraPos = cameraPos;
 	constMap->color = color;
+	constMap->uvval = uv;
 	constBuffB0->Unmap(0, nullptr);
 	//当たり判定更新
 	if (collider)
@@ -391,6 +393,7 @@ void IKEObject3d::AffineUpdate()
 	constMap->world = matWorld;
 	constMap->cameraPos = cameraPos;
 	constMap->color = color;
+	constMap->uvval = uv;
 	constBuffB0->Unmap(0, nullptr);
 	//当たり判定更新
 	if (collider)
@@ -446,8 +449,7 @@ void IKEObject3d::UpdateWorldMatrix()
 		matWorld *= matRot; // ワールド行列に回転を反映
 		matWorld *= matBillboard;
 		matWorld *= matTrans; // ワールド行列に平行移動を反映
-	}
-	else
+	} else
 	{
 		matWorld = XMMatrixIdentity(); // 変形をリセット
 		matWorld *= matScale; // ワールド行列にスケーリングを反映
@@ -511,7 +513,7 @@ void IKEObject3d::CollisionField()
 		// 衝突時コールバック関数
 		bool OnQueryHit(const QueryHit& info) override
 		{
-			const XMVECTOR up = {0, 1, 0, 0};
+			const XMVECTOR up = { 0, 1, 0, 0 };
 
 			XMVECTOR rejectDir = XMVector3Normalize(info.reject);
 			float cos = XMVector3Dot(rejectDir, up).m128_f32[0];
@@ -548,7 +550,7 @@ void IKEObject3d::CollisionField()
 	Ray ray;
 	ray.start = sphereCollider->center;
 	ray.start.m128_f32[1] += sphereCollider->GetRadius() + 3.f;
-	ray.dir = {0, -1, 0, 0};
+	ray.dir = { 0, -1, 0, 0 };
 	RaycastHit raycastHit;
 
 	// 接地状態
@@ -558,7 +560,7 @@ void IKEObject3d::CollisionField()
 		const float adsDistance = 1.2f;
 		// 接地を維持
 		if (CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit,
-		                                             sphereCollider->GetRadius() * 2.5f + adsDistance))
+			sphereCollider->GetRadius() * 2.5f + adsDistance))
 		{
 			onGround = true;
 			position.y -= (raycastHit.m_Distance - sphereCollider->GetRadius() * 3.0f);
@@ -575,7 +577,7 @@ void IKEObject3d::CollisionField()
 	else if (fallV.m128_f32[1] <= 0.0f)
 	{
 		if (CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit,
-		                                             sphereCollider->GetRadius() * 3.0f))
+			sphereCollider->GetRadius() * 3.0f))
 		{
 			// 着地
 			onGround = true;

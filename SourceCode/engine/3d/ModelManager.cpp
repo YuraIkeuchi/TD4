@@ -38,6 +38,12 @@ void ModelManager::SecondInitialize()
 	LoadModel(CD, "CD");
 	LoadModel(SKIRT, "skirt");
 	LoadModel(NOTE, "NOTE");
+	LoadModel(UPBOX, "upbox");
+	LoadModel(WIDTH1, "width1");
+	LoadModel(WIDTH2, "width2");
+	LoadModel(WIDTH3, "width3");
+	LoadModel(WIDTH4, "width4");
+	LoadModel(DOWNBOX, "downbox");
 
 	LoadModel(GLASS1, "glass1");
 	LoadModel(GLASS2, "glass2");
@@ -46,6 +52,7 @@ void ModelManager::SecondInitialize()
 	LoadModel(MILKCAP_BREAK, "milkCap_break");
 	LoadModel(CAP, "cap");
 	LoadModel(NAIL, "Nail");
+	LoadModel(LASTBOSS, "burapon");
 
 	LoadFBXModel(PLAYER, "kotoko");
 	LoadFBXModel(SIORI, "siori_idol");

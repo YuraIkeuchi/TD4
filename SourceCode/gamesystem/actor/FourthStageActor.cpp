@@ -150,12 +150,12 @@ void FourthStageActor::BackDraw(DirectXCommon* dxCommon) {
 	if (camerawork->GetAppearEndF()) {
 		Player::GetInstance()->Draw(dxCommon);
 	}
+	enemymanager->Draw(dxCommon);
 	if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd()) {
 		IKESprite::PreDraw();
 		ui->Draw();
 		IKESprite::PostDraw();
 	}
-	enemymanager->Draw(dxCommon);
 	if (isVisible) {
 		IKEObject3d::PreDraw();
 		apple->Draw();
@@ -381,7 +381,7 @@ void FourthStageActor::MainUpdate(DebugCamera* camera) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kFourthStage,true);
 		sceneChanger_->ChangeStart();
-		sceneChanger_->ChangeScene("GAMEOVER", SceneChanger::Reverse);
+		sceneChanger_->ChangeSceneLose("GAMEOVER");
 	}
 	//音楽の音量が変わる
 	VolumManager::GetInstance()->Update();

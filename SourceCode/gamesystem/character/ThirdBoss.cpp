@@ -16,10 +16,10 @@ ThirdBoss::ThirdBoss() {
 
 	shake = make_unique< Shake>();
 
-	mark.reset(IKETexture::Create(ImageManager::MARK, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 }));
+	mark.reset(IKETexture::Create(ImageManager::DARKBOM, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 }));
 	mark->TextureCreate();
 	mark->SetRotation({ 90.0f,0.0f,0.0f });
-	mark->SetScale({ 3.5f,3.5f,3.5f });
+	mark->SetScale({ 4.5f,4.5f,4.5f });
 	mark->SetColor(m_MarkColor);
 
 #pragma region Third
@@ -222,7 +222,9 @@ void ThirdBoss::DamAction()
 //ImGui
 void ThirdBoss::ImGui_Origin() {
 	ImGui::Begin("Third");
-	ImGui::Text("End:%d", m_EndTimer);
+	ImGui::Text("RotX:%f", m_Rotation.x);
+	ImGui::Text("RotY:%f", m_Rotation.y);
+	ImGui::Text("RotZ::%f", m_Rotation.z);
 	ImGui::End();
 }
 //移動
@@ -1006,12 +1008,59 @@ void ThirdBoss::DeathParticle() {
 void ThirdBoss::InitAwake() {
 
 }
-
+//エンドロール
 void ThirdBoss::EndRollAction() {
+	const float l_AddFrame = 0.01f;
+	const float l_AddFrame2 = 0.05f;
 	m_EndTimer++;
-	if (m_EndTimer == 1) {
-		m_Position = { -3.0f,2.0f,3.0f };
-		m_Rotation = { 0.0f,0.0f,0.0f };
+	if (_EndState == END_SET) {
+		if (m_EndTimer == 1) {
+			m_Position = { 50.0f,20.0f,3.0f };
+			m_Rotation = { 0.0f,0.0f,90.0f };
+		}
+		else if (m_EndTimer == 470) {
+			m_AfterRot = { 180.0f,90.0f,90.0f };
+			m_AfterPos = { 20.0f,15.0f,15.0f };
+			_EndState = END_WALK;
+		}
+	}
+	else if (_EndState == END_WALK) {
+
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			_EndState = END_DIR_CAMERA;
+			m_Frame = {};
+		}
+
+		m_Position = {
+			Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
+			Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
+			Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z)
+		};
+		m_Rotation = {
+			Ease(In,Cubic,m_Frame,m_Rotation.x,m_AfterRot.x),
+			Ease(In,Cubic,m_Frame,m_Rotation.y,m_AfterRot.y),
+			Ease(In,Cubic,m_Frame,m_Rotation.z,m_AfterRot.z)
+		};
+	}
+	else {
+		if (m_EndTimer == 1670) {
+			m_EndStop = true;
+		}
+
+		if (!m_EndStop) {
+			if (m_EndTimer % 100 == 0) {
+				m_AfterRot.y = m_Rotation.y + 180.0f;
+				m_Rot = true;
+			}
+
+			if (m_Rot) {
+				if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame2)) {
+					m_Frame = {};
+					m_Rot = false;
+				}
+				m_Rotation.y = Ease(In, Cubic, m_Frame, m_Rotation.y, m_AfterRot.y);
+			}
+		}
 	}
 	Fbx_SetParam();
 	//どっち使えばいいか分からなかったから保留
