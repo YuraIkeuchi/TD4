@@ -251,9 +251,15 @@ void FourthBoss::SelectAction() {
 			isInstruction = FourthBossInst::ChangeGhost;
 			phase = commandState::EnemySpawn;
 		} else {
-			ChangePos2Random();
-			isInstruction = FourthBossInst::None;
-			phase = commandState::MoveCommand;
+			if (isReferCheck) {
+				isSearch = true;
+				isInstruction = FourthBossInst::None;
+				phase = commandState::ControlCommand;
+			} else {
+				ChangePos2Random();
+				isInstruction = FourthBossInst::None;
+				phase = commandState::MoveCommand;
+			}
 		}
 	} else if (l_case <= 68) {
 		if (isReferCheck) {
@@ -261,9 +267,14 @@ void FourthBoss::SelectAction() {
 			isInstruction = FourthBossInst::None;
 			phase = commandState::ControlCommand;
 		} else {
-			ChangePos2Random();
-			isInstruction = FourthBossInst::None;
-			phase = commandState::MoveCommand;
+			if (!EnemysIsActiveCheck()) {
+				isSearch = true;
+				isInstruction = FourthBossInst::ChangeGhost;
+				phase = commandState::EnemySpawn;
+			} else {
+				isInstruction = FourthBossInst::None;
+				phase = commandState::SubGauge;
+			}
 		}
 	} else if (l_case < 92) {
 		isInstruction = FourthBossInst::None;

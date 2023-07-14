@@ -39,6 +39,8 @@ public:
 		WINDOW,
 		BLACKWINDOW,
 		HEART,
+		PlayerHPGauge,
+		BossHPGauge,
 		UnderGauge,
 		Gauge,
 		TopGauge,

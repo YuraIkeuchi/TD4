@@ -150,12 +150,12 @@ void FourthStageActor::BackDraw(DirectXCommon* dxCommon) {
 	if (camerawork->GetAppearEndF()) {
 		Player::GetInstance()->Draw(dxCommon);
 	}
+	enemymanager->Draw(dxCommon);
 	if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd()) {
 		IKESprite::PreDraw();
 		ui->Draw();
 		IKESprite::PostDraw();
 	}
-	enemymanager->Draw(dxCommon);
 	if (isVisible) {
 		IKEObject3d::PreDraw();
 		apple->Draw();

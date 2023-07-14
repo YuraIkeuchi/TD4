@@ -430,6 +430,7 @@ void LoadStageObj::ChangeGhost2Enemy() {
 		boss->SetJackPos(i, stopGhosts[i]->GetPosition());
 		m_GhostPos++;
 	}
+	ReferGhorstReseted();
 	boss->SetInstruction(InterBoss::FourthBossInst::SpawnEnemy);
 }
 

@@ -40,7 +40,10 @@ void ImageManager::SecondLoad2D()
 	IKESprite::LoadTexture(CUBE, L"Resources/2d/objicon/cube.png");
 	IKESprite::LoadTexture(NON, L"Resources/2d/objicon/non.png");
 	IKESprite::LoadTexture(HEART, L"Resources/2d/objicon/PlayerHeart.png");
-	IKESprite::LoadTexture(UnderGauge, L"Resources/2d/objicon/UnderGauge.png");
+	IKESprite::LoadTexture(PlayerHPGauge, L"Resources/2d/objicon/playerHPGauge.png");
+	IKESprite::LoadTexture(BossHPGauge, L"Resources/2d/objicon/bossHPGauge.png");
+
+	IKESprite::LoadTexture(UnderGauge, L"Resources/2d/objicon/hangarGauge.png");
 	IKESprite::LoadTexture(Gauge, L"Resources/2d/objicon/Gauge.png");
 	IKESprite::LoadTexture(TopGauge, L"Resources/2d/objicon/TopGauge.png");
 
