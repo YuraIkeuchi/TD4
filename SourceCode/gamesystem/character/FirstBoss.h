@@ -12,10 +12,7 @@
 
 
 class Spline;
-enum BottleState {
-	NORMAL,
-	FRACTION,
-};
+
 class FirstBoss :
 	public InterBoss
 {
@@ -34,6 +31,11 @@ private:
 		Move=0,
 		Stop,
 	}move_;
+
+	enum BottleState {
+		NORMAL,
+		FRACTION,
+	}bottlestate_;
 public:
 	FirstBoss();
 
