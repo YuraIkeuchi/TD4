@@ -544,9 +544,23 @@ void FourthBoss::InitAwake() {
 }
 void FourthBoss::EndRollAction() {
 	m_EndTimer++;
-	if (m_EndTimer == 1) {
-		m_Position = { -50.0f,2.0f,0.0f };
-		m_Rotation = { 0.0f,0.0f,0.0f };
+	if (_EndState == END_SET) {
+		if (m_EndTimer == 1) {
+			m_Position = { -30.0f,40.0f,15.0f };
+			m_Rotation = { 0.0f,90.0f,0.0f };
+		}
+		else if (m_EndTimer == 600) {
+			_EndState = END_WALK;
+		}
+	}
+	else if (_EndState == END_WALK) {
+		m_AddPower -= m_Gravity;
+		if (Helper::GetInstance()->CheckMax(m_Position.y, 0.0f, m_AddPower)) {
+			_EndState = END_DIR_CAMERA;
+		}
+	}
+	else {
+
 	}
 	//OBJのステータスのセット
 	Obj_SetParam();

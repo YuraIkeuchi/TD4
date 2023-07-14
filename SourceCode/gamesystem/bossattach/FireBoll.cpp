@@ -151,10 +151,6 @@ void FireBoll::Move() {
 		}
 
 		m_Color.w = Ease(In,Cubic,m_Frame,m_Color.w,0.0f);
-		/*m_Scale = { Ease(In,Cubic,m_Frame,m_Scale.x,0.0f),
-			Ease(In,Cubic,m_Frame,m_Scale.y,0.0f),
-			Ease(In,Cubic,m_Frame,m_Scale.z,0.0f),
-		};*/
 	}
 
 	tex->SetPosition(m_TexPos);

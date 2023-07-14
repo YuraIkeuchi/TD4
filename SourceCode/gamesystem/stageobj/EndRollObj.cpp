@@ -54,5 +54,5 @@ void EndRollObj::ImGuiDraw() {
 		boss[i]->ImGuiDraw();
 	}
 
-	Player::GetInstance()->ImGuiDraw();
+	//Player::GetInstance()->ImGuiDraw();
 }

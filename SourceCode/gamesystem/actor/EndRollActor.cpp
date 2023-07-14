@@ -76,7 +76,7 @@ void EndRollActor::IntroUpdate(DebugCamera* camera) {
 	camerawork->DefUpda(camera);
 	m_EndTimer++;
 
-	if (m_EndTimer == 500) {
+	if (m_EndTimer == 2000) {
 		isShutter = true;
 	}
 
@@ -136,6 +136,9 @@ void EndRollActor::BackDraw(DirectXCommon* dxCommon) {
 //ImGui•`‰æ
 void EndRollActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	endobj->ImGuiDraw();
+	ImGui::Begin("End");
+	ImGui::Text("Timer:%d", m_EndTimer);
+	ImGui::End();
 }
 //‰ð•ú
 void EndRollActor::Finalize() {
