@@ -560,15 +560,19 @@ void SixBoss::EndRollAction() {
 	}
 	else {
 		for (int i = 0; i < cd.size(); i++) {
-			cd[i]->EndMove((100 + (10 * i)));
+			cd[i]->EndMove((20 + (10 * i)));
 		}
 		Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame);
 		m_Rotation.z = Ease(In, Cubic, m_Frame, m_Rotation.z, m_AfterRot.z);
-
-		//sin波によって上下に動く
-		m_Angle += 6.0f;
-		m_Angle2 = m_Angle * (3.14f / 180.0f);
-		m_Position.y = (sin(m_Angle2) * 0.5f + 2.0f);
+		if (m_EndTimer == 1670) {
+			m_EndStop = true;
+		}
+		if (!m_EndStop) {
+			//sin波によって上下に動く
+			m_Angle += 6.0f;
+			m_Angle2 = m_Angle * (3.14f / 180.0f);
+			m_Position.y = (sin(m_Angle2) * 0.5f + 2.0f);
+		}
 	}
 	//OBJのステータスのセット
 	Obj_SetParam();

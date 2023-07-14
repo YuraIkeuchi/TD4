@@ -835,14 +835,29 @@ void Player::EndRollUpdate(int Timer) {
 		if (Timer == 400 || Timer == 630) {
 			_EndState = END_DIR_LEFT;
 		}
+		else if (Timer == 900) {
+			_EndState = END_DIR_BACK;
+		}
 	}
-	else {
+	else if(_EndState == END_DIR_LEFT) {
 		m_Rotation.y = Ease(In, Cubic, 0.5f, m_Rotation.y, 270.0f);
-		if (Timer == 500) {
+		if (Timer == 500 || Timer == 730) {
 			_EndState = END_DIR_RIGHT;
 		}
 	}
+	else if (_EndState == END_DIR_BACK) {
+		m_Rotation.y = Ease(In, Cubic, 0.5f, m_Rotation.y, 0.0f);
+		if (Timer == 1000) {
+			_EndState = END_DIR_FRONT;
+		}
+	}
+	else {
+		m_Rotation.y = Ease(In, Cubic, 0.5f, m_Rotation.y, 180.0f);
+	}
 
+	if (Timer == 1670) {
+		m_fbxObject->StopAnimation();
+	}
 	index = 15;
 	m_fbxObject->GetBoneIndexMat(index, skirtmat);
 	skirtobj->FollowUpdate(skirtmat);

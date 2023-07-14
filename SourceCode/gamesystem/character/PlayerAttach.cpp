@@ -183,24 +183,31 @@ void PlayerAttach::EndRollUpdate(int Timer) {
 	}
 	else if (_EndState == END_WALK) {
 		Helper::GetInstance()->CheckMax(m_Position.x, 4.0f, -l_AddPosX);
-		if (Timer % 200 == 0) {
-			m_Rot = true;
-			m_AfterRot = m_Rotation.y + 360.0f;
+		if (Timer == 1670) {
+			m_EndStop = true;
 		}
-
-		if (m_Rot) {
-			if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
-				m_Frame = {};
-				m_Rotation.y = 0.0f;
-				m_Rot = false;
+		if (!m_EndStop) {
+			if (Timer % 200 == 0) {
+				m_Rot = true;
+				m_AfterRot = m_Rotation.y + 360.0f;
 			}
-			m_Rotation.y = Ease(In, Cubic, m_Frame, m_Rotation.y, m_AfterRot);
+
+			if (m_Rot) {
+				if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+					m_Frame = {};
+					m_Rotation.y = 0.0f;
+					m_Rot = false;
+				}
+				m_Rotation.y = Ease(In, Cubic, m_Frame, m_Rotation.y, m_AfterRot);
+			}
 		}
 	}
 
 	//sinîgÇ…ÇÊÇ¡Çƒè„â∫Ç…ìÆÇ≠
-	m_SinAngle += 3.0f;
-	m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
-	m_Position.y = (sin(m_SinAngle2) * 0.5f + 3.0f);
+	if (!m_EndStop) {
+		m_SinAngle += 3.0f;
+		m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
+		m_Position.y = (sin(m_SinAngle2) * 0.5f + 3.0f);
+	}
 	Obj_SetParam();
 }

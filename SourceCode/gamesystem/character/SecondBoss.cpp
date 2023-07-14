@@ -1117,12 +1117,18 @@ void SecondBoss::EndRollAction() {
 	else {
 		Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame);
 		m_Rotation.y = Ease(In, Cubic, m_Frame, m_Rotation.y, 90.0f);
+
+		if (m_EndTimer == 1670) {
+			m_EndStop = true;
+		}
 	}
 
 	//sin波によって上下に動く
-	m_SinAngle += 6.0f;
-	m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
-	m_Position.y = (sin(m_SinAngle2) * 1.0f + 6.0f);
+	if (!m_EndStop) {
+		m_SinAngle += 6.0f;
+		m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
+		m_Position.y = (sin(m_SinAngle2) * 1.0f + 6.0f);
+	}
 	//OBJのステータスのセット
 	Obj_SetParam();
 }

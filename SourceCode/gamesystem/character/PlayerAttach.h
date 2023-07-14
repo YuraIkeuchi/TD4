@@ -75,4 +75,6 @@ private:
 
 	bool m_Rot = false;
 	float m_AfterRot = {};
+
+	bool m_EndStop = false;
 };
