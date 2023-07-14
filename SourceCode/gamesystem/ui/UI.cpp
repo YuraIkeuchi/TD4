@@ -19,27 +19,21 @@ void UI::Initialize() {
 		TexList.emplace_back(std::move(sprites[i]));
 	}
 	{//ゲージ下敷き
-		sprites[UnderStatusGaugeMax] = CreateUi(ImageManager::UnderGauge, m_GaugePos, m_GaugeSize, { 1.5f, 1.5f, 1.5f,1.f });
-		sprites[UnderStatusGaugeMax].Tex->SetAnchorPoint({ 0,0.0f });
-		sprites[UnderStatusGaugeMax].IsVisible = false;
+		sprites[UnderStatusGaugeMax] = CreateUi(ImageManager::UnderGauge, m_GaugePos, { 512,100 }, { 1.5f, 1.5f, 1.5f,1.f });
+		sprites[UnderStatusGaugeMax].Tex->SetAnchorPoint({ 0,0 });
+		//sprites[UnderStatusGaugeMax].IsVisible = false;
 		TexList.emplace_back(std::move(sprites[UnderStatusGaugeMax]));
 	}
 	{//ゲージ
-		sprites[ExtraGauge] = CreateUi(ImageManager::WHITE, m_GaugePosMini, m_GaugeSizeMini, { 1.5f, 1.5f, 1.5f,1 });
-		sprites[ExtraGauge].Tex->SetAnchorPoint({ 0,0.f });
-		sprites[ExtraGauge].IsVisible = false;
+		sprites[ExtraGauge] = CreateUi(ImageManager::WHITE, m_GaugePosMini, m_GaugeSizeMini, { 0.0f,1.0f,1.0f,1.0f });
 		TexList.emplace_back(std::move(sprites[ExtraGauge]));
 	}
 	{//ゲージ
-		sprites[StatusGauge] = CreateUi(ImageManager::WHITE, m_GaugePosMini, m_GaugeSizeMini, { 1.5f, 1.5f, 1.5f,0.5f });
-		sprites[StatusGauge].Tex->SetAnchorPoint({ 0,0.f });
-		sprites[StatusGauge].IsVisible = false;
+		sprites[StatusGauge] = CreateUi(ImageManager::WHITE, m_GaugePosMini, m_GaugeSizeMini, { 0.f, 1.f, 0.f,1.f });
 		TexList.emplace_back(std::move(sprites[StatusGauge]));
 	}
 	{//ゲージ
-		sprites[ChargeGauge] = CreateUi(ImageManager::Gauge, m_GaugePos, m_GaugeSizeMini, { 1.5f, 1.5f, 1.5f,1 });
-		sprites[ChargeGauge].Tex->SetAnchorPoint({ 0,0.5f });
-		sprites[ChargeGauge].IsVisible = false;
+		sprites[ChargeGauge] = CreateUi(ImageManager::Gauge, m_GaugePosMini, m_GaugeSizeMini, { 1.5f, 1.5f, 1.5f,1 });
 		TexList.emplace_back(std::move(sprites[ChargeGauge]));
 	}
 	{//ゲージ
@@ -79,7 +73,6 @@ void UI::Initialize() {
 void UI::Update() {
 	//Gauge処理
 	if (HungerGauge::GetInstance()->GetCatchCount() == 0) {
-		//TexList[UnderStatusGauge].IsVisible = false;
 		TexList[StatusGauge].IsVisible = false;
 		TexList[ExtraGauge].IsVisible = false;
 		TexList[ChargeGauge].IsVisible = false;
@@ -87,12 +80,10 @@ void UI::Update() {
 		TexList[StatusGauge].Size = { HungerGauge::GetInstance()->GetPercentage() * m_GaugeSizeMini.x,m_GaugeSizeMini.y };
 		TexList[ExtraGauge].Size = { HungerGauge::GetInstance()->GetPercentageExtra() * m_GaugeSizeMini.x,m_GaugeSizeMini.y };
 		TexList[ChargeGauge].Size = { Player::GetInstance()->GetPercentage() * m_GaugeSizeMini.x,m_GaugeSizeMini.y };
-		//TexList[UnderStatusGauge].Size = { (HungerGauge::GetInstance()->GetHungerMax() / 5.f) * m_GaugeSize.x / 10.f,m_GaugeSize.y };
-		//TexList[UnderStatusGauge].IsVisible = true;
 		TexList[StatusGauge].IsVisible = true;
 		TexList[ExtraGauge].IsVisible = true;
 		TexList[ChargeGauge].IsVisible = true;
-		TexList[ExtraGauge].Color = { 0.0f,1.0f,1.0f,1.0f };
+		//HungerGauge::GetInstance()->GetAdditional()
 		if (Player::GetInstance()->GetChargeType() == 0) {
 			TexList[ChargeGauge].Color = { 1.0f,1.0f,0.2f,1.0f };
 		} else if (Player::GetInstance()->GetChargeType() == 1) {
@@ -174,7 +165,7 @@ void UI::Update() {
 
 
 	if (boss) {
-		TexList[BossGauge].Size = { boss->HpPercent() * m_GaugeSizeMini.x * 0.9f ,m_PlayerHpSize.y * 0.34f };
+		TexList[BossGauge].Size = { boss->HpPercent() * 512.f * 0.6f * 0.9f ,128.f * 0.8f * 0.34f };
 		TexList[MiddleBossGauge].Size = {
 		Ease(In,Quad,0.3f,TexList[MiddleBossGauge].Size.x,TexList[BossGauge].Size.x),
 		Ease(In,Quad,0.3f,TexList[MiddleBossGauge].Size.y,TexList[BossGauge].Size.y),
