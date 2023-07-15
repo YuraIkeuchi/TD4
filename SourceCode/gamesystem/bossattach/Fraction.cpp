@@ -64,6 +64,10 @@ void Fraction::Spatter()
 	Ease(Out, Quart, commandTimer, s_pos.z, e_pos.z),
 	};
 	if (commandTimer >= 1) {
+		if (m_Position.x <= -55.f || m_Position.x >= 65.f
+			|| m_Position.z <= -60.f || m_Position.z >= 60.f) {
+			Isdelete = true;
+		}
 		drop_F = false;
 	}
 }
@@ -77,6 +81,8 @@ void Fraction::Drop(const XMFLOAT3& dropposiition)
 
 void Fraction::Update(vector<InterBullet*> bullet)
 {
+
+
 	ColPlayer(bullet);
 	
 	Pop();

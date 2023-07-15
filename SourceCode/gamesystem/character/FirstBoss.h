@@ -38,9 +38,9 @@ private:
 	}bottlestate_;
 
 	enum Bounce {
-		SOURCE=0,
-		UP,
+		UP=0,
 		DOWN,
+		SOURCE,
 	}bounce_;
 public:
 	FirstBoss();
@@ -76,7 +76,7 @@ private:
 	//ロックオン突進
 	void RockOnAttack();
 	//ランダム
-	void RandAttack();
+	void DropAttack();
 	//当たり屋?
 	void Hit();
 
@@ -93,6 +93,10 @@ private:
 	void Areia();
 	// INVINCIBLE
 	void Invincible();
+
+	void FractionRockOn();
+
+	void FractionAttack();
 
 	void Crush();
 private:
