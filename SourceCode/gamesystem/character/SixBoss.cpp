@@ -455,15 +455,8 @@ void SixBoss::BirthNote(const std::string& BarrageName) {
 				matRot2 = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
 			}
 			else if (i == 1) {
-				matRot2 = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 90.0f));
-			}
-			else if (i == 2) {
 				matRot2 = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 180.0f));
 			}
-			else {
-				matRot2 = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 270));
-			}
-
 			move2 = XMVector3TransformNormal(move2, matRot2);
 			XMFLOAT2 l_Angle2;
 			l_Angle2.x = move2.m128_f32[0];

@@ -222,9 +222,8 @@ void ThirdBoss::DamAction()
 //ImGui
 void ThirdBoss::ImGui_Origin() {
 	ImGui::Begin("Third");
-	ImGui::Text("RotX:%f", m_Rotation.x);
-	ImGui::Text("RotY:%f", m_Rotation.y);
-	ImGui::Text("RotZ::%f", m_Rotation.z);
+	ImGui::Text("Frame:%f", m_Frame);
+	ImGui::Text("Choice:%d", int(_charaState));
 	ImGui::End();
 }
 //移動
@@ -467,7 +466,7 @@ void ThirdBoss::Rolling() {
 		//回転を決める
 		m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, 90.0f);
 	}
-	else if (m_RollType == ROLL_THIRD) {
+	else if (m_RollType == ROLL_SECOND) {
 		l_AfterPos = { 55.0f,m_Position.y,-50.0f };
 		l_AddFrame = 0.007f;
 		l_AfterRotY = 90.0f;
