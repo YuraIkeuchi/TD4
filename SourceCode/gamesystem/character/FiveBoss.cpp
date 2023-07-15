@@ -25,8 +25,7 @@ FiveBoss::FiveBoss()
 
 	noteeffect.reset(new NoteEffect());
 	noteeffect->Initialize();
-
-	m_HP = 10;
+	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "hp")));
 }
 
 bool FiveBoss::Initialize()
