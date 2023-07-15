@@ -49,6 +49,7 @@ public:
 
 	void SetCircleSpeed(const float CircleSpeed) { m_CircleSpeed = CircleSpeed; }
 	void SetLimitTimer(const int LimitTimer) { m_LimitTimer = LimitTimer; }
+	void SetDelete(const int Delete) { m_Delete = Delete; }
 private:
 	vector<InterEffect*> effects;
 	unique_ptr<IKETexture> tex;
@@ -63,6 +64,8 @@ private:
 	float m_Damage = {};
 	float m_Frame = {};
 	XMFLOAT3 m_TargetPos = {};
+	float m_SinAngle = {};
+	float m_SinAngle2 = {};
 	enum MoveState {
 		MOVE_SET,
 		MOVE_PLAY,
@@ -74,4 +77,5 @@ private:
 	int m_LimitTimer = 200;
 
 	float m_HP = 1.0f;
+	bool m_Delete = false;
 };

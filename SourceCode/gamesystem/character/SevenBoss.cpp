@@ -272,7 +272,7 @@ void SevenBoss::Draw(DirectXCommon* dxCommon) {
 void SevenBoss::ImGui_Origin() {
 	ImGui::Begin("Seven");
 	ImGui::Text("End:%d", m_EndTimer);
-	ImGui::Text("PosY:%f", m_Position.y);
+	ImGui::Text("PosY:%f", m_Rotation.y);
 	ImGui::End();
 
 	//火の玉
@@ -293,6 +293,14 @@ void SevenBoss::InterValMove() {
 		l_LimitTimer = m_StrongLimit[STATE_INTER];
 	}
 	m_InterVal++;
+
+	//一定時間立った後にボスに近づくと消える
+	if (m_InterVal >= 100) {
+		m_Dir = Helper::GetInstance()->ChechLength(m_Position, Player::GetInstance()->GetPosition());
+		if (m_Dir <= 18.0f) {
+			m_Return = true;
+		}
+	}
 	if (!m_Return) {
 		RandMove();//一定フレームで動くで
 	}
@@ -501,6 +509,9 @@ void SevenBoss::FireAttack() {
 	}
 }
 void SevenBoss::BirthFire() {
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_RandomMove(0, 7);
+	m_DeleteNumber = l_RandomMove(mt);
 	//火の玉
 	for (int i = 0; i < FIRE_NUM; i++) {
 		FireBoll* newfire;
@@ -509,6 +520,8 @@ void SevenBoss::BirthFire() {
 		newfire->SetCircleSpeed(i * 45.0f);
 		fireboll.push_back(newfire);
 	}
+
+	fireboll[m_DeleteNumber]->SetDelete(true);
 }
 //プレイヤー混乱
 void SevenBoss::Confu() {
@@ -923,13 +936,17 @@ void SevenBoss::ReturnBoss() {
 			m_VanishFrame += l_AddFrame;
 		}
 		else {
+			//乱数生成(円周のどこか)
+			mt19937 mt{ std::random_device{}() };
+			uniform_int_distribution<int> l_RandSpeed(0, 360);
+			m_RandSpeed = float(l_RandSpeed(mt));
 			_ReturnState = RETURN_PLAY;
 			m_VanishFrame = {};
 		}
 	}
 	else if (_ReturnState == RETURN_PLAY) {
 		m_CircleScale = 30.0f;
-		m_CircleSpeed = {};
+		m_CircleSpeed = m_RandSpeed;
 		m_Position = Helper::GetInstance()->CircleMove({ Player::GetInstance()->GetPosition().x,m_Position.y,Player::GetInstance()->GetPosition().z}, m_CircleScale, m_CircleSpeed);
 		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, Player::GetInstance()->GetPosition(), -PI_90);
 		_ReturnState = RETURN_END;

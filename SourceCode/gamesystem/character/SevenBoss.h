@@ -117,7 +117,10 @@ private:
 	bool m_Stun = false;
 	//UŒ‚‚Ì—”
 	int m_AttackRand = {};
-
+	//Á‚¦‚½Œã‚Ì‰~ü‚ÌˆÊ’u
+	float m_RandSpeed = {};
+	//“ñ“_‚Ì‹——£
+	float m_Dir = {};
 	//“G‚ª’e‚ğ”ğ‚¯‚é‚©‚Ç‚¤‚©
 	bool m_Vanish = false;
 
@@ -182,4 +185,6 @@ private:
 		DEATH_TALK,
 		DEATH_NO_TALK,
 	}_DeathState;
+
+	int m_DeleteNumber = {};
 };
