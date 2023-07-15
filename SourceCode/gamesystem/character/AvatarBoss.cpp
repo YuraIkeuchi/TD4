@@ -217,7 +217,7 @@ void AvatarBoss::InterValMove() {
 			_charaState = STATE_VANISH;
 			m_InterVal = {};
 			m_AttackCount = {};
-			m_AfterAlpha = 1.0f;
+			m_AfterAlpha = 0.5f;
 		}
 	}
 }

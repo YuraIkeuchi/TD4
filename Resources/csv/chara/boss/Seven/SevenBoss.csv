@@ -12,6 +12,9 @@ VanishTarget,90
 //物を投げる攻撃の物の速さ
 Speed,3.0
 
+//ボス自体の移動の速さ
+BossSpeed,1.0
+
 //ゴーストを吸収したときの回復量
 HealPower,0.5
 
