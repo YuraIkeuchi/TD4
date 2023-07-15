@@ -163,7 +163,7 @@ private:
 	float GuardTime;
 		//ノックバック頻度
 	int KnockInter;
-	
+	int noAction;
 	float KnockDam, MeteoDam, ShotDam, UltDam;
 	int KnockTimer;
 	float MaxHP;

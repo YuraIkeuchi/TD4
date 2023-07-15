@@ -25,7 +25,7 @@ FiveBoss::FiveBoss()
 
 	noteeffect.reset(new NoteEffect());
 	noteeffect->Initialize();
-	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "hp")));
+	//m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "hp")));
 }
 
 bool FiveBoss::Initialize()
@@ -37,7 +37,7 @@ bool FiveBoss::Initialize()
 	m_Color = { 0.0f,1.0f,0.0f,1.0f };
 	//m_Rotation.y = -90.f;
 	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "Magnification")));
-	m_HP =  static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "hp1")));
+	m_HP =  static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "hp")));
 	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "HeartTarget")));
 
 	//ƒmƒbƒNƒoƒbƒN•p“x
@@ -56,6 +56,7 @@ bool FiveBoss::Initialize()
 		//Ultimate
 		UltDam = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "UltDam")));
 
+		noAction = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "noAction")));
 
 		shot = new ShotAttack();
 		normal = new NormalAttack();
@@ -226,9 +227,9 @@ void FiveBoss::Action()
 	mt19937 mt{ std::random_device{}() };
 
 	//single->Upda();
-	if (shot->GetCanRand() > 0&& shot->GetPhase()==ShotAttack::Phase::END) {
+	if (shot->GetCanRand() > 30&& shot->GetPhase()==ShotAttack::Phase::END) {
 		//’ÊíUŒ‚
-		if (GhostSize > 0 && GhostSize < 4)
+		if (GhostSize > noAction && GhostSize < 4)
 		{
 			shot->SetActionEnd(true);
 			shot->SetIdleDam(false);
@@ -240,7 +241,7 @@ void FiveBoss::Action()
 			shot->SetIdleDam(false);
 			smash->SetActionEnd(false);
 			_aPhase = ATTACK_IMPACT;
-		} else if (GhostSize == 5)
+		} else if (GhostSize >= 5)
 		{
 			shot->SetActionEnd(true);
 			shot->SetIdleDam(false);
