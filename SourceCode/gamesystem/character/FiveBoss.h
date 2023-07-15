@@ -142,6 +142,16 @@ private:
 	SingleShot* single;
 	GuardAction* guard;
 	KnockAttack* knock;
+	float WalkSpeed;
+		//ガード続く時間
+	float GuardTime;
+		//ノックバック頻度
+	int KnockInter;
+	
+	float KnockDam, MeteoDam, ShotDam, UltDam;
+	int KnockTimer;
+	float MaxHP;
+	int GuardCount;
 	static void (FiveBoss::* attackTable[])();
 	enum ActionPhase
 	{

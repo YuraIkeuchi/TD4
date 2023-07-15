@@ -34,9 +34,15 @@ protected:
 	XMFLOAT3 m_Position, m_Rotation;
 
 	int CanRand;
+
+	float Dam;
+
+	float WalkSpeed;
+	float GuardTimes;
 public:
 	void FollowPlayer();
 	int GetCanRand() { return CanRand; }
 	void SetCanRand(int num) { CanRand = num; }
+	void SetDam(float dam) { Dam = dam; }
 };
 

@@ -149,35 +149,16 @@ void SingleShot::Phase_Shot()
 	FollowPlayerAct();
 	//向いた方向に進む
 	constexpr float SummonSpeed = 4.f;
-
+XMFLOAT4 s_color[BulSize];
+	XMFLOAT4 e_color[BulSize];
+	float s_scale[BulSize];
+	float e_scale[BulSize];
+	int m_Life[BulSize];
 	for (auto i = 0; i < BulSize; i++)
 	{
 		move[i] = { 0.f,0.f,0.1f,0.f };
 		matRot[i] = XMMatrixRotationY(XMConvertToRadians(boss->GetRotation().y - 0.f + (static_cast<float>(i * 30.f - 30.f))));
 		move[i] = XMVector3TransformNormal(move[i], matRot[i]);
-
-	}
-	XMFLOAT4 s_color[BulSize];
-	XMFLOAT4 e_color[BulSize];
-	float s_scale[BulSize];
-	float e_scale[BulSize];
-	int m_Life[BulSize];
-
-	for (auto i = 0; i < BulSize; i++)
-	{
-		if (!ShotAlive[i])continue;
-		if (BulAlpha[i] >= 1.f)BulPos[i] = boss->GetPosition();
-		if (Collision::GetLength(BulPos[i], Player::GetInstance()->GetPosition()) < 5.f) {
-			Player::GetInstance()->PlayerHit(m_Position);
-			Player::GetInstance()->RecvDamage(1);
-
-		}
-
-		//進行スピード
-		BulPos[i].x += move[i].m128_f32[0] * SummonSpeed;
-		BulPos[i].z += move[i].m128_f32[2] * SummonSpeed;
-		//弾を薄く
-		BulAlpha[i] -= 0.01f;
 
 		s_color[i] = { 0.8f,0.4f,1.0f,1.0f };
 		e_color[i] = { 0.40f,0.0f,0.50f,1.0f };
@@ -187,6 +168,24 @@ void SingleShot::Phase_Shot()
 
 		ParticleEmitter::GetInstance()->FireEffect(m_Life[i], BulPos[i], s_scale[i], e_scale[i], s_color[i], e_color[i]);
 
+	}
+	
+
+	for (auto i = 0; i < BulSize; i++)
+	{
+		if (!ShotAlive[i])continue;
+		if (BulAlpha[i] >= 1.f)BulPos[i] = boss->GetPosition();
+		if (Collision::GetLength(BulPos[i], Player::GetInstance()->GetPosition()) < 5.f) {
+			Player::GetInstance()->PlayerHit(m_Position);
+			Player::GetInstance()->RecvDamage(Dam);
+
+		}
+
+		//進行スピード
+		BulPos[i].x += move[i].m128_f32[0] * SummonSpeed;
+		BulPos[i].z += move[i].m128_f32[2] * SummonSpeed;
+		//弾を薄く
+		BulAlpha[i] -= 0.01f;
 	}
 
 	bool OwnShot = ShotSize == 1 && BulAlpha[1] <= 0.f;

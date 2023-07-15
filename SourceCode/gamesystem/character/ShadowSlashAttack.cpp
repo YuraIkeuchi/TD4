@@ -2,6 +2,7 @@
 
 #include <random>
 
+#include "Collision.h"
 #include "Helper.h"
 #include "ImageManager.h"
 #include "Player.h"
@@ -128,7 +129,7 @@ void ShadowSlashAttack::Phase_Idle()
 	KotokoPos[0].z = -60.f;
 
 	KotokoPos[1].x = -60.f;
-	KotokoPos[1].z = 30.f;
+	KotokoPos[1].z = boss->GetPosition().z;
 
 	ImpactTexPos[0] = KotokoPos[0];
 	ImpactTexPos[1] = KotokoPos[1];
@@ -158,6 +159,7 @@ void ShadowSlashAttack::Phase_ViewArea()
 		Swords_H[i].Alpha = 1.f;
 	}
 
+	
 	//‰¡”ÍˆÍ
 	for (auto i = 0; i < SwordSize; i++) {
 		mt19937 mt{ std::random_device{}() };
@@ -209,7 +211,26 @@ void ShadowSlashAttack::Phase_Impact()
 	{
 		_phase = NAILDEST;
 	}
-		
+	//else{
+		Line2D lines[2];
+		Point points;
+		points = { Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z };
+
+		lines[0].start = { KotokoPos[0].x,KotokoPos[0].z };
+		lines[0].end = { KotokoPos[0].x,60.f };
+		lines[1].start = { KotokoPos[1].x,KotokoPos[1].z };
+		lines[1].end = { 60,KotokoPos[1].z };
+		for (size_t i = 0; i < 2; i++) {
+			if (Player::GetInstance()->GetDamageInterVal() != 0)break;
+			//////////////
+			//”»’è•”
+			if (Collision::IsCollidingLineAndCircle(lines[i], points, 10.0f))
+			{
+				Player::GetInstance()->PlayerHit(KotokoPos[i]);
+				Player::GetInstance()->RecvDamage(Dam);
+			}
+		}
+	//}
 	AreaAlpha[0] = 0.f;
 	AreaAlpha[1] = 0.f;
 }

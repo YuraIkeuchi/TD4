@@ -301,7 +301,7 @@ void SmashShotAttack::BomParticle()
 		if (Collision::GetLength(Player::GetInstance()->GetPosition(), BulPos[i]) < 10.f)
 		{
 			Player::GetInstance()->PlayerHit(boss->GetPosition());
-			Player::GetInstance()->RecvDamage(2);
+			Player::GetInstance()->RecvDamage(Dam);
 		}
 		ParticleEmitter::GetInstance()->Explosion(l_Life[i], BulPos[i], l_AddSize[i], s_scale[i], e_scale[i], s_color[i], e_color[i]);
 

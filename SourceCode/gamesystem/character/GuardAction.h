@@ -26,7 +26,7 @@ private:
     std::array<float, GuardSize>guardUvY;
     float GuardEaseT;
     bool GuardStart = false;
-
+    int GuardTime;
 private:
     void GuardAreacreate();
 public:

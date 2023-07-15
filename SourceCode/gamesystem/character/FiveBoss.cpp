@@ -22,25 +22,6 @@ FiveBoss::FiveBoss()
 	confueffect.reset(new ConfuEffect());
 	confueffect->Initialize();
 
-	shot = new ShotAttack();
-	normal = new NormalAttack();
-	smash = new SmashShotAttack();
-	slash = new ShadowSlashAttack();
-	single = new SingleShot();
-	guard = new GuardAction();
-	knock = new KnockAttack();
-
-	smash->Init();
-	shot->Init();
-	slash->Init();
-	single->Init();
-	guard->Init();
-	normal->Init();
-	knock->Init();
-
-
-	normal->SetBoss(this);
-
 	noteeffect.reset(new NoteEffect());
 	noteeffect->Initialize();
 
@@ -52,9 +33,56 @@ bool FiveBoss::Initialize()
 	m_Position = { 0.0f,3.0f,30.0f };
 	m_Rotation = { 0.0f,90.0f,0.0f };
 	m_Radius = 5.2f;
-	m_Scale = { 1.2f,0.8f,1.2f };
+	m_Scale = { 1.9f,1.5f,1.9f };
 	m_Color = { 0.0f,1.0f,0.0f,1.0f };
 	//m_Rotation.y = -90.f;
+	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "Magnification")));
+	m_HP =  static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "hp1")));
+	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "HeartTarget")));
+
+	//ノックバック頻度
+	KnockInter = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "KnockInter")));
+
+	//KnockBack
+	KnockDam = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "KnockDam")));
+
+
+		//MeteoShot
+		MeteoDam = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "MeteoDam")));
+
+		//WayShot
+		ShotDam = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "ShotDam")));
+
+		//Ultimate
+		UltDam = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "UltDam")));
+
+
+		shot = new ShotAttack();
+		normal = new NormalAttack();
+		smash = new SmashShotAttack();
+		slash = new ShadowSlashAttack();
+		single = new SingleShot();
+		guard = new GuardAction();
+		knock = new KnockAttack();
+
+		smash->Init();
+		shot->Init();
+		slash->Init();
+		single->Init();
+		guard->Init();
+		normal->Init();
+		knock->Init();
+
+
+		normal->SetBoss(this);
+
+		knock->SetDam(KnockDam);
+		smash->SetDam(MeteoDam);
+		slash->SetDam(UltDam);
+		single->SetDam(ShotDam);
+
+	MaxHP = m_HP;
+
 	GhostSize = 0;
 	_aPhase = ATTACK_SHOT;
 	/*ActionTimer = 1;
@@ -129,11 +157,19 @@ void FiveBoss::Action()
 
 	
 	//}
-	if (Input::GetInstance()->TriggerButton(Input::X))
+	if(KnockTimer%KnockInter==0)
+	//if (Input::GetInstance()->TriggerButton(Input::X))
 		knock->setKnockF(true);
-	if (Input::GetInstance()->TriggerButton(Input::Y))
+	if (GuardCount==0&& m_HP < MaxHP / 2) {
 		guard->SetGuardStart(true);
+		GuardCount++;
 		//guard->SetGuardStart(true);
+	}
+	if (guard->GetGuardStart())
+		m_Magnification = 0.f;
+	else
+		m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/Firstboss.csv", "Magnification")));
+
 
 	knock->Upda();
 	guard->Upda();
@@ -196,8 +232,8 @@ void FiveBoss::Action()
 		{
 			shot->SetActionEnd(true);
 			shot->SetIdleDam(false);
-			single->SetActionEnd(false);
-			_aPhase = ATTACK_SINGLESHOT;
+			slash->SetActionEnd(false);
+			_aPhase = ATTACK_SLASH;
 		} else if (GhostSize == 4)
 		{
 			shot->SetActionEnd(true);

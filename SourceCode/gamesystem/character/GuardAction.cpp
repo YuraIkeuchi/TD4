@@ -1,5 +1,6 @@
 #include "GuardAction.h"
 
+#include "CsvLoader.h"
 #include "Easing.h"
 #include "Helper.h"
 #include "ImageManager.h"
@@ -17,6 +18,8 @@ void GuardAction::Init()
 	guardtex[3]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::WIDTH3));
 	guardtex[4]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::WIDTH4));
 	guardtex[5]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::DOWNBOX));
+	//ƒK[ƒh‘±‚­ŠÔ
+	GuardTimes = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "GuardTime")));
 
 }
 
@@ -80,6 +83,7 @@ void GuardAction::SpriteDraw()
 void GuardAction::GuardAreacreate()
 {
 	if (GuardStart) {
+		GuardTime++;
 		Helper::GetInstance()->FrameCheck(guardtexEaseT[5], 0.02f);
 		for (auto i = 5; i >=0; i--) {
 			if(guardtexEaseT[i+1] > 0.8f)
@@ -98,6 +102,11 @@ void GuardAction::GuardAreacreate()
 
 			};
 			Helper::GetInstance()->Clamp(guardAlpha[i], 0.f, 0.5f);
+		}
+
+		if(GuardTime>GuardTimes)
+		{
+			GuardStart = false;
 		}
 	}
 	//else {
