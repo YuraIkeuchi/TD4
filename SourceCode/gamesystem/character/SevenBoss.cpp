@@ -346,10 +346,9 @@ void SevenBoss::InterValMove() {
 				m_InterVal = {};
 			}
 			else {
-				
+				_charaState = STATE_BLOCK;
+				m_InterVal = {};
 			}
-			_charaState = STATE_BLOCK;
-			m_InterVal = {};
 		}
 		else {
 			_charaState = STATE_AVATAR;
@@ -922,9 +921,7 @@ void SevenBoss::RandMove() {
 	if (m_ChangeTimer == 50) {
 		//óêêîê∂ê¨(â¡éZóÕÇ∆ëÂÇ´Ç≥)
 		mt19937 mt{ std::random_device{}() };
-		uniform_int_distribution<int> l_RandSpeed(-10, 10);
-		uniform_int_distribution<int> l_RandScale(-5, 5);
-		uniform_int_distribution<int> l_RandDir(0, 1);
+		uniform_int_distribution<int> l_RandScale(-5, 10);
 		m_AddScale = float(l_RandScale(mt)) / l_Division;
 		m_ChangeTimer = {};
 	}
