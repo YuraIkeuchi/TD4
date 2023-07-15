@@ -80,6 +80,11 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	CreateWord(AISATU, L"おはよう", L"こんにちは", L"こんばんは");
 
 
+	CreateCapWord(Name_Cap::CAP3, L"わいらなかなかやっな", L"じゃっどんそげん攻撃おいにはきかん", L" ");
+	CreateCapWord(Name_Cap::KOTO3, L"どうしようどうやったら元に戻せるんだろう",L" ", L" ");
+
+	//CreateCapWord(Name_Cap::SUTO3,L"")
+
 	CreateWord(Name_First::VIEWBOSS, L"あれは..！",L"ちえよしなのか？",L"");
 	CreateWord(Name_First::SPEAKPLAYER1, L"あれがストポンの友達なの？");
 	CreateWord(Name_First::SPEALPLAYER2, L"そうだ..悪霊になって",L"本に憑りついちまったみたいだ",L"コトコ!ちえよしを倒してもとに戻してくれ！");
@@ -408,6 +413,12 @@ void TextManager::CameraBossCreateWord(Name_CameraBoss name, wchar_t* tex1, wcha
 	Word temp = SetWord(tex1, tex2, tex3);
 
 	wordlist_cameraBoss.insert(std::make_pair(name, temp));
+}
+void TextManager::CreateCapWord(Name_Cap name, wchar_t* tex1, wchar_t* tex2, wchar_t* tex3)
+{
+	Word temp = SetWord(tex1, tex2, tex3);
+
+	wordlist_cap.insert(std::make_pair(name, temp));
 }
 void TextManager::SetRowPosition(float posX)
 {

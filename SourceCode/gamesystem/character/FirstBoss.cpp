@@ -11,7 +11,7 @@ void (FirstBoss::* FirstBoss::stateTable[])() = {
 	&FirstBoss::InterValMove,
 	&FirstBoss::Choice,
 	&FirstBoss::RockOnAttack,
-	&FirstBoss::RandAttack,
+	&FirstBoss::DropAttack,
 	&FirstBoss::Hit,
 	&FirstBoss::Invincible,
 };
@@ -201,6 +201,7 @@ void FirstBoss::Draw(DirectXCommon* dxCommon)
 //攻撃後のインターバル
 void FirstBoss::InterValMove()
 {
+	jumpCount = 0;
 	commandTimer += 1.0f / 50;
 	Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);
 	s_posY = m_Position.y;
@@ -295,7 +296,7 @@ void FirstBoss::RockOnAttack()
 	Attack();
 }
 //動いてる途中に落とす
-void FirstBoss::RandAttack()
+void FirstBoss::DropAttack()
 {
 	if (act_ == ActionFase::Before) {
 		commandTimer += 1.0f / 30;
@@ -309,6 +310,7 @@ void FirstBoss::RandAttack()
 		};
 		if (m_Rotation.x >= 90) {
 			act_ = ActionFase::After;
+		
 			commandTimer = 0;
 		}
 	}
@@ -322,8 +324,9 @@ void FirstBoss::RandAttack()
 			0.f,
 			0.f,
 		};
-		if (m_Rotation.x <= 0) {
-			CreateFraction(m_Position, m_Position);
+		if (m_Rotation.x <= 10) {
+			FractionRockOn();
+			CreateFraction(e_pos, m_Position);
 			commandTimer = 0.f;
 			m_Rotation.x = 0;
 			_charstate = CharaState::STATE_INTER;
@@ -446,7 +449,6 @@ void FirstBoss::RockOn()
 
 void FirstBoss::Attack()
 {
-
 	if (_rockonstate != RockonState::STATE_ATTACK) { return; }
 	m_Frame++;
 	if (m_Frame >= 5) {
@@ -560,6 +562,15 @@ void FirstBoss::Areia()
 void FirstBoss::Invincible()
 {
 }
+
+void FirstBoss::FractionRockOn()
+{
+	rot = m_Rotation.y;
+	jumpCount = 3;
+	s_pos = m_Position;
+	e_pos = { m_Position.x + sinf(RottoPlayer) * -(20.f * (float)jumpCount),0.f, m_Position.z + cosf(RottoPlayer) * -(20.0f * (float)jumpCount) };
+}
+
 
 void FirstBoss::InitAwake() {
 

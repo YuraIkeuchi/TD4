@@ -65,6 +65,19 @@ public:
 		UNKNOW2
 	};
 
+	enum Name_Cap
+	{
+		KOTO1,
+		SUTO1,
+		CAP1,
+		KOTO2,
+		SUTO2,
+		CAP2,
+		KOTO3,
+		SUTO3,
+		CAP3,
+	};
+
 	enum Name_First
 	{
 		VIEWBOSS,
@@ -205,6 +218,7 @@ private:
 	void FourthCreateWord(Name_Fourth name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
 	void LastCreateWord(Name_Last name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
 	void CameraBossCreateWord(Name_CameraBoss name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
+	void CreateCapWord(Name_Cap name, wchar_t* tex1, wchar_t* tex2 = L" ", wchar_t* tex3 = L" ");
 	//
 	Word SetWord(wchar_t* tex1, wchar_t* tex2, wchar_t* tex3);
 	//
@@ -218,6 +232,7 @@ private:
 	std::map<TextManager::Name_CameraBoss, Word> wordlist_cameraBoss;
 	std::map<TextManager::Name_Fourth, Word> wordlist_fourth;
 	std::map<TextManager::Name_Last, Word> wordlist_last;
+	std::map<TextManager::Name_Cap, Word> wordlist_cap;
 
 	Conversation conversation_ = {};
 	Conversation old_conversation_ = {};
