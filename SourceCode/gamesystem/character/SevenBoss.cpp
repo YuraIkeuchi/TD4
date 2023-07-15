@@ -216,6 +216,11 @@ void SevenBoss::Action() {
 		isStrong = true;
 		AVATAR_NUM = 4;
 	}
+
+	if (!m_Stun) {
+		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, Player::GetInstance()->GetPosition(), -PI_180);
+	}
+
 }
 //ポーズ
 void SevenBoss::Pause() {
@@ -378,6 +383,8 @@ void SevenBoss::Polter() {
 			_charaState = STATE_CATCH;
 		}
 	}
+
+	m_Color.w = Ease(In, Cubic, 0.5f, m_Color.w, 1.0f);
 }
 //バウンド弾
 void SevenBoss::ThrowBound() {
@@ -406,6 +413,7 @@ void SevenBoss::ThrowBound() {
 			_charaState = STATE_CATCH;
 		}
 	}
+	m_Color.w = Ease(In, Cubic, 0.5f, m_Color.w, 1.0f);
 }
 //偽物のボスを生む
 void SevenBoss::BirthAvatar() {
@@ -438,6 +446,7 @@ void SevenBoss::BirthAvatar() {
 			_charaState = STATE_CATCH;
 		}
 	}
+	m_Color.w = Ease(In, Cubic, 0.5f, m_Color.w, 1.0f);
 }
 //捕まえているゴーストを操る
 void SevenBoss::Manipulate() {
@@ -479,6 +488,7 @@ void SevenBoss::Manipulate() {
 			}
 		}
 	}
+	m_Color.w = Ease(In, Cubic, 0.5f, m_Color.w, 1.0f);
 }
 //火の玉攻撃
 void SevenBoss::FireAttack() {
@@ -507,6 +517,7 @@ void SevenBoss::FireAttack() {
 			_charaState = STATE_CATCH;
 		}
 	}
+	m_Color.w = Ease(In, Cubic, 0.5f, m_Color.w, 1.0f);
 }
 void SevenBoss::BirthFire() {
 	mt19937 mt{ std::random_device{}() };
@@ -561,6 +572,7 @@ void SevenBoss::Confu() {
 			_charaState = STATE_CATCH;
 		}
 	}
+	m_Color.w = Ease(In, Cubic, 0.5f, m_Color.w, 1.0f);
 }
 //ダメージのブロック
 void SevenBoss::BlockAttack() {
@@ -588,6 +600,7 @@ void SevenBoss::BlockAttack() {
 			_charaState = STATE_CATCH;
 		}
 	}
+	m_Color.w = Ease(In, Cubic, 0.5f, m_Color.w, 1.0f);
 }
 //ブロックの生成
 void SevenBoss::BirthBlock() {
@@ -703,6 +716,7 @@ void SevenBoss::Stun() {
 		bossstuneffect->SetAlive(false);
 		m_Return = true;
 	}
+	m_Color.w = Ease(In, Cubic, 0.5f, m_Color.w, 1.0f);
 }
 //登場シーン
 void SevenBoss::AppearAction() {
@@ -926,7 +940,6 @@ void SevenBoss::RandMove() {
 		m_Position.y,
 		Ease(In,Cubic,0.5f,m_Position.z,m_AfterPos.z),
 	};
-	m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, Player::GetInstance()->GetPosition(), -PI_180);
 }
 void SevenBoss::ReturnBoss() {
 	const float l_AddFrame = 0.05f;

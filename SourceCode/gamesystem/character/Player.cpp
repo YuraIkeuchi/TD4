@@ -133,6 +133,7 @@ void Player::Update()
 	index = 15;
 	m_fbxObject->GetBoneIndexMat(index, skirtmat);
 	skirtobj->FollowUpdate(skirtmat);
+	skirtobj->SetColor(m_Color);
 	//Stateに入れなくていいやつ
 	//攻撃のインターバル
 	InterVal();

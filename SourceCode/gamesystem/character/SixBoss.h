@@ -59,7 +59,7 @@ private:
 	//死んだときのパーティクル
 	void DeathParticle();
 private:
-	static const int BULLET_NUM = 4;
+	static const int BULLET_NUM = 2;
 	static const int CD_NUM = 4;
 private:
 	//各クラス
