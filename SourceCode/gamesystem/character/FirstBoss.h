@@ -235,6 +235,7 @@ private:
 
 	float beforeTimer = 0.f;
 	float half_hp_{};
+	float DecisionCount = 0.f;
 };
 
 

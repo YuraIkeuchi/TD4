@@ -49,6 +49,7 @@ bool FirstBoss::Initialize()
 	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/Firstboss.csv", "Magnification")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/Firstboss.csv", "hp1")));
 	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/Firstboss.csv", "HeartTarget")));
+	DecisionCount=static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/Firstboss.csv", "DecisionCount")));
 	m_Radius = 5.2f;
 	m_MaxHp = m_HP;
 	half_hp_ = m_HP / 4;
@@ -220,7 +221,7 @@ void FirstBoss::InterValMove()
 	m_Position.y = Ease(In, Quart, commandTimer, s_posY, e_posY);
 
 
-	m_ActionTimer += 1.0f / 60;
+	m_ActionTimer += 1.0f / DecisionCount;
 	if (m_ActionTimer >= 1.f && m_Position.y <= 1) {
 		_charstate = STATE_CHOICE;
 		m_ActionTimer = 0;
