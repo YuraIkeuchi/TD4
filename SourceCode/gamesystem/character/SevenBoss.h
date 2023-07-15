@@ -174,6 +174,8 @@ private:
 	vector<int>m_Limit;
 	//‹­‰»Œã
 	vector<int>m_StrongLimit;
+	//ˆÚ“®‘¬“x
+	
 
 	//Œ‚”jƒV[ƒ“ŠÖŒW
 	float m_BoundPower = {};

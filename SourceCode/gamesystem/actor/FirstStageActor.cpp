@@ -48,7 +48,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	loadobj->LightSet(lightgroup);
 	LoadStageObj::SetEnemyManager(enemymanager.get());
 
-	quarter_hp_ = enemymanager->GetHp() / 4;
+	quarter_hp_ = enemymanager->GetHp() / 2;
 
 	m_SceneState = SceneState::IntroState;
 
@@ -324,5 +324,5 @@ void FirstStageActor::TalkUpdate()
 	
 	messagewindow_->Update(girl_color_, sutopon_color_);
 	
-	quarter_hp_ = 0.f;
+	quarter_hp_ = -100.f;
 }

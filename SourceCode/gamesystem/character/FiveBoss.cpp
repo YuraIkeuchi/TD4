@@ -82,7 +82,7 @@ bool FiveBoss::Initialize()
 		slash->SetDam(UltDam);
 		single->SetDam(ShotDam);
 
-	MaxHP = m_HP;
+	m_MaxHp = m_HP;
 
 	GhostSize = 0;
 	_aPhase = ATTACK_SHOT;
@@ -102,7 +102,7 @@ bool FiveBoss::Initialize()
 	e_scale.resize(19);
 	m_Life.resize(19);
 
-	m_HP = 10;
+	//m_HP = 10;
 	CSVLoad();
 	return true;
 }
@@ -161,7 +161,7 @@ void FiveBoss::Action()
 	if(KnockTimer%KnockInter==0)
 		knock->setKnockF(true);
 
-	if (GuardCount==0&& m_HP < MaxHP / 2) {
+	if (GuardCount==0&& m_HP < m_MaxHp / 2) {
 		guard->SetGuardStart(true);
 		GuardCount++;
 		//guard->SetGuardStart(true);

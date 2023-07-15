@@ -167,7 +167,6 @@ private:
 	int noAction;
 	float KnockDam, MeteoDam, ShotDam, UltDam;
 	int KnockTimer=1;
-	float MaxHP;
 	int GuardCount;
 	static void (FiveBoss::* attackTable[])();
 	enum ActionPhase

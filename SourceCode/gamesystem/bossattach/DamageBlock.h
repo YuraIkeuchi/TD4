@@ -61,7 +61,7 @@ private:
 	XMFLOAT3 m_TexScale = {};
 	XMFLOAT4 m_TexColor = { 1.0f,1.0f,1.0f,0.0f };
 	float m_Alpha = 0.0f;
-	float m_AfterAlpha = 1.0f;
+	float m_AfterAlpha = 0.5f;
 private:
 	enum BlockState {
 		BLOCK_SET,

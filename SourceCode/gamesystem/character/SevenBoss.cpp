@@ -66,7 +66,7 @@ void SevenBoss::CSVLoad() {
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "hp1")));
 	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "HeartTarget")));
 	m_VanishTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "VanishTarget")));
-
+	m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "BossSpeed")));
 	m_MaxHp = m_HP;
 
 	m_CircleScale = 30.0f;
@@ -921,12 +921,8 @@ void SevenBoss::RandMove() {
 	if (m_ChangeTimer == 50) {
 		//óêêîê∂ê¨(â¡éZóÕÇ∆ëÂÇ´Ç≥)
 		mt19937 mt{ std::random_device{}() };
-		uniform_int_distribution<int> l_RandSpeed(-10, 10);
-		uniform_int_distribution<int> l_RandScale(-5, 5);
-		uniform_int_distribution<int> l_RandDir(0, 1);
+		uniform_int_distribution<int> l_RandScale(-5, 10);
 		m_AddScale = float(l_RandScale(mt)) / l_Division;
-		
-		m_AddSpeed = 1.0f;
 		m_ChangeTimer = {};
 	}
 	
@@ -940,6 +936,8 @@ void SevenBoss::RandMove() {
 		m_Position.y,
 		Ease(In,Cubic,0.5f,m_Position.z,m_AfterPos.z),
 	};
+
+	m_Color.w = Ease(In, Cubic, 0.5f, m_Color.w, 1.0f);
 }
 void SevenBoss::ReturnBoss() {
 	const float l_AddFrame = 0.05f;
