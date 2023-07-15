@@ -7,6 +7,7 @@
 
 void GuardAction::Init()
 {
+	
 	for (auto i = 0; i < GuardSize; i++) {
 		guardtex[i].reset(new IKEObject3d());
 		guardtex[i]->Initialize();
@@ -70,6 +71,7 @@ void GuardAction::Draw(DirectXCommon* dxCommon)
 	for (auto i = 0; i < GuardSize; i++) {
 		guardtex[i]->Draw();
 	}
+
 	IKEObject3d::PostDraw();
 }
 

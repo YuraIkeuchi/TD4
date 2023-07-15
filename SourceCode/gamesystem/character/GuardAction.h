@@ -24,6 +24,9 @@ private:
     std::array<XMFLOAT3, GuardSize>guardOldPos;
 	std::array<float, GuardSize>guardAlpha;
     std::array<float, GuardSize>guardUvY;
+
+
+
     float GuardEaseT;
     bool GuardStart = false;
     int GuardTime;

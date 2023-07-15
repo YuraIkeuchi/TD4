@@ -45,6 +45,7 @@ public:
     Phase GetPhase() { return _phase; }
 
 private:
+    bool TriggerAttack;
 	int PhaseCount = 0;
 
     int DarkCount;

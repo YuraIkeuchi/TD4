@@ -277,8 +277,7 @@ void FiveBoss::Action()
 	}
 	for (auto i = 0; i < 19; i++) {
 	}
-
-
+	
 	//‚Ç‚Á‚¿Žg‚¦‚Î‚¢‚¢‚©•ª‚©‚ç‚È‚©‚Á‚½‚©‚ç•Û—¯
 	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 	for (auto i = 0; i < 19; i++)

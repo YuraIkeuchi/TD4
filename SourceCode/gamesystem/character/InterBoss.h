@@ -268,6 +268,16 @@ public:
 	bool GetRecv() { return Recv; }
 	void SetRecv(bool f) { Recv = f; }
 	bool GetCanAttack() { return CanAttack; }
+	IKEFBXObject3d* GetFbxobj() { return m_fbxObject.get(); }
+
+	enum AnimeName
+	{
+		IDLE,
+		SHOT,
+		WALK
+	}_animeName;
+	void AnimationControl(AnimeName name, const bool& loop, int speed);
+
 	int NextActionInteval;
 	bool IdleRota;
 

@@ -32,6 +32,7 @@ public:
 	void Action() override;//行動
 
 	void EndRollAction() override;
+
 	void AppearAction() override;//ボス登場の固有の処理
 
 	void DeadAction() override;//ボス撃破の固有の処理
@@ -179,6 +180,9 @@ private:
 		ATTACK_SINGLESHOT
 	}_aPhase = ATTACK_SHOT;
 
+public:
+
+private:
 	void ActionSet(ActionPhase phase, InterAttack* attack);
 	int RandAction;
 	int ActionTimer;
@@ -190,8 +194,9 @@ private:
 	std::vector<float> s_scale;
 	std::vector<float> e_scale;
 	std::vector<int> m_Life;
-
 	int JudgAttack;
+
+	
 	inline void Shot() { shot->Upda(); }
 	inline void Normal() { normal->Upda(); }
 	inline void Smash() { smash->Upda(); }

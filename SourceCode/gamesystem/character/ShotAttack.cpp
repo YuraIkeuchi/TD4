@@ -131,7 +131,7 @@ void ShotAttack::Phase_Idle()
 {
 	AttackTimer++;
 	FollowPlayerAct();
-
+	boss->AnimationControl(InterBoss::AnimeName::WALK, true, 1);
 	bool next = Collision::GetLength(boss->GetGhost()[TargetGhost]->GetPosition(), boss->GetPosition()) < 15;
 	//次フェーズ
 
@@ -157,6 +157,9 @@ void ShotAttack::Phase_Idle()
 			mt19937 mt{ std::random_device{}() };
 			uniform_int_distribution<int> l_Rand(1, (int)boss->GetGhost().size() - 1);
 			TargetGhost = l_Rand(mt);
+
+			TriggerAttack = true;
+			boss->AnimationControl(InterBoss::AnimeName::SHOT, false, 1);
 
 			_phase = Phase::SHOT;
 		}
@@ -203,7 +206,14 @@ void ShotAttack::Phase_Shot()
 
 void ShotAttack::Phase_End()
 {
-	if (RotEaseTime == 0.f) {
+	if (TriggerAttack) {
+		if (boss->GetFbxobj()->GetCurrent() >= boss->GetFbxobj()->GetEndTime() - 1) {
+			boss->GetFbxobj()->StopAnimation();
+			boss->AnimationControl(InterBoss::AnimeName::IDLE, true, 1);
+			TriggerAttack = false;
+		}
+	}
+			if (RotEaseTime == 0.f) {
 		mt19937 mt{ std::random_device{}() };
 		uniform_int_distribution<int> l_RandRot(-100, 100);
 
