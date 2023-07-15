@@ -9,7 +9,7 @@
 #include "ImageManager.h"
 //生成
 AvatarBoss::AvatarBoss() {
-	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Ghost);
+	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::LASTBOSS);
 
 	m_Object.reset(new IKEObject3d());
 	m_Object->Initialize();
@@ -23,9 +23,9 @@ AvatarBoss::AvatarBoss() {
 //初期化
 bool AvatarBoss::Initialize() {
 	m_Position = { 0.0f,3.0f,0.0f };
-	m_Rotation = { 0.0f,270.0f,0.0f };
+	m_Rotation = { 0.0f,180.0f,0.0f };
 	m_Scale = { 0.7f,0.7f,0.7f };
-	m_Color = { 1.0f,0.7f,0.0f,0.0f };
+	m_Color = { 1.0f,1.0f,1.0f,0.0f };
 	//m_Rotation.y = -90.f;
 
 	ActionTimer = 1;
@@ -63,9 +63,9 @@ bool AvatarBoss::Initialize() {
 //スキップ時の初期化
 void AvatarBoss::SkipInitialize() {
 	m_Position = { 0.0f,3.0f,30.0f };
-	m_Rotation = { 0.0f,270.0f,0.0f };
+	m_Rotation = { 0.0f,180.0f,0.0f };
 	m_Scale = { 0.7f,0.7f,0.7f };
-	m_Color = { 1.0f,0.7f,0.0f,0.0f };
+	m_Color = { 1.0f,1.0f,1.0f,0.0f };
 }
 //CSV
 void AvatarBoss::CSVLoad() {

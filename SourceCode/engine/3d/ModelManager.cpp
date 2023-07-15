@@ -52,6 +52,7 @@ void ModelManager::SecondInitialize()
 	LoadModel(MILKCAP_BREAK, "milkCap_break");
 	LoadModel(CAP, "cap");
 	LoadModel(NAIL, "Nail");
+	LoadModel(LASTBOSS, "burapon");
 
 	LoadFBXModel(PLAYER, "kotoko");
 	LoadFBXModel(SIORI, "siori_idol");

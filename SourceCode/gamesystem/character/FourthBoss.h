@@ -129,4 +129,9 @@ private:
 
 	float shutterTimeMax = 40.0f;
 	float feedTimeMax = 15.0f;
+
+	//ã¸“x
+	float m_AddPower = 0.0f;
+	//d—Í‰Á‘¬“x
+	float m_Gravity = 0.03f;
 };

@@ -62,7 +62,7 @@ public://getter setter
 	const bool GetEnemyAbsorption() { return boss.get()->GetAbsorption(); }
 	const bool GetManipulate() { return boss.get()->GetManipulate(); }
 	const bool GetEnemyFinishAppear() { return boss.get()->GetFinishAppear(); }
-
+	const float GetHp() { return boss.get()->GetHP(); }
 	const bool GetBirthHeart() { return boss.get()->GetBirthHeart(); }
 	//チュートリアル関係のgetset
 	InterEnemy* GetEnemy(const int num) { return tutorialenemy[num].get(); }

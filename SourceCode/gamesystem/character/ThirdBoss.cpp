@@ -222,7 +222,8 @@ void ThirdBoss::DamAction()
 //ImGui
 void ThirdBoss::ImGui_Origin() {
 	ImGui::Begin("Third");
-	ImGui::Text("End:%d", m_EndTimer);
+	ImGui::Text("Frame:%f", m_Frame);
+	ImGui::Text("Choice:%d", int(_charaState));
 	ImGui::End();
 }
 //移動
@@ -465,7 +466,7 @@ void ThirdBoss::Rolling() {
 		//回転を決める
 		m_Rotation.x = Ease(In, Cubic, m_Frame, m_Rotation.x, 90.0f);
 	}
-	else if (m_RollType == ROLL_THIRD) {
+	else if (m_RollType == ROLL_SECOND) {
 		l_AfterPos = { 55.0f,m_Position.y,-50.0f };
 		l_AddFrame = 0.007f;
 		l_AfterRotY = 90.0f;
@@ -1006,12 +1007,59 @@ void ThirdBoss::DeathParticle() {
 void ThirdBoss::InitAwake() {
 
 }
-
+//エンドロール
 void ThirdBoss::EndRollAction() {
+	const float l_AddFrame = 0.01f;
+	const float l_AddFrame2 = 0.05f;
 	m_EndTimer++;
-	if (m_EndTimer == 1) {
-		m_Position = { 50.0f,2.0f,3.0f };
-		m_Rotation = { 0.0f,0.0f,0.0f };
+	if (_EndState == END_SET) {
+		if (m_EndTimer == 1) {
+			m_Position = { 50.0f,20.0f,3.0f };
+			m_Rotation = { 0.0f,0.0f,90.0f };
+		}
+		else if (m_EndTimer == 470) {
+			m_AfterRot = { 180.0f,90.0f,90.0f };
+			m_AfterPos = { 20.0f,15.0f,15.0f };
+			_EndState = END_WALK;
+		}
+	}
+	else if (_EndState == END_WALK) {
+
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			_EndState = END_DIR_CAMERA;
+			m_Frame = {};
+		}
+
+		m_Position = {
+			Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
+			Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
+			Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z)
+		};
+		m_Rotation = {
+			Ease(In,Cubic,m_Frame,m_Rotation.x,m_AfterRot.x),
+			Ease(In,Cubic,m_Frame,m_Rotation.y,m_AfterRot.y),
+			Ease(In,Cubic,m_Frame,m_Rotation.z,m_AfterRot.z)
+		};
+	}
+	else {
+		if (m_EndTimer == 1670) {
+			m_EndStop = true;
+		}
+
+		if (!m_EndStop) {
+			if (m_EndTimer % 100 == 0) {
+				m_AfterRot.y = m_Rotation.y + 180.0f;
+				m_Rot = true;
+			}
+
+			if (m_Rot) {
+				if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame2)) {
+					m_Frame = {};
+					m_Rot = false;
+				}
+				m_Rotation.y = Ease(In, Cubic, m_Frame, m_Rotation.y, m_AfterRot.y);
+			}
+		}
 	}
 	Fbx_SetParam();
 	//どっち使えばいいか分からなかったから保留

@@ -46,7 +46,7 @@ public:
 
 	void Draw(DirectXCommon* dxCommon) override;//ï`âÊ
 private:
-
+	void SetEasePos();
 private:
 	//CSVì«Ç›çûÇ›ån
 	void CSVLoad();
@@ -133,6 +133,22 @@ private:
 		LIMIT_BARRA,
 	};
 
+	enum EndState2 {
+		END_SET2,
+		END_RIGHT,
+		END_LEFT,
+		END_TOP,
+		END_MOVE2,
+	}_EndState2;
+
+	enum ViewType {
+		VIEW_MOVE,
+		VIEW_RETURN,
+	}_ViewType = VIEW_MOVE;
+
+	int m_ViewTimer = {};
+
+	bool m_View = false;
 	//à⁄ìÆóÕ
 	float m_FollowSpeed = {};
 	ShotAttack* shot;

@@ -13,7 +13,7 @@ void (FirstBoss::* FirstBoss::stateTable[])() = {
 	&FirstBoss::RockOnAttack,
 	&FirstBoss::RandAttack,
 	&FirstBoss::Hit,
-	&FirstBoss::EndMove,
+	&FirstBoss::Invincible,
 };
 
 FirstBoss::FirstBoss()
@@ -29,6 +29,11 @@ FirstBoss::FirstBoss()
 
 	noteeffect.reset(new NoteEffect());
 	noteeffect->Initialize();
+
+	tex.reset(IKETexture::Create(ImageManager::DAMAGEAREA, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 }));
+	tex->TextureCreate();
+	tex->SetPosition({ 0.0f,-500.0f,0.0f });
+	tex->SetTiling(2.0f);
 
 	m_HP = 5.f;
 }
@@ -46,7 +51,12 @@ bool FirstBoss::Initialize()
 	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/Firstboss.csv", "HeartTarget")));
 	m_Radius = 5.2f;
 	m_MaxHp = m_HP;
+	half_hp_ = m_HP / 4;
 	_charstate = CharaState::STATE_INTER;
+
+	m_TexColor = { 1.0f,1.0f,1.0f,0.0f };
+	m_TexRot = { 90.0f,0.0f,0.0f };
+	m_TexScale = { 0.2f,3.0f,0.6f };
 
 	return true;
 }
@@ -65,6 +75,18 @@ void FirstBoss::Pause()
 
 void FirstBoss::Action()
 {
+	if (bounce_ == Bounce::SOURCE) {
+		XMFLOAT3 s_scl = m_Scale;
+		bounceTimer += 1.0f / 60;
+		XMFLOAT3 e_scl{ 15.3f,15.3f,15.3f };
+		Helper::GetInstance()->Clamp(bounceTimer, 0.0f, 1.0f);
+		m_Scale = {
+		Ease(Out, Quart, bounceTimer, s_scl.x, e_scl.x),
+		Ease(Out, Quart, bounceTimer, s_scl.y, e_scl.y),
+		Ease(Out, Quart, bounceTimer, s_scl.z, e_scl.z),
+		};
+	}
+
 	if (bottlestate_ == BottleState::NORMAL) {
 		m_Model = ModelManager::GetInstance()->GetModel(ModelManager::MILKCAP_NORMAL);
 		m_Object->SetModel(m_Model);
@@ -85,6 +107,9 @@ void FirstBoss::Action()
 	//弾とボスの当たり判定
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
 	CollideBul(_playerBulA, Type::CIRCLE);
+	if (half_hp_ >= m_HP) {
+		m_Magnification = 0.2f;
+	}
 	//プレイヤーの当たり判定
 	ColPlayer();
 	//OBJのステータスのセット
@@ -162,6 +187,11 @@ void FirstBoss::EffecttexDraw(DirectXCommon* dxCommon)
 
 void FirstBoss::Draw(DirectXCommon* dxCommon)
 {
+	IKETexture::PreDraw2(dxCommon, AlphaBlendType);
+	if (Display == true) {
+		tex->Draw();
+	}
+	IKETexture::PostDraw();
 	Obj_Draw();
 	for (std::unique_ptr<Fraction>& fraction : fraction_) {
 		fraction->Draw(dxCommon);
@@ -170,10 +200,31 @@ void FirstBoss::Draw(DirectXCommon* dxCommon)
 //攻撃後のインターバル
 void FirstBoss::InterValMove()
 {
-	ActionTimer++;
-	if (ActionTimer >= 180.f) {
+	commandTimer += 1.0f / 50;
+	Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);
+	s_posY = m_Position.y;
+	if (act_ == ActionFase::Before) {
+		e_posY = 5.f;
+		if (commandTimer >= 1) {
+			commandTimer = 0.f;
+			act_ = ActionFase::After;
+		}
+	}
+	else {
+		e_posY = 0.f;
+		if (commandTimer >= 1) {
+			commandTimer = 0.f;
+			act_ = ActionFase::Before;
+		}
+	}
+	m_Position.y = Ease(In, Quart, commandTimer, s_posY, e_posY);
+
+
+	m_ActionTimer += 1.0f / 60;
+	if (m_ActionTimer >= 1.f && m_Position.y <= 1) {
 		_charstate = STATE_CHOICE;
-		ActionTimer = 0;
+		m_ActionTimer = 0;
+		commandTimer = 0.f;
 	}
 }
 //攻撃の選択
@@ -188,7 +239,6 @@ void FirstBoss::Choice()
 	m_StopTimer++;
 	//一定時間立ったらランダムで行動選択
 	if (m_StopTimer > m_ChoiceInterval) {
-		m_Frame = 0.0f;
 		m_StopTimer = 0;
 		l_RandState = int(l_RandomMove(mt));
 		//_InterValState = UpState;
@@ -196,14 +246,15 @@ void FirstBoss::Choice()
 		m_FollowSpeed = 1.0f;
 		m_AfterPos.y = 30.0f;
 		////RandStateが30以下ならそれに応じた移動にする、
-		if (l_RandState < 10) {
+		if (l_RandState < 12) {
 			_charstate = CharaState::STATE_RAND;
 		}
-		else if (10 <= l_RandState && l_RandState < 20) {
+		else if (12 <= l_RandState && l_RandState < 26) {
 			_charstate = CharaState::STATE_ROCKON;
+			bounce_ = Bounce::UP;
 			_rockonstate = RockonState::STATE_AIM;
 		}
-		else if (20 <= l_RandState && l_RandState <= 30) {
+		else if (26 <= l_RandState && l_RandState <= 30) {
 			_charstate = CharaState::STATE_HIT;
 		}
 	}
@@ -229,9 +280,15 @@ void FirstBoss::RockOnAttack()
 			fase_ = AttackFase::AttackAfter;
 			waitCount = 0;
 			commandTimer = 0.f;
+			act_ = ActionFase::Before;
 		}
 	}
 	if (fase_ != AttackFase::AttackAfter) { return; }
+	
+	Bounce();
+
+	Areia();
+
 	RockOn();
 
 	Attack();
@@ -265,7 +322,7 @@ void FirstBoss::RandAttack()
 			0.f,
 		};
 		if (m_Rotation.x <= 0) {
-			CreateFraction(m_Position);
+			CreateFraction(m_Position, m_Position);
 			commandTimer = 0.f;
 			m_Rotation.x = 0;
 			_charstate = CharaState::STATE_INTER;
@@ -331,19 +388,19 @@ void FirstBoss::Hit()
 
 		//乱数指定
 		uniform_int_distribution<int> l_RandState(0, 40);
-		if (attack_count_ < 3) {
+		if (attack_count_ < 5) {
 			int ans = (l_RandState(mt)) % 4;
 			if (ans == 0) {
-				CreateFraction(AreaOne);
+				CreateFraction(AreaOne, m_Position);
 			}
 			else if (ans == 1) {
-				CreateFraction(AreaTwo);
+				CreateFraction(AreaTwo, m_Position);
 			}
 			else if (ans == 2) {
-				CreateFraction(AreaThree);
+				CreateFraction(AreaThree, m_Position);
 			}
 			else if (ans == 3) {
-				CreateFraction(AreaFour);
+				CreateFraction(AreaFour, m_Position);
 
 			}
 			attack_count_ += 1;
@@ -353,64 +410,76 @@ void FirstBoss::Hit()
 			move_ = MoveFase::Move;
 		}
 
-		if (attack_count_ >= 3) {
+		if (attack_count_ >= 5) {
 			m_StopTimer++;
 			//一定時間立ったらランダムで行動選択
 			if (m_StopTimer > m_ChoiceInterval) {
 				m_StopTimer = 0;
 				_charstate = CharaState::STATE_INTER;
 				fase_ = AttackFase::AttackBefore;
-				commandTimer = 0.f;
+				commandTimer = 0.0f;
 				move_ = MoveFase::Move;
 				attack_count_ = 0;
-				bottlestate_ = BottleState::FRACTION;
+				//bottlestate_ = BottleState::FRACTION;
 			}
 		}
 	}
-}
-//行動の終わり(プレイヤーから逃げる)
-void FirstBoss::EndMove()
-{
-
 }
 
 void FirstBoss::RockOn()
 {
 	if (_rockonstate != RockonState::STATE_AIM) { return; }
-
-	commandTimer += 1.0f / kLockOnTimeMax;
-	Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);
-	if (commandTimer == 1.0f) {
+	beforeTimer += 1.0f / kLockOnTimeMax;
+	Helper::GetInstance()->Clamp(beforeTimer, 0.0f, 1.0f);
+	if (beforeTimer == 1.0f) {
+		beforeTimer = 0.f;
 		commandTimer = 0.0f;
 		jumpCount++;
 		rot = m_Rotation.y;
 		s_pos = m_Position;
 		e_pos = { m_Position.x + sinf(RottoPlayer) * -(20.f * (float)jumpCount),0.f, m_Position.z + cosf(RottoPlayer) * -(20.0f * (float)jumpCount) };
 		_rockonstate = RockonState::STATE_ATTACK;
+		Display = false;
 	}
 }
 
 void FirstBoss::Attack()
 {
+
 	if (_rockonstate != RockonState::STATE_ATTACK) { return; }
-	commandTimer += 1.0f / kJumpTimeMax;
-	Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);
-
-
-	float hight = Ease(In, Quad, commandTimer, 1.0f, 0.0f);
-
-	m_Position = {
-	Ease(Out, Quart, commandTimer, s_pos.x, e_pos.x),
-	0.0f,
-	Ease(Out, Quart, commandTimer, s_pos.z, e_pos.z),
-	};
+	m_Frame++;
+	if (m_Frame >= 5) {
+		Display = true;
+	}
+	if (m_Frame >= 30) {
+		m_Frame = 0;
+		act_ = ActionFase::After;
+	}
+	//動く
+	{
+		if (act_ == ActionFase::After) {
+			commandTimer += 1.0f / kJumpTimeMax;
+			Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);
+		}
+		m_Position = {
+		Ease(Out, Quart, commandTimer, s_pos.x, e_pos.x),
+		0.0f,
+		Ease(Out, Quart, commandTimer, s_pos.z, e_pos.z),
+		};
+		
+	}
 	if (commandTimer == 1.0f) {
 		if (jumpCount < kJumpCountMax) {
 			_rockonstate = RockonState::STATE_AIM;
+			fase_ = AttackFase::AttackBefore;
 		}
 		else {
 			jumpCount = 0;
 			_charstate = CharaState::STATE_INTER;
+			bounce_ = Bounce::SOURCE;
+			bounceTimer = 0.f;
+			m_Alpha = {};
+			Display = false;
 		}
 		commandTimer = 0.0f;
 	}
@@ -426,27 +495,106 @@ void FirstBoss::FaceToOrientation()
 	//プレイヤーと敵のベクトルの長さ(差)を求める
 	XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
 	RottoPlayer = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
-	m_Rotation.y = RottoPlayer * 60.0f + (PI_90 + PI_180);
+	m_Rotation.y = RottoPlayer * 60.0f + (PI_90 + PI_180) + 180.f;
 }
 
-void FirstBoss::CreateFraction(const XMFLOAT3& FractionPos)
+void FirstBoss::CreateFraction(const XMFLOAT3& DropPos, const XMFLOAT3& BossPos)
 {
 	unique_ptr<Fraction> fraction = make_unique<Fraction>();
-	fraction->Init(FractionPos);
-	fraction->Drop();
+	fraction->Init(BossPos);
+	fraction->Drop(DropPos);
 	fraction_.push_back(std::move(fraction));
 }
 
+void FirstBoss::Bounce()
+{
+	if (bounce_ == Bounce::SOURCE) { return; }
+	XMFLOAT3 s_scl = m_Scale;
+	bounceTimer += 1.0f / 60;
+	Helper::GetInstance()->Clamp(bounceTimer, 0.0f, 1.0f);
+	if (bounce_ == Bounce::UP) {
+		XMFLOAT3 e_scl{ 10.3f,15.3f,10.3f };
+		m_Scale = {
+	Ease(In, Quart, bounceTimer, s_scl.x, e_scl.x),
+	Ease(In, Quart, bounceTimer, s_scl.y, e_scl.y),
+	Ease(In, Quart, bounceTimer, s_scl.z, e_scl.z)
+		};
+		if (bounceTimer >= 1) {
+			bounce_ = Bounce::DOWN;
+			bounceTimer = 0.f;
+		}
+	}
+	else if (bounce_ == Bounce::DOWN) {
+		XMFLOAT3 e_scl{ 15.3f,5.3f,15.3f };
+		m_Scale = {
+	Ease(In, Quart, bounceTimer, s_scl.x, e_scl.x),
+	Ease(In, Quart, bounceTimer, s_scl.y, e_scl.y),
+	Ease(In, Quart, bounceTimer, s_scl.z, e_scl.z)
+		};
+		if (bounceTimer >= 1) {
+			bounce_ = Bounce::UP;
+			bounceTimer = 0.f;
+		}
+	}
+}
+
+void FirstBoss::Areia()
+{
+	m_TexPos = {
+	m_TexPos.x = (m_Position.x + e_pos.x) / 2,
+	0.0f,
+	m_TexPos.z = (m_Position.z + e_pos.z) / 2,
+	};
+
+	m_TexScale.y = Helper::GetInstance()->ChechLength(m_Position, e_pos) * 0.1f;
+	tex->Update();
+	tex->SetPosition(m_TexPos);
+	tex->SetRotation(m_TexRot);
+	tex->SetScale(m_TexScale);
+	tex->SetColor({ m_TexColor.x,m_TexColor.y,m_TexColor.z,1 });
+
+	m_TexRot.y = Helper::GetInstance()->DirRotation(m_Position, e_pos, -PI_180);
+}
+
+void FirstBoss::Invincible()
+{
+}
 
 void FirstBoss::InitAwake() {
 
 }
 
 void FirstBoss::EndRollAction() {
+	const float l_AddPosX = 0.4f;
+	const float l_AddFrame = 0.01f;
 	m_EndTimer++;
-	if (m_EndTimer == 1) {
-		m_Position = { 50.0f,2.0f,0.0f };
-		m_Rotation = { 0.0f,0.0f,0.0f };
+	if (_EndState == END_SET) {
+		if (m_EndTimer == 1) {
+			m_Position = { 55.0f,2.0f,10.0f };
+			m_Rotation = { 0.0f,180.0f,0.0f };
+		}
+		else if (m_EndTimer == 290) {
+			_EndState = END_WALK;
+		}
+	}
+	else if (_EndState == END_WALK) {
+		if (Helper::GetInstance()->CheckMax(m_Position.x, 10.0f, -l_AddPosX)) {
+			_EndState = END_DIR_CAMERA;
+		}
+	}
+	else {
+		Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame);
+		m_Rotation.y = Ease(In, Cubic, m_Frame, m_Rotation.y, 90.0f);
+
+		if (m_EndTimer == 1670) {
+			m_EndStop = true;
+		}
+	}
+	//sin波によって上下に動く
+	if (!m_EndStop) {
+		m_SinAngle += 6.0f;
+		m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
+		m_Position.y = (sin(m_SinAngle2) * 0.5f + 2.0f);
 	}
 	//OBJのステータスのセット
 	Obj_SetParam();

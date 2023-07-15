@@ -2,7 +2,8 @@
 #include"Player.h"
 #include"Collision.h"
 #include"InterBullet.h"
-
+#include"Helper.h"
+#include"Easing.h"
 
 Fraction::~Fraction()
 {
@@ -15,7 +16,7 @@ void Fraction::Init(const XMFLOAT3& BossPos)
 	m_Object.reset(new IKEObject3d);
 	m_Object->Initialize();
 	m_Object->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::GLASS1));
-	m_Scale = { 2.f,2.f,2.f };
+	m_Scale = { 3.f,3.f,3.f };
 }
 
 void Fraction::Obj_Set()
@@ -27,15 +28,60 @@ void Fraction::Obj_Set()
 	m_Object->Update();
 }
 
-void Fraction::Drop()
+void Fraction::Pop()
 {
-	m_Position = boss_pos_;
+	if (pop_ != PopState::Before) { return; }
+	commandTimer += 1.0f / 60;
+	Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);
+	float s_pos = boss_pos_.y;
+	float e_pos = 15.f;
+
+	m_Position = {
+	boss_pos_.x,
+	Ease(Out, Quart, commandTimer, s_pos, e_pos),
+	boss_pos_.z,
+	};
+
+	if (commandTimer >= 1) {
+		pop_ = PopState::After;
+		pop_pos_ = m_Position;
+		commandTimer = 0.f;
+	}
+}
+
+void Fraction::Spatter()
+{
+	if (pop_ != PopState::After) { return; }
+	if (drop_F != true) { return; }
+
+	commandTimer += 1.0f / 60;
+	Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);
+	XMFLOAT3 s_pos = pop_pos_;
+	XMFLOAT3 e_pos = drop_pos_;
+	m_Position = {
+	Ease(Out, Quart, commandTimer, s_pos.x, e_pos.x),
+	Ease(Out, Quart, commandTimer, s_pos.y, e_pos.y),
+	Ease(Out, Quart, commandTimer, s_pos.z, e_pos.z),
+	};
+	if (commandTimer >= 1) {
+		drop_F = false;
+	}
+}
+
+void Fraction::Drop(const XMFLOAT3& dropposiition)
+{
+	drop_pos_ = dropposiition;
+	drop_F = true;
 }
 
 
 void Fraction::Update(vector<InterBullet*> bullet)
 {
 	ColPlayer(bullet);
+	
+	Pop();
+
+	Spatter();
 
 	Obj_Set();
 }

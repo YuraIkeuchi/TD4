@@ -22,7 +22,7 @@ FireBoll::FireBoll() {
 bool FireBoll::Initialize() {
 	m_Position = { 500.0f,8.0f,0.0f };
 	m_Scale = { 20.0f,20.0f,20.0f };
-	m_Color = { 1.0f,0.0f,1.0f,1.0f };
+	m_Color = { 1.0f,0.0f,0.0f,1.0f };
 	m_TexPos = { 0.0f,0.0f,0.0f };
 	m_CircleScale = 20.0f;
 	m_CircleSpeed = 0.0f;
@@ -84,7 +84,6 @@ bool FireBoll::Collide() {
 		Player::GetInstance()->PlayerHit(m_Position);
 		m_Frame = {};
 		_MoveState = MOVE_END;
-		//m_Alive = false;
 		return true;
 	}
 	else {
@@ -99,7 +98,7 @@ void FireBoll::Move() {
 	const float l_AddSpeed = 2.0f;
 	float l_AddFrame = 0.1f;
 
-	if (_MoveState == MOVE_SET) {
+	if (_MoveState == MOVE_SET) {		//落下マークが出てくる
 		m_TexAlive = true;
 		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 			_MoveState = MOVE_PLAY;
@@ -109,7 +108,7 @@ void FireBoll::Move() {
 		m_Position.y = 60.0f;
 		m_Position = Helper::GetInstance()->CircleMove({ l_PlayerPos.x,m_Position.y,l_PlayerPos.z }, m_CircleScale, m_CircleSpeed);
 		m_TexPos = { m_Position.x,0.0f,m_Position.z };
-	}else if (_MoveState == MOVE_PLAY) {
+	}else if (_MoveState == MOVE_PLAY) {		//ブロックが落ちてくる
 		m_MoveTimer++;
 		if (m_MoveTimer == m_LimitTimer) {
 			m_AfterPos.y = 3.0f;
@@ -121,20 +120,29 @@ void FireBoll::Move() {
 		m_Position = Helper::GetInstance()->CircleMove({ l_PlayerPos.x,m_Position.y,l_PlayerPos.z }, m_CircleScale, m_CircleSpeed);
 		m_TexPos = { m_Position.x,1.0f,m_Position.z };
 	}
-	else if (_MoveState == MOVE_OMEN) {
+	else if (_MoveState == MOVE_OMEN) {			//予兆
 		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 			m_MoveTimer++;
 			m_TexAlive = false;
+			if (m_MoveTimer == 200 && m_Delete) {
+				m_Frame = {};
+				_MoveState = MOVE_END;
+			}
 			if (m_MoveTimer == 300) {
 				_MoveState = MOVE_ATTACK;
 				m_Frame = {};
 				m_MoveTimer = {};
+				m_Color.x = 1.0f;
 			}
 		}
 		m_Position.y = Ease(In, Cubic, m_Frame, m_Position.y, m_AfterPos.y);
 		m_Position = Helper::GetInstance()->CircleMove({ m_TargetPos.x,m_Position.y,m_TargetPos.z }, m_CircleScale, m_CircleSpeed);
+
+		m_SinAngle += 6.0f;
+		m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
+		m_Color.x = (sin(m_SinAngle2) * 1.0f + 1.0f);
 	}
-	else if (_MoveState == MOVE_ATTACK) {
+	else if (_MoveState == MOVE_ATTACK) {			//攻撃
 		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 			m_Frame = {};
 			_MoveState = MOVE_END;
@@ -151,10 +159,6 @@ void FireBoll::Move() {
 		}
 
 		m_Color.w = Ease(In,Cubic,m_Frame,m_Color.w,0.0f);
-		/*m_Scale = { Ease(In,Cubic,m_Frame,m_Scale.x,0.0f),
-			Ease(In,Cubic,m_Frame,m_Scale.y,0.0f),
-			Ease(In,Cubic,m_Frame,m_Scale.z,0.0f),
-		};*/
 	}
 
 	tex->SetPosition(m_TexPos);

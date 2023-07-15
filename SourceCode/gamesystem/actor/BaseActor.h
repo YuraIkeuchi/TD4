@@ -29,6 +29,7 @@ protected:
 		IntroState = 0,
 		MainState,
 		FinishState,
+		TolkState,
 	};
 
 	//関数ポインタ

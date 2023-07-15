@@ -48,12 +48,23 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	loadobj->LightSet(lightgroup);
 	LoadStageObj::SetEnemyManager(enemymanager.get());
 
+	quarter_hp_ = enemymanager->GetHp() / 4;
+
 	m_SceneState = SceneState::IntroState;
 
 	lightgroup->SetCircleShadowActive(0, true);
 	lightgroup->SetCircleShadowActive(1, true);
 
 	Menu::GetIns()->Init();
+
+	//メッセージウィンドウ生成
+	messagewindow_ = make_unique<MessageWindow>();
+	messagewindow_->Initialize();
+	messagewindow_->Display();
+
+	text_ = make_unique<BossText>();
+	text_->Initialize(dxCommon);
+	text_->SelectText(TextManager::ANGER_TALK);
 }
 
 void FirstStageActor::Finalize()
@@ -62,30 +73,33 @@ void FirstStageActor::Finalize()
 
 void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
+	CheckHp();
+	TalkUpdate();
+
 	if (!Menu::GetIns()->GetMenuOpen()) {
 		//関数ポインタで状態管理
 		(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
 	}
 		sceneChanger_->Update();
 
-	////プレイヤー
-	//if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
-	//	SceneSave::GetInstance()->SetClearFlag(kFirstStage, true);
-	//	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-	//	lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, 0.0f, Player::GetInstance()->GetPosition().z }));
-	//	lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
-	//	lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
-	//}
-	//else {//ボス撃破ムービーの後は丸影消す
-	//	lightgroup->SetCircleShadowActive(0, false);
-	//}
+	//プレイヤー
+	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
+		SceneSave::GetInstance()->SetClearFlag(kFirstStage, true);
+		lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
+		lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, 0.0f, Player::GetInstance()->GetPosition().z }));
+		lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
+		lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
+	}
+	else {//ボス撃破ムービーの後は丸影消す
+		lightgroup->SetCircleShadowActive(0, false);
+	}
 
-	////ボス
-	//lightgroup->SetCircleShadowDir(1, XMVECTOR({ BosscircleShadowDir[0], BosscircleShadowDir[1], BosscircleShadowDir[2], 0 }));
-	//lightgroup->SetCircleShadowCasterPos(1, XMFLOAT3({ enemymanager->GetBoss()->GetPosition().x, 	0.0f, 	enemymanager->GetBoss()->GetPosition().z }));
-	//lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
-	//lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
-	//lightgroup->Update();
+	//ボス
+	lightgroup->SetCircleShadowDir(1, XMVECTOR({ BosscircleShadowDir[0], BosscircleShadowDir[1], BosscircleShadowDir[2], 0 }));
+	lightgroup->SetCircleShadowCasterPos(1, XMFLOAT3({ enemymanager->GetBoss()->GetPosition().x, 	0.0f, 	enemymanager->GetBoss()->GetPosition().z }));
+	lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
+	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
+	lightgroup->Update();
 
 	Menu::GetIns()->Upda();
 	postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
@@ -127,9 +141,13 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon)
 	ParticleEmitter::GetInstance()->DeathDrawAll();
 	//完全に前に書くスプライト
 	IKESprite::PreDraw();
-	//if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd()) {
+	if (tolk_F==true) {
+		messagewindow_->Draw();
+	}
+
+	if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd()) {
 		ui->Draw();
-	//}
+	}
 	if (m_SceneState == SceneState::IntroState) {
 		if ((camerawork->GetAppearType() == APPEAR_SEVEN) || (camerawork->GetAppearType() == APPEAR_EIGHT)) {
 			text_->SpriteDraw(dxCommon);
@@ -220,6 +238,7 @@ void FirstStageActor::MainUpdate(DebugCamera* camera)
 {
 	Input* input = Input::GetInstance();
 	ui->Update();
+	if (tolk_F != false) { return; }
 	//カメラワークのセット
 	if (enemymanager->BossDestroy())
 	{
@@ -248,6 +267,7 @@ void FirstStageActor::MainUpdate(DebugCamera* camera)
 
 		Player::GetInstance()->DeathUpdate();
 	}
+	
 	else
 	{
 		Player::GetInstance()->Update();
@@ -285,4 +305,24 @@ void FirstStageActor::MainUpdate(DebugCamera* camera)
 void FirstStageActor::FinishUpdate(DebugCamera* camera)
 {
 	Input* input = Input::GetInstance();
+}
+
+void FirstStageActor::CheckHp()
+{
+	boss_hp_ = enemymanager->GetHp();
+	if (boss_hp_ <= quarter_hp_) {
+		tolk_F = true;
+	}
+	else {
+		tolk_F = false;
+	}
+}
+
+void FirstStageActor::TalkUpdate()
+{
+	if (tolk_F != true) { return; }
+	
+	messagewindow_->Update(girl_color_, sutopon_color_);
+	
+	quarter_hp_ = 0.f;
 }

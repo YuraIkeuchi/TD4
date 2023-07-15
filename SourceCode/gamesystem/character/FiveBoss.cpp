@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "VariableCommon.h"
 #include "CsvLoader.h"
+#include "Easing.h"
 #include <random>
 
 #include "Input.h"
@@ -318,6 +319,10 @@ void FiveBoss::DeathParticle()
 
 void FiveBoss::ImGui_Origin()
 {
+	ImGui::Begin("Five");
+	ImGui::Text("Frame:%f", m_Frame);
+	ImGui::Text("PosX:%f", m_Position.x);
+	ImGui::End();
 }
 
 void FiveBoss::EffecttexDraw(DirectXCommon* dxCommon)
@@ -353,5 +358,99 @@ void FiveBoss::InitAwake() {
 }
 void FiveBoss::EndRollAction()
 {
+	const float l_AddFrame = 0.01f;
+	m_EndTimer++;
+	if (_EndState2 == END_SET2) {
+		m_Position = { 10.0f,5.0f,-25.0f };
+		m_Rotation = { 0.0f,180.0f,270.0f };
+		m_Scale = { 0.8f,0.4f,0.8f };
+		m_fbxObject->PlayAnimation(0);
+		if (m_EndTimer == 980) {
+			_EndState2 = END_RIGHT;
+			m_AfterPos = { 7.0f,5.0f,-25.0f };
+			m_View = true;
+			_ViewType = VIEW_MOVE;
+		}
+	}
+	else if (_EndState2 == END_RIGHT) {
+		if (m_View) {
+			if (_ViewType == VIEW_MOVE) {
+				if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+					m_Frame = {};
+					m_AfterPos = { 10.0f,5.0f,-25.0f };
+					_ViewType = VIEW_RETURN;
+				}
+			}
+			else {
+				if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+					m_Frame = {};
+					_ViewType = VIEW_MOVE;
+					m_Position = { -10.0f,5.0f,-25.0f };
+					m_AfterPos = { -7.0f,5.0f,-25.0f };
+					_EndState2 = END_LEFT;
+				}
+			}
+			SetEasePos();
+		}
+	}
+	else if (_EndState2 == END_LEFT) {
+		m_Rotation = { 0.0f,180.0f,90.0f };
+		if (m_View) {
+			if (_ViewType == VIEW_MOVE) {
+				if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+					m_Frame = {};
+					m_AfterPos = { -10.0f,5.0f,-25.0f };
+					_ViewType = VIEW_RETURN;
+				}
+			}
+			else {
+				if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+					m_Frame = {};
+					_ViewType = VIEW_MOVE;
+					m_Position = { -3.0f,15.0f,-25.0f };
+					m_AfterPos = { -3.0f,10.0f,-25.0f };
+					_EndState2 = END_TOP;
+				}
+			}
+			SetEasePos();
+		}
+	}
+	else if (_EndState2 == END_TOP) {
+		m_Rotation = { 0.0f,180.0f,180.0f };
+		if (m_View) {
+			if (_ViewType == VIEW_MOVE) {
+				if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+					m_Frame = {};
+					m_AfterPos = { -3.0f,15.0f,-25.0f };
+					_ViewType = VIEW_RETURN;
+				}
+			}
+			else {
+				if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+				}
+			}
+			SetEasePos();
+		}
 
+		if (m_EndTimer == 1670) {
+			_EndState2 = END_MOVE2;
+			m_fbxObject->StopAnimation();
+		}
+	}
+	else {
+		m_Rotation = { 0.0f,180.0f,0.0f };
+		m_Position = { -3.0f,0.0f,-25.0f };
+	}
+
+	Fbx_SetParam();
+	//‚Ç‚Á‚¿Žg‚¦‚Î‚¢‚¢‚©•ª‚©‚ç‚È‚©‚Á‚½‚©‚ç•Û—¯
+	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+}
+
+void FiveBoss::SetEasePos() {
+	m_Position = {
+Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
+Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
+	Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z)
+	};
 }

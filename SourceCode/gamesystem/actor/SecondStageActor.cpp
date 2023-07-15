@@ -247,13 +247,13 @@ enemymanager->BattleUpdate();
 	camerawork->Update(camera);
 	lightgroup->Update();
 
-	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
+	/*if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
 		SelectScene::GetIns()->Upda();
 
 	if (Input::GetInstance()->TriggerButton(Input::Y)) {
 		SelectScene::GetIns()->ResetParama();
 		SceneManager::GetInstance()->ChangeScene("SELECT");
-	}
+	}*/
 
 }Menu::GetIns()->Upda();
 	BackObj::GetInstance()->Update();
@@ -272,7 +272,7 @@ void SecondStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
 
-		ImGuiDraw(dxCommon);
+		//ImGuiDraw(dxCommon);
 
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
@@ -284,7 +284,7 @@ void SecondStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-		ImGuiDraw(dxCommon);
+		//ImGuiDraw(dxCommon);
 
 		dxCommon->PostDraw();
 	}
@@ -350,7 +350,7 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 		Menu::GetIns()->Draw();
 		camerawork->feedDraw();
 
-		SelectScene::GetIns()->Draw_Sprite();
+		//SelectScene::GetIns()->Draw_Sprite();
 		IKESprite::PostDraw();
 	}
 }

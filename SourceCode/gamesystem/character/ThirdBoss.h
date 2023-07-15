@@ -214,6 +214,9 @@ private:
 	float m_Angle2 = 0.0f;
 
 	bool m_BirthWave = false;
+
+	bool m_Rot = false;
+	float m_AddRot = {};
 public:
 	void SetAppearEnd(bool end) { if (end) { m_AppearState = APPEAR_END; } }
 };

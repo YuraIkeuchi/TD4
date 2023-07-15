@@ -36,6 +36,12 @@ private:
 		NORMAL,
 		FRACTION,
 	}bottlestate_;
+
+	enum Bounce {
+		SOURCE=0,
+		UP,
+		DOWN,
+	}bounce_;
 public:
 	FirstBoss();
 
@@ -73,8 +79,6 @@ private:
 	void RandAttack();
 	//当たり屋?
 	void Hit();
-	//行動終わり
-	void EndMove();
 
 	void RockOn();
 
@@ -82,7 +86,13 @@ private:
 
 	void FaceToOrientation();
 
-	void CreateFraction(const XMFLOAT3& FractionPos);
+	void CreateFraction(const XMFLOAT3& DropPos,const XMFLOAT3& BossPos);
+
+	void Bounce();
+
+	void Areia();
+	// INVINCIBLE
+	void Invincible();
 
 	void Crush();
 private:
@@ -90,6 +100,10 @@ private:
 	void CSVLoad();
 	//死んだときのパーティクル
 	void DeathParticle();
+public:
+
+	float GetHp() { return m_HP; }
+
 private:
 	static const int BULLET_NUM = 4;
 	static const int CD_NUM = 4;
@@ -99,6 +113,7 @@ private:
 	unique_ptr<NoteEffect> noteeffect;
 	std::list<std::unique_ptr<Fraction>> fraction_;
 	vector<XMFLOAT3> m_Area;
+	unique_ptr<IKETexture> tex;//エリア
 
 	//キャラの状態
 	enum CharaState
@@ -108,6 +123,7 @@ private:
 		STATE_ROCKON,
 		STATE_RAND,
 		STATE_HIT,
+		STATE_INVINCIBLE,
 		STATE_END
 	}_charstate;
 
@@ -186,6 +202,7 @@ private:
 	float timer_ = 0.f;
 	float RottoPlayer = 0.0f;
 	float commandTimer = 0.0f;
+	float bounceTimer = 0.f;
 	float kLockOnTimeMax = 50.0f;
 	float rot = 0.0f;
 	int jumpCount = 0;
@@ -200,6 +217,24 @@ private:
 	int attack_count_ = 0;
 
 	int jump_count_ = 0;
+	float m_SinAngle = {};
+	float m_SinAngle2 = {};
+
+	float s_posY{};
+	float e_posY{};
+
+	//テクスチャ関連
+	XMFLOAT3 m_TexPos = {};
+	XMFLOAT3 m_TexRot = {};
+	XMFLOAT3 m_TexScale = {};
+	XMFLOAT4 m_TexColor = { 1.0f,1.0f,1.0f,0.0f };
+	float m_Alpha = 0.0f;
+	float m_AfterAlpha = 1.0f;
+	float m_ActionTimer = 0.f;
+	bool Display = false;
+
+	float beforeTimer = 0.f;
+	float half_hp_{};
 };
 
 

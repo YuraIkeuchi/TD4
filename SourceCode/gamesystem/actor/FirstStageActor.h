@@ -19,11 +19,12 @@ public:
 	void FrontDraw(DirectXCommon* dxCommon);
 	void BackDraw(DirectXCommon* dxCommon);
 private:
-
 	void IntroUpdate(DebugCamera* camera)override;		//登場シーン
 	void MainUpdate(DebugCamera* camera)override;		//バトルシーン
 	void FinishUpdate(DebugCamera* camera)override;		//撃破シーン
-
+private:
+	void CheckHp();
+	void TalkUpdate();
 private:
 	static const int SPOT_NUM = 4;
 private:
@@ -47,6 +48,9 @@ private:
 
 	int m_AppTimer = 0;
 
+	float boss_hp_{};
+	float quarter_hp_{};
+	bool tolk_F = false;
 
 	enum AppState {
 		APP_START,

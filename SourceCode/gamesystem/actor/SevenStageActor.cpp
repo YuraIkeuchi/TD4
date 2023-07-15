@@ -105,7 +105,7 @@ void SevenStageActor::Draw(DirectXCommon* dxCommon) {
 
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
-		ImGuiDraw(dxCommon);
+		//ImGuiDraw(dxCommon);
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
@@ -116,7 +116,7 @@ void SevenStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-		ImGuiDraw(dxCommon);
+		//ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 }
@@ -180,12 +180,14 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGui‚Ì•`‰æ
 void SevenStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	ImGui::Begin("Seven");
+	enemymanager->ImGuiDraw();
+	//loadobj->ImGuiDraw();
+	/*ImGui::Begin("Seven");
 	ImGui::Text("Timer:%d", m_EndTimer);
 	ImGui::End();
-	enemymanager->ImGuiDraw();
+
 	camerawork->ImGuiDraw();
-	Player::GetInstance()->ImGuiDraw();
+	Player::GetInstance()->ImGuiDraw();*/
 }
 //“oêƒV[ƒ“
 void SevenStageActor::IntroUpdate(DebugCamera* camera) {

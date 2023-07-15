@@ -9,7 +9,7 @@
 #include "HungerGauge.h"
 //生成
 SevenBoss::SevenBoss() {
-	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Ghost);
+	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::LASTBOSS);
 
 	m_Object.reset(new IKEObject3d());
 	m_Object->Initialize();
@@ -24,9 +24,9 @@ SevenBoss::SevenBoss() {
 //初期化
 bool SevenBoss::Initialize() {
 	m_Position = { 0.0f,5.0f,30.0f };
-	m_Rotation = { 0.0f,270.0f,0.0f };
+	m_Rotation = { 0.0f,180.0f,0.0f };
 	m_Scale = { 1.5f,1.5f,1.5f };
-	m_Color = { 1.0f,0.0f,0.0f,1.0f };
+	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	ActionTimer = 1;
 
 	m_Radius = 3.0f;
@@ -41,9 +41,9 @@ bool SevenBoss::Initialize() {
 //スキップ時の初期化
 void SevenBoss::SkipInitialize() {
 	m_Position = { 0.0f,5.0f,30.0f };
-	m_Rotation = { 0.0f,270.0f,0.0f };
+	m_Rotation = { 0.0f,180.0f,0.0f };
 	m_Scale = { 1.5f,1.5f,1.5f };
-	m_Color = { 1.0f,0.0f,0.0f,1.0f };
+	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 }
 //CSV
 void SevenBoss::CSVLoad() {
@@ -216,6 +216,11 @@ void SevenBoss::Action() {
 		isStrong = true;
 		AVATAR_NUM = 4;
 	}
+
+	if (!m_Stun) {
+		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, Player::GetInstance()->GetPosition(), -PI_180);
+	}
+
 }
 //ポーズ
 void SevenBoss::Pause() {
@@ -272,6 +277,7 @@ void SevenBoss::Draw(DirectXCommon* dxCommon) {
 void SevenBoss::ImGui_Origin() {
 	ImGui::Begin("Seven");
 	ImGui::Text("End:%d", m_EndTimer);
+	ImGui::Text("PosY:%f", m_Rotation.y);
 	ImGui::End();
 
 	//火の玉
@@ -292,6 +298,14 @@ void SevenBoss::InterValMove() {
 		l_LimitTimer = m_StrongLimit[STATE_INTER];
 	}
 	m_InterVal++;
+
+	//一定時間立った後にボスに近づくと消える
+	if (m_InterVal >= 100) {
+		m_Dir = Helper::GetInstance()->ChechLength(m_Position, Player::GetInstance()->GetPosition());
+		if (m_Dir <= 18.0f) {
+			m_Return = true;
+		}
+	}
 	if (!m_Return) {
 		RandMove();//一定フレームで動くで
 	}
@@ -369,6 +383,8 @@ void SevenBoss::Polter() {
 			_charaState = STATE_CATCH;
 		}
 	}
+
+	m_Color.w = Ease(In, Cubic, 0.5f, m_Color.w, 1.0f);
 }
 //バウンド弾
 void SevenBoss::ThrowBound() {
@@ -397,6 +413,7 @@ void SevenBoss::ThrowBound() {
 			_charaState = STATE_CATCH;
 		}
 	}
+	m_Color.w = Ease(In, Cubic, 0.5f, m_Color.w, 1.0f);
 }
 //偽物のボスを生む
 void SevenBoss::BirthAvatar() {
@@ -429,6 +446,7 @@ void SevenBoss::BirthAvatar() {
 			_charaState = STATE_CATCH;
 		}
 	}
+	m_Color.w = Ease(In, Cubic, 0.5f, m_Color.w, 1.0f);
 }
 //捕まえているゴーストを操る
 void SevenBoss::Manipulate() {
@@ -470,6 +488,7 @@ void SevenBoss::Manipulate() {
 			}
 		}
 	}
+	m_Color.w = Ease(In, Cubic, 0.5f, m_Color.w, 1.0f);
 }
 //火の玉攻撃
 void SevenBoss::FireAttack() {
@@ -498,8 +517,12 @@ void SevenBoss::FireAttack() {
 			_charaState = STATE_CATCH;
 		}
 	}
+	m_Color.w = Ease(In, Cubic, 0.5f, m_Color.w, 1.0f);
 }
 void SevenBoss::BirthFire() {
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_RandomMove(0, 7);
+	m_DeleteNumber = l_RandomMove(mt);
 	//火の玉
 	for (int i = 0; i < FIRE_NUM; i++) {
 		FireBoll* newfire;
@@ -508,6 +531,8 @@ void SevenBoss::BirthFire() {
 		newfire->SetCircleSpeed(i * 45.0f);
 		fireboll.push_back(newfire);
 	}
+
+	fireboll[m_DeleteNumber]->SetDelete(true);
 }
 //プレイヤー混乱
 void SevenBoss::Confu() {
@@ -547,6 +572,7 @@ void SevenBoss::Confu() {
 			_charaState = STATE_CATCH;
 		}
 	}
+	m_Color.w = Ease(In, Cubic, 0.5f, m_Color.w, 1.0f);
 }
 //ダメージのブロック
 void SevenBoss::BlockAttack() {
@@ -574,6 +600,7 @@ void SevenBoss::BlockAttack() {
 			_charaState = STATE_CATCH;
 		}
 	}
+	m_Color.w = Ease(In, Cubic, 0.5f, m_Color.w, 1.0f);
 }
 //ブロックの生成
 void SevenBoss::BirthBlock() {
@@ -689,6 +716,7 @@ void SevenBoss::Stun() {
 		bossstuneffect->SetAlive(false);
 		m_Return = true;
 	}
+	m_Color.w = Ease(In, Cubic, 0.5f, m_Color.w, 1.0f);
 }
 //登場シーン
 void SevenBoss::AppearAction() {
@@ -710,7 +738,7 @@ void SevenBoss::DeadAction() {
 	if (_DeathState == DEATH_SET) {
 		if (m_DeathTimer == 1) {
 			m_Position = { 0.0f,5.0f,-10.0f };
-			m_Rotation = { 0.0f,270.0f,0.0f };
+			m_Rotation = { 0.0f,180.0f,0.0f };
 			m_BoundPower = 1.0f;
 		}
 		else if (m_DeathTimer == 20) {
@@ -912,7 +940,6 @@ void SevenBoss::RandMove() {
 		m_Position.y,
 		Ease(In,Cubic,0.5f,m_Position.z,m_AfterPos.z),
 	};
-	m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, Player::GetInstance()->GetPosition(), -PI_90);
 }
 void SevenBoss::ReturnBoss() {
 	const float l_AddFrame = 0.05f;
@@ -922,14 +949,18 @@ void SevenBoss::ReturnBoss() {
 			m_VanishFrame += l_AddFrame;
 		}
 		else {
+			//乱数生成(円周のどこか)
+			mt19937 mt{ std::random_device{}() };
+			uniform_int_distribution<int> l_RandSpeed(0, 360);
+			m_RandSpeed = float(l_RandSpeed(mt));
 			_ReturnState = RETURN_PLAY;
 			m_VanishFrame = {};
 		}
 	}
 	else if (_ReturnState == RETURN_PLAY) {
 		m_CircleScale = 30.0f;
-		m_CircleSpeed = {};
-		m_Position = Helper::GetInstance()->CircleMove(Player::GetInstance()->GetPosition(), m_CircleScale, m_CircleSpeed);
+		m_CircleSpeed = m_RandSpeed;
+		m_Position = Helper::GetInstance()->CircleMove({ Player::GetInstance()->GetPosition().x,m_Position.y,Player::GetInstance()->GetPosition().z}, m_CircleScale, m_CircleSpeed);
 		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, Player::GetInstance()->GetPosition(), -PI_90);
 		_ReturnState = RETURN_END;
 		m_AfterAlpha = 1.0f;
@@ -956,9 +987,8 @@ void SevenBoss::InitAwake() {
 		fireboll.clear();
 		damageblock.clear();
 		m_Position = { 0.0f,5.0f,30.0f };
-		m_Rotation = { 0.0f,270.0f,0.0f };
+		m_Rotation = { 0.0f,180.0f,0.0f };
 		m_Scale = { 1.5f,1.5f,1.5f };
-		m_Color = { 1.0f,0.0f,0.0f,1.0f };
 		m_InterVal = {};
 		m_MoveTimer = {};
 		//攻撃回数
@@ -985,10 +1015,37 @@ void SevenBoss::InitAwake() {
 	}
 }
 void SevenBoss::EndRollAction() {
+	const float l_AddFrame = 0.01f;
 	m_EndTimer++;
-	if (m_EndTimer == 1) {
-		m_Position = { 50.0f,2.0f,0.0f };
-		m_Rotation = { 0.0f,0.0f,0.0f };
+	if (_EndState == END_SET) {
+		if (m_EndTimer == 1) {
+			m_Position = { 0.0f,5.0f,15.0f };
+			m_Rotation = { 0.0f,180.0f,0.0f };
+			m_Color = { 1.0f,1.0f,1.0f,0.0f };
+		}
+		else if (m_EndTimer == 900) {
+			_EndState = END_WALK;
+		}
+	}
+	else if (_EndState == END_WALK) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			_EndState = END_DIR_CAMERA;
+			m_Frame = {};
+		}
+
+		m_Color.w = Ease(In, Cubic, m_Frame, m_Color.w, 1.0f);
+	}
+	else {
+		if (m_EndTimer == 1670) {
+			m_EndStop = true;
+		}
+	}
+
+	//sin波によって上下に動く
+	if (!m_EndStop) {
+		m_SinAngle += 6.0f;
+		m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
+		m_Position.y = (sin(m_SinAngle2) * 0.5f + 5.0f);
 	}
 	//OBJのステータスのセット
 	Obj_SetParam();

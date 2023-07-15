@@ -73,16 +73,20 @@ void EndRollActor::FrontDraw() {
 	sceneChanger_->Draw();
 }
 void EndRollActor::IntroUpdate(DebugCamera* camera) {
+	float l_AddFrame = 0.003f;
+	float l_AddColor = 0.01f;
+	float l_EndSepia = 0.1f;
 	camerawork->DefUpda(camera);
 	m_EndTimer++;
 
-	if (m_EndTimer == 500) {
+	if (m_EndTimer == 1620) {
 		isShutter = true;
 	}
 
 	if (isShutter) {
 		if (ShutterEffect()) {
 			stopTime++;
+			PlayPostEffect = true;
 			if (stopTime >= stopTimerMax) {
 				if (ShutterFeed()) {
 					ShutterReset();
@@ -90,16 +94,7 @@ void EndRollActor::IntroUpdate(DebugCamera* camera) {
 			}
 		}
 	}
-	/*if (m_EndTimer == 100) {
-		m_SceneState = SceneState::MainState;
-		PlayPostEffect = true;
-	}*/
-}
-void EndRollActor::MainUpdate(DebugCamera* camera) {
-	float l_AddFrame = 0.005f;
-	float l_AddColor = 0.01f;
-	float l_EndSepia = 0.1f;
-	camerawork->DefUpda(camera);
+
 	//セピアカラーになる
 	if (PlayPostEffect) {
 		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
@@ -107,10 +102,21 @@ void EndRollActor::MainUpdate(DebugCamera* camera) {
 		}
 		m_Sepia = Ease(In, Cubic, m_Frame, m_Sepia, l_EndSepia);
 	}
+
+	if (m_EndTimer == 1900) {
+		m_Change = true;
+	}
+	if (m_Change) {
+		sceneChanger_->ChangeStart();
+		sceneChanger_->ChangeScene("TITLE", SceneChanger::NonReverse);
+	}
+}
+void EndRollActor::MainUpdate(DebugCamera* camera) {
+	
+	camerawork->DefUpda(camera);
+	
 }
 void EndRollActor::FinishUpdate(DebugCamera* camera) {
-	//sceneChanger_->ChangeScene(str, SceneChanger::Reverse);
-	//sceneChanger_->Update();
 	camerawork->DefUpda(camera);
 }
 
@@ -135,7 +141,10 @@ void EndRollActor::BackDraw(DirectXCommon* dxCommon) {
 }
 //ImGui描画
 void EndRollActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	endobj->ImGuiDraw();
+	///endobj->ImGuiDraw();
+	ImGui::Begin("End");
+	ImGui::Text("Timer:%d", m_EndTimer);
+	ImGui::End();
 }
 //解放
 void EndRollActor::Finalize() {
