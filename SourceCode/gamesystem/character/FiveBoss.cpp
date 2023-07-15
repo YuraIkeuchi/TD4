@@ -156,11 +156,11 @@ void FiveBoss::Action()
 	if(GhostSize<6)
 	(this->*attackTable[_aPhase])();
 
-	
+	KnockTimer++;
 	//}
 	if(KnockTimer%KnockInter==0)
-	//if (Input::GetInstance()->TriggerButton(Input::X))
 		knock->setKnockF(true);
+
 	if (GuardCount==0&& m_HP < MaxHP / 2) {
 		guard->SetGuardStart(true);
 		GuardCount++;

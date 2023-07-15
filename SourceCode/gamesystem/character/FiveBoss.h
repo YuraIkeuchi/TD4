@@ -165,7 +165,7 @@ private:
 	int KnockInter;
 	int noAction;
 	float KnockDam, MeteoDam, ShotDam, UltDam;
-	int KnockTimer;
+	int KnockTimer=1;
 	float MaxHP;
 	int GuardCount;
 	static void (FiveBoss::* attackTable[])();

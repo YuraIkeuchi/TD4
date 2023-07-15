@@ -8,7 +8,8 @@ ImageManager* ImageManager::GetInstance()
 
 //スプライトの読み込み
 void ImageManager::StartLoad2D()
-{
+{IKESprite::LoadTexture(FEED, L"Resources/2d/sceneback/feedwhite.png");
+	
 	IKESprite::LoadTexture(TITLE, L"Resources/2d/sceneback/title2.png");
 	IKESprite::LoadTexture(TITLEWORD, L"Resources/2d/sceneback/gameTitle.png");
 	IKESprite::LoadTexture(LOADING_LO, L"Resources/2d/objicon/LoadText/01_Lo.png");
@@ -21,7 +22,6 @@ void ImageManager::StartLoad2D()
 	IKESprite::LoadTexture(BLACKWINDOW, L"Resources/2d/objicon/BlackWindow.png");
 	IKESprite::LoadTexture(GIRL, L"Resources/2d/objicon/40E32961-2FAD-4C47-B412-6CAD5C0BFEE2.png");
 	IKESprite::LoadTexture(SUTOPON, L"Resources/2d/objicon/sutopon.png");
-	IKESprite::LoadTexture(FEED, L"Resources/2d/sceneback/feedwhite.png");
 	IKESprite::LoadTexture(PLAY, L"Resources/2d/sceneback/game.png");
 
 }
