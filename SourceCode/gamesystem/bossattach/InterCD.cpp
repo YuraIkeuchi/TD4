@@ -52,7 +52,7 @@ void InterCD::ImGuiDraw() {
 void InterCD::CollideBul(vector<InterBullet*> bullet)
 {
 	if (m_CDState != CD_STAY)return;
-	const float l_Radius = 1.0f;
+	const float l_Radius = 1.5f;
 	for (InterBullet* _bullet : bullet) {
 		if (_bullet != nullptr && _bullet->GetAlive()) {
 			if (Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, l_Radius, m_Position.x, m_Position.z, l_Radius)) {

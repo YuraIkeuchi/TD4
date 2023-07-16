@@ -81,8 +81,12 @@ void SixStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Lig
 }
 //更新
 void SixStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
+
 	//関数ポインタで状態管理
-	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+	if (!Menu::GetIns()->GetMenuOpen()) {
+		(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+		sceneChanger_->Update();
+	}
 	//プレイヤー
 	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
 		SceneSave::GetInstance()->SetClearFlag(kSixStage, true);
@@ -133,7 +137,6 @@ void SixStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGr
 		lightgroup->SetSpotLightFactorAngle(i, XMFLOAT2(spotLightFactorAngle));
 	}
 	lightgroup->Update();
-	sceneChanger_->Update();
 
 	Menu::GetIns()->Upda();
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
