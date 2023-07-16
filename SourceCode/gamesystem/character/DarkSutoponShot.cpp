@@ -122,14 +122,15 @@ void ShotBul::Upda()
 
 		ParticleEmitter::GetInstance()->FireEffect(m_Life[i], BulPos[i], s_scale[i], e_scale[i], s_color[i], e_color[i]);
 
-		if (Collision::GetLength(BulPos[i], Player::GetInstance()->GetPosition()) < 3.f) {
+		if (Collision::CircleCollision(BulPos[i].x,BulPos[i].z,3.f, 
+			Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z,1.f)) {
 			Player::GetInstance()->PlayerHit(BulPos[i]);
 			Player::GetInstance()->RecvDamage(0.5f);
 			BulAlive[i] = false;
 		}
 
 		//進行スピード
-		BulPos[i].y = 0.f;
+		BulPos[i].y = Sutopos.y;
 		BulPos[i].x += move[i].m128_f32[0] * 4;
 		BulPos[i].z += move[i].m128_f32[2] * 4;
 		//弾を薄く

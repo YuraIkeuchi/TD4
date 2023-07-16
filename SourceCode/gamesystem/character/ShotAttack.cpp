@@ -159,7 +159,7 @@ void ShotAttack::Phase_Idle()
 	} else
 	{
 		AttackTimer++;
-		if (next || AttackTimer > 120) {
+		if (next ) {
 			mt19937 mt{ std::random_device{}() };
 			uniform_int_distribution<int> l_Rand(1, (int)boss->GetGhost().size() - 1);
 			TargetGhost = l_Rand(mt);
