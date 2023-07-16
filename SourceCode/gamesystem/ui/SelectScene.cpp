@@ -72,7 +72,7 @@ void SelectScene::Init() {
 	StageObjs[FOUR]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Camera));
 	StageObjs[FIVE]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::DJ));
 	StageObjs[SIX]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Sutopon));
-	StageObjs[SEVEN]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Ghost));
+	StageObjs[SEVEN]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::LASTBOSS));
 
 	BackSkyDome.reset(new IKEObject3d());
 	BackSkyDome->Initialize();
