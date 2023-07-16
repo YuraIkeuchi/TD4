@@ -27,7 +27,7 @@ public:
 
 	bool GetLoseFlag(SeceneCategory sceneCategory);
 
-	void AllClear();
+	bool AllClear();
 
 	void ImGuiDraw();
 private:
@@ -36,6 +36,8 @@ private:
 
 	static bool m_StageLose[(size_t)kMaxStage];
 
-	bool m_AllClear = false;
+	bool m_ClearCheck[(size_t)kMaxStage] = { false };
+
+	int m_ClearCount = {};
 };
 

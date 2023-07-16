@@ -131,7 +131,7 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	FourthCreateWord(TALK_FOURTH, L"オレをテラセ!!!!!!", L"スポットライト!!!!!!", L"このオレを!!!!!!");
 	FourthCreateWord(TALK_FIVE, L"さあ!!!", L"ショータイムのはじまりだ!!!", L"");
 
-	LastCreateWord(LAST_TALK_FIRST, L"いったい誰がゴースト達を", L"操って襲いかからせたのかと思ったけど", L"やっぱり・・・");
+	LastCreateWord(LAST_TALK_FIRST, L"毎日誰がゴースト達を", L"操って襲いかからせたのかと思ったけど", L"やっぱり・・・");
 	LastCreateWord(LAST_TALK_SECOND, L"やっぱりお前だったんだな!", L"", L"");
 	LastCreateWord(LAST_TALK_THIRD, L"ストポン?", L"キミのしってる子?", L"");
 	LastCreateWord(LAST_TALK_FOURTH, L"こいつは俺の弟だ", L"あいかわらずナマイキな面しやがって", L"");

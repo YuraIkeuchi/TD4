@@ -145,6 +145,13 @@ void SelectScene::Init() {
 	AfterScale[FOUR] = { 3.0f,3.0f,3.0f };
 	StageObjs[FOUR]->SetRotation({ 0.0f,90.0f,0.0f });
 	AfterScale[FIVE] = { 0.2f,0.2f,0.2f };
+	
+	//一回開放したら大きさを合わせる
+	for (auto i = 0; i < ObjNum; i++) {
+		if (m_Birth[i]) {
+			m_Scale[i] = AfterScale[i];
+		}
+	}
 }
 
 void SelectScene::Upda() {
@@ -235,7 +242,7 @@ void SelectScene::Upda() {
 	for (auto i = 0; i < TipsAct.size(); i++)
 		temp[i] = TipsAct[i];
 	if (Helper::GetInstance()->All_OfF(temp, ObjNum)) {
-		if (TrigerSelect == NOINP) {
+		if (TrigerSelect == NOINP && m_Wide) {
 			if (Input::GetInstance()->TriggerButton(Input::RB)) {
 				SelIndex++;
 				TrigerSelect = RB;
@@ -273,6 +280,11 @@ void SelectScene::Draw_Sprite() {
 	}
 }
 
+void SelectScene::ImGuiDraw() {
+	ImGui::Begin("Select");
+	ImGui::Text("%d", m_SelectState);
+	ImGui::End();
+}
 void SelectScene::Draw_SpriteBack() {
 	if (closeScl <= 0.f) { return; }
 	ButtonNav_RBLB[0]->Draw();
@@ -390,37 +402,66 @@ void SelectScene::ViewTips() {
 
 void SelectScene::StateManager() {
 	//クリア状況に応じてOBJの大きさだったりが違う
-	if (m_SelectState == SELECT_FIRST) {
+	if (m_SelectState == SELECT_FIRST) {		//ここは牛乳のみ
 
 	}
-	else if (m_SelectState == SELECT_SECOND) {
+	else if (m_SelectState == SELECT_SECOND) {			//牛乳をクリアしてラスボス以外出現する
 		bool temp[ObjNum] = {};
 		for (auto i = 0; i < TipsAct.size(); i++)
 			temp[i] = TipsAct[i];
-		if (Helper::GetInstance()->All_OfF(temp, ObjNum)) {
+		if (Helper::GetInstance()->All_OfF(temp, ObjNum)) {			//画面を閉じた後
 			m_BirthTimer++;
-			for (auto i = 1; i < ObjNum - 1; i++) {
-				m_Birth[i] = true;
+			for (auto i = 1; i < ObjNum - 1; i++) {			//ラスボス以外
+				m_Birth[i] = true;			//ボスが出現した
 			}
-			if (m_BirthTimer == 100) {
+			if (m_BirthTimer == 50) {			//　一定フレームに達するとボスが大きくなる
 				m_Wide = true;
-				m_BirthTimer = 0;
+				m_BirthTimer = {};
 			}
-			if (m_Wide) {
+			if (m_Wide) {			//ボスを大きくする
 				for (auto i = 0; i < ObjNum - 1; i++) {
 					m_Scale[i] = { Ease(In,Cubic,0.5f,m_Scale[i].x,AfterScale[i].x),
 						Ease(In,Cubic,0.5f,m_Scale[i].y,AfterScale[i].y),
 						Ease(In,Cubic,0.5f,m_Scale[i].z,AfterScale[i].z),
 					};
+					m_BirthFinish[i] = true;
 				}
+			}
+			else {			//大きくなる前はパーティクルを出すようにしている
+				BirthParticle();
+			}
+		}
+
+		if (SceneSave::GetInstance()->AllClear()) {			//ラスボス以外倒したら(いまはちえよしまで)ラスボスが出現する
+			m_SelectState = SELECT_LAST;
+			m_Wide = false;
+			m_BirthTimer = {};
+		}
+	}
+	else {			//ラスボスゾーンの出現
+		bool temp[ObjNum] = {};
+		for (auto i = 0; i < TipsAct.size(); i++)
+			temp[i] = TipsAct[i];
+		if (Helper::GetInstance()->All_OfF(temp, ObjNum)) {
+			m_BirthTimer++;
+			m_Birth[SEVEN] = true;			//ラスボスの出現
+
+			if (m_BirthTimer == 50) {
+				m_Wide = true;
+				m_BirthTimer = {};
+			}
+
+			if (m_Wide) {//ラスボスのOBJを大きくする
+				m_Scale[SEVEN] = { Ease(In,Cubic,0.5f,m_Scale[SEVEN].x,AfterScale[SEVEN].x),
+					Ease(In,Cubic,0.5f,m_Scale[SEVEN].y,AfterScale[SEVEN].y),
+					Ease(In,Cubic,0.5f,m_Scale[SEVEN].z,AfterScale[SEVEN].z),
+				};
+				m_BirthFinish[SEVEN] = true;
 			}
 			else {
 				BirthParticle();
 			}
 		}
-	}
-	else {
-
 	}
 }
 
@@ -437,7 +478,7 @@ void SelectScene::BirthParticle() {
 
 	for (auto i = 0; i < ObjNum; i++) {
 		l_Life[i] = 50;
-		if (m_Birth[i]) {
+		if (m_Birth[i] && !m_BirthFinish[i]) {
 			ParticleEmitter::GetInstance()->SelectEffect(l_Life[i], StageObjPos[i], 1.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
 		}
 	}

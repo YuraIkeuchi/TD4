@@ -58,7 +58,6 @@ bool ThirdBoss::Initialize() {
 	//CSVはこっから
 	CSVLoad();
 	m_MaxHp = m_HP;
-	m_HP = 0.5f;
 	return true;
 }
 void ThirdBoss::SkipInitialize() {

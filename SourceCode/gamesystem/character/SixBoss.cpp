@@ -79,7 +79,6 @@ void SixBoss::CSVLoad() {
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Six/Sixboss.csv", "hp1")));
 	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Six/Sixboss.csv", "HeartTarget")));
 	m_FollowSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Six/Sixboss.csv", "Speed")));
-	m_HP = 0.5f;
 	m_MaxHp = m_HP;
 }
 //行動

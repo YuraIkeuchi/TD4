@@ -65,6 +65,8 @@ public:
 
 	void BirthParticle();
 
+	void ImGuiDraw();
+
 private:
 	//ó‹µ‚É‰‚¶‚ÄŠÇ—‚·‚é
 	void StateManager();
@@ -84,6 +86,7 @@ private:
 	array<float, ObjNum>TipsPosY = {};
 	array<bool, ObjNum>TipsAct = {};
 	array<bool, ObjNum>m_Birth = {};
+	array<bool, ObjNum>m_BirthFinish = {};
 	array<XMFLOAT3, ObjNum>StageObjRot = {};
 	array<float, ObjNum>StageObjRotAngle = {};
 	array<float, ObjNum>StageObjEaseT = {};

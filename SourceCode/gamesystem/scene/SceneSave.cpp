@@ -37,23 +37,29 @@ bool SceneSave::GetLoseFlag(SeceneCategory sceneCategory) {
 }
 
 //全ステージクリア
-void SceneSave::AllClear() {
+bool SceneSave::AllClear() {
 	m_StageClear[kTutorialStage] = true;
-	bool temp[kMaxStage - 1] = {};
-	for (auto i = 0; i < kMaxStage - 1; i++){
-		temp[i] = m_StageClear[(size_t)i];
+	for (auto i = 0; i < kSevenStage; i++){
+		if (m_StageClear[(size_t)i] && !m_ClearCheck[(size_t)i]) {
+			m_ClearCount++;
+			m_ClearCheck[(size_t)i] = true;
+		}
 	}
-	if (Helper::GetInstance()->All_OfF(temp, kMaxStage - 1)) {
-		m_AllClear = true;
+
+	if (m_ClearCount == 3) {
+		return true;
 	}
 	else {
-		m_AllClear = false;
+		return false;
 	}
+	//if (Helper::GetInstance()->All_OfF(temp, kFirstStage)) {
+	//	
+	//}
 }
 
 void SceneSave::ImGuiDraw() {
 	ImGui::Begin("Save");
-	ImGui::Text("All:%d", m_AllClear);
+	ImGui::Text("m_ClearCount:%d", m_ClearCount);
 	for (auto i = 0; i < kMaxStage; i++) {
 		ImGui::Text("Clear[%d]:%d", i, m_StageClear[(size_t)i]);
 	}

@@ -160,7 +160,8 @@ void SelectSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGui‚Ì•`‰æ
 void SelectSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	//loadobj->ImGuiDraw();
-	SceneSave::GetInstance()->ImGuiDraw();
+	////loadobj->ImGuiDraw();
+	//SceneSave::GetInstance()->ImGuiDraw();
+	//SelectScene::GetIns()->ImGuiDraw();
 }
 

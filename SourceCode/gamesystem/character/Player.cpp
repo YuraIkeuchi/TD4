@@ -714,6 +714,7 @@ void Player::AppearUpdate() {
 }
 //ボス撃破シーンの更新
 void Player::DeathUpdate() {
+	BulletDelete();
 	//基礎パラメータ設定
 	Fbx_SetParam();
 
