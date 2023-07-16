@@ -303,7 +303,7 @@ void SmashShotAttack::BomParticle()
 			Player::GetInstance()->PlayerHit(boss->GetPosition());
 			Player::GetInstance()->RecvDamage(Dam);
 		}
-		ParticleEmitter::GetInstance()->Explosion(l_Life[i], BulPos[i], l_AddSize[i], s_scale[i], e_scale[i], s_color[i], e_color[i]);
+		ParticleEmitter::GetInstance()->Explosion(l_Life[i], BulPos[i], l_AddSize[i], s_scale[i], e_scale[i], s_color[i], e_color[i],0);
 
 	}
 

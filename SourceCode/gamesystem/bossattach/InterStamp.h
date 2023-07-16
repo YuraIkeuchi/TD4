@@ -34,6 +34,8 @@ public:
 	//gettersetter
 	bool GetBirth() { return m_Birth; }
 
+	void SetAfterScale(float AfterScale) { m_AfterScale = AfterScale; };
+	
 protected:
 	unique_ptr<IKETexture> texture;
 	bool m_Birth = false;//èoåª
@@ -42,7 +44,11 @@ protected:
 	float m_Frame = 0.0f;
 	XMFLOAT3 m_Position = { 0.0f,-200.0f,0.0f };
 	XMFLOAT3 m_Rotation = { 90.0f,0.0f,0.0f };
-	XMFLOAT3 m_Scale = { 1.3f,1.3f,1.3f };
+	XMFLOAT3 m_Scale = { 0.0f,0.0f,0.0f };
 	XMFLOAT4 m_Color = { 1.0f,1.0f,1.0f,0.0f };
+
+	float m_AfterScale = {};
+
+	float m_Radius = {};
 };
 

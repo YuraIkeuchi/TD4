@@ -76,24 +76,41 @@ void ParticleEmitter::LimitEffect(const int life, const XMFLOAT3& l_pos, const f
 
 //爆発
 void ParticleEmitter::Explosion(const int life, const XMFLOAT3& pos, const float size, const float startscale,
-	const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor) {
+	const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor, const int ExploType) {
+	float RandPos = {};
+	//X,Y,Z全て[-0.8f, +0.8f]でランダムに分布
+	float RandPos2 = {};
+	//X,Y,Z全て[-0.05f, +0.05f]でランダムに分布
+	float RandVel = {};
+	//爆発の規模でエフェクトも変わる
+	if (ExploType == 0) {
+		RandPos = 2.0f;
+		RandPos2 = 0.8f;
+		RandVel = 0.05f;
+	}
+	else if (ExploType == 1) {
+		RandPos = 4.0f;
+		RandPos2 = 0.8f;
+		RandVel = 0.05f;
+	}
+	else {
+		RandPos = 7.0f;
+		RandPos2 = 0.8f;
+		RandVel = 0.05f;
+	}
 	for (int j = 0; j < 3; j++) {
-		//X,Y,Z全て[-2.0f, +2.0f]でランダムに分布
-		const float RandPos = 2.0f;
 		XMFLOAT3 l_pos = pos;
 		l_pos.x += ((float)rand() / RAND_MAX * RandPos - RandPos / 2.0f) * size;
 		l_pos.y += ((float)rand() / RAND_MAX * RandPos - RandPos / 2.0f) * size;
 		l_pos.z += ((float)rand() / RAND_MAX * RandPos - RandPos / 2.0f) * size;
 
 		for (int i = 0; i < 10; i++) {
-			//X,Y,Z全て[-0.8f, +0.8f]でランダムに分布
-			const float RandPos2 = 0.8f;
+			
 			l_pos.x += ((float)rand() / RAND_MAX * RandPos2 - RandPos2 / 2.0f) * size;
 			l_pos.y += ((float)rand() / RAND_MAX * RandPos2 - RandPos2 / 2.0f) * size;
 			l_pos.z += ((float)rand() / RAND_MAX * RandPos2 - RandPos2 / 2.0f) * size;
 
-			//X,Y,Z全て[-0.05f, +0.05f]でランダムに分布
-			const float RandVel = 0.05f;
+			
 			XMFLOAT3 vel{};
 			vel.x = ((float)rand() / RAND_MAX * RandVel - RandVel / 2.0f) * size;
 			vel.y = ((float)rand() / RAND_MAX * RandVel - RandVel / 2.0f) * size;

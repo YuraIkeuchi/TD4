@@ -112,12 +112,12 @@ void ThirdBoss::Action() {
 	StampUpdate(angerstamps);
 	StampUpdate(joystamps);
 
-	//衝撃波
-	for (ShockWave* wave : shockwaves) {
-		if (wave != nullptr) {
-			wave->Update();
-		}
-	}
+	////衝撃波
+	//for (ShockWave* wave : shockwaves) {
+	//	if (wave != nullptr) {
+	//		wave->Update();
+	//	}
+	//}
 
 	//マーク
 	for (Predict* predict : predicts) {
@@ -151,16 +151,16 @@ void ThirdBoss::Action() {
 		}
 	}
 
-	//衝撃波
-	for (int i = 0; i < shockwaves.size(); i++) {
-		if (shockwaves[i] == nullptr) {
-			continue;
-		}
+	////衝撃波
+	//for (int i = 0; i < shockwaves.size(); i++) {
+	//	if (shockwaves[i] == nullptr) {
+	//		continue;
+	//	}
 
-		if (!shockwaves[i]->GetAlive()) {
-			shockwaves.erase(cbegin(shockwaves) += i);
-		}
-	}
+	//	if (!shockwaves[i]->GetAlive()) {
+	//		shockwaves.erase(cbegin(shockwaves) += i);
+	//	}
+	//}
 
 	//マークの削除
 	for (int i = 0; i < predicts.size(); i++) {
@@ -191,11 +191,11 @@ void ThirdBoss::EffecttexDraw(DirectXCommon* dxCommon)
 	StampDraw(angerstamps, dxCommon);
 	StampDraw(joystamps, dxCommon);
 
-	for (ShockWave* wave : shockwaves) {
+	/*for (ShockWave* wave : shockwaves) {
 		if (wave != nullptr) {
 			wave->Draw(dxCommon);
 		}
-	}
+	}*/
 
 	//マーク
 	for (Predict* predict : predicts) {
@@ -224,6 +224,7 @@ void ThirdBoss::ImGui_Origin() {
 	ImGui::Begin("Third");
 	ImGui::Text("Frame:%f", m_Frame);
 	ImGui::Text("Choice:%d", int(_charaState));
+	ImGui::Text("RotX:%f", m_Rotation.x);
 	ImGui::End();
 }
 //移動
@@ -282,7 +283,8 @@ void ThirdBoss::Stamp() {
 	else if (m_PressType == PRESS_SET) {		//一定時間上で待機
 		if (Helper::GetInstance()->CheckMin(m_StopTimer, m_StampInterval[PRESS_SET], 1)) {		//次の行動
 			StampInit(PRESS_ATTACK, false);
-			m_AfterRot.x = m_Rotation.x + 360.0f;
+			m_Rotation.x = 180.0f;
+			m_AfterRot.x = m_Rotation.x - 180.0f;
 		}
 	}
 	else if (m_PressType == PRESS_ATTACK) {			//落下してくる
@@ -568,6 +570,15 @@ void ThirdBoss::BirthStamp(const std::string& stampName) {
 		InterStamp* newstamp;
 		newstamp = new AngerStamp();
 		newstamp->Initialize(m_Position);
+		if (_charaState == STATE_STAMP) {
+			newstamp->SetAfterScale(4.0f);
+		}
+		else if (_charaState == STATE_RANDOM) {
+			newstamp->SetAfterScale(2.5f);
+		}
+		else if (_charaState == STATE_MOVE) {
+			newstamp->SetAfterScale(1.3f);
+		}
 		angerstamps.push_back(newstamp);
 	}
 	else if (stampName == "Joy") {//喜びのスタンプ

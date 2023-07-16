@@ -15,5 +15,22 @@ private:
 	bool Collide();	//“–‚½‚è”»’è
 
 private:
+	void AngerMove();
+
+private:
 	float m_DamagePower = {};
+
+	enum StampState {
+		STAMP_SET,
+		STAMP_WIDE,
+		STAMP_EXPLO,
+	}_StampState;
+
+	enum ExploState {
+		EXPLO_SMALL,
+		EXPLO_MIDIUM,
+		EXPLO_LARGE
+	};
+
+	int m_ExploType = {};
 };
