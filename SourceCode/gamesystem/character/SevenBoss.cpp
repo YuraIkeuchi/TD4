@@ -68,7 +68,7 @@ void SevenBoss::CSVLoad() {
 	m_VanishTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "VanishTarget")));
 	m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "BossSpeed")));
 	m_MaxHp = m_HP;
-
+	m_HP = 0.5f;
 	m_CircleScale = 30.0f;
 }
 

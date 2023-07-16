@@ -7,6 +7,11 @@
 #include"IKEObject3d.h"
 #include "IKETexture.h"
 #include "SceneManager.h"
+enum SelectState {
+	SELECT_FIRST,//最初の牛乳のみ
+	SELECT_SECOND,//らすぼす以外開放済み
+	SELECT_LAST,//ラスボス開放
+};
 
 using namespace DirectX;
 using namespace std;
@@ -57,6 +62,12 @@ public:
 	void ResetParama();
 
 	void TipsPosUpda(Stage stage);
+
+	void BirthParticle();
+
+private:
+	//状況に応じて管理する
+	void StateManager();
 private:
 	//土台
 	unique_ptr<IKEObject3d>Pedestal = nullptr;
@@ -68,8 +79,11 @@ private:
 	array<unique_ptr<IKEObject3d>, ObjNum>StageObjs = { nullptr };
 	array<unique_ptr<IKESprite>, ObjNum>StageObj = { nullptr };
 	array<XMFLOAT3, ObjNum>StageObjPos = {};
+	array<XMFLOAT3, ObjNum>m_Scale = {};
+	array<XMFLOAT3, ObjNum>AfterScale = {};
 	array<float, ObjNum>TipsPosY = {};
 	array<bool, ObjNum>TipsAct = {};
+	array<bool, ObjNum>m_Birth = {};
 	array<XMFLOAT3, ObjNum>StageObjRot = {};
 	array<float, ObjNum>StageObjRotAngle = {};
 	array<float, ObjNum>StageObjEaseT = {};
@@ -112,5 +126,15 @@ public:
 	float GetCloseIconRad() { return closeRad; }
 	float GetCloseScl() { return closeScl; }
 	XMFLOAT3 GetPedestalPos() { return Pedestal->GetPosition(); }
+
+private:
+	
+	int m_SelectState = SELECT_FIRST;
+
+public:
+	void SetSelectState(int SelectState) { m_SelectState = SelectState; };
+private:
+	int m_BirthTimer = {};
+	bool m_Wide = false;
 };
 

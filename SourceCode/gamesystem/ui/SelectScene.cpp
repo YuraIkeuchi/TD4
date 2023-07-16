@@ -2,6 +2,8 @@
 #include "Helper.h"
 #include "ImageManager.h"
 #include "SceneManager.h"
+#include "Easing.h"
+#include "ParticleEmitter.h"
 
 SelectScene* SelectScene::GetIns() {
 	static SelectScene ins;
@@ -132,14 +134,17 @@ void SelectScene::Init() {
 		//BossIcon.
 		StageObjRot[i].y = 90;
 		StageObjs[i]->SetPosition(StageObjPos[i]);
-		StageObjs[i]->SetScale({ 1,1,1 });
+		StageObjs[i]->SetScale({ 0.0f,0.0f,0.0f });
+		m_Scale[i] = { 0.0f,0.0f,0.0f };
+		AfterScale[i] = { 1.0f,1.0f,1.0f };
 	}
-	StageObjs[FIRST]->SetScale({ 5,5,5 });
-	StageObjs[THIRD]->SetScale({ 4,4,4 });
-	StageObjs[FOUR]->SetScale({ 3.f,3.f,3.f });
+	m_Scale[FIRST] = { 5.0f,5.0f,5.0f };
+	AfterScale[FIRST] = { 5.0f,5.0f,5.0f };
+	m_Birth[FIRST] = true;
+	AfterScale[THIRD] = { 4.0f,4.0f,4.0f };
+	AfterScale[FOUR] = { 3.0f,3.0f,3.0f };
 	StageObjs[FOUR]->SetRotation({ 0.0f,90.0f,0.0f });
-	StageObjs[FIVE]->SetScale({ 0.2f,0.2f,0.2f });
-
+	AfterScale[FIVE] = { 0.2f,0.2f,0.2f };
 }
 
 void SelectScene::Upda() {
@@ -160,18 +165,18 @@ void SelectScene::Upda() {
 
 	for (int i = 0; i < MAX; i++) {
 		if (IconColor[i] < 1.f) { continue; }
-		if (Input::GetInstance()->TriggerButton(Input::B)) {
+		if (Input::GetInstance()->TriggerButton(Input::B) && (m_Birth[i])) {
 			TipsAct[i] = true;
 		}
 	}
 
 	ChangeEffect("FIRSTSTAGE", Stage::FIRST, FIRST);
-	ChangeEffect("FIVESTAGE", Stage::SECOND, SECOND);
+	ChangeEffect("SECONDSTAGE", Stage::SECOND, SECOND);
 	ChangeEffect("FOURTHSTAGE", Stage::FOUR, FOUR);
 	ChangeEffect("THIRDSTAGE", Stage::THIRD, THIRD);
 	ChangeEffect("FIVESTAGE", Stage::FIVE, FIVE);
-	ChangeEffect("FOURTHSTAGE", Stage::SIX, SIX);
 	ChangeEffect("SIXSTAGE", Stage::SIX, SIX);
+	ChangeEffect("SEVENSTAGE", Stage::SEVEN, SEVEN);
 
 	for (int i = 0; i < MAX; i++) {
 		if (closeScl >= 10000.f) {
@@ -223,6 +228,7 @@ void SelectScene::Upda() {
 
 		StageObjs[FOUR]->SetRotation({ 0,StageObjRot[FOUR].y,90 });
 		StageObjs[i]->SetPosition(StageObjPos[i]);
+		StageObjs[i]->SetScale(m_Scale[i]);
 		StageObjs[i]->Update();
 	}
 	bool temp[ObjNum] = {};
@@ -241,6 +247,10 @@ void SelectScene::Upda() {
 			}
 		}
 	}
+
+	//セレクトのステート管理
+	StateManager();
+
 }
 
 void SelectScene::Draw_Obj(DirectXCommon* dxcomn) {
@@ -375,5 +385,60 @@ void SelectScene::ViewTips() {
 			TipsPosY[i] -= AddVal;
 
 		Helper::GetInstance()->Clamp(TipsPosY[i], -360.f, 360.f);
+	}
+}
+
+void SelectScene::StateManager() {
+	//クリア状況に応じてOBJの大きさだったりが違う
+	if (m_SelectState == SELECT_FIRST) {
+
+	}
+	else if (m_SelectState == SELECT_SECOND) {
+		bool temp[ObjNum] = {};
+		for (auto i = 0; i < TipsAct.size(); i++)
+			temp[i] = TipsAct[i];
+		if (Helper::GetInstance()->All_OfF(temp, ObjNum)) {
+			m_BirthTimer++;
+			for (auto i = 1; i < ObjNum - 1; i++) {
+				m_Birth[i] = true;
+			}
+			if (m_BirthTimer == 100) {
+				m_Wide = true;
+				m_BirthTimer = 0;
+			}
+			if (m_Wide) {
+				for (auto i = 0; i < ObjNum - 1; i++) {
+					m_Scale[i] = { Ease(In,Cubic,0.5f,m_Scale[i].x,AfterScale[i].x),
+						Ease(In,Cubic,0.5f,m_Scale[i].y,AfterScale[i].y),
+						Ease(In,Cubic,0.5f,m_Scale[i].z,AfterScale[i].z),
+					};
+				}
+			}
+			else {
+				BirthParticle();
+			}
+		}
+	}
+	else {
+
+	}
+}
+
+void SelectScene::BirthParticle() {
+	//float s_scale[ObjNum];
+	//float e_scale[ObjNum];
+
+	////色
+	//XMFLOAT4 s_color[ObjNum];
+	//XMFLOAT4 e_color[ObjNum];
+	int l_Life[ObjNum];
+
+
+
+	for (auto i = 0; i < ObjNum; i++) {
+		l_Life[i] = 50;
+		if (m_Birth[i]) {
+			ParticleEmitter::GetInstance()->SelectEffect(l_Life[i], StageObjPos[i], 1.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
+		}
 	}
 }

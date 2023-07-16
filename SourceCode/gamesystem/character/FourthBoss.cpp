@@ -70,7 +70,7 @@ bool FourthBoss::Initialize() {
 	ActionTimerMax[(size_t)commandState::SubGauge] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "SubGauge")));
 	ActionTimerMax[(size_t)commandState::Ultimate] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Ultimate")));
 	ActionTimerMax[(size_t)commandState::Explosion] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Explosion")));
-
+	m_HP = 0.5f;
 	ActionTimer = 0;
 	m_Radius = 5.0f;
 	return true;

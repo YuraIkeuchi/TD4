@@ -226,6 +226,8 @@ void FiveStageActor::MainUpdate(DebugCamera* camera)
 	//カメラワークのセット
 	if (enemymanager->BossDestroy())
 	{
+		sceneChanger_->ChangeStart();
+		sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		//フェード前
 		if (!camerawork->GetFeedEnd()) {
@@ -244,8 +246,7 @@ void FiveStageActor::MainUpdate(DebugCamera* camera)
 		}
 
 		if (camerawork->GetEndDeath()) {
-			sceneChanger_->ChangeStart();
-			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
+			
 
 		}
 
