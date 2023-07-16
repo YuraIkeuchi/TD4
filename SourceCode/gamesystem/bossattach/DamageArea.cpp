@@ -32,7 +32,7 @@ DamageArea::DamageArea(const int Num) {
 	}
 
 	for (size_t i = 0; i < tex.size(); i++) {
-		tex[i] = IKETexture::Create(ImageManager::DAMAGEAREA2, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
+		tex[i] = IKETexture::Create(ImageManager::SLASHAREA, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 });
 		tex[i]->TextureCreate();
 		tex[i]->SetPosition({ 0.0f,-500.0f,0.0f });
 		tex[i]->SetTiling(2.0f);
@@ -44,7 +44,7 @@ void DamageArea::Initialize() {
 	for (size_t i = 0; i < obj.size(); i++) {
 		m_Scale[i] = { 0.0f,0.0f,0.0f };
 		m_Color[i] = { 1.0f,0.0f,1.0f,1.0f };
-		m_Rotation[i] = { 0.0f,0.0f,0.0f };
+		m_Rotation[i] = { 0.0f,270.0f,0.0f };
 		m_Alive[i] = true;
 	}
 

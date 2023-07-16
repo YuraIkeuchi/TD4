@@ -59,8 +59,10 @@ void SevenStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 //更新
 void SevenStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	//関数ポインタで状態管理
-	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
-	sceneChanger_->Update();
+	if (!Menu::GetIns()->GetMenuOpen()) {
+		(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+		sceneChanger_->Update();
+	}
 
 	//プレイヤー
 	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
