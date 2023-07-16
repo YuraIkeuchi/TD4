@@ -35,7 +35,8 @@ void InterEnemy::OnCollision()
 				if (HP <= 0)
 				{
 					DeathEffectF = true;
-				}
+				}_bullet->SetAlive(false);
+				
 			}
 		}
 	}
