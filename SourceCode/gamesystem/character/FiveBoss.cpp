@@ -87,7 +87,6 @@ bool FiveBoss::Initialize()
 		single->SetDam(ShotDam);
 		darkshot->SetDam(DarkShotDam);
 	m_MaxHp = m_HP;
-
 	GhostSize = 0;
 	_aPhase = ATTACK_SHOT;
 	/*ActionTimer = 1;

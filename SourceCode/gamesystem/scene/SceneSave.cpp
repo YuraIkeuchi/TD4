@@ -1,7 +1,7 @@
 #include "SceneSave.h"
 #include <cassert>
 #include "imgui.h"
-
+#include "Helper.h"
 bool SceneSave::m_StageClear[(size_t)kMaxStage] = { };
 bool SceneSave::m_StageLose[(size_t)kMaxStage] = { };
 
@@ -36,5 +36,32 @@ bool SceneSave::GetLoseFlag(SeceneCategory sceneCategory) {
 	return m_StageLose[(size_t)sceneCategory];
 }
 
+//全ステージクリア
+bool SceneSave::AllClear() {
+	m_StageClear[kTutorialStage] = true;
+	for (auto i = 0; i < kSevenStage; i++){
+		if (m_StageClear[(size_t)i] && !m_ClearCheck[(size_t)i]) {
+			m_ClearCount++;
+			m_ClearCheck[(size_t)i] = true;
+		}
+	}
+
+	if (m_ClearCount == 3) {
+		return true;
+	}
+	else {
+		return false;
+	}
+	//if (Helper::GetInstance()->All_OfF(temp, kFirstStage)) {
+	//	
+	//}
+}
+
 void SceneSave::ImGuiDraw() {
+	ImGui::Begin("Save");
+	ImGui::Text("m_ClearCount:%d", m_ClearCount);
+	for (auto i = 0; i < kMaxStage; i++) {
+		ImGui::Text("Clear[%d]:%d", i, m_StageClear[(size_t)i]);
+	}
+	ImGui::End();
 }
