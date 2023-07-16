@@ -61,8 +61,6 @@ public:
 		SETUMEI2,
 		SETUMEI3,
 		SETUMEI4,
-		UNKNOW1,
-		UNKNOW2
 	};
 
 	enum Name_Cap

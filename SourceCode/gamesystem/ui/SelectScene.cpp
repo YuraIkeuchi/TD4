@@ -152,17 +152,7 @@ void SelectScene::Upda() {
 	Pedestal->SetScale({ 15.f,15.f,15.f });
 	Pedestal->Update();
 
-	if (TrigerSelect == NOINP) {
-		if (Input::GetInstance()->TriggerButton(Input::RB)) {
-			SelIndex++;
-			TrigerSelect = RB;
-		}
 
-		if (Input::GetInstance()->TriggerButton(Input::LB)) {
-			SelIndex--;
-			TrigerSelect = LB;
-		}
-	}
 	CloseIconView(CloseF);
 	Helper::GetInstance()->Clamp(closeScl, 0.f, 12500.f);
 	Helper::GetInstance()->Clamp(closeRad, 0.f, 1500.f);
@@ -235,7 +225,22 @@ void SelectScene::Upda() {
 		StageObjs[i]->SetPosition(StageObjPos[i]);
 		StageObjs[i]->Update();
 	}
+	bool temp[ObjNum] = {};
+	for (auto i = 0; i < TipsAct.size(); i++)
+		temp[i] = TipsAct[i];
+	if (Helper::GetInstance()->All_OfF(temp, ObjNum)) {
+		if (TrigerSelect == NOINP) {
+			if (Input::GetInstance()->TriggerButton(Input::RB)) {
+				SelIndex++;
+				TrigerSelect = RB;
+			}
 
+			if (Input::GetInstance()->TriggerButton(Input::LB)) {
+				SelIndex--;
+				TrigerSelect = LB;
+			}
+		}
+	}
 }
 
 void SelectScene::Draw_Obj(DirectXCommon* dxcomn) {
