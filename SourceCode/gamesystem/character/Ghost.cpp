@@ -364,7 +364,7 @@ if (m_Scale.x <= 0.f) {
 
 //探索
 void Ghost::Search() {
-	const int l_LimitTimer = 300;
+	const int l_LimitTimer = 170;
 	const float l_Vel = 0.8f;
 	const float l_Vel2 = 0.8f;
 	XMFLOAT3 l_playerPos = Player::GetInstance()->GetPosition();

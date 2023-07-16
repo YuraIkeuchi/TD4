@@ -14,6 +14,7 @@ bool JoyStamp::Initialize(const XMFLOAT3& pos) {
 	m_Birth = true;
 	m_Position = { pos.x,0.0f,pos.z };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
+	m_Scale = { 0.0f,0.0f,0.0f };
 	return true;
 }
 
@@ -37,6 +38,10 @@ void JoyStamp::Action() {
 		
 		}
 		m_Color.w = Ease(In, Cubic, m_Frame, 1.0f, 0.0f);
+
+		m_Scale = { Ease(In,Cubic,0.5f,m_Scale.x,1.3f),
+		Ease(In,Cubic,0.5f,m_Scale.y,1.3f),
+		Ease(In,Cubic,0.5f,m_Scale.z,1.3f), };
 	}
 }
 

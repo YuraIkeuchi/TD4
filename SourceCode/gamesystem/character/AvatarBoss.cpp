@@ -396,7 +396,7 @@ void AvatarBoss::BirthExplosion() {
 	uniform_int_distribution<int> l_Randlife(10, 40);
 	int l_Life = int(l_Randlife(mt));
 
-	ParticleEmitter::GetInstance()->Explosion(l_Life, m_Position, l_AddSize, s_scale, e_scale, s_color, e_color);
+	ParticleEmitter::GetInstance()->Explosion(l_Life, m_Position, l_AddSize, s_scale, e_scale, s_color, e_color,0);
 }
 //ìoèÍÉVÅ[Éì
 void AvatarBoss::AppearAction() {
