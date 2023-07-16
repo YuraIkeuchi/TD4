@@ -199,6 +199,7 @@
     <ClCompile Include="SourceCode\gamesystem\bossattach\Predict.cpp" />
     <ClCompile Include="SourceCode\gamesystem\bossattach\ShockWave.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\AvatarBoss.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\character\DarkSutoponShot.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\EnemyManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\FirstBoss.cpp" />
     <ClCompile Include="SourceCode\gamesystem\character\FiveBoss.cpp" />
@@ -378,6 +379,7 @@
     <ClInclude Include="SourceCode\gamesystem\bossattach\Predict.h" />
     <ClInclude Include="SourceCode\gamesystem\bossattach\ShockWave.h" />
     <ClInclude Include="SourceCode\gamesystem\character\AvatarBoss.h" />
+    <ClInclude Include="SourceCode\gamesystem\character\DarkSutoponShot.h" />
     <ClInclude Include="SourceCode\gamesystem\character\EnemyManager.h" />
     <ClInclude Include="SourceCode\gamesystem\character\FirstBoss.h" />
     <ClInclude Include="SourceCode\gamesystem\character\FiveBoss.h" />

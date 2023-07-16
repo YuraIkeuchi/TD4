@@ -29,7 +29,7 @@ private:
 
     float GuardEaseT;
     bool GuardStart = false;
-    int GuardTime;
+    float GuardTime;
 private:
     void GuardAreacreate();
 public:

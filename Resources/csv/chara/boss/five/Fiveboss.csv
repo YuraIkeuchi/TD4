@@ -25,6 +25,8 @@ ShotDam,1
 //Ultimate
 UltDam,3
 
+//StoponShot
+DarkSutoponShotDam,0.5
 //--------------------//
 //ハートが生成される確率
 //0～100で大きければ大きいほど生成されにくいです。(0の場合は100%)

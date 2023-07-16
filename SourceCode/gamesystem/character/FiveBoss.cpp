@@ -56,6 +56,9 @@ bool FiveBoss::Initialize()
 		//Ultimate
 		UltDam = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "UltDam")));
 
+	//darkshot
+		DarkShotDam = 0.5f;// static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "DarkSutoponShotDam")));
+
 		noAction = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "noAction")));
 
 		shot = new ShotAttack();
@@ -65,6 +68,7 @@ bool FiveBoss::Initialize()
 		single = new SingleShot();
 		guard = new GuardAction();
 		knock = new KnockAttack();
+		darkshot = new DarkSutoponShot();
 
 		smash->Init();
 		shot->Init();
@@ -73,7 +77,7 @@ bool FiveBoss::Initialize()
 		guard->Init();
 		normal->Init();
 		knock->Init();
-
+		darkshot->Init();
 
 		normal->SetBoss(this);
 
@@ -81,7 +85,7 @@ bool FiveBoss::Initialize()
 		smash->SetDam(MeteoDam);
 		slash->SetDam(UltDam);
 		single->SetDam(ShotDam);
-
+		darkshot->SetDam(DarkShotDam);
 	m_MaxHp = m_HP;
 
 	GhostSize = 0;
@@ -156,11 +160,13 @@ void FiveBoss::Action()
 	if(GhostSize<6)
 	(this->*attackTable[_aPhase])();
 
+	//knockÇÃçUåÇîªíË
 	KnockTimer++;
-	//}
-	if(KnockTimer%KnockInter==0)
-		knock->setKnockF(true);
-
+	if (!darkshot->GetActionStart()) {
+		if (KnockTimer % KnockInter == 0)
+			knock->setKnockF(true);
+	}
+	//èÇì\ÇÈÉ^ÉCÉ~ÉìÉO
 	if (GuardCount==0&& m_HP < m_MaxHp / 2) {
 		guard->SetGuardStart(true);
 		GuardCount++;
@@ -171,26 +177,22 @@ void FiveBoss::Action()
 	else
 		m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/Firstboss.csv", "Magnification")));
 
-
+	darkshot->SetSutoPos(knock->Sutoobj()->GetPosition());
+	darkshot->SetSutoRot(knock->Sutoobj()->GetRotation());
+	darkshot->Upda();
 	knock->Upda();
 	guard->Upda();
 
 	/// <summary>
 	/// çUåÇÅ[ÇRWAY
 	/// </summary>
-	for (auto i = 0; i < ghosts.size(); i++)
-	{
-		if (slash->GetActionEnd() && GhostSize >= 5)
-			ghosts[i]->SetCleanGhost(true);
-		else
-			ghosts[i]->SetCleanGhost(false);
-	}
+	
 	////ActionSet(ATTACK_SHOT, shot);
 	ActionSet(ATTACK_IMPACT, smash);
 	ActionSet(ATTACK_SLASH, slash);
 	ActionSet(ATTACK_SINGLESHOT, single);
 
-	if (_aPhase == ATTACK_SHOT)ActionTimer++;
+	if (_aPhase == ATTACK_SHOT) { ActionTimer++; }
 
 	{
 		for (auto i = 0; i < ghosts.size(); i++) {
@@ -224,31 +226,60 @@ void FiveBoss::Action()
 			ghosts[i]->SetStateSpawn(false);
 		}
 	}
-	mt19937 mt{ std::random_device{}() };
+
+	
+
+			mt19937 mt{ std::random_device{}() };
 
 	//single->Upda();
-	if (shot->GetCanRand() > 30&& shot->GetPhase()==ShotAttack::Phase::END) {
-		//í èÌçUåÇ
-		if (GhostSize > noAction && GhostSize < 4)
+			if (shot->GetPhase() == ShotAttack::Phase::END) {
+				//í èÌçUåÇ
+				if (GhostSize > noAction) {
+					if (GhostSize < 4)
+					{
+						shot->SetActionEnd(true);
+						shot->SetIdleDam(false);
+						slash->SetActionEnd(false);
+						_aPhase = ATTACK_SLASH;
+					} else if (GhostSize == 4)
+					{
+						shot->SetActionEnd(true);
+						shot->SetIdleDam(false);
+						smash->SetActionEnd(false);
+						_aPhase = ATTACK_IMPACT;
+					}
+			}
+				if (GhostSize >= 5)
+				{
+					shot->SetActionEnd(true);
+					shot->SetIdleDam(false);
+					slash->SetActionEnd(false);
+					_aPhase = ATTACK_SLASH;
+				}
+			}
+		
+
+		if (!JudgDShot&&GhostSize > 3)
 		{
-			shot->SetActionEnd(true);
-			shot->SetIdleDam(false);
-			slash->SetActionEnd(false);
-			_aPhase = ATTACK_SLASH;
-		} else if (GhostSize == 4)
-		{
-			shot->SetActionEnd(true);
-			shot->SetIdleDam(false);
-			smash->SetActionEnd(false);
-			_aPhase = ATTACK_IMPACT;
-		} else if (GhostSize >= 5)
-		{
-			shot->SetActionEnd(true);
-			shot->SetIdleDam(false);
-			slash->SetActionEnd(false);
-			_aPhase = ATTACK_SLASH;
+			uniform_int_distribution<int> l_Rand(0, 10);
+			ThreeGhostActionRand = l_Rand(mt);
+
+			if (ThreeGhostActionRand < 20) {
+				JudgDShot = true;
+				darkshot->SetActionStart(true);
+			}
 		}
+	if(JudgDShot)
+	{
+		CoolDShot++;
+		if (CoolDShot > 300)
+			JudgDShot = false;
 	}
+	else
+	{
+		CoolDShot = 0;
+	}
+
 	Helper::GetInstance()->Clamp(GhostSize, 0, 5);
 
 	/*^^^^ìñÇΩÇËîªíË^^^^*/
@@ -341,7 +372,7 @@ void FiveBoss::Draw(DirectXCommon* dxCommon)
 	shot->Draw(dxCommon);
 	knock->Draw(dxCommon);
 	slash->Draw(dxCommon);
-
+	darkshot->Draw(dxCommon);
 	Fbx_Draw(dxCommon); guard->Draw(dxCommon);
 
 }

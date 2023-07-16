@@ -180,7 +180,7 @@ void ShadowSlashAttack::Phase_ViewArea()
 	AreaAlpha[0] = 0.8f;
 	AreaAlpha[1] = 0.8f;
 	IdleCount++;
-	if (IdleCount > 180)_phase = IMPACTSLASH;
+	if (IdleCount > 120)_phase = IMPACTSLASH;
 }
 
 void ShadowSlashAttack::Phase_Impact()
@@ -249,8 +249,13 @@ void ShadowSlashAttack::Phase_Dest()
 			Swords_H[i].Alpha -= 0.04f;
 	}
 	if (Swords_H[SwordSize - 1].Alpha <= 0.f &&
-		Swords_W[SwordSize - 1].Alpha <= 0.f)
+		Swords_W[SwordSize - 1].Alpha <= 0.f) {
+		for (auto i = 0; i < boss->GetGhost().size(); i++) {
+			if (boss->GetGhost()[i]->GetState() != Ghost::STATE_DARKOTI)continue;
+			boss->GetGhost()[i]->SetCleanGhost(true);
+		}
 		_phase = END;
+	}
 }
 
 void ShadowSlashAttack::Phase_End()

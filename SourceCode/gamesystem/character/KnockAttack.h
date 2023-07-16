@@ -45,6 +45,6 @@ private:
 public:
     inline void setKnockF(bool f) { KnockF = f; TexAlpha = 1.f; TexAlpha2 = 1.f; }
     bool GetKnockF() { return KnockF; }
-
+    IKEObject3d* Sutoobj() { return darksutopon.get(); }
 };
 

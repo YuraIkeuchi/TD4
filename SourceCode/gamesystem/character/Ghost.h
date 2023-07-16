@@ -145,6 +145,7 @@ public:
 	bool GetCleanghost() { return DarkOtiClean; }
 	void SetCleanGhost(bool f) { DarkOtiClean = f; }
 
+	bool CollideDarkBul(OBB obb);
 	CharaState GetState() { return _charaState; }
 private:
 	unique_ptr<IKEModel> model_follow = nullptr;

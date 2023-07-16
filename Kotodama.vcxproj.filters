@@ -569,6 +569,9 @@
     <ClCompile Include="SourceCode\gamesystem\character\KnockAttack.cpp">
       <Filter>gamesystem\charactor\Boss\Five\NewFilter1</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\character\DarkSutoponShot.cpp">
+      <Filter>gamesystem\charactor\Boss\Five\NewFilter1</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
@@ -1100,6 +1103,9 @@
       <Filter>gamesystem\charactor\Boss\Five</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\KnockAttack.h">
+      <Filter>gamesystem\charactor\Boss\Five\NewFilter1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\DarkSutoponShot.h">
       <Filter>gamesystem\charactor\Boss\Five\NewFilter1</Filter>
     </ClInclude>
   </ItemGroup>

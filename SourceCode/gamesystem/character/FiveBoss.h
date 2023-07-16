@@ -15,6 +15,7 @@
 #include"GuardAction.h"
 #include"SingleShot.h"
 #include "KnockAttack.h"
+#include"DarkSutoponShot.h"
 class Spline;
 
 class FiveBoss :
@@ -159,13 +160,17 @@ private:
 	SingleShot* single;
 	GuardAction* guard;
 	KnockAttack* knock;
+	DarkSutoponShot* darkshot;
+	int ThreeGhostActionRand;
+	bool JudgDShot;
+	int CoolDShot;
 	float WalkSpeed;
 		//ガード続く時間
 	float GuardTime;
 		//ノックバック頻度
 	int KnockInter;
 	int noAction;
-	float KnockDam, MeteoDam, ShotDam, UltDam;
+	float KnockDam, MeteoDam, ShotDam, UltDam,DarkShotDam;
 	int KnockTimer=1;
 	int GuardCount;
 	static void (FiveBoss::* attackTable[])();

@@ -224,6 +224,9 @@ bool Ghost::VerseCheck() {
 //何もない状態
 void Ghost::None() {
 	//浮遊状態
+	DarkOtiClean = false;
+	float scales = 0.5f;
+	m_Scale = { scales,scales,scales };
 	noneTimer += 0.05f;
 	float size = sinf(noneTimer) * 0.05f;
 	if (!m_Absorption) {
@@ -337,9 +340,7 @@ void Ghost::DarkSide() {
 		m_Scale.x -= 0.1f;
 		m_Scale.y -= 0.1f;
 		m_Scale.z -= 0.1f;
-
-	}
-	if (m_Scale.x <= 0.f) {
+if (m_Scale.x <= 0.f) {
 		m_DarkC = 0;
 		m_DFollow = false;
 		Collide = false;
@@ -353,6 +354,8 @@ void Ghost::DarkSide() {
 		stateSpawn = true;
 		_charaState = CharaState::STATE_NONE;
 	}
+	}
+	
 	Helper::GetInstance()->Clamp(m_Scale.x, 0.f, 5.f);
 
 	Helper::GetInstance()->Clamp(m_Scale.y, 0.f, 5.f);
@@ -539,6 +542,20 @@ bool Ghost::CollideBullet(vector<InterBullet*>bullet) {
 	}
 
 	return false;
+}
+
+bool Ghost::CollideDarkBul(OBB obb)
+{
+	m_OBB1.SetParam_Pos(m_Position);
+	m_OBB1.SetParam_Rot(m_Object->GetMatrot());
+	m_OBB1.SetParam_Scl(m_OBBScale);
+	//弾の更新
+	if ((Collision::OBBCollision(m_OBB1, obb))) {
+		return true;
+	} else {
+		return false;
+	}
+
 }
 
 void Ghost::GetRotation2Player() {

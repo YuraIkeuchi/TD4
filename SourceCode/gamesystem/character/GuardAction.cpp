@@ -62,13 +62,20 @@ void GuardAction::Upda()
 		guardtex[i]->SetColor({ 1,1,1,guardAlpha[i] });
 		guardtex[i]->Update();
 	}
-
+	if(!GuardStart)
+	{
+		for (auto i = 0; i < GuardSize; i++) {
+			guardAlpha[i] -= 0.05f;
+		}
+		
+	}
 }
 
 void GuardAction::Draw(DirectXCommon* dxCommon)
 {
 	IKEObject3d::PreDraw();
 	for (auto i = 0; i < GuardSize; i++) {
+		if (guardAlpha[i] <= 0.f)continue;
 		guardtex[i]->Draw();
 	}
 

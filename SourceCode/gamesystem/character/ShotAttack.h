@@ -58,7 +58,8 @@ private:
 
     void Phase_End();
 
-
+    void Collide();
+    OBB obb[3];
     void RottoPlayer();
 
     void CollideGhost();

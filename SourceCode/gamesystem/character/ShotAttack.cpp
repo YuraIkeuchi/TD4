@@ -31,24 +31,30 @@ void ShotAttack::Upda()
 	for (auto i = 0; i < boss->GetGhost().size(); i++) {
 		boss->GetGhost()[i]->SetFivePos(boss->GetPosition());
 	}
+	for (auto i = 0; i < 3; i++) {
+		obb[i].SetParam_Pos(ShotObj[i]->GetPosition());
+		obb[i].SetParam_Rot(ShotObj[i]->GetMatrot());
+		obb[i].SetParam_Scl({ 2.f,2.f,5.f });
+	}
 	if (_phase == SHOT) {
 		for (auto i = 0; i < boss->GetGhost().size(); i++) {
 			if (boss->GetGhost()[i]->GetState() != Ghost::STATE_NONE)continue;
 			if (boss->GetGhost()[i]->GetScale().x <= 0.f)continue;
 			if (!boss->GetGhost()[i]->JugNONE())continue;
 			for (auto k = 0; k < 3; k++) {
-				if (Collision::GetLength(BulPos[k], boss->GetGhost()[i]->GetPosition()) < 5.f)
+				if ( boss->GetGhost()[i]->CollideDarkBul(obb[k]))
 				{
 					if (!BulAlive[k])continue;
 					
 						DarkCount++;
+					boss->GetGhost()[i]->SetCollide(true);
 						boss->SetGhostSize(boss->GetGhostSize() + 1);
 						CanRand = rand() % 100;
-						boss->GetGhost()[i]->SetCollide(true);
+						
 
 						BulAlive[k] = false;
 					
-					continue;;
+					continue;
 				}
 			}
 		}
@@ -203,6 +209,13 @@ void ShotAttack::Phase_Shot()
 
 
 }
+void ShotAttack::Collide()
+{
+	
+	
+
+}
+
 
 void ShotAttack::Phase_End()
 {
