@@ -408,7 +408,7 @@ void Ghost::Jack() {
 	if (Player::GetInstance()->PlayerCollide(m_Position) &&
 		Player::GetInstance()->GetDamageInterVal() == 0) {
 		Player::GetInstance()->PlayerHit(m_Position);
-		Player::GetInstance()->RecvDamage(1.0f);
+		Player::GetInstance()->RecvDamage(0.75f);
 	}
 
 	if (m_Position.x < -55.0f || m_Position.x>65.0f ||
