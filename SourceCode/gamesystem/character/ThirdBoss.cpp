@@ -567,10 +567,10 @@ void ThirdBoss::BirthStamp(const std::string& stampName) {
 		newstamp = new AngerStamp();
 		newstamp->Initialize(m_Position);
 		if (_charaState == STATE_STAMP) {
-			newstamp->SetAfterScale(4.0f);
+			newstamp->SetAfterScale(6.0f);
 		}
 		else if (_charaState == STATE_RANDOM) {
-			newstamp->SetAfterScale(3.5f);
+			newstamp->SetAfterScale(4.5f);
 		}
 		else if (_charaState == STATE_MOVE) {
 			newstamp->SetAfterScale(1.3f);

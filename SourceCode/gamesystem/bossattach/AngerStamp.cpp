@@ -76,12 +76,12 @@ bool AngerStamp::Collide() {
 		m_Radius = 2.5f;
 		m_ExploType = EXPLO_SMALL;
 	}
-	else if (m_AfterScale == 3.5f) {
-		m_Radius = 6.0f;
+	else if (m_AfterScale == 4.5f) {
+		m_Radius = 8.5f;
 		m_ExploType = EXPLO_MIDIUM;
 	}
 	else {
-		m_Radius = 8.0f;
+		m_Radius = 11.5f;
 		m_ExploType = EXPLO_LARGE;
 	}
 	if (Collision::CircleCollision(m_Position.x, m_Position.z, m_Radius, l_PlayerPos.x, l_PlayerPos.z, m_Radius) && (Player::GetInstance()->GetDamageInterVal() == 0)) {
