@@ -98,20 +98,6 @@ void ShotBul::Upda()
 
 	for (auto i = 0; i < BulSize; i++)
 	{
-		
-		s_color[i] = { 0.8f,0.4f,1.0f,1.0f };
-		e_color[i] = { 0.40f,0.0f,0.50f,1.0f };
-		s_scale[i] = 2.0f;
-		e_scale[i] = 0.0f;
-		m_Life[i] = 50;
-
-		ParticleEmitter::GetInstance()->FireEffect(m_Life[i], BulPos[i], s_scale[i], e_scale[i], s_color[i], e_color[i]);
-
-	}
-
-
-	for (auto i = 0; i < BulSize; i++)
-	{
 		if (!BulAlive[i])continue;
 
 		s_color[i] = { 0.8f,0.4f,1.0f,1.0f };
@@ -122,7 +108,7 @@ void ShotBul::Upda()
 
 		ParticleEmitter::GetInstance()->FireEffect(m_Life[i], BulPos[i], s_scale[i], e_scale[i], s_color[i], e_color[i]);
 
-		if (Collision::CircleCollision(BulPos[i].x,BulPos[i].z,3.f, 
+		if (Player::GetInstance()->GetDamageInterVal() == 0 && Collision::CircleCollision(BulPos[i].x,BulPos[i].z,3.f,
 			Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z,1.f)) {
 			Player::GetInstance()->PlayerHit(BulPos[i]);
 			Player::GetInstance()->RecvDamage(0.5f);

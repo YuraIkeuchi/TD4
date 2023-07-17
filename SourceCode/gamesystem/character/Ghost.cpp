@@ -337,9 +337,9 @@ void Ghost::DarkSide() {
 
 	if (DarkOtiClean)
 	{
-		m_Scale.x -= 0.1f;
-		m_Scale.y -= 0.1f;
-		m_Scale.z -= 0.1f;
+		m_Scale.x -= 0.01f;
+		m_Scale.y -= 0.01f;
+		m_Scale.z -= 0.01f;
 if (m_Scale.x <= 0.f) {
 		m_DarkC = 0;
 		m_DFollow = false;

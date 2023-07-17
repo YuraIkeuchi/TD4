@@ -153,34 +153,36 @@ void ShadowSlashAttack::Phase_ViewArea()
 		uniform_int_distribution<int> l_RandScl(2, 4);
 
 		uniform_int_distribution<int> l_RandRot(-60, 60);
-		Swords_H[i].Scl = { (float)l_RandScl(mt)*1.5f,0.f,(float)l_RandScl(mt)*1.5f };
+		Swords_H[i].Scl = { (float)l_RandScl(mt) * 1.5f,0.f,(float)l_RandScl(mt) * 1.5f };
 		Swords_H[i].YSclRandMax = (float)l_RandScl(mt);
-		Swords_H[i].Rot = { (float)l_RandRot(mt)/2,0,(float)l_RandRot(mt)/2 };
+		Swords_H[i].Rot = { (float)l_RandRot(mt) / 2,0,(float)l_RandRot(mt) / 2 };
 		Swords_H[i].Alpha = 1.f;
 	}
 
-	
+
 	//‰¡”ÍˆÍ
 	for (auto i = 0; i < SwordSize; i++) {
 		mt19937 mt{ std::random_device{}() };
 		uniform_int_distribution<int> l_RandPos(-5, 5);
 
 		Swords_W[i].Pos.x = KotokoPos[1].x + static_cast<float>(i) * 6.f;
-		Swords_W[i].Pos.z = KotokoPos[1].z+(float)(l_RandPos(mt));
+		Swords_W[i].Pos.z = KotokoPos[1].z + (float)(l_RandPos(mt));
 		Swords_W[i].Pos.y = -10.f;
 		uniform_int_distribution<int> l_RandScl(2, 4);
 
 		uniform_int_distribution<int> l_RandRot(-60, 60);
-		Swords_W[i].Scl = { (float)l_RandScl(mt)*1.5f,0.f,(float)l_RandScl(mt)*1.5f };
+		Swords_W[i].Scl = { (float)l_RandScl(mt) * 1.5f,0.f,(float)l_RandScl(mt) * 1.5f };
 		Swords_W[i].YSclRandMax = (float)l_RandScl(mt);
-		Swords_W[i].Rot = { (float)l_RandRot(mt) / 2,0,(float)l_RandRot(mt)/2 };
+		Swords_W[i].Rot = { (float)l_RandRot(mt) / 2,0,(float)l_RandRot(mt) / 2 };
 		Swords_W[i].Alpha = 1.f;
 	}
 
 	AreaAlpha[0] = 0.8f;
 	AreaAlpha[1] = 0.8f;
 	IdleCount++;
-	if (IdleCount > 120)_phase = IMPACTSLASH;
+	if (IdleCount > 120) {
+		_phase = IMPACTSLASH;
+	}
 }
 
 void ShadowSlashAttack::Phase_Impact()

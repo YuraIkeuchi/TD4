@@ -37,7 +37,7 @@ bool FiveBoss::Initialize()
 	m_Color = { 0.0f,1.0f,0.0f,1.0f };
 	//m_Rotation.y = -90.f;
 	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "Magnification")));
-	m_HP =  static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "hp")));
+	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "hp")));
 	m_BirthTarget = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "HeartTarget")));
 
 	//ÉmÉbÉNÉoÉbÉNïpìx
@@ -47,52 +47,52 @@ bool FiveBoss::Initialize()
 	KnockDam = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "KnockDam")));
 
 
-		//MeteoShot
-		MeteoDam = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "MeteoDam")));
+	//MeteoShot
+	MeteoDam = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "MeteoDam")));
 
-		//WayShot
-		ShotDam = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "ShotDam")));
+	//WayShot
+	ShotDam = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "ShotDam")));
 
-		//Ultimate
-		UltDam = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "UltDam")));
+	//Ultimate
+	UltDam = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "UltDam")));
 
 	//darkshot
-		DarkShotDam = 0.5f;// static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "DarkSutoponShotDam")));
+	DarkShotDam = 0.5f;// static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "DarkSutoponShotDam")));
 
-		noAction = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "noAction")));
+	noAction = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "noAction")));
 
-		shot = new ShotAttack();
-		normal = new NormalAttack();
-		smash = new SmashShotAttack();
-		slash = new ShadowSlashAttack();
-		single = new SingleShot();
-		guard = new GuardAction();
-		knock = new KnockAttack();
-		darkshot = new DarkSutoponShot();
+	shot = new ShotAttack();
+	normal = new NormalAttack();
+	smash = new SmashShotAttack();
+	slash = new ShadowSlashAttack();
+	single = new SingleShot();
+	guard = new GuardAction();
+	knock = new KnockAttack();
+	darkshot = new DarkSutoponShot();
 
-		smash->Init();
-		shot->Init();
-		slash->Init();
-		single->Init();
-		guard->Init();
-		normal->Init();
-		knock->Init();
-		darkshot->Init();
+	smash->Init();
+	shot->Init();
+	slash->Init();
+	single->Init();
+	guard->Init();
+	normal->Init();
+	knock->Init();
+	darkshot->Init();
 
-		normal->SetBoss(this);
+	normal->SetBoss(this);
 
-		knock->SetDam(KnockDam);
-		smash->SetDam(MeteoDam);
-		slash->SetDam(UltDam);
-		single->SetDam(ShotDam);
-		darkshot->SetDam(DarkShotDam);
+	knock->SetDam(KnockDam);
+	smash->SetDam(MeteoDam);
+	slash->SetDam(UltDam);
+	single->SetDam(ShotDam);
+	darkshot->SetDam(DarkShotDam);
 	m_MaxHp = m_HP;
 
 	GhostSize = 0;
 	_aPhase = ATTACK_SHOT;
 	/*ActionTimer = 1;
 
-	
+
 	_charaState = STATE_INTER;
 	m_AreaState = AREA_SET;*/
 	//CSVÉçÅ[Éh
@@ -126,7 +126,6 @@ void (FiveBoss::* FiveBoss::attackTable[])() = {
 	&FiveBoss::Shot,
 	&FiveBoss::Normal,
 	&FiveBoss::Smash,
-	&FiveBoss::Slash,
 	&FiveBoss::Single
 };
 
@@ -157,8 +156,8 @@ void FiveBoss::Action()
 
 	////èÛë‘à⁄çs(charastateÇ…çáÇÌÇπÇÈ)
 	//if (m_HP > 0.0f) {
-	if(GhostSize<6)
-	(this->*attackTable[_aPhase])();
+	if (GhostSize < 6)
+		(this->*attackTable[_aPhase])();
 
 	//knockÇÃçUåÇîªíË
 	KnockTimer++;
@@ -167,7 +166,7 @@ void FiveBoss::Action()
 			knock->setKnockF(true);
 	}
 	//èÇì\ÇÈÉ^ÉCÉ~ÉìÉO
-	if (GuardCount==0&& m_HP < m_MaxHp / 2) {
+	if (GuardCount == 0 && m_HP < m_MaxHp / 2) {
 		guard->SetGuardStart(true);
 		GuardCount++;
 		//guard->SetGuardStart(true);
@@ -182,14 +181,14 @@ void FiveBoss::Action()
 	darkshot->Upda();
 	knock->Upda();
 	guard->Upda();
-
+	//slash->Upda();
 	/// <summary>
 	/// çUåÇÅ[ÇRWAY
 	/// </summary>
-	
+
 	////ActionSet(ATTACK_SHOT, shot);
 	ActionSet(ATTACK_IMPACT, smash);
-	ActionSet(ATTACK_SLASH, slash);
+	//ActionSet(ATTACK_SLASH, slash);
 	ActionSet(ATTACK_SINGLESHOT, single);
 
 	if (_aPhase == ATTACK_SHOT) { ActionTimer++; }
@@ -227,55 +226,62 @@ void FiveBoss::Action()
 		}
 	}
 
-	
 
-			mt19937 mt{ std::random_device{}() };
+
+	mt19937 mt{ std::random_device{}() };
 
 	//single->Upda();
-			if (shot->GetPhase() == ShotAttack::Phase::END) {
-				//í èÌçUåÇ
-				if (GhostSize > noAction) {
-					if (GhostSize < 4)
-					{
-						shot->SetActionEnd(true);
-						shot->SetIdleDam(false);
-						slash->SetActionEnd(false);
-						_aPhase = ATTACK_SLASH;
-					} else if (GhostSize == 4)
-					{
-						shot->SetActionEnd(true);
-						shot->SetIdleDam(false);
-						smash->SetActionEnd(false);
-						_aPhase = ATTACK_IMPACT;
-					}
+	if (shot->GetPhase() == ShotAttack::Phase::END) {
+		//í èÌçUåÇ
+		if (shot->GetCanRand() > noAction) {
+			if (GhostSize > 0 && GhostSize < 4)
+			{
+				shot->SetActionEnd(true);
+				shot->SetIdleDam(false);
+				single->SetActionEnd(false);
+				_aPhase = ATTACK_SINGLESHOT;
+			} else if (GhostSize == 4)
+			{
+				shot->SetActionEnd(true);
+				shot->SetIdleDam(false);
+				smash->SetActionEnd(false);
+				_aPhase = ATTACK_IMPACT;
+			} else if (GhostSize >= 5)
+			{
+				shot->SetActionEnd(true);
+				shot->SetIdleDam(false);
+				single->SetActionEnd(false);
+				JudgSlash = true;
+				_aPhase = ATTACK_SINGLESHOT;
 			}
-				if (GhostSize >= 5)
-				{
-					shot->SetActionEnd(true);
-					shot->SetIdleDam(false);
-					slash->SetActionEnd(false);
-					_aPhase = ATTACK_SLASH;
-				}
-			}
-		
 
-		if (!JudgDShot&&GhostSize > 3)
-		{
-			uniform_int_distribution<int> l_Rand(0, 10);
-			ThreeGhostActionRand = l_Rand(mt);
-
-			if (ThreeGhostActionRand < 20) {
-				JudgDShot = true;
-				darkshot->SetActionStart(true);
-			}
 		}
-	if(JudgDShot)
+	}
+	if (JudgSlash)
+	{
+		slash->SetActionEnd(false);
+		slash->Upda();
+		if (slash->GetActionEnd())
+			JudgSlash = false;
+	}
+
+
+	if (!JudgDShot && GhostSize > 3)
+	{
+		uniform_int_distribution<int> l_Rand(0, 10);
+		ThreeGhostActionRand = l_Rand(mt);
+
+		if (ThreeGhostActionRand < 20) {
+			JudgDShot = true;
+			darkshot->SetActionStart(true);
+		}
+	}
+	if (JudgDShot)
 	{
 		CoolDShot++;
 		if (CoolDShot > 300)
 			JudgDShot = false;
-	}
-	else
+	} else
 	{
 		CoolDShot = 0;
 	}
@@ -308,7 +314,7 @@ void FiveBoss::Action()
 	}
 	for (auto i = 0; i < 19; i++) {
 	}
-	
+
 	//Ç«Ç¡ÇøégÇ¶ÇŒÇ¢Ç¢Ç©ï™Ç©ÇÁÇ»Ç©Ç¡ÇΩÇ©ÇÁï€óØ
 	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 	for (auto i = 0; i < 19; i++)
@@ -350,7 +356,7 @@ void FiveBoss::DeathParticle()
 void FiveBoss::ImGui_Origin()
 {
 	ImGui::Begin("Five");
-	ImGui::Text("Frame:%f", m_Frame);
+	ImGui::Text("Frame:%d", static_cast<int>(_aPhase));
 	ImGui::Text("PosX:%f", m_Position.x);
 	ImGui::End();
 }
@@ -401,8 +407,7 @@ void FiveBoss::EndRollAction()
 			m_View = true;
 			_ViewType = VIEW_MOVE;
 		}
-	}
-	else if (_EndState2 == END_RIGHT) {
+	} else if (_EndState2 == END_RIGHT) {
 		if (m_View) {
 			if (_ViewType == VIEW_MOVE) {
 				if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
@@ -410,8 +415,7 @@ void FiveBoss::EndRollAction()
 					m_AfterPos = { 10.0f,5.0f,-25.0f };
 					_ViewType = VIEW_RETURN;
 				}
-			}
-			else {
+			} else {
 				if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 					m_Frame = {};
 					_ViewType = VIEW_MOVE;
@@ -422,8 +426,7 @@ void FiveBoss::EndRollAction()
 			}
 			SetEasePos();
 		}
-	}
-	else if (_EndState2 == END_LEFT) {
+	} else if (_EndState2 == END_LEFT) {
 		m_Rotation = { 0.0f,180.0f,90.0f };
 		if (m_View) {
 			if (_ViewType == VIEW_MOVE) {
@@ -432,8 +435,7 @@ void FiveBoss::EndRollAction()
 					m_AfterPos = { -10.0f,5.0f,-25.0f };
 					_ViewType = VIEW_RETURN;
 				}
-			}
-			else {
+			} else {
 				if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 					m_Frame = {};
 					_ViewType = VIEW_MOVE;
@@ -444,8 +446,7 @@ void FiveBoss::EndRollAction()
 			}
 			SetEasePos();
 		}
-	}
-	else if (_EndState2 == END_TOP) {
+	} else if (_EndState2 == END_TOP) {
 		m_Rotation = { 0.0f,180.0f,180.0f };
 		if (m_View) {
 			if (_ViewType == VIEW_MOVE) {
@@ -454,8 +455,7 @@ void FiveBoss::EndRollAction()
 					m_AfterPos = { -3.0f,15.0f,-25.0f };
 					_ViewType = VIEW_RETURN;
 				}
-			}
-			else {
+			} else {
 				if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 				}
 			}
@@ -466,8 +466,7 @@ void FiveBoss::EndRollAction()
 			_EndState2 = END_MOVE2;
 			m_fbxObject->StopAnimation();
 		}
-	}
-	else {
+	} else {
 		m_Rotation = { 0.0f,180.0f,0.0f };
 		m_Position = { -3.0f,0.0f,-25.0f };
 	}

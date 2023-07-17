@@ -163,8 +163,10 @@ private:
 	DarkSutoponShot* darkshot;
 	int ThreeGhostActionRand;
 	bool JudgDShot;
+	bool JudgSlash;
 	int CoolDShot;
 	float WalkSpeed;
+
 		//ガード続く時間
 	float GuardTime;
 		//ノックバック頻度
@@ -180,7 +182,6 @@ private:
 		ATTACK_SHOT,
 		ATTACK_NORMAL,
 		ATTACK_IMPACT,
-		ATTACK_SLASH,
 		ATTACK_SINGLESHOT
 	}_aPhase = ATTACK_SHOT;
 
