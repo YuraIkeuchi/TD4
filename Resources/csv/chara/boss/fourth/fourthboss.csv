@@ -9,9 +9,9 @@ HeartTarget,90
 //5体生成に変わります
 PinchHP,
 //シャッターを切る時間
-shutterTime,30
+shutterTime,16
 //シャッターが開ける時間
-feedTime,15
+feedTime,17
 //各アクションのクールタイム
 Wait,240
 Move,120

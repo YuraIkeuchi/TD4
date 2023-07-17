@@ -133,6 +133,7 @@ void FirstBoss::AppearAction()
 
 void FirstBoss::DeadAction()
 {
+	m_Scale = { 15.3f,15.3f,15.3f };
 	const float l_AddAngle = 5.0f;
 	m_DeathTimer++;
 	const int l_BaseTarget = 50;
@@ -189,7 +190,7 @@ void FirstBoss::EffecttexDraw(DirectXCommon* dxCommon)
 void FirstBoss::Draw(DirectXCommon* dxCommon)
 {
 	IKETexture::PreDraw2(dxCommon, AlphaBlendType);
-	if (Display == true) {
+	if (Display == true&&m_HP>0) {
 		tex->Draw();
 	}
 	IKETexture::PostDraw();
