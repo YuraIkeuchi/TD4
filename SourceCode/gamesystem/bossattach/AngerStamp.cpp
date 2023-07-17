@@ -76,15 +76,15 @@ bool AngerStamp::Collide() {
 		m_Radius = 2.5f;
 		m_ExploType = EXPLO_SMALL;
 	}
-	else if (m_AfterScale == 2.5f) {
-		m_Radius = 4.0f;
+	else if (m_AfterScale == 3.5f) {
+		m_Radius = 5.0f;
 		m_ExploType = EXPLO_MIDIUM;
 	}
 	else {
 		m_Radius = 7.0f;
 		m_ExploType = EXPLO_LARGE;
 	}
-	if (Collision::CircleCollision(m_Position.x, m_Position.z, m_Radius, l_PlayerPos.x, l_PlayerPos.z, m_Radius) && (m_Color.w < 0.4f) && (Player::GetInstance()->GetDamageInterVal() == 0)) {
+	if (Collision::CircleCollision(m_Position.x, m_Position.z, m_Radius, l_PlayerPos.x, l_PlayerPos.z, m_Radius) && (m_Color.w < 0.6f) && (Player::GetInstance()->GetDamageInterVal() == 0)) {
 		Player::GetInstance()->RecvDamage(m_DamagePower);
 		Player::GetInstance()->PlayerHit(m_Position);
 		return true;
@@ -98,7 +98,7 @@ bool AngerStamp::Collide() {
 
 void AngerStamp::AngerMove() {
 	const int l_AliveTimer = 1;
-	const int l_LimitTimer = 60;
+	const int l_LimitTimer = 1;
 	const int l_LimitDead = 30;
 	float l_AddFrame = {};
 	if (m_Birth) {
@@ -113,7 +113,7 @@ void AngerStamp::AngerMove() {
 			}
 		}
 		else if (_StampState == STAMP_WIDE) {
-			l_AddFrame = 0.05f;
+			l_AddFrame = 0.01f;
 			if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 				m_BirthTimer++;
 
@@ -130,7 +130,7 @@ void AngerStamp::AngerMove() {
 				Ease(In,Cubic,m_Frame,m_Scale.z,m_AfterScale), };
 		}
 		else {
-			l_AddFrame = 0.01f;
+			l_AddFrame = 0.05f;
 			if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 				m_DeadTimer++;
 				m_Alive = false;
@@ -147,7 +147,7 @@ void AngerStamp::AngerMove() {
 			};
 
 			//一定のラインになったら爆発エフェクト発生
-			if (m_Color.w >= 0.3f && m_Color.w < 0.4f) {
+			if (m_Color.w >= 0.4f && m_Color.w < 0.6f) {
 				BirthParticle();
 			}
 		}

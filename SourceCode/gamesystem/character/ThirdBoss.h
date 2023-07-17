@@ -176,6 +176,15 @@ private:
 	};
 	int m_RollType;
 
+	enum RandType {
+		RAND_ALTER,
+		RAND_JOY,
+		RAND_ANGER,
+		RAND_STAMP,
+		RAND_RANDOM,
+		RAND_ROLL
+	};
+
 	//方向転換するためのもの
 	bool m_ChangeRot = false;
 	float m_RotFrame = 0.0f;
@@ -200,6 +209,8 @@ private:
 	vector<int>m_StampInterval;
 	vector<int>m_RandomInterval;
 	vector<float>m_DamagePower;
+	//各インターバルやリミット時間
+	vector<int>m_RandAct;
 	int m_MoveInterval = {};
 	int m_QuickMoveInterval = {};
 	int m_ChoiceInterval = {};
