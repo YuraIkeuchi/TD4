@@ -301,7 +301,7 @@ void SmashShotAttack::BomParticle()
 		mt19937 mt{ std::random_device{}() };
 		uniform_int_distribution<int> l_Randlife(10, 40);
 		l_Life[i] = int(l_Randlife(mt));
-		if (Collision::GetLength(Player::GetInstance()->GetPosition(), BulPos[i]) < 10.f)
+		if (Player::GetInstance()->GetDamageInterVal() == 0 && Collision::GetLength(Player::GetInstance()->GetPosition(), BulPos[i]) < 5.f)
 		{
 			Player::GetInstance()->PlayerHit(boss->GetPosition());
 			Player::GetInstance()->RecvDamage(Dam);

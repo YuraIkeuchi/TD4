@@ -105,7 +105,7 @@ void ShotBul::Upda()
 
 		ParticleEmitter::GetInstance()->FireEffect(m_Life[i], BulPos[i], s_scale[i], e_scale[i], s_color[i], e_color[i]);
 
-		if (Player::GetInstance()->GetDamageInterVal() == 0 && Collision::CircleCollision(BulPos[i].x,BulPos[i].z,3.f,
+		if (Player::GetInstance()->GetDamageInterVal() == 0 && Collision::CircleCollision(BulPos[i].x,BulPos[i].z,2.f,
 			Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z,1.f)) {
 			Player::GetInstance()->PlayerHit(BulPos[i]);
 			Player::GetInstance()->RecvDamage(0.5f);

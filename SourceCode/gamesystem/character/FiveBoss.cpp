@@ -156,8 +156,7 @@ void FiveBoss::Action()
 	////ó‘ÔˆÚs(charastate‚É‡‚í‚¹‚é)
 	//if (m_HP > 0.0f) {\
 	//if (GhostSize < 6)
-		(this->*attackTable[_aPhase])();
-
+	
 	if (GhostSize < 6) {
 		if (m_HP > 0.0f) {
 			(this->*attackTable[_aPhase])();
@@ -183,8 +182,8 @@ void FiveBoss::Action()
 	darkshot->SetSutoPos(knock->Sutoobj()->GetPosition());
 	darkshot->SetSutoRot(knock->Sutoobj()->GetRotation());
 	darkshot->Upda();
-	knock->Upda();
-	guard->Upda();
+	//knock->Upda();
+	//guard->Upda();
 	//slash->Upda();
 	if (m_HP > 0.0f) {
 		knock->Upda();
