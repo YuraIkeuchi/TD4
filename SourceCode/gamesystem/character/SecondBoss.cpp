@@ -48,6 +48,8 @@ bool SecondBoss::Initialize() {
 
 	//
 	SummonCool = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Second/Secondboss.csv", "SummonCool")));
+
+	effects.clear();
 	return true;
 }
 
@@ -97,13 +99,7 @@ void SecondBoss::Action() {
 		/*^^^^^^^^^^^^^^^^^^^^^*/
 
 		/*^^^^当たり判定^^^^*/
-		//弾とボスの当たり判定
-
-		//通常時の当たり判定
-		if (!_normal.GetAttackF() && !_cattack.GetAttackF())
-		{
-			ColPlayer_Def();
-		}
+		ColPlayer();
 		/*^^^^^^^^^^^^^^^^^*/
 
 
@@ -145,17 +141,10 @@ void SecondBoss::Action() {
 			Move_Away(); _normal.Remove(m_Position, m_Scale, EncF); DamAction();
 		}
 		/*^^^^^^^^^^^^^^^^^^^*/
-
-		if (!SummobnStop) {
-			ColPlayer();
-		}
-
 		_normal.SetreposAngle();
 
 		vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
 		CollideBul(_playerBulA, Type::CIRCLE);
-
-
 	}
 	//OBJのステータスのセット
 	Obj_SetParam();
@@ -263,7 +252,7 @@ void SecondBoss::NormalAttak::Update(XMFLOAT3& Pos, XMFLOAT3& Rot, bool& Enf)
 
 void SecondBoss::EffecttexDraw(DirectXCommon* dxCommon)
 {
-	if (m_HP < 0.1f)return;
+	if (m_HP <= 0.0f)return;
 
 	IKETexture::PreDraw2(dxCommon, AlphaBlendType);
 	_cattack.Draw();

@@ -7,7 +7,9 @@
 void InterBoss::Update() {
 	//陦悟虚
 	Action();
-	if (m_HP > 0.0f) {
+
+	Helper::GetInstance()->CheckMax(m_HP, 0.0f, 0.0f);
+	if (m_HP == 0.0f) {
 		DeathAction();
 	}
 	//エフェクト

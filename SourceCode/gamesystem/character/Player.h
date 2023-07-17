@@ -112,6 +112,7 @@ public:
 	float GetHP() { return m_HP; }
 	float GetMaxHP() { return m_MaxHP; }
 
+	void SetHitPlayer(bool HitPlayer) { m_HitPlayer = HitPlayer; };
 	void SetCanShot(const bool m_canShot) {this->m_canShot = m_canShot;}
 	void SetConfu(const bool Confu) { this->m_Confu = Confu; }
 	void SetConfuTimer(const int ConfuTimer) { this->m_ConfuTimer = ConfuTimer; }
@@ -162,6 +163,8 @@ private://各クラス
 	//CSV系
 	//弾の強さのリミット
 	vector<float>m_PowerLimit;
+
+	bool m_HitPlayer = false;
 
 	//ラスボスのときの動き
 	enum LastState {

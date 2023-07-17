@@ -54,6 +54,8 @@ bool ThirdBoss::Initialize() {
 	//CSVはこっから
 	CSVLoad();
 	m_MaxHp = m_HP;
+
+	effects.clear();
 	return true;
 }
 void ThirdBoss::SkipInitialize() {
@@ -176,7 +178,7 @@ void ThirdBoss::Action() {
 	//テキスチャ
 	MarkUpdate();
 
-	if (m_HP < 0.0f) {
+	if (m_HP <= 0.0f) {
 		m_fbxObject->StopAnimation();
 	}
 }

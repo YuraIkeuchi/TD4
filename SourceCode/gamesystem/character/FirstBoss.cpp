@@ -59,6 +59,7 @@ bool FirstBoss::Initialize()
 	m_TexRot = { 90.0f,0.0f,0.0f };
 	m_TexScale = { 0.2f,3.0f,0.6f };
 
+	effects.clear();
 	return true;
 }
 
@@ -181,7 +182,7 @@ void FirstBoss::ImGui_Origin()
 
 void FirstBoss::EffecttexDraw(DirectXCommon* dxCommon)
 {
-	if (m_HP < 0.0f)return;
+	if (m_HP <= 0.0f)return;
 
 	confueffect->Draw(dxCommon);
 	noteeffect->Draw(dxCommon);
@@ -442,6 +443,9 @@ void FirstBoss::RockOn()
 		rot = m_Rotation.y;
 		s_pos = m_Position;
 		e_pos = { m_Position.x + sinf(RottoPlayer) * -(20.f * (float)jumpCount),0.f, m_Position.z + cosf(RottoPlayer) * -(20.0f * (float)jumpCount) };
+		//リミット制限
+		Helper::GetInstance()->Clamp(e_pos.x, -55.0f, 65.0f);
+		Helper::GetInstance()->Clamp(e_pos.z, -60.0f, 60.0f);
 		_rockonstate = RockonState::STATE_ATTACK;
 		Display = false;
 	}

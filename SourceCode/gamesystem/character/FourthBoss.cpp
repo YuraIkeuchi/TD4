@@ -72,6 +72,7 @@ bool FourthBoss::Initialize() {
 	ActionTimerMax[(size_t)commandState::Explosion] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Explosion")));
 	ActionTimer = 0;
 	m_Radius = 5.0f;
+	effects.clear();
 	return true;
 }
 
@@ -198,7 +199,7 @@ void FourthBoss::ImGui_Origin() {
 }
 
 void FourthBoss::EffecttexDraw(DirectXCommon* dxCommon) {
-	if (m_HP < 0.0f) { return; }
+	if (m_HP <= 0.0f) { return; }
 	IKETexture::PreDraw2(dxCommon, AlphaBlendType);
 	for (int i = 0; i < kPhotoSpotMax; i++) {
 		photoSpot[i]->Draw();

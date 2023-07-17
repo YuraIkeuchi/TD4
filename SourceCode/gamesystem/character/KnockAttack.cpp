@@ -135,11 +135,20 @@ void KnockAttack::ImpactAction()
 
 	if(KnockF)
 	{
+		if(JFrame<=0.f)
+		{
+			if (Player::GetInstance()->GetDamageInterVal() == 0 && Collision::GetLength(stopos, Player::GetInstance()->GetPosition()) < 15.f) {
+				Player::GetInstance()->PlayerHit(m_Position);
+				Player::GetInstance()->RecvDamage(Dam);
+			}
+		}
+
 		JFrame += 1.f / 60.f;
 		stopos.y = GroundY+ (1.0f - pow(1.0f - sin(PI * JFrame), Distortion)) * Height;
 		ReturnEaseT = 0.f;
 		//SUB Alpha-Scling
 		if (JFrame >= 1.f) {
+
 			TexAlpha -= 0.02f;
 			TexScl.x += AddTexScling; TexScl.y += AddTexScling;
 			if (TexScl.x > 1.5f || TexScl.z > 1.5f)
@@ -150,10 +159,7 @@ void KnockAttack::ImpactAction()
 		}
 		
 		//knock
-		if (Player::GetInstance()->GetDamageInterVal()==0&& Collision::GetLength(boss->GetPosition(), Player::GetInstance()->GetPosition()) < 15.f) {
-			Player::GetInstance()->PlayerHit(m_Position);
-			Player::GetInstance()->RecvDamage(Dam);
-		}
+		
 
 	}
 	else

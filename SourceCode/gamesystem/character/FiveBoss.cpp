@@ -104,7 +104,7 @@ bool FiveBoss::Initialize()
 	s_scale.resize(19);
 	e_scale.resize(19);
 	m_Life.resize(19);
-
+	effects.clear();
 	//m_HP = 10;
 	CSVLoad();
 	return true;
@@ -154,15 +154,12 @@ void FiveBoss::Action()
 	knock->SetBoss(this);
 
 	////ó‘ÔˆÚs(charastate‚É‡‚í‚¹‚é)
-	//if (m_HP > 0.0f) {\
-	//if (GhostSize < 6)
-		(this->*attackTable[_aPhase])();
-
 	if (GhostSize < 6) {
 		if (m_HP > 0.0f) {
 			(this->*attackTable[_aPhase])();
 		}
 	}
+
 	//knock‚ÌUŒ‚”»’è
 	KnockTimer++;
 	if (!darkshot->GetActionStart()) {
@@ -183,9 +180,8 @@ void FiveBoss::Action()
 	darkshot->SetSutoPos(knock->Sutoobj()->GetPosition());
 	darkshot->SetSutoRot(knock->Sutoobj()->GetRotation());
 	darkshot->Upda();
-	knock->Upda();
-	guard->Upda();
-	//slash->Upda();
+
+
 	if (m_HP > 0.0f) {
 		knock->Upda();
 		guard->Upda();
@@ -412,7 +408,7 @@ void FiveBoss::ImGui_Origin()
 
 void FiveBoss::EffecttexDraw(DirectXCommon* dxCommon)
 {
-	if (m_HP < 0.0f)return;
+	if (m_HP <= 0.0f)return;
 
 	confueffect->Draw(dxCommon);
 	noteeffect->Draw(dxCommon);
