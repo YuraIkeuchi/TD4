@@ -368,7 +368,7 @@ void FiveBoss::DeadAction()
 		DeathParticle();
 	}
 
-	//knock->DeathUpdate(m_DeathTimer);
+	knock->DeathUpdate(m_DeathTimer);
 	//m_Rotation.y += 3.0f;
 	Fbx_SetParam();
 	//‚Ç‚Á‚¿Žg‚¦‚Î‚¢‚¢‚©•ª‚©‚ç‚È‚©‚Á‚½‚©‚ç•Û—¯
