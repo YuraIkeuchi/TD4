@@ -73,8 +73,8 @@ void FirstStageActor::Finalize()
 
 void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
-	CheckHp();
-	TalkUpdate();
+	//CheckHp();
+	//TalkUpdate();
 
 	if (!Menu::GetIns()->GetMenuOpen()) {
 		//関数ポインタで状態管理
@@ -324,5 +324,5 @@ void FirstStageActor::TalkUpdate()
 
 	text_->SelectText(TextManager::CAP1);
 
-	//quarter_hp_ = -100.f;
+	quarter_hp_ = -100.f;
 }
