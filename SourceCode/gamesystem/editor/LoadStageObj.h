@@ -80,6 +80,7 @@ private:
 	void NonVerseGhost();
 	//参照されているゴーストが存在するかチェックします。
 	bool CheckReferGhost();
+	bool CheckReferDarkGhost();
 	//手に入れているゴーストを三体ほど消します
 	void SubHunger();
 
@@ -103,6 +104,7 @@ private:
 	int kStopGhorstMax = 3;
 
 	array<Ghost*, kStopGhostMax> stopGhosts;
+	array<Ghost*, kStopGhostMax> darkGhosts;
 	std::vector<Food*> foods;
 	std::vector<Heart*> hearts;
 	//ゴーストを消す処理

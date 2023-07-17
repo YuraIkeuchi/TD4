@@ -178,7 +178,8 @@ XMFLOAT4 s_color[BulSize];
 	{
 		if (!ShotAlive[i])continue;
 		if (BulAlpha[i] >= 1.f)BulPos[i] = boss->GetPosition();
-		if (Player::GetInstance()->GetDamageInterVal() == 0 && Collision::GetLength(BulPos[i], Player::GetInstance()->GetPosition()) < 2.f) {
+		if (Player::GetInstance()->GetDamageInterVal() == 0 && Collision::CircleCollision(BulPos[i].x,BulPos[i].z,3.f, 
+			Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z,1.f)) {
 			Player::GetInstance()->PlayerHit(m_Position);
 			Player::GetInstance()->RecvDamage(Dam);
 

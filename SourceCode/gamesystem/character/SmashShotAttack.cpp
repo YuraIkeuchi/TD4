@@ -112,11 +112,13 @@ void SmashShotAttack::Phase_Shot()
 	//Œü‚¢‚½•ûŒü‚Éi‚Þ
 	constexpr float SummonSpeed = 4.f;
 
-
-
 	constexpr float MaxY = 20.f;
 
+	Helper::GetInstance()->FrameCheck(BulEaseCount[0], 0.015f);
 	BulPos[0].y += 0.5f;
+	BulPos[0].x = Ease(In, Quad, BulEaseCount[0], boss->GetPosition().x, boss->GetPosition().x + PosXVal[0]);
+	BulPos[0].z = Ease(In, Quad, BulEaseCount[0], boss->GetPosition().z, boss->GetPosition().z + PosZVal[0]);
+
 	for (auto i = 1; i < BulSize; i++)
 	{
 		//’e‚ðã—ŽË

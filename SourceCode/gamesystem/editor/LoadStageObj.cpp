@@ -417,6 +417,23 @@ bool LoadStageObj::CheckReferGhost() {
 	}
 }
 
+bool LoadStageObj::CheckReferDarkGhost() {
+	InterBoss* boss = m_EnemyManager->GetBoss();
+	int checkNum = 0;
+	for (Ghost*& ghost : stopGhosts) {
+		if (!ghost) { continue; }
+		if (!ghost->GetIsRefer()) { continue; }
+		checkNum++;
+	}
+	if (checkNum == 0) {
+		boss->SetIsReferCheck(true);
+		return false;
+	} else {
+		boss->SetIsReferCheck(false);
+		return true;
+	}
+}
+
 void LoadStageObj::ChangeGhost2Enemy() {
 	InterBoss* boss = m_EnemyManager->GetBoss();
 	if (boss->GetInstruction() != InterBoss::FourthBossInst::ChangeGhost) { return; }

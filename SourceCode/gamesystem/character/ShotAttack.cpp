@@ -139,7 +139,7 @@ void ShotAttack::Phase_Idle()
 	AttackTimer++;
 	FollowPlayerAct();
 			mt19937 mt{ std::random_device{}() };
-	boss->AnimationControl(InterBoss::AnimeName::WALK, true, 1);
+	boss->AnimationControl(InterBoss::AnimeNames::WALK, true, 1);
 
 
 	if (TargetGhost == 0) {
@@ -182,7 +182,7 @@ void ShotAttack::Phase_Idle()
 				TargetGhost = l_Rand(mt);
 
 				TriggerAttack = true;
-				boss->AnimationControl(InterBoss::AnimeName::SHOT, false, 1);
+				boss->AnimationControl(InterBoss::AnimeNames::SHOT, false, 1);
 
 				_phase = Phase::SHOT;
 			}
@@ -199,10 +199,9 @@ void ShotAttack::Phase_Idle()
 			if (next) {
 				uniform_int_distribution<int> l_Rand(1, (int)boss->GetGhost().size() - 1);
 				TargetGhost = l_Rand(mt);
-
 				TriggerAttack = true;
-				boss->AnimationControl(InterBoss::AnimeName::SHOT, false, 1);
 
+				boss->AnimationControl(InterBoss::AnimeNames::SHOT, false, 1);
 				_phase = Phase::SHOT;
 			}
 		}
@@ -224,8 +223,6 @@ void ShotAttack::Phase_Idle()
 		}
 	} else
 	{
-		//
-		
 
 	}
 }
@@ -279,7 +276,7 @@ void ShotAttack::Phase_End()
 	if (TriggerAttack) {
 		if (boss->GetFbxobj()->GetCurrent() >= boss->GetFbxobj()->GetEndTime() - 1) {
 			boss->GetFbxobj()->StopAnimation();
-			boss->AnimationControl(InterBoss::AnimeName::IDLE, true, 1);
+			boss->AnimationControl(InterBoss::AnimeNames::IDLE, true, 1);
 			TriggerAttack = false;
 		}
 	}

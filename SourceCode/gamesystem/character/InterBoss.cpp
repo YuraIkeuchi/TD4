@@ -252,12 +252,12 @@ void InterBoss::EndRollUpdate() {
 	EndRollAction();
 }
 
-void InterBoss::AnimationControl(AnimeName name, const bool& loop, int speed)
+void InterBoss::AnimationControl(AnimeNames name, const bool& loop, int speed)
 {
 	//アニメーションを引数に合わせる
 	if (_animeName != name)
 	{
-		m_fbxObject->PlayAnimation(static_cast<int>(name));
+	//	m_fbxObject->PlayAnimation(static_cast<int>(name));
 	}
 
 	//各種パラメータ反映

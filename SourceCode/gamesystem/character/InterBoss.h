@@ -270,13 +270,13 @@ public:
 	bool GetCanAttack() { return CanAttack; }
 	IKEFBXObject3d* GetFbxobj() { return m_fbxObject.get(); }
 
-	enum AnimeName
+	enum AnimeNames
 	{
 		IDLE,
 		SHOT,
 		WALK
 	}_animeName;
-	void AnimationControl(AnimeName name, const bool& loop, int speed);
+	void AnimationControl(AnimeNames name, const bool& loop, int speed);
 
 	int NextActionInteval;
 	bool IdleRota;
