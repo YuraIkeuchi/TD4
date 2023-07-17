@@ -397,7 +397,7 @@ void Player::Bullet_Management() {
 		}
 
 		//チャージ中に飢餓ゲージが切れた場合弾が自動で放たれる
-		if (m_ChargePower != 0.0f) {
+		if (m_ChargePower != 0.0f && (HungerGauge::GetInstance()->GetCatchCount() >= l_TargetCount)) {
 			if ((HungerGauge::GetInstance()->GetNowHunger() == 0.0f) || (m_ChargePower > HungerGauge::GetInstance()->GetNowHunger())) {
 				if (m_ChargeType < POWER_STRONG) {
 					Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
