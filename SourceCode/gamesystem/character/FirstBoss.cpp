@@ -59,6 +59,7 @@ bool FirstBoss::Initialize()
 	m_TexRot = { 90.0f,0.0f,0.0f };
 	m_TexScale = { 0.2f,3.0f,0.6f };
 
+	effects.clear();
 	return true;
 }
 
@@ -181,7 +182,7 @@ void FirstBoss::ImGui_Origin()
 
 void FirstBoss::EffecttexDraw(DirectXCommon* dxCommon)
 {
-	if (m_HP < 0.0f)return;
+	if (m_HP <= 0.0f)return;
 
 	confueffect->Draw(dxCommon);
 	noteeffect->Draw(dxCommon);

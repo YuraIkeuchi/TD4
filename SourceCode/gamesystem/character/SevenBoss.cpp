@@ -36,6 +36,7 @@ bool SevenBoss::Initialize() {
 	m_CircleSpeed = 90.0f;
 	//CSVロード
 	CSVLoad();
+	effects.clear();
 	return true;
 }
 //スキップ時の初期化
@@ -227,7 +228,7 @@ void SevenBoss::Pause() {
 //エフェクト描画
 void SevenBoss::EffecttexDraw(DirectXCommon* dxCommon)
 {
-	if (m_HP < 0.0f)return;
+	if (m_HP <= 0.0f)return;
 	confueffect->Draw(dxCommon);
 	if (_charaState == STATE_STUN) {
 		bossstuneffect->Draw(dxCommon);

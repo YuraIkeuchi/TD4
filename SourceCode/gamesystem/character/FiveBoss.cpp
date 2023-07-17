@@ -104,7 +104,7 @@ bool FiveBoss::Initialize()
 	s_scale.resize(19);
 	e_scale.resize(19);
 	m_Life.resize(19);
-
+	effects.clear();
 	//m_HP = 10;
 	CSVLoad();
 	return true;
@@ -412,7 +412,7 @@ void FiveBoss::ImGui_Origin()
 
 void FiveBoss::EffecttexDraw(DirectXCommon* dxCommon)
 {
-	if (m_HP < 0.0f)return;
+	if (m_HP <= 0.0f)return;
 
 	confueffect->Draw(dxCommon);
 	noteeffect->Draw(dxCommon);
