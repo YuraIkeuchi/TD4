@@ -337,7 +337,28 @@ void FiveBoss::AppearAction()
 
 void FiveBoss::DeadAction()
 {
-	m_Rotation.y += 3.0f;
+	m_DeathTimer++;
+	if (_DeathState == DEATH_SET) {
+		if (m_DeathTimer == 1) {
+			m_Position = { -4.0f,-5.0f,20.0f };
+			m_Rotation = { 0.0f,180.0f,0.0f };
+			_DeathState = DEATH_KNOCK;
+		}
+	}
+	else if(_DeathState == DEATH_KNOCK) {
+		m_Position.y = Ease(Out, Quad, m_DeathTimer / static_cast<float>(150), -5.0f, 0.0f);
+		m_Rotation.x = Ease(Out, Quad, m_DeathTimer / static_cast<float>(150), 0.0f, -90.0f);
+
+		if (m_Rotation.x <= -80.0f) {
+			_DeathState = DEATH_STOP;
+		}
+	}
+	else {
+		DeathParticle();
+	}
+
+	knock->DeathUpdate(m_DeathTimer);
+	//m_Rotation.y += 3.0f;
 	Fbx_SetParam();
 	//Ç«Ç¡ÇøégÇ¶ÇŒÇ¢Ç¢Ç©ï™Ç©ÇÁÇ»Ç©Ç¡ÇΩÇ©ÇÁï€óØ
 	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
@@ -356,14 +377,26 @@ void FiveBoss::CSVLoad()
 
 void FiveBoss::DeathParticle()
 {
+	float l_AddSize = 2.5f;
+	const float RandScale = 3.0f;
+	float s_scale = 0.3f * l_AddSize;
+	float e_scale = (4.0f + (float)rand() / RAND_MAX * RandScale - RandScale / 2.0f) * l_AddSize;
 
+	//êF
+	const float RandRed = 0.2f;
+	const float red = 0.2f + (float)rand() / RAND_MAX * RandRed;
+	const XMFLOAT4 s_color = { 0.9f, red, 0.1f, 1.0f }; //îZÇ¢ê‘
+	const XMFLOAT4 e_color = { 0, 0, 0, 1.0f }; //ñ≥êF
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_Randlife(10, 40);
+	int l_Life = int(l_Randlife(mt));
+	ParticleEmitter::GetInstance()->ExproEffectBoss(l_Life, m_Position, l_AddSize, s_scale, e_scale, s_color, e_color);
 }
 
 void FiveBoss::ImGui_Origin()
 {
 	ImGui::Begin("Five");
-	ImGui::Text("Frame:%f", m_Frame);
-	ImGui::Text("PosX:%f", m_Position.x);
+	ImGui::Text("Timer:%d", m_DeathTimer);
 	ImGui::End();
 }
 
@@ -378,7 +411,6 @@ void FiveBoss::EffecttexDraw(DirectXCommon* dxCommon)
 void FiveBoss::Draw(DirectXCommon* dxCommon)
 {
 	//Obj_Draw();
-	//knock->Draw(dxCommon);
 	if (m_HP > 0.0f) {
 		smash->Draw(dxCommon);
 		single->Draw(dxCommon);
@@ -388,6 +420,7 @@ void FiveBoss::Draw(DirectXCommon* dxCommon)
 		slash->Draw(dxCommon);
 		darkshot->Draw(dxCommon);
 	}
+	knock->Draw(dxCommon);
 	Fbx_Draw(dxCommon);
 	guard->Draw(dxCommon);
 

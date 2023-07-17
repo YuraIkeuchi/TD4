@@ -12,6 +12,11 @@ public:
     void Draw(DirectXCommon* dxCommon) override;
 
     void SpriteDraw() override;
+
+    void DeathUpdate(int Timer) override;
+
+private:
+    void DeathParticle();
 private:
     bool KnockF=false;
     //CSV用
@@ -42,6 +47,19 @@ private:
     float ReturnEaseT;
     float OldPosY;
     void ImpactAction();
+
+    bool m_End = false;
+
+    enum EndState {
+        END_SET,
+        END_MOVE,
+        END_STOP
+    }_EndState;
+
+    //上昇度
+    float m_AddPower = 0.0f;
+    //重力加速度
+    float m_Gravity = 0.03f;
 public:
     inline void setKnockF(bool f) { KnockF = f; TexAlpha = 1.f; TexAlpha2 = 1.f; }
     bool GetKnockF() { return KnockF; }

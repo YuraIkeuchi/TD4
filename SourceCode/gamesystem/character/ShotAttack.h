@@ -13,6 +13,8 @@ public:
     void Draw(DirectXCommon* dxCommon) override;
 
     void SpriteDraw() override;
+
+    void DeathUpdate(int Timer) override;
 private:
     //ƒ‚ƒfƒ‹AUŒ‚—\‘ª‚Ì”ÍˆÍ
     static constexpr int BulSize = 3;

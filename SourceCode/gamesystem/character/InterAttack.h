@@ -17,6 +17,8 @@ public:
 
 	virtual void SpriteDraw() = 0;
 
+	virtual void DeathUpdate(int Timer) = 0;
+
 public:
 	bool GetActionEnd() { return ActionEnd; }
 

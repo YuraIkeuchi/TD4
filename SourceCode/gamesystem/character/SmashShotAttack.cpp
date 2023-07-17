@@ -208,6 +208,9 @@ void SmashShotAttack::RottoPlayer()
 
 }
 
+void SmashShotAttack::DeathUpdate(int Timer) {
+
+}
 
 void SmashShotAttack::Phase_Impact()
 {

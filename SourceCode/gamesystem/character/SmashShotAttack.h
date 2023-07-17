@@ -13,6 +13,8 @@ public:
     void SpriteDraw() override;
 
     void BomParticle();
+
+    void DeathUpdate(int Timer) override;
 private:
     //ƒ‚ƒfƒ‹AUŒ‚—\‘ª‚Ì”ÍˆÍ
     static constexpr int BulSize = 10;

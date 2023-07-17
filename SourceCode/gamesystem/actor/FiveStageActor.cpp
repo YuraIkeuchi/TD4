@@ -104,6 +104,7 @@ void FiveStageActor::Draw(DirectXCommon* dxCommon)
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
 		enemymanager->ImGuiDraw();
+		camerawork->ImGuiDraw();
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
@@ -114,6 +115,7 @@ void FiveStageActor::Draw(DirectXCommon* dxCommon)
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
+		camerawork->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 }
@@ -238,7 +240,7 @@ void FiveStageActor::MainUpdate(DebugCamera* camera)
 			Player::GetInstance()->InitState({ 0.0f,0.0f,-5.0f });
 			enemymanager->SetDeadThrow(false);
 			enemymanager->DeadUpdate();
-			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_SECOND);
+			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_FIVE);
 		}
 
 		if (camerawork->GetEndDeath()) {

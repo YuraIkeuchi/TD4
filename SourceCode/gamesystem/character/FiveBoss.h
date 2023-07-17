@@ -184,6 +184,11 @@ private:
 		ATTACK_SINGLESHOT
 	}_aPhase = ATTACK_SHOT;
 
+	enum DeathState {
+		DEATH_SET,
+		DEATH_KNOCK,
+		DEATH_STOP
+	}_DeathState = DEATH_SET;
 public:
 
 private:
