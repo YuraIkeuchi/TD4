@@ -291,7 +291,7 @@ void ThirdBoss::Stamp() {
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
 
-			if (m_Frame > 0.05f) {
+			if (m_Frame > 0.6f) {
 				if (!m_BirthWave) {
 					BirthStamp("Anger");
 					//BirthWave(6.0f);//ウェーブの生成
@@ -415,7 +415,7 @@ void ThirdBoss::RandomStamp() {
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
 
-			if (m_Frame > 0.01f) {
+			if (m_Frame > 0.6f) {
 				if (!m_BirthWave) {
 					BirthStamp("Anger");
 					m_BirthWave = true;
