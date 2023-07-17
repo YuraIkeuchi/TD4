@@ -79,7 +79,7 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 
 	CreateWord(AISATU, L"おはよう", L"こんにちは", L"こんばんは");
 
-
+	CreateCapWord(Name_Cap::CAP1, L"わいらなかなかやっな", L"じゃっどんそげん攻撃おいにはきかん", L" ");
 	//CreateCapWord(Name_Cap::CAP3, L"わいらなかなかやっな", L"じゃっどんそげん攻撃おいにはきかん", L" ");
 //	CreateCapWord(Name_Cap::KOTO3, L"どうしようどうやったら元に戻せるんだろう",L" ", L" ");
 
@@ -351,6 +351,23 @@ void TextManager::SetCameraBossConversation(Name_CameraBoss name) {
 
 	CreateCon(conversation_, itr->second);
 
+}
+void TextManager::SetCapConversation(Name_Cap name)
+{
+	std::map<TextManager::Name_Cap, Word>::iterator itr = wordlist_cap.find(name);
+
+	if (old_fourth != itr->first) {
+		for (int i = 0; i < 3; i++) {
+			flag[i] = true;
+			next_f[i] = false;
+		}
+	}
+
+	old_cap = itr->first;
+
+	GetWordSize(itr->second);
+
+	CreateCon(conversation_, itr->second);
 }
 //名前から文字列を呼び出しセットする
 void TextManager::SetLastConversation(Name_Last name)

@@ -321,6 +321,8 @@ void FirstStageActor::TalkUpdate()
 	if (tolk_F != true) { return; }
 	
 	messagewindow_->Update(girl_color_, sutopon_color_);
-	
-	quarter_hp_ = -100.f;
+
+	text_->SelectText(TextManager::CAP1);
+
+	//quarter_hp_ = -100.f;
 }

@@ -204,6 +204,8 @@ public:
 
 	void SetCameraBossConversation(Name_CameraBoss name = TALK_FIRST_T);
 
+	void SetCapConversation(Name_Cap name = CAP1);
+
 	void GetWordSize(Word word);
 
 	void SetRowPosition(float posX);
@@ -255,5 +257,6 @@ private:
 	Name_Fourth old_fourth = TALK_FIRST;
 	Name_CameraBoss old_cameraBoss = TALK_FIRST_T;
 	Name_Last old_last = LAST_TALK_FIRST;
+	Name_Cap old_cap = CAP1;
 };
 

@@ -52,6 +52,7 @@ private:
 	float quarter_hp_{};
 	bool tolk_F = false;
 
+
 	enum AppState {
 		APP_START,
 		APP_NOTICE,
