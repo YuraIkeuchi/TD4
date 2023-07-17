@@ -126,6 +126,7 @@ void CameraWork::DefaultCam() {
 
 	m_eyePos.z = Player::GetInstance()->GetPosition().z - 20.0f;
 	m_targetPos.x = Player::GetInstance()->GetPosition().x;
+	m_targetPos.y = 3.0f;
 	m_targetPos.z = Player::GetInstance()->GetPosition().z;
 
 }
@@ -407,7 +408,13 @@ void CameraWork::EditorCamera() {
 //ImGui
 void CameraWork::ImGuiDraw() {
 	ImGui::Begin("Camera");
-	ImGui::Text("Timer:%d", DeathTimer);
+	ImGui::Text("eyeX:%f", m_eyePos.x);
+	ImGui::Text("eyeY:%f", m_eyePos.y);
+	ImGui::Text("eyeZ:%f", m_eyePos.z);
+
+	ImGui::Text("targetX:%f", m_targetPos.x);
+	ImGui::Text("targetY:%f", m_targetPos.y);
+	ImGui::Text("targetZ:%f", m_targetPos.z);
 	ImGui::End();
 }
 void CameraWork::SpecialUpdate() {
