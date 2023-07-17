@@ -293,15 +293,15 @@ void ThirdBoss::Stamp() {
 
 			if (m_Frame > 0.05f) {
 				if (!m_BirthWave) {
-					BirthWave(6.0f);//ウェーブの生成
+					BirthStamp("Anger");
+					//BirthWave(6.0f);//ウェーブの生成
 					m_BirthWave = true;
 				}
 			}
 		}
 		else {
-			m_BirthWave = false;
 			m_Frame = 1.0f;
-
+			m_BirthWave = false;
 			if (Helper::GetInstance()->CheckMin(m_StopTimer, m_StampInterval[PRESS_ATTACK], 1)) {			//シェイクが始まる
 				StampInit(PRESS_SHAKE, false);
 				shake->SetShakeStart(true);
@@ -327,7 +327,7 @@ void ThirdBoss::Stamp() {
 			m_ShakePos = { 0.0f,0.0f,0.0f };
 			//スタンプを押す
 			if (m_StopTimer == 51) {
-				BirthStamp("Anger");
+				//BirthStamp("Anger");
 			}
 		}
 
@@ -415,24 +415,20 @@ void ThirdBoss::RandomStamp() {
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
 
-			if (m_Frame > 0.05f) {
+			if (m_Frame > 0.01f) {
 				if (!m_BirthWave) {
-					BirthWave(3.0f);//ウェーブの生成
+					BirthStamp("Anger");
 					m_BirthWave = true;
 				}
 			}
 		}
 		else {
-			m_BirthWave = false;
 			m_Frame = 1.0f;
-			if (m_StopTimer == 1) {
-				//スタンプと衝撃波の生成
-				BirthStamp("Anger");
-			}
 			if (Helper::GetInstance()->CheckMin(m_StopTimer, m_RandomInterval[RANDOM_ATTACK], 1)) {
 				if (m_MoveCount < l_MoveMax) {		//何回スタンプを押したかで最初に戻るか別の行動をするか決まる
 					m_MoveCount++;
 					StampInit(RANDOM_START, true);
+					m_BirthWave = false;
 				}
 				else {
 					m_MoveCount = 0;
