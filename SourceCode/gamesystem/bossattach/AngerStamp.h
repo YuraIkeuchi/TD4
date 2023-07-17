@@ -23,7 +23,6 @@ private:
 	enum StampState {
 		STAMP_SET,
 		STAMP_WIDE,
-		STAMP_EXPLO,
 	}_StampState;
 
 	enum ExploState {
@@ -35,4 +34,8 @@ private:
 	int m_ExploType = {};
 
 	int m_DeadTimer = {};
+
+	bool m_Explo = false;
+
+	float m_AlphaFrame = {};
 };

@@ -89,12 +89,12 @@ void ParticleEmitter::Explosion(const int life, const XMFLOAT3& pos, const float
 		RandVel = 0.05f;
 	}
 	else if (ExploType == 1) {
-		RandPos = 4.0f;
+		RandPos = 6.0f;
 		RandPos2 = 0.8f;
 		RandVel = 0.05f;
 	}
 	else {
-		RandPos = 7.0f;
+		RandPos = 9.0f;
 		RandPos2 = 0.8f;
 		RandVel = 0.05f;
 	}

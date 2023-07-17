@@ -114,13 +114,15 @@ void AngerStamp::AngerMove() {
 		}
 		else if (_StampState == STAMP_WIDE) {
 			l_AddFrame = 0.01f;
+			if (m_Frame >= 0.6f) {
+				m_Explo = true;
+			}
 			if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 				m_BirthTimer++;
 
 				if (m_BirthTimer == l_LimitTimer) {
 					m_Frame = {};
 					m_BirthTimer = {};
-					_StampState = STAMP_EXPLO;
 				}
 				
 			}
@@ -129,9 +131,10 @@ void AngerStamp::AngerMove() {
 				Ease(In,Cubic,m_Frame,m_Scale.y,m_AfterScale),
 				Ease(In,Cubic,m_Frame,m_Scale.z,m_AfterScale), };
 		}
-		else {
+		//爆発する
+		if (m_Explo) {
 			l_AddFrame = 0.05f;
-			if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			if (Helper::GetInstance()->FrameCheck(m_AlphaFrame, l_AddFrame)) {
 				m_DeadTimer++;
 				m_Alive = false;
 				if (m_DeadTimer == l_LimitDead) {
@@ -141,13 +144,13 @@ void AngerStamp::AngerMove() {
 			//赤に近づけつつ消す
 			m_Color = {
 				m_Color.x,
-				m_Color.y = Ease(In, Cubic, m_Frame, 1.0f, 0.0f),
-				m_Color.z = Ease(In, Cubic, m_Frame, 1.0f, 0.0f),
-				m_Color.w = Ease(In, Cubic, m_Frame, 1.0f, 0.0f),
+				m_Color.y = Ease(In, Cubic, m_AlphaFrame, 1.0f, 0.0f),
+				m_Color.z = Ease(In, Cubic, m_AlphaFrame, 1.0f, 0.0f),
+				m_Color.w = Ease(In, Cubic, m_AlphaFrame, 1.0f, 0.0f),
 			};
 
 			//一定のラインになったら爆発エフェクト発生
-			if (m_Frame >= 0.15f) {
+			if (m_AlphaFrame >= 0.15f) {
 				if (m_Color.w >= 0.2f) {
 					BirthParticle();
 				}
