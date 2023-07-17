@@ -79,6 +79,9 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 
 	CreateWord(AISATU, L"おはよう", L"こんにちは", L"こんばんは");
 
+
+	CreateCapWord(Name_Cap::CAP3, L"わいらなかなかやっな", L"じゃっどんそげん攻撃おいにはきかん", L" ");
+	CreateCapWord(Name_Cap::KOTO3, L"どうしようどうやったら元に戻せるんだろう",L" ", L" ");
 	CreateCapWord(Name_Cap::CAP1, L"わいらなかなかやっな", L"じゃっどんそげん攻撃おいにはきかん", L" ");
 	//CreateCapWord(Name_Cap::CAP3, L"わいらなかなかやっな", L"じゃっどんそげん攻撃おいにはきかん", L" ");
 //	CreateCapWord(Name_Cap::KOTO3, L"どうしようどうやったら元に戻せるんだろう",L" ", L" ");

@@ -62,6 +62,9 @@ private:
 
     void Collide();
     OBB obb[3];
+    float oldroty;
+    float currentEase;
+    XMFLOAT3 TargetPos;
     void RottoPlayer();
 
     void CollideGhost();

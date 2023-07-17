@@ -39,7 +39,7 @@ void KnockAttack::Upda()
 	float RottoPlayer;
 	RottoPlayer = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
 
-	strot.y = RottoPlayer * 60.f + 270.f;
+	strot.y = RottoPlayer * 60.f + 180.f;
 	darksutopon->SetScale({ 1,1,1 });
 	darksutopon->SetColor({ 0.9f,0.2f,0.7f,0.7f });
 	darksutopon->SetPosition(stopos);
@@ -150,8 +150,11 @@ void KnockAttack::ImpactAction()
 		}
 		
 		//knock
-		if(Collision::GetLength(boss->GetPosition(),Player::GetInstance()->GetPosition())<15.f)
+		if (Player::GetInstance()->GetDamageInterVal()==0&& Collision::GetLength(boss->GetPosition(), Player::GetInstance()->GetPosition()) < 15.f) {
 			Player::GetInstance()->PlayerHit(m_Position);
+			Player::GetInstance()->RecvDamage(Dam);
+		}
+
 	}
 	else
 	{

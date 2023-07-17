@@ -63,7 +63,7 @@ void SingleShot::Draw(DirectXCommon* dxCommon)
 	for (auto i = 0; i < BulSize; i++) {
 		if (BulAlpha[i] <= 0.f)continue;
 		if (!ShotAlive[i])continue;;
-		//ShotObj[i]->Draw();
+		ShotObj[i]->Draw();
 	}
 	IKEObject3d::PostDraw();
 
@@ -141,7 +141,7 @@ void SingleShot::Phase_Shot()
 		ShotAlive[0] = true;
 		ShotAlive[2] = true;
 	}
-	if (ShotSize == 3)
+	if (ShotSize == 3||ShotSize>=5)
 	{
 		ShotAlive[0] = true;
 		ShotAlive[1] = true;
@@ -193,7 +193,7 @@ XMFLOAT4 s_color[BulSize];
 
 	bool OwnShot = ShotSize == 1 && BulAlpha[1] <= 0.f;
 	bool TwoShot = ShotSize == 2 && BulAlpha[0] <= 0.f;
-	bool ThirdShot = ShotSize == 3 && BulAlpha[2] <= 0.f;
+	bool ThirdShot = (ShotSize == 3||ShotSize>=5) && BulAlpha[2] <= 0.f;
 
 	if (OwnShot || TwoShot || ThirdShot) {
 		_phase = END;
@@ -210,6 +210,7 @@ void SingleShot::Phase_End()
 	}
 	PhaseCount = 0;
 	AttackTimer = 0;
+	
 	ActionEnd = true;
 	_phase = NON;
 	//if (PhaseCount < 4) {
