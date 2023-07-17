@@ -98,7 +98,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
 	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
 	lightgroup->Update();
-
+	ui->Update();
 	Menu::GetIns()->Upda();
 	postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
 }
@@ -235,7 +235,6 @@ void FirstStageActor::IntroUpdate(DebugCamera* camera)
 void FirstStageActor::MainUpdate(DebugCamera* camera)
 {
 	Input* input = Input::GetInstance();
-	ui->Update();
 	if (tolk_F != false) { return; }
 	//カメラワークのセット
 	if (enemymanager->BossDestroy())

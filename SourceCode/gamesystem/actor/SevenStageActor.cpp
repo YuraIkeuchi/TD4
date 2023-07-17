@@ -87,8 +87,8 @@ void SevenStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	if (Input::GetInstance()->TriggerButton(Input::Y)) {
 		SelectScene::GetIns()->ResetParama();
 		SceneManager::GetInstance()->ChangeScene("SELECT");
-	}*/
-
+	}*/	
+	ui->Update();
 	Menu::GetIns()->Upda();
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 }
@@ -215,7 +215,6 @@ void SevenStageActor::IntroUpdate(DebugCamera* camera) {
 //バトルシーン
 void SevenStageActor::MainUpdate(DebugCamera* camera) {
 	Input* input = Input::GetInstance();
-	ui->Update();
 	//覚醒シーンに入る
 	if (enemymanager->GetEnemyStrong() && !camerawork->GetCameraStrong()) {
 		if (!camerawork->GetFeedF()) {

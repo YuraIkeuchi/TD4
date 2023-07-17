@@ -69,9 +69,7 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 //更新
 void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	if (!Menu::GetIns()->GetMenuOpen()) {
-
 		constexpr int IntervalTextC = 200;
-
 
 		messagewindow_->DisplayCharacter(sutopon_color_);
 		if (_Tscne == TextScene::NON)
@@ -110,7 +108,6 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 				_Tscne = TextScene::LET_GO;
 			}
 		}
-
 		else if (_Tscne == TextScene::LET_GO)
 		{
 			sutopon_color_ = { 0.50f,0.50f,0.50f,0.50f };
@@ -123,8 +120,6 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 				_Tscne = TextScene::ENDTEXT;
 			}
 		}
-
-
 		if (_Tscne == TextScene::TIEYOSHI_EXP ||
 			_Tscne == TextScene::NON)
 		{
@@ -178,9 +173,6 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 		//音楽の音量が変わる
 		Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 		VolumManager::GetInstance()->Update();
-		ui->Update();
-
-
 		if (enemymanager->BossDestroy())
 		{
 			Player::GetInstance()->DeathUpdate();
@@ -255,9 +247,11 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 			SceneManager::GetInstance()->ChangeScene("SELECT");
 		}*/
 
-	}Menu::GetIns()->Upda();
+	}
+	Menu::GetIns()->Upda();
 	BackObj::GetInstance()->Update();
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
+	ui->Update();
 }
 //描画
 void SecondStageActor::Draw(DirectXCommon* dxCommon) {
@@ -342,8 +336,9 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 		IKESprite::PostDraw();
 	} else {
 		IKESprite::PreDraw();
-		if (camerawork->GetAppearEndF() && camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_BEFORE && camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_AFTER_FIRST)
+		if (camerawork->GetAppearEndF() && camerawork->GetCameraState() == CameraState::CAMERA_NORMAL) {
 			ui->Draw();
+		}
 		sceneChanger_->Draw();
 		IKESprite::PostDraw();
 

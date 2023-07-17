@@ -29,6 +29,7 @@ bool FireBoll::Initialize() {
 	_MoveState = MOVE_SET;
 	m_Alive = true;
 	m_Damage = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Seven/Sevenboss.csv", "FireDamage")));
+	effects.clear();
 	return true;
 
 }

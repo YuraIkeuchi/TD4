@@ -36,8 +36,8 @@ FourthBoss::FourthBoss() {
 	photo[Photo_In_Control] = IKESprite::Create(ImageManager::PHOTO_IN_Control, { 0,0 }, { 1,1,1,0.5f });
 	photo[Photo_In_Sub] = IKESprite::Create(ImageManager::PHOTO_IN_Sub, { 0,0 }, { 1,1,1,0.5f });
 	photo[Photo_In_Ult] = IKESprite::Create(ImageManager::PHOTO_IN_Ult, { 0,0 }, { 1,1,1,0.5f });
-	photo[Photo_Out_Top] = IKESprite::Create(ImageManager::PHOTO_OUT, { 0,-360 });
-	photo[Photo_Out_Under] = IKESprite::Create(ImageManager::PHOTO_OUT, { 0,1080 });
+	photo[Photo_Out_Top] = IKESprite::Create(ImageManager::PHOTO_OUT, { 0,-360 }, { 1,1,1,0.5f });
+	photo[Photo_Out_Under] = IKESprite::Create(ImageManager::PHOTO_OUT, { 0,1080 }, { 1,1,1,0.5f });
 	for (int i = Photo_Out_Top; i <= Photo_Out_Under; i++) {
 		photo[i]->SetSize({ 1280,360 });
 	}
@@ -72,6 +72,7 @@ bool FourthBoss::Initialize() {
 	ActionTimerMax[(size_t)commandState::Explosion] = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam(str, "Explosion")));
 	ActionTimer = 0;
 	m_Radius = 5.0f;
+	effects.clear();
 	return true;
 }
 
@@ -198,27 +199,29 @@ void FourthBoss::ImGui_Origin() {
 }
 
 void FourthBoss::EffecttexDraw(DirectXCommon* dxCommon) {
-	if (m_HP < 0.0f) { return; }
+	if (m_HP <= 0.0f) { return; }
 	IKETexture::PreDraw2(dxCommon, AlphaBlendType);
 	for (int i = 0; i < kPhotoSpotMax; i++) {
 		photoSpot[i]->Draw();
 	}
 	IKETexture::PostDraw();
 	IKESprite::PreDraw();
-	if (phase == commandState::MoveCommand) {
-		photo[Photo_In]->Draw();
-	}
-	if (phase == commandState::EnemySpawn) {
-		photo[Photo_In_Change]->Draw();
-	}
-	if (phase == commandState::ControlCommand) {
-		photo[Photo_In_Control]->Draw();
-	}
-	if (phase == commandState::SubGauge) {
-		photo[Photo_In_Sub]->Draw();
-	}
-	if (phase == commandState::Ultimate) {
-		photo[Photo_In_Ult]->Draw();
+	if (!isShutter) {
+		if (phase == commandState::MoveCommand) {
+			photo[Photo_In]->Draw();
+		}
+		if (phase == commandState::EnemySpawn) {
+			photo[Photo_In_Change]->Draw();
+		}
+		if (phase == commandState::ControlCommand) {
+			photo[Photo_In_Control]->Draw();
+		}
+		if (phase == commandState::SubGauge) {
+			photo[Photo_In_Sub]->Draw();
+		}
+		if (phase == commandState::Ultimate) {
+			photo[Photo_In_Ult]->Draw();
+		}
 	}
 	for (int i = Photo_Out_Top; i <= Photo_Out_Under; i++) {
 		photo[i]->Draw();

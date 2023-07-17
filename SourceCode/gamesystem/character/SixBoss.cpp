@@ -59,6 +59,8 @@ bool SixBoss::Initialize() {
 	m_AreaState = AREA_SET;
 	//CSVロード
 	CSVLoad();
+
+	effects.clear();
 	return true;
 }
 //スキップ時の初期化
@@ -148,7 +150,7 @@ void SixBoss::Pause() {
 //エフェクト描画
 void SixBoss::EffecttexDraw(DirectXCommon* dxCommon)
 {
-	if (m_HP < 0.0f)return;
+	if (m_HP <= 0.0f)return;
 
 	confueffect->Draw(dxCommon);
 	noteeffect->Draw(dxCommon);

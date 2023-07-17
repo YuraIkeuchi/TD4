@@ -48,6 +48,8 @@ bool SecondBoss::Initialize() {
 
 	//
 	SummonCool = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Second/Secondboss.csv", "SummonCool")));
+
+	effects.clear();
 	return true;
 }
 
@@ -250,7 +252,7 @@ void SecondBoss::NormalAttak::Update(XMFLOAT3& Pos, XMFLOAT3& Rot, bool& Enf)
 
 void SecondBoss::EffecttexDraw(DirectXCommon* dxCommon)
 {
-	if (m_HP < 0.1f)return;
+	if (m_HP <= 0.0f)return;
 
 	IKETexture::PreDraw2(dxCommon, AlphaBlendType);
 	_cattack.Draw();

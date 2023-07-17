@@ -91,6 +91,7 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	//	SceneManager::GetInstance()->ChangeScene("SELECT");
 	//}
 	Menu::GetIns()->Upda();
+	ui->Update();
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 }
 //描画
@@ -296,7 +297,6 @@ void ThirdStageActor::IntroUpdate(DebugCamera* camera) {
 //バトルシーン
 void ThirdStageActor::MainUpdate(DebugCamera* camera) {
 	Input* input = Input::GetInstance();
-	ui->Update();
 	//カメラワークのセット
 	if (enemymanager->BossDestroy())
 	{
