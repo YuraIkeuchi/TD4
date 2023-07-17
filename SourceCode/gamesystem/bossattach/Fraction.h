@@ -4,6 +4,7 @@
 #include"IKEObject3d.h"
 #include"IKEModel.h"
 #include"InterBullet.h"
+#include"BreakEffect.h"
 
 class Fraction 
 {
@@ -40,8 +41,10 @@ public:
     void Drop(const XMFLOAT3& dropposiition);
 
     void ColPlayer(vector<InterBullet*> bullet);
+
+    void Break();
 private:
-   
+    vector<InterEffect*> effects;
     unique_ptr<IKEObject3d> m_Object;
     XMFLOAT3 boss_pos_{};
     XMFLOAT3 m_Scale{};
@@ -51,6 +54,7 @@ private:
     XMFLOAT3 pop_pos_{};
 
     XMFLOAT3 drop_pos_{};
+    float m_HP = 2.f;
 
     bool Isdelete = false;
     bool drop_F = false;

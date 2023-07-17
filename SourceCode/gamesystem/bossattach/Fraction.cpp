@@ -17,6 +17,7 @@ void Fraction::Init(const XMFLOAT3& BossPos)
 	m_Object->Initialize();
 	m_Object->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::GLASS1));
 	m_Scale = { 3.f,3.f,3.f };
+	m_Object->SetPosition(m_Position);
 }
 
 void Fraction::Obj_Set()
@@ -81,14 +82,34 @@ void Fraction::Drop(const XMFLOAT3& dropposiition)
 
 void Fraction::Update(vector<InterBullet*> bullet)
 {
+	//エフェクト
+	for (InterEffect* effect : effects) {
+		if (effect != nullptr) {
+			effect->Update();
+		}
+	}
 
+	//マークの削除
+	for (int i = 0; i < effects.size(); i++) {
+		if (effects[i] == nullptr) {
+			continue;
+		}
+
+		if (!effects[i]->GetAlive()) {
+			effects.erase(cbegin(effects) += i);
+		}
+	}
+
+	if (m_HP <= 0.f&&effects.size()==0) {
+		Isdelete = true;
+	}
 
 	ColPlayer(bullet);
 	
 	Pop();
 
 	Spatter();
-
+	
 	Obj_Set();
 }
 
@@ -101,6 +122,7 @@ void Fraction::Draw(DirectXCommon* dxCommon)
 
 void Fraction::ColPlayer(vector<InterBullet*> bullet)
 {
+	if (m_HP <= 0) { return; }
 	//ラッシュ中判定あり
 	if (Collision::CircleCollision(m_Position.x, m_Position.z, m_Radius, Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z, 1.f) &&
 		(Player::GetInstance()->GetDamageInterVal() == 0))
@@ -114,8 +136,20 @@ void Fraction::ColPlayer(vector<InterBullet*> bullet)
 		JudgColide = Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, m_Radius, m_Position.x, m_Position.z, m_Radius);
 		if (JudgColide) {
 			_bullet->SetAlive(false);
-			Isdelete = true;
+			Break();
+			m_HP -= _bullet->GetPower();
 		}
 	}
 	
+}
+
+void Fraction::Break()
+{
+	InterEffect* neweffect;
+	neweffect = new BreakEffect();
+	neweffect->Initialize();
+	neweffect->SetPosition(m_Position);
+	neweffect->SetDiviSpeed(1.0f);
+	neweffect->SetLife(50);
+	effects.push_back(neweffect);
 }
