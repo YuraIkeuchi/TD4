@@ -3,6 +3,7 @@
 #include"BreakEffect.h"
 #include"IKEObject3d.h"
 #include"IKEModel.h"
+#include"IKETexture.h"
 #include"InterBullet.h"
 #include"BreakEffect.h"
 
@@ -46,6 +47,7 @@ public:
 private:
     vector<InterEffect*> effects;
     unique_ptr<IKEObject3d> m_Object;
+    unique_ptr<IKETexture> tex;
     XMFLOAT3 boss_pos_{};
     XMFLOAT3 m_Scale{};
     XMFLOAT3 m_Position{};

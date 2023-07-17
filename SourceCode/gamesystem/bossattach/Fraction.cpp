@@ -4,6 +4,7 @@
 #include"InterBullet.h"
 #include"Helper.h"
 #include"Easing.h"
+#include"ImageManager.h"
 
 Fraction::~Fraction()
 {
@@ -18,10 +19,19 @@ void Fraction::Init(const XMFLOAT3& BossPos)
 	m_Object->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::GLASS1));
 	m_Scale = { 3.f,3.f,3.f };
 	m_Object->SetPosition(m_Position);
+
+	tex.reset(IKETexture::Create(ImageManager::SLASHAREA, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 }));
+	tex->TextureCreate();
+	tex->SetPosition(m_Position);
+	tex->SetTiling(2.0f);
 }
 
 void Fraction::Obj_Set()
 {
+	tex->SetRotation({ 90.f,0.f,0.f });
+	tex->SetPosition({ m_Position.x,0,m_Position.z });
+	tex->Update();
+
 	m_Object->SetPosition(m_Position);
 	m_Object->SetScale(m_Scale);
 	m_Object->SetRotation(m_Rotation);
@@ -115,6 +125,10 @@ void Fraction::Update(vector<InterBullet*> bullet)
 
 void Fraction::Draw(DirectXCommon* dxCommon)
 {
+	IKETexture::PreDraw2(dxCommon, AlphaBlendType);
+	tex->Draw();
+	IKETexture::PostDraw();
+
 	IKEObject3d::PreDraw();
 	m_Object->Draw();
 	IKEObject3d::PostDraw();
@@ -124,7 +138,7 @@ void Fraction::ColPlayer(vector<InterBullet*> bullet)
 {
 	if (m_HP <= 0) { return; }
 	//ƒ‰ƒbƒVƒ…’†”»’è‚ ‚è
-	if (Collision::CircleCollision(m_Position.x, m_Position.z, m_Radius, Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z, 1.f) &&
+	if (Collision::SphereCollision(m_Position, m_Radius, Player::GetInstance()->GetPosition(), 1.f) &&
 		(Player::GetInstance()->GetDamageInterVal() == 0))
 	{
 		Player::GetInstance()->RecvDamage(1.0f);
