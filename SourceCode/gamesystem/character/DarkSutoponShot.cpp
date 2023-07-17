@@ -63,7 +63,9 @@ void DarkSutoponShot::SpriteDraw()
 	
 }
 
+void DarkSutoponShot::DeathUpdate(int Timer) {
 
+}
 
 
 

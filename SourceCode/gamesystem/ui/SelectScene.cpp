@@ -2,6 +2,8 @@
 #include "Helper.h"
 #include "ImageManager.h"
 #include "SceneManager.h"
+#include "Easing.h"
+#include "ParticleEmitter.h"
 
 SelectScene* SelectScene::GetIns() {
 	static SelectScene ins;
@@ -70,7 +72,7 @@ void SelectScene::Init() {
 	StageObjs[FOUR]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Camera));
 	StageObjs[FIVE]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::DJ));
 	StageObjs[SIX]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Sutopon));
-	StageObjs[SEVEN]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Ghost));
+	StageObjs[SEVEN]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::LASTBOSS));
 
 	BackSkyDome.reset(new IKEObject3d());
 	BackSkyDome->Initialize();
@@ -132,14 +134,26 @@ void SelectScene::Init() {
 		//BossIcon.
 		StageObjRot[i].y = 90;
 		StageObjs[i]->SetPosition(StageObjPos[i]);
-		StageObjs[i]->SetScale({ 1,1,1 });
+		StageObjs[i]->SetScale({ 0.0f,0.0f,0.0f });
+		m_Scale[i] = { 0.0f,0.0f,0.0f };
+		AfterScale[i] = { 1.0f,1.0f,1.0f };
 	}
-	StageObjs[FIRST]->SetScale({ 5,5,5 });
-	StageObjs[THIRD]->SetScale({ 4,4,4 });
-	StageObjs[FOUR]->SetScale({ 3.f,3.f,3.f });
+	m_Scale[FIRST] = { 5.0f,5.0f,5.0f };
+	AfterScale[FIRST] = { 5.0f,5.0f,5.0f };
+	m_Birth[FIRST] = true;
+	m_BirthFinish[FIRST] = true;
+	AfterScale[THIRD] = { 4.0f,4.0f,4.0f };
+	AfterScale[FOUR] = { 3.0f,3.0f,3.0f };
 	StageObjs[FOUR]->SetRotation({ 0.0f,90.0f,0.0f });
-	StageObjs[FIVE]->SetScale({ 0.2f,0.2f,0.2f });
-
+	AfterScale[FIVE] = { 0.2f,0.2f,0.2f };
+	
+	//一回開放したら大きさを合わせる
+	for (auto i = 0; i < ObjNum; i++) {
+		if (m_Birth[i]) {
+			m_Scale[i] = AfterScale[i];
+		}
+		TipsAct[i] = false;
+	}
 }
 
 void SelectScene::Upda() {
@@ -160,18 +174,18 @@ void SelectScene::Upda() {
 
 	for (int i = 0; i < MAX; i++) {
 		if (IconColor[i] < 1.f) { continue; }
-		if (Input::GetInstance()->TriggerButton(Input::B)) {
+		if (Input::GetInstance()->TriggerButton(Input::B) && (m_Birth[i])) {
 			TipsAct[i] = true;
 		}
 	}
 
 	ChangeEffect("FIRSTSTAGE", Stage::FIRST, FIRST);
-	ChangeEffect("FIVESTAGE", Stage::SECOND, SECOND);
+	ChangeEffect("SECONDSTAGE", Stage::SECOND, SECOND);
 	ChangeEffect("FOURTHSTAGE", Stage::FOUR, FOUR);
 	ChangeEffect("THIRDSTAGE", Stage::THIRD, THIRD);
-	ChangeEffect("FIVESTAGE", Stage::FIVE, FIVE);
-	ChangeEffect("FOURTHSTAGE", Stage::SIX, SIX);
-	ChangeEffect("SIXSTAGE", Stage::SIX, SIX);
+	ChangeEffect("FIVESTAGE", Stage::SIX, SIX);
+	ChangeEffect("SIXSTAGE", Stage::FIVE, FIVE);
+	ChangeEffect("SEVENSTAGE", Stage::SEVEN, SEVEN);
 
 	for (int i = 0; i < MAX; i++) {
 		if (closeScl >= 10000.f) {
@@ -223,13 +237,14 @@ void SelectScene::Upda() {
 
 		StageObjs[FOUR]->SetRotation({ 0,StageObjRot[FOUR].y,90 });
 		StageObjs[i]->SetPosition(StageObjPos[i]);
+		StageObjs[i]->SetScale(m_Scale[i]);
 		StageObjs[i]->Update();
 	}
 	bool temp[ObjNum] = {};
 	for (auto i = 0; i < TipsAct.size(); i++)
 		temp[i] = TipsAct[i];
 	if (Helper::GetInstance()->All_OfF(temp, ObjNum)) {
-		if (TrigerSelect == NOINP) {
+		if (TrigerSelect == NOINP && m_Wide) {
 			if (Input::GetInstance()->TriggerButton(Input::RB)) {
 				SelIndex++;
 				TrigerSelect = RB;
@@ -241,6 +256,10 @@ void SelectScene::Upda() {
 			}
 		}
 	}
+
+	//セレクトのステート管理
+	StateManager();
+
 }
 
 void SelectScene::Draw_Obj(DirectXCommon* dxcomn) {
@@ -263,6 +282,11 @@ void SelectScene::Draw_Sprite() {
 	}
 }
 
+void SelectScene::ImGuiDraw() {
+	ImGui::Begin("Select");
+	ImGui::Text("%d", m_SelectState);
+	ImGui::End();
+}
 void SelectScene::Draw_SpriteBack() {
 	if (closeScl <= 0.f) { return; }
 	ButtonNav_RBLB[0]->Draw();
@@ -375,5 +399,82 @@ void SelectScene::ViewTips() {
 			TipsPosY[i] -= AddVal;
 
 		Helper::GetInstance()->Clamp(TipsPosY[i], -360.f, 360.f);
+	}
+}
+
+void SelectScene::StateManager() {
+	//クリア状況に応じてOBJの大きさだったりが違う
+	if (m_SelectState == SELECT_FIRST) {		//ここは牛乳のみ
+
+	}
+	else if (m_SelectState == SELECT_SECOND) {			//牛乳をクリアしてラスボス以外出現する
+		bool temp[ObjNum] = {};
+		for (auto i = 0; i < TipsAct.size(); i++)
+			temp[i] = TipsAct[i];
+		if (Helper::GetInstance()->All_OfF(temp, ObjNum)) {			//画面を閉じた後
+			m_BirthTimer++;
+			for (auto i = 1; i < ObjNum - 1; i++) {			//ラスボス以外
+				m_Birth[i] = true;			//ボスが出現した
+			}
+			if (m_BirthTimer == 150) {			//　一定フレームに達するとボスが大きくなる
+				m_Wide = true;
+				m_BirthTimer = {};
+			}
+			if (m_Wide) {			//ボスを大きくする
+				for (auto i = 1; i < ObjNum - 1; i++) {
+					m_Scale[i] = { Ease(In,Cubic,0.5f,m_Scale[i].x,AfterScale[i].x),
+						Ease(In,Cubic,0.5f,m_Scale[i].y,AfterScale[i].y),
+						Ease(In,Cubic,0.5f,m_Scale[i].z,AfterScale[i].z),
+					};
+					m_BirthFinish[i] = true;
+				}
+			}
+			else {			//大きくなる前はパーティクルを出すようにしている
+				BirthParticle();
+			}
+		}
+
+		if (SceneSave::GetInstance()->AllClear()) {			//ラスボス以外倒したら(いまはちえよしまで)ラスボスが出現する
+			m_SelectState = SELECT_LAST;
+			m_Wide = false;
+			m_BirthTimer = {};
+		}
+	}
+	else {			//ラスボスゾーンの出現
+		bool temp[ObjNum] = {};
+		for (auto i = 0; i < TipsAct.size(); i++)
+			temp[i] = TipsAct[i];
+		if (Helper::GetInstance()->All_OfF(temp, ObjNum)) {
+			m_BirthTimer++;
+			m_Birth[SEVEN] = true;			//ラスボスの出現
+
+			if (m_BirthTimer == 150) {
+				m_Wide = true;
+				m_BirthTimer = {};
+			}
+
+			if (m_Wide) {//ラスボスのOBJを大きくする
+				m_Scale[SEVEN] = { Ease(In,Cubic,0.5f,m_Scale[SEVEN].x,AfterScale[SEVEN].x),
+					Ease(In,Cubic,0.5f,m_Scale[SEVEN].y,AfterScale[SEVEN].y),
+					Ease(In,Cubic,0.5f,m_Scale[SEVEN].z,AfterScale[SEVEN].z),
+				};
+				m_BirthFinish[SEVEN] = true;
+			}
+			else {
+				BirthParticle();
+			}
+		}
+	}
+}
+
+//パーティクル
+void SelectScene::BirthParticle() {
+	int l_Life[ObjNum];
+
+	for (auto i = 0; i < ObjNum; i++) {
+		l_Life[i] = 50;
+		if (m_Birth[i] && !m_BirthFinish[i]) {
+			ParticleEmitter::GetInstance()->SelectEffect(l_Life[i], StageObjPos[i], 1.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
+		}
 	}
 }

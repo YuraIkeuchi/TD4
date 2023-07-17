@@ -90,15 +90,12 @@ void SixStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGr
 	//プレイヤー
 	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
 		SceneSave::GetInstance()->SetClearFlag(kSixStage, true);
+		lightgroup->SetCircleShadowActive(0, false);
 	}
 	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
 	lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, 0.0f, Player::GetInstance()->GetPosition().z }));
 	lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
 	lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
-
-	if (enemymanager->BossDestroy()) {
-		lightgroup->SetCircleShadowActive(0, false);
-	}
 
 	//ボス
 	lightgroup->SetCircleShadowDir(1, XMVECTOR({ BosscircleShadowDir[0], BosscircleShadowDir[1], BosscircleShadowDir[2], 0 }));

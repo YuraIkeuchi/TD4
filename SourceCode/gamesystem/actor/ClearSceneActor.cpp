@@ -3,6 +3,7 @@
 #include <Easing.h>
 #include "ImageManager.h"
 #include "VariableCommon.h"
+#include "SelectScene.h"
 #include "Audio.h"
 //‰Šú‰»
 void ClearSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -29,6 +30,10 @@ void ClearSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		sceneChanger_->ChangeStart();
 		str = "SELECT";
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Clear.wav", VolumManager::GetInstance()->GetSEVolum()+1.5f);
+		SceneSave::GetInstance()->AllClear();
+		if (SceneSave::GetInstance()->GetClearFlag(kFirstStage)) {
+			SelectScene::GetIns()->SetSelectState(SELECT_SECOND);
+		}
 	}
 	sceneChanger_->ChangeScene(str, SceneChanger::Reverse);
 	sceneChanger_->Update();

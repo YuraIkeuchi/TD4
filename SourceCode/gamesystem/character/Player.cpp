@@ -83,6 +83,7 @@ void Player::InitState(const XMFLOAT3& pos) {
 	m_ChargeType = POWER_NONE;
 	m_Position.y = 0.f;
 	m_Scale = { 1.2f,0.8f,1.2f };
+	HungerGauge::GetInstance()->SetAdditional(0.0f);
 }
 //状態遷移
 /*CharaStateのState並び順に合わせる*/
@@ -649,6 +650,8 @@ void Player::RecvDamage(float Damage) {
 //	m_HP -= Damage;
 	m_DamageInterVal = 50;
 	m_Damage = true;
+	m_Confu = false;
+	m_ConfuTimer = 0;
 	BirthParticle();
 }
 //弾の削除
@@ -714,6 +717,7 @@ void Player::AppearUpdate() {
 }
 //ボス撃破シーンの更新
 void Player::DeathUpdate() {
+	BulletDelete();
 	//基礎パラメータ設定
 	Fbx_SetParam();
 

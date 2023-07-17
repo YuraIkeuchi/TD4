@@ -82,6 +82,9 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 
 	CreateCapWord(Name_Cap::CAP3, L"わいらなかなかやっな", L"じゃっどんそげん攻撃おいにはきかん", L" ");
 	CreateCapWord(Name_Cap::KOTO3, L"どうしようどうやったら元に戻せるんだろう",L" ", L" ");
+	CreateCapWord(Name_Cap::CAP1, L"わいらなかなかやっな", L"じゃっどんそげん攻撃おいにはきかん", L" ");
+	//CreateCapWord(Name_Cap::CAP3, L"わいらなかなかやっな", L"じゃっどんそげん攻撃おいにはきかん", L" ");
+//	CreateCapWord(Name_Cap::KOTO3, L"どうしようどうやったら元に戻せるんだろう",L" ", L" ");
 
 	//CreateCapWord(Name_Cap::SUTO3,L"")
 
@@ -131,7 +134,7 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	FourthCreateWord(TALK_FOURTH, L"オレをテラセ!!!!!!", L"スポットライト!!!!!!", L"このオレを!!!!!!");
 	FourthCreateWord(TALK_FIVE, L"さあ!!!", L"ショータイムのはじまりだ!!!", L"");
 
-	LastCreateWord(LAST_TALK_FIRST, L"いったい誰がゴースト達を", L"操って襲いかからせたのかと思ったけど", L"やっぱり・・・");
+	LastCreateWord(LAST_TALK_FIRST, L"毎日誰がゴースト達を", L"操って襲いかからせたのかと思ったけど", L"やっぱり・・・");
 	LastCreateWord(LAST_TALK_SECOND, L"やっぱりお前だったんだな!", L"", L"");
 	LastCreateWord(LAST_TALK_THIRD, L"ストポン?", L"キミのしってる子?", L"");
 	LastCreateWord(LAST_TALK_FOURTH, L"こいつは俺の弟だ", L"あいかわらずナマイキな面しやがって", L"");
@@ -351,6 +354,23 @@ void TextManager::SetCameraBossConversation(Name_CameraBoss name) {
 
 	CreateCon(conversation_, itr->second);
 
+}
+void TextManager::SetCapConversation(Name_Cap name)
+{
+	std::map<TextManager::Name_Cap, Word>::iterator itr = wordlist_cap.find(name);
+
+	if (old_fourth != itr->first) {
+		for (int i = 0; i < 3; i++) {
+			flag[i] = true;
+			next_f[i] = false;
+		}
+	}
+
+	old_cap = itr->first;
+
+	GetWordSize(itr->second);
+
+	CreateCon(conversation_, itr->second);
 }
 //名前から文字列を呼び出しセットする
 void TextManager::SetLastConversation(Name_Last name)

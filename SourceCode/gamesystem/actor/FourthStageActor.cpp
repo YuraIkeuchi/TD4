@@ -93,6 +93,15 @@ void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	ui->Update();
 	postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
 	messagewindow_->Update(girl_color_, sutopon_color_);
+
+	//ゲームクリアフラグ
+	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
+		SceneSave::GetInstance()->SetClearFlag(kFourthStage, true);
+	}
+	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
+	lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, 0.0f, Player::GetInstance()->GetPosition().z }));
+	lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
+	lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
 	lightgroup->Update();
 }
 //描画

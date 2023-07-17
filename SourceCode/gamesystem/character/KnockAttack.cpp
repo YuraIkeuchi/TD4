@@ -5,6 +5,7 @@
 #include "Helper.h"
 #include "ImageManager.h"
 #include "Player.h"
+#include <random>
 
 void KnockAttack::Init()
 {
@@ -61,14 +62,64 @@ void KnockAttack::Upda()
 void KnockAttack::Draw(DirectXCommon* dxCommon)
 {
 	IKETexture::PreDraw2(dxCommon, AlphaBlendType);
-	KnockImpTex->Draw();
-	KnockImpTex2->Draw();
+	if (!m_End) {
+		KnockImpTex->Draw();
+		KnockImpTex2->Draw();
+	}
 	IKETexture::PostDraw();
 
 	IKEObject3d::PreDraw();
 	darksutopon->Draw();
 	IKEObject3d::PostDraw();
 
+}
+
+void KnockAttack::DeathUpdate(int Timer) {
+	m_End = true;
+	if (_EndState == END_SET) {
+		if (Timer == 1) {
+			stopos = { 5.0f,2.0f,20.0f };
+		}
+		else if (Timer == 100) {
+			m_AddPower = 0.8f;
+			_EndState = END_MOVE;
+		}
+	}
+	else if(_EndState == END_MOVE) {
+		m_AddPower -= m_Gravity;
+		stopos.x += 0.5f;
+		stopos.z += 0.5f;
+		stopos.y += m_AddPower;
+		if (stopos.y <= 0.5f) {
+			_EndState = END_STOP;
+		}
+	}
+	else {
+		DeathParticle();
+	}
+	darksutopon->SetScale({ 1,1,1 });
+	darksutopon->SetColor({ 0.9f,0.2f,0.7f,0.7f });
+	darksutopon->SetPosition(stopos);
+	darksutopon->SetRotation(strot);
+	darksutopon->Update();
+}
+
+void KnockAttack::DeathParticle()
+{
+	float l_AddSize = 2.5f;
+	const float RandScale = 3.0f;
+	float s_scale = 0.3f * l_AddSize;
+	float e_scale = (4.0f + (float)rand() / RAND_MAX * RandScale - RandScale / 2.0f) * l_AddSize;
+
+	//êF
+	const float RandRed = 0.2f;
+	const float red = 0.2f + (float)rand() / RAND_MAX * RandRed;
+	const XMFLOAT4 s_color = { 0.9f, red, 0.1f, 1.0f }; //îZÇ¢ê‘
+	const XMFLOAT4 e_color = { 0, 0, 0, 1.0f }; //ñ≥êF
+	mt19937 mt{ std::random_device{}() };
+	uniform_int_distribution<int> l_Randlife(10, 40);
+	int l_Life = int(l_Randlife(mt));
+	ParticleEmitter::GetInstance()->ExproEffectBoss(l_Life, stopos, l_AddSize, s_scale, e_scale, s_color, e_color);
 }
 
 void KnockAttack::ImpactAction()

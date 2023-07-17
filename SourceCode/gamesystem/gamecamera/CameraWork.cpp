@@ -126,6 +126,7 @@ void CameraWork::DefaultCam() {
 
 	m_eyePos.z = Player::GetInstance()->GetPosition().z - 20.0f;
 	m_targetPos.x = Player::GetInstance()->GetPosition().x;
+	m_targetPos.y = 3.0f;
 	m_targetPos.z = Player::GetInstance()->GetPosition().z;
 
 }
@@ -244,7 +245,6 @@ void CameraWork::SetBossDead_AfterSecond() {
 }
 //フェード後の撃破アクション(3ボス)
 void CameraWork::SetBossDead_AfterThird() {
-
 	RadEffect = 0.f;
 	if (FeedF) {
 		feed->FeedIn(Feed::FeedType::WHITE, 0.01f, FeedF);
@@ -259,7 +259,7 @@ void CameraWork::SetBossDead_AfterThird() {
 
 	DeathTimer++;
 
-	if (DeathTimer == 500) {
+	if (DeathTimer == 250) {
 		m_EndDeath = true;
 	}
 }
@@ -289,9 +289,7 @@ void CameraWork::SetBossDead_AfterFive() {
 	if (FeedF) {
 		feed->FeedIn(Feed::FeedType::WHITE, 0.01f, FeedF);
 	}
-	if (SceneName == "FIRSTSTAGE") {
-		FirstBossDead_AfterFeed();
-	}
+
 	m_eyePos.x = Player::GetInstance()->GetPosition().x;
 	m_eyePos.y = Player::GetInstance()->GetPosition().y + 3.0f;
 	m_eyePos.z = Player::GetInstance()->GetPosition().z - 20.0f;
@@ -301,7 +299,7 @@ void CameraWork::SetBossDead_AfterFive() {
 
 	DeathTimer++;
 
-	if (DeathTimer == 350) {
+	if (DeathTimer == 200) {
 		m_EndDeath = true;
 	}
 }
@@ -410,10 +408,13 @@ void CameraWork::EditorCamera() {
 //ImGui
 void CameraWork::ImGuiDraw() {
 	ImGui::Begin("Camera");
-	ImGui::Text("TargetZ:%f", m_targetPos.z);
-	ImGui::Text("EyeX:%f", m_eyePos.x);
-	ImGui::Text("EyeY:%f", m_eyePos.y);
-	ImGui::Text("EyeZ:%f", m_eyePos.z);
+	ImGui::Text("eyeX:%f", m_eyePos.x);
+	ImGui::Text("eyeY:%f", m_eyePos.y);
+	ImGui::Text("eyeZ:%f", m_eyePos.z);
+
+	ImGui::Text("targetX:%f", m_targetPos.x);
+	ImGui::Text("targetY:%f", m_targetPos.y);
+	ImGui::Text("targetZ:%f", m_targetPos.z);
 	ImGui::End();
 }
 void CameraWork::SpecialUpdate() {

@@ -73,15 +73,13 @@ void FiveStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	//プレイヤー
 	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
 		SceneSave::GetInstance()->SetClearFlag(kFiveStage, true);
-		lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-		lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, 0.0f, Player::GetInstance()->GetPosition().z }));
-		lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
-		lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
-	}
-	else {//ボス撃破ムービーの後は丸影消す
 		lightgroup->SetCircleShadowActive(0, false);
 	}
 
+	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
+	lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, 0.0f, Player::GetInstance()->GetPosition().z }));
+	lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
+	lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
 	//ボス
 	lightgroup->SetCircleShadowDir(1, XMVECTOR({ BosscircleShadowDir[0], BosscircleShadowDir[1], BosscircleShadowDir[2], 0 }));
 	lightgroup->SetCircleShadowCasterPos(1, XMFLOAT3({ enemymanager->GetBoss()->GetPosition().x, 	0.0f, 	enemymanager->GetBoss()->GetPosition().z }));
@@ -106,6 +104,7 @@ void FiveStageActor::Draw(DirectXCommon* dxCommon)
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
 		enemymanager->ImGuiDraw();
+		camerawork->ImGuiDraw();
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
@@ -116,6 +115,7 @@ void FiveStageActor::Draw(DirectXCommon* dxCommon)
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
+		camerawork->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 }
@@ -240,13 +240,12 @@ void FiveStageActor::MainUpdate(DebugCamera* camera)
 			Player::GetInstance()->InitState({ 0.0f,0.0f,-5.0f });
 			enemymanager->SetDeadThrow(false);
 			enemymanager->DeadUpdate();
-			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_SECOND);
+			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_FIVE);
 		}
 
 		if (camerawork->GetEndDeath()) {
 			sceneChanger_->ChangeStart();
 			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
-
 		}
 
 		Player::GetInstance()->DeathUpdate();

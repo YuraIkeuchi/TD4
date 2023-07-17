@@ -123,6 +123,10 @@ void ShadowSlashAttack::SpriteDraw()
 	
 }
 
+void ShadowSlashAttack::DeathUpdate(int Timer) {
+
+}
+
 void ShadowSlashAttack::Phase_Idle()
 {
 	KotokoPos[0].x = Player::GetInstance()->GetPosition().x;

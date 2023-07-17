@@ -310,7 +310,6 @@ void FirstBoss::DropAttack()
 		};
 		if (m_Rotation.x >= 90) {
 			act_ = ActionFase::After;
-		
 			commandTimer = 0;
 		}
 	}

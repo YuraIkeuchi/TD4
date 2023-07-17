@@ -81,6 +81,9 @@ void SingleShot::SpriteDraw()
 	IKESprite::PostDraw();
 }
 
+void SingleShot::DeathUpdate(int Timer) {
+
+}
 
 #pragma region s“®‚Ì’†g
 void SingleShot::Phase_Idle()

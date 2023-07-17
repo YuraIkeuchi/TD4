@@ -30,10 +30,6 @@ ThirdBoss::ThirdBoss() {
 			pointsList.emplace_back(XMFLOAT3{ 40,35,20 });
 			pointsList.emplace_back(XMFLOAT3{ -40,40,20 });
 			pointsList.emplace_back(XMFLOAT3{ 20,25,20 });
-			pointsList.emplace_back(XMFLOAT3{ -20,30,20 });
-			pointsList.emplace_back(XMFLOAT3{ -40,40,20 });
-			pointsList.emplace_back(XMFLOAT3{ 20,25,20 });
-			pointsList.emplace_back(XMFLOAT3{ -20,30,20 });
 		}
 		spline = new Spline();
 		spline->Init(pointsList, static_cast<int>(pointsList.size()));
@@ -71,7 +67,8 @@ void ThirdBoss::CSVLoad() {
 	auto PressSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Third/Thirdboss.csv", "PRESS_NUM")));
 	auto RandomSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Third/Thirdboss.csv", "RANDOM_NUM")));
 	auto DamageSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Third/Thirdboss.csv", "DAMAGE_NUM")));
-
+	auto ActSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Third/Thirdboss.csv", "ACT_NUM")));
+	m_RandAct.resize(ActSize);
 	m_StampInterval.resize(PressSize);
 	m_RandomInterval.resize(RandomSize);
 	m_DamagePower.resize(DamageSize);
@@ -79,6 +76,7 @@ void ThirdBoss::CSVLoad() {
 	LoadCSV::LoadCsvParam_Int("Resources/csv/chara/boss/Third/Thirdboss.csv", m_StampInterval, "Interval");
 	LoadCSV::LoadCsvParam_Int("Resources/csv/chara/boss/Third/Thirdboss.csv", m_RandomInterval, "RandomInterval");
 	LoadCSV::LoadCsvParam_Float("Resources/csv/chara/boss/Third/Thirdboss.csv", m_DamagePower, "Damage");
+	LoadCSV::LoadCsvParam_Int("Resources/csv/chara/boss/Third/Thirdboss.csv", m_RandAct, "RandAct");
 
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Third/Thirdboss.csv", "hp1")));
 	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Third/Thirdboss.csv", "Magnification")));
@@ -112,12 +110,12 @@ void ThirdBoss::Action() {
 	StampUpdate(angerstamps);
 	StampUpdate(joystamps);
 
-	//衝撃波
-	for (ShockWave* wave : shockwaves) {
-		if (wave != nullptr) {
-			wave->Update();
-		}
-	}
+	////衝撃波
+	//for (ShockWave* wave : shockwaves) {
+	//	if (wave != nullptr) {
+	//		wave->Update();
+	//	}
+	//}
 
 	//マーク
 	for (Predict* predict : predicts) {
@@ -151,16 +149,16 @@ void ThirdBoss::Action() {
 		}
 	}
 
-	//衝撃波
-	for (int i = 0; i < shockwaves.size(); i++) {
-		if (shockwaves[i] == nullptr) {
-			continue;
-		}
+	////衝撃波
+	//for (int i = 0; i < shockwaves.size(); i++) {
+	//	if (shockwaves[i] == nullptr) {
+	//		continue;
+	//	}
 
-		if (!shockwaves[i]->GetAlive()) {
-			shockwaves.erase(cbegin(shockwaves) += i);
-		}
-	}
+	//	if (!shockwaves[i]->GetAlive()) {
+	//		shockwaves.erase(cbegin(shockwaves) += i);
+	//	}
+	//}
 
 	//マークの削除
 	for (int i = 0; i < predicts.size(); i++) {
@@ -191,11 +189,11 @@ void ThirdBoss::EffecttexDraw(DirectXCommon* dxCommon)
 	StampDraw(angerstamps, dxCommon);
 	StampDraw(joystamps, dxCommon);
 
-	for (ShockWave* wave : shockwaves) {
+	/*for (ShockWave* wave : shockwaves) {
 		if (wave != nullptr) {
 			wave->Draw(dxCommon);
 		}
-	}
+	}*/
 
 	//マーク
 	for (Predict* predict : predicts) {
@@ -224,6 +222,7 @@ void ThirdBoss::ImGui_Origin() {
 	ImGui::Begin("Third");
 	ImGui::Text("Frame:%f", m_Frame);
 	ImGui::Text("Choice:%d", int(_charaState));
+	ImGui::Text("RotX:%f", m_Rotation.x);
 	ImGui::End();
 }
 //移動
@@ -282,7 +281,8 @@ void ThirdBoss::Stamp() {
 	else if (m_PressType == PRESS_SET) {		//一定時間上で待機
 		if (Helper::GetInstance()->CheckMin(m_StopTimer, m_StampInterval[PRESS_SET], 1)) {		//次の行動
 			StampInit(PRESS_ATTACK, false);
-			m_AfterRot.x = m_Rotation.x + 360.0f;
+			m_Rotation.x = 180.0f;
+			m_AfterRot.x = m_Rotation.x - 180.0f;
 		}
 	}
 	else if (m_PressType == PRESS_ATTACK) {			//落下してくる
@@ -291,20 +291,20 @@ void ThirdBoss::Stamp() {
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
 
-			if (m_Frame > 0.05f) {
+			if (m_Frame > 0.6f) {
 				if (!m_BirthWave) {
-					BirthWave(6.0f);//ウェーブの生成
+					BirthStamp("Anger");
+					//BirthWave(6.0f);//ウェーブの生成
 					m_BirthWave = true;
 				}
 			}
 		}
 		else {
-			m_BirthWave = false;
 			m_Frame = 1.0f;
-
 			if (Helper::GetInstance()->CheckMin(m_StopTimer, m_StampInterval[PRESS_ATTACK], 1)) {			//シェイクが始まる
 				StampInit(PRESS_SHAKE, false);
 				shake->SetShakeStart(true);
+				m_BirthWave = false;
 			}
 		}
 		m_Position = {
@@ -327,7 +327,7 @@ void ThirdBoss::Stamp() {
 			m_ShakePos = { 0.0f,0.0f,0.0f };
 			//スタンプを押す
 			if (m_StopTimer == 51) {
-				BirthStamp("Anger");
+				//BirthStamp("Anger");
 			}
 		}
 
@@ -336,6 +336,7 @@ void ThirdBoss::Stamp() {
 			m_Rotation.x = 0.0f;
 			m_AfterRot.x = 0.0f;
 			StampInit(PRESS_RETURN, false);
+			m_BirthWave = false;
 		}
 
 	}
@@ -415,26 +416,23 @@ void ThirdBoss::RandomStamp() {
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
 
-			if (m_Frame > 0.05f) {
+			if (m_Frame > 0.6f) {
 				if (!m_BirthWave) {
-					BirthWave(3.0f);//ウェーブの生成
+					BirthStamp("Anger");
 					m_BirthWave = true;
 				}
 			}
 		}
 		else {
-			m_BirthWave = false;
 			m_Frame = 1.0f;
-			if (m_StopTimer == 1) {
-				//スタンプと衝撃波の生成
-				BirthStamp("Anger");
-			}
 			if (Helper::GetInstance()->CheckMin(m_StopTimer, m_RandomInterval[RANDOM_ATTACK], 1)) {
 				if (m_MoveCount < l_MoveMax) {		//何回スタンプを押したかで最初に戻るか別の行動をするか決まる
 					m_MoveCount++;
 					StampInit(RANDOM_START, true);
+					m_BirthWave = false;
 				}
 				else {
+					m_BirthWave = false;
 					m_MoveCount = 0;
 					StampInit(RANDOM_END, true);
 				}
@@ -568,6 +566,15 @@ void ThirdBoss::BirthStamp(const std::string& stampName) {
 		InterStamp* newstamp;
 		newstamp = new AngerStamp();
 		newstamp->Initialize(m_Position);
+		if (_charaState == STATE_STAMP) {
+			newstamp->SetAfterScale(6.0f);
+		}
+		else if (_charaState == STATE_RANDOM) {
+			newstamp->SetAfterScale(4.5f);
+		}
+		else if (_charaState == STATE_MOVE) {
+			newstamp->SetAfterScale(1.3f);
+		}
 		angerstamps.push_back(newstamp);
 	}
 	else if (stampName == "Joy") {//喜びのスタンプ
@@ -724,22 +731,22 @@ void ThirdBoss::ChoiceMove() {
 		m_FollowSpeed = 1.0f;
 		m_AfterPos.y = 30.0f;
 		////RandStateが30以下ならそれに応じた移動にする、
-		if (l_RandState <= 30) {
-			if (l_RandState <= 10) {
+		if (l_RandState <= m_RandAct[RAND_ANGER]) {
+			if (l_RandState <= m_RandAct[RAND_ALTER]) {
 				m_MoveState = MOVE_ALTER;
 			}
-			else if (l_RandState >= 11 && l_RandState <= 20) {
+			else if (l_RandState > m_RandAct[RAND_ALTER] && l_RandState <= m_RandAct[RAND_JOY]) {
 				m_MoveState = MOVE_JOY;
 			}
 			else {
 				m_MoveState = MOVE_ANGER;
 			}
 		}
-		else if (l_RandState >= 31 && l_RandState <= 37) {	//スタンプ攻撃
+		else if (l_RandState > m_RandAct[RAND_ANGER] && l_RandState <= m_RandAct[RAND_STAMP]) {	//スタンプ攻撃
 			_charaState = STATE_STAMP;
 			m_PressType = PRESS_START;
 		}
-		else if (l_RandState >= 38 && l_RandState <= 44) {	//ランダム攻撃
+		else if (l_RandState > m_RandAct[RAND_STAMP] && l_RandState <= m_RandAct[RAND_RANDOM]) {	//ランダム攻撃
 			_charaState = STATE_RANDOM;
 			m_RandomType = RANDOM_START;
 		}

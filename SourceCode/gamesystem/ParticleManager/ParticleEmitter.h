@@ -41,7 +41,7 @@ public: //メンバ関数
 	//制御点のエフェクト
 	void LimitEffect(const int life, const XMFLOAT3& pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor);
 	//爆発エフェクト
-	void Explosion(const int life, const XMFLOAT3& pos, const float size,const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor);
+	void Explosion(const int life, const XMFLOAT3& pos, const float size,const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor,const int ExploType);
 	//ダメージエフェクト
 	void Break(const int life, const XMFLOAT3& pos,const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor,const float Gravity,float divi);
 	//死んだ時のエフェクト
@@ -50,6 +50,8 @@ public: //メンバ関数
 	void HealEffect(const int life, const XMFLOAT3& pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor);
 	//カメラボスUltimateエフェクト
 	void CameraEffect(const int life, const XMFLOAT3& pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor);
+	//セレクトエフェクト
+	void SelectEffect(const int life, const XMFLOAT3& pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor);
 	//削除
 	void AllDelete();
 	//爆発　ボス

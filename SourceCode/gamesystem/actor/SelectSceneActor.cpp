@@ -106,6 +106,7 @@ void SelectSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 		lightgroup->SetSpotLightFactorAngle(0, XMFLOAT2(spotLightFactorAngle));
 	
 	lightgroup->Update();
+	ParticleEmitter::GetInstance()->Update();
 }
 //描画
 void SelectSceneActor::Draw(DirectXCommon* dxCommon) {
@@ -148,6 +149,7 @@ void SelectSceneActor::BackDraw(DirectXCommon* dxCommon) {
 }
 //ポストエフェクトがかからない
 void SelectSceneActor::FrontDraw(DirectXCommon* dxCommon) {
+	ParticleEmitter::GetInstance()->FlontDrawAll();
 	sceneChanger_->Draw();	//完全に前に書くスプライト
 	//if (camerawork->GetAppearType() == APPEAR_SEVEN || camerawork->GetAppearType() == APPEAR_EIGHT) {
 	IKESprite::PreDraw();
@@ -158,7 +160,8 @@ void SelectSceneActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void SelectSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	//loadobj->ImGuiDraw();
-	//SceneSave::GetInstance()->ImGuiDraw();
+	////loadobj->ImGuiDraw();
+	SceneSave::GetInstance()->ImGuiDraw();
+	//SelectScene::GetIns()->ImGuiDraw();
 }
 

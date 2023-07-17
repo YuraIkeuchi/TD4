@@ -87,7 +87,9 @@ void GuardAction::SpriteDraw()
 
 }
 
+void GuardAction::DeathUpdate(int Timer) {
 
+}
 
 void GuardAction::GuardAreacreate()
 {
