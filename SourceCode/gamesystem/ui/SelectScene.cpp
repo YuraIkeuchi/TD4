@@ -141,6 +141,7 @@ void SelectScene::Init() {
 	m_Scale[FIRST] = { 5.0f,5.0f,5.0f };
 	AfterScale[FIRST] = { 5.0f,5.0f,5.0f };
 	m_Birth[FIRST] = true;
+	m_BirthFinish[FIRST] = true;
 	AfterScale[THIRD] = { 4.0f,4.0f,4.0f };
 	AfterScale[FOUR] = { 3.0f,3.0f,3.0f };
 	StageObjs[FOUR]->SetRotation({ 0.0f,90.0f,0.0f });
@@ -151,6 +152,7 @@ void SelectScene::Init() {
 		if (m_Birth[i]) {
 			m_Scale[i] = AfterScale[i];
 		}
+		TipsAct[i] = false;
 	}
 }
 
@@ -414,12 +416,12 @@ void SelectScene::StateManager() {
 			for (auto i = 1; i < ObjNum - 1; i++) {			//ラスボス以外
 				m_Birth[i] = true;			//ボスが出現した
 			}
-			if (m_BirthTimer == 50) {			//　一定フレームに達するとボスが大きくなる
+			if (m_BirthTimer == 150) {			//　一定フレームに達するとボスが大きくなる
 				m_Wide = true;
 				m_BirthTimer = {};
 			}
 			if (m_Wide) {			//ボスを大きくする
-				for (auto i = 0; i < ObjNum - 1; i++) {
+				for (auto i = 1; i < ObjNum - 1; i++) {
 					m_Scale[i] = { Ease(In,Cubic,0.5f,m_Scale[i].x,AfterScale[i].x),
 						Ease(In,Cubic,0.5f,m_Scale[i].y,AfterScale[i].y),
 						Ease(In,Cubic,0.5f,m_Scale[i].z,AfterScale[i].z),
@@ -446,7 +448,7 @@ void SelectScene::StateManager() {
 			m_BirthTimer++;
 			m_Birth[SEVEN] = true;			//ラスボスの出現
 
-			if (m_BirthTimer == 50) {
+			if (m_BirthTimer == 150) {
 				m_Wide = true;
 				m_BirthTimer = {};
 			}
