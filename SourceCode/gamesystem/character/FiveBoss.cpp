@@ -155,7 +155,7 @@ void FiveBoss::Action()
 
 	////ó‘ÔˆÚs(charastate‚É‡‚í‚¹‚é)
 	//if (m_HP > 0.0f) {\
-	if (GhostSize < 6)
+	//if (GhostSize < 6)
 		(this->*attackTable[_aPhase])();
 
 	if (GhostSize < 6) {
