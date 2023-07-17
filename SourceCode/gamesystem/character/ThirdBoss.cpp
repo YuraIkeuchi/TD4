@@ -301,10 +301,10 @@ void ThirdBoss::Stamp() {
 		}
 		else {
 			m_Frame = 1.0f;
-			m_BirthWave = false;
 			if (Helper::GetInstance()->CheckMin(m_StopTimer, m_StampInterval[PRESS_ATTACK], 1)) {			//シェイクが始まる
 				StampInit(PRESS_SHAKE, false);
 				shake->SetShakeStart(true);
+				m_BirthWave = false;
 			}
 		}
 		m_Position = {
@@ -336,6 +336,7 @@ void ThirdBoss::Stamp() {
 			m_Rotation.x = 0.0f;
 			m_AfterRot.x = 0.0f;
 			StampInit(PRESS_RETURN, false);
+			m_BirthWave = false;
 		}
 
 	}
@@ -431,6 +432,7 @@ void ThirdBoss::RandomStamp() {
 					m_BirthWave = false;
 				}
 				else {
+					m_BirthWave = false;
 					m_MoveCount = 0;
 					StampInit(RANDOM_END, true);
 				}

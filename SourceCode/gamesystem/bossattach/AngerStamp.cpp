@@ -113,7 +113,7 @@ void AngerStamp::AngerMove() {
 			}
 		}
 		else if (_StampState == STAMP_WIDE) {
-			l_AddFrame = 0.05f;
+			l_AddFrame = 0.01f;
 			if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 				m_BirthTimer++;
 
