@@ -298,6 +298,7 @@ void SecondStageActor::BackDraw(DirectXCommon* dxCommon) {
 	IKESprite::PostDraw();
 
 	IKEObject3d::PreDraw();
+
 	BackObj::GetInstance()->Draw(dxCommon);
 
 	if (camerawork->GetCameraState() != CameraState::CAMERA_BOSSAPPEAR &&
@@ -306,6 +307,7 @@ void SecondStageActor::BackDraw(DirectXCommon* dxCommon) {
 			ParticleEmitter::GetInstance()->BackDrawAll();
 		}
 	}
+	if (camerawork->GetAppearEndF() && camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_BEFORE && camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_AFTER_FIRST)
 	loadobj->Draw(dxCommon);
 
 	ParticleEmitter::GetInstance()->DeathDrawAll();
