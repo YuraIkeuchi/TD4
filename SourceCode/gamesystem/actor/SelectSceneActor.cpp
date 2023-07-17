@@ -123,7 +123,7 @@ void SelectSceneActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
-		ImGuiDraw(dxCommon);
+		//ImGuiDraw(dxCommon);
 
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
@@ -134,7 +134,7 @@ void SelectSceneActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-		ImGuiDraw(dxCommon);
+		//ImGuiDraw(dxCommon);
 
 		dxCommon->PostDraw();
 	}

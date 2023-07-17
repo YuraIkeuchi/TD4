@@ -103,8 +103,8 @@ void FiveStageActor::Draw(DirectXCommon* dxCommon)
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
-		enemymanager->ImGuiDraw();
-		camerawork->ImGuiDraw();
+		//enemymanager->ImGuiDraw();
+		//camerawork->ImGuiDraw();
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
@@ -115,7 +115,7 @@ void FiveStageActor::Draw(DirectXCommon* dxCommon)
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-		camerawork->ImGuiDraw();
+		//camerawork->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 }

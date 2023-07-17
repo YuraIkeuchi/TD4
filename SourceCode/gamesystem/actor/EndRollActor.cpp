@@ -55,14 +55,14 @@ void EndRollActor::Draw(DirectXCommon* dxCommon) {
 
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
-		ImGuiDraw(dxCommon);
+		//ImGuiDraw(dxCommon);
 		FrontDraw();
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 	else {
 		dxCommon->PreDraw();
-		ImGuiDraw(dxCommon);
+		//ImGuiDraw(dxCommon);
 		BackDraw(dxCommon);
 		FrontDraw();
 		dxCommon->PostDraw();
