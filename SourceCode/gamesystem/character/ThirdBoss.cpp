@@ -67,7 +67,8 @@ void ThirdBoss::CSVLoad() {
 	auto PressSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Third/Thirdboss.csv", "PRESS_NUM")));
 	auto RandomSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Third/Thirdboss.csv", "RANDOM_NUM")));
 	auto DamageSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Third/Thirdboss.csv", "DAMAGE_NUM")));
-
+	auto ActSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Third/Thirdboss.csv", "ACT_NUM")));
+	m_RandAct.resize(ActSize);
 	m_StampInterval.resize(PressSize);
 	m_RandomInterval.resize(RandomSize);
 	m_DamagePower.resize(DamageSize);
@@ -75,6 +76,7 @@ void ThirdBoss::CSVLoad() {
 	LoadCSV::LoadCsvParam_Int("Resources/csv/chara/boss/Third/Thirdboss.csv", m_StampInterval, "Interval");
 	LoadCSV::LoadCsvParam_Int("Resources/csv/chara/boss/Third/Thirdboss.csv", m_RandomInterval, "RandomInterval");
 	LoadCSV::LoadCsvParam_Float("Resources/csv/chara/boss/Third/Thirdboss.csv", m_DamagePower, "Damage");
+	LoadCSV::LoadCsvParam_Int("Resources/csv/chara/boss/Third/Thirdboss.csv", m_RandAct, "RandAct");
 
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Third/Thirdboss.csv", "hp1")));
 	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Third/Thirdboss.csv", "Magnification")));
@@ -570,7 +572,7 @@ void ThirdBoss::BirthStamp(const std::string& stampName) {
 			newstamp->SetAfterScale(4.0f);
 		}
 		else if (_charaState == STATE_RANDOM) {
-			newstamp->SetAfterScale(2.5f);
+			newstamp->SetAfterScale(3.5f);
 		}
 		else if (_charaState == STATE_MOVE) {
 			newstamp->SetAfterScale(1.3f);
@@ -731,22 +733,22 @@ void ThirdBoss::ChoiceMove() {
 		m_FollowSpeed = 1.0f;
 		m_AfterPos.y = 30.0f;
 		////RandStateが30以下ならそれに応じた移動にする、
-		if (l_RandState <= 30) {
-			if (l_RandState <= 10) {
+		if (l_RandState <= m_RandAct[RAND_ANGER]) {
+			if (l_RandState <= m_RandAct[RAND_ALTER]) {
 				m_MoveState = MOVE_ALTER;
 			}
-			else if (l_RandState >= 11 && l_RandState <= 20) {
+			else if (l_RandState > m_RandAct[RAND_ALTER] && l_RandState <= m_RandAct[RAND_JOY]) {
 				m_MoveState = MOVE_JOY;
 			}
 			else {
 				m_MoveState = MOVE_ANGER;
 			}
 		}
-		else if (l_RandState >= 31 && l_RandState <= 37) {	//スタンプ攻撃
+		else if (l_RandState > m_RandAct[RAND_ANGER] && l_RandState <= m_RandAct[RAND_STAMP]) {	//スタンプ攻撃
 			_charaState = STATE_STAMP;
 			m_PressType = PRESS_START;
 		}
-		else if (l_RandState >= 38 && l_RandState <= 44) {	//ランダム攻撃
+		else if (l_RandState > m_RandAct[RAND_STAMP] && l_RandState <= m_RandAct[RAND_RANDOM]) {	//ランダム攻撃
 			_charaState = STATE_RANDOM;
 			m_RandomType = RANDOM_START;
 		}

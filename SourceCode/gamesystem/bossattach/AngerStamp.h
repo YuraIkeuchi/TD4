@@ -33,4 +33,6 @@ private:
 	};
 
 	int m_ExploType = {};
+
+	int m_DeadTimer = {};
 };

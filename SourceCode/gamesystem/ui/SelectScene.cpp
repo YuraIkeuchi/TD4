@@ -181,8 +181,8 @@ void SelectScene::Upda() {
 	ChangeEffect("SECONDSTAGE", Stage::SECOND, SECOND);
 	ChangeEffect("FOURTHSTAGE", Stage::FOUR, FOUR);
 	ChangeEffect("THIRDSTAGE", Stage::THIRD, THIRD);
-	ChangeEffect("FIVESTAGE", Stage::FIVE, FIVE);
-	ChangeEffect("SIXSTAGE", Stage::SIX, SIX);
+	ChangeEffect("FIVESTAGE", Stage::SIX, SIX);
+	ChangeEffect("SIXSTAGE", Stage::FIVE, FIVE);
 	ChangeEffect("SEVENSTAGE", Stage::SEVEN, SEVEN);
 
 	for (int i = 0; i < MAX; i++) {

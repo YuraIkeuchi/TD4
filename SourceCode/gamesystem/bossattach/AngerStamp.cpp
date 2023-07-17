@@ -64,7 +64,9 @@ void AngerStamp::BirthParticle() {
 	uniform_int_distribution<int> l_Randlife(20, 50);
 	int l_Life = int(l_Randlife(mt));
 
-	ParticleEmitter::GetInstance()->Explosion(l_Life, m_Position, l_AddSize, s_scale, e_scale, s_color, e_color,m_ExploType);
+	for (int i = 0; i < 3; i++) {
+		ParticleEmitter::GetInstance()->Explosion(l_Life, m_Position, l_AddSize, s_scale, e_scale, s_color, e_color, m_ExploType);
+	}
 }
 //当たり判定
 bool AngerStamp::Collide() {
@@ -74,15 +76,15 @@ bool AngerStamp::Collide() {
 		m_Radius = 2.5f;
 		m_ExploType = EXPLO_SMALL;
 	}
-	else if (m_AfterScale == 2.5f) {
-		m_Radius = 4.0f;
+	else if (m_AfterScale == 3.5f) {
+		m_Radius = 5.0f;
 		m_ExploType = EXPLO_MIDIUM;
 	}
 	else {
 		m_Radius = 7.0f;
 		m_ExploType = EXPLO_LARGE;
 	}
-	if (Collision::CircleCollision(m_Position.x, m_Position.z, m_Radius, l_PlayerPos.x, l_PlayerPos.z, m_Radius) && (m_Color.w < 0.2f) && (Player::GetInstance()->GetDamageInterVal() == 0)) {
+	if (Collision::CircleCollision(m_Position.x, m_Position.z, m_Radius, l_PlayerPos.x, l_PlayerPos.z, m_Radius) && (m_Color.w < 0.6f) && (Player::GetInstance()->GetDamageInterVal() == 0)) {
 		Player::GetInstance()->RecvDamage(m_DamagePower);
 		Player::GetInstance()->PlayerHit(m_Position);
 		return true;
@@ -96,7 +98,8 @@ bool AngerStamp::Collide() {
 
 void AngerStamp::AngerMove() {
 	const int l_AliveTimer = 1;
-	const int l_LimitTimer = 100;
+	const int l_LimitTimer = 1;
+	const int l_LimitDead = 30;
 	float l_AddFrame = {};
 	if (m_Birth) {
 		if (_StampState == STAMP_SET) {
@@ -110,7 +113,7 @@ void AngerStamp::AngerMove() {
 			}
 		}
 		else if (_StampState == STAMP_WIDE) {
-			l_AddFrame = 0.05f;
+			l_AddFrame = 0.01f;
 			if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 				m_BirthTimer++;
 
@@ -127,10 +130,13 @@ void AngerStamp::AngerMove() {
 				Ease(In,Cubic,m_Frame,m_Scale.z,m_AfterScale), };
 		}
 		else {
-			l_AddFrame = 0.01f;
+			l_AddFrame = 0.05f;
 			if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+				m_DeadTimer++;
 				m_Alive = false;
-				m_Birth = false;
+				if (m_DeadTimer == l_LimitDead) {
+					m_Birth = false;
+				}
 			}
 			//赤に近づけつつ消す
 			m_Color = {
@@ -141,7 +147,7 @@ void AngerStamp::AngerMove() {
 			};
 
 			//一定のラインになったら爆発エフェクト発生
-			if (m_Color.w >= 0.12f && m_Color.w < 0.2f) {
+			if (m_Color.w >= 0.4f && m_Color.w < 0.6f) {
 				BirthParticle();
 			}
 		}
