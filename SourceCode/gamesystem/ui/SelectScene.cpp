@@ -465,16 +465,9 @@ void SelectScene::StateManager() {
 	}
 }
 
+//パーティクル
 void SelectScene::BirthParticle() {
-	//float s_scale[ObjNum];
-	//float e_scale[ObjNum];
-
-	////色
-	//XMFLOAT4 s_color[ObjNum];
-	//XMFLOAT4 e_color[ObjNum];
 	int l_Life[ObjNum];
-
-
 
 	for (auto i = 0; i < ObjNum; i++) {
 		l_Life[i] = 50;

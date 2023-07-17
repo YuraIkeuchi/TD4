@@ -259,7 +259,7 @@ void CameraWork::SetBossDead_AfterThird() {
 
 	DeathTimer++;
 
-	if (DeathTimer == 500) {
+	if (DeathTimer == 250) {
 		m_EndDeath = true;
 	}
 }

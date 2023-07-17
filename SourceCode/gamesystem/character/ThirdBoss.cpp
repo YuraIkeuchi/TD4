@@ -30,10 +30,6 @@ ThirdBoss::ThirdBoss() {
 			pointsList.emplace_back(XMFLOAT3{ 40,35,20 });
 			pointsList.emplace_back(XMFLOAT3{ -40,40,20 });
 			pointsList.emplace_back(XMFLOAT3{ 20,25,20 });
-			pointsList.emplace_back(XMFLOAT3{ -20,30,20 });
-			pointsList.emplace_back(XMFLOAT3{ -40,40,20 });
-			pointsList.emplace_back(XMFLOAT3{ 20,25,20 });
-			pointsList.emplace_back(XMFLOAT3{ -20,30,20 });
 		}
 		spline = new Spline();
 		spline->Init(pointsList, static_cast<int>(pointsList.size()));
