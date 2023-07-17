@@ -55,14 +55,14 @@ void Fraction::Spatter()
 	if (pop_ != PopState::After) { return; }
 	if (drop_F != true) { return; }
 
-	commandTimer += 1.0f / 60;
+	commandTimer += 1.0f / 80;
 	Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);
 	XMFLOAT3 s_pos = pop_pos_;
 	XMFLOAT3 e_pos = drop_pos_;
 	m_Position = {
-	Ease(Out, Quart, commandTimer, s_pos.x, e_pos.x),
-	Ease(Out, Quart, commandTimer, s_pos.y, e_pos.y),
-	Ease(Out, Quart, commandTimer, s_pos.z, e_pos.z),
+	Ease(In, Quart, commandTimer, s_pos.x, e_pos.x),
+	Ease(In, Quart, commandTimer, s_pos.y, e_pos.y),
+	Ease(In, Quart, commandTimer, s_pos.z, e_pos.z),
 	};
 	if (commandTimer >= 1) {
 		if (m_Position.x <= -55.f || m_Position.x >= 65.f
