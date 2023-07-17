@@ -22,6 +22,11 @@ void BossText::SelectText(TextManager::Name_First name, const XMVECTOR& color) {
 	text_->SetConversation(name,color);
 }
 
+void BossText::SelectText(TextManager::Name_Cap name, const XMVECTOR& color)
+{
+	text_->SetCapConversation(name);
+}
+
 void BossText::SelectText(TextManager::Name_Fourth name) {
 	text_->SetFourthConversation(name);
 }
