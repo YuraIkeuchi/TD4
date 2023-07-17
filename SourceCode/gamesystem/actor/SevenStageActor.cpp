@@ -74,9 +74,6 @@ void SevenStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
 	lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
 
-	if (enemymanager->BossDestroy()) {
-		lightgroup->SetCircleShadowActive(0, false);
-	}
 	//ƒ{ƒX
 	lightgroup->SetCircleShadowDir(1, XMVECTOR({ BosscircleShadowDir[0], BosscircleShadowDir[1], BosscircleShadowDir[2], 0 }));
 	lightgroup->SetCircleShadowCasterPos(1, XMFLOAT3({ enemymanager->GetBoss()->GetPosition().x, 	0.0f, 	enemymanager->GetBoss()->GetPosition().z }));

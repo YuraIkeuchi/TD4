@@ -34,6 +34,8 @@ void NormalAttack::SpriteDraw()
 
 }
 
+void NormalAttack::DeathUpdate(int Timer) {
 
+}
 
 

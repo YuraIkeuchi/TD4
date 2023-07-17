@@ -13,6 +13,8 @@ public:
 
     void SpriteDraw() override;
 
+    void DeathUpdate(int Timer) override;
+
     struct Sword
     {
         std::unique_ptr<IKEObject3d>Obj;

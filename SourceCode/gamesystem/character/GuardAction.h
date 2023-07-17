@@ -13,6 +13,7 @@ public:
 
     void SpriteDraw() override;
 
+    void DeathUpdate(int Timer) override;
 private:
     static constexpr int GuardSize = 6;
 

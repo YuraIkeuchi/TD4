@@ -131,6 +131,9 @@ void ShotAttack::SpriteDraw()
 	IKESprite::PostDraw();
 }
 
+void ShotAttack::DeathUpdate(int Timer) {
+
+}
 
 #pragma region s“®‚Ì’†g
 void ShotAttack::Phase_Idle()
