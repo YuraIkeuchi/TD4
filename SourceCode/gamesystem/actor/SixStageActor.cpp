@@ -136,6 +136,7 @@ void SixStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGr
 	lightgroup->Update();
 
 	Menu::GetIns()->Upda();
+	ui->Update();
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 }
 //描画
@@ -274,7 +275,6 @@ void SixStageActor::IntroUpdate(DebugCamera* camera) {
 //バトルシーン
 void SixStageActor::MainUpdate(DebugCamera* camera) {
 	Input* input = Input::GetInstance();
-	ui->Update();
 	//カメラワークのセット
 	if (enemymanager->BossDestroy())
 	{
