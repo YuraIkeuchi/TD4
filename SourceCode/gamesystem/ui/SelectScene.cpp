@@ -404,9 +404,9 @@ void SelectScene::ViewTips() {
 }
 
 void SelectScene::StateManager() {
-	//
-	m_Wide = true;
-	m_SelectState =SELECT_SECOND;
+	//debug‚æ‚¤
+	//m_Wide = true;
+	//m_SelectState =SELECT_SECOND;
 	//
 	//ƒNƒŠƒAó‹µ‚É‰‚¶‚ÄOBJ‚Ì‘å‚«‚³‚¾‚Á‚½‚è‚ªˆá‚¤
 	if (m_SelectState == SELECT_FIRST) {		//‚±‚±‚Í‹“û‚Ì‚İ
