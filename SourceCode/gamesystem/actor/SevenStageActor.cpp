@@ -115,7 +115,7 @@ void SevenStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-		//ImGuiDraw(dxCommon);
+		ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 }
@@ -179,14 +179,17 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void SevenStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	enemymanager->ImGuiDraw();
-	//loadobj->ImGuiDraw();
-	/*ImGui::Begin("Seven");
-	ImGui::Text("Timer:%d", m_EndTimer);
-	ImGui::End();
+	//enemymanager->ImGuiDraw();
+	//camerawork->ImGuiDraw();
+	////loadobj->ImGuiDraw();
+	///*
+	//
+	//*/
+	//ImGui::Begin("Seven");
+	//ImGui::Text("Timer:%d", m_EndTimer);
+	//ImGui::End();
 
-	camerawork->ImGuiDraw();
-	Player::GetInstance()->ImGuiDraw();*/
+	//Player::GetInstance()->ImGuiDraw();
 }
 //登場シーン
 void SevenStageActor::IntroUpdate(DebugCamera* camera) {
@@ -414,39 +417,33 @@ void SevenStageActor::DeathText() {
 		text_->SelectText(TextManager::DEATH_FIVE);
 	}
 	else if (m_EndTimer == 800) {
-		text_->SelectText(TextManager::DEATH_SIX);
+		text_->SelectText(TextManager::DEATH_SIX);//ボス
 	}
 	else if (m_EndTimer == 900) {
-		text_->SelectText(TextManager::DEATH_SEVEN);
+		text_->SelectText(TextManager::DEATH_SEVEN);//ボス
 	}
 	else if (m_EndTimer == 1000) {
-		text_->SelectText(TextManager::DEATH_EIGHT);
+		text_->SelectText(TextManager::DEATH_EIGHT);//コトコ
 	}
 	else if (m_EndTimer == 1100) {
-		text_->SelectText(TextManager::DEATH_NINE);
+		text_->SelectText(TextManager::DEATH_NINE);//ボス
 	}
 	else if (m_EndTimer == 1200) {
-		text_->SelectText(TextManager::DEATH_TEN);
+		text_->SelectText(TextManager::DEATH_TEN);//コトコ
 	}
 	else if (m_EndTimer == 1300) {
-		text_->SelectText(TextManager::DEATH_ELEVEN);
+		text_->SelectText(TextManager::DEATH_ELEVEN);//コトコ
 	}
 	else if (m_EndTimer == 1400) {
-		text_->SelectText(TextManager::DEATH_TWELVE);
+		text_->SelectText(TextManager::DEATH_TWELVE);//ボス
 	}
 	else if (m_EndTimer == 1500) {
-		text_->SelectText(TextManager::DEATH_THIRTEEN);
+		text_->SelectText(TextManager::DEATH_THIRTEEN);//コトコ
 	}
 	else if (m_EndTimer == 1600) {
-		text_->SelectText(TextManager::DEATH_FOURTEEN);
+		text_->SelectText(TextManager::DEATH_FOURTEEN);//すと
 	}
 	else if (m_EndTimer == 1700) {
-		text_->SelectText(TextManager::DEATH_FIFTEEN);
-	}
-	else if (m_EndTimer == 1800) {
-		text_->SelectText(TextManager::DEATH_SIXTEEN);
-	}
-	else if (m_EndTimer == 1900) {
-		text_->SelectText(TextManager::DEATH_SEVENTEEN);
+		text_->SelectText(TextManager::DEATH_FIFTEEN);//ボス
 	}
 }

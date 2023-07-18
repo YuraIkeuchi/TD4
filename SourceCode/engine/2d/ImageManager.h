@@ -65,13 +65,6 @@ public:
 		PHOTO_OUT,
 		CIRCLE,
 		CIRCLECOVER,
-		SELECT_FIRST,
-		SELECT_SECOND,
-		SELECT_THIRD,
-		SELECT_FOUR,
-		SELECT_FIVE,
-		SELECT_SIX,
-		SELECT_SEVEN,
 		RBBUTTON,
 		LBBUTTON,
 		tip1,
@@ -80,8 +73,6 @@ public:
 		BOSS_ARROW,
 		NOTE,
 		NOTE2,
-		DARKBOM,
-
 	};
 	//テクスチャの名前
 	enum tex2dName
@@ -96,7 +87,8 @@ public:
 		PHOTOSPOT,
 		STUN,
 		CATCH,
-		SLASHAREA
+		SLASHAREA,
+		DARKBOM,
 	};
 	enum particleName
 	{

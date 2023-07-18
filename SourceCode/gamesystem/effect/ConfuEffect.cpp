@@ -16,6 +16,7 @@ ConfuEffect::ConfuEffect() {
 		stuntex[i].reset(IKETexture::Create(ImageManager::STUN, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 }));
 		stuntex[i]->TextureCreate();
 		stuntex[i]->SetRotation({ 0,0,0 });
+		stuntex[i]->SetScale({ 0.2f,0.2f,0.2f });
 	}
 }
 //‰Šú‰»

@@ -169,8 +169,6 @@ public:
 		DEATH_THIRTEEN,
 		DEATH_FOURTEEN,
 		DEATH_FIFTEEN,
-		DEATH_SIXTEEN,
-		DEATH_SEVENTEEN,
 	};
 
 	static TextManager* GetInstance();

@@ -189,4 +189,10 @@ private:
 	}_DeathState;
 
 	int m_DeleteNumber = {};
+
+	enum EndDir {
+		DIR_NONE,
+		DIR_PLAYER,
+		DIR_RETURN,
+	}_EndDir = DIR_NONE;
 };

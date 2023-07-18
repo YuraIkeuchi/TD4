@@ -347,7 +347,7 @@ void CameraWork::SetBossDead_AfterSeven() {
 			m_Frame = 1.0f;
 		}
 
-		if (m_EndTimer == 450) {				//プレイヤーを見る
+		if (m_EndTimer == 420) {				//プレイヤーを見る
 			m_AfterEye = { 0.0f,5.0f,10.0f };
 			m_AfterTarget = { 0.0f,5.0f,-30.0f };
 			_DeathCamera = DEATH_PLAYER;
@@ -359,33 +359,24 @@ void CameraWork::SetBossDead_AfterSeven() {
 		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 			m_Frame = 1.0f;
 		}
-		if (m_EndTimer == 800) {
+		if (m_EndTimer == 730) {
 			m_Frame = {};
-			_DeathCamera = DEATH_FAR_PLAYER;
+			m_AfterEye = { -15.0f,5.0f,12.0f };
+			m_AfterTarget = { 0.0f,5.0f,12.0f };
+			_DeathCamera = DEATH_LOOK_BOSS;
 		}
 		SetEaseCamera();
-	}
-	else if(_DeathCamera == DEATH_FAR_PLAYER) {
-		m_eyePos = { boss->GetPosition().x,5.0f,boss->GetPosition().z - 12.0f };
-		m_targetPos = { 0.0f,5.0f,-70.0f };
-
-		if (m_EndTimer == 950) {
-			m_Frame = {};
-			_DeathCamera = DEATH_LOOK_BOSS;
-			m_AfterEye = { -15.0f,5.0f,-50.0f };
-			m_AfterTarget = { 0.0f,5.0f,-50.0f};
-		}
 	}
 	else if(_DeathCamera == DEATH_LOOK_BOSS) {
 		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 			m_Frame = 1.0f;
 		}
 		SetEaseCamera();
-		if (m_EndTimer == 1950) {
+		if (m_EndTimer == 1800) {
 			m_Frame = {};
 			_DeathCamera = DEATH_END;
-			m_AfterEye = { -300.0f,5.0f,-50.0f };
-			m_AfterTarget = { 0.0f,5.0f,-50.0f };
+			m_AfterEye = { -300.0f,5.0f,12.0f };
+			m_AfterTarget = { 0.0f,5.0f,12.0f };
 		}
 	}
 	else {
@@ -411,10 +402,14 @@ void CameraWork::ImGuiDraw() {
 	ImGui::Text("eyeX:%f", m_eyePos.x);
 	ImGui::Text("eyeY:%f", m_eyePos.y);
 	ImGui::Text("eyeZ:%f", m_eyePos.z);
+	ImGui::Text("AftereyeX:%f", m_AfterEye.x);
+	ImGui::Text("AftereyeY:%f", m_AfterEye.y);
+	ImGui::Text("AftereyeZ:%f", m_AfterEye.z);
 
 	ImGui::Text("targetX:%f", m_targetPos.x);
 	ImGui::Text("targetY:%f", m_targetPos.y);
 	ImGui::Text("targetZ:%f", m_targetPos.z);
+	ImGui::Text("Timer:%d", m_EndTimer);
 	ImGui::End();
 }
 void CameraWork::SpecialUpdate() {
