@@ -14,11 +14,11 @@ FiveBoss::FiveBoss()
 
 	//ダーク琴子モデル
 		//モデル初期化と読み込み
-	m_fbxObject.reset(new IKEFBXObject3d());
-	m_fbxObject->Initialize();
-	m_fbxObject->SetModel(ModelManager::GetInstance()->GetFBXModel(ModelManager::PLAYER));
-	m_fbxObject->LoadAnimation();
-	m_fbxObject->PlayAnimation(0);
+	fbxmodel.reset(new IKEFBXObject3d());
+	fbxmodel->Initialize();
+	fbxmodel->SetModel(ModelManager::GetInstance()->GetFBXModel(ModelManager::PLAYER2));
+	fbxmodel->LoadAnimation();
+	fbxmodel->PlayAnimation(0);
 
 	confueffect.reset(new ConfuEffect());
 	confueffect->Initialize();
@@ -95,7 +95,7 @@ bool FiveBoss::Initialize()
 	_charaState = STATE_INTER;
 	m_AreaState = AREA_SET;*/
 	//CSVロード
-	bonesize = m_fbxObject->GetBoneSize();
+	bonesize = fbxmodel->GetBoneSize();
 	//{
 	bonepos.resize(19);
 	bonemat.resize(19);
@@ -312,7 +312,7 @@ void FiveBoss::Action()
 	}
 	//基礎パラメータ設定
 
-	Fbx_SetParam();
+	//Fbx_SetParam();
 
 	if (bonesize == 0) {
 
@@ -321,10 +321,14 @@ void FiveBoss::Action()
 	}
 
 	//どっち使えばいいか分からなかったから保留
-	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+	fbxmodel->SetPosition(m_Position);
+	fbxmodel->SetRotation(m_Rotation);
+	fbxmodel->SetScale(m_Scale);
+	fbxmodel->SetColor(m_Color);
+	fbxmodel->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 	for (auto i = 0; i < 19; i++)
 	{
-		m_fbxObject->GetBoneIndexMat(i, bonemat[i]);
+		fbxmodel->GetBoneIndexMat(i, bonemat[i]);
 		MatTranstoPos(bonemat[i], bonepos[i]);
 
 		s_color[i] = { 1.0f,0.4f,1.0f,0.50f };
@@ -368,14 +372,14 @@ void FiveBoss::DeadAction()
 	//m_Rotation.y += 3.0f;
 	Fbx_SetParam();
 	//どっち使えばいいか分からなかったから保留
-	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+	fbxmodel->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 }
 
 void FiveBoss::DeadAction_Throw()
 {
 	Fbx_SetParam();
 	//どっち使えばいいか分からなかったから保留
-	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+	fbxmodel->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 }
 
 void FiveBoss::CSVLoad()
@@ -427,7 +431,7 @@ void FiveBoss::Draw(DirectXCommon* dxCommon)
 		darkshot->Draw(dxCommon);
 	}
 	knock->Draw(dxCommon);
-	Fbx_Draw(dxCommon);
+	fbxmodel->Draw(dxCommon->GetCmdList());
 	guard->Draw(dxCommon);
 
 }
@@ -449,7 +453,7 @@ void FiveBoss::EndRollAction()
 		m_Position = { 10.0f,5.0f,-25.0f };
 		m_Rotation = { 0.0f,180.0f,270.0f };
 		m_Scale = { 0.8f,0.4f,0.8f };
-		m_fbxObject->PlayAnimation(0);
+		fbxmodel->PlayAnimation(0);
 		if (m_EndTimer == 980) {
 			_EndState2 = END_RIGHT;
 			m_AfterPos = { 7.0f,5.0f,-25.0f };
@@ -513,16 +517,16 @@ void FiveBoss::EndRollAction()
 
 		if (m_EndTimer == 1670) {
 			_EndState2 = END_MOVE2;
-			m_fbxObject->StopAnimation();
+			fbxmodel->StopAnimation();
 		}
 	} else {
 		m_Rotation = { 0.0f,180.0f,0.0f };
 		m_Position = { -3.0f,0.0f,-25.0f };
 	}
 
-	Fbx_SetParam();
+	//Fbx_SetParam();
 	//どっち使えばいいか分からなかったから保留
-	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+	//fbxmodel->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 }
 
 void FiveBoss::SetEasePos() {

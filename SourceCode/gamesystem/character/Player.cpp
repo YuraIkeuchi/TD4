@@ -15,11 +15,11 @@ Player* Player::GetInstance()
 bool Player::Initialize()
 {
 	//モデル初期化と読み込み
-	m_fbxObject.reset(new IKEFBXObject3d());
-	m_fbxObject->Initialize();
-	m_fbxObject->SetModel(ModelManager::GetInstance()->GetFBXModel(ModelManager::PLAYER));
-	m_fbxObject->LoadAnimation();
-	m_fbxObject->PlayAnimation(0);
+	fbxmodels.reset(new IKEFBXObject3d());
+	fbxmodels->Initialize();
+	fbxmodels->SetModel(ModelManager::GetInstance()->GetFBXModel(ModelManager::PLAYER));
+	fbxmodels->LoadAnimation();
+	fbxmodels->PlayAnimation(0);
 
 	//飢餓ゲージはプレイヤーで管理する
 	HungerGauge::GetInstance()->Initialize();
@@ -117,13 +117,13 @@ void Player::Update()
 			input->TiltPushStick(Input::L_RIGHT, 0.0f) ||
 			input->TiltPushStick(Input::L_LEFT, 0.0f))
 		{
-			//m_fbxObject->PlayAnimation(2);
+			//fbxmodels->PlayAnimation(2);
 			_charaState = CharaState::STATE_RUN;
 		}
 		//何もアクションがなかったらアイドル状態
 		else
 		{
-			//m_fbxObject->PlayAnimation(2);
+			//fbxmodels->PlayAnimation(2);
 			_charaState = CharaState::STATE_IDLE;
 		}
 	}
@@ -137,7 +137,7 @@ void Player::Update()
 	(this->*stateTable[_charaState])();
 
 	index = 15;
-	m_fbxObject->GetBoneIndexMat(index, skirtmat);
+	fbxmodels->GetBoneIndexMat(index, skirtmat);
 	skirtobj->FollowUpdate(skirtmat);
 	skirtobj->SetColor(m_Color);
 	//Stateに入れなくていいやつ
@@ -171,12 +171,16 @@ void Player::Update()
 	Helper::GetInstance()->Clamp(m_Position.x, -55.0f, 65.0f);
 	Helper::GetInstance()->Clamp(m_Position.z, -60.0f, 60.0f);
 	Helper::GetInstance()->Clamp(m_HP, 0.0f, 5.0f);
-
-	//基礎パラメータ設定
-	Fbx_SetParam();
+	
 
 	//どっち使えばいいか分からなかったから保留
-	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+	fbxmodels->SetPosition(m_Position);
+	fbxmodels->SetRotation(m_Rotation);
+	fbxmodels->SetScale(m_Scale);
+	fbxmodels->SetColor(m_Color);
+	fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+
+	//fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 
 	//エフェクト
 	for (InterEffect* effect : effects) {
@@ -200,7 +204,9 @@ void Player::Update()
 void Player::Draw(DirectXCommon* dxCommon)
 {
 	//キャラクター
-	Fbx_Draw(dxCommon);
+
+	//どっち使えばいいか分からなかったから保留
+	fbxmodels->Draw(dxCommon->GetCmdList());
 	playerattach->Draw(dxCommon);
 	//弾の描画
 	BulletDraw(ghostbullets, dxCommon);
@@ -233,7 +239,7 @@ void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
 	//アニメーションを引数に合わせる
 	if (_animeName != name)
 	{
-		m_fbxObject->PlayAnimation(static_cast<int>(name));
+		fbxmodels->PlayAnimation((int)(name));
 	}
 
 	//各種パラメータ反映
@@ -358,8 +364,8 @@ void Player::Bullet_Management() {
 		TriggerAttack = true;
 	}
 	if (TriggerAttack) {
-		if (m_fbxObject->GetCurrent()>=m_fbxObject->GetEndTime()-1) {
-			m_fbxObject->StopAnimation();
+		if (fbxmodels->GetCurrent()>=fbxmodels->GetEndTime()-1) {
+			fbxmodels->StopAnimation();
 			_animeName = AnimeName::IDLE;
 			TriggerAttack = false;
 		}
@@ -717,20 +723,28 @@ void Player::BirthParticle() {
 //ボス登場シーンの更新
 void Player::AppearUpdate() {
 	//基礎パラメータ設定
-	Fbx_SetParam();
+	fbxmodels->SetPosition(m_Position);
+	fbxmodels->SetRotation(m_Rotation);
+	fbxmodels->SetScale(m_Scale);
+	fbxmodels->SetColor(m_Color);
+	fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 
 	//どっち使えばいいか分からなかったから保留
-	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+	//fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 }
 //ボス撃破シーンの更新
 void Player::DeathUpdate() {
 	m_HitPlayer = false;
 	BulletDelete();
 	//基礎パラメータ設定
-	Fbx_SetParam();
+	fbxmodels->SetPosition(m_Position);
+	fbxmodels->SetRotation(m_Rotation);
+	fbxmodels->SetScale(m_Scale);
+	fbxmodels->SetColor(m_Color);
+	//fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 
 	//どっち使えばいいか分からなかったから保留
-	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+	fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 }
 //割合
 float Player::GetPercentage() {
@@ -790,14 +804,19 @@ void Player::LastAppearUpdate(int Timer) {
 		}*/
 	}
 	index = 15;
-	m_fbxObject->GetBoneIndexMat(index, skirtmat);
+	fbxmodels->GetBoneIndexMat(index, skirtmat);
 	skirtobj->FollowUpdate(skirtmat);
 	playerattach->AppearUpdate(Timer);
 	//基礎パラメータ設定
-	Fbx_SetParam();
 
 	//どっち使えばいいか分からなかったから保留
-	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+	fbxmodels->SetPosition(m_Position);
+	fbxmodels->SetRotation(m_Rotation);
+	fbxmodels->SetScale(m_Scale);
+	fbxmodels->SetColor(m_Color);
+	fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+	//どっち使えばいいか分からなかったから保留
+	//fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 }
 void Player::LastDeadUpdate(int Timer) {
 	BulletDelete();
@@ -808,14 +827,14 @@ void Player::LastDeadUpdate(int Timer) {
 		AnimationControl(AnimeName::IDLE, true, 1);
 	}
 	index = 15;
-	m_fbxObject->GetBoneIndexMat(index, skirtmat);
+	fbxmodels->GetBoneIndexMat(index, skirtmat);
 	skirtobj->FollowUpdate(skirtmat);
 	playerattach->LastDeadUpdate(Timer);
 	//基礎パラメータ設定
 	Fbx_SetParam();
 
 	//どっち使えばいいか分からなかったから保留
-	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+	fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 }
 void Player::EndRollUpdate(int Timer) {
 	const float l_AddPosX = 0.2f;
@@ -869,15 +888,15 @@ void Player::EndRollUpdate(int Timer) {
 	}
 
 	if (Timer == 1670) {
-		m_fbxObject->StopAnimation();
+		fbxmodels->StopAnimation();
 	}
 	index = 15;
-	m_fbxObject->GetBoneIndexMat(index, skirtmat);
+	fbxmodels->GetBoneIndexMat(index, skirtmat);
 	skirtobj->FollowUpdate(skirtmat);
 	playerattach->EndRollUpdate(Timer);
 	//基礎パラメータ設定
 	Fbx_SetParam();
 
 	//どっち使えばいいか分からなかったから保留
-	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+	fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 }

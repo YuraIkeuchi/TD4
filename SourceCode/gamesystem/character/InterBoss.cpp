@@ -259,7 +259,7 @@ void InterBoss::AnimationControl(AnimeNames name, const bool& loop, int speed)
 	//アニメーションを引数に合わせる
 	if (_animeName != name)
 	{
-	//	m_fbxObject->PlayAnimation(static_cast<int>(name));
+		fbxmodel->PlayAnimation(static_cast<int>(name));
 	}
 
 	//各種パラメータ反映

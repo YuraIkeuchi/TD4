@@ -52,6 +52,7 @@ public:
 	//FBXの名前
 	enum FBXName {
 		PLAYER,
+		PLAYER2,
 		KIDO,
 		SIORI,
 		TIEYOSHI

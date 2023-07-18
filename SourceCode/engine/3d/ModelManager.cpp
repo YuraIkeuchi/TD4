@@ -55,6 +55,7 @@ void ModelManager::SecondInitialize()
 	LoadModel(LASTBOSS, "burapon");
 
 	LoadFBXModel(PLAYER, "kotoko");
+	LoadFBXModel(PLAYER2, "dkotoko");
 	LoadFBXModel(SIORI, "siori_idol");
 	LoadFBXModel(KIDO, "kidokun_idol");
 	LoadFBXModel(TIEYOSHI, "tieyosi_anime");

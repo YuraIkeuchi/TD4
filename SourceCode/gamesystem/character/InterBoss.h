@@ -268,8 +268,9 @@ public:
 	bool GetRecv() { return Recv; }
 	void SetRecv(bool f) { Recv = f; }
 	bool GetCanAttack() { return CanAttack; }
-	IKEFBXObject3d* GetFbxobj() { return m_fbxObject.get(); }
+	IKEFBXObject3d* GetFbxobj() { return fbxmodel.get(); }
 
+	std::unique_ptr<IKEFBXObject3d>fbxmodel;
 	enum AnimeNames
 	{
 		IDLE,

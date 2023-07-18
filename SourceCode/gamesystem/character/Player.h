@@ -43,6 +43,8 @@ public:
 	}_charaState;
 	unique_ptr<IKEObject3d>skirtobj;
 	XMMATRIX skirtmat;
+
+	std::unique_ptr<IKEFBXObject3d>fbxmodels;
 private:
 	void LoadCSV();
 private:

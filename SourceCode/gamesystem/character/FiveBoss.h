@@ -90,7 +90,7 @@ private:
 
 	int m_RotCount = 0;
 	int m_RotTimer = 0;
-
+	
 	enum AreaState {
 		AREA_SET,
 		AREA_STOP,
