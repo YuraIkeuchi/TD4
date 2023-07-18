@@ -852,10 +852,10 @@ void Player::LastDeadUpdate(int Timer) {
 	fbxmodels->GetBoneIndexMat(index, skirtmat);
 	skirtobj->FollowUpdate(skirtmat);
 	playerattach->LastDeadUpdate(Timer);
-	//基礎パラメータ設定
-	Fbx_SetParam();
-
-	//どっち使えばいいか分からなかったから保留
+	fbxmodels->SetPosition(m_Position);
+	fbxmodels->SetRotation(m_Rotation);
+	fbxmodels->SetScale(m_Scale);
+	fbxmodels->SetColor(m_Color);
 	fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 }
 void Player::EndRollUpdate(int Timer) {
@@ -916,9 +916,9 @@ void Player::EndRollUpdate(int Timer) {
 	fbxmodels->GetBoneIndexMat(index, skirtmat);
 	skirtobj->FollowUpdate(skirtmat);
 	playerattach->EndRollUpdate(Timer);
-	//基礎パラメータ設定
-	Fbx_SetParam();
-
-	//どっち使えばいいか分からなかったから保留
+	fbxmodels->SetPosition(m_Position);
+	fbxmodels->SetRotation(m_Rotation);
+	fbxmodels->SetScale(m_Scale);
+	fbxmodels->SetColor(m_Color);
 	fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 }
