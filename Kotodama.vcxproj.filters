@@ -1211,9 +1211,6 @@
     <Filter Include="gamesystem\particle">
       <UniqueIdentifier>{48e0eb1e-cc91-487d-b504-f2487da18d23}</UniqueIdentifier>
     </Filter>
-    <Filter Include="gamesystem\scene">
-      <UniqueIdentifier>{88dffa51-41c6-421c-ae0e-d8f4ba011bb3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="gamesystem\ui">
       <UniqueIdentifier>{dc38cca5-722f-4b16-9bc0-94872d7d0a9f}</UniqueIdentifier>
     </Filter>
@@ -1286,35 +1283,8 @@
     <Filter Include="gamesystem\charactor\Player">
       <UniqueIdentifier>{67cc1ef3-c531-4952-b181-9f7044af6c4a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="gamesystem\scene\Tutorial">
-      <UniqueIdentifier>{40fae6cc-723f-427e-8439-66617f5c0615}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gamesystem\scene\Clear">
-      <UniqueIdentifier>{836dd921-f6f8-4000-addf-b66663142475}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gamesystem\scene\Load">
-      <UniqueIdentifier>{47055e9e-6cba-47a1-b497-d0672c56b841}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gamesystem\scene\Base">
-      <UniqueIdentifier>{9e1f5803-f387-4e10-a4d7-972a5705d5d7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gamesystem\scene\Play">
-      <UniqueIdentifier>{888ff33b-a6a2-41a2-8358-dcc9d4477e5f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gamesystem\scene\Play\First">
-      <UniqueIdentifier>{a4f89e05-04e6-49a8-918a-b14a5ea09be7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gamesystem\scene\Play\Second">
-      <UniqueIdentifier>{5cd4740c-9756-469e-808a-14707c4710a6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gamesystem\scene\GameOver">
-      <UniqueIdentifier>{8340f8aa-fee7-47d7-9c77-10fd67ad1f22}</UniqueIdentifier>
-    </Filter>
     <Filter Include="gamesystem\actor\Tutorial">
       <UniqueIdentifier>{4654ff1e-0f15-48f3-b61d-9335e76f4bcc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gamesystem\scene\Base\Framework">
-      <UniqueIdentifier>{d99bcb95-18d3-4b65-9d94-542bc0b0bd94}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shader">
       <UniqueIdentifier>{5157e7cf-15cd-4c09-bd21-31621f90b40b}</UniqueIdentifier>
@@ -1403,9 +1373,6 @@
     <Filter Include="gamesystem\actor\Third">
       <UniqueIdentifier>{b1928847-a667-4f38-ba4f-2fecc6acc321}</UniqueIdentifier>
     </Filter>
-    <Filter Include="gamesystem\scene\Play\Third">
-      <UniqueIdentifier>{e80c8f10-0750-4b60-97f2-7559ec2e7bac}</UniqueIdentifier>
-    </Filter>
     <Filter Include="gamesystem\charactor\Boss\Third">
       <UniqueIdentifier>{5764d420-c4d4-4607-b827-3307dd9ddd13}</UniqueIdentifier>
     </Filter>
@@ -1417,9 +1384,6 @@
     </Filter>
     <Filter Include="gamesystem\actor\Fourth">
       <UniqueIdentifier>{10017404-cd0d-494a-b74c-734e0f92aeee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gamesystem\scene\Play\Fourth">
-      <UniqueIdentifier>{4c5715b8-6156-4a65-aae3-d7ed88ac153e}</UniqueIdentifier>
     </Filter>
     <Filter Include="gamesystem\bossattach\Note">
       <UniqueIdentifier>{f5d5fe81-1118-4806-88e1-69b872a67f61}</UniqueIdentifier>
@@ -1451,9 +1415,6 @@
     <Filter Include="gamesystem\actor\Five">
       <UniqueIdentifier>{5173ded3-c5fb-4587-823c-2a2d51a18860}</UniqueIdentifier>
     </Filter>
-    <Filter Include="gamesystem\scene\Six">
-      <UniqueIdentifier>{aa3aa91f-7e77-45a6-a95b-ebb4ae1db898}</UniqueIdentifier>
-    </Filter>
     <Filter Include="gamesystem\charactor\Boss\Six">
       <UniqueIdentifier>{b7f512e4-f30b-4794-bcaf-1cc472040edb}</UniqueIdentifier>
     </Filter>
@@ -1471,15 +1432,6 @@
     </Filter>
     <Filter Include="gamesystem\charactor\Boss\Five">
       <UniqueIdentifier>{ef1fcbbc-6811-40b3-b1f8-33abeb6d24a4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gamesystem\scene\Play\Five">
-      <UniqueIdentifier>{ff450f5b-f452-4158-8782-6c0ba94ed002}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gamesystem\scene\Play\Six">
-      <UniqueIdentifier>{a4058aaa-0b6e-4a9b-a409-62125457bf88}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gamesystem\scene\Play\Seven">
-      <UniqueIdentifier>{c22e072a-798b-4f56-ace8-3ba410fe85a4}</UniqueIdentifier>
     </Filter>
     <Filter Include="gamesystem\charactor\Boss\Seven\Avatar">
       <UniqueIdentifier>{8bd348bd-8efe-44ee-9794-e8665164a4fe}</UniqueIdentifier>
@@ -1502,11 +1454,59 @@
     <Filter Include="gamesystem\stageobj\EndRoll">
       <UniqueIdentifier>{97bf035e-76f9-4b34-b273-f0b483c059d9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="gamesystem\scene\EndRoll">
-      <UniqueIdentifier>{cc3076ca-66ef-4952-b4dc-38fbeb169a69}</UniqueIdentifier>
-    </Filter>
     <Filter Include="gamesystem\charactor\Boss\Five\NewFilter1">
       <UniqueIdentifier>{ebc72d52-0c3c-42a4-b9da-1f1a8008e2f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene">
+      <UniqueIdentifier>{88dffa51-41c6-421c-ae0e-d8f4ba011bb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Tutorial">
+      <UniqueIdentifier>{40fae6cc-723f-427e-8439-66617f5c0615}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Clear">
+      <UniqueIdentifier>{836dd921-f6f8-4000-addf-b66663142475}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Load">
+      <UniqueIdentifier>{47055e9e-6cba-47a1-b497-d0672c56b841}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Base">
+      <UniqueIdentifier>{9e1f5803-f387-4e10-a4d7-972a5705d5d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Base\Framework">
+      <UniqueIdentifier>{d99bcb95-18d3-4b65-9d94-542bc0b0bd94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Play">
+      <UniqueIdentifier>{888ff33b-a6a2-41a2-8358-dcc9d4477e5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Play\First">
+      <UniqueIdentifier>{a4f89e05-04e6-49a8-918a-b14a5ea09be7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Play\Second">
+      <UniqueIdentifier>{5cd4740c-9756-469e-808a-14707c4710a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Play\Third">
+      <UniqueIdentifier>{e80c8f10-0750-4b60-97f2-7559ec2e7bac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Play\Fourth">
+      <UniqueIdentifier>{4c5715b8-6156-4a65-aae3-d7ed88ac153e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Play\Five">
+      <UniqueIdentifier>{ff450f5b-f452-4158-8782-6c0ba94ed002}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Play\Six">
+      <UniqueIdentifier>{a4058aaa-0b6e-4a9b-a409-62125457bf88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Play\Seven">
+      <UniqueIdentifier>{c22e072a-798b-4f56-ace8-3ba410fe85a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\GameOver">
+      <UniqueIdentifier>{8340f8aa-fee7-47d7-9c77-10fd67ad1f22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\Six">
+      <UniqueIdentifier>{aa3aa91f-7e77-45a6-a95b-ebb4ae1db898}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\scene\EndRoll">
+      <UniqueIdentifier>{cc3076ca-66ef-4952-b4dc-38fbeb169a69}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

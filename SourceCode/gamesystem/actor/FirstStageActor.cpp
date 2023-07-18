@@ -6,6 +6,8 @@
 #include "BackObj.h"
 #include "Menu.h"
 #include "Helper.h"
+#include "SelectScene.h"
+
 void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
 	dxCommon->SetFullScreen(true);
@@ -100,7 +102,11 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	lightgroup->Update();
 	ui->Update();
 	Menu::GetIns()->Upda();
-	postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
+	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
+		SelectScene::GetIns()->Upda();
+
+
+	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 }
 
 void FirstStageActor::Draw(DirectXCommon* dxCommon)
@@ -110,11 +116,11 @@ void FirstStageActor::Draw(DirectXCommon* dxCommon)
 	if (PlayPostEffect) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
+		FrontDraw(dxCommon);
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
-		FrontDraw(dxCommon);
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
@@ -155,6 +161,9 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon)
 	sceneChanger_->Draw();
 	Menu::GetIns()->Draw();
 	camerawork->feedDraw();
+	IKESprite::PreDraw();
+	SelectScene::GetIns()->Draw_Sprite();
+	IKESprite::PostDraw();
 }
 
 void FirstStageActor::BackDraw(DirectXCommon* dxCommon)
@@ -258,6 +267,7 @@ void FirstStageActor::MainUpdate(DebugCamera* camera)
 
 		if (camerawork->GetEndDeath()) {
 			sceneChanger_->ChangeStart();
+			SelectScene::GetIns()->ResetParama();
 			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
 
 		}

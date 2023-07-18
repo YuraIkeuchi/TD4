@@ -52,9 +52,11 @@ void ImageManager::SecondLoad2D()
 	IKESprite::LoadTexture(MENU_SCENECHANGE, L"Resources/2d/sceneback/MenuS.png");
 	IKESprite::LoadTexture(MENU_FRAME, L"Resources/2d/sceneback/TaskFrame.png");
 	IKESprite::LoadTexture(EXPLANATION, L"Resources/2d/sceneback/Explanation.png");
+	IKESprite::LoadTexture(CLOSEMILK, L"Resources/2d/objicon/closeMilk.png");
 	IKESprite::LoadTexture(CLOSESYTOPON, L"Resources/2d/objicon/closeSutopon.png");
 	IKESprite::LoadTexture(CLOSEKIDO, L"Resources/2d/objicon/closekido.png");
 	IKESprite::LoadTexture(CLOSEDJ, L"Resources/2d/objicon/closeDJ.png");
+	IKESprite::LoadTexture(CLOSEDARK, L"Resources/2d/objicon/closedark.png");
 	IKESprite::LoadTexture(PHOTO_IN, L"Resources/2d/effect/camera_soto.png");
 	IKESprite::LoadTexture(PHOTO_IN_Change, L"Resources/2d/effect/camera_soto_Chan.png");
 	IKESprite::LoadTexture(PHOTO_IN_Control, L"Resources/2d/effect/camera_soto_Cont.png");

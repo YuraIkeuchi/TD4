@@ -108,13 +108,13 @@ void SelectScene::Init() {
 	StageObj[SIX] = IKESprite::Create(ImageManager::tip1, { 0,0 });
 	StageObj[SEVEN] = IKESprite::Create(ImageManager::tip1, { 0,0 });
 	//ポストエフェクト用
-	BossIcon[FIRST] = IKESprite::Create(ImageManager::CLOSESYTOPON, { 0,0 });
+	BossIcon[FIRST] = IKESprite::Create(ImageManager::CLOSEMILK, { 0,0 });
 	BossIcon[SECOND] = IKESprite::Create(ImageManager::CLOSESYTOPON, { 0,0 });
 	BossIcon[THIRD] = IKESprite::Create(ImageManager::CLOSEKIDO, { 0,0 });
 	BossIcon[FOUR] = IKESprite::Create(ImageManager::CLOSECAMERA, { 0,0 });
-	BossIcon[FIVE] = IKESprite::Create(ImageManager::DARKBOM, { 0,0 });
-	BossIcon[SIX] = IKESprite::Create(ImageManager::CLOSEDJ, { 0,0 });
-	BossIcon[SEVEN] = IKESprite::Create(ImageManager::DARKBOM, { 0,0 });
+	BossIcon[FIVE] = IKESprite::Create(ImageManager::CLOSEDJ, { 0,0 });
+	BossIcon[SIX] = IKESprite::Create(ImageManager::CLOSEDARK, { 0,0 });
+	BossIcon[SEVEN] = IKESprite::Create(ImageManager::CLOSEDARK, { 0,0 });
 
 	for (int i = 0; i < MAX; i++) {
 		BossIcon[i]->SetAnchorPoint({ 0.5f,0.5f });
@@ -278,6 +278,7 @@ void SelectScene::Draw_Obj(DirectXCommon* dxcomn) {
 void SelectScene::Draw_Sprite() {
 	for (auto i = 0; i < ObjNum; i++) {
 		if (!BossIcon[i]) { continue; }
+		if (_stages != i)continue;
 		BossIcon[i]->Draw();
 	}
 }
@@ -403,6 +404,10 @@ void SelectScene::ViewTips() {
 }
 
 void SelectScene::StateManager() {
+	//
+	m_Wide = true;
+	m_SelectState =SELECT_SECOND;
+	//
 	//クリア状況に応じてOBJの大きさだったりが違う
 	if (m_SelectState == SELECT_FIRST) {		//ここは牛乳のみ
 

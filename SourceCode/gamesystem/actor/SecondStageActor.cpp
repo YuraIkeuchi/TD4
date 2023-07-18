@@ -16,7 +16,7 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	//オーディオ
 	Audio::GetInstance()->LoopWave(AUDIO_BATTLE, VolumManager::GetInstance()->GetBGMVolum() + 1.0f);
 	//ポストエフェクト
-	PlayPostEffect = false;
+	PlayPostEffect = true;
 
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
@@ -211,6 +211,7 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 
 			if (camerawork->GetEndDeath()) {
 				sceneChanger_->ChangeStart();
+				SelectScene::GetIns()->ResetParama();
 				sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::ReverseType::NonReverse);
 			}
 		} else
@@ -239,13 +240,8 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 		camerawork->Update(camera);
 		lightgroup->Update();
 
-		/*if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
+		if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
 			SelectScene::GetIns()->Upda();
-
-		if (Input::GetInstance()->TriggerButton(Input::Y)) {
-			SelectScene::GetIns()->ResetParama();
-			SceneManager::GetInstance()->ChangeScene("SELECT");
-		}*/
 
 	}
 	Menu::GetIns()->Upda();
@@ -261,6 +257,9 @@ void SecondStageActor::Draw(DirectXCommon* dxCommon) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
+		IKESprite::PreDraw();
+		SelectScene::GetIns()->Draw_Sprite();
+		IKESprite::PostDraw();
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 
 		dxCommon->PreDraw();
@@ -346,8 +345,7 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 		IKESprite::PreDraw();
 		Menu::GetIns()->Draw();
 		camerawork->feedDraw();
-
-		//SelectScene::GetIns()->Draw_Sprite();
+		
 		IKESprite::PostDraw();
 	}
 }
