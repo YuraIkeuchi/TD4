@@ -142,10 +142,10 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	LastCreateWord(LAST_TALK_SIX, L"おい!", L"なんでゴーストを操って", L"俺に襲いかかった!?");
 	LastCreateWord(LAST_TALK_SEVEN, L"それはね・・・", L"", L"");
 	LastCreateWord(LAST_TALK_EIGHT, L"兄さんが嫌いだからだよ!", L"", L"");
-	LastCreateWord(LAST_TALK_NINE, L"こんな出来の悪いやつが・・・", L"兄だなんて・・・", L"");
-	LastCreateWord(LAST_TALK_TEN, L"ほんとにうんざりだ!!!", L"", L"");
-	LastCreateWord(LAST_TALK_ELEVEN, L"だからね悪いやつはね・・・", L"", L"");
-	LastCreateWord(LAST_TALK_TWELVE, L"ボクが消してあげるよ!!!", L"", L"");
+	LastCreateWord(LAST_TALK_NINE, L"兄さんは友達も多くて", L"兄弟なのにこんなに違う", L"だからボクは・・・");
+	LastCreateWord(LAST_TALK_TEN, L"兄さんがとっても嫌いだ!!!", L"", L"");
+	LastCreateWord(LAST_TALK_ELEVEN, L"兄さんが間違っている!", L"それをボクが証明してあげるよ!", L"だから・・・");
+	LastCreateWord(LAST_TALK_TWELVE, L"ここで兄さんは消えるのさ!!!", L"", L"");
 	LastCreateWord(LAST_TALK_THIRTEEN, L"悪いなコトコ・・・", L"兄弟喧嘩にまきこんじまってよ", L"だが・・・");
 	LastCreateWord(LAST_TALK_FOURTEEN, L"自分の運を恨んでくれ!", L"協力しろ!!!", L"");
 	LastCreateWord(LAST_TALK_FIFETEEN, L"そんなぼーっとしてるやつに", L"何ができるのかねぇ", L"まぁ・・・");
@@ -158,23 +158,21 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	LastCreateWord(AWAKE_SECOND, L"そろそろ遊びは終わりかなぁ", L"じゃあ!", L"");
 	LastCreateWord(AWAKE_THIRD, L"逃げるなら今のうちだよ!!!", L"", L"");
 	//倒した後
-	LastCreateWord(DEATH_FIRST, L"ウボァァァァァァァァァ", L"ァァァァァァァァァ", L"ァァァァァァァァァ！");
-	LastCreateWord(DEATH_SECOND, L"な、なんでボクが負けそうに・・・?", L"まさかボクが兄さんに負ける!?", L"");
-	LastCreateWord(DEATH_THIRD, L"違う!", L"そんなはずはない!!", L"ありえない!!!");
-	LastCreateWord(DEATH_FOURTH, L"そうだ・・・", L"あの隣にいる女のせいだ・・・", L"あいつから倒せば・・・");
-	LastCreateWord(DEATH_FIVE, L"ごめんね!", L"キミに恨みはないけど・・・!", L"");
-	LastCreateWord(DEATH_SIX, L"さきに!", L"消えてもらうよ!!!", L"");
-	LastCreateWord(DEATH_SEVEN, L"待て!!!", L"", L"");
-	LastCreateWord(DEATH_EIGHT, L"!?", L"・・・何かな兄さん?", L"");
-	LastCreateWord(DEATH_NINE, L"弟!", L"もうこんな戦いやめないか・・・", L"");
-	LastCreateWord(DEATH_TEN, L"もしかして怖気付いたのかな兄さん?", L"そんな情けないこといって", L"");
-	LastCreateWord(DEATH_ELEVEN, L"違う!", L"俺はお前を消したいわけじゃない!!", L"");
-	LastCreateWord(DEATH_TWELVE, L"!?", L"・・・!?!?", L"・・・!?!?!?");
-	LastCreateWord(DEATH_THIRTEEN, L"うぇい", L"", L"");
-	LastCreateWord(DEATH_FOURTEEN, L"うぇいうぇい", L"", L"");
-	LastCreateWord(DEATH_FIFTEEN, L"うぇいうぇいうぇい", L"", L"");
-	LastCreateWord(DEATH_SIXTEEN, L"うぇいうぇいうぇい", L"うぇい!", L"");
-	LastCreateWord(DEATH_SEVENTEEN, L"うぇいうぇいうぇい", L"うぇいうぇいうぇい!?", L"");
+	LastCreateWord(DEATH_FIRST, L"なんで・・・", L"兄さんのほうが強いんだ・・・？", L"");
+	LastCreateWord(DEATH_SECOND, L"兄さんが友達とかふざけたもの", L"作っている間にボクは", L"必死に強くなろうとしたのに!?");
+	LastCreateWord(DEATH_THIRD, L"兄さんの友達を悪霊化させて", L"ボクが正しいことを", L"証明しようとしたのに・・・");
+	LastCreateWord(DEATH_FOURTH, L"友だちを救うためなら強くなれる!", L"友達の数だけ強くなれるんだ!!", L"");
+	LastCreateWord(DEATH_FIVE, L"お前はそこから間違っている・・・！", L"", L"");
+	LastCreateWord(DEATH_SIX, L"ボクが間違っている・・・？", L"友達の数だけ強くなれる・・・？", L"");
+	LastCreateWord(DEATH_SEVEN, L"でも、ボクは今まで友達を", L"作ったことがないから", L"わからないよ・・・？");
+	LastCreateWord(DEATH_EIGHT, L"私もそうだった", L"ずっと1人だったよ", L"");
+	LastCreateWord(DEATH_NINE, L"キミも?", L"", L"");
+	LastCreateWord(DEATH_TEN, L"うん、でもストポンと出会って", L"友達もふえて楽しいよ!", L"");
+	LastCreateWord(DEATH_ELEVEN, L"だから私とも友達になろうよ!", L"", L"");
+	LastCreateWord(DEATH_TWELVE, L"ボクもキミと友達になっていいの・・・?", L"", L"");
+	LastCreateWord(DEATH_THIRTEEN, L"もちろん!", L"私だけじゃなくてみんなともだよ!", L"ね？ストポン");
+	LastCreateWord(DEATH_FOURTEEN, L"おう！", L"お前は俺の弟だからな!", L"");
+	LastCreateWord(DEATH_FIFTEEN, L"ありがとう!", L"コトコちゃん!兄さん!", L"");
 	//ラスボス
 	//コンヴァージョン初期化
 	Create(dxcomon);

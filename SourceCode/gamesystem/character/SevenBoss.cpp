@@ -744,7 +744,7 @@ void SevenBoss::DeadAction() {
 		else if (m_DeathTimer == 20) {
 			m_Bound = true;
 		}
-		else if (m_DeathTimer == 800) {
+		else if (m_DeathTimer == 400) {
 			m_AfterPos = { 0.0f,5.0f,-40.0f };
 			m_Frame = {};
 			_DeathState = DEATH_ATTACK;
@@ -758,16 +758,8 @@ void SevenBoss::DeadAction() {
 		}
 	}
 	else if(_DeathState == DEATH_ATTACK) {
-		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
-			m_Frame = 1.0f;
-		}
-		m_Position = {
-		Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
-		m_Position.y,
-		Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z),
-		};
-
-		if (m_DeathTimer == 1000) {
+		
+		if (m_DeathTimer == 800) {
 			m_Frame = {};
 			_DeathState = DEATH_TALK;
 		}
@@ -778,14 +770,30 @@ void SevenBoss::DeadAction() {
 		m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
 		m_Position.y = (sin(m_SinAngle2) * 1.0f + 5.0f);
 
-		if (m_DeathTimer == 1100 || m_DeathTimer == 1300 || m_DeathTimer == 1500 || m_DeathTimer == 1700) {
+		if (m_DeathTimer == 1000 || m_DeathTimer == 1200 || m_DeathTimer == 1500) {
 			_DeathState = DEATH_NO_TALK;
 		}
 	}
 	else {
-		if (m_DeathTimer == 1200 || m_DeathTimer == 1400 || m_DeathTimer == 1600 || m_DeathTimer == 1800) {
+		if (m_DeathTimer == 1100 || m_DeathTimer == 1400 || m_DeathTimer == 1700) {
 			_DeathState = DEATH_TALK;
 		}
+	}
+
+	//Œü‚«
+	if (_EndDir == DIR_NONE) {
+		if (m_DeathTimer == 1050) {
+			_EndDir = DIR_PLAYER;
+		}
+	}
+	else if (_EndDir == DIR_PLAYER) {
+		Helper::GetInstance()->CheckMax(m_Rotation.y, 135.0f, -2.0f);
+		if (m_DeathTimer == 1650) {
+			_EndDir = DIR_RETURN;
+		}
+	}
+	else {
+		Helper::GetInstance()->CheckMin(m_Rotation.y, 180.0f, 2.0f);
 	}
 
 	Obj_SetParam();

@@ -38,6 +38,8 @@ void PlayerAttach::Draw(DirectXCommon* dxCommon) {
 void PlayerAttach::ImGuiDraw() {
 	ImGui::Begin("Attach");
 	ImGui::Text("PosX:%f", m_Position.x);
+	ImGui::Text("PosX:%f", m_Position.y);
+	ImGui::Text("PosX:%f", m_Position.z);
 	ImGui::Text("Frame:%f", m_Frame);
 	ImGui::Text("State:%d",int(_DeathState));
 	ImGui::End();
@@ -129,30 +131,20 @@ void PlayerAttach::LastDeadUpdate(int Timer) {
 	if (_DeathState == DEATH_SET) {
 		if (Timer == 1) {
 			m_Rotation = { 0.0f,90.0f,0.0f };
-			m_Position = { 100.0f,3.0f,-60.0f };
+			m_Position = { 0.0f,3.0f,-20.0f };
 		}
-		else if (Timer == 810) {
-			m_AfterPos = { 0.0f,3.0f,-60.0f };
+		else if (Timer == 200) {
+			m_Position = { 0.0f,3.0f,0.0f };
 			_DeathState = DEATH_MOVE;
 		}
 	}
 	else if(_DeathState == DEATH_MOVE) {
-		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
-			m_Frame = 1.0f;
-		}
-
-		m_Position = {
-	Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
-	Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
-	Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z),
-		};
-
-		if (Timer == 1100) {
+		if (Timer == 400) {
 			_DeathState = DEATH_TALK;
 		}
 	}
 	else if (_DeathState == DEATH_TALK) {
-		if (Timer == 1200 || Timer == 1400 || Timer == 1600 || Timer == 1800) {
+		if (Timer == 790 || Timer == 1700) {
 			_DeathState = DEATH_NO_TALK;
 		}
 
@@ -162,7 +154,7 @@ void PlayerAttach::LastDeadUpdate(int Timer) {
 		m_Position.y = (sin(m_SinAngle2) * 0.5f + 3.0f);
 	}
 	else {
-		if (Timer == 1300 || Timer == 1500 || Timer == 1700) {
+		if (Timer == 1600) {
 			_DeathState = DEATH_TALK;
 		}
 	}

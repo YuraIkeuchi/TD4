@@ -227,10 +227,13 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 }
 //ImGui
 void Player::ImGuiDraw() {
-	HungerGauge::GetInstance()->ImGuiDraw();
+	//HungerGauge::GetInstance()->ImGuiDraw();
 
 	playerattach->ImGuiDraw();
 	ImGui::Begin("Player");
+	ImGui::Text("POSX:%f", m_Position.x);
+	ImGui::Text("POSY:%f", m_Position.y);
+	ImGui::Text("POSZ:%f", m_Position.z);
 	ImGui::End();
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
@@ -771,6 +774,7 @@ void Player::AwakeInit() {
 	HungerGauge::GetInstance()->SetNowHunger(0.0f);
 	BulletDelete();
 }
+//ラスボス登場
 void Player::LastAppearUpdate(int Timer) {
 	if (_LastState == LAST_SET) {
 		if (Timer == 1) {
@@ -818,13 +822,31 @@ void Player::LastAppearUpdate(int Timer) {
 	//どっち使えばいいか分からなかったから保留
 	//fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 }
+//ラスボス撃破
 void Player::LastDeadUpdate(int Timer) {
 	BulletDelete();
-	if (Timer == 1) {
-		m_Color = { 1.0f, 1.0f, 1.0f, 1.0f };
-		m_Position = { 0.0f,0.0f,-70.0f };
-		m_Rotation = { 0.0f,0.0f,0.0f };
-		AnimationControl(AnimeName::IDLE, true, 1);
+	if (_LastEndState == LAST_END_SET) {
+		if (Timer == 1) {
+			m_Color = { 1.0f, 1.0f, 1.0f, 1.0f };
+			m_Position = { 5.0f,0.0f,-10.0f };
+			m_Rotation = { 0.0f,0.0f,0.0f };
+			AnimationControl(AnimeName::IDLE, true, 1);
+		}
+		else if (Timer == 920) {
+			_LastEndState = LAST_END_WALK;
+			AnimationControl(AnimeName::WALK, true, 1);
+		}
+	}
+	else if (_LastEndState == LAST_END_WALK) {
+	
+		if (Helper::GetInstance()->CheckMin(m_Position.z, 5.0f, 0.4f)) {
+			_LastEndState = LAST_END_DIR;
+			AnimationControl(AnimeName::IDLE, true, 1);
+		}
+	}
+	else {
+		Helper::GetInstance()->CheckMax(m_Rotation.y, -45.0f, -2.0f);
+		//if () {
 	}
 	index = 15;
 	fbxmodels->GetBoneIndexMat(index, skirtmat);

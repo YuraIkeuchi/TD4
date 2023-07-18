@@ -185,6 +185,12 @@ private://各クラス
 		END_DIR_BACK,
 		END_DIR_FRONT,
 	}_EndState = END_SET;
+
+	enum LastEndState {
+		LAST_END_SET,
+		LAST_END_WALK,
+		LAST_END_DIR,
+	}_LastEndState = LAST_END_SET;
 public:
 	vector<InterBullet*>GetBulllet_ghost() { return ghostbullets; }
 	vector<InterBullet*>GetBulllet_attack() { return attackbullets; }
