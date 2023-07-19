@@ -29,6 +29,8 @@ public:
 	void AppearUpdate();
 	//ボス撃破シーンの動き
 	void DeathUpdate();
+	//ダークコトコ登場シーンの動き
+	void DarkAppearUpdate(int Timer);
 	//ラスボス登場シーンの動き
 	void LastAppearUpdate(int Timer);
 	//ラスボス撃破シーンの動き
@@ -80,6 +82,8 @@ private:
 	void SutoponUpdate();
 	//ダメージパーティクル
 	void BirthParticle();
+	//パラメーターセット
+	void SetParam();
 private:
 	//各アニメーション
 	enum class AnimeName
