@@ -265,8 +265,8 @@ void SixBoss::LineSet() {
 	m_CheckTimer++;
 
 	//最初にSE鳴らす
-	if (m_CheckTimer == 50) {
-		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
+	if (m_CheckTimer == 70) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/DJSE1.wav", VolumManager::GetInstance()->GetSEVolum());
 	}
 
 	if (m_CheckTimer > l_StartLimit) {
@@ -286,8 +286,8 @@ void SixBoss::LineSet() {
 void SixBoss::Debuff() {
 	const int l_StartLimit = 150;
 	m_CheckTimer++;
-	if (m_CheckTimer == 50) {
-		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
+	if (m_CheckTimer == 60) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/DJSE1.wav", VolumManager::GetInstance()->GetSEVolum());
 	}
 	else if (m_CheckTimer == 80) {
 		noteeffect->SetAlive(true);
@@ -307,8 +307,8 @@ void SixBoss::Confu() {
 	const int l_LimitConfu = 80;
 	const int l_EndConfu = 120;
 	int l_ConfuTimer = {};
-	if (m_CheckTimer == 50) {
-		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
+	if (m_CheckTimer == 60) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/DJSE1.wav", VolumManager::GetInstance()->GetSEVolum());
 	}
 
 	if (m_CheckTimer == l_LimitConfu) {
@@ -336,9 +336,9 @@ void SixBoss::Barrage() {
 	uniform_int_distribution<int> l_RandomMove(0, 1);
 
 	m_CheckTimer++;
-	if (m_CheckTimer == 50) {
+	if (m_CheckTimer == 70) {
 		m_BarraRand = int(l_RandomMove(mt));
-		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/DJSE1.wav", VolumManager::GetInstance()->GetSEVolum());
 	}
 	else if (m_CheckTimer > l_StartLimit) {
 		m_Rotation.y += 2.0f;

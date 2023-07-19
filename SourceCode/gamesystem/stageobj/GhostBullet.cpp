@@ -31,10 +31,12 @@ void GhostBullet::Draw_Origin() {
 void GhostBullet::Action() {
 	//タイプによって色を一旦変えてる
 	if (m_BulletType == BULLET_FORROW) {
-		m_Color.x = 1.0f;
+		m_Color = { 1.0f,0.3f,0.0f,1.0f };
 	}
 	else {
-		m_Color.y = 1.0f;
+	/*	m_Color.x = 0.8f;
+		m_Color.y = 1.0f;*/
+		m_Color = { 0.3f,1.0f,0.3f,1.0f };
 	}
 	if (m_Alive) {
 		//移動を加算

@@ -33,6 +33,9 @@ void EndRollActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	for (int i = Photo_Out_Top; i <= Photo_Out_Under; i++) {
 		photo[i]->SetSize({ 1280,360 });
 	}
+
+	backScreen_ = IKESprite::Create(ImageManager::PLAY, { 0,0 });
+	backScreen_->SetSize({ 1280.0f,720.0f });
 }
 //XV
 void EndRollActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -123,7 +126,7 @@ void EndRollActor::FinishUpdate(DebugCamera* camera) {
 //”w–Ê
 void EndRollActor::BackDraw(DirectXCommon* dxCommon) {
 	IKESprite::PreDraw();
-	//ClearSprite->Draw();
+	backScreen_->Draw();
 	IKESprite::PostDraw();
 
 	IKEObject3d::PreDraw();
