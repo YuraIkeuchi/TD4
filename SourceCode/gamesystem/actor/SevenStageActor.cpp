@@ -42,7 +42,8 @@ void SevenStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	ui->Initialize();
 
 	SelectScene::GetIns()->Init();
-	Menu::GetIns()->Init();
+	menu = make_unique<Menu>();
+	menu->Initialize();
 	ui->SetBoss(enemymanager->GetBoss());
 	BackObj::GetInstance()->Initialize();
 
@@ -59,10 +60,10 @@ void SevenStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 //更新
 void SevenStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	//関数ポインタで状態管理
-	if (!Menu::GetIns()->GetMenuOpen()) {
-		(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
-		sceneChanger_->Update();
-	}
+	//if (!Menu::GetIns()->GetMenuOpen()) {
+	//	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+	//	sceneChanger_->Update();
+	//}
 
 	//プレイヤー
 	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
@@ -89,7 +90,7 @@ void SevenStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		SceneManager::GetInstance()->ChangeScene("SELECT");
 	}*/	
 	ui->Update();
-	Menu::GetIns()->Upda();
+	menu->Update();
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 }
 //描画
@@ -172,7 +173,7 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	IKESprite::PostDraw();
 	IKESprite::PreDraw();
 	//blackwindow->Draw();
-	Menu::GetIns()->Draw();
+	menu->Draw();
 	camerawork->feedDraw();
 	//SelectScene::GetIns()->Draw_Sprite();
 	IKESprite::PostDraw();

@@ -53,7 +53,8 @@ void FiveStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	lightgroup->SetCircleShadowActive(0, true);
 	lightgroup->SetCircleShadowActive(1, true);
 
-	Menu::GetIns()->Init();
+	menu = make_unique<Menu>();
+	menu->Initialize();
 }
 
 void FiveStageActor::Finalize()
@@ -63,13 +64,12 @@ void FiveStageActor::Finalize()
 void FiveStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
 	//関数ポインタで状態管理
-	if (!Menu::GetIns()->GetMenuOpen()) {
-		enemymanager->SetGhost(loadobj->GetGhost());
+	//if (!Menu::GetIns()->GetMenuOpen()) {
+	//	enemymanager->SetGhost(loadobj->GetGhost());
 
-		(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
-		sceneChanger_->Update();
-
-	}
+	//	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+	//	sceneChanger_->Update();
+	//}
 	//プレイヤー
 	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
 		SceneSave::GetInstance()->SetClearFlag(kFiveStage, true);
@@ -87,8 +87,8 @@ void FiveStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
 	lightgroup->Update();
 	ui->Update();
-	Menu::GetIns()->Upda();
-	postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
+	menu->Update();
+	//postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
 }
 
 void FiveStageActor::Draw(DirectXCommon* dxCommon)
@@ -140,7 +140,7 @@ void FiveStageActor::FrontDraw(DirectXCommon* dxCommon)
 	}
 	IKESprite::PostDraw();
 	sceneChanger_->Draw();
-	Menu::GetIns()->Draw();
+	menu->Draw();
 	camerawork->feedDraw();
 }
 

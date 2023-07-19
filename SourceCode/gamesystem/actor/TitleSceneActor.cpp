@@ -20,7 +20,8 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	TitleWordSprite= IKESprite::Create(ImageManager::TITLEWORD, pos);
 	TitleWordSprite->SetSize(size);
 	PlayPostEffect = false;
-	Menu::GetIns()->Init();
+	menu = make_unique<Menu>();
+	menu->Initialize();
 }
 //更新
 void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -44,9 +45,8 @@ void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	//パーティクル更新
 	ParticleEmitter::GetInstance()->Update();
 
-	postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
-
-	Menu::GetIns()->Upda();
+	//postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
+	menu->Update();
 }
 //描画
 void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
@@ -79,7 +79,7 @@ void TitleSceneActor::FrontDraw() {
 	IKESprite::PreDraw();
 	TitleSprite->Draw();
 	TitleWordSprite->Draw();
-	Menu::GetIns()->Draw();
+	menu->Draw();
 	IKESprite::PostDraw();
 	sceneChanger_->Draw();
 }

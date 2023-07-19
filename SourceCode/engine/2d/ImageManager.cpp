@@ -50,7 +50,7 @@ void ImageManager::SecondLoad2D()
 	IKESprite::LoadTexture(MENU_RESET, L"Resources/2d/sceneback/MenuT.png");
 	IKESprite::LoadTexture(MENU_RULE, L"Resources/2d/sceneback/MenuR.png");
 	IKESprite::LoadTexture(MENU_SCENECHANGE, L"Resources/2d/sceneback/MenuS.png");
-	IKESprite::LoadTexture(MENU_FRAME, L"Resources/2d/sceneback/TaskFrame.png");
+	IKESprite::LoadTexture(MENU_FRAME, L"Resources/2d/sceneback/MenuBar.png");
 	IKESprite::LoadTexture(EXPLANATION, L"Resources/2d/sceneback/Explanation.png");
 	IKESprite::LoadTexture(CLOSEMILK, L"Resources/2d/objicon/closeMilk.png");
 	IKESprite::LoadTexture(CLOSESYTOPON, L"Resources/2d/objicon/closeSutopon.png");

@@ -77,21 +77,23 @@ void FourthStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 
 	lightgroup->SetCircleShadowActive(0, true);
 	lightgroup->SetCircleShadowActive(1, true);
-
-	Menu::GetIns()->Init();
+	menu = make_unique<Menu>();
+	menu->Initialize();
 }
 //更新
 void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	//関数ポインタで状態管理
-	if (!Menu::GetIns()->GetMenuOpen()) {
-		(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
-		sceneChanger_->Update();
-		camerawork->Update(camera);
-		if (isVisible) { apple->Update(); }
-	}
-	Menu::GetIns()->Upda();
+	//if (!Menu::GetIns()->GetMenuOpen()) {
+	//	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+	//	sceneChanger_->Update();
+	//	camerawork->Update(camera);
+	//	if (isVisible) { apple->Update(); }
+	//}
+
+
+	menu->Update();
 	ui->Update();
-	postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
+	//postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
 	messagewindow_->Update(girl_color_, sutopon_color_);
 
 	//ゲームクリアフラグ
@@ -193,7 +195,7 @@ void FourthStageActor::FrontDraw(DirectXCommon* dxCommon) {
 		IKESprite::PostDraw();
 	}
 	sceneChanger_->Draw();
-	Menu::GetIns()->Draw();
+	menu->Draw();
 	camerawork->feedDraw();
 }
 //IMGuiの描画

@@ -54,16 +54,17 @@ void ThirdStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	lightgroup->SetCircleShadowActive(1, true);
 
 	//SelectScene::GetIns()->Init();
-	Menu::GetIns()->Init();
+	menu = make_unique<Menu>();
+	menu->Initialize();
 }
 //更新
 void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 
 	//関数ポインタで状態管理
-	if (!Menu::GetIns()->GetMenuOpen()) {
-		(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
-		sceneChanger_->Update();
-	}
+	//if (!Menu::GetIns()->GetMenuOpen()) {
+	//	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+	//	sceneChanger_->Update();
+	//}
 	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
 	lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, 0.0f, Player::GetInstance()->GetPosition().z }));
 	lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
@@ -90,7 +91,7 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	//	SelectScene::GetIns()->ResetParama();
 	//	SceneManager::GetInstance()->ChangeScene("SELECT");
 	//}
-	Menu::GetIns()->Upda();
+	menu->Update();
 	ui->Update();
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 }
@@ -163,7 +164,7 @@ void ThirdStageActor::FrontDraw(DirectXCommon* dxCommon) {
 			text_->SpriteDraw(dxCommon);
 		}
 	}sceneChanger_->Draw();
-	Menu::GetIns()->Draw();
+	menu->Draw();
 	//if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
 	//	SelectScene::GetIns()->Draw_Sprite();
 	IKESprite::PostDraw();
