@@ -130,7 +130,7 @@ public:
 	float GetCloseIconRad() { return closeRad; }
 	float GetCloseScl() { return closeScl; }
 	XMFLOAT3 GetPedestalPos() { return Pedestal->GetPosition(); }
-
+	IKEObject3d* GetPedestal() { return Pedestal.get(); }
 private:
 	
 	int m_SelectState = SELECT_FIRST;

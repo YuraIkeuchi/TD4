@@ -74,7 +74,7 @@ void SelectScene::Init() {
 	StageObjs[FIVE]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::DJ));
 	StageObjs[SIX]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Sutopon));
 	StageObjs[SEVEN]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::LASTBOSS));
-	StageObjs[TITLE]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::LASTBOSS));
+	StageObjs[TITLE]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::TITLEMAP));
 
 
 	BackSkyDome.reset(new IKEObject3d());
@@ -119,7 +119,7 @@ void SelectScene::Init() {
 	BossIcon[FIVE] = IKESprite::Create(ImageManager::CLOSEDJ, { 0,0 });
 	BossIcon[SIX] = IKESprite::Create(ImageManager::CLOSEDARK, { 0,0 });
 	BossIcon[SEVEN] = IKESprite::Create(ImageManager::CLOSEDARK, { 0,0 });
-	BossIcon[TITLE] = IKESprite::Create(ImageManager::CLOSEDARK, { 0,0 });
+	BossIcon[TITLE] = IKESprite::Create(ImageManager::CLOSEHOME, { 0,0 });
 
 	for (int i = 0; i < MAX; i++) {
 		BossIcon[i]->SetAnchorPoint({ 0.5f,0.5f });
@@ -177,6 +177,8 @@ void SelectScene::Upda() {
 	Helper::GetInstance()->Clamp(closeRad, 0.f, 1500.f);
 	RotPedestal();
 
+	//Selectは常時出す
+	m_Birth[TITLE] = true;
 	for (int i = 0; i < MAX; i++) {
 		if (IconColor[i] < 1.f) { continue; }
 		if (Input::GetInstance()->TriggerButton(Input::B) && (m_Birth[i])) {
@@ -192,13 +194,7 @@ void SelectScene::Upda() {
 	ChangeEffect("SIXSTAGE", Stage::FIVE, FIVE);
 	ChangeEffect("SEVENSTAGE", Stage::SEVEN, SEVEN);
 	ChangeEffect("TITLE", Stage::TITLE, TITLE);
-	if(IconColor[TITLE]>=1.f)
-	{
-		if(Input::GetInstance()->TriggerButton(Input::B))
-		{
-			SceneManager::GetInstance()->ChangeScene("TITLE");
-		}
-	}
+	
 	for (int i = 0; i < MAX; i++) {
 		if (closeScl >= 10000.f) {
 			BossIcon[i]->SetAnchorPoint({ 0.5f,0.5f });
@@ -268,7 +264,7 @@ void SelectScene::Upda() {
 			}
 		}
 	}
-
+	m_Scale[TITLE] = { 0.01f,0.01f,0.01f };
 	//セレクトのステート管理
 	StateManager();
 
@@ -386,6 +382,7 @@ void SelectScene::ChangeEffect(std::string name, Stage stage, UINT iconnum) {
 		sin = true;
 		Player::GetInstance()->MoveStop(false);
 		Player::GetInstance()->SetCanShot(true);
+		//ResetParama();
 		SceneManager::GetInstance()->ChangeScene(name);
 		CloseF = false;
 	}
@@ -418,7 +415,7 @@ void SelectScene::ViewTips() {
 
 void SelectScene::StateManager() {
 	//debugよう
-	m_Scale[TITLE] = { 1,1,1 };
+	m_Scale[TITLE] = { 0.025f,0.1f,0.025f };
 	m_Wide = true;
 	m_SelectState =SELECT_SECOND;
 	//

@@ -655,7 +655,7 @@ void Player::isOldPos()
 void Player::RecvDamage(float Damage) {
 	if (m_HitPlayer) {
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Damage.wav", VolumManager::GetInstance()->GetSEVolum());
-		//m_HP -= Damage;
+		m_HP -= Damage;
 		m_DamageInterVal = 50;
 		m_Damage = true;
 		m_Confu = false;

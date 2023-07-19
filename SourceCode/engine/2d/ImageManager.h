@@ -60,6 +60,7 @@ public:
 		CLOSEDARK,
 		CLOSECAMERA,
 		CLOSELAST,
+		CLOSEHOME,
 		PHOTO_IN,
 		PHOTO_IN_Change,
 		PHOTO_IN_Control,

@@ -53,7 +53,7 @@ void ModelManager::SecondInitialize()
 	LoadModel(CAP, "cap");
 	LoadModel(NAIL, "Nail");
 	LoadModel(LASTBOSS, "burapon");
-
+		LoadModel(TITLEMAP, "LowPoly_Landscape");
 	LoadFBXModel(PLAYER, "kotoko");
 	LoadFBXModel(PLAYER2, "dkotoko");
 	LoadFBXModel(SIORI, "siori_idol");
