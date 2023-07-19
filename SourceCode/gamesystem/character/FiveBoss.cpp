@@ -459,10 +459,10 @@ void FiveBoss::AppParticle() {
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> l_RandX(-6, 6);
 	l_birthPos.x = float(l_RandX(mt));
-	l_birthPos.z = m_Position.z - 1.0f;
+	l_birthPos.z = m_Position.z - 5.0f;
 	l_birthPos.y = -1.0f;
 
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 5; i++) {
 		ParticleEmitter::GetInstance()->DarkEffect(200, l_birthPos, s_scale, e_scale, s_color, e_color);
 	}
 }
@@ -594,10 +594,11 @@ void FiveBoss::EndRollAction()
 		m_Rotation = { 0.0f,180.0f,0.0f };
 		m_Position = { -3.0f,0.0f,-25.0f };
 	}
-
-	//Fbx_SetParam();
-	//‚Ç‚Á‚¿Žg‚¦‚Î‚¢‚¢‚©•ª‚©‚ç‚È‚©‚Á‚½‚©‚ç•Û—¯
-	//fbxmodel->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+	fbxmodel->SetPosition(m_Position);
+	fbxmodel->SetRotation(m_Rotation);
+	fbxmodel->SetScale(m_Scale);
+	fbxmodel->SetColor(m_Color);
+	fbxmodel->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 }
 
 void FiveBoss::SetEasePos() {

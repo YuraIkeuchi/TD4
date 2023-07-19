@@ -16,7 +16,7 @@ void FiveStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	//オーディオ
 	Audio::GetInstance()->LoopWave(AUDIO_BATTLE, VolumManager::GetInstance()->GetBGMVolum() + 1.0f);
 	//ポストエフェクト
-	PlayPostEffect = true;
+	PlayPostEffect = false;
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
 
@@ -147,7 +147,7 @@ void FiveStageActor::FrontDraw(DirectXCommon* dxCommon)
 	}
 	IKESprite::PostDraw();
 	sceneChanger_->Draw();
-	menu->Draw();
+	//menu->Draw();
 	camerawork->feedDraw();
 }
 
