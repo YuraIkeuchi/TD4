@@ -15,6 +15,9 @@ public:
 
     void DeathUpdate(int Timer) override;
 
+public:
+    void AppearUpdate(int Timer);
+
 private:
     void DeathParticle();
 private:
@@ -55,6 +58,16 @@ private:
         END_MOVE,
         END_STOP
     }_EndState;
+
+    float m_Frame = {};
+
+    enum AppState {
+        APP_SET,
+        APP_MOVE,
+        APP_END,
+    }_AppState;
+    float m_SinAngle = {};
+    float m_SinAngle2 = {};
 
     //è„è∏ìx
     float m_AddPower = 0.0f;
