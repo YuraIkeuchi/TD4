@@ -77,6 +77,8 @@ public:
     void SetIdleDam(bool f) { IdleRecv=f; }
     Phase GEtPhase() { return _phase; }
     int GetTargetGhost() { return TargetGhost; }
+    float GetBulAlpha(int i) { return BulAlpha[i]; }
+
     //Phase GetPhase();
 };
 

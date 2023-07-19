@@ -181,10 +181,11 @@ void FiveStageActor::IntroUpdate(DebugCamera* camera)
 	}
 
 	if (camerawork->GetAppearEndF()) {
+		enemymanager->SkipInitialize();
 		_AppState = APP_END;
 		m_SceneState = SceneState::MainState;
 		camerawork->SetCameraState(CAMERA_NORMAL);
-		enemymanager->SkipInitialize();
+		
 	}
 
 	//各クラス更新

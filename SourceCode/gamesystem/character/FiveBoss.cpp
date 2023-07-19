@@ -112,6 +112,7 @@ bool FiveBoss::Initialize()
 
 void FiveBoss::SkipInitialize()
 {
+
 	m_Position = { 0.0f,3.0f,30.0f };
 	m_Rotation = { 0.0f,90.0f,0.0f };
 	m_Color = { 0.0f,1.0f,0.0f,1.0f };
@@ -152,7 +153,7 @@ void FiveBoss::Action()
 	single->SetBoss(this);
 	guard->SetBoss(this);
 	knock->SetBoss(this);
-
+	m_Color.w = 1.0f;
 	////ó‘ÔˆÚs(charastate‚É‡‚í‚¹‚é)
 	if (GhostSize < 6) {
 		if (m_HP > 0.0f) {
@@ -470,6 +471,10 @@ void FiveBoss::ImGui_Origin()
 	ImGui::Begin("Five");
 	ImGui::Text("PosX %f", m_Position.x);
 	ImGui::Text("PosZ %f", m_Position.z);
+//	ImGui::Text("Cololr %f", m_Color.w);
+	ImGui::Text("Cololr1 %f", shot->GetBulAlpha(2));
+	ImGui::Text("Cololr2 %f", shot->GetBulAlpha(2));
+	ImGui::Text("Cololr3 %f", shot->GetBulAlpha(2));
 	ImGui::Text("Phase %d", (int)_aPhase);
 	ImGui::Text("ShotPhase %d", (int)shot->GEtPhase());
 	ImGui::Text("NowTarget %d", (int)shot->GetTargetGhost());

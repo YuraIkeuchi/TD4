@@ -110,11 +110,11 @@ BulRot[0].y = boss->GetRotation().y - 30.f+90;
 
 void ShotAttack::Draw(DirectXCommon* dxCommon)
 {
-	if (_phase != SHOT)return;
+	//if (_phase != SHOT)return;
 	IKEObject3d::PreDraw();
 	for (auto i = 0; i < BulSize; i++) {
-		if (BulAlpha[i] <= 0.f)continue;
-		if (!BulAlive[i])continue;
+	//	if (BulAlpha[i] <= 0.f)continue;
+		//if (!BulAlive[i])continue;
 		ShotObj[i]->Draw();
 	}
 	IKEObject3d::PostDraw();
@@ -137,7 +137,14 @@ void ShotAttack::DeathUpdate(int Timer) {
 #pragma region 行動の中身
 void ShotAttack::Phase_Idle()
 {
+	for(auto i=0;i<3;i++)
+	{
+		BulPos[i] = boss->GetPosition();
+		BulAlpha[i] = 1.f;
+		BulAlive[i] = true;
+	}
 	AttackTimer++;
+	RottoPlayer();
 	FollowPlayerAct();
 			mt19937 mt{ std::random_device{}() };
 	boss->AnimationControl(InterBoss::AnimeNames::WALK, true, 1);
@@ -165,14 +172,14 @@ void ShotAttack::Phase_Idle()
 				boss->GetPosition().z,
 			};
 
-			XMVECTOR PositionA = {0,0,0 };
+			XMVECTOR PositionA = { 0,0,0 };
 			//プレイヤーと敵のベクトルの長さ(差)を求める
 			XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
 
 
 			RottoGhost = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
 			Helper::GetInstance()->FrameCheck(currentEase, 0.02f);
-			m_Rotation.y = Ease(In, Quad, currentEase, oldroty, RottoGhost*60.f + 180.f);
+			m_Rotation.y = Ease(In, Quad, currentEase, oldroty, RottoGhost * 60.f + 180.f);
 			if (currentEase >= 1.f)
 			{
 				TriggerAttack = true;
@@ -180,22 +187,22 @@ void ShotAttack::Phase_Idle()
 
 				_phase = Phase::SHOT;
 			}
-	//次フェーズ
-	boss->SetRotation(m_Rotation);
-		}
-	
+			//次フェーズ
+			boss->SetRotation(m_Rotation);
+		} else {
+
 			bool next = Collision::GetLength(boss->GetGhost()[TargetGhost]->GetBirthPos(), boss->GetPosition()) < 15;
 
 			TargetPos = boss->GetGhost()[TargetGhost]->GetPosition();
 
 			AttackTimer++;
 			if (next) {
-				
+
 				boss->AnimationControl(InterBoss::AnimeNames::SHOT, false, 1);
 				_phase = Phase::SHOT;
 			}
 		}
-	
+	}
 }
 void ShotAttack::Phase_Shot()
 {
@@ -207,7 +214,7 @@ void ShotAttack::Phase_Shot()
 	TriggerAttack = true;
 
 	//弾の向きをプレイヤーに
-	RottoPlayer();
+	//RottoPlayer();
 	//向いた方向に進む
 	
 	for (auto i = 0; i < BulSize; i++)
@@ -223,10 +230,8 @@ void ShotAttack::Phase_Shot()
 	BulPos[0].z += move[0].m128_f32[2] * WalkSpeed;
 	//弾を薄く
 	BulAlpha[0] -= 0.01f;
-	for (auto i = 1; i < BulSize; i++)
+	for (auto i = 0; i < BulSize; i++)
 	{
-		if(BulAlpha[i-1]>0.8f)continue;
-		BulAlive[i] = true;
 		if (BulAlpha[i] >= 1.f)BulPos[i] = boss->GetPosition();
 		//進行スピード
 		BulPos[i].x += move[i].m128_f32[0] * WalkSpeed;
@@ -289,7 +294,7 @@ void ShotAttack::Phase_End()
 	}
 
 
-	Helper::GetInstance()->FrameCheck(RotEaseTime, 0.04f);
+	//Helper::GetInstance()->FrameCheck(RotEaseTime, 0.04f);
 
 	boss->SetRotation({ boss->GetRotation().x,
 	Ease(In,Quad,RotEaseTime,OldRot.y,RottoGhost * 60 + 180),
@@ -298,7 +303,7 @@ void ShotAttack::Phase_End()
 	currentEase = 0.f;
 	oldroty = boss->GetRotation().y;
 	//if (PhaseCount < 4) {
-	if (RotEaseTime >= 1.f)
+	//if (RotEaseTime >= 1.f)
 		_phase = NON;
 	//}
 
@@ -309,7 +314,36 @@ void ShotAttack::Phase_End()
 void ShotAttack::RottoPlayer()
 {
 	//FollowPlayer();
+	XMVECTOR PositionB = { boss->GetPosition().x,
+		boss->GetPosition().y,
+		boss->GetPosition().z,
+	};
 
+
+	XMVECTOR PositionA = { boss->GetGhost()[TargetGhost]->GetBirthPos().x
+		,boss->GetGhost()[TargetGhost]->GetBirthPos().y,
+		boss->GetGhost()[TargetGhost]->GetBirthPos().z };
+	//プレイヤーと敵のベクトルの長さ(差)を求める
+	XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
+
+
+	RottoGhost = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
+
+
+	boss->SetRotation({ boss->GetRotation().x,
+	Ease(In,Quad,RotEaseTime,OldRot.y,RottoGhost * 60 + 180),
+	boss->GetRotation().z });
+	if (boss->GetGhost()[TargetGhost]->GetState() != Ghost::STATE_NONE)
+	{
+		RotEaseTime = 0.f;
+		mt19937 mt{ std::random_device{}() };
+		uniform_int_distribution<int> l_RandRot(1, (int)boss->GetGhost().size() - 1);
+
+		TargetGhost = l_RandRot(mt);
+	} else
+	{
+		Helper::GetInstance()->FrameCheck(RotEaseTime, 0.04f);
+	}
 
 
 }
