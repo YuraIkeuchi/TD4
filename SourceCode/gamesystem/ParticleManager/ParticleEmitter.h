@@ -30,6 +30,7 @@ public: //メンバ関数
 	//更新
 	void Update();
 
+	void IntroDraw();
 	//描画
 	void FlontDrawAll();
 
@@ -40,6 +41,8 @@ public: //メンバ関数
 	void FireEffect(const int life,const XMFLOAT3& pos,const float startscale, const float endscale,const XMFLOAT4& startcolor,const XMFLOAT4& endcolor);
 	//制御点のエフェクト
 	void LimitEffect(const int life, const XMFLOAT3& pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor);
+	//ダークコトコののエフェクト
+	void DarkEffect(const int life, const XMFLOAT3& pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor);
 	//爆発エフェクト
 	void Explosion(const int life, const XMFLOAT3& pos, const float size,const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor,const int ExploType);
 	//ダメージエフェクト
@@ -68,6 +71,8 @@ private: //メンバ関数
 private: //メンバ変数
 	//パーティクルマネージャー(丸)
 	unique_ptr<ParticleManager> circleParticle;
+	//パーティクルマネージャー(ダークコトコ)
+	unique_ptr<ParticleManager> darkParticle;
 	//パーティクルマネージャー(壁)
 	unique_ptr<ParticleManager> wallParticle;
 	//パーティクルマネージャー(死亡)

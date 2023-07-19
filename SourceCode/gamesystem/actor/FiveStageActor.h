@@ -24,6 +24,7 @@ private:
 	void MainUpdate(DebugCamera* camera)override;		//バトルシーン
 	void FinishUpdate(DebugCamera* camera)override;		//撃破シーン
 
+	void ImGuiDraw();
 private:
 	static const int SPOT_NUM = 4;
 private:

@@ -38,8 +38,8 @@ void PlayerAttach::Draw(DirectXCommon* dxCommon) {
 void PlayerAttach::ImGuiDraw() {
 	ImGui::Begin("Attach");
 	ImGui::Text("PosX:%f", m_Position.x);
-	ImGui::Text("PosX:%f", m_Position.y);
-	ImGui::Text("PosX:%f", m_Position.z);
+	ImGui::Text("PosY:%f", m_Position.y);
+	ImGui::Text("PosZ:%f", m_Position.z);
 	ImGui::Text("Frame:%f", m_Frame);
 	ImGui::Text("State:%d",int(_DeathState));
 	ImGui::End();
@@ -206,37 +206,33 @@ void PlayerAttach::EndRollUpdate(int Timer) {
 void PlayerAttach::DarkAppear(int Timer) {
 	m_Scale = { 0.7f,0.7f,0.7f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
-	const float l_AddFrame = 0.01f;
-	if (_DeathState == DEATH_SET) {
+	if (_AppearState == APPEAR_SET) {
 		if (Timer == 1) {
+			m_Position = { 5.0f,3.0f,-25.0f };
 			m_Rotation = { 0.0f,90.0f,0.0f };
-			m_Position = { 0.0f,3.0f,-20.0f };
-		}
-		else if (Timer == 200) {
-			m_Position = { 0.0f,3.0f,0.0f };
-			_DeathState = DEATH_MOVE;
+			_AppearState = APPEAR_WALK;
 		}
 	}
-	else if (_DeathState == DEATH_MOVE) {
-		if (Timer == 400) {
-			_DeathState = DEATH_TALK;
+	else if (_AppearState == APPEAR_WALK) {
+		m_Position.z += 0.2f;
+		if (Helper::GetInstance()->CheckMin(m_Position.z, -1.0f, 0.025f)) {
+			_AppearState = APPEAR_STOP;
 		}
 	}
-	else if (_DeathState == DEATH_TALK) {
-		if (Timer == 790 || Timer == 1700) {
-			_DeathState = DEATH_NO_TALK;
+	else if (_AppearState == APPEAR_WALK2) {
+		if (Helper::GetInstance()->CheckMin(m_Position.z, 15.0f, 0.025f)) {
+			_AppearState = APPEAR_STOP;
 		}
-
-		//sinîgÇ…ÇÊÇ¡Çƒè„â∫Ç…ìÆÇ≠
-		m_SinAngle += 6.0f;
-		m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
-		m_Position.y = (sin(m_SinAngle2) * 0.5f + 3.0f);
 	}
 	else {
-		if (Timer == 1600) {
-			_DeathState = DEATH_TALK;
+		if (Timer == 2500) {
+			_AppearState = APPEAR_WALK2;
 		}
 	}
+	//sinîgÇ…ÇÊÇ¡Çƒè„â∫Ç…ìÆÇ≠
+	m_SinAngle += 3.5f;
+	m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
+	m_Position.y = (sin(m_SinAngle2) * 0.5f + 3.0f);
 
 	Obj_SetParam();
 }

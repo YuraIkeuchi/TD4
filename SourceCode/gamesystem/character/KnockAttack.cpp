@@ -104,6 +104,37 @@ void KnockAttack::DeathUpdate(int Timer) {
 	darksutopon->Update();
 }
 
+void KnockAttack::AppearUpdate(int Timer) {
+	const float l_AddFrame = 0.01f;
+	if (_AppState == APP_SET) {
+		stopos = { 7.0f,20.0f,25.0f };
+		strot.y = 270.0f;
+
+		if (Timer == 510) {
+			_AppState = APP_MOVE;
+		}
+	}
+	else if (_AppState == APP_MOVE) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			_AppState = APP_END;
+			m_Frame = {};
+		}
+
+		stopos.y = Ease(In,Cubic,m_Frame,stopos.y,2.0f);
+	}
+	else {
+		//sin”g‚É‚æ‚Á‚Äã‰º‚É“®‚­
+		m_SinAngle += 3.5f;
+		m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
+		m_Position.y = (sin(m_SinAngle2) * 0.5f + 2.0f);
+	}
+	darksutopon->SetScale({ 1,1,1 });
+	darksutopon->SetColor({ 0.9f,0.2f,0.7f,0.7f });
+	darksutopon->SetPosition(stopos);
+	darksutopon->SetRotation(strot);
+	darksutopon->Update();
+}
+
 void KnockAttack::DeathParticle()
 {
 	float l_AddSize = 2.5f;

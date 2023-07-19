@@ -173,7 +173,7 @@ void Ghost::GhostCollision(const XMFLOAT3& pos) {
 	m_Position.x += sin(atan2f((m_Position.x - pos.x), (m_Position.z - pos.z))) * 0.1f;
 	m_Position.z += cos(atan2f((m_Position.x - pos.x), (m_Position.z - pos.z))) * 0.1f;
 }
-//食料生成
+//ゴースト生成
 void Ghost::BirthGhost() {
 	if (!VerseCheck()) { return; }
 	if (m_Alive) { return; }
