@@ -83,17 +83,19 @@ void FourthStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 //更新
 void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	//関数ポインタで状態管理
-	//if (!Menu::GetIns()->GetMenuOpen()) {
-	//	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
-	//	sceneChanger_->Update();
-	//	camerawork->Update(camera);
-	//	if (isVisible) { apple->Update(); }
-	//}
+	if (menu->Pause()) {
+		menu->Update();
+		sceneChanger_->Update();
+		return;
+	}
+	if (isVisible) { apple->Update(); }
 
-
+	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+	sceneChanger_->Update();
+	camerawork->Update(camera);
 	menu->Update();
 	ui->Update();
-	//postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
+	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 	messagewindow_->Update(girl_color_, sutopon_color_);
 
 	//ゲームクリアフラグ
@@ -333,7 +335,7 @@ void FourthStageActor::IntroUpdate(DebugCamera* camera) {
 		text_->ChangeColor({ 1.0f,1.0f,1.0f,1.0f });
 		text_->SelectText(TextManager::TALK_XVI_T);
 		girl_color_ = { 1.2f,1.2f,1.2f,1 };
-	}else if (m_AppTimer == 3450) {
+	} else if (m_AppTimer == 3450) {
 		text_->ChangeColor({ 0.8f,0.0f,0.0f,1.0f });
 		text_->SelectText(TextManager::TALK_XVII_T);
 		girl_color_ = { 1.2f,1.2f,1.2f,0 };
@@ -390,7 +392,7 @@ void FourthStageActor::MainUpdate(DebugCamera* camera) {
 
 	if (PlayerDestroy()) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
-		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kFourthStage,true);
+		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kFourthStage, true);
 		sceneChanger_->ChangeStart();
 		sceneChanger_->ChangeSceneLose("GAMEOVER");
 	}

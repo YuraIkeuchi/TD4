@@ -69,180 +69,165 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 }
 //更新
 void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
-	//if (!Menu::GetIns()->GetMenuOpen()) {
-	//	constexpr int IntervalTextC = 200;
-	//	messagewindow_->DisplayCharacter(sutopon_color_);
-	//	if (_Tscne == TextScene::NON)
-	//	{
-	//		sutopon_color_ = { 1.0f,1.0f,1.0f,1.0f };
-	//		girl_color_ = { 0.5f,0.5f,0.5f,0.5f };
-	//		textT++;
-	//		text_->SelectText(TextManager::Name_First::VIEWBOSS, kSkyBlue);
-	//		if (Input::GetInstance()->TriggerButton(Input::B) || textT > 1 * IntervalTextC)
-	//		{
-	//			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
-	//			_Tscne = TextScene::TIEYOSHI_EXP;
-	//		}
-	//	} else if (_Tscne == TextScene::TIEYOSHI_EXP)
-	//	{
-	//		sutopon_color_ = { 0.50f,0.50f,0.50f,0.50f };
-	//		girl_color_ = { 1.2f,1.2f,1.2f,1.f };
-	//		textT++;
-	//		text_->SelectText(TextManager::Name_First::SPEAKPLAYER1, kPink);
-	//		if (Input::GetInstance()->TriggerButton(Input::B) || textT > 2 * IntervalTextC)
-	//		{
-	//			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
-	//			_Tscne = TextScene::KILL_TIEYOSHI;
-	//		}
-	//	} else if (_Tscne == TextScene::KILL_TIEYOSHI)
-	//	{
-	//		girl_color_ = { 0.50f,0.50f,0.50f,0.50f };
-	//		sutopon_color_ = { 1.f,1.f,1.f,1.f };
+	if (menu->Pause()) {
+		menu->Update();
+		sceneChanger_->Update();
+		return;
+	}
 
-	//		textT++;
-	//		text_->SelectText(TextManager::Name_First::SPEALPLAYER2, kSkyBlue);
-	//		if (Input::GetInstance()->TriggerButton(Input::B) || textT > 3 * IntervalTextC)
-	//		{
-	//			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
-	//			_Tscne = TextScene::LET_GO;
-	//		}
-	//	}
-	//	else if (_Tscne == TextScene::LET_GO)
-	//	{
-	//		sutopon_color_ = { 0.50f,0.50f,0.50f,0.50f };
-	//		girl_color_ = { 1.2f,1.2f,1.2f,1.f };
-	//		textT++;
-	//		text_->SelectText(TextManager::Name_First::SPEALPLAYER3, kPink);
-	//		if (Input::GetInstance()->TriggerButton(Input::B) || textT > 4 * IntervalTextC)
-	//		{
-	//			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
-	//			_Tscne = TextScene::ENDTEXT;
-	//		}
-	//	}
-	//	if (_Tscne == TextScene::TIEYOSHI_EXP ||
-	//		_Tscne == TextScene::NON)
-	//	{
-	//		if (Input::GetInstance()->TriggerButton(Input::A))
-	//		{
-	//			_Tscne = TextScene::ENDTEXT;
-	//		}
-	//	}
-	//	//関数ポインタで状態管理
-	////	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+	constexpr int IntervalTextC = 200;
+	messagewindow_->DisplayCharacter(sutopon_color_);
+	if (_Tscne == TextScene::NON) {
+		sutopon_color_ = { 1.0f,1.0f,1.0f,1.0f };
+		girl_color_ = { 0.5f,0.5f,0.5f,0.5f };
+		textT++;
+		text_->SelectText(TextManager::Name_First::VIEWBOSS, kSkyBlue);
+		if (Input::GetInstance()->TriggerButton(Input::B) || textT > 1 * IntervalTextC) {
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
+			_Tscne = TextScene::TIEYOSHI_EXP;
+		}
+	} else if (_Tscne == TextScene::TIEYOSHI_EXP) {
+		sutopon_color_ = { 0.50f,0.50f,0.50f,0.50f };
+		girl_color_ = { 1.2f,1.2f,1.2f,1.f };
+		textT++;
+		text_->SelectText(TextManager::Name_First::SPEAKPLAYER1, kPink);
+		if (Input::GetInstance()->TriggerButton(Input::B) || textT > 2 * IntervalTextC) {
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
+			_Tscne = TextScene::KILL_TIEYOSHI;
+		}
+	} else if (_Tscne == TextScene::KILL_TIEYOSHI) {
+		girl_color_ = { 0.50f,0.50f,0.50f,0.50f };
+		sutopon_color_ = { 1.f,1.f,1.f,1.f };
 
-	//	Input* input = Input::GetInstance();
-	//	//プレイヤー
-	//	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
-	//	lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, 0.0f, Player::GetInstance()->GetPosition().z }));
-	//	lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
-	//	lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
+		textT++;
+		text_->SelectText(TextManager::Name_First::SPEALPLAYER2, kSkyBlue);
+		if (Input::GetInstance()->TriggerButton(Input::B) || textT > 3 * IntervalTextC) {
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
+			_Tscne = TextScene::LET_GO;
+		}
+	} else if (_Tscne == TextScene::LET_GO) {
+		sutopon_color_ = { 0.50f,0.50f,0.50f,0.50f };
+		girl_color_ = { 1.2f,1.2f,1.2f,1.f };
+		textT++;
+		text_->SelectText(TextManager::Name_First::SPEALPLAYER3, kPink);
+		if (Input::GetInstance()->TriggerButton(Input::B) || textT > 4 * IntervalTextC) {
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
+			_Tscne = TextScene::ENDTEXT;
+		}
+	}
+	if (_Tscne == TextScene::TIEYOSHI_EXP ||
+		_Tscne == TextScene::NON) {
+		if (Input::GetInstance()->TriggerButton(Input::A)) {
+			_Tscne = TextScene::ENDTEXT;
+		}
+	}
+	Input* input = Input::GetInstance();
+	//プレイヤー
+	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
+	lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, 0.0f, Player::GetInstance()->GetPosition().z }));
+	lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
+	lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
 
-	//	//ボス
-	//	lightgroup->SetCircleShadowDir(1, XMVECTOR({ BosscircleShadowDir[0], BosscircleShadowDir[1], BosscircleShadowDir[2], 0 }));
-	//	lightgroup->SetCircleShadowCasterPos(1, XMFLOAT3({ enemymanager->GetBoss()->GetPosition().x, 0.0f, 	enemymanager->GetBoss()->GetPosition().z }));
-	//	lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
-	//	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
+	//ボス
+	lightgroup->SetCircleShadowDir(1, XMVECTOR({ BosscircleShadowDir[0], BosscircleShadowDir[1], BosscircleShadowDir[2], 0 }));
+	lightgroup->SetCircleShadowCasterPos(1, XMFLOAT3({ enemymanager->GetBoss()->GetPosition().x, 0.0f, 	enemymanager->GetBoss()->GetPosition().z }));
+	lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
+	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
 
 
-	//	if (enemymanager->BossDestroy()) {
-	//		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
-	//		SceneSave::GetInstance()->SetClearFlag(kSecondStage, true);
-	//		if (camerawork->GetCameraState() == CameraState::CAMERA_BOSSDEAD_AFTER_FIRST)
-	//		{
-	//			PlayPostEffect = false;
-	//		}
-	//	}
-	//	enemymanager->AppearUpdate();
-	//	enemymanager->BattleUpdate();
-	//	if (camerawork->GetAppearEndF()) {
-	//		Player::GetInstance()->MoveStop(false);
-	//		Player::GetInstance()->SetCanShot(true);
-	//		camerawork->SetCameraState(CAMERA_NORMAL);
-	//		//enemymanager->SkipInitialize();
-	//		//各クラス更新
+	if (enemymanager->BossDestroy()) {
+		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
+		SceneSave::GetInstance()->SetClearFlag(kSecondStage, true);
+		if (camerawork->GetCameraState() == CameraState::CAMERA_BOSSDEAD_AFTER_FIRST) {
+			PlayPostEffect = false;
+		}
+	}
+	enemymanager->AppearUpdate();
+	enemymanager->BattleUpdate();
+	if (camerawork->GetAppearEndF()) {
+		Player::GetInstance()->MoveStop(false);
+		Player::GetInstance()->SetCanShot(true);
+		camerawork->SetCameraState(CAMERA_NORMAL);
+		//enemymanager->SkipInitialize();
+		//各クラス更新
 
-	//	}
+	}
 
-	//	if (PlayerDestroy()) {
-	//		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
-	//		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kSecondStage, true);
-	//		sceneChanger_->ChangeStart();
-	//		sceneChanger_->ChangeSceneLose("GAMEOVER");
-	//	}
-	//	//音楽の音量が変わる
-	//	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
-	//	VolumManager::GetInstance()->Update();
-	//	if (enemymanager->BossDestroy())
-	//	{
-	//		Player::GetInstance()->DeathUpdate();
-	//	} else
-	//	{
-	//		Player::GetInstance()->Update();
-	//	}
-	//	//enemymanager->BattleUpdate();
-	//	ColEnemy(enemymanager->GetBulEnemy());
-	//	loadobj->SecondUpdate();
-	//	ParticleEmitter::GetInstance()->Update();
-	//	if (input->TriggerKey(DIK_X)) {
-	//		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
-	//		//SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
+	if (PlayerDestroy()) {
+		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
+		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kSecondStage, true);
+		sceneChanger_->ChangeStart();
+		sceneChanger_->ChangeSceneLose("GAMEOVER");
+	}
+	//音楽の音量が変わる
+	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
+	VolumManager::GetInstance()->Update();
+	if (enemymanager->BossDestroy()) {
+		Player::GetInstance()->DeathUpdate();
+	} else {
+		Player::GetInstance()->Update();
+	}
+	//enemymanager->BattleUpdate();
+	ColEnemy(enemymanager->GetBulEnemy());
+	loadobj->SecondUpdate();
+	ParticleEmitter::GetInstance()->Update();
+	if (input->TriggerKey(DIK_X)) {
+		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
+		//SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
 
-	//	}
-	//	//カメラワークのセット
-	//	if (enemymanager->BossDestroy())
-	//	{
-	//		//フェード前
-	//		if (!camerawork->GetFeedEnd()) {
-	//			enemymanager->SetDeadThrow(true);
-	//			enemymanager->DeadUpdate();
-	//			camerawork->SetCameraState(CAMERA_BOSSDEAD_BEFORE);
-	//		}
-	//		//フェード後
-	//		else
-	//		{
-	//			Player::GetInstance()->InitState({ 0.0f,0.0f,-5.0f });
+	}
+	//カメラワークのセット
+	if (enemymanager->BossDestroy()) {
+		//フェード前
+		if (!camerawork->GetFeedEnd()) {
+			enemymanager->SetDeadThrow(true);
+			enemymanager->DeadUpdate();
+			camerawork->SetCameraState(CAMERA_BOSSDEAD_BEFORE);
+		}
+		//フェード後
+		else {
+			Player::GetInstance()->InitState({ 0.0f,0.0f,-5.0f });
 
-	//			enemymanager->SetDeadThrow(false);
-	//			enemymanager->DeadUpdate();
-	//			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_FIRST);
-	//		}
+			enemymanager->SetDeadThrow(false);
+			enemymanager->DeadUpdate();
+			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_FIRST);
+		}
 
 
-	//		if (camerawork->GetEndDeath()) {
-	//			sceneChanger_->ChangeStart();
-	//			SelectScene::GetIns()->ResetParama();
-	//			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::ReverseType::NonReverse);
-	//		}
-	//	} else
-	//	{
-	//		//if (camerawork->FinishAppear()) {
-	//			//m_SceneState = SceneState::MainState;
-	//		//	camerawork->SetCameraState(CAMERA_NORMAL);
-	//		//}
-	//	}
-	//	XMFLOAT3 Position = enemymanager->GetBoss()->GetPosition();
-	//	XMVECTOR tex2DPos = { Position.x, Position.y, Position.z };
-	//	tex2DPos = Helper::GetInstance()->PosDivi(tex2DPos, camera->GetViewMatrix(), false);
-	//	tex2DPos = Helper::GetInstance()->PosDivi(tex2DPos, camera->GetProjectionMatrix(), true);
-	//	tex2DPos = Helper::GetInstance()->WDivision(tex2DPos, false);
-	//	tex2DPos = Helper::GetInstance()->PosDivi(tex2DPos, camera->GetViewPort(), false);
+		if (camerawork->GetEndDeath()) {
+			sceneChanger_->ChangeStart();
+			SelectScene::GetIns()->ResetParama();
+			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::ReverseType::NonReverse);
+		}
+	} else {
+		//if (camerawork->FinishAppear()) {
+			//m_SceneState = SceneState::MainState;
+		//	camerawork->SetCameraState(CAMERA_NORMAL);
+		//}
+	}
+	XMFLOAT3 Position = enemymanager->GetBoss()->GetPosition();
+	XMVECTOR tex2DPos = { Position.x, Position.y, Position.z };
+	tex2DPos = Helper::GetInstance()->PosDivi(tex2DPos, camera->GetViewMatrix(), false);
+	tex2DPos = Helper::GetInstance()->PosDivi(tex2DPos, camera->GetProjectionMatrix(), true);
+	tex2DPos = Helper::GetInstance()->WDivision(tex2DPos, false);
+	tex2DPos = Helper::GetInstance()->PosDivi(tex2DPos, camera->GetViewPort(), false);
 
-	//	postEffect->SetRadCenter(XMFLOAT2(tex2DPos.m128_f32[0], tex2DPos.m128_f32[1]));
-	//	postEffect->SetRadPower(camerawork->GetEffectPower());
-	//	sceneChanger_->Update();
+	postEffect->SetRadCenter(XMFLOAT2(tex2DPos.m128_f32[0], tex2DPos.m128_f32[1]));
+	postEffect->SetRadPower(camerawork->GetEffectPower());
+	sceneChanger_->Update();
 
-	//	if (_Tscne != TextScene::ENDTEXT)
-	//		text_->Display();
+	if (_Tscne != TextScene::ENDTEXT)
+		text_->Display();
 
-	//	messagewindow_->Update(girl_color_, sutopon_color_);
+	messagewindow_->Update(girl_color_, sutopon_color_);
 
-	//	camerawork->Update(camera);
-	//	lightgroup->Update();
+	camerawork->Update(camera);
+	lightgroup->Update();
 
-	//	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
-	//		SelectScene::GetIns()->Upda();
+	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
+		SelectScene::GetIns()->Upda();
 
-	//}
+
 	menu->Update();
 	BackObj::GetInstance()->Update();
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
@@ -300,7 +285,7 @@ void SecondStageActor::BackDraw(DirectXCommon* dxCommon) {
 		}
 	}
 	if (camerawork->GetAppearEndF() && camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_BEFORE && camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_AFTER_FIRST)
-	loadobj->Draw(dxCommon);
+		loadobj->Draw(dxCommon);
 
 	ParticleEmitter::GetInstance()->DeathDrawAll();
 	//パーティクル描画
@@ -344,7 +329,7 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 		IKESprite::PreDraw();
 		menu->Draw();
 		camerawork->feedDraw();
-		
+
 		IKESprite::PostDraw();
 	}
 }
@@ -357,8 +342,7 @@ void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 }
 
 
-void SecondStageActor::ColEnemy(std::vector<InterEnemy*> enelist)
-{
+void SecondStageActor::ColEnemy(std::vector<InterEnemy*> enelist) {
 	for (auto i = 0; i < enelist.size(); ++i) {
 		for (auto j = 0; j < enelist.size(); ++j) {
 			XMFLOAT3 ghostpos = enelist[i]->GetPosition();

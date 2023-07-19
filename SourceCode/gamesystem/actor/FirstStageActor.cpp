@@ -76,15 +76,13 @@ void FirstStageActor::Finalize()
 
 void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
-	//CheckHp();
-	//TalkUpdate();
 	//関数ポインタで状態管理
-	//if (!Menu::GetIns()->GetMenuOpen()) {
-	//	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
-	//	sceneChanger_->Update();
-	//}
-	sceneChanger_->Update();
-
+	if (menu->Pause()) {
+		menu->Update();
+		sceneChanger_->Update();
+		return;
+	}
+	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
 	//プレイヤー
 	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
 		SceneSave::GetInstance()->SetClearFlag(kFirstStage, true);
@@ -101,12 +99,12 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
 	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
 	lightgroup->Update();
+	sceneChanger_->Update();
 	ui->Update();
 	menu->Update();
-	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
+	if (SelectScene::GetIns()->GetCloseScl() < 10000.f) {
 		SelectScene::GetIns()->Upda();
-
-
+	}
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 }
 

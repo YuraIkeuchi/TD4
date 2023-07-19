@@ -10,6 +10,7 @@ Helper* Helper::GetInstance()
 bool Helper::FrameCheck(float& frame, const float addframe) {
 	if (frame < m_FrameMax) {
 		frame += addframe;
+		Clamp(frame, 0.f, 1.0f);
 	}
 	else {
 		return true;

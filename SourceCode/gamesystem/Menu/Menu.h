@@ -19,6 +19,9 @@ public:
 	void Initialize();
 	void Update();
 	void Draw();
+
+	bool ReturnSelect() { return isSelectBack; };
+	bool Pause();
 private:
 	enum class State :int{
 		NONE = 0,
@@ -44,6 +47,8 @@ private:
 		XMFLOAT2 pos = {};
 		XMFLOAT2 start_size = {};
 		XMFLOAT2 end_size = {};
+		XMFLOAT2 start_pos = {};
+		XMFLOAT2 end_pos = {};
 		bool isVisible = false;
 		bool isAction = false;
 		float easingFrame=0.0f;
@@ -57,7 +62,7 @@ private:
 		SceneBackButton,
 		ReturnButton,
 		SutoponBar,
-		//Confirm_FIRST,
+		Confirm_FIRST,
 		//Confirm_SECOND,
 		//Confirm_THIRD,
 		//SceneBack,
@@ -65,11 +70,22 @@ private:
 	};
 	std::array<SpriteInfo, SpriteMax> sprites_;
 
-	std::array<XMFLOAT2, 3> buttonPos = {
+	enum {
+		CONFIRM=0,
+		SCENEBACK,
+		RETURN,
+		MOVEMAX
+	};
+
+	bool isFinish = false;
+	bool isSelectBack = false;
+	std::array<XMFLOAT2, MOVEMAX> buttonPos = {
 	XMFLOAT2(half_Width - 320.f,half_Height),
 	XMFLOAT2(half_Width + 320.f,half_Height),
 	XMFLOAT2(half_Width,half_Height + 180)
 	};
-
+	bool moveBar = false;
+	int barIndex = 0;
 	SpriteInfo CreateSprite(UINT num,XMFLOAT2 pos,float easingFrame=60.0f);
+	bool TriggerMoveButton();
 };

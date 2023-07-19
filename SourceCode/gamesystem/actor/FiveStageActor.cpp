@@ -6,8 +6,7 @@
 #include "BackObj.h"
 #include "Menu.h"
 #include "Helper.h"
-void FiveStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
-{
+void FiveStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	dxCommon->SetFullScreen(true);
 	//共通の初期化
 	BaseInitialize(dxCommon);
@@ -57,19 +56,20 @@ void FiveStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	menu->Initialize();
 }
 
-void FiveStageActor::Finalize()
-{
+void FiveStageActor::Finalize() {
 }
 
-void FiveStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
-{
+void FiveStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	//関数ポインタで状態管理
-	//if (!Menu::GetIns()->GetMenuOpen()) {
-	//	enemymanager->SetGhost(loadobj->GetGhost());
+	if (menu->Pause()) {
+		menu->Update();
+		sceneChanger_->Update();
+		return;
+	}
 
-	//	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
-	//	sceneChanger_->Update();
-	//}
+	enemymanager->SetGhost(loadobj->GetGhost());
+	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+
 	//プレイヤー
 	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
 		SceneSave::GetInstance()->SetClearFlag(kFiveStage, true);
@@ -86,13 +86,13 @@ void FiveStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
 	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
 	lightgroup->Update();
+
+	sceneChanger_->Update();
 	ui->Update();
 	menu->Update();
-	//postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
 }
 
-void FiveStageActor::Draw(DirectXCommon* dxCommon)
-{
+void FiveStageActor::Draw(DirectXCommon* dxCommon) {
 	//描画方法
 	//ポストエフェクトをかけるか
 	if (PlayPostEffect) {
@@ -107,8 +107,7 @@ void FiveStageActor::Draw(DirectXCommon* dxCommon)
 		//camerawork->ImGuiDraw();
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
-	}
-	else {
+	} else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
@@ -120,8 +119,7 @@ void FiveStageActor::Draw(DirectXCommon* dxCommon)
 	}
 }
 
-void FiveStageActor::FrontDraw(DirectXCommon* dxCommon)
-{
+void FiveStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	//パーティクル描画
 	if (!camerawork->GetFeedEnd() && m_SceneState == SceneState::MainState) {
 		ParticleEmitter::GetInstance()->FlontDrawAll();
@@ -144,8 +142,7 @@ void FiveStageActor::FrontDraw(DirectXCommon* dxCommon)
 	camerawork->feedDraw();
 }
 
-void FiveStageActor::BackDraw(DirectXCommon* dxCommon)
-{
+void FiveStageActor::BackDraw(DirectXCommon* dxCommon) {
 	IKESprite::PreDraw();
 	backScreen_->Draw();
 	IKESprite::PostDraw();
@@ -166,8 +163,7 @@ void FiveStageActor::BackDraw(DirectXCommon* dxCommon)
 	IKEObject3d::PostDraw();
 }
 
-void FiveStageActor::IntroUpdate(DebugCamera* camera)
-{
+void FiveStageActor::IntroUpdate(DebugCamera* camera) {
 	//演出スキップ
 	if (Input::GetInstance()->TriggerButton(Input::A)) {
 		camerawork->SetCameraSkip(true);
@@ -191,8 +187,7 @@ void FiveStageActor::IntroUpdate(DebugCamera* camera)
 	m_AppTimer++;
 	if (m_AppTimer == 400) {
 		_AppState = APP_NOTICE;
-	}
-	else if (m_AppTimer == 580) {
+	} else if (m_AppTimer == 580) {
 		_AppState = APP_VANISH;
 	}
 
@@ -200,31 +195,25 @@ void FiveStageActor::IntroUpdate(DebugCamera* camera)
 	text_->Display();
 	if (m_AppTimer == 1) {
 		text_->SelectText(TextManager::TALK_FIRST);
-	}
-	else if (m_AppTimer == 150) {
+	} else if (m_AppTimer == 150) {
 		text_->SelectText(TextManager::TALK_SECOND);
-	}
-	else if (m_AppTimer == 300) {
+	} else if (m_AppTimer == 300) {
 		text_->SelectText(TextManager::TALK_THIRD);
 		text_->ChangeColor(0, { 1.0f,0.0f,0.0f,1.0f });
-	}
-	else if (m_AppTimer == 400) {
+	} else if (m_AppTimer == 400) {
 		text_->SelectText(TextManager::TALK_FOURTH);
 		for (int i = 0; i < 3; i++) {
 			text_->ChangeColor(i, { 1.0f,1.0f,0.0f,1.0f });
 		}
-	}
-	else if (m_AppTimer == 500) {
+	} else if (m_AppTimer == 500) {
 		text_->SelectText(TextManager::TALK_FIVE);
 	}
 }
 
-void FiveStageActor::MainUpdate(DebugCamera* camera)
-{
+void FiveStageActor::MainUpdate(DebugCamera* camera) {
 	Input* input = Input::GetInstance();
 	//カメラワークのセット
-	if (enemymanager->BossDestroy())
-	{
+	if (enemymanager->BossDestroy()) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		//フェード前
 		if (!camerawork->GetFeedEnd()) {
@@ -233,8 +222,7 @@ void FiveStageActor::MainUpdate(DebugCamera* camera)
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_BEFORE);
 		}
 		//フェード後
-		else
-		{
+		else {
 			PlayPostEffect = false;
 			Player::GetInstance()->InitState({ 0.0f,0.0f,-5.0f });
 			enemymanager->SetDeadThrow(false);
@@ -248,9 +236,7 @@ void FiveStageActor::MainUpdate(DebugCamera* camera)
 		}
 
 		Player::GetInstance()->DeathUpdate();
-	}
-	else
-	{
+	} else {
 		Player::GetInstance()->Update();
 	}
 
@@ -285,7 +271,6 @@ void FiveStageActor::MainUpdate(DebugCamera* camera)
 	postEffect->SetRadPower(camerawork->GetEffectPower());
 }
 
-void FiveStageActor::FinishUpdate(DebugCamera* camera)
-{
+void FiveStageActor::FinishUpdate(DebugCamera* camera) {
 	Input* input = Input::GetInstance();
 }
