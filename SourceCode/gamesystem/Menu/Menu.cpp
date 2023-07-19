@@ -1,5 +1,5 @@
 #include "Menu.h"
-
+#include "ImageManager.h"
 void (Menu::* Menu::stateTable[])() = {
 	&Menu::NoneUpdate,
 	&Menu::OpenUpdate,
@@ -49,7 +49,6 @@ void Menu::ConfirmUpdate() {
 void Menu::CloseUpdate() {
 }
 
-std::unique_ptr<IKESprite> Menu::CreateSprite(UINT num) {
-	std::unique_ptr<IKESprite>
-	return ;
+std::unique_ptr<IKESprite> Menu::CreateSprite(UINT num, XMFLOAT2 pos) {
+	return IKESprite::Create(num, pos);
 }

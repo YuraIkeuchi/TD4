@@ -42,5 +42,5 @@ private:
 
 
 
-	std::unique_ptr<IKESprite> CreateSprite(UINT num);
+	std::unique_ptr<IKESprite> CreateSprite(UINT num,XMFLOAT2 pos);
 };
