@@ -223,11 +223,11 @@ void Player::ImGuiDraw() {
 	////HungerGauge::GetInstance()->ImGuiDraw();
 
 	//playerattach->ImGuiDraw();
-	//ImGui::Begin("Player");
-	//ImGui::Text("POSX:%f", m_Position.x);
-	//ImGui::Text("POSY:%f", m_Position.y);
-	//ImGui::Text("POSZ:%f", m_Position.z);
-	//ImGui::End();
+	ImGui::Begin("Player");
+	ImGui::Text("CanSearch:%d", m_CanSearch);
+	ImGui::Text("Type:%d", m_BulletType);
+	ImGui::Text("Limit:%d", m_ChangeLimit);
+	ImGui::End();
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
@@ -320,10 +320,13 @@ void Player::Bullet_Management() {
 	const int l_TargetCount = 1;
 	const int l_Limit = 20;//ショットのチャージ時間
 	const float l_AddFrame = 0.1f;
+
+	Helper::GetInstance()->CheckMax(m_ChangeLimit, 0, -1);
 	/*-----------------------------*/
 	//RB||LBが押されたら弾を切り替える
-	if (((Input::GetInstance()->TriggerButton(Input::RB)) || (Input::GetInstance()->TriggerButton(Input::LB))) && (m_canShot) && (m_ChargePower == 0.0f))
+	if (((Input::GetInstance()->TriggerButton(Input::RB)) || (Input::GetInstance()->TriggerButton(Input::LB))) && (m_canShot) && (m_ChargePower == 0.0f) && (m_ChangeLimit == 0))
 	{
+		m_ChangeLimit = 5;
 		isShotNow = true;
 		float nowhunger = HungerGauge::GetInstance()->GetNowHunger();
 		if (nowhunger != 0) {
@@ -331,9 +334,16 @@ void Player::Bullet_Management() {
 		}
 		if (Input::GetInstance()->TriggerButton(Input::RB)) {
 			if (m_BulletType != BULLET_ATTACK) {
-				m_BulletType++;
+				if (!m_CanSearch && m_BulletType == BULLET_FORROW) {
+					m_BulletType += 2;
+				}
+				else {
+
+					m_BulletType++;
+				}
 				
 				if (nowhunger <= 0 && m_BulletType == BULLET_ATTACK) {
+
 					m_BulletType = BULLET_FORROW;
 					m_Skip = true;
 				}
@@ -344,12 +354,26 @@ void Player::Bullet_Management() {
 		}
 		else if (Input::GetInstance()->TriggerButton(Input::LB)) {
 			if (m_BulletType != BULLET_FORROW) {
-				m_BulletType--;
+				if (!m_CanSearch && m_BulletType == BULLET_ATTACK) {
+					m_BulletType -= 2;
+				}
+				else {
+					m_BulletType--;
+				}
 			}
 			else {
-				m_BulletType = BULLET_ATTACK;
-				if (nowhunger <= 0 && m_BulletType == BULLET_ATTACK) {
-					m_BulletType = BULLET_SEARCH;
+				if (nowhunger > 0.0f) {
+					m_BulletType = BULLET_ATTACK;
+				}
+				if (nowhunger <= 0) {
+					if (m_CanSearch) {
+
+						m_BulletType = BULLET_SEARCH;
+					}
+					else {
+
+						m_BulletType = BULLET_FORROW;
+					}
 					m_Skip = true;
 				}
 			}
@@ -718,12 +742,18 @@ void Player::BirthParticle() {
 }
 //ボス登場シーンの更新
 void Player::AppearUpdate() {
+	index = 15;
+	fbxmodels->GetBoneIndexMat(index, skirtmat);
+	skirtobj->FollowUpdate(skirtmat);
 	SetParam();
 }
 //ボス撃破シーンの更新
 void Player::DeathUpdate() {
 	m_HitPlayer = false;
 	BulletDelete();
+	index = 15;
+	fbxmodels->GetBoneIndexMat(index, skirtmat);
+	skirtobj->FollowUpdate(skirtmat);
 	SetParam();
 }
 //割合

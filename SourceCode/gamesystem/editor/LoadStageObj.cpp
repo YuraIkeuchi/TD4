@@ -280,6 +280,14 @@ void LoadStageObj::CommonUpdate() {
 			hearts.erase(cbegin(hearts) + i);
 		}
 	}
+
+	//食料のサイズによって探索型を出せるかどうか決まる
+	if (foods.size() != 0) {
+		Player::GetInstance()->SetCanSearch(true);
+	}
+	else {
+		Player::GetInstance()->SetCanSearch(false);
+	}
 	//
 	//当たり判定
 	Collide();
