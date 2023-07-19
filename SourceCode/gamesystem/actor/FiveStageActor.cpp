@@ -194,35 +194,6 @@ void FiveStageActor::IntroUpdate(DebugCamera* camera) {
 	camerawork->SetLastTimer(m_AppTimer);
 	camerawork->Update(camera);
 	m_AppTimer++;
-	//
-	//if (m_AppTimer == 400) {
-	//	_AppState = APP_NOTICE;
-	//}
-	//else if (m_AppTimer == 580) {
-	//	_AppState = APP_VANISH;
-	//}
-
-	////テキスト関係
-	//text_->Display();
-	//if (m_AppTimer == 1) {
-	//	text_->SelectText(TextManager::TALK_FIRST);
-	//}
-	//else if (m_AppTimer == 150) {
-	//	text_->SelectText(TextManager::TALK_SECOND);
-	//}
-	//else if (m_AppTimer == 300) {
-	//	text_->SelectText(TextManager::TALK_THIRD);
-	//	text_->ChangeColor(0, { 1.0f,0.0f,0.0f,1.0f });
-	//}
-	//else if (m_AppTimer == 400) {
-	//	text_->SelectText(TextManager::TALK_FOURTH);
-	//	for (int i = 0; i < 3; i++) {
-	//		text_->ChangeColor(i, { 1.0f,1.0f,0.0f,1.0f });
-	//	}
-	//}
-	//else if (m_AppTimer == 500) {
-	//	text_->SelectText(TextManager::TALK_FIVE);
-	//}
 }
 
 void FiveStageActor::MainUpdate(DebugCamera* camera) {
@@ -291,10 +262,4 @@ void FiveStageActor::FinishUpdate(DebugCamera* camera) {
 }
 
 void FiveStageActor::ImGuiDraw() {
-	/*Player::GetInstance()->ImGuiDraw();
-	ImGui::Begin("Five");
-	ImGui::Text("Timer:%d", m_AppTimer);
-	ImGui::End();*/
-
-	camerawork->ImGuiDraw();
 }
