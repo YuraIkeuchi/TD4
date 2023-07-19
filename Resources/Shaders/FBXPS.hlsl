@@ -16,7 +16,7 @@ PSOutput main(VSOutput input)
 	// Lambert反射
 	float3 light = normalize(float3(1, -1, 1)); // 右下奥　向きのライト
 	float diffuse = saturate(dot(-light, input.normal));
-	float brightness = diffuse + 0.3f;
+	float brightness = diffuse + 0.5f;
 	float4 shadecolor = float4(brightness, brightness, brightness, 1.0f);
 
 	// 陰影とテクスチャの色を合成

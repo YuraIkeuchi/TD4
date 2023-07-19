@@ -212,10 +212,6 @@ void SixStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void SixStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	/*ImGui::Begin("Six");
-	ImGui::Text("Timer:%d", m_AppTimer);
-	ImGui::End();*/
-	Player::GetInstance()->ImGuiDraw();
 }
 //登場シーン
 void SixStageActor::IntroUpdate(DebugCamera* camera) {
