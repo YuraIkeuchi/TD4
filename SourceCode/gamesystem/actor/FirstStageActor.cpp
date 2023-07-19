@@ -102,8 +102,8 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	lightgroup->Update();
 	ui->Update();
 	Menu::GetIns()->Upda();
-	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
-		SelectScene::GetIns()->Upda();
+	/*if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
+		SelectScene::GetIns()->Upda();*/
 
 
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
@@ -162,7 +162,7 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon)
 	Menu::GetIns()->Draw();
 	camerawork->feedDraw();
 	IKESprite::PreDraw();
-	SelectScene::GetIns()->Draw_Sprite();
+	//SelectScene::GetIns()->Draw_Sprite();
 	IKESprite::PostDraw();
 }
 
