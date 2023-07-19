@@ -103,8 +103,7 @@ void FiveStageActor::Draw(DirectXCommon* dxCommon)
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
-		//enemymanager->ImGuiDraw();
-		//camerawork->ImGuiDraw();
+		ImGuiDraw();
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
@@ -115,13 +114,16 @@ void FiveStageActor::Draw(DirectXCommon* dxCommon)
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-		//camerawork->ImGuiDraw();
+		ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 }
 
 void FiveStageActor::FrontDraw(DirectXCommon* dxCommon)
 {
+	if (m_SceneState == SceneState::IntroState) {
+		ParticleEmitter::GetInstance()->IntroDraw();
+	}
 	//パーティクル描画
 	if (!camerawork->GetFeedEnd() && m_SceneState == SceneState::MainState) {
 		ParticleEmitter::GetInstance()->FlontDrawAll();
@@ -288,4 +290,13 @@ void FiveStageActor::MainUpdate(DebugCamera* camera)
 void FiveStageActor::FinishUpdate(DebugCamera* camera)
 {
 	Input* input = Input::GetInstance();
+}
+
+void FiveStageActor::ImGuiDraw() {
+	/*Player::GetInstance()->ImGuiDraw();
+	ImGui::Begin("Five");
+	ImGui::Text("Timer:%d", m_AppTimer);
+	ImGui::End();*/
+
+	camerawork->ImGuiDraw();
 }

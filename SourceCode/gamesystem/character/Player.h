@@ -173,6 +173,14 @@ private://各クラス
 	bool m_HitPlayer = false;
 
 	//ラスボスのときの動き
+	enum DarkState {
+		DARK_SET,
+		DARK_WALK,
+		DARK_SECOND_WALK,
+		DARK_STOP,
+	}_DarkState;
+
+	//ラスボスのときの動き
 	enum LastState {
 		LAST_SET,
 		LAST_WALK,

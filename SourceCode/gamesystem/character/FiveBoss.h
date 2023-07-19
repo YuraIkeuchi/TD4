@@ -54,6 +54,8 @@ private:
 	void CSVLoad();
 	//死んだときのパーティクル
 	void DeathParticle();
+	//登場シーンのパーティクル
+	void AppParticle();
 private:
 	static const int CD_NUM = 4;
 private:
@@ -190,6 +192,12 @@ private:
 		DEATH_KNOCK,
 		DEATH_STOP
 	}_DeathState = DEATH_SET;
+
+	enum AppState {
+		APP_SET,
+		APP_BIRTH,
+		APP_END,
+	}_AppState = APP_SET;
 public:
 
 private:

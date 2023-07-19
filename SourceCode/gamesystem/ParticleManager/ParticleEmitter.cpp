@@ -16,6 +16,7 @@ void ParticleEmitter::Initialize()
 	LoadTexture();
 	//パーティクルマネージャー生成
 	circleParticle.reset(ParticleManager::Create(ImageManager::Normal));
+	darkParticle.reset(ParticleManager::Create(ImageManager::Normal));
 	healParticle.reset(ParticleManager::Create(ImageManager::Heal));
 	deathParticle.reset(ParticleManager::Create(ImageManager::Normal));
 	BossDeadParticle.reset(ParticleManager::Create(ImageManager::Normal));
@@ -28,6 +29,7 @@ void ParticleEmitter::Update()
 {
 	//パーティクルマネージャー更新
 	circleParticle->Update();
+	darkParticle->Update();
 	healParticle->Update();
 	deathParticle->Update();
 	BossDeadParticle->Update();
@@ -35,6 +37,9 @@ void ParticleEmitter::Update()
 	PhotoParticle->Update();
 }
 
+void ParticleEmitter::IntroDraw() {
+	darkParticle->Draw(AddBlendType);
+}
 void ParticleEmitter::FlontDrawAll() {
 	circleParticle->Draw(AddBlendType);
 	PhotoParticle->Draw(AddBlendType);
@@ -74,6 +79,18 @@ void ParticleEmitter::LimitEffect(const int life, const XMFLOAT3& l_pos, const f
 	wallParticle->Add(life, { pos.x,pos.y,pos.z }, vel, {}, startscale, endscale, startcolor, endcolor, {});
 }
 
+//移動制御
+void ParticleEmitter::DarkEffect(const int life, const XMFLOAT3& l_pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor)
+{
+	XMFLOAT3 pos = l_pos;
+	const float rnd_vel = 0.05f;
+	XMFLOAT3 vel{};
+	vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 4.0f;
+	vel.y = (float)rand() / RAND_MAX * rnd_vel * 6.0f;// -rnd_vel / 2.0f;
+	vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 4.0f;
+
+	darkParticle->Add(life, { pos.x,pos.y,pos.z }, vel, {}, startscale, endscale, startcolor, endcolor, {});
+}
 //爆発
 void ParticleEmitter::Explosion(const int life, const XMFLOAT3& pos, const float size, const float startscale,
 	const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor, const int ExploType) {
@@ -201,6 +218,7 @@ void ParticleEmitter::AllDelete()
 	deathParticle->AllDelete();
 	wallParticle->AllDelete();
 	BossDeadParticle->AllDelete();
+	darkParticle->AllDelete();
 }
 
 void ParticleEmitter::LoadTexture() {

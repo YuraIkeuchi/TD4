@@ -734,33 +734,25 @@ float Player::GetPercentage() {
 }
 //ダークコトコの登場シーン
 void Player::DarkAppearUpdate(int Timer) {
-	if (_LastState == LAST_SET) {
+	if (_DarkState == DARK_SET) {
 		if (Timer == 1) {
 			AnimationControl(AnimeName::WALK, true, 1);
-			m_Position = { 3.0f,-2.0f,-40.0f };
-			_LastState = LAST_WALK;
+			m_Position = { 0.0f,-2.0f,-20.0f };
+			_DarkState = DARK_WALK;
 		}
 	}
-	else if (_LastState == LAST_WALK) {
+	else if (_DarkState == DARK_WALK) {
 		m_Position.z += 0.2f;
 
-		if (Helper::GetInstance()->CheckMin(m_Position.z, 3.0f, 0.025f)) {
-			_LastState = LAST_STOP;
+		if (Helper::GetInstance()->CheckMin(m_Position.z, -6.0f, 0.025f)) {
+			_DarkState = DARK_STOP;
 			AnimationControl(AnimeName::IDLE, true, 1);
 		}
-	}
-	else if (_LastState == LAST_SECOND_WALK) {
-		if (Helper::GetInstance()->CheckMin(m_Position.z, 15.0f, 0.025f)) {
-			_LastState = LAST_STOP;
-			AnimationControl(AnimeName::IDLE, true, 1);
-		}
-	}
-	else {
 	}
 	index = 15;
 	fbxmodels->GetBoneIndexMat(index, skirtmat);
 	skirtobj->FollowUpdate(skirtmat);
-	playerattach->AppearUpdate(Timer);
+	playerattach->DarkAppear(Timer);
 	//基礎パラメータ設定
 
 	//どっち使えばいいか分からなかったから保留
