@@ -81,7 +81,9 @@ bool Heart::PlayerCollision() {
 		if (Player::GetInstance()->GetHP() <= 0.0f) {
 			return false; }
 		m_Alive = false;
-		Player::GetInstance()->SetHP(Player::GetInstance()->GetHP() + 1.0f);
+		if (Player::GetInstance()->GetHP() <= 4.0f) {
+			Player::GetInstance()->SetHP(Player::GetInstance()->GetHP() + 1.0f);
+		}
 		return true;
 	} else {
 		return false;

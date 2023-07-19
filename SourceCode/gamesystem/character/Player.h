@@ -115,6 +115,7 @@ public:
 	const bool& GetConfu() { return m_Confu; }
 
 	void SetHP(float hp) { m_HP = hp; };
+	void SetCanSearch(bool CanSearch) { m_CanSearch = CanSearch; };
 	float GetHP() { return m_HP; }
 	float GetMaxHP() { return m_MaxHP; }
 
@@ -165,6 +166,10 @@ private://各クラス
 	float m_Frame = 0.0f;
 
 	float m_LimitHunger = {};
+
+	bool m_CanSearch = true;
+
+	int m_ChangeLimit = 0;
 
 	//CSV系
 	//弾の強さのリミット

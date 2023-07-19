@@ -65,11 +65,6 @@ void SecondBoss::Action() {
 
 	if (m_HP < 0.1) return;
 
-	/*^^^^^^^^^^^^^^^^^^^^^*/
-	/*^^^^当たり判定^^^^*/
-	//弾とボスの当たり判定
-	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
-	CollideBul(_playerBulA, Type::CIRCLE);
 	{
 		/*^^^^^^上下運動^^^^^^^*/
 		float OldsMov = 0;
@@ -142,7 +137,9 @@ void SecondBoss::Action() {
 		}
 		/*^^^^^^^^^^^^^^^^^^^*/
 		_normal.SetreposAngle();
-
+		/*^^^^^^^^^^^^^^^^^^^^^*/
+	/*^^^^当たり判定^^^^*/
+	//弾とボスの当たり判定
 		vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
 		CollideBul(_playerBulA, Type::CIRCLE);
 	}
@@ -450,10 +447,10 @@ void SecondBoss::NormalAttak::ShakeAction(XMFLOAT3& Pos, XMFLOAT3& Rot)
 		NormalAttak::Rot(Pos, Rot);
 	}
 
-	if (Collision::CircleCollision(Pos.x, Pos.z, 1.f, Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z, 3.f))
-	{
-		Player::GetInstance()->isOldPos();
-	}
+	//if (Collision::CircleCollision(Pos.x, Pos.z, 1.f, Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z, 3.f))
+	//{
+	//	Player::GetInstance()->isOldPos();
+	//}
 }
 
 void SecondBoss::NormalAttak::Rot(XMFLOAT3& Pos, XMFLOAT3& Rot)
@@ -695,7 +692,7 @@ void SecondBoss::ColPlayer_Def()
 {
 	if (RushMoveEaseT <= 0.f && Collision::CircleCollision(m_Position.x, m_Position.z, 5.f, Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z, 1.f))
 	{
-		Player::GetInstance()->isOldPos();
+		//Player::GetInstance()->isOldPos();
 	}
 }
 //ImGui
@@ -798,7 +795,7 @@ void SecondBoss::ChargeAttack::JumpAction(XMFLOAT3& Pos, XMFLOAT3& Rot)
 
 	if (JFrame >= 1.f)
 	{
-		if (Collision::CircleCollision(PPos.x, PPos.z, 2.f, Pos.x, Pos.z, 5.f))
+		if (Collision::CircleCollision(PPos.x, PPos.z, 2.f, Pos.x, Pos.z, 5.f) && Player::GetInstance()->GetDamageInterVal() == 0)
 		{
 			Player::GetInstance()->RecvDamage(2.0f);
 		}

@@ -25,7 +25,7 @@ void SelectScene::ResetParama() {
 	for (auto i = 0; i < ObjNum; i++) {
 		TipsPosY[i] = -360.f;
 		StageObjRotAngle[i] = static_cast<float>(i) * (360.f / static_cast<float>(ObjNum)) + 180.f;
-		//ˆÊ’u‚Ì‰Šú‰»
+		//ä½ç½®ã®åˆæœŸåŒ–
 		StageObjPos[i].x = Pedestal->GetPosition().x + sinf(StageObjRotAngle[i] * (PI / PI_180)) * PosRad;
 		StageObjPos[i].z = Pedestal->GetPosition().z + cosf(StageObjRotAngle[i] * (PI / PI_180)) * PosRad;
 		StageObjPos[i].y = Pedestal->GetPosition().y + 8.f;
@@ -111,7 +111,7 @@ void SelectScene::Init() {
 	StageObj[SIX] = IKESprite::Create(ImageManager::tip1, { 0,0 });
 	StageObj[SEVEN] = IKESprite::Create(ImageManager::tip1, { 0,0 });
 	StageObj[TITLE] = IKESprite::Create(ImageManager::tip1, { 0,0 });
-	//ƒ|ƒXƒgƒGƒtƒFƒNƒg—p
+	//ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆç”¨
 	BossIcon[FIRST] = IKESprite::Create(ImageManager::CLOSEMILK, { 0,0 });
 	BossIcon[SECOND] = IKESprite::Create(ImageManager::CLOSESYTOPON, { 0,0 });
 	BossIcon[THIRD] = IKESprite::Create(ImageManager::CLOSEKIDO, { 0,0 });
@@ -132,7 +132,7 @@ void SelectScene::Init() {
 	for (auto i = 0; i < ObjNum; i++) {
 		TipsPosY[i] = -360.f;
 		StageObjRotAngle[i] = static_cast<float>(i) * (360.f / static_cast<float>(ObjNum)) + 180.f;
-		//ˆÊ’u‚Ì‰Šú‰»
+		//ä½ç½®ã®åˆæœŸåŒ–
 		StageObjPos[i].x = Pedestal->GetPosition().x + sinf(StageObjRotAngle[i] * (PI / PI_180)) * PosRad;
 		StageObjPos[i].z = Pedestal->GetPosition().z + cosf(StageObjRotAngle[i] * (PI / PI_180)) * PosRad;
 		StageObjPos[i].y = Pedestal->GetPosition().y + 8.f;
@@ -152,7 +152,7 @@ void SelectScene::Init() {
 	StageObjs[FOUR]->SetRotation({ 0.0f,90.0f,0.0f });
 	AfterScale[FIVE] = { 0.2f,0.2f,0.2f };
 	
-	//ˆê‰ñŠJ•ú‚µ‚½‚ç‘å‚«‚³‚ğ‡‚í‚¹‚é
+	//ä¸€å›é–‹æ”¾ã—ãŸã‚‰å¤§ãã•ã‚’åˆã‚ã›ã‚‹
 	for (auto i = 0; i < ObjNum; i++) {
 		if (m_Birth[i]) {
 			m_Scale[i] = AfterScale[i];
@@ -163,11 +163,11 @@ void SelectScene::Init() {
 
 void SelectScene::Upda() {
 	constexpr float PosRad = 25.f;
-	//”wŒi
+	//èƒŒæ™¯
 	SkydomeRotY += 0.5f;
 	BackSkyDome->SetRotation({ 0,SkydomeRotY,0 });
 	BackSkyDome->Update();
-	//“y‘ä
+	//åœŸå°
 	Pedestal->SetScale({ 15.f,15.f,15.f });
 	Pedestal->Update();
 
@@ -177,7 +177,7 @@ void SelectScene::Upda() {
 	Helper::GetInstance()->Clamp(closeRad, 0.f, 1500.f);
 	RotPedestal();
 
-	//Select‚Íío‚·
+	//Selectã¯å¸¸æ™‚å‡ºã™
 	m_Birth[TITLE] = true;
 	for (int i = 0; i < MAX; i++) {
 		if (IconColor[i] < 1.f) { continue; }
@@ -265,7 +265,7 @@ void SelectScene::Upda() {
 		}
 	}
 	m_Scale[TITLE] = { 0.01f,0.01f,0.01f };
-	//ƒZƒŒƒNƒg‚ÌƒXƒe[ƒgŠÇ—
+	//ã‚»ãƒ¬ã‚¯ãƒˆã®ã‚¹ãƒ†ãƒ¼ãƒˆç®¡ç†
 	StateManager();
 
 }
@@ -351,7 +351,7 @@ void SelectScene::RotPedestal() {
 	}
 }
 void SelectScene::CloseIconView(bool closeF) {
-	//’è”‚í‚Á‚µ‚å‚¢@—Ç‚¢•û–@–Íõ’†BBB
+	//å®šæ•°ã‚ã£ã—ã‚‡ã„ã€€è‰¯ã„æ–¹æ³•æ¨¡ç´¢ä¸­ã€‚ã€‚ã€‚
 	constexpr float texScl = 6500.f;
 	constexpr float MinScl = 2000.f;
 	constexpr float SubRad = 0.5f;
@@ -414,29 +414,29 @@ void SelectScene::ViewTips() {
 }
 
 void SelectScene::StateManager() {
-	//debug‚æ‚¤
+	//debugã‚ˆã†
 	m_Scale[TITLE] = { 0.025f,0.1f,0.025f };
 	m_Wide = true;
 	m_SelectState =SELECT_SECOND;
 	//
-	//ƒNƒŠƒAó‹µ‚É‰‚¶‚ÄOBJ‚Ì‘å‚«‚³‚¾‚Á‚½‚è‚ªˆá‚¤
-	if (m_SelectState == SELECT_FIRST) {		//‚±‚±‚Í‹“û‚Ì‚İ
+	//ã‚¯ãƒªã‚¢çŠ¶æ³ã«å¿œã˜ã¦OBJã®å¤§ãã•ã ã£ãŸã‚ŠãŒé•ã†
+	if (m_SelectState == SELECT_FIRST) {		//ã“ã“ã¯ç‰›ä¹³ã®ã¿
 
 	}
-	else if (m_SelectState == SELECT_SECOND) {//‹“û‚ğƒNƒŠƒA‚µ‚Äƒ‰ƒXƒ{ƒXˆÈŠOoŒ»‚·‚é
+	else if (m_SelectState == SELECT_SECOND) {//ç‰›ä¹³ã‚’ã‚¯ãƒªã‚¢ã—ã¦ãƒ©ã‚¹ãƒœã‚¹ä»¥å¤–å‡ºç¾ã™ã‚‹
 		bool temp[ObjNum] = {};
 		for (auto i = 0; i < TipsAct.size(); i++)
 			temp[i] = TipsAct[i];
-		if (Helper::GetInstance()->All_OfF(temp, ObjNum)) {			//‰æ–Ê‚ğ•Â‚¶‚½Œã
+		if (Helper::GetInstance()->All_OfF(temp, ObjNum)) {			//ç”»é¢ã‚’é–‰ã˜ãŸå¾Œ
 			m_BirthTimer++;
-			for (auto i = 1; i < ObjNum - 1; i++) {			//ƒ‰ƒXƒ{ƒXˆÈŠO
-				m_Birth[i] = true;			//ƒ{ƒX‚ªoŒ»‚µ‚½
+			for (auto i = 1; i < ObjNum - 1; i++) {			//ãƒ©ã‚¹ãƒœã‚¹ä»¥å¤–
+				m_Birth[i] = true;			//ãƒœã‚¹ãŒå‡ºç¾ã—ãŸ
 			}
-			if (m_BirthTimer == 150) {			//@ˆê’èƒtƒŒ[ƒ€‚É’B‚·‚é‚Æƒ{ƒX‚ª‘å‚«‚­‚È‚é
+			if (m_BirthTimer == 150) {			//ã€€ä¸€å®šãƒ•ãƒ¬ãƒ¼ãƒ ã«é”ã™ã‚‹ã¨ãƒœã‚¹ãŒå¤§ãããªã‚‹
 				m_Wide = true;
 				m_BirthTimer = {};
 			}
-			if (m_Wide) {			//ƒ{ƒX‚ğ‘å‚«‚­‚·‚é
+			if (m_Wide) {			//ãƒœã‚¹ã‚’å¤§ããã™ã‚‹
 				for (auto i = 1; i < ObjNum - 1; i++) {
 					m_Scale[i] = { Ease(In,Cubic,0.5f,m_Scale[i].x,AfterScale[i].x),
 						Ease(In,Cubic,0.5f,m_Scale[i].y,AfterScale[i].y),
@@ -445,31 +445,31 @@ void SelectScene::StateManager() {
 					m_BirthFinish[i] = true;
 				}
 			}
-			else {			//‘å‚«‚­‚È‚é‘O‚Íƒp[ƒeƒBƒNƒ‹‚ğo‚·‚æ‚¤‚É‚µ‚Ä‚¢‚é
+			else {			//å¤§ãããªã‚‹å‰ã¯ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚’å‡ºã™ã‚ˆã†ã«ã—ã¦ã„ã‚‹
 				BirthParticle();
 			}
 		}
 
-		if (SceneSave::GetInstance()->AllClear()) {			//ƒ‰ƒXƒ{ƒXˆÈŠO“|‚µ‚½‚ç(‚¢‚Ü‚Í‚¿‚¦‚æ‚µ‚Ü‚Å)ƒ‰ƒXƒ{ƒX‚ªoŒ»‚·‚é
+		if (SceneSave::GetInstance()->AllClear()) {			//ãƒ©ã‚¹ãƒœã‚¹ä»¥å¤–å€’ã—ãŸã‚‰(ã„ã¾ã¯ã¡ãˆã‚ˆã—ã¾ã§)ãƒ©ã‚¹ãƒœã‚¹ãŒå‡ºç¾ã™ã‚‹
 			m_SelectState = SELECT_LAST;
 			m_Wide = false;
 			m_BirthTimer = {};
 		}
 	}
-	else {			//ƒ‰ƒXƒ{ƒXƒ][ƒ“‚ÌoŒ»
+	else {			//ãƒ©ã‚¹ãƒœã‚¹ã‚¾ãƒ¼ãƒ³ã®å‡ºç¾
 		bool temp[ObjNum] = {};
 		for (auto i = 0; i < TipsAct.size(); i++)
 			temp[i] = TipsAct[i];
 		if (Helper::GetInstance()->All_OfF(temp, ObjNum)) {
 			m_BirthTimer++;
-			m_Birth[SEVEN] = true;			//ƒ‰ƒXƒ{ƒX‚ÌoŒ»
+			m_Birth[SEVEN] = true;			//ãƒ©ã‚¹ãƒœã‚¹ã®å‡ºç¾
 
 			if (m_BirthTimer == 150) {
 				m_Wide = true;
 				m_BirthTimer = {};
 			}
 
-			if (m_Wide) {//ƒ‰ƒXƒ{ƒX‚ÌOBJ‚ğ‘å‚«‚­‚·‚é
+			if (m_Wide) {//ãƒ©ã‚¹ãƒœã‚¹ã®OBJã‚’å¤§ããã™ã‚‹
 				m_Scale[SEVEN] = { Ease(In,Cubic,0.5f,m_Scale[SEVEN].x,AfterScale[SEVEN].x),
 					Ease(In,Cubic,0.5f,m_Scale[SEVEN].y,AfterScale[SEVEN].y),
 					Ease(In,Cubic,0.5f,m_Scale[SEVEN].z,AfterScale[SEVEN].z),
@@ -483,7 +483,7 @@ void SelectScene::StateManager() {
 	}
 }
 
-//ƒp[ƒeƒBƒNƒ‹
+//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
 void SelectScene::BirthParticle() {
 	int l_Life[ObjNum];
 
