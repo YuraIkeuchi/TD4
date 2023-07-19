@@ -203,3 +203,40 @@ void PlayerAttach::EndRollUpdate(int Timer) {
 	}
 	Obj_SetParam();
 }
+void PlayerAttach::DarkAppear(int Timer) {
+	m_Scale = { 0.7f,0.7f,0.7f };
+	m_Color = { 1.0f,1.0f,1.0f,1.0f };
+	const float l_AddFrame = 0.01f;
+	if (_DeathState == DEATH_SET) {
+		if (Timer == 1) {
+			m_Rotation = { 0.0f,90.0f,0.0f };
+			m_Position = { 0.0f,3.0f,-20.0f };
+		}
+		else if (Timer == 200) {
+			m_Position = { 0.0f,3.0f,0.0f };
+			_DeathState = DEATH_MOVE;
+		}
+	}
+	else if (_DeathState == DEATH_MOVE) {
+		if (Timer == 400) {
+			_DeathState = DEATH_TALK;
+		}
+	}
+	else if (_DeathState == DEATH_TALK) {
+		if (Timer == 790 || Timer == 1700) {
+			_DeathState = DEATH_NO_TALK;
+		}
+
+		//sinîgÇ…ÇÊÇ¡Çƒè„â∫Ç…ìÆÇ≠
+		m_SinAngle += 6.0f;
+		m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
+		m_Position.y = (sin(m_SinAngle2) * 0.5f + 3.0f);
+	}
+	else {
+		if (Timer == 1600) {
+			_DeathState = DEATH_TALK;
+		}
+	}
+
+	Obj_SetParam();
+}
