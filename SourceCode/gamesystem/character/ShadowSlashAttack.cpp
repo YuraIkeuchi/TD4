@@ -26,7 +26,7 @@ void ShadowSlashAttack::Init()
 		Kotoko[i]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Sutopon));
 
 	}
-	ShotArea[0].reset(IKETexture::Create(ImageManager::SLASHAREA, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 }));
+	ShotArea[0].reset(IKETexture::Create(ImageManager::SLASHAREA , { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 }));
 	ShotArea[0]->TextureCreate();
 	ShotArea[1].reset(IKETexture::Create(ImageManager::SLASHAREA, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 }));
 	ShotArea[1]->TextureCreate();
@@ -62,7 +62,7 @@ void ShadowSlashAttack::Upda()
 		if(i<2)Kotoko[i]->SetPosition(KotokoPos[0]);
 		else Kotoko[i]->SetPosition(KotokoPos[1]);
 
-		Kotoko[i]->SetColor({ 1,0,1,0.5f });
+		Kotoko[i]->SetColor({ 1,0,1,KotokoAlpha[i]});
 		Kotoko[i]->SetScale({ 2,2,2 });
 		Kotoko[i]->Update();
 	}
@@ -105,8 +105,10 @@ void ShadowSlashAttack::Draw(DirectXCommon* dxCommon)
 		if (Swords_W[i].Alpha > 0.f)
 		Swords_W[i].Obj->Draw();
 	}
-	for(auto i=0;i<KotokoShadow;i++)
+	for (auto i = 0; i < KotokoShadow; i++) {
+		if (KotokoAlpha[i] <= 0.f)continue;
 		Kotoko[i]->Draw();
+	}
 	IKEObject3d::PostDraw();
 
 
@@ -138,6 +140,9 @@ void ShadowSlashAttack::Phase_Idle()
 	ImpactTexPos[0] = KotokoPos[0];
 	ImpactTexPos[1] = KotokoPos[1];
 
+	for (auto i = 0; i < 4; i++) {
+		KotokoAlpha[i] = 1.f;
+	}
 	AreaAlpha[0] = 0.8f;
 	AreaAlpha[1] = 0.8f;
 
@@ -211,6 +216,11 @@ void ShadowSlashAttack::Phase_Impact()
 
 		Helper::GetInstance()->Clamp(Swords_W[i].Scl.y, 0.f, Swords_W[i].YSclRandMax);
 		Helper::GetInstance()->Clamp(Swords_H[i].Scl.y, 0.f, Swords_H[i].YSclRandMax);
+	}
+
+	for(auto i=0;i<4;i++)
+	{
+		KotokoAlpha[i] -= 0.1f;
 	}
 	if(Swords_H[SwordSize-1].Scl.y>= Swords_H[SwordSize-1].YSclRandMax&&
 		Swords_W[SwordSize - 1].Scl.y >= Swords_W[SwordSize - 1].YSclRandMax )

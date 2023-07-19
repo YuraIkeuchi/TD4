@@ -4,6 +4,7 @@
 #include "ImageManager.h"
 #include "ParticleEmitter.h"
 #include "Menu.h"
+#include "SelectScene.h"
 //初期化
 void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	//共通の初期化
@@ -19,7 +20,7 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	TitleSprite = IKESprite::Create(ImageManager::TITLE, { 0.0f,0.0f });
 	TitleWordSprite= IKESprite::Create(ImageManager::TITLEWORD, pos);
 	TitleWordSprite->SetSize(size);
-	PlayPostEffect = false;
+	PlayPostEffect = true;
 	menu = make_unique<Menu>();
 	menu->Initialize();
 }
@@ -45,7 +46,14 @@ void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	//パーティクル更新
 	ParticleEmitter::GetInstance()->Update();
 
-	//postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
+	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
+	if (SelectScene::GetIns()->GetPedestal() != nullptr) {
+		if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
+			SelectScene::GetIns()->Upda();
+		else
+			SelectScene::GetIns()->ResetParama();
+	}
+
 	menu->Update();
 }
 //描画
@@ -57,10 +65,7 @@ void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
 		FrontDraw();
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
-		
-		
 		postEffect->Draw(dxCommon->GetCmdList());
-		
 		dxCommon->PostDraw();
 	}
 	else {
@@ -79,6 +84,7 @@ void TitleSceneActor::FrontDraw() {
 	IKESprite::PreDraw();
 	TitleSprite->Draw();
 	TitleWordSprite->Draw();
+	SelectScene::GetIns()->Draw_Sprite();
 	menu->Draw();
 	IKESprite::PostDraw();
 	sceneChanger_->Draw();

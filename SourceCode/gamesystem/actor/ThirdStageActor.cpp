@@ -121,7 +121,7 @@ void ThirdStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-		//ImGuiDraw(dxCommon);
+		ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 }
@@ -176,6 +176,7 @@ void ThirdStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void ThirdStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
+	Player::GetInstance()->ImGuiDraw();
 	//Player::GetInstance()->ImGuiDraw();
 	//loadobj->ImGuiDraw();
 	//camerawork->ImGuiDraw();

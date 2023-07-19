@@ -26,7 +26,7 @@ public:
     };
 
     //ƒ‚ƒfƒ‹AUŒ‚—\‘ª‚Ì”ÍˆÍ
-    static constexpr int SwordSize = 20;
+    static constexpr int SwordSize = 18;
     static constexpr int KotokoShadow = 4;
 
     std::array<Sword, SwordSize>Swords_H;
@@ -35,6 +35,7 @@ public:
 
     std::array<std::unique_ptr<IKEObject3d>, SwordSize>ShotObj;
     std::array<std::unique_ptr<IKEObject3d>, KotokoShadow>Kotoko;
+    std::array<float, KotokoShadow>KotokoAlpha;
     std::array<XMFLOAT3, 2>KotokoPos;
 
     std::array<std::unique_ptr<IKETexture>, 2>ShotArea;

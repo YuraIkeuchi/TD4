@@ -47,7 +47,8 @@ public:
 		WIDTH2,
 		WIDTH3,
 		WIDTH4,
-		DOWNBOX
+		DOWNBOX,
+		TITLEMAP
 	};
 	//FBXの名前
 	enum FBXName {

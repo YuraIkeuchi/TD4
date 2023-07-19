@@ -6,7 +6,10 @@
 #include "BackObj.h"
 #include "Menu.h"
 #include "Helper.h"
-void FiveStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
+#include "SelectScene.h"
+
+void FiveStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
+{
 	dxCommon->SetFullScreen(true);
 	//共通の初期化
 	BaseInitialize(dxCommon);
@@ -103,8 +106,10 @@ void FiveStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
-		//enemymanager->ImGuiDraw();
+		enemymanager->ImGuiDraw();
+		
 		//camerawork->ImGuiDraw();
+		ImGuiDraw();
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	} else {
@@ -114,12 +119,16 @@ void FiveStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-		//camerawork->ImGuiDraw();
+		ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 }
 
-void FiveStageActor::FrontDraw(DirectXCommon* dxCommon) {
+void FiveStageActor::FrontDraw(DirectXCommon* dxCommon)
+{
+	if (m_SceneState == SceneState::IntroState) {
+		ParticleEmitter::GetInstance()->IntroDraw();
+	}
 	//パーティクル描画
 	if (!camerawork->GetFeedEnd() && m_SceneState == SceneState::MainState) {
 		ParticleEmitter::GetInstance()->FlontDrawAll();
@@ -170,44 +179,50 @@ void FiveStageActor::IntroUpdate(DebugCamera* camera) {
 	}
 
 	if (camerawork->GetAppearEndF()) {
+		enemymanager->SkipInitialize();
 		_AppState = APP_END;
 		m_SceneState = SceneState::MainState;
 		camerawork->SetCameraState(CAMERA_NORMAL);
-		enemymanager->SkipInitialize();
+		
 	}
 
 	//各クラス更新
 	BackObj::GetInstance()->Update();
 	ParticleEmitter::GetInstance()->Update();
-	Player::GetInstance()->AppearUpdate();
+	Player::GetInstance()->DarkAppearUpdate(m_AppTimer);
 	enemymanager->AppearUpdate();
-
+	camerawork->SetLastTimer(m_AppTimer);
 	camerawork->Update(camera);
-
 	m_AppTimer++;
-	if (m_AppTimer == 400) {
-		_AppState = APP_NOTICE;
-	} else if (m_AppTimer == 580) {
-		_AppState = APP_VANISH;
-	}
+	//
+	//if (m_AppTimer == 400) {
+	//	_AppState = APP_NOTICE;
+	//}
+	//else if (m_AppTimer == 580) {
+	//	_AppState = APP_VANISH;
+	//}
 
-	//テキスト関係
-	text_->Display();
-	if (m_AppTimer == 1) {
-		text_->SelectText(TextManager::TALK_FIRST);
-	} else if (m_AppTimer == 150) {
-		text_->SelectText(TextManager::TALK_SECOND);
-	} else if (m_AppTimer == 300) {
-		text_->SelectText(TextManager::TALK_THIRD);
-		text_->ChangeColor(0, { 1.0f,0.0f,0.0f,1.0f });
-	} else if (m_AppTimer == 400) {
-		text_->SelectText(TextManager::TALK_FOURTH);
-		for (int i = 0; i < 3; i++) {
-			text_->ChangeColor(i, { 1.0f,1.0f,0.0f,1.0f });
-		}
-	} else if (m_AppTimer == 500) {
-		text_->SelectText(TextManager::TALK_FIVE);
-	}
+	////テキスト関係
+	//text_->Display();
+	//if (m_AppTimer == 1) {
+	//	text_->SelectText(TextManager::TALK_FIRST);
+	//}
+	//else if (m_AppTimer == 150) {
+	//	text_->SelectText(TextManager::TALK_SECOND);
+	//}
+	//else if (m_AppTimer == 300) {
+	//	text_->SelectText(TextManager::TALK_THIRD);
+	//	text_->ChangeColor(0, { 1.0f,0.0f,0.0f,1.0f });
+	//}
+	//else if (m_AppTimer == 400) {
+	//	text_->SelectText(TextManager::TALK_FOURTH);
+	//	for (int i = 0; i < 3; i++) {
+	//		text_->ChangeColor(i, { 1.0f,1.0f,0.0f,1.0f });
+	//	}
+	//}
+	//else if (m_AppTimer == 500) {
+	//	text_->SelectText(TextManager::TALK_FIVE);
+	//}
 }
 
 void FiveStageActor::MainUpdate(DebugCamera* camera) {
@@ -273,4 +288,13 @@ void FiveStageActor::MainUpdate(DebugCamera* camera) {
 
 void FiveStageActor::FinishUpdate(DebugCamera* camera) {
 	Input* input = Input::GetInstance();
+}
+
+void FiveStageActor::ImGuiDraw() {
+	/*Player::GetInstance()->ImGuiDraw();
+	ImGui::Begin("Five");
+	ImGui::Text("Timer:%d", m_AppTimer);
+	ImGui::End();*/
+
+	camerawork->ImGuiDraw();
 }

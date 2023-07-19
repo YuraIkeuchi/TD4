@@ -174,14 +174,7 @@ void Player::Update()
 	
 
 	//どっち使えばいいか分からなかったから保留
-	fbxmodels->SetPosition(m_Position);
-	fbxmodels->SetRotation(m_Rotation);
-	fbxmodels->SetScale(m_Scale);
-	fbxmodels->SetColor(m_Color);
-	fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
-
-	//fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
-
+	SetParam();
 	//エフェクト
 	for (InterEffect* effect : effects) {
 		if (effect != nullptr) {
@@ -227,13 +220,13 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 }
 //ImGui
 void Player::ImGuiDraw() {
-	//HungerGauge::GetInstance()->ImGuiDraw();
+	////HungerGauge::GetInstance()->ImGuiDraw();
 
-	playerattach->ImGuiDraw();
+	//playerattach->ImGuiDraw();
 	ImGui::Begin("Player");
-	ImGui::Text("POSX:%f", m_Position.x);
-	ImGui::Text("POSY:%f", m_Position.y);
-	ImGui::Text("POSZ:%f", m_Position.z);
+	ImGui::Text("CanSearch:%d", m_CanSearch);
+	ImGui::Text("Type:%d", m_BulletType);
+	ImGui::Text("Limit:%d", m_ChangeLimit);
 	ImGui::End();
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
@@ -327,10 +320,13 @@ void Player::Bullet_Management() {
 	const int l_TargetCount = 1;
 	const int l_Limit = 20;//ショットのチャージ時間
 	const float l_AddFrame = 0.1f;
+
+	Helper::GetInstance()->CheckMax(m_ChangeLimit, 0, -1);
 	/*-----------------------------*/
 	//RB||LBが押されたら弾を切り替える
-	if (((Input::GetInstance()->TriggerButton(Input::RB)) || (Input::GetInstance()->TriggerButton(Input::LB))) && (m_canShot) && (m_ChargePower == 0.0f))
+	if (((Input::GetInstance()->TriggerButton(Input::RB)) || (Input::GetInstance()->TriggerButton(Input::LB))) && (m_canShot) && (m_ChargePower == 0.0f) && (m_ChangeLimit == 0))
 	{
+		m_ChangeLimit = 5;
 		isShotNow = true;
 		float nowhunger = HungerGauge::GetInstance()->GetNowHunger();
 		if (nowhunger != 0) {
@@ -338,9 +334,16 @@ void Player::Bullet_Management() {
 		}
 		if (Input::GetInstance()->TriggerButton(Input::RB)) {
 			if (m_BulletType != BULLET_ATTACK) {
-				m_BulletType++;
+				if (!m_CanSearch && m_BulletType == BULLET_FORROW) {
+					m_BulletType += 2;
+				}
+				else {
+
+					m_BulletType++;
+				}
 				
 				if (nowhunger <= 0 && m_BulletType == BULLET_ATTACK) {
+
 					m_BulletType = BULLET_FORROW;
 					m_Skip = true;
 				}
@@ -351,12 +354,26 @@ void Player::Bullet_Management() {
 		}
 		else if (Input::GetInstance()->TriggerButton(Input::LB)) {
 			if (m_BulletType != BULLET_FORROW) {
-				m_BulletType--;
+				if (!m_CanSearch && m_BulletType == BULLET_ATTACK) {
+					m_BulletType -= 2;
+				}
+				else {
+					m_BulletType--;
+				}
 			}
 			else {
-				m_BulletType = BULLET_ATTACK;
-				if (nowhunger <= 0 && m_BulletType == BULLET_ATTACK) {
-					m_BulletType = BULLET_SEARCH;
+				if (nowhunger > 0.0f) {
+					m_BulletType = BULLET_ATTACK;
+				}
+				if (nowhunger <= 0) {
+					if (m_CanSearch) {
+
+						m_BulletType = BULLET_SEARCH;
+					}
+					else {
+
+						m_BulletType = BULLET_FORROW;
+					}
 					m_Skip = true;
 				}
 			}
@@ -662,7 +679,7 @@ void Player::isOldPos()
 void Player::RecvDamage(float Damage) {
 	if (m_HitPlayer) {
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Damage.wav", VolumManager::GetInstance()->GetSEVolum());
-		m_HP -= Damage;
+		//m_HP -= Damage;
 		m_DamageInterVal = 50;
 		m_Damage = true;
 		m_Confu = false;
@@ -725,35 +742,51 @@ void Player::BirthParticle() {
 }
 //ボス登場シーンの更新
 void Player::AppearUpdate() {
-	//基礎パラメータ設定
-	fbxmodels->SetPosition(m_Position);
-	fbxmodels->SetRotation(m_Rotation);
-	fbxmodels->SetScale(m_Scale);
-	fbxmodels->SetColor(m_Color);
-	fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
-
-	//どっち使えばいいか分からなかったから保留
-	//fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+	index = 15;
+	fbxmodels->GetBoneIndexMat(index, skirtmat);
+	skirtobj->FollowUpdate(skirtmat);
+	SetParam();
 }
 //ボス撃破シーンの更新
 void Player::DeathUpdate() {
 	m_HitPlayer = false;
 	BulletDelete();
-	//基礎パラメータ設定
-	fbxmodels->SetPosition(m_Position);
-	fbxmodels->SetRotation(m_Rotation);
-	fbxmodels->SetScale(m_Scale);
-	fbxmodels->SetColor(m_Color);
-	//fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
-
-	//どっち使えばいいか分からなかったから保留
-	fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+	index = 15;
+	fbxmodels->GetBoneIndexMat(index, skirtmat);
+	skirtobj->FollowUpdate(skirtmat);
+	SetParam();
 }
 //割合
 float Player::GetPercentage() {
 	float temp = m_ChargePower / 50.0f;
 	Helper::GetInstance()->Clamp(temp, 0.0f, 1.0f);
 	return temp;
+}
+//ダークコトコの登場シーン
+void Player::DarkAppearUpdate(int Timer) {
+	if (_DarkState == DARK_SET) {
+		if (Timer == 1) {
+			AnimationControl(AnimeName::WALK, true, 1);
+			m_Position = { 0.0f,-2.0f,-20.0f };
+			_DarkState = DARK_WALK;
+		}
+	}
+	else if (_DarkState == DARK_WALK) {
+		m_Position.z += 0.2f;
+
+		if (Helper::GetInstance()->CheckMin(m_Position.z, -6.0f, 0.025f)) {
+			_DarkState = DARK_STOP;
+			AnimationControl(AnimeName::IDLE, true, 1);
+		}
+	}
+	index = 15;
+	fbxmodels->GetBoneIndexMat(index, skirtmat);
+	skirtobj->FollowUpdate(skirtmat);
+	playerattach->DarkAppear(Timer);
+	//基礎パラメータ設定
+
+	//どっち使えばいいか分からなかったから保留
+	SetParam();
 }
 //覚醒シーンの初期化
 void Player::AwakeInit() {
@@ -790,11 +823,6 @@ void Player::LastAppearUpdate(int Timer) {
 			_LastState = LAST_STOP;
 			AnimationControl(AnimeName::IDLE, true, 1);
 		}
-
-	/*	if (Timer == 2550) {
-			AnimationControl(AnimeName::WALK, true, 1);
-			_LastState = LAST_SECOND_WALK;
-		}*/
 	}
 	else if(_LastState == LAST_SECOND_WALK) {
 		if (Helper::GetInstance()->CheckMin(m_Position.z, 15.0f, 0.025f)) {
@@ -803,9 +831,6 @@ void Player::LastAppearUpdate(int Timer) {
 		}
 	}
 	else {
-		/*if (Timer == 330) {
-			_LastState = LAST_SECOND_WALK;
-		}*/
 	}
 	index = 15;
 	fbxmodels->GetBoneIndexMat(index, skirtmat);
@@ -814,13 +839,7 @@ void Player::LastAppearUpdate(int Timer) {
 	//基礎パラメータ設定
 
 	//どっち使えばいいか分からなかったから保留
-	fbxmodels->SetPosition(m_Position);
-	fbxmodels->SetRotation(m_Rotation);
-	fbxmodels->SetScale(m_Scale);
-	fbxmodels->SetColor(m_Color);
-	fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
-	//どっち使えばいいか分からなかったから保留
-	//fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+	SetParam();
 }
 //ラスボス撃破
 void Player::LastDeadUpdate(int Timer) {
@@ -852,11 +871,7 @@ void Player::LastDeadUpdate(int Timer) {
 	fbxmodels->GetBoneIndexMat(index, skirtmat);
 	skirtobj->FollowUpdate(skirtmat);
 	playerattach->LastDeadUpdate(Timer);
-	fbxmodels->SetPosition(m_Position);
-	fbxmodels->SetRotation(m_Rotation);
-	fbxmodels->SetScale(m_Scale);
-	fbxmodels->SetColor(m_Color);
-	fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+	SetParam();
 }
 void Player::EndRollUpdate(int Timer) {
 	const float l_AddPosX = 0.2f;
@@ -916,6 +931,10 @@ void Player::EndRollUpdate(int Timer) {
 	fbxmodels->GetBoneIndexMat(index, skirtmat);
 	skirtobj->FollowUpdate(skirtmat);
 	playerattach->EndRollUpdate(Timer);
+	SetParam();
+}
+//パラメーターセット
+void Player::SetParam() {
 	fbxmodels->SetPosition(m_Position);
 	fbxmodels->SetRotation(m_Rotation);
 	fbxmodels->SetScale(m_Scale);

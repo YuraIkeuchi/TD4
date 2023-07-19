@@ -264,7 +264,7 @@ public:
 	bool Recv;
 	bool CanAttack;
 	int GetGhostSize() { return GhostSize; }
-	void SetGhostSize(int count) { GhostSize=count; }
+	void SetGhostSize() { GhostSize++; }
 	bool GetRecv() { return Recv; }
 	void SetRecv(bool f) { Recv = f; }
 	bool GetCanAttack() { return CanAttack; }

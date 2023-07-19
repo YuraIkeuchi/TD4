@@ -29,6 +29,8 @@ public:
 	void AppearUpdate();
 	//ボス撃破シーンの動き
 	void DeathUpdate();
+	//ダークコトコ登場シーンの動き
+	void DarkAppearUpdate(int Timer);
 	//ラスボス登場シーンの動き
 	void LastAppearUpdate(int Timer);
 	//ラスボス撃破シーンの動き
@@ -80,6 +82,8 @@ private:
 	void SutoponUpdate();
 	//ダメージパーティクル
 	void BirthParticle();
+	//パラメーターセット
+	void SetParam();
 private:
 	//各アニメーション
 	enum class AnimeName
@@ -111,6 +115,7 @@ public:
 	const bool& GetConfu() { return m_Confu; }
 
 	void SetHP(float hp) { m_HP = hp; };
+	void SetCanSearch(bool CanSearch) { m_CanSearch = CanSearch; };
 	float GetHP() { return m_HP; }
 	float GetMaxHP() { return m_MaxHP; }
 
@@ -162,11 +167,23 @@ private://各クラス
 
 	float m_LimitHunger = {};
 
+	bool m_CanSearch = true;
+
+	int m_ChangeLimit = 0;
+
 	//CSV系
 	//弾の強さのリミット
 	vector<float>m_PowerLimit;
 
 	bool m_HitPlayer = false;
+
+	//ラスボスのときの動き
+	enum DarkState {
+		DARK_SET,
+		DARK_WALK,
+		DARK_SECOND_WALK,
+		DARK_STOP,
+	}_DarkState;
 
 	//ラスボスのときの動き
 	enum LastState {

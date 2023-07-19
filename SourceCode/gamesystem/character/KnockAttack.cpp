@@ -31,7 +31,7 @@ void KnockAttack::Upda()
 
 	//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
 	XMVECTOR PositionA = {l_player.x,l_player.y,l_player.z };
-	XMVECTOR PositionB = { strot.x,strot.y,strot.z };
+	XMVECTOR PositionB = {stopos.x,stopos.y,stopos.z };
 
 	//プレイヤーと敵のベクトルの長さ(差)を求める
 	XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
@@ -104,6 +104,37 @@ void KnockAttack::DeathUpdate(int Timer) {
 	darksutopon->Update();
 }
 
+void KnockAttack::AppearUpdate(int Timer) {
+	const float l_AddFrame = 0.01f;
+	if (_AppState == APP_SET) {
+		stopos = { 7.0f,20.0f,25.0f };
+		strot.y = 270.0f;
+
+		if (Timer == 510) {
+			_AppState = APP_MOVE;
+		}
+	}
+	else if (_AppState == APP_MOVE) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			_AppState = APP_END;
+			m_Frame = {};
+		}
+
+		stopos.y = Ease(In,Cubic,m_Frame,stopos.y,2.0f);
+	}
+	else {
+		//sin波によって上下に動く
+		m_SinAngle += 3.5f;
+		m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
+		m_Position.y = (sin(m_SinAngle2) * 0.5f + 2.0f);
+	}
+	darksutopon->SetScale({ 1,1,1 });
+	darksutopon->SetColor({ 0.9f,0.2f,0.7f,0.7f });
+	darksutopon->SetPosition(stopos);
+	darksutopon->SetRotation(strot);
+	darksutopon->Update();
+}
+
 void KnockAttack::DeathParticle()
 {
 	float l_AddSize = 2.5f;
@@ -135,20 +166,16 @@ void KnockAttack::ImpactAction()
 
 	if(KnockF)
 	{
-		if(JFrame<=0.f)
-		{
-			if (Player::GetInstance()->GetDamageInterVal() == 0 && Collision::GetLength(stopos, Player::GetInstance()->GetPosition()) < 15.f) {
-				Player::GetInstance()->PlayerHit(m_Position);
-				Player::GetInstance()->RecvDamage(Dam);
-			}
-		}
 
 		JFrame += 1.f / 60.f;
 		stopos.y = GroundY+ (1.0f - pow(1.0f - sin(PI * JFrame), Distortion)) * Height;
 		ReturnEaseT = 0.f;
 		//SUB Alpha-Scling
 		if (JFrame >= 1.f) {
-
+			if (Player::GetInstance()->GetDamageInterVal() == 0 && Collision::GetLength(stopos, Player::GetInstance()->GetPosition()) < 10.f) {
+				Player::GetInstance()->PlayerHit(stopos);
+				Player::GetInstance()->RecvDamage(Dam);
+			}
 			TexAlpha -= 0.02f;
 			TexScl.x += AddTexScling; TexScl.y += AddTexScling;
 			if (TexScl.x > 1.5f || TexScl.z > 1.5f)

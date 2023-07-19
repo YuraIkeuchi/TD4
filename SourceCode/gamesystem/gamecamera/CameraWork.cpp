@@ -405,11 +405,10 @@ void CameraWork::ImGuiDraw() {
 	ImGui::Text("AftereyeX:%f", m_AfterEye.x);
 	ImGui::Text("AftereyeY:%f", m_AfterEye.y);
 	ImGui::Text("AftereyeZ:%f", m_AfterEye.z);
-
 	ImGui::Text("targetX:%f", m_targetPos.x);
 	ImGui::Text("targetY:%f", m_targetPos.y);
 	ImGui::Text("targetZ:%f", m_targetPos.z);
-	ImGui::Text("Timer:%d", m_EndTimer);
+	ImGui::Text("Frame:%f", m_Frame);
 	ImGui::End();
 }
 void CameraWork::SpecialUpdate() {
@@ -421,7 +420,7 @@ void CameraWork::feedDraw() {
 }
 //最初のボスのカメラ
 void CameraWork::FirstBossAppear() {
-
+	\
 	XMVECTOR move = { 0.f,0.f, 0.1f, 0.0f };
 	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(boss->GetRotation().y + 60));
 	move = XMVector3TransformNormal(move, matRot);
@@ -745,63 +744,80 @@ void CameraWork::FourthBossAppear() {
 }
 //5個目のボス
 void CameraWork::FiveBossAppear() {
-	XMVECTOR move = { 0.f,0.f, 0.1f, 0.0f };
-	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(boss->GetRotation().y + 60));
-	move = XMVector3TransformNormal(move, matRot);
+	float l_AddFrame = 0.01f;
+	if (m_AppearType == APPEAR_START) {
+		if (m_LastTimer == 1) {
+			m_eyePos = { -3.0f,5.0f,20.0f };
+			m_targetPos = { 0.0f,5.0f,0.0f };
+		}
 
-	/*ほりゅう*/
-	//if (_firstState == ONE) {
-	//	m_eyePos = { boss->GetPosition().x + move.m128_f32[0] * 300.f,boss->GetPosition().y,boss->GetPosition().z + move.m128_f32[2] * 300.f };
-	//	if (Timer_first == 90) { _firstState = TWO; }
-	//	else Timer_first++;
-	//}
-
-	//if (_firstState == TWO) {
-	//	m_eyePos = { boss->GetPosition().x + move.m128_f32[0] * -300.f,boss->GetPosition().y,boss->GetPosition().z + move.m128_f32[2] * -300.f };
-	//	
-	//	if (Timer_first == 180)_firstState = THREE;
-	//	else Timer_first++;
-	//}
-
-
-	if (spline->GetIndex() >= pointsList.size() - 2) {
-		RadEffect -= 0.2f;
-	} else if (spline->GetIndex() >= pointsList.size()) {
-		RadEffect += 0.2f;
-		SplineSpeed = 400.f;
-	} else {
-		SplineSpeed = 300.f;
+		if (m_LastTimer == 150) {
+			m_Frame = {};
+			m_AppearType = APPEAR_SECOND;
+			m_AfterTarget = { 0.0f,5.0f,boss->GetPosition().z };
+			m_AfterEye = { 0.0f,6.0f,5.0f };
+		}
 	}
-	if (!Finish) {
-
-		spline->Upda(m_eyePos, SplineSpeed);
-	}
-	Helper::GetInstance()->Clamp(RadEffect, 0.f, 15.f);
-
-	if (spline->GetIndex() >= pointsList.size() - 1) {
-
-		if (Helper::GetInstance()->FrameCheck(m_Frame, 0.01f)) {
-			AppearEndF = true;
-			m_CameraState = CAMERA_NORMAL;
+	else if (m_AppearType == APPEAR_SECOND) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
 			m_Frame = 1.0f;
 		}
-		m_AfterEye = { Player::GetInstance()->GetPosition().x,45.0f,Player::GetInstance()->GetPosition().z - 20.0f };
-		m_AfterTarget = Player::GetInstance()->GetPosition();
-		m_targetPos = {
-Ease(In,Cubic,m_Frame,boss->GetPosition().x,m_AfterTarget.x),
-Ease(In,Cubic,m_Frame,boss->GetPosition().y,m_AfterTarget.y),
-Ease(In,Cubic,m_Frame,boss->GetPosition().z,m_AfterTarget.z),
-		};
 
-		m_eyePos = {
-Ease(In,Cubic,m_Frame,m_eyePos.x,m_AfterEye.x),
-Ease(In,Cubic,m_Frame,m_eyePos.y,m_AfterEye.y),
-Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
-		};
+		if (m_LastTimer == 620) {
+			m_Frame = {};
+			m_AfterTarget = { 0.0f,5.0f,12.0f };
+			m_AfterEye = { -25.0f,5.0f,12.0f };
+			m_AppearType = APPEAR_THIRD;
+		}
+		SetEaseCamera();
+	}
+	else if (m_AppearType == APPEAR_THIRD) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = 1.0f;
+		}
+		if (m_LastTimer == 750) {
+			m_Frame = 0.0f;
+			m_AfterTarget = { 0.0f,m_targetPos.y,-4.0f };
+			m_AppearType = APPEAR_FOURTH;
+		}
+		SetEaseCamera();
+	}
+	else if (m_AppearType == APPEAR_FOURTH) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = 1.0f;
+		}
+		if (m_LastTimer == 900) {
+			m_Frame = 0.0f;
+			m_AfterEye = m_eyePos;
+			m_AfterTarget = { 0.0f,m_targetPos.y,28.0f };
+			m_AppearType = APPEAR_FIVE;
+		}
 
-		Finish = true;
-	} else {
-		m_targetPos = { boss->GetPosition() };
+		SetEaseCamera();
+	}
+	else if (m_AppearType == APPEAR_FIVE) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = 1.0f;
+		}
+		if (m_LastTimer == 1050) {
+			m_Frame = 0.0f;
+			m_AfterEye = { -300.0f,5.0f,12.0f };
+			m_AfterTarget = { 0.0f,5.0f,12.0f };
+			m_AppearType = APPEAR_SIX;
+		}
+
+		SetEaseCamera();
+	}
+	else if (m_AppearType == APPEAR_SIX) {
+		l_AddFrame = 0.005f;
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = 1.0f;
+		}
+		SetEaseCamera();
+
+		if (m_Frame > 0.005f) {
+			m_CameraSkip = true;
+		}
 	}
 }
 //6個目のボス

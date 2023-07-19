@@ -152,7 +152,7 @@ void SingleShot::Phase_Shot()
 	FollowPlayerAct();
 	//å¸Ç¢ÇΩï˚å¸Ç…êiÇﬁ
 	constexpr float SummonSpeed = 4.f;
-XMFLOAT4 s_color[BulSize];
+	XMFLOAT4 s_color[BulSize];
 	XMFLOAT4 e_color[BulSize];
 	float s_scale[BulSize];
 	float e_scale[BulSize];

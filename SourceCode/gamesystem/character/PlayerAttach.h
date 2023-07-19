@@ -28,6 +28,8 @@ public:
 	void BirthObj();
 	//登場シーンの動き
 	void AppearUpdate(int Timer);
+	//ダークコトコの登場シーン
+	void DarkAppear(int  Timer);
 	//撃破シーンの動き
 	void LastDeadUpdate(int Timer);
 	//エンドロールの動き

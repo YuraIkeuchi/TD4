@@ -242,7 +242,7 @@ void SecondStageActor::Draw(DirectXCommon* dxCommon) {
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
 		IKESprite::PreDraw();
-		SelectScene::GetIns()->Draw_Sprite();
+		//SelectScene::GetIns()->Draw_Sprite();
 		IKESprite::PostDraw();
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 

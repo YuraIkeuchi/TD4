@@ -161,7 +161,7 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon)
 	menu->Draw();
 	camerawork->feedDraw();
 	IKESprite::PreDraw();
-	SelectScene::GetIns()->Draw_Sprite();
+	//SelectScene::GetIns()->Draw_Sprite();
 	IKESprite::PostDraw();
 }
 
