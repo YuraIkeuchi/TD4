@@ -42,7 +42,8 @@ void SevenStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	ui->Initialize();
 
 	SelectScene::GetIns()->Init();
-	Menu::GetIns()->Init();
+	menu = make_unique<Menu>();
+	menu->Initialize();
 	ui->SetBoss(enemymanager->GetBoss());
 	BackObj::GetInstance()->Initialize();
 
@@ -59,10 +60,13 @@ void SevenStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 //更新
 void SevenStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	//関数ポインタで状態管理
-	if (!Menu::GetIns()->GetMenuOpen()) {
-		(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+	if (menu->Pause()) {
+		menu->Update();
 		sceneChanger_->Update();
+		return;
 	}
+	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+	sceneChanger_->Update();
 
 	//プレイヤー
 	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
@@ -81,15 +85,17 @@ void SevenStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
 
 	lightgroup->Update();
+	sceneChanger_->Update();
+
 	/*if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
 		SelectScene::GetIns()->Upda();
 
 	if (Input::GetInstance()->TriggerButton(Input::Y)) {
 		SelectScene::GetIns()->ResetParama();
 		SceneManager::GetInstance()->ChangeScene("SELECT");
-	}*/	
+	}*/
 	ui->Update();
-	Menu::GetIns()->Upda();
+	menu->Update();
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 }
 //描画
@@ -107,8 +113,7 @@ void SevenStageActor::Draw(DirectXCommon* dxCommon) {
 		//ImGuiDraw(dxCommon);
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
-	}
-	else {
+	} else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
@@ -172,7 +177,7 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	IKESprite::PostDraw();
 	IKESprite::PreDraw();
 	//blackwindow->Draw();
-	Menu::GetIns()->Draw();
+	menu->Draw();
 	camerawork->feedDraw();
 	//SelectScene::GetIns()->Draw_Sprite();
 	IKESprite::PostDraw();
@@ -244,8 +249,7 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 		}
 	}
 	//カメラワークのセット
-	if (enemymanager->BossDestroy())
-	{
+	if (enemymanager->BossDestroy()) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		//フェード前
 		if (!camerawork->GetFeedEnd()) {
@@ -254,8 +258,7 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_BEFORE);
 		}
 		//フェード後
-		else
-		{
+		else {
 			text_->Display();
 			m_EndTimer++;
 			PlayPostEffect = false;
@@ -278,13 +281,11 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 		}
 
 		Player::GetInstance()->DeathUpdate();
-	}
-	else
-	{
-		if(camerawork->GetCameraState() == CAMERA_NORMAL)
-		Player::GetInstance()->Update();
-		else 
-		Player::GetInstance()->DeathUpdate();
+	} else {
+		if (camerawork->GetCameraState() == CAMERA_NORMAL)
+			Player::GetInstance()->Update();
+		else
+			Player::GetInstance()->DeathUpdate();
 	}
 
 	if (PlayerDestroy()) {
@@ -301,8 +302,7 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 	BackObj::GetInstance()->Update();
 	if (camerawork->GetCameraState() == CAMERA_NORMAL) {
 		enemymanager->BattleUpdate();
-	}
-	else {
+	} else {
 		enemymanager->Awake();
 	}
 
@@ -331,59 +331,41 @@ void SevenStageActor::TextRead() {
 	m_AppTimer++;
 	if (m_AppTimer == 240) {
 		text_->SelectText(TextManager::LAST_TALK_SECOND);
-	}
-	else if (m_AppTimer == 350) {
+	} else if (m_AppTimer == 350) {
 		text_->SelectText(TextManager::LAST_TALK_THIRD);
-	}
-	else if (m_AppTimer == 500) {
+	} else if (m_AppTimer == 500) {
 		text_->SelectText(TextManager::LAST_TALK_FOURTH);
-	}
-	else if (m_AppTimer == 650) {
+	} else if (m_AppTimer == 650) {
 		text_->SelectText(TextManager::LAST_TALK_FIVE);
-	}
-	else if (m_AppTimer == 800) {
+	} else if (m_AppTimer == 800) {
 		text_->SelectText(TextManager::LAST_TALK_SIX);
-	}
-	else if (m_AppTimer == 950) {
+	} else if (m_AppTimer == 950) {
 		text_->SelectText(TextManager::LAST_TALK_SEVEN);
-	}
-	else if (m_AppTimer == 1100) {
+	} else if (m_AppTimer == 1100) {
 		text_->SelectText(TextManager::LAST_TALK_EIGHT);
-	}
-	else if (m_AppTimer == 1250) {
+	} else if (m_AppTimer == 1250) {
 		text_->SelectText(TextManager::LAST_TALK_NINE);
-	}
-	else if (m_AppTimer == 1400) {
+	} else if (m_AppTimer == 1400) {
 		text_->SelectText(TextManager::LAST_TALK_TEN);
-	}
-	else if (m_AppTimer == 1550) {
+	} else if (m_AppTimer == 1550) {
 		text_->SelectText(TextManager::LAST_TALK_ELEVEN);
-	}
-	else if (m_AppTimer == 1700) {
+	} else if (m_AppTimer == 1700) {
 		text_->SelectText(TextManager::LAST_TALK_TWELVE);
-	}
-	else if (m_AppTimer == 1850) {
+	} else if (m_AppTimer == 1850) {
 		text_->SelectText(TextManager::LAST_TALK_THIRTEEN);
-	}
-	else if (m_AppTimer == 2000) {
+	} else if (m_AppTimer == 2000) {
 		text_->SelectText(TextManager::LAST_TALK_FOURTEEN);
-	}
-	else if (m_AppTimer == 2150) {
+	} else if (m_AppTimer == 2150) {
 		text_->SelectText(TextManager::LAST_TALK_FIFETEEN);
-	}
-	else if (m_AppTimer == 2300) {
+	} else if (m_AppTimer == 2300) {
 		text_->SelectText(TextManager::LAST_TALK_SIXTEEN);
-	}
-	else if (m_AppTimer == 2450) {
+	} else if (m_AppTimer == 2450) {
 		text_->SelectText(TextManager::LAST_TALK_SEVENTEEN);
-	}
-	else if (m_AppTimer == 2600) {
+	} else if (m_AppTimer == 2600) {
 		text_->SelectText(TextManager::LAST_TALK_EIGHTTEEN);
-	}
-	else if (m_AppTimer == 2750) {
+	} else if (m_AppTimer == 2750) {
 		text_->SelectText(TextManager::LAST_TALK_NINETEEN);
-	}
-	else if (m_AppTimer == 2950) {
+	} else if (m_AppTimer == 2950) {
 		camerawork->SetCameraSkip(true);
 	}
 }
@@ -391,11 +373,9 @@ void SevenStageActor::TextRead() {
 void SevenStageActor::AwakeText() {
 	if (m_AwakeTimer == 1) {
 		text_->SelectText(TextManager::AWAKE_FIRST);
-	}
-	else if (m_AwakeTimer == 200) {
+	} else if (m_AwakeTimer == 200) {
 		text_->SelectText(TextManager::AWAKE_SECOND);
-	}
-	else if (m_AwakeTimer == 400) {
+	} else if (m_AwakeTimer == 400) {
 		text_->SelectText(TextManager::AWAKE_THIRD);
 	}
 }
@@ -403,47 +383,33 @@ void SevenStageActor::AwakeText() {
 void SevenStageActor::DeathText() {
 	if (m_EndTimer == 1) {
 		text_->SelectText(TextManager::DEATH_FIRST);
-	}
-	else if (m_EndTimer == 200) {
+	} else if (m_EndTimer == 200) {
 		text_->SelectText(TextManager::DEATH_SECOND);
-	}
-	else if (m_EndTimer == 350) {
+	} else if (m_EndTimer == 350) {
 		text_->SelectText(TextManager::DEATH_THIRD);
-	}
-	else if (m_EndTimer == 500) {
+	} else if (m_EndTimer == 500) {
 		text_->SelectText(TextManager::DEATH_FOURTH);
-	}
-	else if (m_EndTimer == 650) {
+	} else if (m_EndTimer == 650) {
 		text_->SelectText(TextManager::DEATH_FIVE);
-	}
-	else if (m_EndTimer == 800) {
+	} else if (m_EndTimer == 800) {
 		text_->SelectText(TextManager::DEATH_SIX);//ボス
-	}
-	else if (m_EndTimer == 900) {
+	} else if (m_EndTimer == 900) {
 		text_->SelectText(TextManager::DEATH_SEVEN);//ボス
-	}
-	else if (m_EndTimer == 1000) {
+	} else if (m_EndTimer == 1000) {
 		text_->SelectText(TextManager::DEATH_EIGHT);//コトコ
-	}
-	else if (m_EndTimer == 1100) {
+	} else if (m_EndTimer == 1100) {
 		text_->SelectText(TextManager::DEATH_NINE);//ボス
-	}
-	else if (m_EndTimer == 1200) {
+	} else if (m_EndTimer == 1200) {
 		text_->SelectText(TextManager::DEATH_TEN);//コトコ
-	}
-	else if (m_EndTimer == 1300) {
+	} else if (m_EndTimer == 1300) {
 		text_->SelectText(TextManager::DEATH_ELEVEN);//コトコ
-	}
-	else if (m_EndTimer == 1400) {
+	} else if (m_EndTimer == 1400) {
 		text_->SelectText(TextManager::DEATH_TWELVE);//ボス
-	}
-	else if (m_EndTimer == 1500) {
+	} else if (m_EndTimer == 1500) {
 		text_->SelectText(TextManager::DEATH_THIRTEEN);//コトコ
-	}
-	else if (m_EndTimer == 1600) {
+	} else if (m_EndTimer == 1600) {
 		text_->SelectText(TextManager::DEATH_FOURTEEN);//すと
-	}
-	else if (m_EndTimer == 1700) {
+	} else if (m_EndTimer == 1700) {
 		text_->SelectText(TextManager::DEATH_FIFTEEN);//ボス
 	}
 }

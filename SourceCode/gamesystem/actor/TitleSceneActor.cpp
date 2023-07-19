@@ -20,8 +20,9 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	TitleSprite = IKESprite::Create(ImageManager::TITLE, { 0.0f,0.0f });
 	TitleWordSprite= IKESprite::Create(ImageManager::TITLEWORD, pos);
 	TitleWordSprite->SetSize(size);
-	PlayPostEffect =true;
-	Menu::GetIns()->Init();
+	PlayPostEffect = true;
+	menu = make_unique<Menu>();
+	menu->Initialize();
 }
 //更新
 void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -53,7 +54,7 @@ void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 			SelectScene::GetIns()->ResetParama();
 	}
 
-	Menu::GetIns()->Upda();
+	menu->Update();
 }
 //描画
 void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
@@ -83,8 +84,8 @@ void TitleSceneActor::FrontDraw() {
 	IKESprite::PreDraw();
 	TitleSprite->Draw();
 	TitleWordSprite->Draw();
-	Menu::GetIns()->Draw();
 	SelectScene::GetIns()->Draw_Sprite();
+	menu->Draw();
 	IKESprite::PostDraw();
 	sceneChanger_->Draw();
 }
