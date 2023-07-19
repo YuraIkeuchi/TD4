@@ -6,6 +6,7 @@
 #include"Input.h"
 #include"imgui.h"
 #include "SceneManager.h"
+#include "SelectScene.h"
 
 Menu* Menu::GetIns() {
 	static Menu ins;
@@ -29,13 +30,13 @@ void Menu::Init() {
 	ExpTex[0] = IKESprite::Create(ImageManager::EXPLANATION, tasks[Home].Pos);
 	ExpTex[1] = IKESprite::Create(ImageManager::CLOSEKIDO, tasks[Home].Pos);
 	ExpTex[2] = IKESprite::Create(ImageManager::CLOSECAMERA, tasks[Home].Pos);
-
 	//ExpTex->SetAnchorPoint({ 0.5f,0.5f });
 	closeTex = IKESprite::Create(ImageManager::CLOSESYTOPON, tasks[Home].Pos);
 }
 
 void Menu::Upda() {
 	if (_tasks != NON)MenuOpenF = true;
+
 	else {
 		MenuOpenF = false;
 		MenuRestartTimer++;

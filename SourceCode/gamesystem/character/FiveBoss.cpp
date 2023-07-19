@@ -238,20 +238,21 @@ void FiveBoss::Action()
 	//single->Upda();
 	if (shot->GetPhase() == ShotAttack::Phase::END) {
 		//’ÊíUŒ‚
-		if (shot->GetCanRand() > noAction) {
-			if (GhostSize > 0 && GhostSize < 4)
+			if (shot->GetCanRand() > noAction&&GhostSize > 0 && GhostSize < 4)
 			{
 				shot->SetActionEnd(true);
 				shot->SetIdleDam(false);
 				single->SetActionEnd(false);
 				_aPhase = ATTACK_SINGLESHOT;
-			} else if (GhostSize == 4)
+			}
+		if (shot->GetCanRand() > noAction&&GhostSize == 4)
 			{
 				shot->SetActionEnd(true);
 				shot->SetIdleDam(false);
 				smash->SetActionEnd(false);
 				_aPhase = ATTACK_IMPACT;
-			} else if (GhostSize >= 5)
+			}
+		if (GhostSize >= 5)
 			{
 				shot->SetActionEnd(true);
 				shot->SetIdleDam(false);
@@ -261,7 +262,6 @@ void FiveBoss::Action()
 			}
 
 		}
-	}
 	if (JudgSlash)
 	{
 		slash->SetActionEnd(false);
