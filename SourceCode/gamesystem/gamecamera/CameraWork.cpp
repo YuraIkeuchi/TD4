@@ -420,7 +420,7 @@ void CameraWork::feedDraw() {
 }
 //最初のボスのカメラ
 void CameraWork::FirstBossAppear() {
-
+	\
 	XMVECTOR move = { 0.f,0.f, 0.1f, 0.0f };
 	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(boss->GetRotation().y + 60));
 	move = XMVector3TransformNormal(move, matRot);

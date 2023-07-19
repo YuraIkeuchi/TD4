@@ -240,8 +240,8 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 		camerawork->Update(camera);
 		lightgroup->Update();
 
-		if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
-			SelectScene::GetIns()->Upda();
+		/*if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
+			SelectScene::GetIns()->Upda();*/
 
 	}
 	Menu::GetIns()->Upda();
@@ -258,7 +258,7 @@ void SecondStageActor::Draw(DirectXCommon* dxCommon) {
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
 		IKESprite::PreDraw();
-		SelectScene::GetIns()->Draw_Sprite();
+		//SelectScene::GetIns()->Draw_Sprite();
 		IKESprite::PostDraw();
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 

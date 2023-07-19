@@ -220,14 +220,14 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 }
 //ImGui
 void Player::ImGuiDraw() {
-	//HungerGauge::GetInstance()->ImGuiDraw();
+	////HungerGauge::GetInstance()->ImGuiDraw();
 
-	playerattach->ImGuiDraw();
-	ImGui::Begin("Player");
-	ImGui::Text("POSX:%f", m_Position.x);
-	ImGui::Text("POSY:%f", m_Position.y);
-	ImGui::Text("POSZ:%f", m_Position.z);
-	ImGui::End();
+	//playerattach->ImGuiDraw();
+	//ImGui::Begin("Player");
+	//ImGui::Text("POSX:%f", m_Position.x);
+	//ImGui::Text("POSY:%f", m_Position.y);
+	//ImGui::Text("POSZ:%f", m_Position.z);
+	//ImGui::End();
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
