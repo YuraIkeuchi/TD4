@@ -124,7 +124,7 @@ void SelectSceneActor::Draw(DirectXCommon* dxCommon) {
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
 		//ImGuiDraw(dxCommon);
-
+		SelectScene::GetIns()->ImGuiDraw();
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	} else {

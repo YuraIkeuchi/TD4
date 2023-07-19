@@ -75,6 +75,8 @@ public:
     int SetDarkCount(int count) { DarkCount = count; }
     bool GetIdleDam() { return IdleRecv; }
     void SetIdleDam(bool f) { IdleRecv=f; }
+    Phase GEtPhase() { return _phase; }
+    int GetTargetGhost() { return TargetGhost; }
     //Phase GetPhase();
 };
 

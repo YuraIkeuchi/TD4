@@ -224,7 +224,7 @@ void FiveBoss::Action()
 	{
 		if (ghosts[i]->GetStateSpawn())
 		{
-			GhostSize--;
+			GhostSize=0;
 			ghosts[i]->SetCollide(false);
 			ghosts[i]->SetCleanGhost(false);
 			ghosts[i]->SetStateSpawn(false);
@@ -234,7 +234,16 @@ void FiveBoss::Action()
 
 
 	mt19937 mt{ std::random_device{}() };
-
+	if(GhostSize==0)
+	{
+		if(_aPhase==ATTACK_SINGLESHOT)
+		{
+			single->SetActionEnd(true);
+			shot->SetCanRand(0);
+			shot->SetActionEnd(false);
+			_aPhase = ATTACK_SHOT;
+		}
+	}
 	//single->Upda();
 	if (shot->GetPhase() == ShotAttack::Phase::END) {
 		//’ÊíUŒ‚
@@ -459,6 +468,11 @@ void FiveBoss::AppParticle() {
 void FiveBoss::ImGui_Origin()
 {
 	ImGui::Begin("Five");
+	ImGui::Text("PosX %f", m_Position.x);
+	ImGui::Text("PosZ %f", m_Position.z);
+	ImGui::Text("Phase %d", (int)_aPhase);
+	ImGui::Text("ShotPhase %d", (int)shot->GEtPhase());
+	ImGui::Text("NowTarget %d", (int)shot->GetTargetGhost());
 	ImGui::End();
 }
 
