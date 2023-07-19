@@ -39,6 +39,7 @@ void SelectScene::ResetParama() {
 	StageObjs[FOUR]->SetScale({ 3.f,3.f,3.f });
 	StageObjs[FOUR]->SetRotation({ 0.0f,0.0f,0.0f });
 	StageObjs[FIVE]->SetScale({ 0.2f,0.2f,0.2f });
+	StageObjs[TITLE]->SetScale({ 4.2f,4.2f,4.2f });
 	TrigerSelect = NOINP;
 	CloseF = false;
 
@@ -73,6 +74,8 @@ void SelectScene::Init() {
 	StageObjs[FIVE]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::DJ));
 	StageObjs[SIX]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Sutopon));
 	StageObjs[SEVEN]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::LASTBOSS));
+	StageObjs[TITLE]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::LASTBOSS));
+
 
 	BackSkyDome.reset(new IKEObject3d());
 	BackSkyDome->Initialize();
@@ -107,6 +110,7 @@ void SelectScene::Init() {
 	StageObj[FIVE] = IKESprite::Create(ImageManager::tip1, { 0,0 });
 	StageObj[SIX] = IKESprite::Create(ImageManager::tip1, { 0,0 });
 	StageObj[SEVEN] = IKESprite::Create(ImageManager::tip1, { 0,0 });
+	StageObj[TITLE] = IKESprite::Create(ImageManager::tip1, { 0,0 });
 	//ポストエフェクト用
 	BossIcon[FIRST] = IKESprite::Create(ImageManager::CLOSEMILK, { 0,0 });
 	BossIcon[SECOND] = IKESprite::Create(ImageManager::CLOSESYTOPON, { 0,0 });
@@ -115,6 +119,7 @@ void SelectScene::Init() {
 	BossIcon[FIVE] = IKESprite::Create(ImageManager::CLOSEDJ, { 0,0 });
 	BossIcon[SIX] = IKESprite::Create(ImageManager::CLOSEDARK, { 0,0 });
 	BossIcon[SEVEN] = IKESprite::Create(ImageManager::CLOSEDARK, { 0,0 });
+	BossIcon[TITLE] = IKESprite::Create(ImageManager::CLOSEDARK, { 0,0 });
 
 	for (int i = 0; i < MAX; i++) {
 		BossIcon[i]->SetAnchorPoint({ 0.5f,0.5f });
@@ -186,7 +191,14 @@ void SelectScene::Upda() {
 	ChangeEffect("FIVESTAGE", Stage::SIX, SIX);
 	ChangeEffect("SIXSTAGE", Stage::FIVE, FIVE);
 	ChangeEffect("SEVENSTAGE", Stage::SEVEN, SEVEN);
-
+	ChangeEffect("TITLE", Stage::TITLE, TITLE);
+	if(IconColor[TITLE]>=1.f)
+	{
+		if(Input::GetInstance()->TriggerButton(Input::B))
+		{
+			SceneManager::GetInstance()->ChangeScene("TITLE");
+		}
+	}
 	for (int i = 0; i < MAX; i++) {
 		if (closeScl >= 10000.f) {
 			BossIcon[i]->SetAnchorPoint({ 0.5f,0.5f });
@@ -285,6 +297,7 @@ void SelectScene::Draw_Sprite() {
 
 void SelectScene::ImGuiDraw() {
 	ImGui::Begin("Select");
+	ImGui::Text("Scene%d", (int)_stages);
 	ImGui::Text("%d", m_SelectState);
 	ImGui::End();
 }
@@ -405,14 +418,15 @@ void SelectScene::ViewTips() {
 
 void SelectScene::StateManager() {
 	//debugよう
+	m_Scale[TITLE] = { 1,1,1 };
 	m_Wide = true;
-	m_SelectState =SELECT_LAST;
+	m_SelectState =SELECT_SECOND;
 	//
 	//クリア状況に応じてOBJの大きさだったりが違う
 	if (m_SelectState == SELECT_FIRST) {		//ここは牛乳のみ
 
 	}
-	else if (m_SelectState == SELECT_SECOND) {			//牛乳をクリアしてラスボス以外出現する
+	else if (m_SelectState == SELECT_SECOND) {//牛乳をクリアしてラスボス以外出現する
 		bool temp[ObjNum] = {};
 		for (auto i = 0; i < TipsAct.size(); i++)
 			temp[i] = TipsAct[i];

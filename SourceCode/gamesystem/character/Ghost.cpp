@@ -224,6 +224,7 @@ bool Ghost::VerseCheck() {
 //何もない状態
 void Ghost::None() {
 	//浮遊状態
+	m_BirthPos = m_Position;
 	DarkOtiClean = false;
 	float scales = 0.5f;
 	m_Scale = { scales,scales,scales };
@@ -337,24 +338,16 @@ void Ghost::DarkSide() {
 
 	if (DarkOtiClean)
 	{
-		m_Scale.x -= 0.01f;
-		m_Scale.y -= 0.01f;
-		m_Scale.z -= 0.01f;
-if (m_Scale.x <= 0.f) {
 		m_DarkC = 0;
 		m_DFollow = false;
 		Collide = false;
 		DarkOtiClean = false;
-		mt19937 mt{ std::random_device{}() };
-		uniform_int_distribution<int> l_distX(-50, 60);
-		uniform_int_distribution<int> l_distZ(-55, 55);
-		m_Position = { float(l_distX(mt)),0.0f,float(l_distZ(mt)) };
-
+	
 		Collide = false;
 		stateSpawn = true;
-		_charaState = CharaState::STATE_NONE;
+		m_Vanish = true;
 	}
-	}
+	
 	
 	Helper::GetInstance()->Clamp(m_Scale.x, 0.f, 5.f);
 

@@ -31,7 +31,7 @@ void KnockAttack::Upda()
 
 	//角度の取得 プレイヤーが敵の索敵位置に入ったら向きをプレイヤーの方に
 	XMVECTOR PositionA = {l_player.x,l_player.y,l_player.z };
-	XMVECTOR PositionB = { strot.x,strot.y,strot.z };
+	XMVECTOR PositionB = {stopos.x,stopos.y,stopos.z };
 
 	//プレイヤーと敵のベクトルの長さ(差)を求める
 	XMVECTOR SubVector = XMVectorSubtract(PositionB, PositionA); // positionA - positionB;
@@ -135,20 +135,16 @@ void KnockAttack::ImpactAction()
 
 	if(KnockF)
 	{
-		if(JFrame<=0.f)
-		{
-			if (Player::GetInstance()->GetDamageInterVal() == 0 && Collision::GetLength(stopos, Player::GetInstance()->GetPosition()) < 15.f) {
-				Player::GetInstance()->PlayerHit(m_Position);
-				Player::GetInstance()->RecvDamage(Dam);
-			}
-		}
 
 		JFrame += 1.f / 60.f;
 		stopos.y = GroundY+ (1.0f - pow(1.0f - sin(PI * JFrame), Distortion)) * Height;
 		ReturnEaseT = 0.f;
 		//SUB Alpha-Scling
 		if (JFrame >= 1.f) {
-
+			if (Player::GetInstance()->GetDamageInterVal() == 0 && Collision::GetLength(stopos, Player::GetInstance()->GetPosition()) < 10.f) {
+				Player::GetInstance()->PlayerHit(stopos);
+				Player::GetInstance()->RecvDamage(Dam);
+			}
 			TexAlpha -= 0.02f;
 			TexScl.x += AddTexScling; TexScl.y += AddTexScling;
 			if (TexScl.x > 1.5f || TexScl.z > 1.5f)

@@ -29,6 +29,7 @@ public:
 		FIVE,
 		SIX,
 		SEVEN,
+		TITLE,
 		MAX,
 	}_stages = MAX;
 public:
@@ -76,7 +77,7 @@ private:
 	XMFLOAT3 PedestalRot = { 0,0,0 };
 
 	//オブジェクト数（ステージ数）
-	static constexpr int ObjNum = 7;
+	static constexpr int ObjNum = 8;
 
 	array<unique_ptr<IKEObject3d>, ObjNum>StageObjs = { nullptr };
 	array<unique_ptr<IKESprite>, ObjNum>StageObj = { nullptr };

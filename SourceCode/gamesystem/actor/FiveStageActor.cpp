@@ -6,6 +6,8 @@
 #include "BackObj.h"
 #include "Menu.h"
 #include "Helper.h"
+#include "SelectScene.h"
+
 void FiveStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
 	dxCommon->SetFullScreen(true);
@@ -103,7 +105,8 @@ void FiveStageActor::Draw(DirectXCommon* dxCommon)
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
-		//enemymanager->ImGuiDraw();
+		enemymanager->ImGuiDraw();
+		
 		//camerawork->ImGuiDraw();
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();

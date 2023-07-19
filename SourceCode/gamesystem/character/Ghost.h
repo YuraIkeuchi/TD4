@@ -127,6 +127,7 @@ private:
 	int m_VerseCureTimer = 0;//リスポーン回復フラグ
 	int m_ResPornTimer = 0;//復活の時間
 	XMFLOAT3 m_FollowPos = {};//追従先
+	XMFLOAT3 m_BirthPos;
 	XMFLOAT3 m_OBBScale = {};//OBB用の大きさ
 public:
 	//キャラの状態
@@ -144,6 +145,8 @@ public:
 
 	bool GetCleanghost() { return DarkOtiClean; }
 	void SetCleanGhost(bool f) { DarkOtiClean = f; }
+
+	XMFLOAT3 GetBirthPos() { return m_BirthPos; };
 
 	bool CollideDarkBul(OBB obb);
 	CharaState GetState() { return _charaState; }
