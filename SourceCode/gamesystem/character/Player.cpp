@@ -174,14 +174,7 @@ void Player::Update()
 	
 
 	//どっち使えばいいか分からなかったから保留
-	fbxmodels->SetPosition(m_Position);
-	fbxmodels->SetRotation(m_Rotation);
-	fbxmodels->SetScale(m_Scale);
-	fbxmodels->SetColor(m_Color);
-	fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
-
-	//fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
-
+	SetParam();
 	//エフェクト
 	for (InterEffect* effect : effects) {
 		if (effect != nullptr) {
@@ -725,35 +718,53 @@ void Player::BirthParticle() {
 }
 //ボス登場シーンの更新
 void Player::AppearUpdate() {
-	//基礎パラメータ設定
-	fbxmodels->SetPosition(m_Position);
-	fbxmodels->SetRotation(m_Rotation);
-	fbxmodels->SetScale(m_Scale);
-	fbxmodels->SetColor(m_Color);
-	fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
-
-	//どっち使えばいいか分からなかったから保留
-	//fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+	SetParam();
 }
 //ボス撃破シーンの更新
 void Player::DeathUpdate() {
 	m_HitPlayer = false;
 	BulletDelete();
-	//基礎パラメータ設定
-	fbxmodels->SetPosition(m_Position);
-	fbxmodels->SetRotation(m_Rotation);
-	fbxmodels->SetScale(m_Scale);
-	fbxmodels->SetColor(m_Color);
-	//fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
-
-	//どっち使えばいいか分からなかったから保留
-	fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+	SetParam();
 }
 //割合
 float Player::GetPercentage() {
 	float temp = m_ChargePower / 50.0f;
 	Helper::GetInstance()->Clamp(temp, 0.0f, 1.0f);
 	return temp;
+}
+//ダークコトコの登場シーン
+void Player::DarkAppearUpdate(int Timer) {
+	if (_LastState == LAST_SET) {
+		if (Timer == 1) {
+			AnimationControl(AnimeName::WALK, true, 1);
+			m_Position = { 3.0f,-2.0f,-40.0f };
+			_LastState = LAST_WALK;
+		}
+	}
+	else if (_LastState == LAST_WALK) {
+		m_Position.z += 0.2f;
+
+		if (Helper::GetInstance()->CheckMin(m_Position.z, 3.0f, 0.025f)) {
+			_LastState = LAST_STOP;
+			AnimationControl(AnimeName::IDLE, true, 1);
+		}
+	}
+	else if (_LastState == LAST_SECOND_WALK) {
+		if (Helper::GetInstance()->CheckMin(m_Position.z, 15.0f, 0.025f)) {
+			_LastState = LAST_STOP;
+			AnimationControl(AnimeName::IDLE, true, 1);
+		}
+	}
+	else {
+	}
+	index = 15;
+	fbxmodels->GetBoneIndexMat(index, skirtmat);
+	skirtobj->FollowUpdate(skirtmat);
+	playerattach->AppearUpdate(Timer);
+	//基礎パラメータ設定
+
+	//どっち使えばいいか分からなかったから保留
+	SetParam();
 }
 //覚醒シーンの初期化
 void Player::AwakeInit() {
@@ -790,11 +801,6 @@ void Player::LastAppearUpdate(int Timer) {
 			_LastState = LAST_STOP;
 			AnimationControl(AnimeName::IDLE, true, 1);
 		}
-
-	/*	if (Timer == 2550) {
-			AnimationControl(AnimeName::WALK, true, 1);
-			_LastState = LAST_SECOND_WALK;
-		}*/
 	}
 	else if(_LastState == LAST_SECOND_WALK) {
 		if (Helper::GetInstance()->CheckMin(m_Position.z, 15.0f, 0.025f)) {
@@ -803,9 +809,6 @@ void Player::LastAppearUpdate(int Timer) {
 		}
 	}
 	else {
-		/*if (Timer == 330) {
-			_LastState = LAST_SECOND_WALK;
-		}*/
 	}
 	index = 15;
 	fbxmodels->GetBoneIndexMat(index, skirtmat);
@@ -814,13 +817,7 @@ void Player::LastAppearUpdate(int Timer) {
 	//基礎パラメータ設定
 
 	//どっち使えばいいか分からなかったから保留
-	fbxmodels->SetPosition(m_Position);
-	fbxmodels->SetRotation(m_Rotation);
-	fbxmodels->SetScale(m_Scale);
-	fbxmodels->SetColor(m_Color);
-	fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
-	//どっち使えばいいか分からなかったから保留
-	//fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+	SetParam();
 }
 //ラスボス撃破
 void Player::LastDeadUpdate(int Timer) {
@@ -852,11 +849,7 @@ void Player::LastDeadUpdate(int Timer) {
 	fbxmodels->GetBoneIndexMat(index, skirtmat);
 	skirtobj->FollowUpdate(skirtmat);
 	playerattach->LastDeadUpdate(Timer);
-	fbxmodels->SetPosition(m_Position);
-	fbxmodels->SetRotation(m_Rotation);
-	fbxmodels->SetScale(m_Scale);
-	fbxmodels->SetColor(m_Color);
-	fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+	SetParam();
 }
 void Player::EndRollUpdate(int Timer) {
 	const float l_AddPosX = 0.2f;
@@ -916,6 +909,10 @@ void Player::EndRollUpdate(int Timer) {
 	fbxmodels->GetBoneIndexMat(index, skirtmat);
 	skirtobj->FollowUpdate(skirtmat);
 	playerattach->EndRollUpdate(Timer);
+	SetParam();
+}
+//パラメーターセット
+void Player::SetParam() {
 	fbxmodels->SetPosition(m_Position);
 	fbxmodels->SetRotation(m_Rotation);
 	fbxmodels->SetScale(m_Scale);
