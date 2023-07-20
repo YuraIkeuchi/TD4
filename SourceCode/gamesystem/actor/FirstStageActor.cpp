@@ -57,7 +57,8 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	lightgroup->SetCircleShadowActive(0, true);
 	lightgroup->SetCircleShadowActive(1, true);
 
-	Menu::GetIns()->Init();
+	menu = make_unique<Menu>();
+	menu->Initialize();
 
 	//メッセージウィンドウ生成
 	messagewindow_ = make_unique<MessageWindow>();
@@ -75,15 +76,13 @@ void FirstStageActor::Finalize()
 
 void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
-	//CheckHp();
-	//TalkUpdate();
-
-	if (!Menu::GetIns()->GetMenuOpen()) {
-		//関数ポインタで状態管理
-		(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
-	}
+	//関数ポインタで状態管理
+	if (menu->Pause()) {
+		menu->Update();
 		sceneChanger_->Update();
-
+		return;
+	}
+	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
 	//プレイヤー
 	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
 		SceneSave::GetInstance()->SetClearFlag(kFirstStage, true);
@@ -100,12 +99,12 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	lightgroup->SetCircleShadowAtten(1, XMFLOAT3(BosscircleShadowAtten));
 	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
 	lightgroup->Update();
+	sceneChanger_->Update();
 	ui->Update();
-	Menu::GetIns()->Upda();
-	/*if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
-		SelectScene::GetIns()->Upda();*/
-
-
+	menu->Update();
+	if (SelectScene::GetIns()->GetCloseScl() < 10000.f) {
+		SelectScene::GetIns()->Upda();
+	}
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 }
 
@@ -159,7 +158,7 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon)
 	}
 	IKESprite::PostDraw();
 	sceneChanger_->Draw();
-	Menu::GetIns()->Draw();
+	menu->Draw();
 	camerawork->feedDraw();
 	IKESprite::PreDraw();
 	//SelectScene::GetIns()->Draw_Sprite();

@@ -3,7 +3,6 @@
 #include "ParticleEmitter.h"
 #include "ImageManager.h"
 #include "BackObj.h"
-#include "Menu.h"
 #include "SelectScene.h"
 #include "Helper.h"
 //初期化
@@ -42,7 +41,8 @@ void SixStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Lig
 	ui->Initialize();
 
 	SelectScene::GetIns()->Init();
-	Menu::GetIns()->Init();
+	menu = make_unique<Menu>();
+	menu->Initialize();
 	ui->SetBoss(enemymanager->GetBoss());
 	BackObj::GetInstance()->Initialize();
 
@@ -81,12 +81,14 @@ void SixStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Lig
 }
 //更新
 void SixStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
-
 	//関数ポインタで状態管理
-	if (!Menu::GetIns()->GetMenuOpen()) {
-		(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+	if (menu->Pause()) {
+		menu->Update();
 		sceneChanger_->Update();
+		return;
 	}
+	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+	sceneChanger_->Update();
 	//プレイヤー
 	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
 		SceneSave::GetInstance()->SetClearFlag(kSixStage, true);
@@ -111,8 +113,6 @@ void SixStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGr
 		SelectScene::GetIns()->ResetParama();
 		SceneManager::GetInstance()->ChangeScene("SELECT");
 	}*/
-
-
 	//スポットライトの動き
 	MoveSpotLight();
 	if (_AppState == APP_END) {
@@ -134,8 +134,7 @@ void SixStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGr
 		lightgroup->SetSpotLightFactorAngle(i, XMFLOAT2(spotLightFactorAngle));
 	}
 	lightgroup->Update();
-
-	Menu::GetIns()->Upda();
+	menu->Update();
 	ui->Update();
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 }
@@ -154,8 +153,7 @@ void SixStageActor::Draw(DirectXCommon* dxCommon) {
 		//ImGuiDraw(dxCommon);
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
-	}
-	else {
+	} else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
@@ -207,17 +205,13 @@ void SixStageActor::FrontDraw(DirectXCommon* dxCommon) {
 		text_->SpriteDraw(dxCommon);
 	}
 	sceneChanger_->Draw();
-	Menu::GetIns()->Draw();
+	menu->Draw();
 	camerawork->feedDraw();
 	//SelectScene::GetIns()->Draw_Sprite();
 	IKESprite::PostDraw();
 }
 //IMGuiの描画
 void SixStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	/*ImGui::Begin("Six");
-	ImGui::Text("Timer:%d", m_AppTimer);
-	ImGui::End();*/
-	Player::GetInstance()->ImGuiDraw();
 }
 //登場シーン
 void SixStageActor::IntroUpdate(DebugCamera* camera) {
@@ -245,8 +239,7 @@ void SixStageActor::IntroUpdate(DebugCamera* camera) {
 	m_AppTimer++;
 	if (m_AppTimer == 400) {
 		_AppState = APP_NOTICE;
-	}
-	else if (m_AppTimer == 580) {
+	} else if (m_AppTimer == 580) {
 		_AppState = APP_VANISH;
 	}
 
@@ -254,21 +247,17 @@ void SixStageActor::IntroUpdate(DebugCamera* camera) {
 	text_->Display();
 	if (m_AppTimer == 1) {
 		text_->SelectText(TextManager::TALK_FIRST);
-	}
-	else if (m_AppTimer == 150) {
+	} else if (m_AppTimer == 150) {
 		text_->SelectText(TextManager::TALK_SECOND);
-	}
-	else if (m_AppTimer == 300) {
+	} else if (m_AppTimer == 300) {
 		text_->SelectText(TextManager::TALK_THIRD);
 		text_->ChangeColor(0, { 1.0f,0.0f,0.0f,1.0f });
-	}
-	else if (m_AppTimer == 400) {
+	} else if (m_AppTimer == 400) {
 		text_->SelectText(TextManager::TALK_FOURTH);
 		for (int i = 0; i < 3; i++) {
 			text_->ChangeColor(i, { 1.0f,1.0f,0.0f,1.0f });
 		}
-	}
-	else if (m_AppTimer == 500) {
+	} else if (m_AppTimer == 500) {
 		text_->SelectText(TextManager::TALK_FIVE);
 	}
 }
@@ -276,8 +265,7 @@ void SixStageActor::IntroUpdate(DebugCamera* camera) {
 void SixStageActor::MainUpdate(DebugCamera* camera) {
 	Input* input = Input::GetInstance();
 	//カメラワークのセット
-	if (enemymanager->BossDestroy())
-	{
+	if (enemymanager->BossDestroy()) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		//フェード前
 		if (!camerawork->GetFeedEnd()) {
@@ -286,8 +274,7 @@ void SixStageActor::MainUpdate(DebugCamera* camera) {
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_BEFORE);
 		}
 		//フェード後
-		else
-		{
+		else {
 			PlayPostEffect = false;
 			Player::GetInstance()->InitState({ 0.0f,0.0f,-5.0f });
 			enemymanager->SetDeadThrow(false);
@@ -302,9 +289,7 @@ void SixStageActor::MainUpdate(DebugCamera* camera) {
 		}
 
 		Player::GetInstance()->DeathUpdate();
-	}
-	else
-	{
+	} else {
 		Player::GetInstance()->Update();
 	}
 
@@ -365,14 +350,12 @@ void SixStageActor::MoveSpotLight() {
 		spotLightDir[3].x = (sin(m_Angle2[3]) * 6.0f + (2.0f));
 		spotLightDir[3].z = (sin(m_Angle2[3]) * 6.0f + (2.0f));
 
-	}
-	else if (_AppState == APP_NOTICE) {
+	} else if (_AppState == APP_NOTICE) {
 		SpotSet(spotLightDir[0], { l_DirMin,{},l_DirMin }, l_AddFrame);
 		SpotSet(spotLightDir[1], { l_DirMin,{},l_DirMax }, l_AddFrame);
 		SpotSet(spotLightDir[2], { l_DirMax,{},l_DirMin }, l_AddFrame);
 		SpotSet(spotLightDir[3], { l_DirMax,{},l_DirMax }, l_AddFrame);
-	}
-	else if (_AppState == APP_VANISH) {
+	} else if (_AppState == APP_VANISH) {
 		//角度
 		SpotSet(spotLightDir[0], {}, l_AddFrame);
 		SpotSet(spotLightDir[1], {}, l_AddFrame);

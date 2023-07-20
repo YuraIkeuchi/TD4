@@ -33,6 +33,8 @@ private:
 	void HeartJump();
 
 	void HeartSet();
+
+	void HeartVanish();
 private://ステート
 	static void (Heart::* stateTable[])();
 private:
@@ -49,10 +51,13 @@ private:
 	int m_AliveTimer = {};
 	//生存時間の制限
 	int m_LimitTimer = {};
+
+	bool m_Vanish = false;
 private:
 	enum HeartState {
 		HEART_JUMP,
 		HEART_SET,
+		HEART_VANISH,
 	}_heartState;
 
 	XMFLOAT3 m_AddPower = {};

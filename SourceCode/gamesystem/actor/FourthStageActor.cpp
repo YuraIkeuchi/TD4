@@ -77,21 +77,25 @@ void FourthStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 
 	lightgroup->SetCircleShadowActive(0, true);
 	lightgroup->SetCircleShadowActive(1, true);
-
-	Menu::GetIns()->Init();
+	menu = make_unique<Menu>();
+	menu->Initialize();
 }
 //更新
 void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	//関数ポインタで状態管理
-	if (!Menu::GetIns()->GetMenuOpen()) {
-		(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+	if (menu->Pause()) {
+		menu->Update();
 		sceneChanger_->Update();
-		camerawork->Update(camera);
-		if (isVisible) { apple->Update(); }
+		return;
 	}
-	Menu::GetIns()->Upda();
+	if (isVisible) { apple->Update(); }
+
+	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+	sceneChanger_->Update();
+	camerawork->Update(camera);
+	menu->Update();
 	ui->Update();
-	postEffect->SetCloseRad(Menu::GetIns()->GetCloseIconRad());
+	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 	messagewindow_->Update(girl_color_, sutopon_color_);
 
 	//ゲームクリアフラグ
@@ -193,15 +197,11 @@ void FourthStageActor::FrontDraw(DirectXCommon* dxCommon) {
 		IKESprite::PostDraw();
 	}
 	sceneChanger_->Draw();
-	Menu::GetIns()->Draw();
+	menu->Draw();
 	camerawork->feedDraw();
 }
 //IMGuiの描画
 void FourthStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	//Player::GetInstance()->ImGuiDraw();
-	//enemymanager->ImGuiDraw();
-	//loadobj->ImGuiDraw();
-	//SceneSave::GetInstance()->ImGuiDraw();
 }
 
 
@@ -331,7 +331,7 @@ void FourthStageActor::IntroUpdate(DebugCamera* camera) {
 		text_->ChangeColor({ 1.0f,1.0f,1.0f,1.0f });
 		text_->SelectText(TextManager::TALK_XVI_T);
 		girl_color_ = { 1.2f,1.2f,1.2f,1 };
-	}else if (m_AppTimer == 3450) {
+	} else if (m_AppTimer == 3450) {
 		text_->ChangeColor({ 0.8f,0.0f,0.0f,1.0f });
 		text_->SelectText(TextManager::TALK_XVII_T);
 		girl_color_ = { 1.2f,1.2f,1.2f,0 };
@@ -388,7 +388,7 @@ void FourthStageActor::MainUpdate(DebugCamera* camera) {
 
 	if (PlayerDestroy()) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
-		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kFourthStage,true);
+		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kFourthStage, true);
 		sceneChanger_->ChangeStart();
 		sceneChanger_->ChangeSceneLose("GAMEOVER");
 	}

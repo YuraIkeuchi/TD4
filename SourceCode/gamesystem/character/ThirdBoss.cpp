@@ -222,9 +222,7 @@ void ThirdBoss::DamAction()
 //ImGui
 void ThirdBoss::ImGui_Origin() {
 	ImGui::Begin("Third");
-	ImGui::Text("Frame:%f", m_Frame);
-	ImGui::Text("Choice:%d", int(_charaState));
-	ImGui::Text("RotX:%f", m_Rotation.x);
+	ImGui::Text("RotY:%f", m_Rotation.y);
 	ImGui::End();
 }
 //移動

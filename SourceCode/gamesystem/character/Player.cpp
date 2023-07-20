@@ -88,6 +88,11 @@ void Player::InitState(const XMFLOAT3& pos) {
 	HungerGauge::GetInstance()->SetAdditional(0.0f);
 
 	m_HitPlayer = true;
+
+	_DarkState = DARK_SET;
+	_LastState = LAST_SET;
+	_EndState = END_SET;
+	_LastEndState = LAST_END_SET;
 	effects.clear();
 }
 //状態遷移
@@ -679,7 +684,7 @@ void Player::isOldPos()
 void Player::RecvDamage(float Damage) {
 	if (m_HitPlayer) {
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Damage.wav", VolumManager::GetInstance()->GetSEVolum());
-		//m_HP -= Damage;
+		m_HP -= Damage;
 		m_DamageInterVal = 50;
 		m_Damage = true;
 		m_Confu = false;

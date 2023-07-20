@@ -277,15 +277,15 @@ void SevenBoss::Draw(DirectXCommon* dxCommon) {
 void SevenBoss::ImGui_Origin() {
 	ImGui::Begin("Seven");
 	ImGui::Text("End:%d", m_EndTimer);
-	ImGui::Text("PosY:%f", m_Rotation.y);
+	ImGui::Text("Vanish:%d", m_VanishTarget);
 	ImGui::End();
 
-	//火の玉
-	for (FireBoll* newfire : fireboll) {
-		if (newfire != nullptr) {
-			newfire->ImGuiDraw();
-		}
-	}
+	////火の玉
+	//for (FireBoll* newfire : fireboll) {
+	//	if (newfire != nullptr) {
+	//		newfire->ImGuiDraw();
+	//	}
+	//}
 }
 //インターバル
 void SevenBoss::InterValMove() {
@@ -872,10 +872,6 @@ void SevenBoss::VanishCollide(vector<InterBullet*> bullet)
 				//乱数指定
 				mt19937 mt{ std::random_device{}() };
 				uniform_int_distribution<int> l_RandomRange(1, 100);
-				uniform_int_distribution<int> l_RandomPosX(5, 10);
-				uniform_int_distribution<int> l_RandomPosZ(5, 10);
-				uniform_int_distribution<int> l_RandomDirX(0, 1);
-				uniform_int_distribution<int> l_RandomDirZ(0, 1);
 				l_RandCount = int(l_RandomRange(mt));
 				_bullet->SetInArea(true);
 
