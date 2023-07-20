@@ -424,45 +424,7 @@ void CameraWork::FirstBossAppear() {
 	XMVECTOR move = { 0.f,0.f, 0.1f, 0.0f };
 	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(boss->GetRotation().y + 60));
 	move = XMVector3TransformNormal(move, matRot);
-	if (spline->GetIndex() >= pointsList.size() - 2) {
-		RadEffect -= 0.2f;
-	} else if (spline->GetIndex() >= pointsList.size()) {
-		RadEffect += 0.2f;
-		SplineSpeed = 400.f;
-	} else {
-		SplineSpeed = 300.f;
-	}
-	if (!Finish) {
-
-		spline->Upda(m_eyePos, SplineSpeed);
-	}
-	Helper::GetInstance()->Clamp(RadEffect, 0.f, 15.f);
-
-	if (spline->GetIndex() >= pointsList.size() - 1) {
-
-		if (Helper::GetInstance()->FrameCheck(m_Frame, 0.01f)) {
-			AppearEndF = true;
-			m_CameraState = CAMERA_NORMAL;
-			m_Frame = 1.0f;
-		}
-		m_AfterEye = { Player::GetInstance()->GetPosition().x,45.0f,Player::GetInstance()->GetPosition().z - 20.0f };
-		m_AfterTarget = Player::GetInstance()->GetPosition();
-		m_targetPos = {
-Ease(In,Cubic,m_Frame,boss->GetPosition().x,m_AfterTarget.x),
-Ease(In,Cubic,m_Frame,boss->GetPosition().y,m_AfterTarget.y),
-Ease(In,Cubic,m_Frame,boss->GetPosition().z,m_AfterTarget.z),
-		};
-
-		m_eyePos = {
-Ease(In,Cubic,m_Frame,m_eyePos.x,m_AfterEye.x),
-Ease(In,Cubic,m_Frame,m_eyePos.y,m_AfterEye.y),
-Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
-		};
-
-		Finish = true;
-	} else {
-		m_targetPos = { boss->GetPosition() };
-	}
+	
 }
 
 void CameraWork::FirstBossDead_AfterFeed() {
