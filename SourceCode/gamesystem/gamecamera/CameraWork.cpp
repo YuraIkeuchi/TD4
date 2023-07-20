@@ -420,11 +420,113 @@ void CameraWork::feedDraw() {
 }
 //最初のボスのカメラ
 void CameraWork::FirstBossAppear() {
-	\
+	
 	XMVECTOR move = { 0.f,0.f, 0.1f, 0.0f };
 	XMMATRIX matRot = XMMatrixRotationY(XMConvertToRadians(boss->GetRotation().y + 60));
 	move = XMVector3TransformNormal(move, matRot);
+		float l_AddFrame = 0.0f;
+	if (m_AppearType == APPEAR_START) {
+		m_CameraTimer++;
+		m_AfterSpeed = m_CameraSpeed;
+		m_targetPos.x = 0.0f;
+		m_eyePos = {
+			Player::GetInstance()->GetPosition().x,
+			0.0f,
+			Player::GetInstance()->GetPosition().z + 23.0f,
+		};
+
+		if (m_CameraTimer == 10) {
+			m_AfterSpeed = 30.0f;
+			m_AppearType = APPEAR_FIVE;
+		}
+
+		SetCircleCameraTarget();
+	}
 	
+	//ボスの後ろにいる
+	else if (m_AppearType == APPEAR_FIVE) {
+		m_targetPos = boss->GetPosition();
+		m_eyePos = { boss->GetPosition().x - 10.0f,boss->GetPosition().y,boss->GetPosition().z + 20.0f };
+		m_CameraTimer++;
+
+		if (m_CameraTimer == 30) {
+			m_AfterEye = { boss->GetPosition().x - 5.0f, boss->GetPosition().y, boss->GetPosition().z - 40.0f };
+			m_AppearType = APPEAR_SIX;
+			m_Frame = {};
+			m_CameraTimer = {};
+		}
+	}
+	//プレイヤーの右後ろに来る
+	else if (m_AppearType == APPEAR_SIX) {
+		l_AddFrame = 0.01f;
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = 0.0f;
+			m_AppearType = APPEAR_SEVEN;
+		}
+
+		m_eyePos = {
+			Ease(In,Cubic,m_Frame,m_eyePos.x,m_AfterEye.x),
+			Ease(In,Cubic,m_Frame,m_eyePos.y,m_AfterEye.y),
+			Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
+		};
+	}
+	//カメラを停止させる
+	else if (m_AppearType == APPEAR_SEVEN) {
+		//カメラが寄るフラグになったら次のシーン移行
+		if (m_Approach) {
+			m_AfterEye = { boss->GetPosition().x,boss->GetPosition().y,boss->GetPosition().z - 20.0f };
+			m_AfterTarget = { boss->GetPosition().x,boss->GetPosition().y,boss->GetPosition().z };
+			m_Frame = {};
+			m_CameraTimer = {};
+			m_AppearType = APPEAR_EIGHT;
+			m_Approach = false;
+		}
+	}
+	//カメラをボスの前に
+	else if (m_AppearType == APPEAR_EIGHT) {
+		l_AddFrame = 0.05f;
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			//一定時間でカメラを戻す
+			if (Helper::GetInstance()->CheckMin(m_CameraTimer, 100, 1)) {
+				m_AfterEye = { Player::GetInstance()->GetPosition().x,45.0f,Player::GetInstance()->GetPosition().z - 20.0f };
+				m_AfterTarget = { Player::GetInstance()->GetPosition().x,5.0f,Player::GetInstance()->GetPosition().z };
+				m_Frame = {};
+				m_CameraTimer = {};
+				m_AppearType = APPEAR_END;
+				boss->SetFinishApp(true);
+			}
+		}
+		m_eyePos = {
+		Ease(In,Cubic,m_Frame,m_eyePos.x,m_AfterEye.x),
+		Ease(In,Cubic,m_Frame,m_eyePos.y,m_AfterEye.y),
+		Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
+		};
+
+		m_targetPos = {
+		Ease(In,Cubic,m_Frame,m_targetPos.x,m_AfterTarget.x),
+		Ease(In,Cubic,m_Frame,m_targetPos.y,m_AfterTarget.y),
+		Ease(In,Cubic,m_Frame,m_targetPos.z,m_AfterTarget.z),
+		};
+	}
+	//バトル前のカメラに戻る
+	else if (m_AppearType == APPEAR_END) {
+		l_AddFrame = 0.05f;
+		if (Helper::GetInstance()->FrameCheck(m_Frame, l_AddFrame)) {
+			m_Frame = 1.0f;
+		}
+
+		m_eyePos = {
+		Ease(In,Cubic,m_Frame,m_eyePos.x,m_AfterEye.x),
+		Ease(In,Cubic,m_Frame,m_eyePos.y,m_AfterEye.y),
+		Ease(In,Cubic,m_Frame,m_eyePos.z,m_AfterEye.z),
+		};
+
+		m_targetPos = {
+		Ease(In,Cubic,m_Frame,m_targetPos.x,m_AfterTarget.x),
+		Ease(In,Cubic,m_Frame,m_targetPos.y,m_AfterTarget.y),
+		Ease(In,Cubic,m_Frame,m_targetPos.z,m_AfterTarget.z),
+		};
+	}
 }
 
 void CameraWork::FirstBossDead_AfterFeed() {
