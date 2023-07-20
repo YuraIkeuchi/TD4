@@ -34,7 +34,7 @@ void ShotAttack::Upda()
 	for (auto i = 0; i < 3; i++) {
 		obb[i].SetParam_Pos(ShotObj[i]->GetPosition());
 		obb[i].SetParam_Rot(ShotObj[i]->GetMatrot());
-		obb[i].SetParam_Scl({ 1.f,2.f,0.5f });
+		obb[i].SetParam_Scl({ 1.f,3.f,0.5f });
 	}
 	if (_phase == SHOT) {
 		for (auto i = 0; i < boss->GetGhost().size(); i++) {
@@ -89,6 +89,7 @@ BulRot[0].y = boss->GetRotation().y - 30.f+90;
 		ShotObj[i]->SetColor({ 1.f,0.3f,1.f ,BulAlpha[i] });
 		ShotObj[i]->SetScale({ 1.f,1.f,1.f });
 		ShotObj[i]->SetRotation(BulRot[i]);
+		BulPos[i].y=3.f;
 		ShotObj[i]->SetPosition(BulPos[i]);
 		ShotObj[i]->Update();
 	}
@@ -110,11 +111,11 @@ BulRot[0].y = boss->GetRotation().y - 30.f+90;
 
 void ShotAttack::Draw(DirectXCommon* dxCommon)
 {
-	//if (_phase != SHOT)return;
+	if (_phase != SHOT)return;
 	IKEObject3d::PreDraw();
 	for (auto i = 0; i < BulSize; i++) {
-	//	if (BulAlpha[i] <= 0.f)continue;
-		//if (!BulAlive[i])continue;
+		if (BulAlpha[i] <= 0.f)continue;
+		if (!BulAlive[i])continue;
 		ShotObj[i]->Draw();
 	}
 	IKEObject3d::PostDraw();
@@ -139,9 +140,9 @@ void ShotAttack::Phase_Idle()
 {
 	for(auto i=0;i<3;i++)
 	{
-		BulPos[i] = boss->GetPosition();
-		BulAlpha[i] = 1.f;
-		BulAlive[i] = true;
+		BulPos[i].x = boss->GetPosition().x;
+		BulPos[i].y = 3.f;
+		BulPos[i].z = boss->GetPosition().z;
 	}
 	AttackTimer++;
 	RottoPlayer();
@@ -155,9 +156,14 @@ void ShotAttack::Phase_Idle()
 		if (AttackTimer > 120)
 		{
 			for (auto i = 0; i < BulSize; i++) {
-				BulPos[i] = boss->GetPosition();
+				BulPos[i].x = boss->GetPosition().x;
+				BulPos[i].y = 3.f;
+				BulPos[i].z = boss->GetPosition().z;
 			}
-
+			for (auto i = 0; i < BulSize; i++)
+			{
+				BulAlpha[0] = 1.f;// true;
+			}
 			_phase = Phase::SHOT;
 		}
 	}
@@ -184,7 +190,10 @@ void ShotAttack::Phase_Idle()
 			{
 				TriggerAttack = true;
 				boss->AnimationControl(InterBoss::AnimeNames::SHOT, false, 1);
-
+				for (auto i = 0; i < BulSize; i++)
+				{
+					BulAlpha[0] = 1.f;// true;
+				}
 				_phase = Phase::SHOT;
 			}
 			//次フェーズ
@@ -197,7 +206,10 @@ void ShotAttack::Phase_Idle()
 
 			AttackTimer++;
 			if (next) {
-
+				for (auto i = 0; i < BulSize; i++)
+				{
+					BulAlpha[0] = 1.f;// true;
+				}
 				boss->AnimationControl(InterBoss::AnimeNames::SHOT, false, 1);
 				_phase = Phase::SHOT;
 			}
@@ -224,22 +236,27 @@ void ShotAttack::Phase_Shot()
 		move[i] = XMVector3TransformNormal(move[i], matRot[i]);
 		
 	}
-	BulAlive[0] = true;
+	//
 	if (BulAlpha[0] >= 1.f)BulPos[0] = boss->GetPosition();
 	BulPos[0].x += move[0].m128_f32[0] * WalkSpeed;
 	BulPos[0].z += move[0].m128_f32[2] * WalkSpeed;
 	//弾を薄く
 	BulAlpha[0] -= 0.01f;
-	for (auto i = 0; i < BulSize; i++)
+	for (auto i = 1; i < BulSize; i++)
 	{
-		if (BulAlpha[i] >= 1.f)BulPos[i] = boss->GetPosition();
-		//進行スピード
-		BulPos[i].x += move[i].m128_f32[0] * WalkSpeed;
-		BulPos[i].z += move[i].m128_f32[2] * WalkSpeed;
-		//弾を薄く
-		BulAlpha[i] -= 0.01f;
-	}
+		if (BulAlpha[i - 1] < 0.8f && !BulAlive[i]) {
+			BulAlpha[i] = 1.f;
+			BulAlive[i] = true;
+		}
+			//if (BulAlpha[i] >= 1.f)BulPos[i] = boss->GetPosition();
+			//進行スピード
+			BulPos[i].x += move[i].m128_f32[0] * WalkSpeed;
+			BulPos[i].z += move[i].m128_f32[2] * WalkSpeed;
+			//弾を薄く
+			BulAlpha[i] -= 0.01f;
+		
 
+	}
 	if (BulAlpha[1] <= 0.f&&
 		BulAlpha[2] <= 0.f&&
 		BulAlpha[0] <= 0.f) {
@@ -286,13 +303,6 @@ void ShotAttack::Phase_End()
 
 		RottoGhost = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
 	}
-	for (auto i = 0; i < BulSize; i++)
-	{
-		BulAlive[i] = true;
-		BulAlpha[i] = 1.f;
-		BulPos[i] = boss->GetPosition();
-	}
-
 
 	//Helper::GetInstance()->FrameCheck(RotEaseTime, 0.04f);
 
@@ -306,7 +316,13 @@ void ShotAttack::Phase_End()
 	//if (RotEaseTime >= 1.f)
 		_phase = NON;
 	//}
-
+		for (auto i = 0; i < 3;i++){
+			BulPos[i].x = boss->GetPosition().x;
+			BulPos[i].y =3.f;
+			BulPos[i].z = boss->GetPosition().z;
+			BulAlpha[i] = 1.f;
+			BulAlive[i] = false;
+		}
 	//else ActionEnd = true;
 }
 

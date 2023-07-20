@@ -354,7 +354,7 @@ void FiveBoss::AppearAction()
 	const float l_AddFrame = 0.05f;
 	m_AppearTimer++;
 	if (_AppState == APP_SET) {
-		m_Position = { 600.0f,-5.0f,30.0f };
+		//m_Position = { 600.0f,-5.0f,30.0f };
 		m_Rotation = { 0.0f,180.0f,0.0f };
 		m_Color = { 0.0f,1.0f,0.0f,0.0f };
 
@@ -472,8 +472,8 @@ void FiveBoss::ImGui_Origin()
 	ImGui::Text("PosX %f", m_Position.x);
 	ImGui::Text("PosZ %f", m_Position.z);
 //	ImGui::Text("Cololr %f", m_Color.w);
-	ImGui::Text("Cololr1 %f", shot->GetBulAlpha(2));
-	ImGui::Text("Cololr2 %f", shot->GetBulAlpha(2));
+	ImGui::Text("Cololr1 %f", shot->GetBulAlpha(0));
+	ImGui::Text("Cololr2 %f", shot->GetBulAlpha(1));
 	ImGui::Text("Cololr3 %f", shot->GetBulAlpha(2));
 	ImGui::Text("Phase %d", (int)_aPhase);
 	ImGui::Text("ShotPhase %d", (int)shot->GEtPhase());
