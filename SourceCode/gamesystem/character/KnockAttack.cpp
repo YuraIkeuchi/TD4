@@ -172,7 +172,7 @@ void KnockAttack::ImpactAction()
 		ReturnEaseT = 0.f;
 		//SUB Alpha-Scling
 		if (JFrame >= 1.f) {
-			if (Player::GetInstance()->GetDamageInterVal() == 0 && Collision::GetLength(stopos, Player::GetInstance()->GetPosition()) < 10.f) {
+			if (Player::GetInstance()->GetDamageInterVal() == 0 && Collision::GetLength(stopos, Player::GetInstance()->GetPosition()) < 13.f) {
 				Player::GetInstance()->PlayerHit(stopos);
 				Player::GetInstance()->RecvDamage(Dam);
 			}

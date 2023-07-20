@@ -494,6 +494,7 @@ void FiveBoss::Draw(DirectXCommon* dxCommon)
 	//Obj_Draw();
 	if (m_HP > 0.0f) {
 		smash->Draw(dxCommon);
+		if(_aPhase==ATTACK_SINGLESHOT)
 		single->Draw(dxCommon);
 
 		shot->Draw(dxCommon);

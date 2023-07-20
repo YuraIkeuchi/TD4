@@ -62,7 +62,7 @@ void SingleShot::Draw(DirectXCommon* dxCommon)
 	IKEObject3d::PreDraw();
 	for (auto i = 0; i < BulSize; i++) {
 		if (BulAlpha[i] <= 0.f)continue;
-		if (!ShotAlive[i])continue;;
+		if (!ShotAlive[i])continue;
 		ShotObj[i]->Draw();
 	}
 	IKEObject3d::PostDraw();
@@ -133,11 +133,13 @@ void SingleShot::Phase_Shot()
 
 	if (ShotSize == 1)
 	{
-
 		ShotAlive[1] = true;
+		ShotAlive[0] = false;
+		ShotAlive[2] = false;
 	}
 	if (ShotSize == 2)
 	{
+		BulAlive[1] = false;
 		ShotAlive[0] = true;
 		ShotAlive[2] = true;
 	}
@@ -182,7 +184,7 @@ void SingleShot::Phase_Shot()
 			Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z,3.f)) {
 			Player::GetInstance()->PlayerHit(m_Position);
 			Player::GetInstance()->RecvDamage(Dam);
-
+			ShotAlive[i] = false;
 		}
 
 		//進行スピード

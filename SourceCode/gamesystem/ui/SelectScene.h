@@ -140,5 +140,9 @@ public:
 private:
 	int m_BirthTimer = {};
 	bool m_Wide = false;
+
+	bool ChangeLastF;
+	float CLastEaseTime;
+	void ChangeStageRot();
 };
 
