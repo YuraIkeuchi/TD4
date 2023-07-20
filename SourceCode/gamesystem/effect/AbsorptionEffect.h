@@ -30,7 +30,10 @@ public:
 	bool GetAlive() { return m_Alive; }
 
 	void SetAlive(const bool Alive) { m_Alive = Alive; }
+	void SetAddFrame(const float AddFrame) { m_AddFrame = AddFrame; }
 	void SetBasePos(const XMFLOAT3& BasePos) { m_BasePos = BasePos; }
+	void SetColor(const XMFLOAT4& Color) { m_Color = Color; }
+
 private:
 	unique_ptr<IKETexture> tex;
 
@@ -39,6 +42,7 @@ private:
 	float m_CircleScale;
 	float m_CircleX;
 	float m_CircleZ;
+	float m_AddFrame = {};
 
 	bool m_Alive = false;
 	XMFLOAT3 m_Position = {};
@@ -47,4 +51,5 @@ private:
 	float m_Frame = {};
 
 	XMFLOAT3 m_Scale = { 0.3f,0.3f,0.3f };
+	XMFLOAT4 m_Color = {};
 };

@@ -856,6 +856,8 @@ void SevenBoss::BirthParticle() {
 	neweffect = new AbsorptionEffect();
 	neweffect->Initialize();
 	neweffect->SetBasePos(m_Position);
+	neweffect->SetColor({ 0.5f,0.0f,0.5f,1.0f });
+	neweffect->SetAddFrame(0.01f);
 	abseffect.push_back(neweffect);
 }
 //ボスの消える判定
@@ -1051,4 +1053,8 @@ void SevenBoss::EndRollAction() {
 	}
 	//OBJのステータスのセット
 	Obj_SetParam();
+}
+//会話
+void SevenBoss::AfterAction() {
+
 }

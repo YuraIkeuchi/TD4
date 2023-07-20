@@ -28,6 +28,8 @@ public:
 	void InitAwake() override;//ボスの覚醒
 
 	void EndRollAction() override;//エンドロールの更新
+
+	void AfterAction() override;//会話
 private:
 	struct SummonEnemy
 	{

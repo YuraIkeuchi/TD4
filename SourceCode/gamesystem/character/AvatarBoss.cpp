@@ -462,3 +462,7 @@ void AvatarBoss::EndRollAction() {
 	//OBJのステータスのセット
 	Obj_SetParam();
 }
+//会話
+void AvatarBoss::AfterAction() {
+
+}

@@ -36,6 +36,8 @@ public:
 	void InitAwake() override;//ボスの覚醒
 
 	void EndRollAction() override;//エンドロールの更新
+
+	void AfterAction() override;//会話
 private:
 	void CSVLoad();
 	
@@ -99,7 +101,7 @@ private:
 	vector<FireBoll*> fireboll;//火の玉
 	vector<InterBoss*> avatarboss;//偽物のボス
 	vector<DamageBlock*> damageblock;//ダメージブロック
-	vector<AbsorptionEffect*> abseffect;//弾幕
+	vector<AbsorptionEffect*> abseffect;//吸収
 	unique_ptr<ConfuEffect> confueffect;
 	unique_ptr<BossStunEffect> bossstuneffect;
 	float m_SinAngle = {};
