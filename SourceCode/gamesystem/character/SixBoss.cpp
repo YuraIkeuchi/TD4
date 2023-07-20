@@ -571,3 +571,7 @@ void SixBoss::EndRollAction() {
 	//OBJのステータスのセット
 	Obj_SetParam();
 }
+//会話
+void SixBoss::AfterAction() {
+
+}

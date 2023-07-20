@@ -50,6 +50,9 @@ void Player::LoadCSV() {
 
 	m_PowerLimit.resize(LimitSize);
 	LoadCSV::LoadCsvParam_Float("Resources/csv/chara/player/player.csv", m_PowerLimit, "PowerLimit");
+	for (auto i = 0; i < ABS_NUM; i++) {
+		m_Birthabs[i] = false;
+	}
 	/*CSV読み込み(CSVファイル名,読み込むパラメータの名前,受け取る値)　今は単一の方のみ対応(int float double charとか)*/
 
 //spから間接的にアクセスする方法 (Update()内で専用の変数に代入する必要あり)
@@ -94,6 +97,7 @@ void Player::InitState(const XMFLOAT3& pos) {
 	_EndState = END_SET;
 	_LastEndState = LAST_END_SET;
 	effects.clear();
+	abseffect.clear();
 }
 //状態遷移
 /*CharaStateのState並び順に合わせる*/
@@ -128,7 +132,6 @@ void Player::Update()
 		//何もアクションがなかったらアイドル状態
 		else
 		{
-			//fbxmodels->PlayAnimation(2);
 			_charaState = CharaState::STATE_IDLE;
 		}
 	}
@@ -197,13 +200,29 @@ void Player::Update()
 			effects.erase(cbegin(effects) += i);
 		}
 	}
+
+	//吸収エフェクト
+	for (AbsorptionEffect* neweffect : abseffect) {
+		if (neweffect != nullptr) {
+			neweffect->Update();
+		}
+	}
+
+	//吸収エフェクト
+	for (int i = 0; i < abseffect.size(); i++) {
+		if (abseffect[i] == nullptr) {
+			continue;
+		}
+
+		if (!abseffect[i]->GetAlive()) {
+			abseffect.erase(cbegin(abseffect) + i);
+		}
+	}
 }
 //描画
 void Player::Draw(DirectXCommon* dxCommon)
 {
 	//キャラクター
-
-	//どっち使えばいいか分からなかったから保留
 	fbxmodels->Draw(dxCommon->GetCmdList());
 	playerattach->Draw(dxCommon);
 	//弾の描画
@@ -212,6 +231,13 @@ void Player::Draw(DirectXCommon* dxCommon)
 	IKEObject3d::PreDraw();
 	skirtobj->Draw();
 	IKEObject3d::PostDraw();
+
+	//吸収エフェクト
+	for (AbsorptionEffect* neweffect : abseffect) {
+		if (neweffect != nullptr) {
+			neweffect->Draw(dxCommon);
+		}
+	}
 }
 //弾の描画
 void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxCommon) {
@@ -225,9 +251,6 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 }
 //ImGui
 void Player::ImGuiDraw() {
-	////HungerGauge::GetInstance()->ImGuiDraw();
-
-	//playerattach->ImGuiDraw();
 	ImGui::Begin("Player");
 	ImGui::Text("CanSearch:%d", m_CanSearch);
 	ImGui::Text("Type:%d", m_BulletType);
@@ -423,12 +446,27 @@ void Player::Bullet_Management() {
 			}
 			else if (m_ChargePower >= m_PowerLimit[POWER_NONE] && m_ChargePower < m_PowerLimit[POWER_MIDDLE]) {
 				m_ChargeType = POWER_MIDDLE;
+				if (!m_Birthabs[POWER_MIDDLE - 1]) {
+					BirthAbs();
+					m_Birthabs[POWER_MIDDLE - 1] = true;
+					Audio::GetInstance()->PlayWave("Resources/Sound/SE/charge.wav", VolumManager::GetInstance()->GetSEVolum());
+				}
 			}
 			else if (m_ChargePower >= m_PowerLimit[POWER_MIDDLE] && m_ChargePower < m_PowerLimit[POWER_STRONG]) {
 				m_ChargeType = POWER_STRONG;
+				if (!m_Birthabs[POWER_STRONG - 1]) {
+					BirthAbs();
+					m_Birthabs[POWER_STRONG - 1] = true;
+					Audio::GetInstance()->PlayWave("Resources/Sound/SE/charge.wav", VolumManager::GetInstance()->GetSEVolum());
+				}
 			}
 			else {
 				m_ChargeType = POWER_UNLIMITED;
+				if (!m_Birthabs[POWER_UNLIMITED - 1]) {
+					BirthAbs();
+					m_Birthabs[POWER_UNLIMITED - 1] = true;
+					Audio::GetInstance()->PlayWave("Resources/Sound/SE/charge.wav", VolumManager::GetInstance()->GetSEVolum());
+				}
 			}
 		}
 
@@ -440,6 +478,9 @@ void Player::Bullet_Management() {
 				}
 				else {
 					Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Charge.wav", VolumManager::GetInstance()->GetSEVolum());
+				}
+				for (auto i = 0; i < ABS_NUM; i++) {
+					m_Birthabs[i] = false;
 				}
 				BirthShot("Attack", true);
 				playerattach->SetAlive(true);
@@ -471,6 +512,9 @@ void Player::Bullet_Management() {
 				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Charge.wav", VolumManager::GetInstance()->GetSEVolum());
 				BirthShot("Attack", true);
 				playerattach->SetAlive(true);
+			}
+			for (auto i = 0; i < ABS_NUM; i++) {
+				m_Birthabs[i] = false;
 			}
 			//減る飢餓ゲージ量を決める
 			if (m_ChargeType != POWER_NONE) {
@@ -570,7 +614,6 @@ void Player::BulletUpdate(std::vector<InterBullet*> bullets) {
 			bullet->Update();
 		}
 	}
-
 }
 //弾の生成
 void Player::BirthShot(const std::string& bulletName, bool Super) {
@@ -696,6 +739,8 @@ void Player::RecvDamage(float Damage) {
 void Player::BulletDelete() {
 	ghostbullets.clear();
 	attackbullets.clear();
+	effects.clear();
+	abseffect.clear();
 }
 //プレイヤーが敵にあたった瞬間の判定
 void Player::PlayerHit(const XMFLOAT3& pos) {
@@ -945,4 +990,17 @@ void Player::SetParam() {
 	fbxmodels->SetScale(m_Scale);
 	fbxmodels->SetColor(m_Color);
 	fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
+}
+//パーティクル
+void Player::BirthAbs() {
+	for (int i = 0; i < 20;i++) {
+		//ノーツの発生
+		AbsorptionEffect* neweffect;
+		neweffect = new AbsorptionEffect();
+		neweffect->Initialize();
+		neweffect->SetBasePos(m_Position);
+		neweffect->SetColor({ 1.0f,1.0f,0.0f,1.0f });
+		neweffect->SetAddFrame(0.05f);
+		abseffect.push_back(neweffect);
+	}
 }

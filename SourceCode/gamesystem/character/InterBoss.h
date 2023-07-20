@@ -53,6 +53,8 @@ public:
 	virtual void EffecttexDraw(DirectXCommon* dxCommon) = 0;
 
 	void AwakeUpdate();
+	//ボス戦後の更新
+	void AfterUpdate();
 protected:
 
 	virtual void Action() = 0;//ボス特有の処理
@@ -68,6 +70,8 @@ protected:
 	virtual void ImGui_Origin() = 0;//ボスそれぞれのImGui
 
 	virtual void InitAwake() = 0;//覚醒シーンの初期化
+
+	virtual void AfterAction() = 0;//バトル後の会話
 
 private:
 	void BirthEffect();

@@ -11,7 +11,6 @@ AbsorptionEffect::AbsorptionEffect() {
 	tex->TextureCreate();
 	tex->SetRotation({ 0,0,0 });
 	tex->SetScale(m_Scale);
-	tex->SetColor({ 0.5f,0.0f,0.5f,1.0f });
 	tex->SetIsBillboard(true);
 }
 //初期化
@@ -29,7 +28,7 @@ void AbsorptionEffect::Initialize() {
 }
 //更新
 void AbsorptionEffect::Update() {
-	//ぴよぴよ
+	//パーティクル動く
 	MoveEffect();
 }
 //描画
@@ -47,13 +46,12 @@ void AbsorptionEffect::ImGuiDraw() {
 
 //スタン時エフェクト
 void AbsorptionEffect::MoveEffect() {
-	const float l_AddFrame = 0.01f;
 	//スタン時のぴよぴよ
 	if (m_Alive) {
 		m_CircleSpeed += 10.0f;
 
 		if (m_Frame < m_FrameMax) {
-			m_Frame += l_AddFrame;
+			m_Frame += m_AddFrame;
 		}
 		else {
 			m_Frame = {};
@@ -70,5 +68,6 @@ void AbsorptionEffect::MoveEffect() {
 	m_Position = Helper::GetInstance()->CircleMove({ m_BasePos.x,m_BasePos.y + 1.0f,m_BasePos.z }, m_CircleScale, m_CircleSpeed);
 	tex->SetPosition(m_Position);
 	tex->SetScale(m_Scale);
+	tex->SetColor(m_Color);
 	tex->Update();
 }

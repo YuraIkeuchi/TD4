@@ -47,6 +47,8 @@ public:
 	void EffecttexDraw(DirectXCommon* dxCommon) override;
 
 	void Draw(DirectXCommon* dxCommon) override;//•`‰æ
+
+	void AfterAction() override;//‰ï˜b
 private:
 	void SetEasePos();
 private:

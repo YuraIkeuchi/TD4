@@ -40,11 +40,11 @@ FirstBoss::FirstBoss()
 
 bool FirstBoss::Initialize()
 {
-	m_Position = { 0.0f,3.0f,30.0f };
+	m_Position = { 0.0f,3.0f,50.0f };
 	m_Rotation = { 0.0f,0.0f,0.0f };
-	m_Scale = { 15.3f,15.3f,15.3f };
-	m_Color = { 1.0f,1.0f,1.0f,1.0f };
-	m_Rotation.y = -90.f;
+	m_Scale = { 18.3f,18.3f,18.3f };
+	m_Color = { 1.0f,1.0f,1.0f,0.1f };
+	m_Rotation.y = 90.f;
 	m_Position.x = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/Firstboss.csv", "pos")));
 	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/Firstboss.csv", "Magnification")));
 	m_HP =  static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/Firstboss.csv", "hp1")));
@@ -77,6 +77,11 @@ void FirstBoss::Pause()
 
 void FirstBoss::Action()
 {
+	if (revival == true && m_HP < 0) {
+		m_HP = 5;
+		revival = false;
+	}
+
 	if (bounce_ == Bounce::SOURCE) {
 		XMFLOAT3 s_scl = m_Scale;
 		bounceTimer += 1.0f / 60;
@@ -109,7 +114,7 @@ void FirstBoss::Action()
 	//弾とボスの当たり判定
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
 	CollideBul(_playerBulA, Type::CIRCLE);
-	if (half_hp_ >= m_HP) {
+	if (revival==false) {
 		m_Magnification = 0.2f;
 	}
 	//プレイヤーの当たり判定
@@ -129,6 +134,16 @@ void FirstBoss::Action()
 
 void FirstBoss::AppearAction()
 {
+	if (movie == false) {
+		if (m_Position.z >= 41) {
+			m_Position.z -= 0.1f;
+			m_Color.w += 0.01f;		
+		}
+		else {
+			movie = true;
+		}
+	}
+
 	Obj_SetParam();
 }
 
@@ -196,8 +211,10 @@ void FirstBoss::Draw(DirectXCommon* dxCommon)
 	}
 	IKETexture::PostDraw();
 	Obj_Draw();
-	for (std::unique_ptr<Fraction>& fraction : fraction_) {
-		fraction->Draw(dxCommon);
+	if (m_HP > 0) {
+		for (std::unique_ptr<Fraction>& fraction : fraction_) {
+			fraction->Draw(dxCommon);
+		}
 	}
 }
 //攻撃後のインターバル
@@ -614,4 +631,8 @@ void FirstBoss::EndRollAction() {
 	}
 	//OBJのステータスのセット
 	Obj_SetParam();
+}
+//会話
+void FirstBoss::AfterAction() {
+
 }

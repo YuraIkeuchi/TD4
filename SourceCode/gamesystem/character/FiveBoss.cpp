@@ -609,3 +609,7 @@ Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
 	Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z)
 	};
 }
+//‰ï˜b
+void FiveBoss::AfterAction() {
+
+}

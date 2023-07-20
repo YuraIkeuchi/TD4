@@ -5,6 +5,7 @@
 #include "AttackBullet.h"
 #include "PlayerAttach.h"
 #include "BreakEffect.h"
+#include "AbsorptionEffect.h"
 #include <any>
 using namespace DirectX;
 class Player:public ObjCommon
@@ -84,6 +85,8 @@ private:
 	void BirthParticle();
 	//パラメーターセット
 	void SetParam();
+	//吸収エフェクトの生成
+	void BirthAbs();
 private:
 	//各アニメーション
 	enum class AnimeName
@@ -131,6 +134,7 @@ private://各クラス
 	unique_ptr<InterBullet> viewbullet;//可視化の弾
 	unique_ptr<PlayerAttach> playerattach;//プレイヤーの装備
 	vector<InterEffect*> effects;//エフェクト
+	vector<AbsorptionEffect*> abseffect;//吸収
 	//弾関係の変数
 	int m_BulletType = {};//弾の種類
 	int m_InterVal = {};//弾の発射のインターバル
@@ -223,4 +227,9 @@ public:
 	void RecvDamage(float Damage);
 	//弾の全削除
 	void BulletDelete();
+
+private:
+	static const int ABS_NUM = 3;
+private:
+	bool m_Birthabs[ABS_NUM];
 };
