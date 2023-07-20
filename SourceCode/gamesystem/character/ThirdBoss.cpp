@@ -1072,3 +1072,7 @@ void ThirdBoss::EndRollAction() {
 	//どっち使えばいいか分からなかったから保留
 	m_fbxObject->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 }
+//会話
+void ThirdBoss::AfterAction() {
+
+}

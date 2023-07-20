@@ -267,3 +267,7 @@ void InterBoss::AnimationControl(AnimeNames name, const bool& loop, int speed)
 	m_LoopFlag = loop;
 	m_AnimationSpeed = speed;
 }
+
+void InterBoss::AfterUpdate() {
+	AfterAction();
+}

@@ -36,6 +36,8 @@ private:
 	void EffecttexDraw(DirectXCommon* dxCommon) override;
 
 	void EndRollAction() override;//エンドロールの更新
+
+	void AfterAction() override;//会話
 private:
 	//基本移動
 	void Move();

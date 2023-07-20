@@ -615,3 +615,7 @@ void FirstBoss::EndRollAction() {
 	//OBJのステータスのセット
 	Obj_SetParam();
 }
+//会話
+void FirstBoss::AfterAction() {
+
+}

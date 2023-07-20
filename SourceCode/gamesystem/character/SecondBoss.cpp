@@ -1118,3 +1118,7 @@ void SecondBoss::EndRollAction() {
 	//OBJのステータスのセット
 	Obj_SetParam();
 }
+//会話
+void SecondBoss::AfterAction() {
+
+}

@@ -33,6 +33,8 @@ public:
 	void Draw(DirectXCommon* dxCommon) override;//描画
 
 	void EndRollAction() override;//エンドロールの更新
+
+	void AfterAction() override;//会話
 private:
 	enum class commandState : int {
 		WaitCommand = 0,
