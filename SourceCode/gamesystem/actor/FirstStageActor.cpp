@@ -50,7 +50,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	loadobj->LightSet(lightgroup);
 	LoadStageObj::SetEnemyManager(enemymanager.get());
 
-	quarter_hp_ = enemymanager->GetHp() / 2;
+	quarter_hp_ = 10;
 
 	m_SceneState = SceneState::IntroState;
 
@@ -76,6 +76,7 @@ void FirstStageActor::Finalize()
 
 void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
+	CheckHp();
 	//関数ポインタで状態管理
 	if (menu->Pause()) {
 		menu->Update();
@@ -148,8 +149,10 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon)
 		messagewindow_->Draw();
 	}
 
-	if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd()) {
-		ui->Draw();
+	if (tolk_F == false) {
+		if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd()) {
+			ui->Draw();
+		}
 	}
 	if (m_SceneState == SceneState::IntroState) {
 		if ((camerawork->GetAppearType() == APPEAR_SEVEN) || (camerawork->GetAppearType() == APPEAR_EIGHT)) {
@@ -243,6 +246,7 @@ void FirstStageActor::IntroUpdate(DebugCamera* camera)
 void FirstStageActor::MainUpdate(DebugCamera* camera)
 {
 	Input* input = Input::GetInstance();
+	TalkUpdate();
 	if (tolk_F != false) { return; }
 	//カメラワークのセット
 	if (enemymanager->BossDestroy())
@@ -332,5 +336,5 @@ void FirstStageActor::TalkUpdate()
 
 	text_->SelectText(TextManager::CAP1);
 
-	quarter_hp_ = -100.f;
+	//quarter_hp_ = -100.f;
 }
