@@ -89,7 +89,6 @@ public:
 		ANGER,
 		JOY,
 		DAMAGEAREA,
-		DAMAGEAREA2,
 		GROUND,
 		PHOTOSPOT,
 		STUN,

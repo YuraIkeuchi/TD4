@@ -51,6 +51,7 @@ public:
 	void AfterAction() override;//âÔòb
 private:
 	void SetEasePos();
+	void BirthParticle();
 private:
 	//CSVì«Ç›çûÇ›ån
 	void CSVLoad();
@@ -79,7 +80,7 @@ private:
 	int m_StopTimer = 0;
 	//Ç«ÇÃçsìÆÇ…Ç∑ÇÈÇ©
 	int m_MoveState = {};
-
+	int m_ParticleTimer = {};
 
 	int _charaState = STATE_INTER;
 
