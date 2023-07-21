@@ -4,6 +4,7 @@
 #include "Shake.h"
 #include "IKETexture.h"
 #include "TutorialEnemy.h"
+#include "BossStunEffect.h"
 
 class FourthBoss :
 	public InterBoss {
@@ -93,6 +94,8 @@ private:
 		SpriteMax,
 	};
 	array<unique_ptr<IKESprite>, SpriteMax> photo = {};
+	//unique_ptr<BossStunEffect> bossstuneffect;
+
 private:
 	int moveSpawn = 0;
 	int nowSpawn = 4;
@@ -118,6 +121,9 @@ private:
 	//	Ultimate,
 	//	COMMANDMAX
 	//};
+	float add = 5.0f;
+	float subtimer = 0.4f;
+
 
 	array<int, (size_t)commandState::COMMANDMAX> ActionTimerMax =
 	{ 180,
