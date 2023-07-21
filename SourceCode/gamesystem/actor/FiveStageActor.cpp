@@ -16,7 +16,7 @@ void FiveStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	//オーディオ
 	Audio::GetInstance()->LoopWave(AUDIO_BATTLE, VolumManager::GetInstance()->GetBGMVolum() + 1.0f);
 	//ポストエフェクト
-	PlayPostEffect = false;
+	PlayPostEffect =true;
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
 
@@ -66,7 +66,10 @@ void FiveStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	//関数ポインタで状態管理
 	if (menu->Pause()) {
 		menu->Update();
-		sceneChanger_->Update();
+		if (menu->ReturnSelect()) {
+			sceneChanger_->ChangeStart();
+			sceneChanger_->ChangeScene("SELECT", SceneChanger::Reverse);
+		}
 		return;
 	}
 
@@ -90,6 +93,11 @@ void FiveStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
 	lightgroup->Update();
 
+	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
+		SelectScene::GetIns()->Upda();
+
+	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
+
 	sceneChanger_->Update();
 	ui->Update();
 	menu->Update();
@@ -101,11 +109,15 @@ void FiveStageActor::Draw(DirectXCommon* dxCommon) {
 	if (PlayPostEffect) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
+		FrontDraw(dxCommon);
+		IKESprite::PreDraw();
+		SelectScene::GetIns()->Draw_Sprite();
+		IKESprite::PostDraw();
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
-		FrontDraw(dxCommon);
+		
 		enemymanager->ImGuiDraw();
 		
 		//camerawork->ImGuiDraw();
@@ -146,8 +158,8 @@ void FiveStageActor::FrontDraw(DirectXCommon* dxCommon)
 		}
 	}
 	IKESprite::PostDraw();
+	menu->Draw();
 	sceneChanger_->Draw();
-	//menu->Draw();
 	camerawork->feedDraw();
 }
 

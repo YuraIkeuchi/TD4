@@ -144,6 +144,7 @@ void AvatarBoss::Action() {
 		}
 	}
 	m_Color.w = Ease(In, Cubic, 0.4f, m_Color.w, 1.0f);
+	m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, Player::GetInstance()->GetPosition(), -PI_180);
 }
 //É|Å[ÉY
 void AvatarBoss::Pause() {

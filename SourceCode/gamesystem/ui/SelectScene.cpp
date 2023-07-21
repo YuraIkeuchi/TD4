@@ -24,7 +24,7 @@ void SelectScene::ResetParama() {
 	constexpr float PosRad = 25.f;
 	for (auto i = 0; i < ObjNum; i++) {
 		TipsPosY[i] = -360.f;
-		StageObjRotAngle[i] = static_cast<float>(i) * (360.f / static_cast<float>(ObjNum)) + 180.f;
+		StageObjRotAngle[i] = OldObjAngle[i];// static_cast<float>(i)* (360.f / static_cast<float>(ObjNum)) + 180.f;
 		//位置の初期化
 		StageObjPos[i].x = Pedestal->GetPosition().x + sinf(StageObjRotAngle[i] * (PI / PI_180)) * PosRad;
 		StageObjPos[i].z = Pedestal->GetPosition().z + cosf(StageObjRotAngle[i] * (PI / PI_180)) * PosRad;
@@ -150,6 +150,8 @@ void SelectScene::Init() {
 	AfterScale[THIRD] = { 4.0f,4.0f,4.0f };
 	AfterScale[FOUR] = { 3.0f,3.0f,3.0f };
 	StageObjs[FOUR]->SetRotation({ 0.0f,90.0f,0.0f });
+	StageObjRot[FOUR].z=190;
+	StageObjRot[FOUR].x = 190;
 	AfterScale[FIVE] = { 0.2f,0.2f,0.2f };
 	
 	//一回開放したら大きさを合わせる
@@ -175,6 +177,7 @@ void SelectScene::Upda() {
 	CloseIconView(CloseF);
 	Helper::GetInstance()->Clamp(closeScl, 0.f, 12500.f);
 	Helper::GetInstance()->Clamp(closeRad, 0.f, 1500.f);
+	if(!ChangeLastF)
 	RotPedestal();
 
 	//Selectは常時出す
@@ -213,13 +216,13 @@ void SelectScene::Upda() {
 	}
 
 
-	XMFLOAT3 nowSelpos = {
+	m_NowSelePos = {
 		Pedestal->GetPosition().x + sinf(180.f * (PI / PI_180)) * PosRad,
 		8.f,
 		Pedestal->GetPosition().z + cosf(180 * (PI / PI_180)) * PosRad };
 
 	for (auto i = 0; i < ObjNum; i++) {
-		if (Collision::GetLength(nowSelpos, StageObjPos[i]) < 5) {
+		if (Collision::GetLength(m_NowSelePos, StageObjPos[i]) < 5) {
 			StageObjRot[i].y++;
 			IconColor[i] += 0.05f;
 		} else {
@@ -240,31 +243,51 @@ void SelectScene::Upda() {
 		StageObj[i]->SetAnchorPoint({ 0.5f,0.5f });
 		StageObj[i]->SetColor({ 1,1,1,1.f });
 
-		StageObjs[i]->SetColor({ 1,1,1,IconColor[i] });
 		StageObjs[i]->SetRotation({ StageObjRot[i] });
 
-		StageObjs[FOUR]->SetRotation({ 0,StageObjRot[FOUR].y,90 });
+		//StageObjs[FOUR]->SetRotation({90,StageObjRot[FOUR].y,0 });
 		StageObjs[i]->SetPosition(StageObjPos[i]);
 		StageObjs[i]->SetScale(m_Scale[i]);
 		StageObjs[i]->Update();
 	}
-	bool temp[ObjNum] = {};
-	for (auto i = 0; i < TipsAct.size(); i++)
-		temp[i] = TipsAct[i];
-	if (Helper::GetInstance()->All_OfF(temp, ObjNum)) {
-		if (TrigerSelect == NOINP && m_Wide) {
-			if (Input::GetInstance()->TriggerButton(Input::RB)) {
-				SelIndex++;
-				TrigerSelect = RB;
-			}
+	for (auto i = 0; i < ObjNum - 2; i++) {
+		StageObjs[i]->SetColor({ 1,1,1,IconColor[i] });
+	}
+		StageObjs[SEVEN]->SetColor({ bossColor.x,bossColor.y,bossColor.z,1.f });
 
-			if (Input::GetInstance()->TriggerButton(Input::LB)) {
-				SelIndex--;
-				TrigerSelect = LB;
+	if (CLastEaseTime >=0.4f) {
+			Helper::GetInstance()->FrameCheck(bossColor.x,1.f/30.f);
+			Helper::GetInstance()->FrameCheck(bossColor.y, 1.f / 30.f);
+			Helper::GetInstance()->FrameCheck(bossColor.z, 1.f / 30.f);
+		}
+
+			StageObjs[TITLE]->SetColor({ 1,1,1,1 });
+	if (!ChangeLastF) {
+		bool temp[ObjNum] = {};
+		for (auto i = 0; i < TipsAct.size(); i++)
+			temp[i] = TipsAct[i];
+		if (Helper::GetInstance()->All_OfF(temp, ObjNum)) {
+			if (TrigerSelect == NOINP && m_Wide) {
+				if (Input::GetInstance()->TriggerButton(Input::RB)) {
+					SelIndex++;
+					TrigerSelect = RB;
+				}
+
+				if (Input::GetInstance()->TriggerButton(Input::LB)) {
+					SelIndex--;
+					TrigerSelect = LB;
+				}
 			}
 		}
 	}
+	if (Input::GetInstance()->TriggerButton(Input::Y))
+	{
+		ChangeLastF = true;
+	}
+	ChangeStageRot();
 	m_Scale[TITLE] = { 0.01f,0.01f,0.01f };
+	if (!ChangeLastF)
+		CLastEaseTime = 0.f;
 	//セレクトのステート管理
 	StateManager();
 
@@ -359,10 +382,10 @@ void SelectScene::CloseIconView(bool closeF) {
 	if (closeF && !sin) {
 		closeScl -= SclingSpeed;
 		if (closeScl <= MinScl) {
-			SclingSpeed = 55.f;
+			SclingSpeed = 105.f;
 			closeRad -= SclingSpeed * SubRad;
 		} else
-			SclingSpeed = 100.f;
+			SclingSpeed = 160.f;
 	}
 	if (sin) {
 		if (closeScl >= MinScl)
@@ -383,6 +406,8 @@ void SelectScene::ChangeEffect(std::string name, Stage stage, UINT iconnum) {
 		Player::GetInstance()->MoveStop(false);
 		Player::GetInstance()->SetCanShot(true);
 		//ResetParama();
+		for(auto i=0;i<ObjNum;i++)
+		OldObjAngle[i]= StageObjRotAngle[i];
 		SceneManager::GetInstance()->ChangeScene(name);
 		CloseF = false;
 	}
@@ -429,7 +454,7 @@ void SelectScene::StateManager() {
 			temp[i] = TipsAct[i];
 		if (Helper::GetInstance()->All_OfF(temp, ObjNum)) {			//画面を閉じた後
 			m_BirthTimer++;
-			for (auto i = 1; i < ObjNum - 1; i++) {			//ラスボス以外
+			for (auto i = 1; i < ObjNum - 2; i++) {			//ラスボス以外
 				m_Birth[i] = true;			//ボスが出現した
 			}
 			if (m_BirthTimer == 150) {			//　一定フレームに達するとボスが大きくなる
@@ -493,4 +518,23 @@ void SelectScene::BirthParticle() {
 			ParticleEmitter::GetInstance()->SelectEffect(l_Life[i], StageObjPos[i], 1.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
 		}
 	}
+}
+
+void SelectScene::ChangeStageRot()
+{
+	if(!ChangeLastF)return;
+
+	Helper::GetInstance()->FrameCheck(CLastEaseTime, 1.f / 120.f);
+	if(CLastEaseTime>=1.f)
+	{
+		ChangeLastF = false;
+	}
+
+	for(auto i=0;i<ObjNum-2;i++)
+	{
+		StageObjRotAngle[i]=Ease(In, Quad, CLastEaseTime, StageObjRotAngle[i],180 -(SEVEN-i)*360.f/ObjNum);
+	}
+	StageObjRotAngle[SEVEN] = Ease(In, Quad, CLastEaseTime, StageObjRotAngle[SEVEN], 180);
+	StageObjRotAngle[TITLE] = Ease(In, Quad, CLastEaseTime, StageObjRotAngle[TITLE],  180- (SEVEN - TITLE) * 360.f / ObjNum);
+
 }

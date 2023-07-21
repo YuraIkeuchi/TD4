@@ -71,7 +71,10 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	if (menu->Pause()) {
 		menu->Update();
-		sceneChanger_->Update();
+		if (menu->ReturnSelect()) {
+			sceneChanger_->ChangeStart();
+			sceneChanger_->ChangeScene("SELECT", SceneChanger::Reverse);
+		}
 		return;
 	}
 
@@ -227,10 +230,10 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
 		SelectScene::GetIns()->Upda();
 
-
+	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 	menu->Update();
 	BackObj::GetInstance()->Update();
-	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
+
 	ui->Update();
 }
 //描画
@@ -242,7 +245,7 @@ void SecondStageActor::Draw(DirectXCommon* dxCommon) {
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
 		IKESprite::PreDraw();
-		//SelectScene::GetIns()->Draw_Sprite();
+		SelectScene::GetIns()->Draw_Sprite();
 		IKESprite::PostDraw();
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 
@@ -275,9 +278,7 @@ void SecondStageActor::BackDraw(DirectXCommon* dxCommon) {
 	IKESprite::PostDraw();
 
 	IKEObject3d::PreDraw();
-
 	BackObj::GetInstance()->Draw(dxCommon);
-
 	if (camerawork->GetCameraState() != CameraState::CAMERA_BOSSAPPEAR &&
 		camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_AFTER_FIRST) {
 		if (camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_BEFORE && camerawork->GetCameraState() != CameraState::CAMERA_BOSSDEAD_AFTER_FIRST) {
@@ -310,26 +311,20 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	//完全に前に書くスプライト
 	if (_Tscne != TextScene::ENDTEXT) {
 		messagewindow_->SetNotBlack();
-
 		if (messagewindow_->DisplayCheck()) {
 			text_->SpriteDraw(dxCommon);
-		}//messagewindow_->SetNotBlack();
+		}
 		IKESprite::PreDraw();
 		messagewindow_->Draw();
 		IKESprite::PostDraw();
+		menu->Draw();
 	} else {
 		IKESprite::PreDraw();
 		if (camerawork->GetAppearEndF() && camerawork->GetCameraState() == CameraState::CAMERA_NORMAL) {
 			ui->Draw();
 		}
-		sceneChanger_->Draw();
-		IKESprite::PostDraw();
-
-		//完全に前に書くスプライト
-		IKESprite::PreDraw();
 		menu->Draw();
-		camerawork->feedDraw();
-
+		sceneChanger_->Draw();
 		IKESprite::PostDraw();
 	}
 }

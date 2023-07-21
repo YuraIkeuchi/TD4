@@ -52,6 +52,7 @@ bool FirstBoss::Initialize()
 	DecisionCount=static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/Firstboss.csv", "DecisionCount")));
 	m_Radius = 5.2f;
 	m_MaxHp = m_HP;
+	m_HP = 15;
 	half_hp_ = m_HP / 4;
 	_charstate = CharaState::STATE_INTER;
 
@@ -603,6 +604,7 @@ void FirstBoss::EndRollAction() {
 	m_EndTimer++;
 	if (_EndState == END_SET) {
 		if (m_EndTimer == 1) {
+			m_Color = { 1.0f,1.0f,1.0f,1.0f };
 			m_Position = { 55.0f,2.0f,10.0f };
 			m_Rotation = { 0.0f,180.0f,0.0f };
 		}

@@ -151,10 +151,13 @@ void ShotAttack::Phase_Idle()
 		{
 			for (auto i = 0; i < BulSize; i++)
 			{
-				BulPos[i] = boss->GetPosition();
-				BulAlive[0] = true;
-				BulAlpha[0] = 1.f;// true;
+				BulAlive[i] = true;
+				BulAlpha[i] = 1.f;
+				BulPos[i].x = boss->GetPosition().x;
+				BulPos[i].y = 3.f;
+				BulPos[i].z = boss->GetPosition().z;
 			}
+
 			_phase = Phase::SHOT;
 		}
 	} else {
@@ -183,7 +186,9 @@ void ShotAttack::Phase_Idle()
 
 				for (auto i = 0; i < BulSize; i++)
 				{
-					BulPos[i] = boss->GetPosition();
+					BulPos[i].x = boss->GetPosition().x;
+					BulPos[i].y = 3.f;
+					BulPos[i].z = boss->GetPosition().z;
 					BulAlive[0] = true;
 					BulAlpha[0] = 1.f;// true;
 				}
@@ -204,7 +209,9 @@ void ShotAttack::Phase_Idle()
 
 				for (auto i = 0; i < BulSize; i++)
 				{
-					BulPos[i] = boss->GetPosition();
+					BulPos[i].x = boss->GetPosition().x;
+					BulPos[i].y = 3.f;
+					BulPos[i].z= boss->GetPosition().z;
 					BulAlive[0] = true;
 					BulAlpha[0] = 1.f;// true;
 				}
@@ -299,16 +306,12 @@ void ShotAttack::Phase_End()
 
 		RottoGhost = atan2f(SubVector.m128_f32[0], SubVector.m128_f32[2]);
 	}
+	
 	for (auto i = 0; i < BulSize; i++)
 	{
-		BulAlive[i] = true;
-		BulAlpha[i] = 1.f;
-		BulPos[i] = boss->GetPosition();
-	}
-
-	for (auto i = 0; i < BulSize; i++)
-	{
-		BulPos[i] = boss->GetPosition();
+		BulPos[i].x = boss->GetPosition().x;
+		BulPos[i].y =3.f;
+		BulPos[i].z = boss->GetPosition().z;
 		BulAlpha[i] = 1.f;
 		BulAlive[i] = true;
 	}

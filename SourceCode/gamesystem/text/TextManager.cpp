@@ -79,14 +79,17 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 
 	CreateWord(AISATU, L"おはよう", L"こんにちは", L"こんばんは");
 
-
-	CreateCapWord(Name_Cap::CAP3, L"わいらなかなかやっな", L"じゃっどんそげん攻撃おいにはきかん", L" ");
+	CreateCapWord(Name_Cap::NO, L" ", L" ", L" ");
+	CreateCapWord(Name_Cap::CAP3, L"ぬる", L"ヌル", L" ");
 	CreateCapWord(Name_Cap::KOTO3, L"どうしようどうやったら元に戻せるんだろう",L" ", L" ");
-	CreateCapWord(Name_Cap::CAP1, L"わいらなかなかやっな", L"じゃっどんそげん攻撃おいにはきかん", L" ");
-	//CreateCapWord(Name_Cap::CAP3, L"わいらなかなかやっな", L"じゃっどんそげん攻撃おいにはきかん", L" ");
-//	CreateCapWord(Name_Cap::KOTO3, L"どうしようどうやったら元に戻せるんだろう",L" ", L" ");
+	CreateCapWord(Name_Cap::CAP1, L"やあ、ストポン!", L"ひさしぶりだね", L"　");
+	CreateCapWord(Name_Cap::SUTO1, L"ミルクキャップ、、", L"", L"　");
+	CreateCapWord(Name_Cap::CAP2, L"さいきんガラスをもりにまくのがたのしくてしょうがないんだ", L"", L"　");
+	CreateCapWord(Name_Cap::SUTO2, L"おまえ、そんなことしてあぶないだろ!", L"", L"　");
+	CreateCapWord(Name_Cap::CAP3, L"いいんだよ", L"よわかったあのころとはちがうんだ", L"じゃまするならきみもようしゃしないよ");
+	CreateCapWord(Name_Cap::SUTO3, L"ダメだ、しょうきじゃない", L"コトコ!ミルクキャップをしょうきにもどすぞ", L"　");
+	CreateCapWord(Name_Cap::KOTO1, L"うん!", L"", L"　");
 
-	//CreateCapWord(Name_Cap::SUTO3,L"")
 
 	CreateWord(Name_First::VIEWBOSS, L"あれは..！",L"ちえよしなのか？",L"");
 	CreateWord(Name_First::SPEAKPLAYER1, L"あれがストポンの友達なの？");
@@ -106,7 +109,7 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	SecondCreateWord(SELECT_JOY, L"キミよくわかってるね!", L"ってことはさ、キミは", L"このぼくのカンジョウ・・・");
 	SecondCreateWord(SELECT_JOY2, L"めのまえのやつをたおすヨロコビを", L"リカイしてくれるよね!!!", L"!!!!!!!!!!");
 
-	CameraBossCreateWord(TALK_FIRST_T, L"ストポンとはぐれちゃった...", L"どこにいっちゃっただろう", L"おなかもすいちゃったし");
+	CameraBossCreateWord(TALK_FIRST_T, L"ストポンとはぐれちゃった...", L"どこにいったんだろう", L"おなかもすいちゃったし");
 	CameraBossCreateWord(TALK_SECOND_T, L"な、なにか探しているのかい？", L"もしかして", L"さっきのメガホンかな...");
 	CameraBossCreateWord(TALK_THIRD_T, L"そうなのかも！", L"でもおなかがすいて", L"もう動けない...");
 	CameraBossCreateWord(TALK_FOURTH_T, L"それならボクに任せて！！", L"一度撮ったら",L"いつでもだせるんだ！");

@@ -51,6 +51,9 @@ void ImageManager::SecondLoad2D()
 	IKESprite::LoadTexture(MENU_RULE, L"Resources/2d/sceneback/MenuR.png");
 	IKESprite::LoadTexture(MENU_SCENECHANGE, L"Resources/2d/sceneback/MenuS.png");
 	IKESprite::LoadTexture(MENU_FRAME, L"Resources/2d/sceneback/MenuBar.png");
+	IKESprite::LoadTexture(CHECK_HOME, L"Resources/2d/sceneback/CheckSheet.png");
+	IKESprite::LoadTexture(CHECK_OK, L"Resources/2d/sceneback/CheckOk.png");
+	IKESprite::LoadTexture(CHECK_NO, L"Resources/2d/sceneback/CheckNo.png");
 	IKESprite::LoadTexture(EXPLANATION, L"Resources/2d/sceneback/Explanation.png");
 	IKESprite::LoadTexture(CLOSEMILK, L"Resources/2d/objicon/closeMilk.png");
 	IKESprite::LoadTexture(CLOSESYTOPON, L"Resources/2d/objicon/closeSutopon.png");
@@ -95,10 +98,8 @@ void ImageManager::SecondLoadTex2D()
 	IKETexture::LoadTexture(ANGER, L"Resources/2d/objicon/AngerStamp.png");
 	IKETexture::LoadTexture(JOY, L"Resources/2d/objicon/JoyStamp.png");
 	IKETexture::LoadTexture(DAMAGEAREA, L"Resources/2d/effect/DArea.png");
-	IKETexture::LoadTexture(DAMAGEAREA2, L"Resources/2d/effect/DArea2.png");
 	IKETexture::LoadTexture(GROUND, L"Resources/2d/SceneBack/Ground.png");
 	IKETexture::LoadTexture(PHOTOSPOT, L"Resources/2d/effect/PhotoSpot.png");
-
 	IKETexture::LoadTexture(STUN, L"Resources/2d/effect/stun.png");
 	IKETexture::LoadTexture(CATCH, L"Resources/2d/effect/effect1.png");
 	IKETexture::LoadTexture(SLASHAREA, L"Resources/2d/effect/DArea3.png");

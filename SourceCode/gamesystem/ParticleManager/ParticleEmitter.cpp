@@ -16,6 +16,7 @@ void ParticleEmitter::Initialize()
 	LoadTexture();
 	//パーティクルマネージャー生成
 	circleParticle.reset(ParticleManager::Create(ImageManager::Normal));
+	kotokoParticle.reset(ParticleManager::Create(ImageManager::Normal));
 	darkParticle.reset(ParticleManager::Create(ImageManager::Normal));
 	healParticle.reset(ParticleManager::Create(ImageManager::Heal));
 	deathParticle.reset(ParticleManager::Create(ImageManager::Normal));
@@ -30,6 +31,7 @@ void ParticleEmitter::Update()
 	//パーティクルマネージャー更新
 	circleParticle->Update();
 	darkParticle->Update();
+	kotokoParticle->Update();
 	healParticle->Update();
 	deathParticle->Update();
 	BossDeadParticle->Update();
@@ -52,6 +54,7 @@ void ParticleEmitter::DeathDrawAll() {
 void ParticleEmitter::BackDrawAll() {
 	wallParticle->Draw(AddBlendType);
 	healParticle->Draw(AddBlendType);
+	kotokoParticle->Draw(AddBlendType);
 }
 
 void ParticleEmitter::FireEffect(const int life, const XMFLOAT3& l_pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor)
@@ -64,6 +67,18 @@ void ParticleEmitter::FireEffect(const int life, const XMFLOAT3& l_pos, const fl
 	vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 
 	circleParticle->Add(life, { pos.x,pos.y,pos.z }, vel, {}, startscale, endscale, startcolor, endcolor,{});
+}
+
+void ParticleEmitter::KotokoEffect(const int life, const XMFLOAT3& l_pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor)
+{
+	XMFLOAT3 pos = l_pos;
+	const float rnd_vel = 0.05f;
+	XMFLOAT3 vel{};
+	vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+	vel.y = (float)rand() / RAND_MAX * rnd_vel * 2.0f;// -rnd_vel / 2.0f;
+	vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+
+	kotokoParticle->Add(life, { pos.x,pos.y,pos.z }, vel, {}, startscale, endscale, startcolor, endcolor, {});
 }
 
 //移動制御
@@ -212,13 +227,15 @@ void ParticleEmitter::SelectEffect(const int life, const XMFLOAT3& pos, const fl
 }
 void ParticleEmitter::AllDelete()
 {
-	//全パーティクルの削除
+	//パーティクルマネージャー更新
 	circleParticle->AllDelete();
+	darkParticle->AllDelete();
+	kotokoParticle->AllDelete();
 	healParticle->AllDelete();
 	deathParticle->AllDelete();
-	wallParticle->AllDelete();
 	BossDeadParticle->AllDelete();
-	darkParticle->AllDelete();
+	wallParticle->AllDelete();
+	PhotoParticle->AllDelete();
 }
 
 void ParticleEmitter::LoadTexture() {

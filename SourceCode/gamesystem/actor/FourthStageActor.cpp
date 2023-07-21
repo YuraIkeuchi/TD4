@@ -17,7 +17,7 @@ void FourthStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	//オーディオ
 	Audio::GetInstance()->LoopWave(AUDIO_BATTLE, VolumManager::GetInstance()->GetBGMVolum() + 1.0f);
 	//ポストエフェクト
-	PlayPostEffect = false;
+	PlayPostEffect = true;
 
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
@@ -85,7 +85,10 @@ void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	//関数ポインタで状態管理
 	if (menu->Pause()) {
 		menu->Update();
-		sceneChanger_->Update();
+		if (menu->ReturnSelect()) {
+			sceneChanger_->ChangeStart();
+			sceneChanger_->ChangeScene("SELECT", SceneChanger::Reverse);
+		}
 		return;
 	}
 	if (isVisible) { apple->Update(); }
@@ -95,6 +98,9 @@ void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	camerawork->Update(camera);
 	menu->Update();
 	ui->Update();
+	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
+		SelectScene::GetIns()->Upda();
+
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 	messagewindow_->Update(girl_color_, sutopon_color_);
 
@@ -116,6 +122,9 @@ void FourthStageActor::Draw(DirectXCommon* dxCommon) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
+		IKESprite::PreDraw();
+		SelectScene::GetIns()->Draw_Sprite();
+		IKESprite::PostDraw();
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 
 		dxCommon->PreDraw();
@@ -196,8 +205,8 @@ void FourthStageActor::FrontDraw(DirectXCommon* dxCommon) {
 		}
 		IKESprite::PostDraw();
 	}
-	sceneChanger_->Draw();
 	menu->Draw();
+	sceneChanger_->Draw();
 	camerawork->feedDraw();
 }
 //IMGuiの描画
@@ -433,6 +442,10 @@ bool FourthStageActor::ShutterEffect() {
 }
 
 bool FourthStageActor::ShutterFeed() {
+	//SEを鳴らす
+	if (feedTimer == 0.0f) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Cemera.wav", VolumManager::GetInstance()->GetSEVolum());
+	}
 	feedTimer += 1.0f / feedTimeMax;
 	float color = Ease(Out, Linear, feedTimer, 1.0f, 0.0f);
 	photo[Photo_Out_Top]->SetColor({ 1,1,1, color });

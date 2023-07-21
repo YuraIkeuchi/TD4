@@ -283,7 +283,7 @@ void FourthBoss::SelectAction() {
 		phase = commandState::SubGauge;
 	} else if (l_case <= 100) {
 		isInstruction = FourthBossInst::None;
-		limitHp = m_HP * 0.7f;
+		limitHp = m_HP * 0.75f;
 		phase = commandState::Ultimate;
 		stage_move = ActionTimerMax[(size_t)phase] / 3;
 	} else if (l_case > 100) {
@@ -394,6 +394,7 @@ void FourthBoss::UltimateUpdate() {
 		m_HP = limitHp;
 		phase = commandState::Explosion;
 		ActionTimer = 0;
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Explo.wav", VolumManager::GetInstance()->GetSEVolum() * 1.3f);
 		return;
 	}
 	ParticleEmitter::GetInstance()->CameraEffect(80, spotPos[1], 4.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
@@ -437,7 +438,17 @@ void FourthBoss::UltimateUpdate() {
 
 void FourthBoss::ExplosionUpdate() {
 	ActionTimer++;
-	m_Rotation.z = 30.0f;
+	float RotTimerMax = ActionTimerMax[(size_t)phase] / 10.0f;
+	float RotTimer = ActionTimer / RotTimerMax;
+	Helper::GetInstance()->Clamp(RotTimer,0.f,1.f);
+	m_Rotation.z = Ease(InOut,Circ, RotTimer,0,390.0f);
+
+
+	m_Position.y += add;
+	add -= subtimer;
+
+	Helper::GetInstance()->Clamp(m_Position.y, 0.f, 150.f);
+
 
 	float l_AddSize = 2.5f;
 	const float RandScale = 3.0f;
@@ -462,7 +473,9 @@ void FourthBoss::ExplosionUpdate() {
 	if (ShutterEffect()) {
 		if (ShutterFeed()) {
 			ShutterReset();
+			add = 5.0f;			
 			m_Rotation.z = 0.0f;
+			subtimer = 0.4f;
 			ActionTimer = 0;
 			phase = commandState::WaitCommand;
 		}
@@ -486,6 +499,10 @@ bool FourthBoss::ShutterEffect() {
 }
 
 bool FourthBoss::ShutterFeed() {
+	//SE‚ð–Â‚ç‚·
+	if (feedTimer == 0.0f) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Cemera.wav", VolumManager::GetInstance()->GetSEVolum());
+	}
 	feedTimer += 1.0f / feedTimeMax;
 	float color = Ease(Out, Linear, feedTimer, 1.0f, 0.0f);
 	photoSpot[moveSpawn]->SetColor({ 1.0f,1.0f,1.0f,1.0f });
