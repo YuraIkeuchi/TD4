@@ -3,6 +3,7 @@
 #include <Input.h>
 #include <Helper.h>
 #include <Easing.h>
+#include "SelectScene.h"
 void (Menu::* Menu::stateTable[])() = {
 	&Menu::NoneUpdate,
 	&Menu::OpenUpdate,
@@ -222,6 +223,7 @@ void Menu::CheckUpdate() {
 		switch (barIndex) {
 		case FINAL_OK:
 			isSelectBack = true;
+			SelectScene::GetIns()->ResetParama();
 			break;
 		case FINAL_NO:
 			_state = State::CHECKOPENCLOSE;
