@@ -65,6 +65,7 @@ public:
 
 	enum Name_Cap
 	{
+		NO,
 		KOTO1,
 		SUTO1,
 		CAP1,
