@@ -214,13 +214,13 @@ void SelectScene::Upda() {
 	}
 
 
-	XMFLOAT3 nowSelpos = {
+	m_NowSelePos = {
 		Pedestal->GetPosition().x + sinf(180.f * (PI / PI_180)) * PosRad,
 		8.f,
 		Pedestal->GetPosition().z + cosf(180 * (PI / PI_180)) * PosRad };
 
 	for (auto i = 0; i < ObjNum; i++) {
-		if (Collision::GetLength(nowSelpos, StageObjPos[i]) < 5) {
+		if (Collision::GetLength(m_NowSelePos, StageObjPos[i]) < 5) {
 			StageObjRot[i].y++;
 			IconColor[i] += 0.05f;
 		} else {

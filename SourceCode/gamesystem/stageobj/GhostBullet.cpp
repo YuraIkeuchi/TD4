@@ -51,7 +51,7 @@ void GhostBullet::Action() {
 }
 //’e‚ª™X‚ÉÁ‚¦‚éˆ—
 void GhostBullet::VanishBullet() {
-	float l_AddFrame = 0.035f;
+	float l_AddFrame = 0.1f;
 	if (m_Alive) {
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;

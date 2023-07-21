@@ -486,6 +486,10 @@ bool FourthBoss::ShutterEffect() {
 }
 
 bool FourthBoss::ShutterFeed() {
+	//SE‚ð–Â‚ç‚·
+	if (feedTimer == 0.0f) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Cemera.wav", VolumManager::GetInstance()->GetSEVolum());
+	}
 	feedTimer += 1.0f / feedTimeMax;
 	float color = Ease(Out, Linear, feedTimer, 1.0f, 0.0f);
 	photoSpot[moveSpawn]->SetColor({ 1.0f,1.0f,1.0f,1.0f });

@@ -42,13 +42,18 @@ void SelectSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	ui = std::make_unique<UI>();
 	ui->Initialize();
 	ui->SetBoss(enemymanager->GetBoss());
-	//背景
-	
-	//lightgroup->SetCircleShadowActive(0, true);
-	//lightgroup->SetCircleShadowActive(1, true);
-//	for (int i = 0; i < SPOT_NUM; i++) {
-		lightgroup->SetSpotLightActive(0, true);
+
 	//}
+	//スポットライト
+	lightgroup->SetDirLightActive(0, false);
+	lightgroup->SetDirLightActive(1, false);
+	lightgroup->SetDirLightActive(2, false);
+
+	lightgroup->SetSpotLightActive(0, true);
+
+	spotLightPos[0] = {SelectScene::GetIns()->GetNowSelePos().x,10.0f,SelectScene::GetIns()->GetNowSelePos().z};
+	spotLightDir[0] = { 0, -1, 0 };
+	spotLightColor[0] = { 1, 1, 1 };
 }
 //更新
 void SelectSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -99,11 +104,11 @@ void SelectSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 
 	camerawork->DefUpda(camera);
 
-		lightgroup->SetSpotLightDir(0, XMVECTOR({0,1,0,0 }));
-		lightgroup->SetSpotLightPos(0, {0,10,0});
-		lightgroup->SetSpotLightColor(0,{1,1,1});
-		lightgroup->SetSpotLightAtten(0, {0.01f,0.f,0.01f});
-		lightgroup->SetSpotLightFactorAngle(0, XMFLOAT2(spotLightFactorAngle));
+	lightgroup->SetSpotLightDir(0, XMVECTOR({0,-1,0,0 }));
+	lightgroup->SetSpotLightPos(0, {SelectScene::GetIns()->GetNowSelePos().x, 20.0f, SelectScene::GetIns()->GetNowSelePos().z});
+	lightgroup->SetSpotLightColor(0,{1,1,1});
+	lightgroup->SetSpotLightAtten(0, {0.005f,0.f,0.005f});
+	lightgroup->SetSpotLightFactorAngle(0, XMFLOAT2(spotLightFactorAngle));
 	
 	lightgroup->Update();
 	ParticleEmitter::GetInstance()->Update();
