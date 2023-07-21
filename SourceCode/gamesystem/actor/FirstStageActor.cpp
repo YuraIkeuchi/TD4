@@ -80,7 +80,10 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	//関数ポインタで状態管理
 	if (menu->Pause()) {
 		menu->Update();
-		sceneChanger_->Update();
+		if (menu->ReturnSelect()) {
+			sceneChanger_->ChangeStart();
+			sceneChanger_->ChangeScene("SELECT", SceneChanger::Reverse);
+		}
 		return;
 	}
 	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
@@ -160,8 +163,8 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon)
 		}
 	}
 	IKESprite::PostDraw();
-	sceneChanger_->Draw();
 	menu->Draw();
+	sceneChanger_->Draw();
 	camerawork->feedDraw();
 	IKESprite::PreDraw();
 	//SelectScene::GetIns()->Draw_Sprite();
