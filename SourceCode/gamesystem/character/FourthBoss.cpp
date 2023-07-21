@@ -394,6 +394,7 @@ void FourthBoss::UltimateUpdate() {
 		m_HP = limitHp;
 		phase = commandState::Explosion;
 		ActionTimer = 0;
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Explo.wav", VolumManager::GetInstance()->GetSEVolum() * 1.3f);
 		return;
 	}
 	ParticleEmitter::GetInstance()->CameraEffect(80, spotPos[1], 4.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });

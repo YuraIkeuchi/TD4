@@ -29,6 +29,7 @@ bool SevenBoss::Initialize() {
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	ActionTimer = 1;
 
+	m_InterVal = 100;
 	m_Radius = 3.0f;
 	m_AfterAlpha = 1.0f;
 	_charaState = STATE_INTER;
@@ -708,7 +709,7 @@ void SevenBoss::Stun() {
 	}
 	m_MoveTimer++;
 	if (m_MoveTimer % 80 == 0) {
-		Audio::GetInstance()->PlayWave("Resources/Sound/SE/piyopiyo.wav", VolumManager::GetInstance()->GetSEVolum());
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/piyopiyo.wav", VolumManager::GetInstance()->GetSEVolum() * 0.7f);
 	}
 	m_Absorption = false;
 	if (m_MoveTimer == l_LimitTimer) {
@@ -819,6 +820,7 @@ void SevenBoss::CatchBul(vector<InterBullet*> bullet)
 
 			if (Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, l_StunRadius, m_Position.x, m_Position.z, l_StunRadius) && (!m_Stun)) {
 				BirthExplosion();
+				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Explo.wav", VolumManager::GetInstance()->GetSEVolum() * 1.3f);
 				bossstuneffect->SetAlive(true);
 				m_Stun = true;
 				m_AttackCount = {};
