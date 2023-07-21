@@ -8,6 +8,7 @@ void (Menu::* Menu::stateTable[])() = {
 	&Menu::OpenUpdate,
 	&Menu::SelectUpdate,
 	&Menu::CheckUpdate,
+	&Menu::CheckOpenCloseUpdate,
 	&Menu::ConfirmUpdate,
 	&Menu::CloseUpdate,
 
@@ -29,6 +30,10 @@ void Menu::Initialize() {
 	sprites_[ReturnButton] = CreateSprite(ImageManager::MENU_RESET, buttonPos[2], 30.0f);
 	sprites_[SutoponBar] = CreateSprite(ImageManager::MENU_FRAME, buttonPos[0], 30.0f);
 	sprites_[Confirm_FIRST] = CreateSprite(ImageManager::EXPLANATION, { half_Width,half_Height }, 15.0f);
+	sprites_[Check_HOME] = CreateSprite(ImageManager::CHECK_HOME, { half_Width,half_Height }, 15.0f);
+	sprites_[Check_OK] = CreateSprite(ImageManager::CHECK_OK, checkPos[0], 15.0f);
+	sprites_[Check_NO] = CreateSprite(ImageManager::CHECK_NO, checkPos[1], 15.0f);
+	sprites_[Check_BAR] = CreateSprite(ImageManager::MENU_FRAME, checkPos[0], 15.0f);
 
 	for (int i = 0; i < SpriteMax; i++) {
 		sprites_[i].sprite->SetAnchorPoint({ 0.5f,0.5f });
@@ -152,10 +157,25 @@ void Menu::SelectUpdate() {
 			_state = State::CONFIRM;
 			break;
 		case SCENEBACK:
-			_state = State::CHECK;
+			isOpen = true;
+			_state = State::CHECKOPENCLOSE;
+			barIndex = FINAL_OK;
 			break;
 		case RETURN:
+			sprites_[(size_t)BackScreen].start_size = { 1280.0f,720.0f };
+			sprites_[(size_t)ConfirmButton].start_size = { 300.0f,150.0f };
+			sprites_[(size_t)SceneBackButton].start_size = { 300.0f,150.0f };
+			sprites_[(size_t)ReturnButton].start_size = { 300.0f,150.0f };
+			sprites_[(size_t)SutoponBar].start_size = { 300.0f,150.0f };
+			for (int i = BackScreen; i <= SutoponBar; i++) {
+				sprites_[i].kFrameMax = 15.0f;
+				sprites_[i].easingFrame = 0.0f;
+				if (i >= ConfirmButton && i <= SutoponBar) {
+					sprites_[i].start_pos = sprites_[i].pos;
+				}
+			}
 			_state = State::CLOSE;
+			barIndex = CONFIRM;
 			break;
 		default:
 			break;
@@ -179,6 +199,145 @@ void Menu::SelectUpdate() {
 }
 
 void Menu::CheckUpdate() {
+	if (isSelectBack) { return; }
+	if (TriggerMoveButton()) {
+		moveBar = true;
+		if (Input::GetInstance()->TiltPushStick(Input::L_RIGHT)) {
+			barIndex++;
+		} else {
+			barIndex--;
+		}
+		if (barIndex > FINAL_NO) {
+			barIndex = FINAL_OK;
+		}
+		if (barIndex < FINAL_OK) {
+			barIndex = FINAL_NO;
+		}
+		sprites_[(size_t)Check_BAR].start_pos = sprites_[(size_t)Check_BAR].pos;
+		sprites_[(size_t)Check_BAR].end_pos = checkPos[barIndex];
+		sprites_[(size_t)Check_BAR].easingFrame = 0.0f;
+	}
+	if (Input::GetInstance()->TriggerButton(Input::B)) {
+		if (moveBar) { return; }
+		switch (barIndex) {
+		case FINAL_OK:
+			isSelectBack = true;
+			break;
+		case FINAL_NO:
+			_state = State::CHECKOPENCLOSE;
+			isOpen = false;
+			break;
+		default:
+			break;
+		}
+		for (int i = 0; i < SpriteMax; i++) {
+			sprites_[i].easingFrame = 0.0f;
+		}
+	}
+	if (moveBar) {
+		if (!Helper::GetInstance()->FrameCheck(sprites_[Check_BAR].easingFrame, 1 / sprites_[Check_BAR].kFrameMax)) {
+			sprites_[(size_t)Check_BAR].pos = {
+			Ease(Out, Quad, sprites_[Check_BAR].easingFrame, sprites_[Check_BAR].start_pos.x, sprites_[Check_BAR].end_pos.x),
+			Ease(Out, Quad, sprites_[Check_BAR].easingFrame, sprites_[Check_BAR].start_pos.y, sprites_[Check_BAR].end_pos.y)
+			};
+		} else {
+			moveBar = false;
+			sprites_[(size_t)Check_BAR].easingFrame = 0.0f;
+		}
+	}
+}
+
+void Menu::CheckOpenCloseUpdate() {
+	sprites_[(size_t)Check_HOME].isVisible = true;
+	sprites_[(size_t)Check_OK].isVisible = true;
+	sprites_[(size_t)Check_NO].isVisible = true;
+	sprites_[(size_t)Check_BAR].isVisible = true;
+	if (isOpen) {
+		sprites_[(size_t)ReturnButton].isVisible = false;
+		for (int i = Check_HOME; i <= Check_BAR; i++) {
+			sprites_[(size_t)i].isVisible = true;
+			sprites_[(size_t)i].start_size = { 0.0f,0.0f };
+			if (i!=Check_HOME) {
+				sprites_[(size_t)i].end_size = { 300.0f,150.0f };
+				sprites_[(size_t)i].start_pos = { half_Width ,half_Height };
+			}
+		}
+		sprites_[(size_t)Check_HOME].end_size = {880, 520};;
+		sprites_[(size_t)Check_OK].end_pos = checkPos[0];
+		sprites_[(size_t)Check_NO].end_pos = checkPos[1];
+		sprites_[(size_t)Check_BAR].end_pos = checkPos[0];
+
+		for (int i = Check_HOME; i <= Check_BAR; i++) {
+			if (!Helper::GetInstance()->FrameCheck(sprites_[i].easingFrame, 1 / sprites_[i].kFrameMax)) {
+				if (i == Check_HOME) {
+					sprites_[(size_t)i].size = {
+						Ease(Out,Quad,sprites_[i].easingFrame,sprites_[i].start_size.x,sprites_[i].end_size.x),
+						Ease(Out,Quad,sprites_[i].easingFrame,sprites_[i].start_size.y,sprites_[i].end_size.y)
+					};
+				} else {
+					sprites_[(size_t)i].size = {
+						Ease(Out,Elastic,sprites_[i].easingFrame,sprites_[i].start_size.x,sprites_[i].end_size.x),
+						Ease(Out,Elastic,sprites_[i].easingFrame,sprites_[i].start_size.y,sprites_[i].end_size.y)
+					};
+					if (i >= Check_OK && i <= Check_BAR) {
+						sprites_[(size_t)i].pos = {
+							Ease(Out, Quad, sprites_[i].easingFrame, sprites_[i].start_pos.x, sprites_[i].end_pos.x),
+							Ease(Out, Quad, sprites_[i].easingFrame, sprites_[i].start_pos.y,sprites_[i].end_pos.y)
+						};
+					}
+
+				}
+			}
+		}
+
+	} else {
+		sprites_[(size_t)ReturnButton].isVisible = true;
+		for (int i = Check_HOME; i <= Check_BAR; i++) {
+			sprites_[(size_t)i].isVisible = true;
+			sprites_[(size_t)i].end_size = { 0.0f,0.0f };
+			if (i != Check_HOME) {
+				sprites_[(size_t)i].start_size = { 300.0f,150.0f };
+				sprites_[(size_t)i].end_pos = { half_Width ,half_Height };
+
+			}
+		}
+		sprites_[(size_t)Check_HOME].start_size = {880,520};
+		sprites_[(size_t)Check_OK].start_pos = checkPos[0];
+		sprites_[(size_t)Check_NO].start_pos = checkPos[1];
+		sprites_[(size_t)Check_BAR].start_pos = checkPos[1];
+		for (int i = Check_HOME; i <= Check_BAR; i++) {
+			if (!Helper::GetInstance()->FrameCheck(sprites_[i].easingFrame, 1 / sprites_[i].kFrameMax)) {
+				if (i == Check_HOME) {
+					sprites_[(size_t)i].size = {
+						Ease(Out,Quad,sprites_[i].easingFrame,sprites_[i].start_size.x,sprites_[i].end_size.x),
+						Ease(Out,Quad,sprites_[i].easingFrame,sprites_[i].start_size.y,sprites_[i].end_size.y)
+					};
+				} else {
+					sprites_[(size_t)i].size = {
+						Ease(Out,Quad,sprites_[i].easingFrame,sprites_[i].start_size.x,sprites_[i].end_size.x),
+						Ease(Out,Quad,sprites_[i].easingFrame,sprites_[i].start_size.y,sprites_[i].end_size.y)
+					};
+					if (i >= Check_OK && i <= Check_BAR) {
+						sprites_[(size_t)i].pos = {
+							Ease(Out, Quad, sprites_[i].easingFrame, sprites_[i].start_pos.x, sprites_[i].end_pos.x),
+							Ease(Out, Quad, sprites_[i].easingFrame, sprites_[i].start_pos.y,sprites_[i].end_pos.y)
+						};
+					}
+
+				}
+			}
+		}
+	}
+	if (sprites_[Check_HOME].easingFrame == 1.0f) {
+		if (isOpen) {
+			_state = State::CHECK;
+		} else {
+			_state = State::SELECT;
+		}
+		for (int i = 0; i < SpriteMax; i++) {
+			sprites_[i].easingFrame = 0.0f;
+		}
+	}
 }
 
 void Menu::ConfirmUpdate() {

@@ -62,7 +62,10 @@ void SevenStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	//ŠÖ”ƒ|ƒCƒ“ƒ^‚Åó‘ÔŠÇ—
 	if (menu->Pause()) {
 		menu->Update();
-		sceneChanger_->Update();
+		if (menu->ReturnSelect()) {
+			sceneChanger_->ChangeStart();
+			sceneChanger_->ChangeScene("SELECT", SceneChanger::Reverse);
+		}
 		return;
 	}
 	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);

@@ -64,8 +64,8 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	if (menu->Pause()) {
 		menu->Update();
 		if (menu->ReturnSelect()) {
+			sceneChanger_->ChangeStart();
 			sceneChanger_->ChangeScene("SELECT", SceneChanger::Reverse);
-			sceneChanger_->Update();
 		}
 		return;
 	}
