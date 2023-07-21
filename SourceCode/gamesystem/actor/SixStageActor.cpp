@@ -84,7 +84,10 @@ void SixStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGr
 	//関数ポインタで状態管理
 	if (menu->Pause()) {
 		menu->Update();
-		sceneChanger_->Update();
+		if (menu->ReturnSelect()) {
+			sceneChanger_->ChangeStart();
+			sceneChanger_->ChangeScene("SELECT", SceneChanger::Reverse);
+		}
 		return;
 	}
 	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
@@ -203,8 +206,8 @@ void SixStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	if (m_SceneState == SceneState::IntroState) {
 		text_->SpriteDraw(dxCommon);
 	}
-	sceneChanger_->Draw();
 	menu->Draw();
+	sceneChanger_->Draw();
 	camerawork->feedDraw();
 	//SelectScene::GetIns()->Draw_Sprite();
 	IKESprite::PostDraw();

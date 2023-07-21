@@ -23,11 +23,12 @@ public:
 	bool ReturnSelect() { return isSelectBack; };
 	bool Pause();
 private:
-	enum class State :int{
+	enum class State :int {
 		NONE = 0,
 		OPEN,
 		SELECT,//セレクト
 		CHECK,//最終確認
+		CHECKOPENCLOSE,
 		CONFIRM,//操作方法
 		CLOSE
 	}_state = State::NONE;
@@ -38,11 +39,12 @@ private:
 	void OpenUpdate();
 	void SelectUpdate();
 	void CheckUpdate();
+	void CheckOpenCloseUpdate();
 	void ConfirmUpdate();
 	void CloseUpdate();
 private:
 	struct SpriteInfo {
-		unique_ptr<IKESprite> sprite=nullptr;
+		unique_ptr<IKESprite> sprite = nullptr;
 		XMFLOAT2 size = {};
 		XMFLOAT2 pos = {};
 		XMFLOAT2 start_size = {};
@@ -51,10 +53,10 @@ private:
 		XMFLOAT2 end_pos = {};
 		bool isVisible = false;
 		bool isAction = false;
-		float easingFrame=0.0f;
+		float easingFrame = 0.0f;
 		float kFrameMax = 60.0f;
 	};
-	
+
 
 	enum {
 		BackScreen,
@@ -63,20 +65,30 @@ private:
 		ReturnButton,
 		SutoponBar,
 		Confirm_FIRST,
-		//Confirm_SECOND,
-		//Confirm_THIRD,
-		//SceneBack,
+		Check_HOME,
+		Check_OK,
+		Check_NO,
+		Check_BAR,
 		SpriteMax,
 	};
 	std::array<SpriteInfo, SpriteMax> sprites_;
 
 	enum {
-		CONFIRM=0,
+		FINAL_OK = 0,
+		FINAL_NO,
+		FINALMAX
+	};
+
+
+	enum {
+		CONFIRM = 0,
 		SCENEBACK,
 		RETURN,
 		MOVEMAX
 	};
 
+
+	bool isOpen = true;
 	bool isFinish = false;
 	bool isSelectBack = false;
 	std::array<XMFLOAT2, MOVEMAX> buttonPos = {
@@ -84,8 +96,16 @@ private:
 	XMFLOAT2(half_Width + 320.f,half_Height),
 	XMFLOAT2(half_Width,half_Height + 180)
 	};
+
+	std::array<XMFLOAT2, FINALMAX> checkPos = {
+	XMFLOAT2(half_Width - 200.f,half_Height + 120.f),
+	XMFLOAT2(half_Width + 200.f,half_Height + 120.f),
+	};
+
+
+
 	bool moveBar = false;
 	int barIndex = 0;
-	SpriteInfo CreateSprite(UINT num,XMFLOAT2 pos,float easingFrame=60.0f);
+	SpriteInfo CreateSprite(UINT num, XMFLOAT2 pos, float easingFrame = 60.0f);
 	bool TriggerMoveButton();
 };

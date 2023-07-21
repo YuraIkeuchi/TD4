@@ -561,6 +561,7 @@ void ThirdBoss::ChangeRot(const float AfterRot) {
 }
 //スタンプの生成
 void ThirdBoss::BirthStamp(const std::string& stampName) {
+	Audio::GetInstance()->PlayWave("Resources/Sound/SE/Stamp.wav", VolumManager::GetInstance()->GetSEVolum());
 	//指定された名前によってスタンプの種類を変える
 	if (stampName == "Anger") {//怒りのスタンプ
 		InterStamp* newstamp;

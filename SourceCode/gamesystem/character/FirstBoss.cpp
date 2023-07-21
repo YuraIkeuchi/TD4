@@ -603,6 +603,7 @@ void FirstBoss::EndRollAction() {
 	m_EndTimer++;
 	if (_EndState == END_SET) {
 		if (m_EndTimer == 1) {
+			m_Color = { 1.0f,1.0f,1.0f,1.0f };
 			m_Position = { 55.0f,2.0f,10.0f };
 			m_Rotation = { 0.0f,180.0f,0.0f };
 		}

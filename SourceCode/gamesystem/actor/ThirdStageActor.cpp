@@ -64,8 +64,8 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	if (menu->Pause()) {
 		menu->Update();
 		if (menu->ReturnSelect()) {
+			sceneChanger_->ChangeStart();
 			sceneChanger_->ChangeScene("SELECT", SceneChanger::Reverse);
-			sceneChanger_->Update();
 		}
 		return;
 	}
@@ -172,10 +172,9 @@ void ThirdStageActor::FrontDraw(DirectXCommon* dxCommon) {
 		if ((camerawork->GetAppearType() == APPEAR_SEVEN) || (camerawork->GetAppearType() == APPEAR_EIGHT)) {
 			text_->SpriteDraw(dxCommon);
 		}
-	}sceneChanger_->Draw();
+	}
 	menu->Draw();
-	//if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
-	//	SelectScene::GetIns()->Draw_Sprite();
+	sceneChanger_->Draw();
 	IKESprite::PostDraw();
 	camerawork->feedDraw();
 

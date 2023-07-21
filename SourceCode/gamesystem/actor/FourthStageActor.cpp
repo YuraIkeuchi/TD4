@@ -85,7 +85,10 @@ void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	//関数ポインタで状態管理
 	if (menu->Pause()) {
 		menu->Update();
-		sceneChanger_->Update();
+		if (menu->ReturnSelect()) {
+			sceneChanger_->ChangeStart();
+			sceneChanger_->ChangeScene("SELECT", SceneChanger::Reverse);
+		}
 		return;
 	}
 	if (isVisible) { apple->Update(); }
@@ -202,8 +205,8 @@ void FourthStageActor::FrontDraw(DirectXCommon* dxCommon) {
 		}
 		IKESprite::PostDraw();
 	}
-	sceneChanger_->Draw();
 	menu->Draw();
+	sceneChanger_->Draw();
 	camerawork->feedDraw();
 }
 //IMGuiの描画
@@ -439,6 +442,10 @@ bool FourthStageActor::ShutterEffect() {
 }
 
 bool FourthStageActor::ShutterFeed() {
+	//SEを鳴らす
+	if (feedTimer == 0.0f) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Cemera.wav", VolumManager::GetInstance()->GetSEVolum());
+	}
 	feedTimer += 1.0f / feedTimeMax;
 	float color = Ease(Out, Linear, feedTimer, 1.0f, 0.0f);
 	photo[Photo_Out_Top]->SetColor({ 1,1,1, color });

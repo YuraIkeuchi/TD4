@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include"IKESprite.h"
 #include<memory>
 #include<array>
@@ -8,9 +8,9 @@
 #include "IKETexture.h"
 #include "SceneManager.h"
 enum SelectState {
-	SELECT_FIRST,//Å‰‚Ì‹“û‚Ì‚İ
-	SELECT_SECOND,//‚ç‚·‚Ú‚·ˆÈŠOŠJ•úÏ‚İ
-	SELECT_LAST,//ƒ‰ƒXƒ{ƒXŠJ•ú
+	SELECT_FIRST,//æœ€åˆã®ç‰›ä¹³ã®ã¿
+	SELECT_SECOND,//ã‚‰ã™ã¼ã™ä»¥å¤–é–‹æ”¾æ¸ˆã¿
+	SELECT_LAST,//ãƒ©ã‚¹ãƒœã‚¹é–‹æ”¾
 };
 
 using namespace DirectX;
@@ -34,23 +34,23 @@ public:
 	}_stages = MAX;
 public:
 	/**
-	 * \brief ‰Šú‰»
+	 * \brief åˆæœŸåŒ–
 	 */
 	void Init();
 
 	/**
-	 * \brief XV
+	 * \brief æ›´æ–°
 	 */
 	void Upda();
 
 	/**
-	 * \brief •`‰æ
+	 * \brief æç”»
 	 */
 	void Draw_Sprite();
 	void Draw_SpriteBack();
 	void Draw_Obj(DirectXCommon* dxcomn);
 	/**
-	 * \brief ”XƒŠƒZƒbƒg
+	 * \brief è«¸ã€…ãƒªã‚»ãƒƒãƒˆ
 	 */
 
 	void CloseIconView(bool closeF);
@@ -58,7 +58,7 @@ public:
 	void ViewTips();
 
 	/**
-	 * \brief NON‚Ì‚Æ‚«‰Šú‰»—p
+	 * \brief NONã®ã¨ãåˆæœŸåŒ–ç”¨
 	 */
 	void ResetParama();
 
@@ -69,14 +69,14 @@ public:
 	void ImGuiDraw();
 
 private:
-	//ó‹µ‚É‰‚¶‚ÄŠÇ—‚·‚é
+	//çŠ¶æ³ã«å¿œã˜ã¦ç®¡ç†ã™ã‚‹
 	void StateManager();
 private:
-	//“y‘ä
+	//åœŸå°
 	unique_ptr<IKEObject3d>Pedestal = nullptr;
 	XMFLOAT3 PedestalRot = { 0,0,0 };
 
-	//ƒIƒuƒWƒFƒNƒg”iƒXƒe[ƒW”j
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæ•°ï¼ˆã‚¹ãƒ†ãƒ¼ã‚¸æ•°ï¼‰
 	static constexpr int ObjNum = 8;
 
 	array<unique_ptr<IKEObject3d>, ObjNum>StageObjs = { nullptr };
@@ -138,13 +138,14 @@ private:
 	int m_SelectState = SELECT_FIRST;
 
 public:
+	const XMFLOAT3& GetNowSelePos() { return m_NowSelePos; }
 	void SetSelectState(int SelectState) { m_SelectState = SelectState; };
 private:
 	int m_BirthTimer = {};
 	bool m_Wide = false;
+	XMFLOAT3 m_NowSelePos = {};
 
 	bool ChangeLastF;
 	float CLastEaseTime;
 	void ChangeStageRot();
 };
-

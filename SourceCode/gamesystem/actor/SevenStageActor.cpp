@@ -62,7 +62,10 @@ void SevenStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	//ŠÖ”ƒ|ƒCƒ“ƒ^‚Åó‘ÔŠÇ—
 	if (menu->Pause()) {
 		menu->Update();
-		sceneChanger_->Update();
+		if (menu->ReturnSelect()) {
+			sceneChanger_->ChangeStart();
+			sceneChanger_->ChangeScene("SELECT", SceneChanger::Reverse);
+		}
 		return;
 	}
 	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
@@ -171,11 +174,12 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	if ((m_SceneState == SceneState::IntroState) ||
 		(m_SceneState == SceneState::MainState && (camerawork->GetChangeStrong() || camerawork->GetCameraState() == CAMERA_BOSSDEAD_AFTER_SEVEN))) {
 		text_->SpriteDraw(dxCommon);
-	}sceneChanger_->Draw();
+	}
+	menu->Draw();
+	sceneChanger_->Draw();
 	IKESprite::PostDraw();
 	IKESprite::PreDraw();
 	//blackwindow->Draw();
-	menu->Draw();
 	camerawork->feedDraw();
 	//SelectScene::GetIns()->Draw_Sprite();
 	IKESprite::PostDraw();

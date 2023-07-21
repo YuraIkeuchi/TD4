@@ -25,11 +25,11 @@ void UI::Initialize() {
 		TexList.emplace_back(std::move(sprites[UnderStatusGaugeMax]));
 	}
 	{//ゲージ
-		sprites[ExtraGauge] = CreateUi(ImageManager::WHITE, m_GaugePosMini, m_GaugeSizeMini, { 0.0f,1.0f,1.0f,1.0f });
+		sprites[ExtraGauge] = CreateUi(ImageManager::WHITE, m_GaugePosMini, m_GaugeSizeMini, { 0.5f, 0.5f, 1.f,1.f } );
 		TexList.emplace_back(std::move(sprites[ExtraGauge]));
 	}
 	{//ゲージ
-		sprites[StatusGauge] = CreateUi(ImageManager::WHITE, m_GaugePosMini, m_GaugeSizeMini, { 0.f, 1.f, 0.f,1.f });
+		sprites[StatusGauge] = CreateUi(ImageManager::WHITE, m_GaugePosMini, m_GaugeSizeMini, { 0.0f,1.0f,1.0f,1.0f });
 		TexList.emplace_back(std::move(sprites[StatusGauge]));
 	}
 	{//ゲージ

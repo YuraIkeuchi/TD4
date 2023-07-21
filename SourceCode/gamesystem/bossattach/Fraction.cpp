@@ -79,6 +79,7 @@ void Fraction::Spatter()
 			|| m_Position.z <= -60.f || m_Position.z >= 60.f) {
 			Isdelete = true;
 		}
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Glass.wav", VolumManager::GetInstance()->GetSEVolum() * 0.7f);
 		drop_F = false;
 	}
 }

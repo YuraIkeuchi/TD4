@@ -39,6 +39,8 @@ public: //メンバ関数
 	void BackDrawAll();
 	//エフェクト
 	void FireEffect(const int life,const XMFLOAT3& pos,const float startscale, const float endscale,const XMFLOAT4& startcolor,const XMFLOAT4& endcolor);
+	//コトコエフェクト
+	void KotokoEffect(const int life, const XMFLOAT3& pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor);
 	//制御点のエフェクト
 	void LimitEffect(const int life, const XMFLOAT3& pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor);
 	//ダークコトコののエフェクト
@@ -71,6 +73,8 @@ private: //メンバ関数
 private: //メンバ変数
 	//パーティクルマネージャー(丸)
 	unique_ptr<ParticleManager> circleParticle;
+	//パーティクルマネージャー(丸)
+	unique_ptr<ParticleManager> kotokoParticle;
 	//パーティクルマネージャー(ダークコトコ)
 	unique_ptr<ParticleManager> darkParticle;
 	//パーティクルマネージャー(壁)

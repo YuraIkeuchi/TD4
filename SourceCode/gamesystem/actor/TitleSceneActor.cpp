@@ -85,8 +85,8 @@ void TitleSceneActor::FrontDraw() {
 	TitleSprite->Draw();
 	TitleWordSprite->Draw();
 	SelectScene::GetIns()->Draw_Sprite();
-	menu->Draw();
 	IKESprite::PostDraw();
+	menu->Draw();
 	sceneChanger_->Draw();
 }
 //背面描画
