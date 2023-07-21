@@ -22,7 +22,7 @@ void DarkSutoponShot::Upda()
 	if ( ShotCount<=250&&ShotCount % 30 == 0) {
 		ShotBul* newbullet;
 		newbullet = new ShotBul();
-		newbullet->SetSutopos(SutoPos);
+		newbullet->SetSutopos({ SutoPos.x,0.f,SutoPos.z });
 		newbullet->SetSutorot(SutoRot);
 		newbullet->init();
 		bullist.push_back(newbullet);

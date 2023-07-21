@@ -151,10 +151,11 @@ void ShotAttack::Phase_Idle()
 		{
 			for (auto i = 0; i < BulSize; i++)
 			{
+				BulAlive[i] = true;
+				BulAlpha[i] = 1.f;
 				BulPos[i] = boss->GetPosition();
-				BulAlive[0] = true;
-				BulAlpha[0] = 1.f;// true;
 			}
+
 			_phase = Phase::SHOT;
 		}
 	} else {

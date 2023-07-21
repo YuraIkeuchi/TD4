@@ -175,6 +175,7 @@ void SelectScene::Upda() {
 	CloseIconView(CloseF);
 	Helper::GetInstance()->Clamp(closeScl, 0.f, 12500.f);
 	Helper::GetInstance()->Clamp(closeRad, 0.f, 1500.f);
+	if(!ChangeLastF)
 	RotPedestal();
 
 	//Selectは常時出す
@@ -248,22 +249,29 @@ void SelectScene::Upda() {
 		StageObjs[i]->SetScale(m_Scale[i]);
 		StageObjs[i]->Update();
 	}
-	bool temp[ObjNum] = {};
-	for (auto i = 0; i < TipsAct.size(); i++)
-		temp[i] = TipsAct[i];
-	if (Helper::GetInstance()->All_OfF(temp, ObjNum)) {
-		if (TrigerSelect == NOINP && m_Wide) {
-			if (Input::GetInstance()->TriggerButton(Input::RB)) {
-				SelIndex++;
-				TrigerSelect = RB;
-			}
+	if (!ChangeLastF) {
+		bool temp[ObjNum] = {};
+		for (auto i = 0; i < TipsAct.size(); i++)
+			temp[i] = TipsAct[i];
+		if (Helper::GetInstance()->All_OfF(temp, ObjNum)) {
+			if (TrigerSelect == NOINP && m_Wide) {
+				if (Input::GetInstance()->TriggerButton(Input::RB)) {
+					SelIndex++;
+					TrigerSelect = RB;
+				}
 
-			if (Input::GetInstance()->TriggerButton(Input::LB)) {
-				SelIndex--;
-				TrigerSelect = LB;
+				if (Input::GetInstance()->TriggerButton(Input::LB)) {
+					SelIndex--;
+					TrigerSelect = LB;
+				}
 			}
 		}
 	}
+	if (Input::GetInstance()->TriggerButton(Input::Y))
+	{
+		ChangeLastF = true;
+	}
+	ChangeStageRot();
 	m_Scale[TITLE] = { 0.01f,0.01f,0.01f };
 	//セレクトのステート管理
 	StateManager();
@@ -359,10 +367,10 @@ void SelectScene::CloseIconView(bool closeF) {
 	if (closeF && !sin) {
 		closeScl -= SclingSpeed;
 		if (closeScl <= MinScl) {
-			SclingSpeed = 55.f;
+			SclingSpeed = 105.f;
 			closeRad -= SclingSpeed * SubRad;
 		} else
-			SclingSpeed = 100.f;
+			SclingSpeed = 160.f;
 	}
 	if (sin) {
 		if (closeScl >= MinScl)
@@ -492,5 +500,21 @@ void SelectScene::BirthParticle() {
 		if (m_Birth[i] && !m_BirthFinish[i]) {
 			ParticleEmitter::GetInstance()->SelectEffect(l_Life[i], StageObjPos[i], 1.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
 		}
+	}
+}
+
+void SelectScene::ChangeStageRot()
+{
+	if(!ChangeLastF)return;
+
+	Helper::GetInstance()->FrameCheck(CLastEaseTime, 1.f / 120.f);
+	if(CLastEaseTime>=1.f)
+	{
+		ChangeLastF = false;
+	}
+
+	for(auto i=0;i<ObjNum;i++)
+	{
+		StageObjRotAngle[i] = Ease(In, Quad, CLastEaseTime, StageObjRotAngle[i], NowRotAngle[i] +360.f/ObjNum*(ObjNum+2));
 	}
 }
