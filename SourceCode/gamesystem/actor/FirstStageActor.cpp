@@ -31,9 +31,6 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 
 	enemymanager = std::make_unique<EnemyManager>("FIRSTSTAGE");
 	//enemymanager->Initialize(dxCommon);
-	text_ = make_unique<BossText>();
-	text_->Initialize(dxCommon);
-	text_->SelectText(TextManager::ANGER_TALK);
 	camerawork->SetBoss(enemymanager->GetBoss());
 	camerawork->SetCameraState(CAMERA_BOSSAPPEAR);
 	camerawork->SetSceneName("FIRSTSTAGE");
@@ -60,14 +57,14 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	menu = make_unique<Menu>();
 	menu->Initialize();
 
+	text_ = make_unique<BossText>();
+	text_->Initialize(dxCommon);
+	text_->Display();
+
 	//メッセージウィンドウ生成
 	messagewindow_ = make_unique<MessageWindow>();
 	messagewindow_->Initialize();
 	messagewindow_->Display();
-
-	text_ = make_unique<BossText>();
-	text_->Initialize(dxCommon);
-	text_->SelectText(TextManager::ANGER_TALK);
 }
 
 void FirstStageActor::Finalize()
@@ -76,11 +73,13 @@ void FirstStageActor::Finalize()
 
 void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
-	CheckHp();
 	//関数ポインタで状態管理
 	if (menu->Pause()) {
 		menu->Update();
-		sceneChanger_->Update();
+		if (menu->ReturnSelect()) {
+			sceneChanger_->ChangeStart();
+			sceneChanger_->ChangeScene("SELECT", SceneChanger::Reverse);
+		}
 		return;
 	}
 	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
@@ -103,6 +102,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	sceneChanger_->Update();
 	ui->Update();
 	menu->Update();
+	messagewindow_->Update(girl_color_, sutopon_color_);
 	if (SelectScene::GetIns()->GetCloseScl() < 10000.f) {
 		SelectScene::GetIns()->Upda();
 	}
@@ -137,31 +137,31 @@ void FirstStageActor::Draw(DirectXCommon* dxCommon)
 
 void FirstStageActor::FrontDraw(DirectXCommon* dxCommon)
 {
+	
+	if (tolk_F == true) {
+		IKESprite::PreDraw();
+		messagewindow_->Draw();
+		IKESprite::PostDraw();
+		text_->SpriteDraw(dxCommon);
+		
+	}
 	//パーティクル描画
 	if (!camerawork->GetFeedEnd() && m_SceneState == SceneState::MainState) {
 		ParticleEmitter::GetInstance()->FlontDrawAll();
 	}
 
 	ParticleEmitter::GetInstance()->DeathDrawAll();
-	//完全に前に書くスプライト
+	
 	IKESprite::PreDraw();
-	if (tolk_F==true) {
-		messagewindow_->Draw();
-	}
 
 	if (tolk_F == false) {
 		if (m_SceneState == SceneState::MainState && !camerawork->GetFeedEnd()) {
 			ui->Draw();
 		}
 	}
-	if (m_SceneState == SceneState::IntroState) {
-		if ((camerawork->GetAppearType() == APPEAR_SEVEN) || (camerawork->GetAppearType() == APPEAR_EIGHT)) {
-			text_->SpriteDraw(dxCommon);
-		}
-	}
 	IKESprite::PostDraw();
-	sceneChanger_->Draw();
 	menu->Draw();
+	sceneChanger_->Draw();
 	camerawork->feedDraw();
 	IKESprite::PreDraw();
 	//SelectScene::GetIns()->Draw_Sprite();
@@ -170,6 +170,13 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon)
 
 void FirstStageActor::BackDraw(DirectXCommon* dxCommon)
 {
+	
+	if (tolk_F == true) {
+		IKESprite::PreDraw();
+		messagewindow_->Draw();
+		IKESprite::PostDraw();
+		text_->SpriteDraw(dxCommon);
+	}
 	IKESprite::PreDraw();
 	backScreen_->Draw();
 	IKESprite::PostDraw();
@@ -195,6 +202,7 @@ void FirstStageActor::IntroUpdate(DebugCamera* camera)
 	//演出スキップ
 	if (Input::GetInstance()->TriggerButton(Input::A)) {
 		camerawork->SetCameraSkip(true);
+		tolk_F = false;
 	}
 
 	if (camerawork->GetAppearEndF()) {
@@ -202,6 +210,7 @@ void FirstStageActor::IntroUpdate(DebugCamera* camera)
 		m_SceneState = SceneState::MainState;
 		camerawork->SetCameraState(CAMERA_NORMAL);
 		enemymanager->SkipInitialize();
+		
 	}
 
 	//各クラス更新
@@ -219,33 +228,34 @@ void FirstStageActor::IntroUpdate(DebugCamera* camera)
 	else if (m_AppTimer == 580) {
 		_AppState = APP_VANISH;
 	}
-
-	//テキスト関係
 	text_->Display();
+	messagewindow_->Display();
+	messagewindow_->SetBack(true);
+	//テキスト関係
 	if (m_AppTimer == 1) {
-		text_->SelectText(TextManager::TALK_FIRST);
+		text_->SelectText(TextManager::Name_Cap::CAP1);
 	}
 	else if (m_AppTimer == 150) {
-		text_->SelectText(TextManager::TALK_SECOND);
+		text_->SelectText(TextManager::Name_Cap::SUTO1);
 	}
 	else if (m_AppTimer == 300) {
-		text_->SelectText(TextManager::TALK_THIRD);
-		text_->ChangeColor(0, { 1.0f,0.0f,0.0f,1.0f });
+		text_->SelectText(TextManager::Name_Cap::CAP2);
 	}
 	else if (m_AppTimer == 400) {
-		text_->SelectText(TextManager::TALK_FOURTH);
-		for (int i = 0; i < 3; i++) {
-			text_->ChangeColor(i, { 1.0f,1.0f,0.0f,1.0f });
-		}
+		text_->SelectText(TextManager::Name_Cap::SUTO2);
 	}
 	else if (m_AppTimer == 500) {
-		text_->SelectText(TextManager::TALK_FIVE);
+		text_->SelectText(TextManager::Name_Cap::CAP3);
+	}
+	else if (m_AppTimer >= 600) {
+		tolk_F = false;
 	}
 }
 
 void FirstStageActor::MainUpdate(DebugCamera* camera)
 {
 	Input* input = Input::GetInstance();
+	CheckHp();
 	TalkUpdate();
 	if (tolk_F != false) { return; }
 	//カメラワークのセット
@@ -331,10 +341,8 @@ void FirstStageActor::CheckHp()
 void FirstStageActor::TalkUpdate()
 {
 	if (tolk_F != true) { return; }
-	
-	messagewindow_->Update(girl_color_, sutopon_color_);
-
-	text_->SelectText(TextManager::CAP1);
-
+	text_->Display();
+	messagewindow_->SetBack(false);
+	text_->SelectText(TextManager::Name_First::SPEAKPLAYER1);
 	//quarter_hp_ = -100.f;
 }
