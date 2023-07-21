@@ -101,7 +101,6 @@ void ImageManager::SecondLoadTex2D()
 	IKETexture::LoadTexture(DAMAGEAREA2, L"Resources/2d/effect/DArea2.png");
 	IKETexture::LoadTexture(GROUND, L"Resources/2d/SceneBack/Ground.png");
 	IKETexture::LoadTexture(PHOTOSPOT, L"Resources/2d/effect/PhotoSpot.png");
-
 	IKETexture::LoadTexture(STUN, L"Resources/2d/effect/stun.png");
 	IKETexture::LoadTexture(CATCH, L"Resources/2d/effect/effect1.png");
 	IKETexture::LoadTexture(SLASHAREA, L"Resources/2d/effect/DArea3.png");
