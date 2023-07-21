@@ -136,9 +136,11 @@ private:
 	int m_SelectState = SELECT_FIRST;
 
 public:
+	const XMFLOAT3& GetNowSelePos() { return m_NowSelePos; }
 	void SetSelectState(int SelectState) { m_SelectState = SelectState; };
 private:
 	int m_BirthTimer = {};
 	bool m_Wide = false;
+	XMFLOAT3 m_NowSelePos = {};
 };
 
