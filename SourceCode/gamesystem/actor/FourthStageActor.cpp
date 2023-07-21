@@ -433,6 +433,10 @@ bool FourthStageActor::ShutterEffect() {
 }
 
 bool FourthStageActor::ShutterFeed() {
+	//SEを鳴らす
+	if (feedTimer == 0.0f) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Cemera.wav", VolumManager::GetInstance()->GetSEVolum());
+	}
 	feedTimer += 1.0f / feedTimeMax;
 	float color = Ease(Out, Linear, feedTimer, 1.0f, 0.0f);
 	photo[Photo_Out_Top]->SetColor({ 1,1,1, color });

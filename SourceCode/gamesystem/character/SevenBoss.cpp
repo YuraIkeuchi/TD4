@@ -707,6 +707,9 @@ void SevenBoss::Stun() {
 		l_LimitTimer = m_StrongLimit[STATE_STUN];
 	}
 	m_MoveTimer++;
+	if (m_MoveTimer % 80 == 0) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/piyopiyo.wav", VolumManager::GetInstance()->GetSEVolum());
+	}
 	m_Absorption = false;
 	if (m_MoveTimer == l_LimitTimer) {
 		m_Stun = false;

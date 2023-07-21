@@ -161,6 +161,9 @@ void Player::Update()
 		if (Helper::GetInstance()->CheckMax(m_ConfuTimer, 0, -1)) {
 			m_Confu = false;
 		}
+		if (m_ConfuTimer % 80 == 0) {
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/piyopiyo.wav", VolumManager::GetInstance()->GetSEVolum());
+		}
 	}
 	//反発
 	ReBound();
