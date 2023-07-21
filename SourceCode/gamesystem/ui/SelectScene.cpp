@@ -286,6 +286,8 @@ void SelectScene::Upda() {
 	}
 	ChangeStageRot();
 	m_Scale[TITLE] = { 0.01f,0.01f,0.01f };
+	if (!ChangeLastF)
+		CLastEaseTime = 0.f;
 	//セレクトのステート管理
 	StateManager();
 
@@ -528,8 +530,11 @@ void SelectScene::ChangeStageRot()
 		ChangeLastF = false;
 	}
 
-	for(auto i=0;i<ObjNum;i++)
+	for(auto i=0;i<ObjNum-2;i++)
 	{
-		StageObjRotAngle[i] = Ease(In, Quad, CLastEaseTime, StageObjRotAngle[i], NowRotAngle[i] +360.f/ObjNum*(ObjNum+2));
-	}
+		StageObjRotAngle[i]=Ease(In, Quad, CLastEaseTime, StageObjRotAngle[i],180 -(SEVEN-i)*360.f/ObjNum);
+		}
+	StageObjRotAngle[SEVEN] = Ease(In, Quad, CLastEaseTime, StageObjRotAngle[SEVEN], 180/*NowRotAngle[i] +360.f/ObjNum*(ObjNum+2)*/);
+	StageObjRotAngle[TITLE] = Ease(In, Quad, CLastEaseTime, StageObjRotAngle[TITLE],  180- (SEVEN - TITLE) * 360.f / ObjNum/*NowRotAngle[i] +360.f/ObjNum*(ObjNum+2)*/);
+
 }
