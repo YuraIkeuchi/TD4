@@ -30,9 +30,9 @@ private:
 private:
 	float Rads;
 	int textT;
-	unique_ptr<MessageWindow> messagewindow_;
-	unique_ptr<BossText> text_;
+	unique_ptr<BossText> text_ = nullptr;
 	unique_ptr<IKESprite> backScreen_ = nullptr;
+	unique_ptr<MessageWindow> messagewindow_ = nullptr;
 
 	//丸影(ボス)
 	float BosscircleShadowDir[3] = { 0,-1,0 };
@@ -50,7 +50,7 @@ private:
 
 	float boss_hp_{};
 	float quarter_hp_{};
-	bool tolk_F = false;
+	bool tolk_F = true;
 
 
 	enum AppState {

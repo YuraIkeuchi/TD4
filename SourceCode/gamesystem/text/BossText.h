@@ -50,4 +50,5 @@ private:
 	XMFLOAT2 window_pos{ WinApp::window_width / 2.f,WinApp::window_height + 100 };
 	XMFLOAT2 window_size{ 0.f,0.f };
 	float m_Frame = 0.0f;
+
 };
