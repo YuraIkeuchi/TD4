@@ -49,7 +49,9 @@ void SingleShot::Upda()
 		RotEaseTime = 0.f;
 		for (auto i = 0; i < BulSize; i++) {
 			BulAlpha[i] = 1.f;
-			BulPos[i] = boss->GetPosition();
+			BulPos[i].x = boss->GetPosition().x;
+			BulPos[i].y = 3.f;
+			BulPos[i].z = boss->GetPosition().z;
 			ShotAlive[i] = false;
 
 		}_phase = NON;
@@ -112,7 +114,9 @@ void SingleShot::Phase_Idle()
 
 	for (auto i = 0; i < BulSize; i++) {
 		BulAlpha[i] = 1.f;
-		BulPos[i] = boss->GetPosition();
+		BulPos[i].x = boss->GetPosition().x;
+		BulPos[i].y = 3.f;
+		BulPos[i].z = boss->GetPosition().z;
 	}
 
 	boss->SetRotation({ boss->GetRotation().x,
@@ -179,7 +183,11 @@ void SingleShot::Phase_Shot()
 	for (auto i = 0; i < BulSize; i++)
 	{
 		if (!ShotAlive[i])continue;
-		if (BulAlpha[i] >= 1.f)BulPos[i] = boss->GetPosition();
+		if (BulAlpha[i] >= 1.f){
+			BulPos[i].x = boss->GetPosition().x;
+			BulPos[i].y = 3.f;
+			BulPos[i].z = boss->GetPosition().z;
+		}
 		if (Player::GetInstance()->GetDamageInterVal() == 0 && Collision::CircleCollision(BulPos[i].x,BulPos[i].z,3.f, 
 			Player::GetInstance()->GetPosition().x, Player::GetInstance()->GetPosition().z,3.f)) {
 			Player::GetInstance()->PlayerHit(m_Position);

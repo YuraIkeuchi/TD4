@@ -113,7 +113,7 @@ bool FiveBoss::Initialize()
 void FiveBoss::SkipInitialize()
 {
 
-	m_Position = { 0.0f,3.0f,30.0f };
+	m_Position = { 0.0f,-5.0f,30.0f };
 	m_Rotation = { 0.0f,90.0f,0.0f };
 	m_Color = { 0.0f,1.0f,0.0f,1.0f };
 }
@@ -354,7 +354,7 @@ void FiveBoss::AppearAction()
 	const float l_AddFrame = 0.05f;
 	m_AppearTimer++;
 	if (_AppState == APP_SET) {
-		//m_Position = { 600.0f,-5.0f,30.0f };
+		m_Position = { 600.0f,-3.0f,30.0f };
 		m_Rotation = { 0.0f,180.0f,0.0f };
 		m_Color = { 0.0f,1.0f,0.0f,0.0f };
 

@@ -15,7 +15,7 @@ void SevenStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	Audio::GetInstance()->LoopWave(AUDIO_BATTLE, VolumManager::GetInstance()->GetBGMVolum() + 1.0f);
 
 	//ポストエフェクト
-	PlayPostEffect = false;
+	PlayPostEffect = true;
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
 
@@ -87,13 +87,8 @@ void SevenStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	lightgroup->Update();
 	sceneChanger_->Update();
 
-	/*if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
+	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
 		SelectScene::GetIns()->Upda();
-
-	if (Input::GetInstance()->TriggerButton(Input::Y)) {
-		SelectScene::GetIns()->ResetParama();
-		SceneManager::GetInstance()->ChangeScene("SELECT");
-	}*/
 	ui->Update();
 	menu->Update();
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
@@ -106,6 +101,9 @@ void SevenStageActor::Draw(DirectXCommon* dxCommon) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
+		IKESprite::PreDraw();
+		SelectScene::GetIns()->Draw_Sprite();
+		IKESprite::PostDraw();
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 
 		dxCommon->PreDraw();

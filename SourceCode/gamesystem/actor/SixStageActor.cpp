@@ -14,7 +14,7 @@ void SixStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Lig
 	Audio::GetInstance()->LoopWave(AUDIO_BATTLE, VolumManager::GetInstance()->GetBGMVolum() + 1.0f);
 
 	//ポストエフェクト
-	PlayPostEffect = false;
+	PlayPostEffect = true;
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
 
@@ -106,13 +106,9 @@ void SixStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGr
 	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
 
 	lightgroup->Update();
-	/*if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
+	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
 		SelectScene::GetIns()->Upda();
 
-	if (Input::GetInstance()->TriggerButton(Input::Y)) {
-		SelectScene::GetIns()->ResetParama();
-		SceneManager::GetInstance()->ChangeScene("SELECT");
-	}*/
 	//スポットライトの動き
 	MoveSpotLight();
 	if (_AppState == APP_END) {
@@ -146,6 +142,9 @@ void SixStageActor::Draw(DirectXCommon* dxCommon) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
+		IKESprite::PreDraw();
+		SelectScene::GetIns()->Draw_Sprite();
+		IKESprite::PostDraw();
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 
 		dxCommon->PreDraw();

@@ -35,6 +35,8 @@ void ClearSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 			SelectScene::GetIns()->SetSelectState(SELECT_SECOND);
 		}
 	}
+
+	SelectScene::GetIns()->ResetParama();
 	sceneChanger_->ChangeScene(str, SceneChanger::Reverse);
 	sceneChanger_->Update();
 

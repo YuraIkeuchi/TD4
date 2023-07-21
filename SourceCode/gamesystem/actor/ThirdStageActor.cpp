@@ -15,7 +15,7 @@ void ThirdStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	Audio::GetInstance()->LoopWave(AUDIO_BATTLE, VolumManager::GetInstance()->GetBGMVolum() + 1.0f);
 
 	//ポストエフェクト
-	PlayPostEffect = false;
+	PlayPostEffect =true;
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
 
@@ -89,7 +89,10 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	lightgroup->Update();
 	//if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
 	//	SelectScene::GetIns()->Upda();
+	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
+		SelectScene::GetIns()->Upda();
 
+	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 	//if (Input::GetInstance()->TriggerButton(Input::Y)) {
 	//	SelectScene::GetIns()->ResetParama();
 	//	SceneManager::GetInstance()->ChangeScene("SELECT");
@@ -106,6 +109,9 @@ void ThirdStageActor::Draw(DirectXCommon* dxCommon) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
+		IKESprite::PreDraw();
+		SelectScene::GetIns()->Draw_Sprite();
+		IKESprite::PostDraw();
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 
 		dxCommon->PreDraw();

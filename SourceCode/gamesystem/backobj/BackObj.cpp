@@ -4,6 +4,7 @@
 #include "LeftLimit.h"
 #include "RightLimit.h"
 #include "DownLimit.h"
+#include "ImageManager.h"
 #include "UpLimit.h"
 BackObj* BackObj::GetInstance()
 {
@@ -62,6 +63,11 @@ bool BackObj::Initialize() {
 	m_Position = { 0.0f,15.0f,0.0f };
 	m_Scale = { 0.3f,0.3f,0.3f };
 	m_Color = { 0.5f,0.5f,0.5f,1.0f };
+
+	ground.reset(IKETexture::Create(ImageManager::GROUND, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 }));
+	ground->TextureCreate();
+
+
 	return true;
 }
 
@@ -71,7 +77,11 @@ void BackObj::Update() {
 	for (auto& object : objects) {
 		object->Update();
 	}
-
+	ground->SetPosition({ 0,0,0 });
+	ground->SetScale({ 30,30,30 });
+	ground->SetRotation({ 90,0,0 });
+	ground->SetColor({ 1.f,1.f,1.f,0.5f });
+	ground->Update();
 	//移動制御のラインにパーティクル設置
 	DownLimit::GetInstance()->LimitParticle();
 	UpLimit::GetInstance()->LimitParticle();
@@ -86,5 +96,8 @@ void BackObj::Draw(DirectXCommon* dxCommon) {
 	for (auto& object : objects) {
 		object->Draw();
 	}
+	IKETexture::PreDraw2(dxCommon, 0);
+	ground->Draw();
+	IKETexture::PostDraw();
 	//Obj_Draw();
 }

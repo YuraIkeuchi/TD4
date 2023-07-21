@@ -83,6 +83,7 @@ private:
 	array<unique_ptr<IKESprite>, ObjNum>StageObj = { nullptr };
 	array<XMFLOAT3, ObjNum>StageObjPos = {};
 	array<XMFLOAT3, ObjNum>m_Scale = {};
+	array<float, ObjNum>OldObjAngle;
 	array<XMFLOAT3, ObjNum>AfterScale = {};
 	array<float, ObjNum>TipsPosY = {};
 	array<bool, ObjNum>TipsAct = {};
@@ -111,6 +112,7 @@ private:
 	array<float, 2>ButtonNav_Challenge_CancelColAlpha;
 	array<XMFLOAT2, 2>ButtonNav_Pos = { };
 
+	XMFLOAT3 bossColor;
 private:
 	bool ChangeF = false;
 	bool JudgChal = false;
