@@ -8,9 +8,9 @@ AttackLimit,40
 //スピード
 GhostSpeed,10
 //生存時間
-GhostLimit,40
+GhostLimit,8
 //始まりの大きさ
-StartScale,0.0
+StartScale,2.0
 //終わりの大きさ
 EndScale,3.0
 

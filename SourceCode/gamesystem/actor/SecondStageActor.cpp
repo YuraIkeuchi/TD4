@@ -230,10 +230,10 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
 		SelectScene::GetIns()->Upda();
 
-
+	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 	menu->Update();
 	BackObj::GetInstance()->Update();
-	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
+
 	ui->Update();
 }
 //描画

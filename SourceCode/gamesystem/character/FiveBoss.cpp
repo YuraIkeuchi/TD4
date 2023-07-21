@@ -113,7 +113,7 @@ bool FiveBoss::Initialize()
 void FiveBoss::SkipInitialize()
 {
 
-	m_Position = { 0.0f,3.0f,30.0f };
+	m_Position = { 0.0f,-5.0f,30.0f };
 	m_Rotation = { 0.0f,90.0f,0.0f };
 	m_Color = { 0.0f,1.0f,0.0f,1.0f };
 }
@@ -347,6 +347,14 @@ void FiveBoss::Action()
 		e_scale[i] = 0.0f;
 		m_Life[i] = 50;
 	}
+
+	//パーティクル
+	m_ParticleTimer++;
+	BirthParticle();
+	if (m_ParticleTimer == 5) {
+		
+		m_ParticleTimer = 0;
+	}
 }
 
 void FiveBoss::AppearAction()
@@ -354,7 +362,7 @@ void FiveBoss::AppearAction()
 	const float l_AddFrame = 0.05f;
 	m_AppearTimer++;
 	if (_AppState == APP_SET) {
-		//m_Position = { 600.0f,-5.0f,30.0f };
+		m_Position = { 600.0f,-3.0f,30.0f };
 		m_Rotation = { 0.0f,180.0f,0.0f };
 		m_Color = { 0.0f,1.0f,0.0f,0.0f };
 
@@ -608,6 +616,14 @@ Ease(In,Cubic,m_Frame,m_Position.x,m_AfterPos.x),
 Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
 	Ease(In,Cubic,m_Frame,m_Position.z,m_AfterPos.z)
 	};
+}
+void FiveBoss::BirthParticle() {
+	XMFLOAT4 s_color = { 1.0f,0.0f,1.0f,1.0f };
+	XMFLOAT4 e_color = { 0.0f,0.0f,0.0f,1.0f };
+	float s_scale = 3.0f;
+	float e_scale = 0.0f;
+	
+	ParticleEmitter::GetInstance()->KotokoEffect(50, m_Position, s_scale, e_scale, s_color, e_color);
 }
 //会話
 void FiveBoss::AfterAction() {

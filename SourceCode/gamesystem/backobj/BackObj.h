@@ -1,7 +1,7 @@
 #pragma once
 #include "ObjCommon.h"
 #include <map>
-
+#include"IKETexture.h"
 struct JsonData;
 //”wŒi‚ÌŠâ‚È‚Ç‹¤’Ê”wŒi‚ÌƒNƒ‰ƒX
 class BackObj :
@@ -33,6 +33,6 @@ private:
 	JsonData* jsonData = nullptr;
 	std::map<std::string, IKEModel*> models;
 	std::vector<IKEObject3d*> objects;
-
+	std::unique_ptr<IKETexture>ground;
 	XMFLOAT3 m_ParticlePos = {};
 };
