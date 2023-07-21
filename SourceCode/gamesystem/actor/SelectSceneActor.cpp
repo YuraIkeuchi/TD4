@@ -20,6 +20,7 @@ void SelectSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
 
+	//FirstStageクリアしたら初期化切る(各シーンごとにResetParamで)
 	if(!SceneSave::GetInstance()->GetClearFlag(SeceneCategory::kFirstStage))
 	SelectScene::GetIns()->Init();
 

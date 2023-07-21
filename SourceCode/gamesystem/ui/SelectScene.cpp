@@ -533,8 +533,8 @@ void SelectScene::ChangeStageRot()
 	for(auto i=0;i<ObjNum-2;i++)
 	{
 		StageObjRotAngle[i]=Ease(In, Quad, CLastEaseTime, StageObjRotAngle[i],180 -(SEVEN-i)*360.f/ObjNum);
-		}
-	StageObjRotAngle[SEVEN] = Ease(In, Quad, CLastEaseTime, StageObjRotAngle[SEVEN], 180/*NowRotAngle[i] +360.f/ObjNum*(ObjNum+2)*/);
-	StageObjRotAngle[TITLE] = Ease(In, Quad, CLastEaseTime, StageObjRotAngle[TITLE],  180- (SEVEN - TITLE) * 360.f / ObjNum/*NowRotAngle[i] +360.f/ObjNum*(ObjNum+2)*/);
+	}
+	StageObjRotAngle[SEVEN] = Ease(In, Quad, CLastEaseTime, StageObjRotAngle[SEVEN], 180);
+	StageObjRotAngle[TITLE] = Ease(In, Quad, CLastEaseTime, StageObjRotAngle[TITLE],  180- (SEVEN - TITLE) * 360.f / ObjNum);
 
 }
