@@ -98,7 +98,6 @@ void ImageManager::SecondLoadTex2D()
 	IKETexture::LoadTexture(ANGER, L"Resources/2d/objicon/AngerStamp.png");
 	IKETexture::LoadTexture(JOY, L"Resources/2d/objicon/JoyStamp.png");
 	IKETexture::LoadTexture(DAMAGEAREA, L"Resources/2d/effect/DArea.png");
-	IKETexture::LoadTexture(DAMAGEAREA2, L"Resources/2d/effect/DArea2.png");
 	IKETexture::LoadTexture(GROUND, L"Resources/2d/SceneBack/Ground.png");
 	IKETexture::LoadTexture(PHOTOSPOT, L"Resources/2d/effect/PhotoSpot.png");
 
