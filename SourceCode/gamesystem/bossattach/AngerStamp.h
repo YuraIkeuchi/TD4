@@ -38,4 +38,6 @@ private:
 	bool m_Explo = false;
 
 	float m_AlphaFrame = {};
+
+	bool m_Audio = false;
 };

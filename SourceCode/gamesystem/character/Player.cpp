@@ -162,7 +162,7 @@ void Player::Update()
 			m_Confu = false;
 		}
 		if (m_ConfuTimer % 80 == 0) {
-			Audio::GetInstance()->PlayWave("Resources/Sound/SE/piyopiyo.wav", VolumManager::GetInstance()->GetSEVolum());
+			Audio::GetInstance()->PlayWave("Resources/Sound/SE/piyopiyo.wav", VolumManager::GetInstance()->GetSEVolum() * 0.7f);
 		}
 	}
 	//反発
