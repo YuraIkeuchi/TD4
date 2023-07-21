@@ -199,8 +199,8 @@ void FourthStageActor::FrontDraw(DirectXCommon* dxCommon) {
 		}
 		IKESprite::PostDraw();
 	}
-	sceneChanger_->Draw();
 	menu->Draw();
+	sceneChanger_->Draw();
 	camerawork->feedDraw();
 }
 //IMGuiの描画

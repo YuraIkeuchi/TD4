@@ -149,8 +149,8 @@ void FiveStageActor::FrontDraw(DirectXCommon* dxCommon)
 		}
 	}
 	IKESprite::PostDraw();
+	menu->Draw();
 	sceneChanger_->Draw();
-	//menu->Draw();
 	camerawork->feedDraw();
 }
 

@@ -147,4 +147,3 @@ private:
 	float CLastEaseTime;
 	void ChangeStageRot();
 };
-

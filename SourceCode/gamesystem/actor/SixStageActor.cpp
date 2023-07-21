@@ -207,8 +207,8 @@ void SixStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	if (m_SceneState == SceneState::IntroState) {
 		text_->SpriteDraw(dxCommon);
 	}
-	sceneChanger_->Draw();
 	menu->Draw();
+	sceneChanger_->Draw();
 	camerawork->feedDraw();
 	//SelectScene::GetIns()->Draw_Sprite();
 	IKESprite::PostDraw();

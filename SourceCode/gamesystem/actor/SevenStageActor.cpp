@@ -176,11 +176,12 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	if ((m_SceneState == SceneState::IntroState) ||
 		(m_SceneState == SceneState::MainState && (camerawork->GetChangeStrong() || camerawork->GetCameraState() == CAMERA_BOSSDEAD_AFTER_SEVEN))) {
 		text_->SpriteDraw(dxCommon);
-	}sceneChanger_->Draw();
+	}
+	menu->Draw();
+	sceneChanger_->Draw();
 	IKESprite::PostDraw();
 	IKESprite::PreDraw();
 	//blackwindow->Draw();
-	menu->Draw();
 	camerawork->feedDraw();
 	//SelectScene::GetIns()->Draw_Sprite();
 	IKESprite::PostDraw();

@@ -325,14 +325,8 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 		if (camerawork->GetAppearEndF() && camerawork->GetCameraState() == CameraState::CAMERA_NORMAL) {
 			ui->Draw();
 		}
-		sceneChanger_->Draw();
-		IKESprite::PostDraw();
-
-		//完全に前に書くスプライト
-		IKESprite::PreDraw();
 		menu->Draw();
-		camerawork->feedDraw();
-
+		sceneChanger_->Draw();
 		IKESprite::PostDraw();
 	}
 }

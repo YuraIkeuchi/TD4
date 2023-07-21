@@ -166,10 +166,9 @@ void ThirdStageActor::FrontDraw(DirectXCommon* dxCommon) {
 		if ((camerawork->GetAppearType() == APPEAR_SEVEN) || (camerawork->GetAppearType() == APPEAR_EIGHT)) {
 			text_->SpriteDraw(dxCommon);
 		}
-	}sceneChanger_->Draw();
+	}
 	menu->Draw();
-	//if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
-	//	SelectScene::GetIns()->Draw_Sprite();
+	sceneChanger_->Draw();
 	IKESprite::PostDraw();
 	camerawork->feedDraw();
 
