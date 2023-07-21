@@ -154,6 +154,11 @@ void AngerStamp::AngerMove() {
 				if (m_Color.w >= 0.2f) {
 					BirthParticle();
 				}
+				//”š”­‰¹
+				if (m_Color.w <= 0.6f && !m_Audio) {
+					Audio::GetInstance()->PlayWave("Resources/Sound/SE/Explo.wav", VolumManager::GetInstance()->GetSEVolum());
+					m_Audio = true;
+				}
 				Collide();
 			}
 		}
