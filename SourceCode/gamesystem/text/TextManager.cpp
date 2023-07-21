@@ -106,7 +106,7 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	SecondCreateWord(SELECT_JOY, L"キミよくわかってるね!", L"ってことはさ、キミは", L"このぼくのカンジョウ・・・");
 	SecondCreateWord(SELECT_JOY2, L"めのまえのやつをたおすヨロコビを", L"リカイしてくれるよね!!!", L"!!!!!!!!!!");
 
-	CameraBossCreateWord(TALK_FIRST_T, L"ストポンとはぐれちゃった...", L"どこにいっちゃっただろう", L"おなかもすいちゃったし");
+	CameraBossCreateWord(TALK_FIRST_T, L"ストポンとはぐれちゃった...", L"どこにいったんだろう", L"おなかもすいちゃったし");
 	CameraBossCreateWord(TALK_SECOND_T, L"な、なにか探しているのかい？", L"もしかして", L"さっきのメガホンかな...");
 	CameraBossCreateWord(TALK_THIRD_T, L"そうなのかも！", L"でもおなかがすいて", L"もう動けない...");
 	CameraBossCreateWord(TALK_FOURTH_T, L"それならボクに任せて！！", L"一度撮ったら",L"いつでもだせるんだ！");
