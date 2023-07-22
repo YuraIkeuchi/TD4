@@ -5,6 +5,7 @@
 #include "RightLimit.h"
 #include "DownLimit.h"
 #include "ImageManager.h"
+#include "SceneManager.h"
 #include "UpLimit.h"
 BackObj* BackObj::GetInstance()
 {
@@ -97,7 +98,8 @@ void BackObj::Draw(DirectXCommon* dxCommon) {
 		object->Draw();
 	}
 	IKETexture::PreDraw2(dxCommon, 0);
-	ground->Draw();
+	
+	//ground->Draw();
 	IKETexture::PostDraw();
 	//Obj_Draw();
 }

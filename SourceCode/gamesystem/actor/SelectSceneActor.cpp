@@ -45,6 +45,8 @@ void SelectSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	ui->Initialize();
 	ui->SetBoss(enemymanager->GetBoss());
 
+	BackObj::GetInstance()->Initialize();
+
 	//}
 	//スポットライト
 	lightgroup->SetDirLightActive(0, false);
@@ -96,6 +98,7 @@ void SelectSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 
 	sceneChanger_->Update();
+	BackObj::GetInstance()->Update();
 
 	SelectScene::GetIns()->Upda();
 	camerawork->SetEye({ SelectScene::GetIns()->GetPedestalPos().x,
@@ -121,7 +124,9 @@ void SelectSceneActor::Draw(DirectXCommon* dxCommon) {
 	//ポストエフェクトをかけるか
 	if (PlayPostEffect) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
+		BackObj::GetInstance()->Draw(dxCommon);
 		BackDraw(dxCommon);
+		
 		IKESprite::PreDraw();
 		SelectScene::GetIns()->Draw_SpriteBack();
 		IKESprite::PostDraw();
