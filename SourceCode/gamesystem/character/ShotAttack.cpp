@@ -34,7 +34,7 @@ void ShotAttack::Upda()
 	for (auto i = 0; i < 3; i++) {
 		obb[i].SetParam_Pos(ShotObj[i]->GetPosition());
 		obb[i].SetParam_Rot(ShotObj[i]->GetMatrot());
-		obb[i].SetParam_Scl({ 1.f,2.f,1.5f });
+		obb[i].SetParam_Scl({ 1.f,2.f,1.8f });
 	}
 	if (_phase == SHOT) {
 		for (auto i = 0; i < boss->GetGhost().size(); i++) {

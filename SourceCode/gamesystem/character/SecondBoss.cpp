@@ -406,7 +406,7 @@ void SecondBoss::NormalAttak::ShakeAction(XMFLOAT3& Pos, XMFLOAT3& Rot)
 	if (RotEaseTime >= 1.f) {
 
 		RotSpeed += 0.1f;
-		if (RotSpeed >= 8.f && !shakeend) {
+		if (RotSpeed >= 3.5f && !shakeend) {
 			RemovePosEaseT += 0.05f;
 			if (RemovePosEaseT >= 1.f) {
 				shakeend = true;
@@ -1040,7 +1040,7 @@ void SecondBoss::SelAttack()
 	if (!SummobnStop && !_cattack.GetAttackF() && !_normal.GetAttackF() && _attackAction == NORMAL)
 		_normal.SetNormalAttackF(true);
 	//ため攻撃
-	if (!SummobnStop && !_cattack.GetAttackF() && !_normal.GetAttackF() && _attackAction == CHARGE)
+	if (!SummobnStop &&SummonF&& !_cattack.GetAttackF() && !_normal.GetAttackF() && _attackAction == CHARGE)
 		_cattack.SetAttackF(true);
 }
 
