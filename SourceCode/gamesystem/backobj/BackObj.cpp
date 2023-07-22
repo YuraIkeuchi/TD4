@@ -81,7 +81,7 @@ void BackObj::Update() {
 	ground->SetPosition({ 0,0,0 });
 	ground->SetScale({ 30,30,30 });
 	ground->SetRotation({ 90,0,0 });
-	ground->SetColor({ 1.f,1.f,1.f,0.5f });
+	ground->SetColor({ 0.6f,0.6f,0.6f,0.5f });
 	ground->Update();
 	//移動制御のラインにパーティクル設置
 	DownLimit::GetInstance()->LimitParticle();
