@@ -325,7 +325,9 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 		}
 		menu->Draw();
 		sceneChanger_->Draw();
+		
 		IKESprite::PostDraw();
+		camerawork->feedDraw();
 	}
 }
 //IMGuiの描画
