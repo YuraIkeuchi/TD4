@@ -56,6 +56,11 @@ void SevenStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 
 	lightgroup->SetCircleShadowActive(0, true);
 	lightgroup->SetCircleShadowActive(1, true);
+
+	messagewindow_ = make_unique<MessageWindow>();
+	messagewindow_->Initialize();
+	messagewindow_->Display();
+	WhoRead("sutopon");
 }
 //更新
 void SevenStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -90,8 +95,10 @@ void SevenStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	lightgroup->Update();
 	sceneChanger_->Update();
 
-	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
-		SelectScene::GetIns()->Upda();
+	messagewindow_->Update(girl_color_, sutopon_color_);
+
+	//if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
+	//	SelectScene::GetIns()->Upda();
 	ui->Update();
 	menu->Update();
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
@@ -105,7 +112,7 @@ void SevenStageActor::Draw(DirectXCommon* dxCommon) {
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
 		IKESprite::PreDraw();
-		SelectScene::GetIns()->Draw_Sprite();
+		//SelectScene::GetIns()->Draw_Sprite();
 		IKESprite::PostDraw();
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 
@@ -173,7 +180,13 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	}
 	if ((m_SceneState == SceneState::IntroState) ||
 		(m_SceneState == SceneState::MainState && (camerawork->GetChangeStrong() || camerawork->GetCameraState() == CAMERA_BOSSDEAD_AFTER_SEVEN))) {
-		text_->SpriteDraw(dxCommon);
+		messagewindow_->SetNotBlack();
+		if (messagewindow_->DisplayCheck()) {
+			text_->SpriteDraw(dxCommon);
+		}
+		IKESprite::PreDraw();
+		messagewindow_->Draw();
+		IKESprite::PostDraw();
 	}
 	menu->Draw();
 	sceneChanger_->Draw();
@@ -322,16 +335,22 @@ void SevenStageActor::TextRead() {
 	m_AppTimer++;
 	if (m_AppTimer == 240) {
 		text_->SelectText(TextManager::LAST_TALK_SECOND);
+		WhoRead("sutopon");
 	} else if (m_AppTimer == 350) {
 		text_->SelectText(TextManager::LAST_TALK_THIRD);
+		WhoRead("girl");
 	} else if (m_AppTimer == 500) {
 		text_->SelectText(TextManager::LAST_TALK_FOURTH);
+		WhoRead("sutopon");
 	} else if (m_AppTimer == 650) {
 		text_->SelectText(TextManager::LAST_TALK_FIVE);
+		WhoRead("boss");
 	} else if (m_AppTimer == 800) {
 		text_->SelectText(TextManager::LAST_TALK_SIX);
+		WhoRead("sutopon");
 	} else if (m_AppTimer == 950) {
 		text_->SelectText(TextManager::LAST_TALK_SEVEN);
+		WhoRead("boss");
 	} else if (m_AppTimer == 1100) {
 		text_->SelectText(TextManager::LAST_TALK_EIGHT);
 	} else if (m_AppTimer == 1250) {
@@ -344,14 +363,17 @@ void SevenStageActor::TextRead() {
 		text_->SelectText(TextManager::LAST_TALK_TWELVE);
 	} else if (m_AppTimer == 1850) {
 		text_->SelectText(TextManager::LAST_TALK_THIRTEEN);
+		WhoRead("sutopon");
 	} else if (m_AppTimer == 2000) {
 		text_->SelectText(TextManager::LAST_TALK_FOURTEEN);
 	} else if (m_AppTimer == 2150) {
 		text_->SelectText(TextManager::LAST_TALK_FIFETEEN);
+		WhoRead("boss");
 	} else if (m_AppTimer == 2300) {
 		text_->SelectText(TextManager::LAST_TALK_SIXTEEN);
 	} else if (m_AppTimer == 2450) {
 		text_->SelectText(TextManager::LAST_TALK_SEVENTEEN);
+		WhoRead("sutopon");
 	} else if (m_AppTimer == 2600) {
 		text_->SelectText(TextManager::LAST_TALK_EIGHTTEEN);
 	} else if (m_AppTimer == 2750) {
@@ -359,6 +381,8 @@ void SevenStageActor::TextRead() {
 	} else if (m_AppTimer == 2950) {
 		camerawork->SetCameraSkip(true);
 	}
+
+	messagewindow_->DisplayCharacter(sutopon_color_);
 }
 //覚醒時のテキスト
 void SevenStageActor::AwakeText() {
@@ -374,33 +398,61 @@ void SevenStageActor::AwakeText() {
 void SevenStageActor::DeathText() {
 	if (m_EndTimer == 1) {
 		text_->SelectText(TextManager::DEATH_FIRST);
+		WhoRead("boss");
 	} else if (m_EndTimer == 200) {
 		text_->SelectText(TextManager::DEATH_SECOND);
 	} else if (m_EndTimer == 350) {
 		text_->SelectText(TextManager::DEATH_THIRD);
 	} else if (m_EndTimer == 500) {
 		text_->SelectText(TextManager::DEATH_FOURTH);
+		WhoRead("sutopon");
 	} else if (m_EndTimer == 650) {
 		text_->SelectText(TextManager::DEATH_FIVE);
 	} else if (m_EndTimer == 800) {
 		text_->SelectText(TextManager::DEATH_SIX);//ボス
+		WhoRead("boss");
 	} else if (m_EndTimer == 900) {
 		text_->SelectText(TextManager::DEATH_SEVEN);//ボス
 	} else if (m_EndTimer == 1000) {
 		text_->SelectText(TextManager::DEATH_EIGHT);//コトコ
+		WhoRead("girl");
 	} else if (m_EndTimer == 1100) {
 		text_->SelectText(TextManager::DEATH_NINE);//ボス
+		WhoRead("boss");
 	} else if (m_EndTimer == 1200) {
 		text_->SelectText(TextManager::DEATH_TEN);//コトコ
+		WhoRead("girl");
 	} else if (m_EndTimer == 1300) {
 		text_->SelectText(TextManager::DEATH_ELEVEN);//コトコ
 	} else if (m_EndTimer == 1400) {
 		text_->SelectText(TextManager::DEATH_TWELVE);//ボス
+		WhoRead("boss");
 	} else if (m_EndTimer == 1500) {
 		text_->SelectText(TextManager::DEATH_THIRTEEN);//コトコ
+		WhoRead("girl");
 	} else if (m_EndTimer == 1600) {
 		text_->SelectText(TextManager::DEATH_FOURTEEN);//すと
+		WhoRead("sutopon");
 	} else if (m_EndTimer == 1700) {
 		text_->SelectText(TextManager::DEATH_FIFTEEN);//ボス
+		WhoRead("boss");
+	}
+}
+//どっちが呼んでいるか
+void SevenStageActor::WhoRead(const string& name) {
+	if (name == "sutopon") {
+		sutopon_color_ = { 1.0f,1.0f,1.0f,1.0f };
+		girl_color_ = { 0.5f,0.5f,0.5f,0.5f };
+	}
+	else if (name == "girl") {
+		girl_color_ = { 1.0f,1.0f,1.0f,1.0f };
+		sutopon_color_ = { 0.5f,0.5f,0.5f,0.5f };
+	}
+	else if(name == "boss") {
+		sutopon_color_ = { 0.5f,0.5f,0.5f,0.5f };
+		girl_color_ = { 0.5f,0.5f,0.5f,0.5f };
+	}
+	else {
+		assert(0);
 	}
 }
