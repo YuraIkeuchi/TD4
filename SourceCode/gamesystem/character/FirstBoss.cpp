@@ -52,6 +52,7 @@ bool FirstBoss::Initialize()
 	DecisionCount=static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/Firstboss.csv", "DecisionCount")));
 	m_Radius = 5.2f;
 	m_MaxHp = m_HP;
+	m_HP = 15;
 	half_hp_ = m_HP / 4;
 	_charstate = CharaState::STATE_INTER;
 

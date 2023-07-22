@@ -28,6 +28,7 @@ public:
 
 	bool DisplayCheck();
 	void SetNotBlack() { notBlack = true; }
+	void SetBack(bool flag) { this->notBlack = flag; }
 private:
 	unique_ptr<IKESprite> window_;
 	unique_ptr<IKESprite> blackback_;
