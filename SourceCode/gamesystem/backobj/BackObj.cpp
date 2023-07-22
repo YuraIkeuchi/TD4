@@ -99,7 +99,7 @@ void BackObj::Draw(DirectXCommon* dxCommon) {
 	}
 	IKETexture::PreDraw2(dxCommon, 0);
 	
-	//ground->Draw();
+	ground->Draw();
 	IKETexture::PostDraw();
 	//Obj_Draw();
 }

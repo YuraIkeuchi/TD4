@@ -35,7 +35,7 @@ FirstBoss::FirstBoss()
 	tex->SetPosition({ 0.0f,-500.0f,0.0f });
 	tex->SetTiling(2.0f);
 
-	m_HP = 5.f;
+	m_HP = 0.f;
 }
 
 bool FirstBoss::Initialize()

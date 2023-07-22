@@ -94,6 +94,7 @@ private:
 	array<float, ObjNum>StageObjEaseT = {};
 	array<float, ObjNum>IconColor = {};
 	array<float, ObjNum> NowRotAngle = {};
+	array<XMFLOAT3, ObjNum> m_Color = {};
 	float IconRotAngle_EaseT = 0.0f;
 
 	enum Select {
@@ -138,6 +139,7 @@ private:
 	int m_SelectState = SELECT_FIRST;
 
 public:
+	void SetFirstClear() { m_Wide = true; m_SelectState = SELECT_SECOND; }
 	const XMFLOAT3& GetNowSelePos() { return m_NowSelePos; }
 	void SetSelectState(int SelectState) { m_SelectState = SelectState; };
 private:

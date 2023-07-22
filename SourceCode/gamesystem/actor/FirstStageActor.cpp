@@ -123,8 +123,7 @@ void FirstStageActor::Draw(DirectXCommon* dxCommon)
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
-	}
-	else {
+	} else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
@@ -137,13 +136,13 @@ void FirstStageActor::Draw(DirectXCommon* dxCommon)
 
 void FirstStageActor::FrontDraw(DirectXCommon* dxCommon)
 {
-	
+
 	if (tolk_F == true) {
 		IKESprite::PreDraw();
 		messagewindow_->Draw();
 		IKESprite::PostDraw();
 		text_->SpriteDraw(dxCommon);
-		
+
 	}
 	//パーティクル描画
 	if (!camerawork->GetFeedEnd() && m_SceneState == SceneState::MainState) {
@@ -151,7 +150,7 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon)
 	}
 
 	ParticleEmitter::GetInstance()->DeathDrawAll();
-	
+
 	IKESprite::PreDraw();
 
 	if (tolk_F == false) {
@@ -170,7 +169,7 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon)
 
 void FirstStageActor::BackDraw(DirectXCommon* dxCommon)
 {
-	
+
 	if (tolk_F == true) {
 		IKESprite::PreDraw();
 		messagewindow_->Draw();
@@ -210,7 +209,7 @@ void FirstStageActor::IntroUpdate(DebugCamera* camera)
 		m_SceneState = SceneState::MainState;
 		camerawork->SetCameraState(CAMERA_NORMAL);
 		enemymanager->SkipInitialize();
-		
+
 	}
 
 	//各クラス更新
@@ -224,8 +223,7 @@ void FirstStageActor::IntroUpdate(DebugCamera* camera)
 	m_AppTimer++;
 	if (m_AppTimer == 400) {
 		_AppState = APP_NOTICE;
-	}
-	else if (m_AppTimer == 580) {
+	} else if (m_AppTimer == 580) {
 		_AppState = APP_VANISH;
 	}
 	text_->Display();
@@ -234,20 +232,15 @@ void FirstStageActor::IntroUpdate(DebugCamera* camera)
 	//テキスト関係
 	if (m_AppTimer == 1) {
 		text_->SelectText(TextManager::Name_Cap::CAP1);
-	}
-	else if (m_AppTimer == 150) {
+	} else if (m_AppTimer == 150) {
 		text_->SelectText(TextManager::Name_Cap::SUTO1);
-	}
-	else if (m_AppTimer == 300) {
+	} else if (m_AppTimer == 300) {
 		text_->SelectText(TextManager::Name_Cap::CAP2);
-	}
-	else if (m_AppTimer == 400) {
+	} else if (m_AppTimer == 400) {
 		text_->SelectText(TextManager::Name_Cap::SUTO2);
-	}
-	else if (m_AppTimer == 500) {
+	} else if (m_AppTimer == 500) {
 		text_->SelectText(TextManager::Name_Cap::CAP3);
-	}
-	else if (m_AppTimer >= 600) {
+	} else if (m_AppTimer >= 600) {
 		tolk_F = false;
 	}
 }
@@ -287,7 +280,7 @@ void FirstStageActor::MainUpdate(DebugCamera* camera)
 
 		Player::GetInstance()->DeathUpdate();
 	}
-	
+
 	else
 	{
 		Player::GetInstance()->Update();
@@ -317,7 +310,12 @@ void FirstStageActor::MainUpdate(DebugCamera* camera)
 	tex2DPos = Helper::GetInstance()->PosDivi(tex2DPos, camera->GetProjectionMatrix(), true);
 	tex2DPos = Helper::GetInstance()->WDivision(tex2DPos, false);
 	tex2DPos = Helper::GetInstance()->PosDivi(tex2DPos, camera->GetViewPort(), false);
-
+	{
+		sceneChanger_->ChangeStart();
+		SelectScene::GetIns()->SetFirstClear();
+		SelectScene::GetIns()->ResetParama();
+		sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
+	}
 	postEffect->SetRadCenter(XMFLOAT2(tex2DPos.m128_f32[0], tex2DPos.m128_f32[1]));
 	postEffect->SetRadPower(camerawork->GetEffectPower());
 }
@@ -332,8 +330,7 @@ void FirstStageActor::CheckHp()
 	boss_hp_ = enemymanager->GetHp();
 	if (boss_hp_ <= quarter_hp_) {
 		tolk_F = true;
-	}
-	else {
+	} else {
 		tolk_F = false;
 	}
 }

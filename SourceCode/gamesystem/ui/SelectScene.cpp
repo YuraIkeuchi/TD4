@@ -267,7 +267,7 @@ void SelectScene::Upda() {
 		for (auto i = 0; i < TipsAct.size(); i++)
 			temp[i] = TipsAct[i];
 		if (Helper::GetInstance()->All_OfF(temp, ObjNum)) {
-			if (TrigerSelect == NOINP && m_Wide) {
+			if (TrigerSelect == NOINP ) {
 				if (Input::GetInstance()->TriggerButton(Input::RB)) {
 					SelIndex++;
 					TrigerSelect = RB;
@@ -441,7 +441,8 @@ void SelectScene::ViewTips() {
 void SelectScene::StateManager() {
 	//debugよう
 	m_Scale[TITLE] = { 0.025f,0.1f,0.025f };
-	m_Wide = true;
+	//m_Wide = true;
+
 	//m_SelectState =SELECT_SECOND;
 	//
 	//クリア状況に応じてOBJの大きさだったりが違う
@@ -471,11 +472,13 @@ void SelectScene::StateManager() {
 				}
 			}
 			else {			//大きくなる前はパーティクルを出すようにしている
-				BirthParticle();
+				
+				//クリア状況に応じてOBJの大きさだったりが違う
+
 			}
 		}
-
 		if (SceneSave::GetInstance()->AllClear()) {			//ラスボス以外倒したら(いまはちえよしまで)ラスボスが出現する
+			ChangeLastF = true;
 			m_SelectState = SELECT_LAST;
 			m_Wide = false;
 			m_BirthTimer = {};
@@ -487,7 +490,7 @@ void SelectScene::StateManager() {
 			temp[i] = TipsAct[i];
 		if (Helper::GetInstance()->All_OfF(temp, ObjNum)) {
 			m_BirthTimer++;
-			m_Birth[SEVEN] = true;			//ラスボスの出現
+			//m_Birth[SEVEN] = true;			//ラスボスの出現
 
 			if (m_BirthTimer == 150) {
 				m_Wide = true;
@@ -506,6 +509,16 @@ void SelectScene::StateManager() {
 			}
 		}
 	}
+	if(ChangeLastF)
+	{
+		m_Birth[SEVEN] = true;
+		m_BirthFinish[SEVEN] = true;
+	}
+	else {
+		m_Birth[SEVEN] = false;
+		m_BirthFinish[SEVEN] = false;
+	}
+		BirthParticle();
 }
 
 //パーティクル
@@ -514,7 +527,7 @@ void SelectScene::BirthParticle() {
 
 	for (auto i = 0; i < ObjNum; i++) {
 		l_Life[i] = 50;
-		if (m_Birth[i] && !m_BirthFinish[i]) {
+		if (!m_Birth[i] && !m_BirthFinish[i]) {
 			ParticleEmitter::GetInstance()->SelectEffect(l_Life[i], StageObjPos[i], 1.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
 		}
 	}
