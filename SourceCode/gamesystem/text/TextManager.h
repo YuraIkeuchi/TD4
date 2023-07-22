@@ -82,7 +82,11 @@ public:
 		VIEWBOSS,
 		SPEAKPLAYER1,
 		SPEALPLAYER2,
-		SPEALPLAYER3
+		SPEALPLAYER3,
+
+		CHARGE1,
+		CHARGE2,
+		CHARGE3,
 	};
 
 	enum Name_Second {

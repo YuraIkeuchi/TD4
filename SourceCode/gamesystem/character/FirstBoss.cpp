@@ -107,9 +107,9 @@ void FirstBoss::Action()
 	//状態移行(charastateに合わせる)
 	if (m_HP > 0.0f) {
 		(this->*stateTable[_charstate])();
+		FaceToOrientation();
 	}
-
-	FaceToOrientation();
+	
 
 	/*^^^^当たり判定^^^^*/
 	//弾とボスの当たり判定
@@ -155,21 +155,25 @@ void FirstBoss::DeadAction()
 	m_DeathTimer++;
 	const int l_BaseTarget = 50;
 	if (m_DeathTimer == 1) {
-		m_Position = { 0.0f,30.0f,20.0f };
-		m_Rotation = { 0.0f,0.0f,0.0f };
+		m_Position = { 0.0f,0.0f,20.0f };
+		m_Rotation = { 20.0f,0.0f,0.0f };
 	}
 	else if (m_DeathTimer >= 2 && m_DeathTimer < 300) {
+		m_Rotation.y += 10.f;
 		//sin波によって上下に動く
-		m_Angle += l_AddAngle;
+	/*	m_Angle += l_AddAngle;
 		m_Angle2 = m_Angle * (3.14f / 180.0f);
-		m_Position.x = (sin(m_Angle2) * 15.0f + 15.0f);
+		m_Position.x = (sin(m_Angle2) * 15.0f + 15.0f);*/
 		DeathParticle();
 	}
 	else {
-		m_Gravity = 0.05f;
-		//飛ぶような感じにするため重力を入れる
-		m_AddPower -= m_Gravity;
-		Helper::GetInstance()->CheckMax(m_Position.y, 6.0f, m_AddPower);
+		if (m_Rotation.x <= 90) {
+			m_Rotation.x++;
+		}
+		//m_Gravity = 0.05f;
+		////飛ぶような感じにするため重力を入れる
+		//m_AddPower -= m_Gravity;
+		//Helper::GetInstance()->CheckMax(m_Position.y, 6.0f, m_AddPower);
 	}
 
 	Obj_SetParam();

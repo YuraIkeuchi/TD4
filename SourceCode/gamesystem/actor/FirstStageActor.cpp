@@ -202,10 +202,12 @@ void FirstStageActor::IntroUpdate(DebugCamera* camera)
 	if (Input::GetInstance()->TriggerButton(Input::A)) {
 		camerawork->SetCameraSkip(true);
 		tolk_F = false;
+		m_AppTimer = 0;
 	}
 
 	if (camerawork->GetAppearEndF()) {
 		_AppState = APP_END;
+		m_AppTimer = 0;
 		m_SceneState = SceneState::MainState;
 		camerawork->SetCameraState(CAMERA_NORMAL);
 		enemymanager->SkipInitialize();
@@ -242,6 +244,7 @@ void FirstStageActor::IntroUpdate(DebugCamera* camera)
 		text_->SelectText(TextManager::Name_Cap::CAP3);
 	} else if (m_AppTimer >= 600) {
 		tolk_F = false;
+		m_AppTimer = 0;
 	}
 }
 
@@ -338,8 +341,19 @@ void FirstStageActor::CheckHp()
 void FirstStageActor::TalkUpdate()
 {
 	if (tolk_F != true) { return; }
+	m_AppTimer++;
 	text_->Display();
 	messagewindow_->SetBack(false);
-	text_->SelectText(TextManager::Name_First::SPEAKPLAYER1);
-	//quarter_hp_ = -100.f;
+	if (m_AppTimer == 2) {
+		text_->SelectText(TextManager::Name_First::CHARGE1);
+	}
+	else if (m_AppTimer == 150) {
+		text_->SelectText(TextManager::Name_First::CHARGE2);
+	}
+	else if (m_AppTimer == 300) {
+		text_->SelectText(TextManager::Name_First::CHARGE3);
+	}
+	else if (m_AppTimer == 450) {
+		quarter_hp_ = -100.f;
+	}
 }
