@@ -86,6 +86,7 @@ private:
 	array<float, ObjNum>OldObjAngle;
 	array<XMFLOAT3, ObjNum>AfterScale = {};
 	array<float, ObjNum>TipsPosY = {};
+	array<float, ObjNum>ObjColEase = {};
 	array<bool, ObjNum>TipsAct = {};
 	array<bool, ObjNum>m_Birth = {};
 	array<bool, ObjNum>m_BirthFinish = {};

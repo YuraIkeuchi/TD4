@@ -143,6 +143,7 @@ void SelectScene::Init() {
 		m_Scale[i] = { 0.0f,0.0f,0.0f };
 		AfterScale[i] = { 1.0f,1.0f,1.0f };
 	}
+	AfterScale[SECOND] = { 0.70f,0.70f,0.70f };
 	m_Scale[FIRST] = { 5.0f,5.0f,5.0f };
 	AfterScale[FIRST] = { 5.0f,5.0f,5.0f };
 	m_Birth[FIRST] = true;
@@ -150,17 +151,19 @@ void SelectScene::Init() {
 	AfterScale[THIRD] = { 4.0f,4.0f,4.0f };
 	AfterScale[FOUR] = { 3.0f,3.0f,3.0f };
 	StageObjs[FOUR]->SetRotation({ 0.0f,90.0f,0.0f });
-	StageObjRot[FOUR].z=190;
+	StageObjRot[FOUR].z = 190;
 	StageObjRot[FOUR].x = 190;
 	AfterScale[FIVE] = { 0.2f,0.2f,0.2f };
-	
+
 	//一回開放したら大きさを合わせる
 	for (auto i = 0; i < ObjNum; i++) {
-		if (m_Birth[i]) {
+	//	if (m_Birth[i]) {
 			m_Scale[i] = AfterScale[i];
-		}
+		//}
 		TipsAct[i] = false;
 	}
+	m_Color[FIRST] = { 1,1,1 };
+	m_Color[TITLE] = { 1,1,1 };
 }
 
 void SelectScene::Upda() {
@@ -241,7 +244,7 @@ void SelectScene::Upda() {
 		StageObj[i]->SetSize({ 800.f,500.f });
 		StageObj[i]->SetPosition({ 640,TipsPosY[i] });
 		StageObj[i]->SetAnchorPoint({ 0.5f,0.5f });
-		StageObj[i]->SetColor({ 1,1,1,1.f });
+		StageObjs[i]->SetColor({ m_Color[i].x, m_Color[i].y, m_Color[i].z,1.f});
 
 		StageObjs[i]->SetRotation({ StageObjRot[i] });
 
@@ -463,10 +466,11 @@ void SelectScene::StateManager() {
 				m_BirthTimer = {};
 			}
 			if (m_Wide) {			//ボスを大きくする
-				for (auto i = 1; i < ObjNum - 1; i++) {
-					m_Scale[i] = { Ease(In,Cubic,0.5f,m_Scale[i].x,AfterScale[i].x),
-						Ease(In,Cubic,0.5f,m_Scale[i].y,AfterScale[i].y),
-						Ease(In,Cubic,0.5f,m_Scale[i].z,AfterScale[i].z),
+				for (auto i = 1; i < ObjNum - 2; i++) {
+					Helper::GetInstance()->FrameCheck(ObjColEase[i], 0.1f);
+					m_Color[i] = { Ease(In,Cubic,ObjColEase[i],0,1),
+						Ease(In,Cubic,ObjColEase[i],0,1),
+						Ease(In,Cubic,ObjColEase[i],0,1),
 					};
 					m_BirthFinish[i] = true;
 				}
@@ -525,10 +529,20 @@ void SelectScene::StateManager() {
 void SelectScene::BirthParticle() {
 	int l_Life[ObjNum];
 
-	for (auto i = 0; i < ObjNum; i++) {
+	for (auto i = 0; i < ObjNum-2; i++) {
 		l_Life[i] = 50;
 		if (!m_Birth[i] && !m_BirthFinish[i]) {
-			ParticleEmitter::GetInstance()->SelectEffect(l_Life[i], StageObjPos[i], 1.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
+			ParticleEmitter::GetInstance()->SelectEffect(l_Life[i], { StageObjPos[i].x,StageObjPos[i].y-3.f,StageObjPos[i].z }, 1.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
+		}
+	}
+	l_Life[TITLE] = 50;
+	if (!m_Birth[TITLE] && !m_BirthFinish[TITLE]) {
+		ParticleEmitter::GetInstance()->SelectEffect(l_Life[TITLE], { StageObjPos[TITLE].x,StageObjPos[TITLE].y - 3.f,StageObjPos[TITLE].z }, 1.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
+	}
+	if (m_SelectState != SELECT_LAST) {
+		l_Life[SEVEN] = 50;
+		if (!m_Birth[SEVEN] && !m_BirthFinish[SEVEN]) {
+			ParticleEmitter::GetInstance()->SelectEffect(l_Life[SEVEN], { StageObjPos[SEVEN].x,StageObjPos[SEVEN].y - 3.f,StageObjPos[SEVEN].z }, 1.0f, 0.0f, { 0.8f,0.2f,0.8f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
 		}
 	}
 }
