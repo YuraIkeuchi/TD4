@@ -32,6 +32,8 @@ private:
 	void TextRead();
 	void AwakeText();
 	void DeathText();
+
+	void WhoRead(const string& name);
 private:
 private:
 	float Rads;
