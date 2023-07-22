@@ -206,7 +206,7 @@ void SevenBoss::Action() {
 		}
 	}
 
-	bossstuneffect->SetBasePos(m_Position);
+	bossstuneffect->SetBasePos({ m_Position.x,m_Position.y + 2.0f,m_Position.z });
 	bossstuneffect->Update();
 
 	confueffect->SetBasePos(Player::GetInstance()->GetPosition());
@@ -700,6 +700,7 @@ void SevenBoss::BulletCatch() {
 //ƒXƒ^ƒ“‚µ‚½Žž
 void SevenBoss::Stun() {
 	int l_LimitTimer = {};
+	m_Rotation.y += 2.0f;
 	//‹­‰»‚É‚æ‚Á‚Ä•Ï‚í‚é
 	if (!isStrong) {
 		l_LimitTimer = m_Limit[STATE_STUN];

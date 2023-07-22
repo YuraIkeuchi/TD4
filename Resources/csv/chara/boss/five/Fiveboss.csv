@@ -1,7 +1,7 @@
 //BaseParam
 pos,0
 //HP
-hp,5
+hp,28
 //歩くスピード
 WalkSpeed,4
 //ガード続く時間
@@ -11,7 +11,7 @@ KnockInter,180
 //回収後攻撃せずにゴースト回収を続ける確率
 noAction,30
 //ダメージ倍率(値が小さければ小さいほど食らうダメージが少ない)
-Magnification,0.65
+Magnification,0.5
 //--------------------//
 //KnockBack
 KnockDam,0.1
