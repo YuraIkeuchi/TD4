@@ -253,18 +253,8 @@ void SelectScene::Upda() {
 		StageObjs[i]->SetScale(m_Scale[i]);
 		StageObjs[i]->Update();
 	}
-	for (auto i = 0; i < ObjNum - 2; i++) {
-		StageObjs[i]->SetColor({ 1,1,1,IconColor[i] });
-	}
-		StageObjs[SEVEN]->SetColor({ bossColor.x,bossColor.y,bossColor.z,1.f });
+	StageObjs[TITLE]->SetColor({ 1,1,1,1 });
 
-	if (CLastEaseTime >=0.4f) {
-			Helper::GetInstance()->FrameCheck(bossColor.x,1.f/30.f);
-			Helper::GetInstance()->FrameCheck(bossColor.y, 1.f / 30.f);
-			Helper::GetInstance()->FrameCheck(bossColor.z, 1.f / 30.f);
-		}
-
-			StageObjs[TITLE]->SetColor({ 1,1,1,1 });
 	if (!ChangeLastF) {
 		bool temp[ObjNum] = {};
 		for (auto i = 0; i < TipsAct.size(); i++)
@@ -481,6 +471,7 @@ void SelectScene::StateManager() {
 
 			}
 		}
+
 		if (SceneSave::GetInstance()->AllClear()) {			//ラスボス以外倒したら(いまはちえよしまで)ラスボスが出現する
 			ChangeLastF = true;
 			m_SelectState = SELECT_LAST;
@@ -497,15 +488,14 @@ void SelectScene::StateManager() {
 			//m_Birth[SEVEN] = true;			//ラスボスの出現
 
 			if (m_BirthTimer == 150) {
+				m_Birth[SEVEN] = true;
+				m_BirthFinish[SEVEN] = true;
 				m_Wide = true;
 				m_BirthTimer = {};
 			}
 
 			if (m_Wide) {//ラスボスのOBJを大きくする
-				m_Scale[SEVEN] = { Ease(In,Cubic,0.5f,m_Scale[SEVEN].x,AfterScale[SEVEN].x),
-					Ease(In,Cubic,0.5f,m_Scale[SEVEN].y,AfterScale[SEVEN].y),
-					Ease(In,Cubic,0.5f,m_Scale[SEVEN].z,AfterScale[SEVEN].z),
-				};
+				
 				m_BirthFinish[SEVEN] = true;
 			}
 			else {
@@ -513,10 +503,9 @@ void SelectScene::StateManager() {
 			}
 		}
 	}
-	if(ChangeLastF)
+	if(m_SelectState == SELECT_LAST)
 	{
-		m_Birth[SEVEN] = true;
-		m_BirthFinish[SEVEN] = true;
+		
 	}
 	else {
 		m_Birth[SEVEN] = false;
@@ -531,7 +520,7 @@ void SelectScene::BirthParticle() {
 
 	for (auto i = 0; i < ObjNum-2; i++) {
 		l_Life[i] = 50;
-		if (!m_Birth[i] && !m_BirthFinish[i]) {
+		if (m_Color[i].x<1.f) {
 			ParticleEmitter::GetInstance()->SelectEffect(l_Life[i], { StageObjPos[i].x,StageObjPos[i].y-3.f,StageObjPos[i].z }, 1.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
 		}
 	}
@@ -541,7 +530,7 @@ void SelectScene::BirthParticle() {
 	}
 	if (m_SelectState != SELECT_LAST) {
 		l_Life[SEVEN] = 50;
-		if (!m_Birth[SEVEN] && !m_BirthFinish[SEVEN]) {
+		if (m_Color[SEVEN].x < 1.f) {
 			ParticleEmitter::GetInstance()->SelectEffect(l_Life[SEVEN], { StageObjPos[SEVEN].x,StageObjPos[SEVEN].y - 3.f,StageObjPos[SEVEN].z }, 1.0f, 0.0f, { 0.8f,0.2f,0.8f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
 		}
 	}
@@ -550,6 +539,11 @@ void SelectScene::BirthParticle() {
 void SelectScene::ChangeStageRot()
 {
 	if(!ChangeLastF)return;
+	Helper::GetInstance()->FrameCheck(ObjColEase[SEVEN], 0.04f);
+	m_Color[SEVEN] = {Ease(In,Cubic,ObjColEase[SEVEN],0,1),
+		Ease(In,Cubic,ObjColEase[SEVEN],0,1),
+			Ease(In,Cubic,ObjColEase[SEVEN],0,1),
+	};
 
 	Helper::GetInstance()->FrameCheck(CLastEaseTime, 1.f / 120.f);
 	if(CLastEaseTime>=1.f)

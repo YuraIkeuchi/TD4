@@ -313,12 +313,7 @@ void FirstStageActor::MainUpdate(DebugCamera* camera)
 	tex2DPos = Helper::GetInstance()->PosDivi(tex2DPos, camera->GetProjectionMatrix(), true);
 	tex2DPos = Helper::GetInstance()->WDivision(tex2DPos, false);
 	tex2DPos = Helper::GetInstance()->PosDivi(tex2DPos, camera->GetViewPort(), false);
-	{
-		sceneChanger_->ChangeStart();
-		SelectScene::GetIns()->SetFirstClear();
-		SelectScene::GetIns()->ResetParama();
-		sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
-	}
+
 	postEffect->SetRadCenter(XMFLOAT2(tex2DPos.m128_f32[0], tex2DPos.m128_f32[1]));
 	postEffect->SetRadPower(camerawork->GetEffectPower());
 }
