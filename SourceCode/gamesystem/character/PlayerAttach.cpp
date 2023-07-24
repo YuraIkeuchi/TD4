@@ -19,30 +19,23 @@ bool PlayerAttach::Initialize() {
 }
 //XV
 void PlayerAttach::Update() {
+	m_Color.w = 0.0f;
+	//m_Position.x += m_Angle.x * m_AddSpeed;
+	//m_Position.z += m_Angle.y * m_AddSpeed;
 
-	m_Position.x += m_Angle.x * m_AddSpeed;
-	m_Position.z += m_Angle.y * m_AddSpeed;
-
-	Obj_SetParam();
-	Particle();
-	BirthObj();
+	//Obj_SetParam();
+	//Particle();
+	//BirthObj();
 }
 //•`‰æ
 void PlayerAttach::Draw(DirectXCommon* dxCommon) {
-	Obj_Draw();
-	if (m_Alive) {
-
+	//
+	if (m_Color.w > 0.1f) {
+		Obj_Draw();
 	}
 }
 //ImGui
 void PlayerAttach::ImGuiDraw() {
-	ImGui::Begin("Attach");
-	ImGui::Text("PosX:%f", m_Position.x);
-	ImGui::Text("PosY:%f", m_Position.y);
-	ImGui::Text("PosZ:%f", m_Position.z);
-	ImGui::Text("Frame:%f", m_Frame);
-	ImGui::Text("State:%d",int(_DeathState));
-	ImGui::End();
 }
 void PlayerAttach::Particle() {
 	XMFLOAT4 s_color = { 1.0f,0.0f,0.0f,1.0f };

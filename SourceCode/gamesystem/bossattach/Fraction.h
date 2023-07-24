@@ -44,6 +44,7 @@ public:
     void ColPlayer(vector<InterBullet*> bullet);
 
     void Break();
+public:
 private:
     vector<InterEffect*> effects;
     unique_ptr<IKEObject3d> m_Object;

@@ -87,6 +87,7 @@ public:
 		CHARGE1,
 		CHARGE2,
 		CHARGE3,
+		CHARGE4,
 	};
 
 	enum Name_Second {
