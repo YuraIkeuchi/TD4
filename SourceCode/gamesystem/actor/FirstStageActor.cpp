@@ -349,6 +349,10 @@ void FirstStageActor::TalkUpdate()
 		text_->SelectText(TextManager::Name_First::CHARGE3);
 	}
 	else if (m_AppTimer == 450) {
+		text_->SelectText(TextManager::Name_First::CHARGE4);
+
+	}
+	else if (m_AppTimer == 625) {
 		quarter_hp_ = -100.f;
 	}
 }
