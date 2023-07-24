@@ -36,24 +36,17 @@ void PlayerAttach::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui
 void PlayerAttach::ImGuiDraw() {
-	ImGui::Begin("Attach");
-	ImGui::Text("PosX:%f", m_Position.x);
-	ImGui::Text("PosY:%f", m_Position.y);
-	ImGui::Text("PosZ:%f", m_Position.z);
-	ImGui::Text("Frame:%f", m_Frame);
-	ImGui::Text("State:%d",int(_DeathState));
-	ImGui::End();
 }
 void PlayerAttach::Particle() {
-	XMFLOAT4 s_color = { 1.0f,0.0f,0.0f,1.0f };
-	XMFLOAT4 e_color = { 1.0f,1.0f,1.0f,1.0f };
-	float s_scale = 3.0f;
-	float e_scale = 0.0f;
-	if (m_Particle) {
-		for (int i = 0; i < 3; i++) {
-			ParticleEmitter::GetInstance()->FireEffect(50, m_Position, s_scale, e_scale, s_color, e_color);
-		}
-	}
+	//XMFLOAT4 s_color = { 1.0f,0.0f,0.0f,1.0f };
+	//XMFLOAT4 e_color = { 1.0f,1.0f,1.0f,1.0f };
+	//float s_scale = 3.0f;
+	//float e_scale = 0.0f;
+	//if (m_Particle) {
+	//	for (int i = 0; i < 3; i++) {
+	//		ParticleEmitter::GetInstance()->FireEffect(50, m_Position, s_scale, e_scale, s_color, e_color);
+	//	}
+	//}
 }
 //èeÇÃèoåª
 void PlayerAttach::BirthObj() {

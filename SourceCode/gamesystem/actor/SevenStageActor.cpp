@@ -110,7 +110,6 @@ void SevenStageActor::Draw(DirectXCommon* dxCommon) {
 	if (PlayPostEffect) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
-		FrontDraw(dxCommon);
 		IKESprite::PreDraw();
 		//SelectScene::GetIns()->Draw_Sprite();
 		IKESprite::PostDraw();
@@ -118,8 +117,8 @@ void SevenStageActor::Draw(DirectXCommon* dxCommon) {
 
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
-		//ImGuiDraw(dxCommon);
-		postEffect->ImGuiDraw();
+		FrontDraw(dxCommon);
+		//postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	} else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
@@ -387,6 +386,7 @@ void SevenStageActor::TextRead() {
 //覚醒時のテキスト
 void SevenStageActor::AwakeText() {
 	if (m_AwakeTimer == 1) {
+		WhoRead("none");
 		text_->SelectText(TextManager::AWAKE_FIRST);
 	} else if (m_AwakeTimer == 200) {
 		text_->SelectText(TextManager::AWAKE_SECOND);
@@ -452,7 +452,8 @@ void SevenStageActor::WhoRead(const string& name) {
 		sutopon_color_ = { 0.5f,0.5f,0.5f,0.5f };
 		girl_color_ = { 0.5f,0.5f,0.5f,0.5f };
 	}
-	else {
-		assert(0);
+	else if(name == "none") {
+		sutopon_color_ = { 0.0f,0.0f,0.0f,0.0f };
+		girl_color_ = { 0.0f,0.0f,0.0f,0.0f };
 	}
 }

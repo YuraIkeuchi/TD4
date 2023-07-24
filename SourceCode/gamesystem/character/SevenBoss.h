@@ -72,6 +72,8 @@ private:
 	void RandMove();
 	//ƒ{ƒX‚ª–ß‚é
 	void ReturnBoss();
+
+	void Rebound();
 public:
 
 private:
@@ -197,4 +199,6 @@ private:
 		DIR_PLAYER,
 		DIR_RETURN,
 	}_EndDir = DIR_NONE;
+
+	XMFLOAT2 m_BullBoundPower = {};
 };
