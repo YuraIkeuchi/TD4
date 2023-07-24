@@ -169,7 +169,7 @@ void Player::Update()
 	ReBound();
 
 	m_LoopFlag = true;
-	m_AnimationSpeed = 1;
+	m_AnimationSpeed = 2;
 	//適当にダメージ食らってるときは赤色
 	if (m_DamageInterVal == 0) {
 		m_Color = { 1.0f,1.0f,1.0f,1.0f };

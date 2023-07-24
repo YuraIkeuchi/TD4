@@ -158,10 +158,15 @@ void SelectSceneActor::Finalize() {
 void SelectSceneActor::BackDraw(DirectXCommon* dxCommon) {
 	
 	SelectScene::GetIns()->Draw_Obj(dxCommon);
+	IKEObject3d::PreDraw();
+	ParticleEmitter::GetInstance()->FlontDrawAll();
+	IKEObject3d::PostDraw();
 }
 //ポストエフェクトがかからない
 void SelectSceneActor::FrontDraw(DirectXCommon* dxCommon) {
-	ParticleEmitter::GetInstance()->FlontDrawAll();
+	IKESprite::PreDraw();
+
+	IKESprite::PostDraw();
 	sceneChanger_->Draw();	//完全に前に書くスプライト
 	//if (camerawork->GetAppearType() == APPEAR_SEVEN || camerawork->GetAppearType() == APPEAR_EIGHT) {
 	IKESprite::PreDraw();
