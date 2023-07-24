@@ -34,7 +34,7 @@ bool FiveBoss::Initialize()
 	m_Rotation = { 0.0f,90.0f,0.0f };
 	m_Radius = 5.2f;
 	m_Scale = { 1.9f,1.5f,1.9f };
-	m_Color = { 0.0f,1.0f,0.0f,1.0f };
+	m_Color = { 0.10f,0.0f,0.10f,0.80f };
 	//m_Rotation.y = -90.f;
 	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "Magnification")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "hp")));
@@ -115,7 +115,7 @@ void FiveBoss::SkipInitialize()
 
 	m_Position = { 0.0f,-5.0f,30.0f };
 	m_Rotation = { 0.0f,90.0f,0.0f };
-	m_Color = { 0.0f,1.0f,0.0f,1.0f };
+	m_Color = { 0.10f,0.0f,0.10f,0.80f };
 }
 
 void FiveBoss::Pause()
@@ -153,7 +153,7 @@ void FiveBoss::Action()
 	single->SetBoss(this);
 	guard->SetBoss(this);
 	knock->SetBoss(this);
-	m_Color.w = 1.0f;
+	m_Color.w = 0.80f;
 	////状態移行(charastateに合わせる)
 	if (GhostSize < 6) {
 		if (m_HP > 0.0f) {
@@ -341,11 +341,13 @@ void FiveBoss::Action()
 		fbxmodel->GetBoneIndexMat(i, bonemat[i]);
 		MatTranstoPos(bonemat[i], bonepos[i]);
 
-		s_color[i] = { 1.0f,0.4f,1.0f,0.50f };
-		e_color[i] = { 0.0f,0.0f,0.0f,0.0f };
-		s_scale[i] = 2.0f;
+		s_color[i] = { 0.30f,0.0f,0.30f,0.50f };
+		e_color[i] = { 0.f,0.f,0.f,0.0f };
+		s_scale[i] = 1.0f;
 		e_scale[i] = 0.0f;
-		m_Life[i] = 50;
+		m_Life[i] = 40;
+		ParticleEmitter::GetInstance()->DarkOtiEffect(m_Life[i], bonepos[i], s_scale[i], e_scale[i], s_color[i], e_color[i]);
+
 	}
 
 	//パーティクル
@@ -364,7 +366,7 @@ void FiveBoss::AppearAction()
 	if (_AppState == APP_SET) {
 		m_Position = { 600.0f,-3.0f,30.0f };
 		m_Rotation = { 0.0f,180.0f,0.0f };
-		m_Color = { 0.0f,1.0f,0.0f,0.0f };
+		m_Color = { 0.10f,0.0f,0.10f,0.80f };
 
 		if (m_AppearTimer == 270) {
 			_AppState = APP_BIRTH;

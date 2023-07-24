@@ -107,6 +107,7 @@ void SmashShotAttack::Phase_Idle()
 
 void SmashShotAttack::Phase_Shot()
 {
+
 	//弾の向きをプレイヤーに
 	RottoPlayer();
 	//向いた方向に進む

@@ -107,9 +107,9 @@ void GuardAction::GuardAreacreate()
 				guardAlpha[i] += 0.05f;
 			
 			guardScl[i] = {
-				Ease(In,Quad,guardtexEaseT[i],0.f,5.5f),
-				Ease(In,Quad,guardtexEaseT[i],0.f,6.f),
-				Ease(In,Quad,guardtexEaseT[i],0.f,5.5f)
+				Ease(In,Quad,guardtexEaseT[i],0.f,8.5f),
+				Ease(In,Quad,guardtexEaseT[i],0.f,8.f),
+				Ease(In,Quad,guardtexEaseT[i],0.f,8.5f)
 
 			};
 			Helper::GetInstance()->Clamp(guardAlpha[i], 0.f, 0.5f);

@@ -16,8 +16,9 @@ void ParticleEmitter::Initialize()
 	LoadTexture();
 	//パーティクルマネージャー生成
 	circleParticle.reset(ParticleManager::Create(ImageManager::Normal));
-	kotokoParticle.reset(ParticleManager::Create(ImageManager::Normal));
 	darkParticle.reset(ParticleManager::Create(ImageManager::Normal));
+	kotokoParticle.reset(ParticleManager::Create(ImageManager::Normal));
+	darkcircleParticle.reset(ParticleManager::Create(ImageManager::Normal));
 	healParticle.reset(ParticleManager::Create(ImageManager::Heal));
 	deathParticle.reset(ParticleManager::Create(ImageManager::Normal));
 	BossDeadParticle.reset(ParticleManager::Create(ImageManager::Normal));
@@ -30,6 +31,7 @@ void ParticleEmitter::Update()
 {
 	//パーティクルマネージャー更新
 	circleParticle->Update();
+	darkcircleParticle->Update();
 	darkParticle->Update();
 	kotokoParticle->Update();
 	healParticle->Update();
@@ -55,6 +57,7 @@ void ParticleEmitter::BackDrawAll() {
 	wallParticle->Draw(AddBlendType);
 	healParticle->Draw(AddBlendType);
 	kotokoParticle->Draw(AddBlendType);
+	darkcircleParticle->Draw(AddBlendType);
 }
 
 void ParticleEmitter::FireEffect(const int life, const XMFLOAT3& l_pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor)
@@ -67,6 +70,20 @@ void ParticleEmitter::FireEffect(const int life, const XMFLOAT3& l_pos, const fl
 	vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 
 	circleParticle->Add(life, { pos.x,pos.y,pos.z }, vel, {}, startscale, endscale, startcolor, endcolor,{});
+}
+
+void ParticleEmitter::DarkOtiEffect(const int life, const XMFLOAT3& l_pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor)
+{
+	XMFLOAT3 pos = l_pos;
+	const float rnd_vel = 0.05f;
+	XMFLOAT3 vel{};
+	
+	float angle = (float)rand() / RAND_MAX * 360.0f;
+
+	vel.x = 0.2f * sinf(angle);
+	vel.y =0.2f * cosf(angle);
+	vel.z = 0.0f;
+	darkcircleParticle->Add(life, { pos.x,pos.y,pos.z }, vel, {}, startscale, endscale, startcolor, endcolor, {});
 }
 
 void ParticleEmitter::KotokoEffect(const int life, const XMFLOAT3& l_pos, const float startscale, const float endscale, const XMFLOAT4& startcolor, const XMFLOAT4& endcolor)
@@ -229,6 +246,7 @@ void ParticleEmitter::AllDelete()
 {
 	//パーティクルマネージャー更新
 	circleParticle->AllDelete();
+	darkcircleParticle->AllDelete();
 	darkParticle->AllDelete();
 	kotokoParticle->AllDelete();
 	healParticle->AllDelete();
