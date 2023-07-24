@@ -158,7 +158,7 @@ void SmashShotAttack::Phase_Shot()
 	}
 
 	for (auto i = 0; i < BulSize; i++) {
-		if (BulPos[i].y <= 0.f)
+		if (BulPos[i].y <= -5.f)
 		{
 			BulPos[i] = boss->GetPosition();
 		}

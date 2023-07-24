@@ -225,7 +225,7 @@ void FiveBoss::Action()
 	{
 		if (ghosts[i]->GetStateSpawn())
 		{
-			GhostSize=0;
+			GhostSize = 0;
 			ghosts[i]->SetCollide(false);
 			ghosts[i]->SetCleanGhost(false);
 			ghosts[i]->SetStateSpawn(false);
@@ -235,9 +235,9 @@ void FiveBoss::Action()
 
 
 	mt19937 mt{ std::random_device{}() };
-	if(GhostSize==0)
+	if (GhostSize == 0)
 	{
-		if(_aPhase==ATTACK_SINGLESHOT)
+		if (_aPhase == ATTACK_SINGLESHOT)
 		{
 			single->SetActionEnd(true);
 			shot->SetCanRand(0);
@@ -248,30 +248,30 @@ void FiveBoss::Action()
 	//single->Upda();
 	if (shot->GetPhase() == ShotAttack::Phase::END) {
 		//’ÊíUŒ‚
-			if (shot->GetCanRand() > noAction&&GhostSize > 0 && GhostSize < 4)
-			{
-				shot->SetActionEnd(true);
-				shot->SetIdleDam(false);
-				single->SetActionEnd(false);
-				_aPhase = ATTACK_SINGLESHOT;
-			}
-		if (shot->GetCanRand() > noAction&&GhostSize == 4)
-			{
-				shot->SetActionEnd(true);
-				shot->SetIdleDam(false);
-				smash->SetActionEnd(false);
-				_aPhase = ATTACK_IMPACT;
-			}
-		if (GhostSize >= 5)
-			{
-				shot->SetActionEnd(true);
-				shot->SetIdleDam(false);
-				single->SetActionEnd(false);
-				JudgSlash = true;
-				_aPhase = ATTACK_SINGLESHOT;
-			}
-
+		if (shot->GetCanRand() > noAction && GhostSize > 0 && GhostSize < 4)
+		{
+			shot->SetActionEnd(true);
+			shot->SetIdleDam(false);
+			single->SetActionEnd(false);
+			_aPhase = ATTACK_SINGLESHOT;
 		}
+		if (shot->GetCanRand() > noAction && GhostSize == 4)
+		{
+			shot->SetActionEnd(true);
+			shot->SetIdleDam(false);
+			smash->SetActionEnd(false);
+			_aPhase = ATTACK_IMPACT;
+		}
+		if (GhostSize >= 5)
+		{
+			shot->SetActionEnd(true);
+			shot->SetIdleDam(false);
+			single->SetActionEnd(false);
+			JudgSlash = true;
+			_aPhase = ATTACK_SINGLESHOT;
+		}
+
+	}
 	if (JudgSlash)
 	{
 		slash->SetActionEnd(false);
@@ -281,7 +281,7 @@ void FiveBoss::Action()
 	}
 
 
-	if (!JudgDShot && GhostSize > 3)
+	if (!JudgDShot && GhostSize > 4)
 	{
 		uniform_int_distribution<int> l_Rand(0, 10);
 		ThreeGhostActionRand = l_Rand(mt);
@@ -354,7 +354,7 @@ void FiveBoss::Action()
 	m_ParticleTimer++;
 	BirthParticle();
 	if (m_ParticleTimer == 5) {
-		
+
 		m_ParticleTimer = 0;
 	}
 }
@@ -371,8 +371,7 @@ void FiveBoss::AppearAction()
 		if (m_AppearTimer == 270) {
 			_AppState = APP_BIRTH;
 		}
-	}
-	else if (_AppState == APP_BIRTH) {
+	} else if (_AppState == APP_BIRTH) {
 		AppParticle();
 
 		if (m_AppearTimer >= 350) {
@@ -384,8 +383,7 @@ void FiveBoss::AppearAction()
 		}
 
 		m_Color.w = Ease(In, Cubic, m_Frame, m_Color.w, 1.0f);
-	}
-	else {
+	} else {
 
 	}
 
@@ -407,16 +405,14 @@ void FiveBoss::DeadAction()
 			m_Rotation = { 0.0f,180.0f,0.0f };
 			_DeathState = DEATH_KNOCK;
 		}
-	}
-	else if(_DeathState == DEATH_KNOCK) {
+	} else if (_DeathState == DEATH_KNOCK) {
 		m_Position.y = Ease(Out, Quad, m_DeathTimer / static_cast<float>(150), -5.0f, 0.0f);
 		m_Rotation.x = Ease(Out, Quad, m_DeathTimer / static_cast<float>(150), 0.0f, -90.0f);
 
 		if (m_Rotation.x <= -80.0f) {
 			_DeathState = DEATH_STOP;
 		}
-	}
-	else {
+	} else {
 		DeathParticle();
 	}
 
@@ -481,11 +477,15 @@ void FiveBoss::ImGui_Origin()
 	ImGui::Begin("Five");
 	ImGui::Text("PosX %f", m_Position.x);
 	ImGui::Text("PosZ %f", m_Position.z);
-//	ImGui::Text("Cololr %f", m_Color.w);
+	ImGui::Text("BulPos0 %f", smash->GetBulpos(0));
+
+	ImGui::Text("BulPos1 %f", smash->GetBulpos(1));
 	ImGui::Text("Cololr1 %f", shot->GetBulAlpha(0));
 	ImGui::Text("Cololr2 %f", shot->GetBulAlpha(1));
 	ImGui::Text("Cololr3 %f", shot->GetBulAlpha(2));
 	ImGui::Text("Phase %d", (int)_aPhase);
+
+	ImGui::Text("ImpactShotPhase %d", (int)smash->GetPhase());
 	ImGui::Text("ShotPhase %d", (int)shot->GEtPhase());
 	ImGui::Text("NowTarget %d", (int)shot->GetTargetGhost());
 	ImGui::End();
@@ -504,11 +504,11 @@ void FiveBoss::Draw(DirectXCommon* dxCommon)
 	//Obj_Draw();
 	if (m_HP > 0.0f) {
 		smash->Draw(dxCommon);
-		if(_aPhase==ATTACK_SINGLESHOT)
-		single->Draw(dxCommon);
+		if (_aPhase == ATTACK_SINGLESHOT)
+			single->Draw(dxCommon);
 
 		shot->Draw(dxCommon);
-	
+
 		slash->Draw(dxCommon);
 		darkshot->Draw(dxCommon);
 	}
@@ -624,7 +624,7 @@ void FiveBoss::BirthParticle() {
 	XMFLOAT4 e_color = { 0.0f,0.0f,0.0f,1.0f };
 	float s_scale = 3.0f;
 	float e_scale = 0.0f;
-	
+
 	ParticleEmitter::GetInstance()->KotokoEffect(50, m_Position, s_scale, e_scale, s_color, e_color);
 }
 //‰ï˜b

@@ -23,10 +23,10 @@ private:
     std::array<float, BulSize>AreaScl;
     std::array<float, BulSize>AreaAlpha;
     std::array<float, BulSize>BulEaseCount;
-	std::array<float, BulSize>PosXVal,PosZVal;
+    std::array<float, BulSize>PosXVal, PosZVal;
     std::array<float, BulSize>BulSpeed;
     std::array<float, BulSize>BulRotZ;
-	std::array<XMFLOAT3, BulSize>BulPos;
+    std::array<XMFLOAT3, BulSize>BulPos;
     std::array<XMFLOAT3, BulSize>BulRot;
     std::array<float, BulSize>BulAlpha;
     std::array<XMFLOAT3, BulSize>ImpactTexPos;
@@ -36,7 +36,7 @@ private:
     int index = 0;
 
     XMFLOAT3 OldRot;
-
+public:
     //フェーズ
     enum Phase
     {
@@ -45,6 +45,9 @@ private:
         IMPACT,
         END
     }_phase = Phase::NON;
+    Phase GetPhase() { return _phase; }
+private:
+
     int PhaseCount = 0;
 
     static void (SmashShotAttack::* stateTable[])();
@@ -60,6 +63,7 @@ private:
     void RottoPlayer();
 
 public:
+    float GetBulpos(int index) { return BulPos[index].y; }
     //Phase GetPhase();
 };
 
