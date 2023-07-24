@@ -269,6 +269,9 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 }
 //ImGui
 void Player::ImGuiDraw() {
+	ImGui::Begin("Player");
+	ImGui::Text("Trigger:%d", TriggerAttack);
+	ImGui::End();
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
@@ -421,16 +424,9 @@ void Player::Bullet_Management() {
 		}
 	}
 	if (Input::GetInstance()->TriggerButton(Input::B)) {
-		AnimationControl(AnimeName::ATTACK, false, 1);
-		TriggerAttack = true;
+	
 	}
-	if (TriggerAttack) {
-		if (fbxmodels->GetCurrent()>=fbxmodels->GetEndTime()-1) {
-			fbxmodels->StopAnimation();
-			_animeName = AnimeName::IDLE;
-			TriggerAttack = false;
-		}
-	}
+	
 
 	//弾を打った瞬間チャージ量分飢餓ゲージを減らす
 	if (m_SubHunger) {
@@ -545,6 +541,15 @@ void Player::Bullet_Management() {
 			}
 			ResetBullet();
 		}
+
+		if (TriggerAttack) {
+			if (fbxmodels->GetCurrent() >= fbxmodels->GetEndTime() - 1) {
+
+				fbxmodels->StopAnimation();
+				_animeName = AnimeName::IDLE;
+				TriggerAttack = false;
+			}
+		}
 	}
 	else {			//言魂
 		if (Input::GetInstance()->TriggerButton(Input::B) && (m_InterVal == 0) && (m_canShot)) {
@@ -554,11 +559,19 @@ void Player::Bullet_Management() {
 			else if (m_BulletType == BULLET_SEARCH) {
 				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Seach.wav", VolumManager::GetInstance()->GetSEVolum());
 			}
-
+		
 			isShotNow = true;
 			ResetBullet();
 			playerattach->SetAlive(true);
 			BirthShot("Ghost", false);
+		}
+
+		if (TriggerAttack) {
+			if (fbxmodels->GetCurrent() >= fbxmodels->GetEndTime() - 1) {
+				fbxmodels->StopAnimation();
+				_animeName = AnimeName::IDLE;
+				TriggerAttack = false;
+			}
 		}
 	}
 
@@ -704,7 +717,9 @@ void Player::Idle()
 	//条件少しおかしいので後で修正
 	if (isShotNow)return;
 	if (_animeName == AnimeName::IDLE)return;
-	AnimationControl(AnimeName::IDLE, true, 1);
+	if (!TriggerAttack) {
+		AnimationControl(AnimeName::IDLE, true, 1);
+	}
 }
 //インターバル
 void Player::InterVal() {
@@ -731,6 +746,8 @@ void Player::ResetBullet() {
 	viewbullet->SetCharge(false);
 	m_ChargePower = {};
 	m_ChargeType = POWER_NONE;
+	AnimationControl(AnimeName::ATTACK, false, 1);
+	TriggerAttack = true;
 }
 void Player::isOldPos()
 {
