@@ -51,12 +51,12 @@ void UI::Initialize() {
 		TexList.emplace_back(std::move(sprites[BossGauge]));
 	}
 	{
-		sprites[CircleCover] = CreateUi(ImageManager::CIRCLECOVER, { m_PlayerCireclePos.x,m_PlayerCireclePos.y - 40.f }, { 400.f,400.f }, { 1.f,1.f,1.f,1.f });
+		sprites[CircleCover] = CreateUi(ImageManager::CIRCLECOVER, { m_PlayerCireclePos.x,m_PlayerCireclePos.y - 40.f }, { 350.f,350.f }, { 1.f,1.f,1.f,1.f });
 		sprites[CircleCover].Tex->SetAnchorPoint({ 0.5,0.5f });
 		TexList.emplace_back(std::move(sprites[CircleCover]));
 	}
 	{
-		sprites[PlayerCircle] = CreateUi(ImageManager::CIRCLE, { m_PlayerCireclePos }, { 250.f,250.f }, { 1.2f,1.2f,1.2f,1.f });
+		sprites[PlayerCircle] = CreateUi(ImageManager::CIRCLE, { m_PlayerCireclePos }, m_PlayerCircleSize, { 1.2f,1.2f,1.2f,1.f });
 		sprites[PlayerCircle].Tex->SetAnchorPoint({ 0.5,0.5f });
 		TexList.emplace_back(std::move(sprites[PlayerCircle]));
 	}
