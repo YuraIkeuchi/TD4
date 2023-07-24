@@ -19,34 +19,34 @@ bool PlayerAttach::Initialize() {
 }
 //çXêV
 void PlayerAttach::Update() {
+	m_Color.w = 0.0f;
+	//m_Position.x += m_Angle.x * m_AddSpeed;
+	//m_Position.z += m_Angle.y * m_AddSpeed;
 
-	m_Position.x += m_Angle.x * m_AddSpeed;
-	m_Position.z += m_Angle.y * m_AddSpeed;
-
-	Obj_SetParam();
-	Particle();
-	BirthObj();
+	//Obj_SetParam();
+	//Particle();
+	//BirthObj();
 }
 //ï`âÊ
 void PlayerAttach::Draw(DirectXCommon* dxCommon) {
-	Obj_Draw();
-	if (m_Alive) {
-
+	//
+	if (m_Color.w > 0.1f) {
+		Obj_Draw();
 	}
 }
 //ImGui
 void PlayerAttach::ImGuiDraw() {
 }
 void PlayerAttach::Particle() {
-	//XMFLOAT4 s_color = { 1.0f,0.0f,0.0f,1.0f };
-	//XMFLOAT4 e_color = { 1.0f,1.0f,1.0f,1.0f };
-	//float s_scale = 3.0f;
-	//float e_scale = 0.0f;
-	//if (m_Particle) {
-	//	for (int i = 0; i < 3; i++) {
-	//		ParticleEmitter::GetInstance()->FireEffect(50, m_Position, s_scale, e_scale, s_color, e_color);
-	//	}
-	//}
+	XMFLOAT4 s_color = { 1.0f,0.0f,0.0f,1.0f };
+	XMFLOAT4 e_color = { 1.0f,1.0f,1.0f,1.0f };
+	float s_scale = 3.0f;
+	float e_scale = 0.0f;
+	if (m_Particle) {
+		for (int i = 0; i < 3; i++) {
+			ParticleEmitter::GetInstance()->FireEffect(50, m_Position, s_scale, e_scale, s_color, e_color);
+		}
+	}
 }
 //èeÇÃèoåª
 void PlayerAttach::BirthObj() {

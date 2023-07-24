@@ -118,6 +118,7 @@ void SevenStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
 		FrontDraw(dxCommon);
+		ImGuiDraw(dxCommon);
 		//postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	} else {
@@ -198,6 +199,7 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGui‚Ì•`‰æ
 void SevenStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
+	Player::GetInstance()->ImGuiDraw();
 }
 //“oêƒV[ƒ“
 void SevenStageActor::IntroUpdate(DebugCamera* camera) {

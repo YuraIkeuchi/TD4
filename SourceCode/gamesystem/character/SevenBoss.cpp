@@ -299,7 +299,7 @@ void SevenBoss::InterValMove() {
 	else {
 		l_LimitTimer = m_StrongLimit[STATE_INTER];
 	}
-	m_InterVal++;
+	//m_InterVal++;
 
 	//ˆê’èŽžŠÔ—§‚Á‚½Œã‚Éƒ{ƒX‚É‹ß‚Ã‚­‚ÆÁ‚¦‚é
 	if (m_InterVal >= 100) {
