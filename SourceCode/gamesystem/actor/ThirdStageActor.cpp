@@ -20,7 +20,7 @@ void ThirdStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	ParticleEmitter::GetInstance()->AllDelete();
 
 	//各クラス
-	Player::GetInstance()->InitState({ 0.0f,5.0f,-5.0f });
+	Player::GetInstance()->InitState({ 0.0f,-2.0f,-30.0f });
 
 	backScreen_ = IKESprite::Create(ImageManager::PLAY, { 0,0 });
 	backScreen_->SetSize({ 1280.0f,720.0f });
@@ -116,8 +116,6 @@ void ThirdStageActor::Draw(DirectXCommon* dxCommon) {
 
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
-		ImGuiDraw(dxCommon);
-		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 	else {
@@ -127,7 +125,6 @@ void ThirdStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-		ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 }
@@ -147,9 +144,8 @@ void ThirdStageActor::BackDraw(DirectXCommon* dxCommon) {
 			ParticleEmitter::GetInstance()->BackDrawAll();
 		}
 	}
-	if (m_SceneState == SceneState::MainState) {
-		Player::GetInstance()->Draw(dxCommon);
-	}
+
+	Player::GetInstance()->Draw(dxCommon);
 
 	////各クラスの描画
 	if (!camerawork->GetFeedEnd()) {
@@ -193,37 +189,42 @@ void ThirdStageActor::IntroUpdate(DebugCamera* camera) {
 		text_->Display();
 		//最初の言葉(怒り)
 		if (m_AppState == AppState::ANGER_START) {
+			m_AppTimer++;
 			text_->SelectText(TextManager::ANGER_TALK);
-			if (Input::GetInstance()->TriggerButton(Input::B)) {
+			if (m_AppTimer == 150) {
 				m_AppState = AppState::ANGER_Third;
 			}
 		}
 		//2つ目の言葉(怒り)
 		else if (m_AppState == AppState::ANGER_Third) {
+			m_AppTimer++;
 			text_->SelectText(TextManager::ANGER_TALK2);
-			if (Input::GetInstance()->TriggerButton(Input::B)) {
+			if (m_AppTimer == 300) {
 				m_AppState = AppState::JOY_START;
 				enemymanager->DirSet(DIR_JOY);
 			}
 		}
 		//最初の言葉(喜び)
 		else if (m_AppState == AppState::JOY_START) {
+			m_AppTimer++;
 			text_->SelectText(TextManager::JOY_TALK);
-			if (Input::GetInstance()->TriggerButton(Input::B)) {
+			if (m_AppTimer == 450) {
 				m_AppState = AppState::JOY_Third;
 			}
 		}
 		//2個目の言葉(喜び)
 		else if (m_AppState == AppState::JOY_Third) {
+			m_AppTimer++;
 			text_->SelectText(TextManager::JOY_TALK2);
-			if (Input::GetInstance()->TriggerButton(Input::B)) {
+			if (m_AppTimer == 600) {
 				m_AppState = AppState::JOY_THIRD;
 			}
 		}
 		//3個めの言葉(喜び)
 		else if (m_AppState == AppState::JOY_THIRD) {
+			m_AppTimer++;
 			text_->SelectText(TextManager::JOY_TALK3);
-			if (Input::GetInstance()->TriggerButton(Input::B)) {
+			if (m_AppTimer == 750) {
 				m_AppState = AppState::SELECT_EMO;
 			}
 		}
@@ -243,11 +244,12 @@ void ThirdStageActor::IntroUpdate(DebugCamera* camera) {
 		}
 		//イカリを選んだ場合
 		else if (m_AppState == AppState::EMO_ANGER) {
+			m_AppTimer++;
 			for (int i = 0; i < 3; i++) {
 				text_->ChangeColor(i, { 1.0f,1.0f,1.0f,1.0f });
 			}
 			text_->SelectText(TextManager::SELECT_ANGER);
-			if (Input::GetInstance()->TriggerButton(Input::B)) {
+			if (m_AppTimer == 900) {
 				m_AppState = AppState::EMO_ANGER2;
 				camerawork->SetApproach(true);
 			}
@@ -260,11 +262,12 @@ void ThirdStageActor::IntroUpdate(DebugCamera* camera) {
 		}
 		//よろこびを選んだ場合
 		else if (m_AppState == AppState::EMO_JOY) {
+			m_AppTimer++;
 			for (int i = 0; i < 3; i++) {
 				text_->ChangeColor(i, { 1.0f,1.0f,1.0f,1.0f });
 			}
 			text_->SelectText(TextManager::SELECT_JOY);
-			if (Input::GetInstance()->TriggerButton(Input::B)) {
+			if (m_AppTimer == 900) {
 				m_AppState = AppState::EMO_JOY2;
 				camerawork->SetApproach(true);
 			}
