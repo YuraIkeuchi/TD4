@@ -221,6 +221,7 @@ void FiveStageActor::MainUpdate(DebugCamera* camera) {
 		}
 		//フェード後
 		else {
+			m_DeathTimer++;
 			PlayPostEffect = false;
 			Player::GetInstance()->InitState({ 0.0f,0.0f,-5.0f });
 			enemymanager->SetDeadThrow(false);

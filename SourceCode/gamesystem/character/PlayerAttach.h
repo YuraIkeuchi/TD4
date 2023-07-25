@@ -34,6 +34,7 @@ public:
 	void LastDeadUpdate(int Timer);
 	//ƒGƒ“ƒhƒ[ƒ‹‚Ì“®‚«
 	void EndRollUpdate(int Timer);
+	void DeathUpdate();
 public:
 	//gettersetter
 	void SetAlive(const bool Alive) { m_Alive = Alive; }

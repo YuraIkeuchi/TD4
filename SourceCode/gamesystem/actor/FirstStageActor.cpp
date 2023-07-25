@@ -122,6 +122,8 @@ void FirstStageActor::Draw(DirectXCommon* dxCommon)
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->ImGuiDraw();
+		Player::GetInstance()->ImGuiDraw();
+		camerawork->ImGuiDraw();
 		dxCommon->PostDraw();
 	} else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
@@ -130,6 +132,8 @@ void FirstStageActor::Draw(DirectXCommon* dxCommon)
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
+		Player::GetInstance()->ImGuiDraw();
+		camerawork->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 }
@@ -267,6 +271,7 @@ void FirstStageActor::MainUpdate(DebugCamera* camera)
 		//フェード後
 		else
 		{
+			m_DeathTimer++;
 			PlayPostEffect = false;
 			Player::GetInstance()->InitState({ 0.0f,0.0f,-5.0f });
 			enemymanager->SetDeadThrow(false);

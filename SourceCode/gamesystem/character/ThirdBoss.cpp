@@ -28,8 +28,6 @@ ThirdBoss::ThirdBoss() {
 			pointsList.emplace_back(XMFLOAT3{ 40,25,20 });
 			pointsList.emplace_back(XMFLOAT3{ -40,30,20 });
 			pointsList.emplace_back(XMFLOAT3{ 40,35,20 });
-			pointsList.emplace_back(XMFLOAT3{ -40,40,20 });
-			pointsList.emplace_back(XMFLOAT3{ 20,25,20 });
 		}
 		spline = new Spline();
 		spline->Init(pointsList, static_cast<int>(pointsList.size()));
@@ -221,9 +219,6 @@ void ThirdBoss::DamAction()
 }
 //ImGui
 void ThirdBoss::ImGui_Origin() {
-	ImGui::Begin("Third");
-	ImGui::Text("RotY:%f", m_Rotation.y);
-	ImGui::End();
 }
 //移動
 void ThirdBoss::Move() {
