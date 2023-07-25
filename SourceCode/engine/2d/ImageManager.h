@@ -101,6 +101,7 @@ public:
 		CATCH,
 		SLASHAREA,
 		DARKBOM,
+		SHADOW,
 	};
 	enum particleName
 	{
