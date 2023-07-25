@@ -65,6 +65,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	messagewindow_ = make_unique<MessageWindow>();
 	messagewindow_->Initialize();
 	messagewindow_->Display();
+	sutopon_color_ = { 1.f,1.f,1.f,1.f };
 }
 
 void FirstStageActor::Finalize()
@@ -142,10 +143,10 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon)
 {
 
 	if (tolk_F == true) {
+		text_->SpriteDraw(dxCommon);
 		IKESprite::PreDraw();
 		messagewindow_->Draw();
 		IKESprite::PostDraw();
-		text_->SpriteDraw(dxCommon);
 
 	}
 	//パーティクル描画
@@ -175,10 +176,10 @@ void FirstStageActor::BackDraw(DirectXCommon* dxCommon)
 {
 
 	if (tolk_F == true) {
+		text_->SpriteDraw(dxCommon);
 		IKESprite::PreDraw();
 		messagewindow_->Draw();
 		IKESprite::PostDraw();
-		text_->SpriteDraw(dxCommon);
 	}
 	IKESprite::PreDraw();
 	backScreen_->Draw();
@@ -344,6 +345,7 @@ void FirstStageActor::TalkUpdate()
 	m_AppTimer++;
 	text_->Display();
 	messagewindow_->SetBack(false);
+	messagewindow_->Invisible();
 	if (m_AppTimer == 2) {
 		text_->SelectText(TextManager::Name_First::CHARGE1);
 	}
