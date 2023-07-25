@@ -255,4 +255,6 @@ private:
 		DEATH_LOOK_BOSS,
 		DEATH_END
 	}_DeathCamera = DEATH_SET;
+
+	bool m_LookPlayer = false;
 };

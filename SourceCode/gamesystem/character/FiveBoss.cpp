@@ -401,7 +401,7 @@ void FiveBoss::DeadAction()
 	m_DeathTimer++;
 	if (_DeathState == DEATH_SET) {
 		if (m_DeathTimer == 1) {
-			m_Position = { -4.0f,-5.0f,20.0f };
+			m_Position = { -4.0f,-5.0f,10.0f };
 			m_Rotation = { 0.0f,180.0f,0.0f };
 			_DeathState = DEATH_KNOCK;
 		}

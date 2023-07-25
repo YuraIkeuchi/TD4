@@ -78,7 +78,7 @@ void KnockAttack::DeathUpdate(int Timer) {
 	m_End = true;
 	if (_EndState == END_SET) {
 		if (Timer == 1) {
-			stopos = { 5.0f,2.0f,20.0f };
+			stopos = { 5.0f,2.0f,10.0f };
 		}
 		else if (Timer == 100) {
 			m_AddPower = 0.8f;

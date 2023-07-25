@@ -147,9 +147,12 @@ void ThirdStageActor::BackDraw(DirectXCommon* dxCommon) {
 			ParticleEmitter::GetInstance()->BackDrawAll();
 		}
 	}
+	if (m_SceneState == SceneState::MainState) {
+		Player::GetInstance()->Draw(dxCommon);
+	}
+
 	////各クラスの描画
 	if (!camerawork->GetFeedEnd()) {
-		Player::GetInstance()->Draw(dxCommon);
 		loadobj->Draw(dxCommon);
 	}
 	enemymanager->Draw(dxCommon);
@@ -181,7 +184,8 @@ void ThirdStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void ThirdStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	enemymanager->ImGuiDraw();
+	Player::GetInstance()->ImGuiDraw();
+	camerawork->ImGuiDraw();
 }
 //登場シーン
 void ThirdStageActor::IntroUpdate(DebugCamera* camera) {
@@ -310,24 +314,23 @@ void ThirdStageActor::MainUpdate(DebugCamera* camera) {
 			enemymanager->SetDeadThrow(true);
 			enemymanager->DeadUpdate();
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_BEFORE);
+			Player::GetInstance()->DeathUpdate();
 		}
 		//フェード後
 		else
 		{
+			m_DeathTimer++;
 			PlayPostEffect = false;
-			Player::GetInstance()->InitState({ 0.0f,0.0f,-5.0f });
 			enemymanager->SetDeadThrow(false);
 			enemymanager->DeadUpdate();
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_THIRD);
+			Player::GetInstance()->DeathUpdateAfter(m_DeathTimer);
 		}
 
 		if (camerawork->GetEndDeath()) {
 			sceneChanger_->ChangeStart();
 			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
-
 		}
-
-		Player::GetInstance()->DeathUpdate();
 	}
 	else
 	{

@@ -483,14 +483,14 @@ void SixBoss::DeadAction() {
 	m_DeathTimer++;
 	const int l_BaseTarget = 50;
 	if (m_DeathTimer == 1) {
-		m_Position = { 0.0f,30.0f,20.0f };
+		m_Position = { 0.0f,30.0f,45.0f };
 		m_Rotation = { 0.0f,0.0f,0.0f };
 	}
 	else if (m_DeathTimer >= 2 && m_DeathTimer < 300) {
 		//sin波によって上下に動く
 		m_Angle += l_AddAngle;
 		m_Angle2 = m_Angle * (3.14f / 180.0f);
-		m_Position.x = (sin(m_Angle2) * 15.0f + 15.0f);
+		m_Position.x = (sin(m_Angle2) * 5.0f + 5.0f);
 		DeathParticle();
 		for (int i = 0; i < cd.size(); i++) {
 			cd[i]->DeathMove(m_DeathTimer, (i * l_BaseTarget) + l_BaseTarget);

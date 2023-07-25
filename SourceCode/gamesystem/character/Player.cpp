@@ -94,7 +94,6 @@ void Player::InitState(const XMFLOAT3& pos) {
 	//大きさ
 	m_ChargePower = {};
 	m_ChargeType = POWER_NONE;
-	m_Position.y = 0.f;
 	m_Scale = { 1.2f,0.8f,1.2f };
 	HungerGauge::GetInstance()->SetAdditional(0.0f);
 
@@ -270,7 +269,9 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 //ImGui
 void Player::ImGuiDraw() {
 	ImGui::Begin("Player");
-	ImGui::Text("Trigger:%d", TriggerAttack);
+	ImGui::Text("PpsX:%f", m_Position.x);
+	ImGui::Text("PpsX:%f", m_Position.y);
+	ImGui::Text("PpsX:%f", m_Position.z);
 	ImGui::End();
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
@@ -830,12 +831,24 @@ void Player::AppearUpdate() {
 }
 //ボス撃破シーンの更新
 void Player::DeathUpdate() {
+	fbxmodels->StopAnimation();
 	m_viewBull = false;
 	m_HitPlayer = false;
 	BulletDelete();
 	index = 15;
 	fbxmodels->GetBoneIndexMat(index, skirtmat);
 	skirtobj->FollowUpdate(skirtmat);
+	SetParam();
+}
+void Player::DeathUpdateAfter(int Timer) {
+	if (Timer == 1) {
+		AnimationControl(AnimeName::IDLE, true, 1);
+		m_Position = { 30.0f,-2.0f,-45.0f };
+		m_Rotation = { 0.0f,270.0f,0.0f };
+		m_Color = { 1.0f,1.0f,1.0f,1.0f };
+	}
+
+	playerattach->DeathUpdate();
 	SetParam();
 }
 //割合
