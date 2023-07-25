@@ -94,7 +94,6 @@ void Player::InitState(const XMFLOAT3& pos) {
 	//大きさ
 	m_ChargePower = {};
 	m_ChargeType = POWER_NONE;
-	m_Position.y = 0.f;
 	m_Scale = { 1.2f,0.8f,1.2f };
 	HungerGauge::GetInstance()->SetAdditional(0.0f);
 

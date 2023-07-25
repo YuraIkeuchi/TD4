@@ -330,7 +330,6 @@ void ThirdStageActor::MainUpdate(DebugCamera* camera) {
 		if (camerawork->GetEndDeath()) {
 			sceneChanger_->ChangeStart();
 			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
-
 		}
 	}
 	else
