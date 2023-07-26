@@ -164,5 +164,4 @@ void EnemyManager::DeleteObj() {
 void EnemyManager::UpdateStop()
 {
 	boss->SetStateReset(true);
-
 }
