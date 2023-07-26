@@ -178,8 +178,8 @@ void SelectScene::Upda() {
 
 
 	CloseIconView(CloseF);
-	Helper::GetInstance()->Clamp(closeScl, 0.f, 12500.f);
-	Helper::GetInstance()->Clamp(closeRad, 0.f, 1500.f);
+	Helper::GetInstance()->Clamp(closeScl, 0.f, 42500.f);
+	Helper::GetInstance()->Clamp(closeRad, 0.f, 4000.f);
 	if(!ChangeLastF)
 	RotPedestal();
 
@@ -382,9 +382,9 @@ void SelectScene::CloseIconView(bool closeF) {
 	}
 	if (sin) {
 		if (closeScl >= MinScl)
-			SclingSpeed = 180.f;
+			SclingSpeed = 580.f;
 		else
-			SclingSpeed = 100.f;
+			SclingSpeed = 300.f;
 
 		closeScl += SclingSpeed;
 		closeRad += SclingSpeed * SubRad;
@@ -436,7 +436,7 @@ void SelectScene::StateManager() {
 	m_Scale[TITLE] = { 0.025f,0.1f,0.025f };
 	//m_Wide = true;
 
-	//m_SelectState =SELECT_SECOND;
+	m_SelectState =SELECT_SECOND;
 	//
 	//クリア状況に応じてOBJの大きさだったりが違う
 	if (m_SelectState == SELECT_FIRST) {		//ここは牛乳のみ

@@ -233,7 +233,6 @@ void FiveBoss::Action()
 	}
 
 
-
 	mt19937 mt{ std::random_device{}() };
 	if (GhostSize == 0)
 	{
@@ -253,6 +252,7 @@ void FiveBoss::Action()
 			shot->SetActionEnd(true);
 			shot->SetIdleDam(false);
 			single->SetActionEnd(false);
+			AnimationControl(InterBoss::AnimeNames::SHOT, false, 1);
 			_aPhase = ATTACK_SINGLESHOT;
 		}
 		if (shot->GetCanRand() > noAction && GhostSize == 4)
@@ -270,8 +270,8 @@ void FiveBoss::Action()
 			JudgSlash = true;
 			_aPhase = ATTACK_SINGLESHOT;
 		}
-
 	}
+
 	if (JudgSlash)
 	{
 		slash->SetActionEnd(false);

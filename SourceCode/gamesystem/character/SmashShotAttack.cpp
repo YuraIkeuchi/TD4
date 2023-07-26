@@ -245,7 +245,7 @@ void SmashShotAttack::Phase_Impact()
 		BulPos[i].z = ImpactTexPos[i].z;
 
 		Helper::GetInstance()->Clamp(BulAlpha[i], 0.f, 1.f);
-		Helper::GetInstance()->Clamp(AreaScl[i], 0.f, 1.f);
+		Helper::GetInstance()->Clamp(AreaScl[i], 0.f, 1.5f);
 	}
 
 	{
