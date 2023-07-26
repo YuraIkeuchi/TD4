@@ -329,7 +329,10 @@ void FirstStageActor::CheckHp()
 {
 	boss_hp_ = enemymanager->GetHp();
 	if (boss_hp_ <= quarter_hp_) {
+		if (isfirst) { return; }
+		enemymanager->UpdateStop();
 		tolk_F = true;
+		isfirst = true;
 	} else {
 		tolk_F = false;
 	}
@@ -338,6 +341,8 @@ void FirstStageActor::CheckHp()
 void FirstStageActor::TalkUpdate()
 {
 	if (tolk_F != true) { return; }
+	
+
 	m_AppTimer++;
 	text_->Display();
 	messagewindow_->SetBack(false);

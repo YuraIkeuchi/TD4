@@ -89,6 +89,7 @@ protected:
 	int SummonCool;
 	bool SearchF;
 	int m_BirthTarget=0;
+	bool statereset_ = false;
 	// = Collision::GetLength(m_Position, l_player) < 25.f;
 private:
 	XMFLOAT3 EffectFirstPos;
@@ -144,10 +145,11 @@ public://gettersetter
 	void SetIsReferCheck(bool isReferCheck) { this->isReferCheck = isReferCheck; };
 	bool GetIsReferCheck() { return isReferCheck; }
 
-	int ActionNum;
+	int ActionNum=0;
 	void SetCircleSpeed(float CircleSpeed) { m_CircleSpeed = CircleSpeed; }
 	void SetTargetPos(XMFLOAT3 TargetPos) { m_TargetPos = TargetPos; }
 
+	void SetStateReset(bool flag) { statereset_ = flag; }
 protected:
 	std::vector<Ghost*> ghosts;
 	std::string SceneName;
