@@ -45,6 +45,8 @@ public:
 	//ライトのセット
 	void LightSet(LightGroup* light);
 	void AwakeInit();
+	//クリアする
+	void AllClear();
 private:
 	//食料の検索
 	void SearchFood();

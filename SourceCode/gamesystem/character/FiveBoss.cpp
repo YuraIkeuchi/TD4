@@ -336,27 +336,27 @@ void FiveBoss::Action()
 	fbxmodel->SetScale(m_Scale);
 	fbxmodel->SetColor(m_Color);
 	fbxmodel->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
-	for (auto i = 0; i < 19; i++)
-	{
-		fbxmodel->GetBoneIndexMat(i, bonemat[i]);
-		MatTranstoPos(bonemat[i], bonepos[i]);
 
-		s_color[i] = { 0.30f,0.0f,0.30f,0.50f };
-		e_color[i] = { 0.f,0.f,0.f,0.0f };
-		s_scale[i] = 1.0f;
-		e_scale[i] = 0.0f;
-		m_Life[i] = 40;
-		ParticleEmitter::GetInstance()->DarkOtiEffect(m_Life[i], bonepos[i], s_scale[i], e_scale[i], s_color[i], e_color[i]);
+	m_ParticleTimer++;
+	if (m_ParticleTimer == 30) {
+		for (auto i = 0; i < 19; i++)
+		{
+			fbxmodel->GetBoneIndexMat(i, bonemat[i]);
+			MatTranstoPos(bonemat[i], bonepos[i]);
 
+			s_color[i] = { 0.30f,0.0f,0.30f,0.50f };
+			e_color[i] = { 0.f,0.f,0.f,0.0f };
+			s_scale[i] = 3.0f;
+			e_scale[i] = 0.0f;
+			m_Life[i] = 40;
+			ParticleEmitter::GetInstance()->DarkOtiEffect(m_Life[i], bonepos[i], s_scale[i], e_scale[i], s_color[i], e_color[i]);
+
+		}
+		m_ParticleTimer = {};
 	}
 
 	//パーティクル
-	m_ParticleTimer++;
-	BirthParticle();
-	if (m_ParticleTimer == 5) {
-
-		m_ParticleTimer = 0;
-	}
+	//BirthParticle();
 }
 
 void FiveBoss::AppearAction()
@@ -621,12 +621,18 @@ Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
 	};
 }
 void FiveBoss::BirthParticle() {
+	const int l_ParticleTimer = 30;
 	XMFLOAT4 s_color = { 1.0f,0.0f,1.0f,1.0f };
 	XMFLOAT4 e_color = { 0.0f,0.0f,0.0f,1.0f };
-	float s_scale = 3.0f;
+	float s_scale = 50.0f;
 	float e_scale = 0.0f;
 
-	ParticleEmitter::GetInstance()->KotokoEffect(50, m_Position, s_scale, e_scale, s_color, e_color);
+	//m_ParticleTimer++;
+
+	//if (m_ParticleTimer == l_ParticleTimer) {
+	//	ParticleEmitter::GetInstance()->KotokoEffect(50, m_Position, s_scale, e_scale, s_color, e_color);
+	//	m_ParticleTimer = {};
+	//}
 }
 //会話
 void FiveBoss::AfterAction() {

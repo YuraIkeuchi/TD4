@@ -324,6 +324,7 @@ void ThirdStageActor::MainUpdate(DebugCamera* camera) {
 		{
 			m_DeathTimer++;
 			PlayPostEffect = false;
+			loadobj->AllClear();
 			enemymanager->SetDeadThrow(false);
 			enemymanager->DeadUpdate();
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_THIRD);
