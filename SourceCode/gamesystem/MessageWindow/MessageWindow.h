@@ -29,7 +29,7 @@ public:
 	bool DisplayCheck();
 	void SetNotBlack() { notBlack = true; }
 	void SetBack(bool flag) { this->notBlack = flag; }
-	void Invisible() { this->invisible = false; }
+	void Invisible(bool flag) { this->invisible = flag; }
 private:
 	unique_ptr<IKESprite> window_;
 	unique_ptr<IKESprite> blackback_;

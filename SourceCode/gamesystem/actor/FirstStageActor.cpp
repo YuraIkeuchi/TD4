@@ -60,11 +60,14 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	text_ = make_unique<BossText>();
 	text_->Initialize(dxCommon);
 	text_->Display();
+	text_->SetWindowInvisible();
 
 	//メッセージウィンドウ生成
 	messagewindow_ = make_unique<MessageWindow>();
 	messagewindow_->Initialize();
 	messagewindow_->Display();
+	messagewindow_->Invisible(false);
+
 	sutopon_color_ = { 1.f,1.f,1.f,0.5f };
 	girl_color_ = { 1.3f,1.3f,1.3f,0.5f };
 }
@@ -140,11 +143,10 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon)
 {
 
 	if (tolk_F == true) {
-		text_->SpriteDraw(dxCommon);
 		IKESprite::PreDraw();
 		messagewindow_->Draw();
 		IKESprite::PostDraw();
-
+		text_->SpriteDraw(dxCommon);
 	}
 	//パーティクル描画
 	if (!camerawork->GetFeedEnd() && m_SceneState == SceneState::MainState) {
@@ -173,10 +175,10 @@ void FirstStageActor::BackDraw(DirectXCommon* dxCommon)
 {
 
 	if (tolk_F == true) {
-		text_->SpriteDraw(dxCommon);
 		IKESprite::PreDraw();
 		messagewindow_->Draw();
 		IKESprite::PostDraw();
+		text_->SpriteDraw(dxCommon);
 	}
 	IKESprite::PreDraw();
 	backScreen_->Draw();
@@ -232,7 +234,6 @@ void FirstStageActor::IntroUpdate(DebugCamera* camera)
 	}
 	text_->Display();
 	messagewindow_->Display();
-	messagewindow_->SetBack(true);
 	//テキスト関係
 	if (m_AppTimer == 1) {
 		text_->SelectText(TextManager::Name_Cap::CAP1);
@@ -351,11 +352,10 @@ void FirstStageActor::TalkUpdate()
 {
 	if (tolk_F != true) { return; }
 	
-
+	
 	m_AppTimer++;
 	text_->Display();
-	messagewindow_->SetBack(false);
-	messagewindow_->Invisible();
+	messagewindow_->Invisible(true);
 	if (m_AppTimer == 2) {
 		text_->SelectText(TextManager::Name_First::CHARGE1);
 		sutopon_color_ = { 1.f,1.f,1.f,0.5f };
