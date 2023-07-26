@@ -306,7 +306,7 @@ void Ghost::Manipulate() {
 		m_Rotation.y += l_AddRot;
 		m_RotTimer++;
 
-		if (m_RotTimer % 20 == 0) {
+		if (m_RotTimer % 10 == 0) {
 			BirthBullet();
 		}
 
