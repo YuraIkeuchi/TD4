@@ -36,8 +36,8 @@ void MessageWindow::Draw()
 	if (!notBlack) {
 		if (invisible) {
 			blackback_->Draw();
-			window_->Draw();
 		}
+			window_->Draw();
 	}
 	girl_->Draw();
 	sutopon_->Draw();

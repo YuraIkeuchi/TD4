@@ -37,9 +37,11 @@ void BossText::SelectText(TextManager::Name_Last name, const XMVECTOR& color) {
 	text_->SetLastConversation(name);
 }
 void BossText::SpriteDraw(DirectXCommon* dxCommon) {
-	IKESprite::PreDraw();
-	window_->Draw();
-	IKESprite::PostDraw();
+	if (window_invisible_) {
+		IKESprite::PreDraw();
+		window_->Draw();
+		IKESprite::PostDraw();
+	}
 	text_->TestDraw(dxCommon);
 }
 

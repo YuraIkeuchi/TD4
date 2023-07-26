@@ -39,6 +39,7 @@ public:
 
 public:
 	void SetTextState(const int TextState) { m_TextState = TextState; }
+	void SetWindowInvisible() { this->window_invisible_ = false; }
 private:
 	unique_ptr<TextManager> text_;
 	unique_ptr<IKESprite> window_;
@@ -50,5 +51,5 @@ private:
 	XMFLOAT2 window_pos{ WinApp::window_width / 2.f,WinApp::window_height + 100 };
 	XMFLOAT2 window_size{ 0.f,0.f };
 	float m_Frame = 0.0f;
-
+	bool window_invisible_ = true;
 };
