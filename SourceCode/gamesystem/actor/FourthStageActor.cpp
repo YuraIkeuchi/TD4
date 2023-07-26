@@ -70,6 +70,9 @@ void FourthStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	text_->Initialize(dxCommon);
 	text_->SelectText(TextManager::Name_First::VIEWBOSS);
 
+	SelectScene::GetIns()->SetTexSpeed(300.f);
+	SelectScene::GetIns()->SetTexScl(30000.f);
+
 	messagewindow_ = make_unique<MessageWindow>();
 	messagewindow_->Initialize();
 	messagewindow_->SetNotBlack();
@@ -87,6 +90,9 @@ void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 		menu->Update();
 		if (menu->ReturnSelect()) {
 			sceneChanger_->ChangeStart();
+
+			SelectScene::GetIns()->SetTexSpeed(180.f);
+			SelectScene::GetIns()->SetTexScl(12500.f);
 			sceneChanger_->ChangeScene("SELECT", SceneChanger::Reverse);
 		}
 		return;
@@ -98,7 +104,7 @@ void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	camerawork->Update(camera);
 	menu->Update();
 	ui->Update();
-	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
+	if (SelectScene::GetIns()->GetCloseScl() < 20000.f)
 		SelectScene::GetIns()->Upda();
 
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
@@ -384,6 +390,8 @@ void FourthStageActor::MainUpdate(DebugCamera* camera) {
 		}
 
 		if (camerawork->GetEndDeath()) {
+			SelectScene::GetIns()->SetTexSpeed(180.f);
+			SelectScene::GetIns()->SetTexScl(12500.f);
 			sceneChanger_->ChangeStart();
 			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
 
@@ -396,6 +404,9 @@ void FourthStageActor::MainUpdate(DebugCamera* camera) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kFourthStage, true);
 		sceneChanger_->ChangeStart();
+
+		SelectScene::GetIns()->SetTexSpeed(180.f);
+		SelectScene::GetIns()->SetTexScl(12500.f);
 		sceneChanger_->ChangeSceneLose("GAMEOVER");
 	}
 	//音楽の音量が変わる
