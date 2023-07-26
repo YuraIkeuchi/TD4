@@ -188,9 +188,9 @@ void FirstStageActor::BackDraw(DirectXCommon* dxCommon)
 			ParticleEmitter::GetInstance()->BackDrawAll();
 		}
 	}
+	Player::GetInstance()->Draw(dxCommon);
 	////各クラスの描画
 	if (!camerawork->GetFeedEnd()) {
-		Player::GetInstance()->Draw(dxCommon);
 		loadobj->Draw(dxCommon);
 	}
 	enemymanager->Draw(dxCommon);
