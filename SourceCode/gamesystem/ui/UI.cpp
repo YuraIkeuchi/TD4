@@ -15,13 +15,12 @@ void UI::Initialize() {
 	sprites[HeartOne] = CreateUi(ImageManager::PlayerHPGauge, m_PlayerHpPos, m_PlayerHpSize, { 1.5f, 1.5f, 1.5f,1 });
 	TexList.emplace_back(std::move(sprites[HeartOne]));
 	for (int i = HeartTwo; i < UnderStatusGaugeMax; i++) {
-		sprites[i] = CreateUi(ImageManager::WHITE, { m_PlayerHpPos.x + 95.0f,m_PlayerHpPos.y + 47.0f }, m_PlayerHpSize, { 1.5f, 1.5f, 1.5f,1 });
+		sprites[i] = CreateUi(ImageManager::WHITE, { m_PlayerHpPos.x + 70.0f,m_PlayerHpPos.y + 35.0f }, m_PlayerHpSize, { 1.5f, 1.5f, 1.5f,1 });
 		TexList.emplace_back(std::move(sprites[i]));
 	}
 	{//ゲージ下敷き
-		sprites[UnderStatusGaugeMax] = CreateUi(ImageManager::UnderGauge, m_GaugePos, { 512,100 }, { 1.5f, 1.5f, 1.5f,1.f });
+		sprites[UnderStatusGaugeMax] = CreateUi(ImageManager::UnderGauge, m_GaugePos, m_GaugeSize, { 1.5f, 1.5f, 1.5f,1.f });
 		sprites[UnderStatusGaugeMax].Tex->SetAnchorPoint({ 0,0 });
-		//sprites[UnderStatusGaugeMax].IsVisible = false;
 		TexList.emplace_back(std::move(sprites[UnderStatusGaugeMax]));
 	}
 	{//ゲージ
@@ -40,23 +39,22 @@ void UI::Initialize() {
 		sprites[UnderBossGauge] = CreateUi(ImageManager::BossHPGauge, { WinApp::window_width-10,10 }, m_PlayerHpSize, { 1.5f, 1.5f, 1.5f,1 });
 		sprites[UnderBossGauge].Tex->SetAnchorPoint({ 1.0f,0.f });
 		TexList.emplace_back(std::move(sprites[UnderBossGauge]));
-	}
-	{//ゲージ
-		sprites[MiddleBossGauge] = CreateUi(ImageManager::WHITE, { 900,30 }, { 350,40 }, { 1.f, 1.f, 0.f,1 });
+		XMFLOAT2 pos = TexList[UnderBossGauge].Tex->GetPosition();
+		sprites[MiddleBossGauge] = CreateUi(ImageManager::WHITE, { pos.x-279.f,pos.y+17.f }, { 350,40 }, { 1.f, 1.f, 0.f,1 });
 		sprites[MiddleBossGauge].Tex->SetAnchorPoint({ 0,0.f });
 		TexList.emplace_back(std::move(sprites[MiddleBossGauge]));
 
-		sprites[BossGauge] = CreateUi(ImageManager::WHITE, { 900,30 }, { 350,40 }, { 1.f, 0.f, 0.f,1 });
+		sprites[BossGauge] = CreateUi(ImageManager::WHITE, { pos.x - 279.f,pos.y + 17.f}, { 350,40 }, { 1.f, 0.f, 0.f,1 });
 		sprites[BossGauge].Tex->SetAnchorPoint({ 0,0.f });
 		TexList.emplace_back(std::move(sprites[BossGauge]));
 	}
 	{
-		sprites[CircleCover] = CreateUi(ImageManager::CIRCLECOVER, { m_PlayerCireclePos.x,m_PlayerCireclePos.y - 40.f }, { 400.f,400.f }, { 1.f,1.f,1.f,1.f });
+		sprites[CircleCover] = CreateUi(ImageManager::CIRCLECOVER, { m_PlayerCireclePos.x,m_PlayerCireclePos.y - 40.f }, { 350.f,350.f }, { 1.f,1.f,1.f,1.f });
 		sprites[CircleCover].Tex->SetAnchorPoint({ 0.5,0.5f });
 		TexList.emplace_back(std::move(sprites[CircleCover]));
 	}
 	{
-		sprites[PlayerCircle] = CreateUi(ImageManager::CIRCLE, { m_PlayerCireclePos }, { 250.f,250.f }, { 1.2f,1.2f,1.2f,1.f });
+		sprites[PlayerCircle] = CreateUi(ImageManager::CIRCLE, { m_PlayerCireclePos }, m_PlayerCircleSize, { 1.2f,1.2f,1.2f,1.f });
 		sprites[PlayerCircle].Tex->SetAnchorPoint({ 0.5,0.5f });
 		TexList.emplace_back(std::move(sprites[PlayerCircle]));
 	}
@@ -95,7 +93,7 @@ void UI::Update() {
 		}
 	}
 	//ライフ処理
-	TexList[HeartThree].Size = { (Player::GetInstance()->GetHP() / Player::GetInstance()->GetMaxHP()) * m_PlayerHpSize.x * 0.68f ,m_PlayerHpSize.y * 0.34f };
+	TexList[HeartThree].Size = { (Player::GetInstance()->GetHP() / Player::GetInstance()->GetMaxHP()) * m_PlayerHpSize.x * 0.68f ,m_PlayerHpSize.y * 0.32f };
 	TexList[HeartThree].Color = { 0,1,0,1.0f };
 	TexList[HeartTwo].Size = {
 		Ease(In,Quad,0.3f,TexList[HeartTwo].Size.x,TexList[HeartThree].Size.x),
@@ -124,7 +122,6 @@ void UI::Update() {
 	if (m_limit == -240) {
 		m_limit = 120;
 	}
-
 	if (m_limit == 360) {
 		m_limit = 0;
 	}
@@ -165,7 +162,7 @@ void UI::Update() {
 
 
 	if (boss) {
-		TexList[BossGauge].Size = { boss->HpPercent() * 512.f * 0.6f * 0.9f ,128.f * 0.8f * 0.34f };
+		TexList[BossGauge].Size = { boss->HpPercent() * m_PlayerHpSize.x * 0.67f ,m_PlayerHpSize.y * 0.33f };
 		TexList[MiddleBossGauge].Size = {
 		Ease(In,Quad,0.3f,TexList[MiddleBossGauge].Size.x,TexList[BossGauge].Size.x),
 		Ease(In,Quad,0.3f,TexList[MiddleBossGauge].Size.y,TexList[BossGauge].Size.y),
