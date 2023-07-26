@@ -261,6 +261,7 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 		}
 		//フェード後
 		else {
+			loadobj->AllClear();
 			text_->Display();
 			m_EndTimer++;
 			PlayPostEffect = false;

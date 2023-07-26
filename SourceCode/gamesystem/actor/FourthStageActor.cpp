@@ -376,7 +376,7 @@ void FourthStageActor::MainUpdate(DebugCamera* camera) {
 			apple->SetPosition(pos);
 			HungerGauge::GetInstance()->SetNowHunger(0);
 			HungerGauge::GetInstance()->Update();
-			
+			loadobj->AllClear();
 			enemymanager->SetDeadThrow(false);
 			enemymanager->DeadUpdate();
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_FOURTH);

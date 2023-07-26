@@ -217,6 +217,7 @@ void FiveStageActor::MainUpdate(DebugCamera* camera) {
 		else {
 			m_DeathTimer++;
 			PlayPostEffect = false;
+			loadobj->AllClear();
 			enemymanager->SetDeadThrow(false);
 			enemymanager->DeadUpdate();
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_FIVE);
