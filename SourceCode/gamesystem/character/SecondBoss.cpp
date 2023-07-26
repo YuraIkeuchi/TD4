@@ -708,7 +708,6 @@ void SecondBoss::ImGui_Origin() {
 
 void SecondBoss::ChargeAttack::Initialize()
 {
-	IKETexture::LoadTexture(8, L"Resources/2d/effect/impact.png");
 	impacttex[0].reset(IKETexture::Create(ImageManager::IMPACT2, { 0,0,0 }, { 10,10,10 }, { 1,1,1,1 }));
 	impacttex[1].reset(IKETexture::Create(ImageManager::IMPACT, { 0,0,0 }, { 0,0,0 }, { 1,1,1,1 }));
 

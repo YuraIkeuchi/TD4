@@ -125,9 +125,12 @@ void SingleShot::Phase_Idle()
 
 	ShotSize = boss->GetGhostSize();
 
-	if (RotEaseTime >= 1.f)
-		_phase = Phase::SHOT;
+	if (RotEaseTime >= 1.f) {
 
+		boss->AnimationControl(InterBoss::AnimeNames::SHOT, false, 1);
+
+		_phase = Phase::SHOT;
+	}
 
 }
 void SingleShot::Phase_Shot()

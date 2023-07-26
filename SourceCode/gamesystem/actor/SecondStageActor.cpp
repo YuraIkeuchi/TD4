@@ -109,12 +109,16 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 			_Tscne = TextScene::LET_GO;
 		}
 	} else if (_Tscne == TextScene::LET_GO) {
+		if (camerawork->GetAppearEndF()) {
+			_Tscne = TextScene::ENDTEXT;
+		}
 		sutopon_color_ = { 0.50f,0.50f,0.50f,0.50f };
 		girl_color_ = { 1.2f,1.2f,1.2f,1.f };
 		textT++;
 		text_->SelectText(TextManager::Name_First::SPEALPLAYER3, kPink);
 		if (Input::GetInstance()->TriggerButton(Input::B) || textT > 4 * IntervalTextC) {
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Text.wav", VolumManager::GetInstance()->GetSEVolum());
+
 			_Tscne = TextScene::ENDTEXT;
 		}
 	}
