@@ -248,6 +248,10 @@ private:
 	float DecisionCount = 0.f;
 
 	bool movie = false;
+
+
+	float returntimer_ = 0.f;
+	float returnrot_ = 0.f;
 };
 
 

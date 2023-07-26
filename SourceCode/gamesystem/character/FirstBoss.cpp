@@ -86,7 +86,7 @@ void FirstBoss::Action()
 		m_Magnification = 0.3f;
 	}
 
-
+	
 
 
 	if (bounce_ == Bounce::SOURCE) {
@@ -220,6 +220,36 @@ void FirstBoss::Draw(DirectXCommon* dxCommon)
 //攻撃後のインターバル
 void FirstBoss::InterValMove()
 {
+	if (m_Rotation.x != 0) {
+		XMFLOAT3 s_rot = m_Rotation;
+		returntimer_ += 1.f / 60.f;
+		XMFLOAT3 e_rot{ 0.f,90.f,0.f };
+		Helper::GetInstance()->Clamp(returntimer_, 0.0f, 1.0f);
+		m_Rotation = {
+		Ease(Out, Quart, bounceTimer, s_rot.x, e_rot.x),
+		Ease(Out, Quart, bounceTimer, s_rot.y, e_rot.y),
+		Ease(Out, Quart, bounceTimer, s_rot.z, e_rot.z),
+		};
+		if (returntimer_ == 1) {
+			returntimer_ = 0;
+		}
+	}
+
+	if (m_Scale.x != 15.3f || m_Scale.y != 15.3f || m_Scale.z != 15.3f) {
+		XMFLOAT3 s_scl = m_Scale;
+		returntimer_ += 1.f / 60.f;
+		XMFLOAT3 e_scl{ 15.3f,15.3f,15.3f };
+		Helper::GetInstance()->Clamp(returntimer_, 0.0f, 1.0f);
+		m_Scale = {
+		Ease(Out, Quart, bounceTimer, s_scl.x, e_scl.x),
+		Ease(Out, Quart, bounceTimer, s_scl.y, e_scl.y),
+		Ease(Out, Quart, bounceTimer, s_scl.z, e_scl.z),
+		};
+		if (returntimer_ == 1) {
+			returntimer_ = 0;
+		}
+	}
+
 	Display = false;
 	jumpCount = 0;
 	commandTimer += 1.0f / 50;
