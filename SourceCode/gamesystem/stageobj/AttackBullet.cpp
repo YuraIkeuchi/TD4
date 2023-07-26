@@ -17,8 +17,28 @@ AttackBullet::AttackBullet() {
 //初期化
 bool AttackBullet::Initialize() {
 	m_Position = { 0.0f,0.0f,0.0f };
-	m_Scale = { 3.0f,3.0f,3.0f };
 	m_Color = { 1.0f,1.0f,1.0f,0.8f };
+	//チャージのタイプによって弾の見た目変化
+	if (m_PowerState == POWER_NONE) {
+		m_Scale = { 3.0f,3.0f,3.0f };
+		m_Object2->SetColor({ 1.0f,1.0f,1.0f,1.0f });
+		m_Radius = 5.0f;
+	}
+	else if (m_PowerState == POWER_MIDDLE) {
+		m_Scale = { 4.0f,4.0f,4.0f };
+		m_Object2->SetColor({ 1.0f,1.0f,0.0f,1.0f });
+		m_Radius = 5.5f;
+	}
+	else if (m_PowerState == POWER_STRONG) {
+		m_Scale = { 5.0f,5.0f,5.0f };
+		m_Object2->SetColor({ 1.0f,0.5f,0.0f,1.0f });
+		m_Radius = 6.0f;
+	}
+	else {
+		m_Scale = { 6.0f,6.0f,6.0f };
+		m_Object2->SetColor({ 1.0f,0.0f,0.0f,1.0f });
+		m_Radius = 6.5f;
+	}
 	//CSVから読み込み
 	m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet/bullet.csv", "AttackSpeed")));
 	m_TargetTimer = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/bullet/bullet.csv", "AttackLimit")));
@@ -56,7 +76,6 @@ void AttackBullet::Action() {
 		m_Object2->SetPosition(m_Position);
 		m_Object2->SetRotation(m_Rotation);
 		m_Object2->SetScale({ m_Scale.x - 0.3f, m_Scale.y - 0.3f, m_Scale.z - 0.3f });
-		m_Object2->SetColor({1.0f,1.0f,1.0f,1.0f});
 		m_Object2->Update();
 		Obj_SetParam();
 		

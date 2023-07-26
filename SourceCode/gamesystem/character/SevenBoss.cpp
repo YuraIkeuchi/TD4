@@ -832,7 +832,7 @@ void SevenBoss::CatchBul(vector<InterBullet*> bullet)
 				_bullet->SetBossCatch(true);
 			}
 
-			if (Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, l_StunRadius, m_Position.x, m_Position.z, l_StunRadius) && (!m_Stun)) {
+			if (Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, _bullet->GetRadius(), m_Position.x, m_Position.z, l_StunRadius) && (!m_Stun)) {
 				BirthExplosion();
 				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Explo.wav", VolumManager::GetInstance()->GetSEVolum() * 1.3f);
 				bossstuneffect->SetAlive(true);
@@ -893,8 +893,8 @@ void SevenBoss::VanishCollide(vector<InterBullet*> bullet)
 	const float l_VanishRadius = m_Radius + 5.0f;
 	for (InterBullet* _bullet : bullet) {
 		if (_bullet != nullptr && _bullet->GetAlive() && !_bullet->GetInArea()) {
-		
-			if (Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, l_VanishRadius, m_Position.x, m_Position.z, l_VanishRadius) && (!m_Stun) && (!m_Vanish)) {
+			const float l_VanishRadius2 = _bullet->GetRadius() + 5.0f;
+			if (Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, l_VanishRadius, m_Position.x, m_Position.z, l_VanishRadius2) && (!m_Stun) && (!m_Vanish)) {
 				//—”w’è
 				mt19937 mt{ std::random_device{}() };
 				uniform_int_distribution<int> l_RandomRange(1, 100);

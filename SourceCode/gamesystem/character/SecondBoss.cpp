@@ -63,7 +63,7 @@ void SecondBoss::Action() {
 	//DamageNormal= static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/Secondboss.csv", "NormalDamage")));
 //	Damage_Circle= static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/second/Secondboss.csv", "impactDamage")));
 	if (this == nullptr)return;
-	if (m_HP < 0.1) return;
+	if (m_HP <= 0.0f) return;
 
 	{
 		/*^^^^^^上下運動^^^^^^^*/
