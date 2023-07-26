@@ -140,6 +140,9 @@ void TutorialEnemy::WaitUpdate() {
 		rot = m_Rotation.y;
 		s_pos = m_Position;
 		e_pos = { m_Position.x + sinf(RottoPlayer) * -10.0f,0.f, m_Position.z + cosf(RottoPlayer) * -10.0f };
+		Helper::GetInstance()->Clamp(e_pos.x, -55.0f, 65.0f);
+		Helper::GetInstance()->Clamp(e_pos.z, -60.0f, 60.0f);
+
 		if (!isWeak) {
 			commandState = CommandState::JumpState;
 		}
@@ -158,6 +161,9 @@ void TutorialEnemy::LockOnUpdate() {
 		rot = m_Rotation.y;
 		s_pos = m_Position;
 		e_pos = { m_Position.x + sinf(RottoPlayer) * -(8.f * (float)jumpCount),0.f, m_Position.z + cosf(RottoPlayer) * -(15.0f * (float)jumpCount) };
+		Helper::GetInstance()->Clamp(e_pos.x, -55.0f, 65.0f);
+		Helper::GetInstance()->Clamp(e_pos.z, -60.0f, 60.0f);
+
 		//kJumpTimeMax=100
 		commandState = CommandState::JumpState;
 	}

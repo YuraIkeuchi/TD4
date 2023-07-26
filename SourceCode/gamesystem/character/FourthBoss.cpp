@@ -232,6 +232,7 @@ void FourthBoss::EffecttexDraw(DirectXCommon* dxCommon) {
 void FourthBoss::Draw(DirectXCommon* dxCommon) {
 	//
 	for (unique_ptr<TutorialEnemy>& enemy : Fourthenemys) {
+		if (m_HP <= 0.0f) { break; }
 		enemy->Draw(dxCommon);
 	}
 	Obj_Draw();
