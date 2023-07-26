@@ -854,6 +854,9 @@ void Player::DeathUpdateAfter(int Timer) {
 		m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	}
 
+	index = 15;
+	fbxmodels->GetBoneIndexMat(index, skirtmat);
+	skirtobj->FollowUpdate(skirtmat);
 	playerattach->DeathUpdate();
 	SetParam();
 }
