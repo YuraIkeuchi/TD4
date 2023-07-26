@@ -27,6 +27,8 @@ void ThirdStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	//シーンチェンジャー
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
+	SelectScene::GetIns()->SetTexSpeed(200.f);
+	SelectScene::GetIns()->SetTexScl(20000.f);
 
 	enemymanager = std::make_unique<EnemyManager>("THIRDSTAGE");
 	//enemymanager->Initialize(dxCommon);
@@ -64,6 +66,9 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	if (menu->Pause()) {
 		menu->Update();
 		if (menu->ReturnSelect()) {
+			SelectScene::GetIns()->SetTexSpeed(180.f);
+			SelectScene::GetIns()->SetTexScl(12500.f);
+
 			sceneChanger_->ChangeStart();
 			sceneChanger_->ChangeScene("SELECT", SceneChanger::Reverse);
 		}
@@ -89,7 +94,7 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	lightgroup->Update();
 	//if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
 	//	SelectScene::GetIns()->Upda();
-	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
+	if (SelectScene::GetIns()->GetCloseScl() < 15000.f)
 		SelectScene::GetIns()->Upda();
 
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
@@ -336,6 +341,9 @@ void ThirdStageActor::MainUpdate(DebugCamera* camera) {
 
 		if (camerawork->GetEndDeath()) {
 			sceneChanger_->ChangeStart();
+			SelectScene::GetIns()->SetTexSpeed(180.f);
+			SelectScene::GetIns()->SetTexScl(12500.f);
+
 			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
 		}
 	}
@@ -348,6 +356,9 @@ void ThirdStageActor::MainUpdate(DebugCamera* camera) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kThirdStage, true);
 		sceneChanger_->ChangeStart();
+		SelectScene::GetIns()->SetTexSpeed(180.f);
+		SelectScene::GetIns()->SetTexScl(12500.f);
+
 		sceneChanger_->ChangeSceneLose("GAMEOVER");
 	}
 
