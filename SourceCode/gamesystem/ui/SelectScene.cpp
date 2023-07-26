@@ -164,6 +164,9 @@ void SelectScene::Init() {
 	}
 	m_Color[FIRST] = { 1,1,1 };
 	m_Color[TITLE] = { 1,1,1 };
+
+	MaxSpeed=180.f;
+	MaxScl=12500.f;
 }
 
 void SelectScene::Upda() {
@@ -178,8 +181,8 @@ void SelectScene::Upda() {
 
 
 	CloseIconView(CloseF);
-	Helper::GetInstance()->Clamp(closeScl, 0.f, 42500.f);
-	Helper::GetInstance()->Clamp(closeRad, 0.f, 4000.f);
+	Helper::GetInstance()->Clamp(closeScl, 0.f, MaxScl);
+	Helper::GetInstance()->Clamp(closeRad, 0.f, 1500.f);
 	if(!ChangeLastF)
 	RotPedestal();
 
@@ -202,7 +205,7 @@ void SelectScene::Upda() {
 	ChangeEffect("TITLE", Stage::TITLE, TITLE);
 	
 	for (int i = 0; i < MAX; i++) {
-		if (closeScl >= 10000.f) {
+		if (closeScl >= MaxScl-2000.f) {
 			BossIcon[i]->SetAnchorPoint({ 0.5f,0.5f });
 			BossIcon[i]->SetSize({ 0,0 });
 			BossIcon[i]->SetPosition({ 1280 / 2,720 / 2 });
@@ -382,9 +385,9 @@ void SelectScene::CloseIconView(bool closeF) {
 	}
 	if (sin) {
 		if (closeScl >= MinScl)
-			SclingSpeed = 580.f;
+			SclingSpeed =MaxSpeed;
 		else
-			SclingSpeed = 300.f;
+			SclingSpeed = 100.f;
 
 		closeScl += SclingSpeed;
 		closeRad += SclingSpeed * SubRad;
@@ -434,9 +437,8 @@ void SelectScene::ViewTips() {
 void SelectScene::StateManager() {
 	//debugよう
 	m_Scale[TITLE] = { 0.025f,0.1f,0.025f };
-	m_Wide = true;
+	//m_Wide = true;
 
-	m_SelectState =SELECT_SECOND;
 	//
 	//クリア状況に応じてOBJの大きさだったりが違う
 	if (m_SelectState == SELECT_FIRST) {		//ここは牛乳のみ

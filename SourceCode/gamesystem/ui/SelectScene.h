@@ -128,9 +128,13 @@ private:
 	float closeRad = 1500.f;
 	float SclingSpeed = 55.f, CorrSpeed = 0.48f;
 
+	float MaxScl, MaxSpeed;
 	void RotPedestal();
 	void ChangeEffect(std::string name, Stage stage, UINT iconnum);
 public:
+	void SetTexScl(float valscl) { MaxScl = valscl; }
+	void SetTexSpeed(float valscl) { MaxSpeed =valscl; }
+
 	float GetCloseIconRad() { return closeRad; }
 	float GetCloseScl() { return closeScl; }
 	XMFLOAT3 GetPedestalPos() { return Pedestal->GetPosition(); }
