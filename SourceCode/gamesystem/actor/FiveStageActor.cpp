@@ -39,6 +39,10 @@ void FiveStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	camerawork->SetSceneName("FIVESTAGE");
 	camerawork->SplineSet();
 	camerawork->Update(camera);
+
+	SelectScene::GetIns()->SetTexSpeed(400.f);
+	SelectScene::GetIns()->SetTexScl(35000.f);
+
 	ui = std::make_unique<UI>();
 	ui->Initialize();
 
@@ -93,8 +97,12 @@ void FiveStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
 	lightgroup->Update();
 
-	//if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
+	if (SelectScene::GetIns()->GetCloseScl() < 35000.f)
+	{
 		SelectScene::GetIns()->Upda();
+	}
+
+		
 
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 
@@ -226,6 +234,8 @@ void FiveStageActor::MainUpdate(DebugCamera* camera) {
 
 		if (camerawork->GetEndDeath()) {
 			sceneChanger_->ChangeStart();
+			SelectScene::GetIns()->SetTexSpeed(180.f);
+			SelectScene::GetIns()->SetTexScl(12500.f);
 			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
 		}
 	} else {
@@ -236,6 +246,8 @@ void FiveStageActor::MainUpdate(DebugCamera* camera) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kFiveStage, true);
 		sceneChanger_->ChangeStart();
+		SelectScene::GetIns()->SetTexSpeed(180.f);
+		SelectScene::GetIns()->SetTexScl(12500.f);
 		sceneChanger_->ChangeSceneLose("GAMEOVER");
 	}
 
