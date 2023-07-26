@@ -170,8 +170,8 @@ bool Ghost::PlayerCollision() {
 }
 //当たり判定(ゴースト同士)
 void Ghost::GhostCollision(const XMFLOAT3& pos) {
-	m_Position.x += sin(atan2f((m_Position.x - pos.x), (m_Position.z - pos.z))) * 0.1f;
-	m_Position.z += cos(atan2f((m_Position.x - pos.x), (m_Position.z - pos.z))) * 0.1f;
+	m_Position.x += sin(atan2f((m_Position.x - pos.x), (m_Position.z - pos.z))) * 0.3f;
+	m_Position.z += cos(atan2f((m_Position.x - pos.x), (m_Position.z - pos.z))) * 0.3f;
 }
 //ゴースト生成
 void Ghost::BirthGhost() {
@@ -325,7 +325,7 @@ void Ghost::DarkSide() {
 	//m_Color.x -= 0.05f;
 	m_Color.y -= 0.05f;
 	//m_Color.z -= 0.05f;
-	float l_Vel = 0.35f;//速度
+	float l_Vel = 0.5f;//速度
 	if (Collision::GetLength(m_Position, bossPos) > 5) {
 		Helper::GetInstance()->FollowMove(m_Position, bossPos, l_Vel);
 		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, bossPos, -PI_90);
