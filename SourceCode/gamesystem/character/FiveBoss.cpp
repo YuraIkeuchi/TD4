@@ -423,6 +423,7 @@ void FiveBoss::DeadAction()
 
 void FiveBoss::DeadAction_Throw()
 {
+	fbxmodel->StopAnimation();
 	fbxmodel->SetPosition(m_Position);
 	fbxmodel->SetRotation(m_Rotation);
 	fbxmodel->SetScale(m_Scale);
