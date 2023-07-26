@@ -41,7 +41,7 @@ void SevenStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	ui = std::make_unique<UI>();
 	ui->Initialize();
 
-	SelectScene::GetIns()->Init();
+	//SelectScene::GetIns()->Init();
 	menu = make_unique<Menu>();
 	menu->Initialize();
 	ui->SetBoss(enemymanager->GetBoss());
@@ -97,8 +97,8 @@ void SevenStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 
 	messagewindow_->Update(girl_color_, sutopon_color_);
 
-	//if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
-	//	SelectScene::GetIns()->Upda();
+	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
+		SelectScene::GetIns()->Upda();
 	ui->Update();
 	menu->Update();
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
@@ -191,7 +191,7 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	IKESprite::PreDraw();
 	//blackwindow->Draw();
 	camerawork->feedDraw();
-	//SelectScene::GetIns()->Draw_Sprite();
+	SelectScene::GetIns()->Draw_Sprite();
 	IKESprite::PostDraw();
 }
 //IMGui‚Ì•`‰æ

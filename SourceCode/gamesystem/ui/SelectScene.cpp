@@ -155,6 +155,8 @@ void SelectScene::Init() {
 	StageObjRot[FOUR].x = 190;
 	AfterScale[FIVE] = { 0.2f,0.2f,0.2f };
 
+
+
 	//一回開放したら大きさを合わせる
 	for (auto i = 0; i < ObjNum; i++) {
 	//	if (m_Birth[i]) {
@@ -166,7 +168,7 @@ void SelectScene::Init() {
 	m_Color[TITLE] = { 1,1,1 };
 
 	MaxSpeed=180.f;
-	MaxScl=12500.f;
+	MaxScl=15500.f;
 }
 
 void SelectScene::Upda() {
@@ -439,6 +441,7 @@ void SelectScene::StateManager() {
 	m_Scale[TITLE] = { 0.025f,0.1f,0.025f };
 	//m_Wide = true;
 
+	
 	//
 	//クリア状況に応じてOBJの大きさだったりが違う
 	if (m_SelectState == SELECT_FIRST) {		//ここは牛乳のみ
