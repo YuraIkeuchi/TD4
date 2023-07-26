@@ -24,7 +24,7 @@ void UI::Initialize() {
 		TexList.emplace_back(std::move(sprites[UnderStatusGaugeMax]));
 	}
 	{//ゲージ
-		sprites[ExtraGauge] = CreateUi(ImageManager::WHITE, m_GaugePosMini, m_GaugeSizeMini, { 0.5f, 0.5f, 1.f,1.f } );
+		sprites[ExtraGauge] = CreateUi(ImageManager::WHITE, m_GaugePosMini, m_GaugeSizeMini, { 0.5f, 0.5f, 1.f,1.f });
 		TexList.emplace_back(std::move(sprites[ExtraGauge]));
 	}
 	{//ゲージ
@@ -36,14 +36,14 @@ void UI::Initialize() {
 		TexList.emplace_back(std::move(sprites[ChargeGauge]));
 	}
 	{//ゲージ
-		sprites[UnderBossGauge] = CreateUi(ImageManager::BossHPGauge, { WinApp::window_width-10,10 }, m_PlayerHpSize, { 1.5f, 1.5f, 1.5f,1 });
+		sprites[UnderBossGauge] = CreateUi(ImageManager::BossHPGauge, { WinApp::window_width - 10,10 }, m_PlayerHpSize, { 1.5f, 1.5f, 1.5f,1 });
 		sprites[UnderBossGauge].Tex->SetAnchorPoint({ 1.0f,0.f });
 		TexList.emplace_back(std::move(sprites[UnderBossGauge]));
 		XMFLOAT2 pos = TexList[UnderBossGauge].Tex->GetPosition();
-		sprites[MiddleBossGauge] = CreateUi(ImageManager::WHITE, { pos.x-279.f,pos.y+17.f }, { 350,40 }, { 1.f, 1.f, 0.f,1 });
+		sprites[MiddleBossGauge] = CreateUi(ImageManager::WHITE, { pos.x - 279.f,pos.y + 17.f }, { 350,40 }, { 1.f, 1.f, 0.f,1 });
 		sprites[MiddleBossGauge].Tex->SetAnchorPoint({ 0,0.f });
 		TexList.emplace_back(std::move(sprites[MiddleBossGauge]));
-		sprites[BossGauge] = CreateUi(ImageManager::WHITE, { pos.x - 279.f,pos.y + 17.f}, { 350,40 }, { 1.f, 0.f, 0.f,1 });
+		sprites[BossGauge] = CreateUi(ImageManager::WHITE, { pos.x - 279.f,pos.y + 17.f }, { 350,40 }, { 1.f, 0.f, 0.f,1 });
 		sprites[BossGauge].Tex->SetAnchorPoint({ 0,0.f });
 		TexList.emplace_back(std::move(sprites[BossGauge]));
 	}
@@ -68,6 +68,89 @@ void UI::Initialize() {
 
 //更新
 void UI::Update() {
+	PlayerGauge();//チャージゲージ関連
+	PlayerLife();//プレイヤーのHP
+	BulletChange();//サークルの処理
+	BossLife();	//ボスの探索とHP
+
+	//テキスト更新
+	for (auto i = 0; i < TexList.size(); i++) {
+		if (TexList[i].Tex == nullptr)continue;
+		TexList[i].Tex->SetPosition(TexList[i].Position);
+		TexList[i].Tex->SetSize(TexList[i].Size);
+		TexList[i].Tex->SetRotation(TexList[i].Rotation);
+		TexList[i].Tex->SetColor(TexList[i].Color);
+	}
+}
+
+//描画
+void UI::Draw() {
+	IKESprite::PreDraw();
+	for (auto i = 0; i < TexList.size(); i++) {
+		if (TexList[i].Tex == nullptr) { continue; }
+		if (TexList[i].IsVisible) {
+			TexList[i].Tex->Draw();
+		}
+	}
+	IKESprite::PostDraw();
+}
+
+UI::SpriteData UI::CreateUi(UINT texNumber, XMFLOAT2 pos, XMFLOAT2 size, XMFLOAT4 color) {
+	SpriteData itr;
+	itr.Tex = IKESprite::Create(texNumber, pos);
+	itr.Tex->SetAnchorPoint({ 0.f,0.f });
+	itr.Position = pos;
+	itr.Size = size;
+	itr.Color = color;
+	return itr;
+}
+
+//ボスの探索
+void UI::SeachBoss() {
+	const float l_LookLength = 55.0f;
+	XMFLOAT3 l_PlaPos = Player::GetInstance()->GetPosition();
+	XMFLOAT3 l_bossPos = boss->GetPosition();
+	XMFLOAT3 l_Position{};
+	float l_Radius = 0;
+	XMFLOAT2 rot{};
+	l_Position.x = (l_PlaPos.x - l_bossPos.x);
+	l_Position.z = (l_PlaPos.z - l_bossPos.z);
+
+	l_Radius = atan2f(l_Position.x, l_Position.z);// *PI / 180.0f;
+	m_Circle.x = (sin(-l_Radius) * 150.0f) + WinApp::window_width / 2; //*0.2251f;
+	m_Circle.y = (cos(-l_Radius) * 150.0f) + WinApp::window_height / 2; //*0.2251f;
+	if (l_LookLength < Helper::GetInstance()->ChechLength({ l_PlaPos.x,0.0f,l_PlaPos.z }, { l_bossPos.x,0.0f,l_bossPos.z })) {
+		TexList[ArrowBoss].IsVisible = true;
+	} else {
+		TexList[ArrowBoss].IsVisible = false;
+	}
+	TexList[ArrowBoss].Rotation = (l_Radius * (PI_180 / XM_PI)) + PI_180;//-radius * PI / 180.0f);
+	TexList[ArrowBoss].Position = m_Circle;
+	//TexList[ArrowBoss].Size = { 62.0f,62.0f };
+}
+
+void UI::PlayerLife() {
+	float percent = (Player::GetInstance()->GetHP() / Player::GetInstance()->GetMaxHP());
+	//ライフ処理
+	TexList[HeartThree].Size = { percent * m_PlayerHpSize.x * 0.68f ,m_PlayerHpSize.y * 0.32f };
+	TexList[HeartTwo].Size = {
+		Ease(In,Quad,0.3f,TexList[HeartTwo].Size.x,TexList[HeartThree].Size.x),
+		Ease(In,Quad,0.3f,TexList[HeartTwo].Size.y,TexList[HeartThree].Size.y),
+	};
+	if (percent>=0.5f) {
+		TexList[HeartThree].Color = { 0,1,0,1 };
+		TexList[HeartTwo].Color = { 1,0,0,1 };
+	} else if (percent >= 0.25f) {
+		TexList[HeartThree].Color = { 1,1,0,1 };
+		TexList[HeartTwo].Color = { 0.5f,0,0,1 };
+	} else  {
+		TexList[HeartThree].Color = { 1,0,0,1 };
+		TexList[HeartTwo].Color = { 0,0,0,1 };
+	}
+
+}
+
+void UI::PlayerGauge() {
 	//Gauge処理
 	if (HungerGauge::GetInstance()->GetCatchCount() == 0) {
 		TexList[StatusGauge].IsVisible = false;
@@ -91,14 +174,14 @@ void UI::Update() {
 			TexList[ChargeGauge].Color = { 1.0f,0.0f,0.0f,1.0f };
 		}
 	}
-	//ライフ処理
-	TexList[HeartThree].Size = { (Player::GetInstance()->GetHP() / Player::GetInstance()->GetMaxHP()) * m_PlayerHpSize.x * 0.68f ,m_PlayerHpSize.y * 0.32f };
-	TexList[HeartThree].Color = { 0,1,0,1.0f };
-	TexList[HeartTwo].Size = {
-		Ease(In,Quad,0.3f,TexList[HeartTwo].Size.x,TexList[HeartThree].Size.x),
-		Ease(In,Quad,0.3f,TexList[HeartTwo].Size.y,TexList[HeartThree].Size.y),
-	};
-	TexList[HeartTwo].Color = { 1,0,0,1 };
+
+
+
+
+
+}
+
+void UI::BulletChange() {
 	TexList[PlayerCircle].Rotation = m_PlayerCircleRot;
 	bullet_type_ = Player::GetInstance()->GetBulletType();
 	float nowhunger = HungerGauge::GetInstance()->GetNowHunger();
@@ -157,10 +240,11 @@ void UI::Update() {
 	} else {
 		oldbullet_type_ = bullet_type_;
 	}
+}
 
-
-
+void UI::BossLife() {
 	if (boss) {
+		SeachBoss();
 		TexList[BossGauge].Size = { boss->HpPercent() * m_PlayerHpSize.x * 0.67f ,m_PlayerHpSize.y * 0.33f };
 		TexList[MiddleBossGauge].Size = {
 		Ease(In,Quad,0.3f,TexList[MiddleBossGauge].Size.x,TexList[BossGauge].Size.x),
@@ -171,64 +255,4 @@ void UI::Update() {
 		TexList[MiddleBossGauge].IsVisible = false;
 		TexList[BossGauge].IsVisible = false;
 	}
-
-	//ボスの探索
-	if (boss)
-		SeachBoss();
-
-	for (auto i = 0; i < TexList.size(); i++) {
-		if (TexList[i].Tex == nullptr)continue;
-		TexList[i].Tex->SetPosition(TexList[i].Position);
-		TexList[i].Tex->SetSize(TexList[i].Size);
-		TexList[i].Tex->SetRotation(TexList[i].Rotation);
-		TexList[i].Tex->SetColor(TexList[i].Color);
-	}
-
-
-}
-
-//描画
-void UI::Draw() {
-	IKESprite::PreDraw();
-	for (auto i = 0; i < TexList.size(); i++) {
-		if (TexList[i].Tex == nullptr) { continue; }
-		if (TexList[i].IsVisible) {
-			TexList[i].Tex->Draw();
-		}
-	}
-	IKESprite::PostDraw();
-}
-
-UI::SpriteData UI::CreateUi(UINT texNumber, XMFLOAT2 pos, XMFLOAT2 size, XMFLOAT4 color) {
-	SpriteData itr;
-	itr.Tex = IKESprite::Create(texNumber, pos);
-	itr.Tex->SetAnchorPoint({ 0.f,0.f });
-	itr.Position = pos;
-	itr.Size = size;
-	itr.Color = color;
-	return itr;
-}
-
-//ボスの探索
-void UI::SeachBoss() {
-	const float l_LookLength = 55.0f;
-	XMFLOAT3 l_PlaPos = Player::GetInstance()->GetPosition();
-	XMFLOAT3 l_bossPos = boss->GetPosition();
-	XMFLOAT3 l_Position{};
-	float l_Radius = 0;
-	XMFLOAT2 rot{};
-	l_Position.x = (l_PlaPos.x - l_bossPos.x);
-	l_Position.z = (l_PlaPos.z - l_bossPos.z);
-
-	l_Radius = atan2f(l_Position.x, l_Position.z);// *PI / 180.0f;
-	m_Circle.x = (sin(-l_Radius) * 150.0f) + WinApp::window_width / 2; //*0.2251f;
-	m_Circle.y = (cos(-l_Radius) * 150.0f) + WinApp::window_height / 2; //*0.2251f;
-	if (l_LookLength < Helper::GetInstance()->ChechLength({ l_PlaPos.x,0.0f,l_PlaPos.z }, { l_bossPos.x,0.0f,l_bossPos.z })) {
-		TexList[ArrowBoss].IsVisible = true;
-	} else {
-		TexList[ArrowBoss].IsVisible = false;
-	}
-	TexList[ArrowBoss].Rotation = (l_Radius * (PI_180 / XM_PI)) + PI_180;//-radius * PI / 180.0f);
-	TexList[ArrowBoss].Position = m_Circle;
-	//TexList[ArrowBoss].Size = { 62.0f,62.0f };
 }

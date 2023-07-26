@@ -80,4 +80,8 @@ private:
 private:
 	//ボスの表示
 	void SeachBoss();
+	void PlayerLife();
+	void PlayerGauge();
+	void BulletChange();
+	void BossLife();
 };
