@@ -81,6 +81,11 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 		Audio::GetInstance()->StopWave(AUDIO_LOAD);
 		str = "SEVENSTAGE";
 	}
+	//7ステージ
+	if (Input::GetInstance()->TriggerKey(DIK_9)) {
+		Audio::GetInstance()->StopWave(AUDIO_LOAD);
+		str = "TUTORIAL";
+	}
 	//エンドロール
 	if (Input::GetInstance()->TriggerKey(DIK_E)) {
 		Audio::GetInstance()->StopWave(AUDIO_LOAD);

@@ -65,7 +65,8 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	messagewindow_ = make_unique<MessageWindow>();
 	messagewindow_->Initialize();
 	messagewindow_->Display();
-	sutopon_color_ = { 1.f,1.f,1.f,1.f };
+	sutopon_color_ = { 1.f,1.f,1.f,0.5f };
+	girl_color_ = { 1.3f,1.3f,1.3f,0.5f };
 }
 
 void FirstStageActor::Finalize()
@@ -188,9 +189,9 @@ void FirstStageActor::BackDraw(DirectXCommon* dxCommon)
 			ParticleEmitter::GetInstance()->BackDrawAll();
 		}
 	}
+	Player::GetInstance()->Draw(dxCommon);
 	////各クラスの描画
 	if (!camerawork->GetFeedEnd()) {
-		Player::GetInstance()->Draw(dxCommon);
 		loadobj->Draw(dxCommon);
 	}
 	enemymanager->Draw(dxCommon);
@@ -237,12 +238,15 @@ void FirstStageActor::IntroUpdate(DebugCamera* camera)
 		text_->SelectText(TextManager::Name_Cap::CAP1);
 	} else if (m_AppTimer == 150) {
 		text_->SelectText(TextManager::Name_Cap::SUTO1);
+		sutopon_color_ = { 1.f,1.f,1.f,1.f };
 		text_->ChangeColor({ 0.f,1.f,1.f,1.f });
 	} else if (m_AppTimer == 300) {
 		text_->SelectText(TextManager::Name_Cap::CAP2);
+		sutopon_color_ = { 1.f,1.f,1.f,0.5f };
 		text_->ChangeColor({ 1.f,1.f,1.f,1.f });
 	} else if (m_AppTimer == 400) {
 		text_->SelectText(TextManager::Name_Cap::SUTO2);
+		sutopon_color_ = { 1.f,1.f,1.f,1.f };
 		text_->ChangeColor({ 0.f,1.f,1.f,1.f });
 	} else if (m_AppTimer == 500) {
 		text_->SelectText(TextManager::Name_Cap::CAP3);
@@ -354,19 +358,23 @@ void FirstStageActor::TalkUpdate()
 	messagewindow_->Invisible();
 	if (m_AppTimer == 2) {
 		text_->SelectText(TextManager::Name_First::CHARGE1);
+		sutopon_color_ = { 1.f,1.f,1.f,0.5f };
 		text_->ChangeColor({ 1.f,1.f,1.f,1.f });
 	}
 	else if (m_AppTimer == 150) {
 		text_->SelectText(TextManager::Name_First::CHARGE2);
+		sutopon_color_ = { 1.f,1.f,1.f,0.5f };
+		girl_color_ = { 1.3f,1.3f,1.3f,1.f };
 		text_->ChangeColor({ 0.9f,0.6f,0.8f,1.f });
 	}
 	else if (m_AppTimer == 300) {
 		text_->SelectText(TextManager::Name_First::CHARGE3);
 		text_->ChangeColor({ 0.f,1.f,1.f,1.f });
+		sutopon_color_ = { 1.f,1.f,1.f,1.f };
+		girl_color_ = { 1.3f,1.3f,1.3f,0.5f };
 	}
 	else if (m_AppTimer == 450) {
 		text_->SelectText(TextManager::Name_First::CHARGE4);
-
 	}
 	else if (m_AppTimer == 625) {
 		quarter_hp_ = -100.f;

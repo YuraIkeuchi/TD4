@@ -847,7 +847,6 @@ void Player::DeathUpdate() {
 }
 void Player::DeathUpdateAfter(int Timer) {
 	if (Timer == 1) {
-
 		AnimationControl(AnimeName::IDLE, true, 1);
 		m_Position = { 30.0f,-2.0f,-45.0f };
 		m_Rotation = { 0.0f,270.0f,0.0f };
@@ -857,6 +856,7 @@ void Player::DeathUpdateAfter(int Timer) {
 	index = 15;
 	fbxmodels->GetBoneIndexMat(index, skirtmat);
 	skirtobj->FollowUpdate(skirtmat);
+	skirtobj->SetColor(m_Color);
 	playerattach->DeathUpdate();
 	SetParam();
 }
