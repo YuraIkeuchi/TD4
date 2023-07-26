@@ -86,6 +86,9 @@ void FirstBoss::Action()
 		m_Magnification = 0.3f;
 	}
 
+
+
+
 	if (bounce_ == Bounce::SOURCE) {
 		XMFLOAT3 s_scl = m_Scale;
 		bounceTimer += 1.0f / 60;

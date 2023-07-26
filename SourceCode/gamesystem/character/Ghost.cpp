@@ -45,7 +45,7 @@ void (Ghost::* Ghost::stateTable[])() = {
 };
 //更新
 void Ghost::Update() {
-	float l_AddScale = 1.5f;//OBB用に少し大きめのスケールを取る
+	float l_AddScale = 2.0f;//OBB用に少し大きめのスケールを取る
 	m_OldPos = m_Position;
 	m_OBBScale = { m_Scale.x + l_AddScale,m_Scale.y + l_AddScale, m_Scale.z + l_AddScale };
 	if (m_IsPostionCheck) { _charaState = CharaState::STATE_JACK; }
@@ -71,9 +71,9 @@ void Ghost::Update() {
 
 	//if(_charaState == CharaState::STATE_NONE)
 	//{
-		if(Collide)
-			_charaState = CharaState::STATE_DARKOTI;
-	
+	if (Collide)
+		_charaState = CharaState::STATE_DARKOTI;
+
 	//攻撃の音符
 	for (AttackNote* newnote : attacknotes) {
 		if (newnote != nullptr) {
@@ -125,15 +125,15 @@ void Ghost::Particle() {
 	if (m_Alive) {
 		if (m_IsRefer && _charaState < CharaState::STATE_JACK) {
 			flash += flashVel * flashAdd;
-			flash = clamp(flash,0.0f,1.0f);
-			if (flash==1.0f) {
+			flash = clamp(flash, 0.0f, 1.0f);
+			if (flash == 1.0f) {
 				flashAdd = sub;
 			}
-			if (flash==0.0f) {
+			if (flash == 0.0f) {
 				flashAdd = add;
 			}
-			m_Color = { 1.0f,flash,1.0f,1.0f};
-		}else if (_charaState == CharaState::STATE_NONE) {
+			m_Color = { 1.0f,flash,1.0f,1.0f };
+		} else if (_charaState == CharaState::STATE_NONE) {
 			m_Color = { 1.0f,1.0f,1.0f,0.7f };
 			m_Scale = { 0.6f,0.6f,0.6f };
 		} else if (_charaState == CharaState::STATE_FOLLOW) {
@@ -213,7 +213,7 @@ void Ghost::BirthGhost() {
 bool Ghost::VerseCheck() {
 	if (isVerse) { return true; }
 	m_VerseCureTimer--;
-	m_VerseCureTimer = clamp(m_VerseCureTimer, 0,1000);
+	m_VerseCureTimer = clamp(m_VerseCureTimer, 0, 1000);
 	if (m_VerseCureTimer <= 0) {
 		isVerse = true;
 		return true;
@@ -234,8 +234,7 @@ void Ghost::None() {
 		m_Position.x += cosf(m_Rotation.y * (PI_180 / XM_PI)) * size;
 		m_Position.y = sinf(noneTimer) * 1.2f;
 		m_Position.z += sinf(m_Rotation.y * (PI_180 / XM_PI)) * size;
-	}
-	else {
+	} else {
 		Absorption();
 	}
 }
@@ -262,8 +261,7 @@ void Ghost::Follow() {
 	if (!m_Manipulate) {
 		Helper::GetInstance()->FollowMove(m_Position, l_playerPos, l_Vel);
 		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, l_playerPos, -PI_90);
-	}
-	else {
+	} else {
 		_ManiState = MANI_SET;
 		_charaState = STATE_MANIPULATE;
 	}
@@ -292,8 +290,7 @@ void Ghost::Manipulate() {
 	else if (_ManiState == MANI_MOVE) {
 		if (m_Frame < m_FrameMax) {
 			m_Frame += l_AddFrame;
-		}
-		else {
+		} else {
 			m_Frame = {};
 			m_Rotation.y = -90.0f;
 			_ManiState = MANI_ATTACK;
@@ -305,8 +302,7 @@ void Ghost::Manipulate() {
 		};
 
 		m_Rotation.y = Ease(In, Cubic, m_Frame, m_Rotation.y, m_AfterRotY);
-	}
-	else if (_ManiState == MANI_ATTACK) {
+	} else if (_ManiState == MANI_ATTACK) {
 		m_Rotation.y += l_AddRot;
 		m_RotTimer++;
 
@@ -318,8 +314,7 @@ void Ghost::Manipulate() {
 			m_RotTimer = {};
 			_ManiState = MANI_END;
 		}
-	}
-	else {
+	} else {
 		m_Manipulate = false;
 		m_Vanish = true;
 	}
@@ -336,19 +331,18 @@ void Ghost::DarkSide() {
 		m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, bossPos, -PI_90);
 	}
 
-	if (DarkOtiClean)
-	{
+	if (DarkOtiClean) {
 		m_DarkC = 0;
 		m_DFollow = false;
 		Collide = false;
 		DarkOtiClean = false;
-	
+
 		Collide = false;
 		stateSpawn = true;
 		m_Vanish = true;
 	}
-	
-	
+
+
 	Helper::GetInstance()->Clamp(m_Scale.x, 0.f, 5.f);
 
 	Helper::GetInstance()->Clamp(m_Scale.y, 0.f, 5.f);
@@ -407,8 +401,8 @@ void Ghost::Jack() {
 		Player::GetInstance()->RecvDamage(0.75f);
 	}
 
-	if (m_Position.x < -55.0f || m_Position.x>65.0f ||
-		m_Position.z < -60.0f || m_Position.z>60.0f) {
+	if (m_Position.x <= -55.0f || m_Position.x >= 65.0f ||
+		m_Position.z <= -60.0f || m_Position.z >= 60.0f) {
 		m_Alive = false;
 		m_Scale = { 0.0f,0.0f,0.0f };
 		m_IsHyperRefer = false;
@@ -435,8 +429,8 @@ void Ghost::HyperJack() {
 		Player::GetInstance()->PlayerHit(m_Position);
 		Player::GetInstance()->RecvDamage(1.5f);
 	}
-	if (m_Position.x < -55.0f || m_Position.x>65.0f ||
-		m_Position.z < -60.0f || m_Position.z>60.0f) {
+	if (m_Position.x <= -55.0f || m_Position.x >= 65.0f ||
+		m_Position.z <= -60.0f || m_Position.z >= 60.0f) {
 		m_Alive = false;
 		isVerse = false;
 		m_VerseCureTimer = 180;
@@ -509,10 +503,8 @@ bool Ghost::CollideBullet(vector<InterBullet*>bullet) {
 			m_OBB2.SetParam_Scl({ 2.0f,2.0f,_bullet->GetScale().z + 3.0f });
 
 			if ((Collision::OBBCollision(m_OBB1, m_OBB2)) && (_bullet->GetAlive()) && (!m_Catch) && (m_Alive)) {
-				if (_charaState != STATE_NONE) { return false; }
-				if (_charaState == STATE_DARKOTI) { return false; }
 				if (_charaState > STATE_SPAWN) { return false; }
-				if (m_IsRefer)  {return false; }
+				if (m_IsRefer) { return false; }
 				m_Catch = true;
 				if (_bullet->GetBulletType() == BULLET_FORROW) {
 					Audio::GetInstance()->PlayWave("Resources/Sound/SE/Get_Follower.wav", VolumManager::GetInstance()->GetSEVolum() / 2.5f);
@@ -537,8 +529,7 @@ bool Ghost::CollideBullet(vector<InterBullet*>bullet) {
 	return false;
 }
 
-bool Ghost::CollideDarkBul(OBB obb)
-{
+bool Ghost::CollideDarkBul(OBB obb) {
 	m_OBB1.SetParam_Pos(m_Position);
 	m_OBB1.SetParam_Rot(m_Object->GetMatrot());
 	m_OBB1.SetParam_Scl(m_OBBScale);
@@ -566,7 +557,7 @@ void Ghost::GetRotation2Player() {
 //吸収
 void Ghost::Absorption() {
 	float l_Vel = 0.35f;//速度
-	Helper::GetInstance()->FollowMove(m_Position,m_TargetPos, l_Vel);
+	Helper::GetInstance()->FollowMove(m_Position, m_TargetPos, l_Vel);
 	m_Rotation.y = Helper::GetInstance()->DirRotation(m_Position, m_TargetPos, -PI_90);
 }
 //攻撃

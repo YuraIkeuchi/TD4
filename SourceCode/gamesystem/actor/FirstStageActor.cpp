@@ -237,15 +237,20 @@ void FirstStageActor::IntroUpdate(DebugCamera* camera)
 		text_->SelectText(TextManager::Name_Cap::CAP1);
 	} else if (m_AppTimer == 150) {
 		text_->SelectText(TextManager::Name_Cap::SUTO1);
+		text_->ChangeColor({ 0.f,1.f,1.f,1.f });
 	} else if (m_AppTimer == 300) {
 		text_->SelectText(TextManager::Name_Cap::CAP2);
+		text_->ChangeColor({ 1.f,1.f,1.f,1.f });
 	} else if (m_AppTimer == 400) {
 		text_->SelectText(TextManager::Name_Cap::SUTO2);
+		text_->ChangeColor({ 0.f,1.f,1.f,1.f });
 	} else if (m_AppTimer == 500) {
 		text_->SelectText(TextManager::Name_Cap::CAP3);
+		text_->ChangeColor({ 1.f,1.f,1.f,1.f });
 	} else if (m_AppTimer >= 600) {
 		tolk_F = false;
 		m_AppTimer = 0;
+		camerawork->SetCameraSkip(true);
 	}
 }
 
@@ -349,12 +354,15 @@ void FirstStageActor::TalkUpdate()
 	messagewindow_->Invisible();
 	if (m_AppTimer == 2) {
 		text_->SelectText(TextManager::Name_First::CHARGE1);
+		text_->ChangeColor({ 1.f,1.f,1.f,1.f });
 	}
 	else if (m_AppTimer == 150) {
 		text_->SelectText(TextManager::Name_First::CHARGE2);
+		text_->ChangeColor({ 0.9f,0.6f,0.8f,1.f });
 	}
 	else if (m_AppTimer == 300) {
 		text_->SelectText(TextManager::Name_First::CHARGE3);
+		text_->ChangeColor({ 0.f,1.f,1.f,1.f });
 	}
 	else if (m_AppTimer == 450) {
 		text_->SelectText(TextManager::Name_First::CHARGE4);
