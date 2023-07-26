@@ -11,36 +11,40 @@ Player* Player::GetInstance()
 
 	return &instance;
 }
-//初期化
-bool Player::Initialize()
-{
-	//モデル初期化と読み込み
+//リソース読み込み
+void Player::LoadResource() {
 	fbxmodels.reset(new IKEFBXObject3d());
 	fbxmodels->Initialize();
 	fbxmodels->SetModel(ModelManager::GetInstance()->GetFBXModel(ModelManager::PLAYER));
 	fbxmodels->LoadAnimation();
-	fbxmodels->PlayAnimation(0);
-
-	//飢餓ゲージはプレイヤーで管理する
-	HungerGauge::GetInstance()->Initialize();
 
 	viewbullet.reset(new ViewBullet());
-	viewbullet->Initialize();
 
 	playerattach.reset(new PlayerAttach());
-	playerattach->Initialize();
 
 	skirtobj.reset(new IKEObject3d());
 	skirtobj->Initialize();
 	skirtobj->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::SKIRT));
 
-	//11
-	skirtobj->SetRotation({ 0,0,-90});
-	skirtobj->SetScale({2,2,2 });
-
 	sutoobj.reset(new IKEObject3d());
 	sutoobj->Initialize();
 	sutoobj->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Sutopon));
+}
+//初期化
+bool Player::Initialize()
+{
+	fbxmodels->PlayAnimation(0);
+
+	//飢餓ゲージはプレイヤーで管理する
+	HungerGauge::GetInstance()->Initialize();
+
+	viewbullet->Initialize();
+
+	playerattach->Initialize();
+
+	//11
+	skirtobj->SetRotation({ 0,0,-90});
+	skirtobj->SetScale({2,2,2 });
 
 	//11
 	sutoobj->SetRotation({ 0,0,-90 });
@@ -52,6 +56,7 @@ bool Player::Initialize()
 	//CSV読み込み
 	return true;
 }
+
 //CSV読み込み
 void Player::LoadCSV() {
 	auto LimitSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player/player.csv", "POWER_NUM")));

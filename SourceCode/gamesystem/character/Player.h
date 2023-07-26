@@ -19,6 +19,7 @@ private:
 	static void (Player::* stateTable[])();
 public:
 	void InitState(const XMFLOAT3& pos);
+	void LoadResource();
 	//初期化
 	bool Initialize()override;
 	//更新
