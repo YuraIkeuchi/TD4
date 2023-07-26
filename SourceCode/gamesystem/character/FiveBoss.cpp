@@ -310,6 +310,7 @@ void FiveBoss::Action()
 	/*^^^^当たり判定^^^^*/
 	//弾とボスの当たり判定
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
+	if (!guard->GetGuardStart())
 	CollideBul(_playerBulA, Type::CIRCLE);
 	//プレイヤーの当たり判定
 	ColPlayer();

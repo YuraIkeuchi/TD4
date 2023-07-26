@@ -72,7 +72,7 @@ void SelectScene::Init() {
 	StageObjs[THIRD]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::KIDO_OBJ));
 	StageObjs[FOUR]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Camera));
 	StageObjs[FIVE]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::DJ));
-	StageObjs[SIX]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Sutopon));
+	StageObjs[SIX]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::PEDKOTOKO));
 	StageObjs[SEVEN]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::LASTBOSS));
 	StageObjs[TITLE]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::TITLEMAP));
 
@@ -441,7 +441,7 @@ void SelectScene::StateManager() {
 	//debugよう
 	m_Scale[TITLE] = { 0.025f,0.1f,0.025f };
 	//m_Wide = true;
-	//
+	m_SelectState = SELECT_SECOND;
 	//クリア状況に応じてOBJの大きさだったりが違う
 	if (m_SelectState == SELECT_FIRST) {		//ここは牛乳のみ
 		if (SceneSave::GetInstance()->GetClearFlag(SeceneCategory::kFirstStage))
@@ -464,7 +464,9 @@ void SelectScene::StateManager() {
 			}
 			if (m_Wide) {			//ボスを大きくする
 				for (auto i = 1; i < ObjNum - 2; i++) {
-					Helper::GetInstance()->FrameCheck(ObjColEase[i], 0.1f);
+					if(m_Color[i-1].x>0.5f)
+					Helper::GetInstance()->FrameCheck(ObjColEase[i], 0.05f);
+
 					m_Color[i] = { Ease(In,Cubic,ObjColEase[i],0,1),
 						Ease(In,Cubic,ObjColEase[i],0,1),
 						Ease(In,Cubic,ObjColEase[i],0,1),

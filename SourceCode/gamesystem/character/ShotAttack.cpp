@@ -144,6 +144,14 @@ void ShotAttack::Phase_Idle()
 	mt19937 mt{ std::random_device{}() };
 	boss->AnimationControl(InterBoss::AnimeNames::WALK, true, 1);
 
+	for (auto i = 0; i < BulSize; i++)
+	{
+		BulPos[i].x = boss->GetPosition().x;
+		BulPos[i].y = 3.f;
+		BulPos[i].z = boss->GetPosition().z;
+		BulAlpha[i] = 1.f;
+		BulAlive[i] = true;
+	}
 
 	if (TargetGhost == 0) {
 		AttackTimer++;

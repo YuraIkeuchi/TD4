@@ -59,6 +59,8 @@ void ModelManager::SecondInitialize()
 	LoadFBXModel(SIORI, "siori_idol");
 	LoadFBXModel(KIDO, "kidokun_idol");
 	LoadFBXModel(TIEYOSHI, "tieyosi_anime");
+	
+	LoadModel(PEDKOTOKO, "Pedestalkotoko");
 }
 
 void ModelManager::Finalize()

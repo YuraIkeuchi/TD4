@@ -189,7 +189,7 @@ void ShadowSlashAttack::Phase_ViewArea()
 	AreaAlpha[0] = 0.8f;
 	AreaAlpha[1] = 0.8f;
 	IdleCount++;
-	if (IdleCount > 120) {
+	if (IdleCount > 90) {
 		_phase = IMPACTSLASH;
 	}
 }

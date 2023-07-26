@@ -49,7 +49,9 @@ void GuardAction::Upda()
 		RotY[i] = atan2f(SubVector[i].m128_f32[0], SubVector[i].m128_f32[2]);
 
 		if (guardtexEaseT[4] >= 1.f) {
-			guardRot[i].y += 1.f;// RotY[i] * 60.f;
+			guardRot[i].y += 1.f;
+			guardRot[i].x += 5.f;
+			guardRot[i].z-= 5.f;// RotY[i] * 60.f;
 		
 		}// Ease(In, Quad, GuardEaseT, 0.f, 180.f);
 		guardtex[i]->SetPosition({boss->GetPosition()});
