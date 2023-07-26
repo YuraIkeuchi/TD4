@@ -118,7 +118,7 @@ void SelectScene::Init() {
 	BossIcon[FOUR] = IKESprite::Create(ImageManager::CLOSECAMERA, { 0,0 });
 	BossIcon[FIVE] = IKESprite::Create(ImageManager::CLOSEDJ, { 0,0 });
 	BossIcon[SIX] = IKESprite::Create(ImageManager::CLOSEDARK, { 0,0 });
-	BossIcon[SEVEN] = IKESprite::Create(ImageManager::CLOSEDARK, { 0,0 });
+	BossIcon[SEVEN] = IKESprite::Create(ImageManager::CLOSEDJ, { 0,0 });
 	BossIcon[TITLE] = IKESprite::Create(ImageManager::CLOSEHOME, { 0,0 });
 
 	for (int i = 0; i < MAX; i++) {
