@@ -43,7 +43,6 @@ void UI::Initialize() {
 		sprites[MiddleBossGauge] = CreateUi(ImageManager::WHITE, { pos.x-279.f,pos.y+17.f }, { 350,40 }, { 1.f, 1.f, 0.f,1 });
 		sprites[MiddleBossGauge].Tex->SetAnchorPoint({ 0,0.f });
 		TexList.emplace_back(std::move(sprites[MiddleBossGauge]));
-
 		sprites[BossGauge] = CreateUi(ImageManager::WHITE, { pos.x - 279.f,pos.y + 17.f}, { 350,40 }, { 1.f, 0.f, 0.f,1 });
 		sprites[BossGauge].Tex->SetAnchorPoint({ 0,0.f });
 		TexList.emplace_back(std::move(sprites[BossGauge]));

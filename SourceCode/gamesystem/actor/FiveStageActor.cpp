@@ -93,7 +93,7 @@ void FiveStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
 	lightgroup->Update();
 
-	//if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
+	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
 		SelectScene::GetIns()->Upda();
 
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
