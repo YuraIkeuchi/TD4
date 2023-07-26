@@ -357,7 +357,7 @@ void CameraWork::SetBossDead_AfterFive() {
 		DeathTimer++;
 		m_eyePos.x = 0.0f;
 		m_eyePos.y = Player::GetInstance()->GetPosition().y + 3.0f;
-		m_eyePos.z = -20.0f;
+		m_eyePos.z = 0.0f;
 
 
 		m_targetPos = { boss->GetPosition().x,boss->GetPosition().y,boss->GetPosition().z };

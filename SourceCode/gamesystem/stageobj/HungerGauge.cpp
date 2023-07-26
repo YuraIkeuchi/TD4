@@ -44,7 +44,6 @@ void HungerGauge::Update() {
 	m_NowHunger = min(m_NowHunger, m_HungerMax);
 	m_HungerMax = min(m_HungerMax, l_Limit);
 	Helper::GetInstance()->Clamp(m_Additional, 0.0f, l_AdditionalLimit);
-	//m_Additional = max(m_Additional, 0.0f);
 }
 
 //ImGui
