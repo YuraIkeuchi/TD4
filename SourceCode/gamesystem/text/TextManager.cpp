@@ -83,7 +83,7 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	CreateCapWord(Name_Cap::KOTO3, L"どうしようどうやったら元に戻せるんだろう",L" ", L" ");
 	CreateCapWord(Name_Cap::CAP1, L"やあ、ストポン!", L"ひさしぶりだね", L"　");
 	CreateCapWord(Name_Cap::SUTO1, L"ミルクキャップ、、", L"", L"　");
-	CreateCapWord(Name_Cap::CAP2, L"さいきんガラスをもりにまくのがたのしくてしょうがないんだ", L"", L"　");
+	CreateCapWord(Name_Cap::CAP2, L"さいきんガラスを", L"もりにまくのが", L"たのしくてしょうがないんだ");
 	CreateCapWord(Name_Cap::SUTO2, L"おまえ、そんなことしてあぶないだろ!", L"", L"　");
 	CreateCapWord(Name_Cap::CAP3, L"いいんだよ", L"よわかったあのころとはちがうんだ", L"じゃまするならきみもようしゃしないよ");
 	CreateCapWord(Name_Cap::SUTO3, L"ダメだ、しょうきじゃない", L"コトコ!ミルクキャップをしょうきにもどすぞ", L"　");
@@ -95,9 +95,10 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 	CreateWord(Name_First::SPEALPLAYER2, L"そうだ..悪霊になって",L"本に憑りついちまったみたいだ",L"コトコ!ちえよしを倒してもとに戻してくれ！");
 	CreateWord(Name_First::SPEALPLAYER3, L"わかった！ちえよしくんを倒して",L"私の友達になってもらう！");
 
-	CreateWord(Name_First::CHARGE1, L"なかなかやるじゃないか", L"だが、ここからさきはいたみなんてかんじない",L"カルシウムパワー!!");
-	CreateWord(Name_First::CHARGE2, L"どうしよう", L"しょうきに戻したいのにこのままじゃ..", L"");
-	CreateWord(Name_First::CHARGE3, L"だいじょうぶだ", L"いままでとはちがう", L"");
+	CreateWord(Name_First::CHARGE1, L"やルジャないかストポン", L"だが、オレのジャまはサセない",L"カルシウムパワー!!");
+	CreateWord(Name_First::CHARGE2, L"どうしよう", L"このままじゃ元に戻せないよ", L"");
+	CreateWord(Name_First::CHARGE3, L"だいじょうぶだ", L"オレにはとっておきがある", L"亡霊をなるべくおおく仲間にするんだ");
+	CreateWord(Name_First::CHARGE4, L"亡霊をあつめたら", L"Bボタンをながおしでゲージをためろ", L"ゲージがたまったらボタンをはなして攻撃だ ");
 	//CreateWord(Name_First::VIEWBOSS, L"ちちうえ!ほんがうごきまわってるでござる!",L"どうするでござるか!?",L"しめるでござるか!?");
 	//CreateWord(Name_First::SPEAKPLAYER1, L"。。。。。。。");
 	//CreateWord(Name_First::SPEALPLAYER2, L"あれはわしらにはすくえぬものじゃ",L"ぜんりょくでころすのじゃ");

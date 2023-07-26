@@ -19,30 +19,26 @@ bool PlayerAttach::Initialize() {
 }
 //çXêV
 void PlayerAttach::Update() {
+	m_Color.w = 0.0f;
+	m_SinAngle = {};
+	m_SinAngle2 = {};
 
-	m_Position.x += m_Angle.x * m_AddSpeed;
-	m_Position.z += m_Angle.y * m_AddSpeed;
+	//m_Position.x += m_Angle.x * m_AddSpeed;
+	//m_Position.z += m_Angle.y * m_AddSpeed;
 
-	Obj_SetParam();
-	Particle();
-	BirthObj();
+	//Obj_SetParam();
+	//Particle();
+	//BirthObj();
 }
 //ï`âÊ
 void PlayerAttach::Draw(DirectXCommon* dxCommon) {
-	Obj_Draw();
-	if (m_Alive) {
-
+	//
+	if (m_Color.w > 0.1f) {
+		Obj_Draw();
 	}
 }
 //ImGui
 void PlayerAttach::ImGuiDraw() {
-	ImGui::Begin("Attach");
-	ImGui::Text("PosX:%f", m_Position.x);
-	ImGui::Text("PosY:%f", m_Position.y);
-	ImGui::Text("PosZ:%f", m_Position.z);
-	ImGui::Text("Frame:%f", m_Frame);
-	ImGui::Text("State:%d",int(_DeathState));
-	ImGui::End();
 }
 void PlayerAttach::Particle() {
 	XMFLOAT4 s_color = { 1.0f,0.0f,0.0f,1.0f };
@@ -234,5 +230,17 @@ void PlayerAttach::DarkAppear(int Timer) {
 	m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
 	m_Position.y = (sin(m_SinAngle2) * 0.5f + 3.0f);
 
+	Obj_SetParam();
+}
+void PlayerAttach::DeathUpdate() {
+	m_Color = { 1.0f,1.0f,1.0f,1.0f };
+	m_Scale = { 0.7f,0.7f,0.7f };
+	m_Rotation.y = 135.0f;
+	m_Position.x = 30.0f;
+	m_Position.z = -50.0f;
+	//sinîgÇ…ÇÊÇ¡Çƒè„â∫Ç…ìÆÇ≠
+	m_SinAngle += 3.5f;
+	m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
+	m_Position.y = (sin(m_SinAngle2) * 0.5f + 3.0f);
 	Obj_SetParam();
 }

@@ -708,7 +708,6 @@ void SecondBoss::ImGui_Origin() {
 
 void SecondBoss::ChargeAttack::Initialize()
 {
-	IKETexture::LoadTexture(8, L"Resources/2d/effect/impact.png");
 	impacttex[0].reset(IKETexture::Create(ImageManager::IMPACT2, { 0,0,0 }, { 10,10,10 }, { 1,1,1,1 }));
 	impacttex[1].reset(IKETexture::Create(ImageManager::IMPACT, { 0,0,0 }, { 0,0,0 }, { 1,1,1,1 }));
 
@@ -938,7 +937,7 @@ void SecondBoss::DeadAction_Throw() {
 		m_Rotation.z += 0.09f;
 	}
 	RotFrontSpeed = 3.f;
-	Player::GetInstance()->SetPosition({ 0,0,10 });
+	//Player::GetInstance()->SetPosition({ 0,0,10 });
 	Obj_SetParam();
 }
 //ボス撃破シーン
@@ -983,7 +982,7 @@ void SecondBoss::DeadAction() {
 
 	Obj_SetParam();
 
-	Player::GetInstance()->SetPosition({ 0,0,0 });
+	//Player::GetInstance()->SetPosition({ 0,0,0 });
 	Helper::GetInstance()->Clamp(m_Rotation.z, -90.f, 90.f);
 	Helper::GetInstance()->Clamp(DeathSpeed, 0.f, 3.f);
 	Helper::GetInstance()->Clamp(RotFrontSpeed, 0.f, 2.f);

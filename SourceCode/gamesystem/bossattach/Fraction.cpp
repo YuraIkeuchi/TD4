@@ -20,10 +20,10 @@ void Fraction::Init(const XMFLOAT3& BossPos)
 	m_Scale = { 3.f,3.f,3.f };
 	m_Object->SetPosition(m_Position);
 
-	tex.reset(IKETexture::Create(ImageManager::SLASHAREA, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 }));
+	tex.reset(IKETexture::Create(ImageManager::SHADOW, { 0,0,0 }, { 1.f,1.f,1.f }, { 1,1,1,1 }));
 	tex->TextureCreate();
 	tex->SetPosition(m_Position);
-	tex->SetTiling(2.0f);
+	tex->SetTiling(1.0f);
 }
 
 void Fraction::Obj_Set()
@@ -79,7 +79,7 @@ void Fraction::Spatter()
 			|| m_Position.z <= -60.f || m_Position.z >= 60.f) {
 			Isdelete = true;
 		}
-		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Glass.wav", VolumManager::GetInstance()->GetSEVolum() * 0.7f);
+
 		drop_F = false;
 	}
 }

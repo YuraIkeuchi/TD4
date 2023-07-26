@@ -47,32 +47,23 @@ private:
 	//スプライト
 	std::array<SpriteData, UiMax> sprites = {};
 
-	//std::array<XMFLOAT2, UnderStatusGauge> pos = {
-	//XMFLOAT2(15.f,650.f),
-	//XMFLOAT2(65.f,650.f),
-	//XMFLOAT2(115.f,650.f),
-	//XMFLOAT2(165.f,650.f),
-	//XMFLOAT2(215.f,650.f)
-	//};
-
-
-	XMFLOAT2 m_GaugePos = { 430,610.f };
-	XMFLOAT2 m_GaugePosMini = { 430+44.0f,597+40.0f };
-	XMFLOAT2 m_GaugeSizeMini = { 419,49 };
+	XMFLOAT2 m_GaugePos = { 430,623.f };
+	XMFLOAT2 m_GaugePosMini = { 430+42.0f,597+50.0f };
+	XMFLOAT2 m_GaugeSize = { 512 * 0.9f,100 * 0.9f };
+	XMFLOAT2 m_GaugeSizeMini = { 419,45 };
 
 	XMFLOAT2 m_PlayerHpPos = { 15.f, 640.f };
 	XMFLOAT2 m_PlayerHpSize = { 512.f * 0.6f, 128.f*0.6f};
 
 	XMFLOAT2 m_PlayerCireclePos = { WinApp::window_width-100 ,WinApp::window_height };
 	XMFLOAT2 m_PlayerCircleSize = { 240.f,240.f };
-
-
 	float m_PlayerCircleRot = 0.f;
+
 	float m_limit = 0.f;
 	int bullet_type_ = 0;
 	int oldbullet_type_ = 0;
 	XMFLOAT2 m_Circle = { 640.0f,360.0f };
-	std::vector<SpriteData>TexList;
+	std::vector<SpriteData>TexList = {};
 
 	bool m_Look = false;
 public:

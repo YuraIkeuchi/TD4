@@ -21,7 +21,7 @@ void FiveStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	ParticleEmitter::GetInstance()->AllDelete();
 
 	//各クラス
-	Player::GetInstance()->InitState({ 0.0f,5.0f,-5.0f });
+	Player::GetInstance()->InitState({ 0.0f,-2.0f,-5.0f });
 
 	backScreen_ = IKESprite::Create(ImageManager::PLAY, { 0,0 });
 	backScreen_->SetSize({ 1280.0f,720.0f });
@@ -93,7 +93,7 @@ void FiveStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	lightgroup->SetCircleShadowFactorAngle(1, XMFLOAT2(BosscircleShadowFactorAngle));
 	lightgroup->Update();
 
-	if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
+	//if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
 		SelectScene::GetIns()->Upda();
 
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
@@ -117,12 +117,6 @@ void FiveStageActor::Draw(DirectXCommon* dxCommon) {
 
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
-		
-		enemymanager->ImGuiDraw();
-		
-		//camerawork->ImGuiDraw();
-		ImGuiDraw();
-		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	} else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
@@ -131,7 +125,6 @@ void FiveStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-		ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 }
@@ -175,9 +168,9 @@ void FiveStageActor::BackDraw(DirectXCommon* dxCommon) {
 			ParticleEmitter::GetInstance()->BackDrawAll();
 		}
 	}
+	Player::GetInstance()->Draw(dxCommon);
 	////各クラスの描画
 	if (!camerawork->GetFeedEnd()) {
-		Player::GetInstance()->Draw(dxCommon);
 		loadobj->Draw(dxCommon);
 	}
 	enemymanager->Draw(dxCommon);
@@ -218,22 +211,23 @@ void FiveStageActor::MainUpdate(DebugCamera* camera) {
 			enemymanager->SetDeadThrow(true);
 			enemymanager->DeadUpdate();
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_BEFORE);
+			Player::GetInstance()->DeathUpdate();
 		}
 		//フェード後
 		else {
+			m_DeathTimer++;
 			PlayPostEffect = false;
-			Player::GetInstance()->InitState({ 0.0f,0.0f,-5.0f });
+			loadobj->AllClear();
 			enemymanager->SetDeadThrow(false);
 			enemymanager->DeadUpdate();
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_FIVE);
+			Player::GetInstance()->DeathUpdateAfter(m_DeathTimer);
 		}
 
 		if (camerawork->GetEndDeath()) {
 			sceneChanger_->ChangeStart();
 			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
 		}
-
-		Player::GetInstance()->DeathUpdate();
 	} else {
 		Player::GetInstance()->Update();
 	}
@@ -274,4 +268,6 @@ void FiveStageActor::FinishUpdate(DebugCamera* camera) {
 }
 
 void FiveStageActor::ImGuiDraw() {
+	Player::GetInstance()->ImGuiDraw();
+	camerawork->ImGuiDraw();
 }

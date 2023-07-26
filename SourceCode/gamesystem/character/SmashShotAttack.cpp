@@ -107,6 +107,7 @@ void SmashShotAttack::Phase_Idle()
 
 void SmashShotAttack::Phase_Shot()
 {
+
 	//弾の向きをプレイヤーに
 	RottoPlayer();
 	//向いた方向に進む
@@ -157,7 +158,7 @@ void SmashShotAttack::Phase_Shot()
 	}
 
 	for (auto i = 0; i < BulSize; i++) {
-		if (BulPos[i].y <= 0.f)
+		if (BulPos[i].y <= -5.f)
 		{
 			BulPos[i] = boss->GetPosition();
 		}
@@ -244,7 +245,7 @@ void SmashShotAttack::Phase_Impact()
 		BulPos[i].z = ImpactTexPos[i].z;
 
 		Helper::GetInstance()->Clamp(BulAlpha[i], 0.f, 1.f);
-		Helper::GetInstance()->Clamp(AreaScl[i], 0.f, 1.f);
+		Helper::GetInstance()->Clamp(AreaScl[i], 0.f, 1.5f);
 	}
 
 	{

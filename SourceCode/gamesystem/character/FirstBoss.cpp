@@ -52,7 +52,6 @@ bool FirstBoss::Initialize()
 	DecisionCount=static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/Firstboss.csv", "DecisionCount")));
 	m_Radius = 5.2f;
 	m_MaxHp = m_HP;
-	m_HP = 15;
 	half_hp_ = m_HP / 4;
 	_charstate = CharaState::STATE_INTER;
 
@@ -78,9 +77,13 @@ void FirstBoss::Pause()
 
 void FirstBoss::Action()
 {
-	if (revival == true && m_HP < 0) {
-		m_HP = 5;
-		revival = false;
+	if (statereset_) {
+		_charstate = CharaState::STATE_INTER;
+		statereset_ = false;
+	}
+
+	if (m_HP < half_hp_) {
+		m_Magnification = 0.3f;
 	}
 
 	if (bounce_ == Bounce::SOURCE) {
@@ -110,14 +113,11 @@ void FirstBoss::Action()
 		FaceToOrientation();
 	}
 	
-
 	/*^^^^当たり判定^^^^*/
 	//弾とボスの当たり判定
 	vector<InterBullet*> _playerBulA = Player::GetInstance()->GetBulllet_attack();
 	CollideBul(_playerBulA, Type::CIRCLE);
-	if (revival==false) {
-		m_Magnification = 0.2f;
-	}
+	
 	//プレイヤーの当たり判定
 	ColPlayer();
 	//OBJのステータスのセット
@@ -160,20 +160,12 @@ void FirstBoss::DeadAction()
 	}
 	else if (m_DeathTimer >= 2 && m_DeathTimer < 300) {
 		m_Rotation.y += 10.f;
-		//sin波によって上下に動く
-	/*	m_Angle += l_AddAngle;
-		m_Angle2 = m_Angle * (3.14f / 180.0f);
-		m_Position.x = (sin(m_Angle2) * 15.0f + 15.0f);*/
 		DeathParticle();
 	}
 	else {
 		if (m_Rotation.x <= 90) {
 			m_Rotation.x++;
 		}
-		//m_Gravity = 0.05f;
-		////飛ぶような感じにするため重力を入れる
-		//m_AddPower -= m_Gravity;
-		//Helper::GetInstance()->CheckMax(m_Position.y, 6.0f, m_AddPower);
 	}
 
 	Obj_SetParam();
@@ -225,6 +217,7 @@ void FirstBoss::Draw(DirectXCommon* dxCommon)
 //攻撃後のインターバル
 void FirstBoss::InterValMove()
 {
+	Display = false;
 	jumpCount = 0;
 	commandTimer += 1.0f / 50;
 	Helper::GetInstance()->Clamp(commandTimer, 0.0f, 1.0f);
@@ -464,7 +457,7 @@ void FirstBoss::RockOn()
 		jumpCount++;
 		rot = m_Rotation.y;
 		s_pos = m_Position;
-		e_pos = { m_Position.x + sinf(RottoPlayer) * -(20.f * (float)jumpCount),0.f, m_Position.z + cosf(RottoPlayer) * -(20.0f * (float)jumpCount) };
+		e_pos = { m_Position.x + sinf(RottoPlayer) * -(10.f * (float)jumpCount),0.f, m_Position.z + cosf(RottoPlayer) * -(10.0f * (float)jumpCount) };
 		//リミット制限
 		Helper::GetInstance()->Clamp(e_pos.x, -55.0f, 65.0f);
 		Helper::GetInstance()->Clamp(e_pos.z, -60.0f, 60.0f);

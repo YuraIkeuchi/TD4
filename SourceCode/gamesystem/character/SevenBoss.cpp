@@ -35,6 +35,7 @@ bool SevenBoss::Initialize() {
 	_charaState = STATE_INTER;
 	_ReturnState = RETURN_SET;
 	m_CircleSpeed = 90.0f;
+	m_BullBoundPower = { 0.0f,0.0f };
 	//CSVロード
 	CSVLoad();
 	effects.clear();
@@ -298,7 +299,7 @@ void SevenBoss::InterValMove() {
 	else {
 		l_LimitTimer = m_StrongLimit[STATE_INTER];
 	}
-	m_InterVal++;
+	//m_InterVal++;
 
 	//一定時間立った後にボスに近づくと消える
 	if (m_InterVal >= 100) {
@@ -722,6 +723,19 @@ void SevenBoss::Stun() {
 		m_Return = true;
 	}
 	m_Color.w = Ease(In, Cubic, 0.5f, m_Color.w, 1.0f);
+
+	//リバウンド処理
+	Rebound();
+}
+//リバウンド
+void SevenBoss::Rebound() {
+	m_BullBoundPower = {
+Ease(In,Cubic,0.5f,m_BullBoundPower.x,0.0f),
+Ease(In,Cubic,0.5f,m_BullBoundPower.y,0.0f),
+	};
+
+	m_Position.x += m_BullBoundPower.x;
+	m_Position.z += m_BullBoundPower.y;
 }
 //登場シーン
 void SevenBoss::AppearAction() {
@@ -831,6 +845,11 @@ void SevenBoss::CatchBul(vector<InterBullet*> bullet)
 				_charaState = STATE_STUN;
 				m_MoveTimer = {};
 				_bullet->SetAlive(false);
+				XMFLOAT2 l_Distance;
+				l_Distance.x = m_Position.x - _bullet->GetPosition().x + 0.1f;
+				l_Distance.y = m_Position.z - _bullet->GetPosition().z;
+				m_BullBoundPower.x = (sin(atan2f(l_Distance.x, l_Distance.y)) * 2.0f);
+				m_BullBoundPower.y = (cos(atan2f(l_Distance.x, l_Distance.y)) * 2.0f);
 			}
 		}
 	}
@@ -1062,5 +1081,4 @@ void SevenBoss::EndRollAction() {
 }
 //会話
 void SevenBoss::AfterAction() {
-
 }

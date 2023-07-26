@@ -8,16 +8,18 @@
 #include "AbsorptionEffect.h"
 #include <any>
 using namespace DirectX;
-class Player:public ObjCommon
+class Player :public ObjCommon
 {
 public:
 	static Player* GetInstance();
 
 private:
 	int index;
+	int index2;
 	static void (Player::* stateTable[])();
 public:
 	void InitState(const XMFLOAT3& pos);
+	void LoadResource();
 	//初期化
 	bool Initialize()override;
 	//更新
@@ -28,8 +30,10 @@ public:
 	void ImGuiDraw();
 	//ボス登場シーンの動き
 	void AppearUpdate();
-	//ボス撃破シーンの動き
+	//ボス撃破シーンの動き(フェード前)
 	void DeathUpdate();
+	//フェードあと
+	void DeathUpdateAfter(int Timer);
 	//ダークコトコ登場シーンの動き
 	void DarkAppearUpdate(int Timer);
 	//ラスボス登場シーンの動き
@@ -45,7 +49,9 @@ public:
 		STATE_RUN,
 	}_charaState;
 	unique_ptr<IKEObject3d>skirtobj;
+	unique_ptr<IKEObject3d>sutoobj;
 	XMMATRIX skirtmat;
+	XMMATRIX sutomat;
 
 	std::unique_ptr<IKEFBXObject3d>fbxmodels;
 private:
@@ -212,6 +218,8 @@ private://各クラス
 		LAST_END_WALK,
 		LAST_END_DIR,
 	}_LastEndState = LAST_END_SET;
+
+	bool m_viewBull = false;
 public:
 	vector<InterBullet*>GetBulllet_ghost() { return ghostbullets; }
 	vector<InterBullet*>GetBulllet_attack() { return attackbullets; }

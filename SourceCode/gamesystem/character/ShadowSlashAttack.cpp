@@ -288,6 +288,7 @@ void ShadowSlashAttack::Phase_End()
 
 	}
 	IdleCount = 0;
+	
 	ActionEnd = true;
 }
 

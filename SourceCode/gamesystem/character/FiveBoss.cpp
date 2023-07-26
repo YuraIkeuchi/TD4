@@ -34,7 +34,7 @@ bool FiveBoss::Initialize()
 	m_Rotation = { 0.0f,90.0f,0.0f };
 	m_Radius = 5.2f;
 	m_Scale = { 1.9f,1.5f,1.9f };
-	m_Color = { 0.0f,1.0f,0.0f,1.0f };
+	m_Color = { 0.10f,0.0f,0.10f,0.80f };
 	//m_Rotation.y = -90.f;
 	m_Magnification = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "Magnification")));
 	m_HP = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/five/Fiveboss.csv", "hp")));
@@ -115,7 +115,7 @@ void FiveBoss::SkipInitialize()
 
 	m_Position = { 0.0f,-5.0f,30.0f };
 	m_Rotation = { 0.0f,90.0f,0.0f };
-	m_Color = { 0.0f,1.0f,0.0f,1.0f };
+	m_Color = { 0.10f,0.0f,0.10f,0.80f };
 }
 
 void FiveBoss::Pause()
@@ -153,7 +153,7 @@ void FiveBoss::Action()
 	single->SetBoss(this);
 	guard->SetBoss(this);
 	knock->SetBoss(this);
-	m_Color.w = 1.0f;
+	m_Color.w = 0.80f;
 	////状態移行(charastateに合わせる)
 	if (GhostSize < 6) {
 		if (m_HP > 0.0f) {
@@ -225,7 +225,7 @@ void FiveBoss::Action()
 	{
 		if (ghosts[i]->GetStateSpawn())
 		{
-			GhostSize=0;
+			GhostSize = 0;
 			ghosts[i]->SetCollide(false);
 			ghosts[i]->SetCleanGhost(false);
 			ghosts[i]->SetStateSpawn(false);
@@ -233,11 +233,10 @@ void FiveBoss::Action()
 	}
 
 
-
 	mt19937 mt{ std::random_device{}() };
-	if(GhostSize==0)
+	if (GhostSize == 0)
 	{
-		if(_aPhase==ATTACK_SINGLESHOT)
+		if (_aPhase == ATTACK_SINGLESHOT)
 		{
 			single->SetActionEnd(true);
 			shot->SetCanRand(0);
@@ -248,30 +247,31 @@ void FiveBoss::Action()
 	//single->Upda();
 	if (shot->GetPhase() == ShotAttack::Phase::END) {
 		//通常攻撃
-			if (shot->GetCanRand() > noAction&&GhostSize > 0 && GhostSize < 4)
-			{
-				shot->SetActionEnd(true);
-				shot->SetIdleDam(false);
-				single->SetActionEnd(false);
-				_aPhase = ATTACK_SINGLESHOT;
-			}
-		if (shot->GetCanRand() > noAction&&GhostSize == 4)
-			{
-				shot->SetActionEnd(true);
-				shot->SetIdleDam(false);
-				smash->SetActionEnd(false);
-				_aPhase = ATTACK_IMPACT;
-			}
-		if (GhostSize >= 5)
-			{
-				shot->SetActionEnd(true);
-				shot->SetIdleDam(false);
-				single->SetActionEnd(false);
-				JudgSlash = true;
-				_aPhase = ATTACK_SINGLESHOT;
-			}
-
+		if (shot->GetCanRand() > noAction && GhostSize > 0 && GhostSize < 4)
+		{
+			shot->SetActionEnd(true);
+			shot->SetIdleDam(false);
+			single->SetActionEnd(false);
+			AnimationControl(InterBoss::AnimeNames::SHOT, false, 1);
+			_aPhase = ATTACK_SINGLESHOT;
 		}
+		if (shot->GetCanRand() > noAction && GhostSize == 4)
+		{
+			shot->SetActionEnd(true);
+			shot->SetIdleDam(false);
+			smash->SetActionEnd(false);
+			_aPhase = ATTACK_IMPACT;
+		}
+		if (GhostSize >= 5)
+		{
+			shot->SetActionEnd(true);
+			shot->SetIdleDam(false);
+			single->SetActionEnd(false);
+			JudgSlash = true;
+			_aPhase = ATTACK_SINGLESHOT;
+		}
+	}
+
 	if (JudgSlash)
 	{
 		slash->SetActionEnd(false);
@@ -281,7 +281,7 @@ void FiveBoss::Action()
 	}
 
 
-	if (!JudgDShot && GhostSize > 3)
+	if (!JudgDShot && GhostSize > 4)
 	{
 		uniform_int_distribution<int> l_Rand(0, 10);
 		ThreeGhostActionRand = l_Rand(mt);
@@ -336,25 +336,27 @@ void FiveBoss::Action()
 	fbxmodel->SetScale(m_Scale);
 	fbxmodel->SetColor(m_Color);
 	fbxmodel->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
-	for (auto i = 0; i < 19; i++)
-	{
-		fbxmodel->GetBoneIndexMat(i, bonemat[i]);
-		MatTranstoPos(bonemat[i], bonepos[i]);
 
-		s_color[i] = { 1.0f,0.4f,1.0f,0.50f };
-		e_color[i] = { 0.0f,0.0f,0.0f,0.0f };
-		s_scale[i] = 2.0f;
-		e_scale[i] = 0.0f;
-		m_Life[i] = 50;
+	m_ParticleTimer++;
+	if (m_ParticleTimer == 30) {
+		for (auto i = 0; i < 19; i++)
+		{
+			fbxmodel->GetBoneIndexMat(i, bonemat[i]);
+			MatTranstoPos(bonemat[i], bonepos[i]);
+
+			s_color[i] = { 0.30f,0.0f,0.30f,0.50f };
+			e_color[i] = { 0.f,0.f,0.f,0.0f };
+			s_scale[i] = 3.0f;
+			e_scale[i] = 0.0f;
+			m_Life[i] = 40;
+			ParticleEmitter::GetInstance()->DarkOtiEffect(m_Life[i], bonepos[i], s_scale[i], e_scale[i], s_color[i], e_color[i]);
+
+		}
+		m_ParticleTimer = {};
 	}
 
 	//パーティクル
-	m_ParticleTimer++;
-	BirthParticle();
-	if (m_ParticleTimer == 5) {
-		
-		m_ParticleTimer = 0;
-	}
+	//BirthParticle();
 }
 
 void FiveBoss::AppearAction()
@@ -364,13 +366,12 @@ void FiveBoss::AppearAction()
 	if (_AppState == APP_SET) {
 		m_Position = { 600.0f,-3.0f,30.0f };
 		m_Rotation = { 0.0f,180.0f,0.0f };
-		m_Color = { 0.0f,1.0f,0.0f,0.0f };
+		m_Color = { 0.10f,0.0f,0.10f,0.80f };
 
 		if (m_AppearTimer == 270) {
 			_AppState = APP_BIRTH;
 		}
-	}
-	else if (_AppState == APP_BIRTH) {
+	} else if (_AppState == APP_BIRTH) {
 		AppParticle();
 
 		if (m_AppearTimer >= 350) {
@@ -382,8 +383,7 @@ void FiveBoss::AppearAction()
 		}
 
 		m_Color.w = Ease(In, Cubic, m_Frame, m_Color.w, 1.0f);
-	}
-	else {
+	} else {
 
 	}
 
@@ -401,20 +401,19 @@ void FiveBoss::DeadAction()
 	m_DeathTimer++;
 	if (_DeathState == DEATH_SET) {
 		if (m_DeathTimer == 1) {
-			m_Position = { -4.0f,-5.0f,20.0f };
+			fbxmodel->PlayAnimation(0);
+			m_Position = { -4.0f,-5.0f,10.0f };
 			m_Rotation = { 0.0f,180.0f,0.0f };
 			_DeathState = DEATH_KNOCK;
 		}
-	}
-	else if(_DeathState == DEATH_KNOCK) {
+	} else if (_DeathState == DEATH_KNOCK) {
 		m_Position.y = Ease(Out, Quad, m_DeathTimer / static_cast<float>(150), -5.0f, 0.0f);
 		m_Rotation.x = Ease(Out, Quad, m_DeathTimer / static_cast<float>(150), 0.0f, -90.0f);
 
 		if (m_Rotation.x <= -80.0f) {
 			_DeathState = DEATH_STOP;
 		}
-	}
-	else {
+	} else {
 		DeathParticle();
 	}
 
@@ -479,11 +478,15 @@ void FiveBoss::ImGui_Origin()
 	ImGui::Begin("Five");
 	ImGui::Text("PosX %f", m_Position.x);
 	ImGui::Text("PosZ %f", m_Position.z);
-//	ImGui::Text("Cololr %f", m_Color.w);
+	ImGui::Text("BulPos0 %f", smash->GetBulpos(0));
+
+	ImGui::Text("BulPos1 %f", smash->GetBulpos(1));
 	ImGui::Text("Cololr1 %f", shot->GetBulAlpha(0));
 	ImGui::Text("Cololr2 %f", shot->GetBulAlpha(1));
 	ImGui::Text("Cololr3 %f", shot->GetBulAlpha(2));
 	ImGui::Text("Phase %d", (int)_aPhase);
+
+	ImGui::Text("ImpactShotPhase %d", (int)smash->GetPhase());
 	ImGui::Text("ShotPhase %d", (int)shot->GEtPhase());
 	ImGui::Text("NowTarget %d", (int)shot->GetTargetGhost());
 	ImGui::End();
@@ -502,11 +505,11 @@ void FiveBoss::Draw(DirectXCommon* dxCommon)
 	//Obj_Draw();
 	if (m_HP > 0.0f) {
 		smash->Draw(dxCommon);
-		if(_aPhase==ATTACK_SINGLESHOT)
-		single->Draw(dxCommon);
+		if (_aPhase == ATTACK_SINGLESHOT)
+			single->Draw(dxCommon);
 
 		shot->Draw(dxCommon);
-	
+
 		slash->Draw(dxCommon);
 		darkshot->Draw(dxCommon);
 	}
@@ -618,12 +621,18 @@ Ease(In,Cubic,m_Frame,m_Position.y,m_AfterPos.y),
 	};
 }
 void FiveBoss::BirthParticle() {
+	const int l_ParticleTimer = 30;
 	XMFLOAT4 s_color = { 1.0f,0.0f,1.0f,1.0f };
 	XMFLOAT4 e_color = { 0.0f,0.0f,0.0f,1.0f };
-	float s_scale = 3.0f;
+	float s_scale = 50.0f;
 	float e_scale = 0.0f;
-	
-	ParticleEmitter::GetInstance()->KotokoEffect(50, m_Position, s_scale, e_scale, s_color, e_color);
+
+	//m_ParticleTimer++;
+
+	//if (m_ParticleTimer == l_ParticleTimer) {
+	//	ParticleEmitter::GetInstance()->KotokoEffect(50, m_Position, s_scale, e_scale, s_color, e_color);
+	//	m_ParticleTimer = {};
+	//}
 }
 //会話
 void FiveBoss::AfterAction() {
