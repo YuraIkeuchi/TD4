@@ -106,7 +106,11 @@ private:
 	void CSVLoad();
 	//死んだときのパーティクル
 	void DeathParticle();
+
+	
 public:
+
+	bool  InterChange() { if (_charstate == CharaState::STATE_INTER) { true; } }
 
 	float GetHp() { return m_HP; }
 
