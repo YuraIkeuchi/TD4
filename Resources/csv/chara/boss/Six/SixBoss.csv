@@ -9,6 +9,9 @@ HeartTarget,90
 
 //移動の速さ
 Speed,0.4
+
+//弾の速さ
+BulSpeed,0.6
 //追従時間
 Timer,300
 

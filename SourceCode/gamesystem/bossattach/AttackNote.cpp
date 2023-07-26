@@ -17,7 +17,7 @@ bool AttackNote::Initialize() {
 	m_Object->SetBillboard(true);
 	m_Scale = { 1.0f,1.0f,1.0f };
 	m_Color = { 1.0f,0.2f,0.2f,1.0f };
-	m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Six/Sixboss.csv", "Speed")));
+	m_AddSpeed = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Six/Sixboss.csv", "BulSpeed")));
 	m_TargetTimer = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Six/Sixboss.csv", "Timer")));
 	m_Damage = static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/Six/Sixboss.csv", "BarrangeDamage")));
 
