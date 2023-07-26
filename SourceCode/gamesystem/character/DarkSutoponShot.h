@@ -53,7 +53,7 @@ private:
     int ShotSize;
     bool CanAction;
     int DarkCount;
-    XMFLOAT3 SutoPos, SutoRot;
+   
     static void (DarkSutoponShot::* stateTable[])();
 
     void Phase_Idle();
@@ -78,8 +78,7 @@ public:
     void SetIdleDam(bool f) { IdleRecv = f; }
     bool GetCanAction() { return CanAction; }
     void SetCanAction(bool f) { CanAction = f; }
-    void SetSutoPos(XMFLOAT3 pos) { SutoPos = pos; }
-    void SetSutoRot(XMFLOAT3 rot) { SutoRot= rot; }
+
 };
 
 

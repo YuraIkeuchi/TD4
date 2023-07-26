@@ -149,6 +149,10 @@ void FiveBoss::Action()
 {
 	smash->SetBoss(this);
 	shot->SetBoss(this);
+
+	shot->SetSutoPos(knock->Sutoobj()->GetPosition());
+	shot->SetSutoRot(knock->Sutoobj()->GetRotation());
+
 	slash->SetBoss(this);
 	single->SetBoss(this);
 	guard->SetBoss(this);
@@ -322,14 +326,6 @@ void FiveBoss::Action()
 	}
 	//基礎パラメータ設定
 
-	//Fbx_SetParam();
-
-	if (bonesize == 0) {
-
-	}
-	for (auto i = 0; i < 19; i++) {
-	}
-
 	//どっち使えばいいか分からなかったから保留
 	fbxmodel->SetPosition(m_Position);
 	fbxmodel->SetRotation(m_Rotation);
@@ -354,9 +350,7 @@ void FiveBoss::Action()
 		}
 		m_ParticleTimer = {};
 	}
-
-	//パーティクル
-	//BirthParticle();
+	
 }
 
 void FiveBoss::AppearAction()
@@ -475,21 +469,7 @@ void FiveBoss::AppParticle() {
 }
 void FiveBoss::ImGui_Origin()
 {
-	ImGui::Begin("Five");
-	ImGui::Text("PosX %f", m_Position.x);
-	ImGui::Text("PosZ %f", m_Position.z);
-	ImGui::Text("BulPos0 %f", smash->GetBulpos(0));
 
-	ImGui::Text("BulPos1 %f", smash->GetBulpos(1));
-	ImGui::Text("Cololr1 %f", shot->GetBulAlpha(0));
-	ImGui::Text("Cololr2 %f", shot->GetBulAlpha(1));
-	ImGui::Text("Cololr3 %f", shot->GetBulAlpha(2));
-	ImGui::Text("Phase %d", (int)_aPhase);
-
-	ImGui::Text("ImpactShotPhase %d", (int)smash->GetPhase());
-	ImGui::Text("ShotPhase %d", (int)shot->GEtPhase());
-	ImGui::Text("NowTarget %d", (int)shot->GetTargetGhost());
-	ImGui::End();
 }
 
 void FiveBoss::EffecttexDraw(DirectXCommon* dxCommon)

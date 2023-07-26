@@ -13,8 +13,8 @@ SelectScene* SelectScene::GetIns() {
 void SelectScene::ResetParama() {
 	ButtonNav_Challenge_Cancel[0]->SetPosition({ 400,650 });
 	ButtonNav_Challenge_Cancel[1]->SetPosition({ 200,650 });
-	ButtonNav_Pos[0] = { 700,500 };
-	ButtonNav_Pos[1] = { 500,500 };
+	ButtonNav_Pos[0] = { 820,560 };
+	ButtonNav_Pos[1] = { 450,560 };
 	for (auto i = 0; i < 2; i++) {
 		ButtonNav_Challenge_Cancel[i]->SetAnchorPoint({ 0.5f,0.5f });
 		ButtonNav_Challenge_CancelScl[i] = { 200,150 };
@@ -126,8 +126,8 @@ void SelectScene::Init() {
 		BossIcon[i]->SetSize({ 0,0 });
 		BossIcon[i]->SetPosition({ 1280 / 2,720 / 2 });
 	}
-	ButtonNav_Pos[0] = { 700,500 };
-	ButtonNav_Pos[1] = { 500,500 };
+	ButtonNav_Pos[0] = { 820,560 };
+	ButtonNav_Pos[1] = { 450,560 };
 	constexpr float PosRad = 25.f;
 	for (auto i = 0; i < ObjNum; i++) {
 		TipsPosY[i] = -360.f;
@@ -406,6 +406,7 @@ void SelectScene::ChangeEffect(std::string name, Stage stage, UINT iconnum) {
 		//ResetParama();
 		for(auto i=0;i<ObjNum;i++)
 		OldObjAngle[i]= StageObjRotAngle[i];
+		Audio::GetInstance()->StopWave(AUDIO_LOAD);
 		SceneManager::GetInstance()->ChangeScene(name);
 		CloseF = false;
 	}
@@ -525,18 +526,18 @@ void SelectScene::BirthParticle() {
 
 	for (auto i = 0; i < ObjNum-2; i++) {
 		l_Life[i] = 50;
-		if (m_Color[i].x<1.f) {
+		if (SceneSave::GetInstance()->GetClearFlag((SeceneCategory)(i+1))) {
 			ParticleEmitter::GetInstance()->SelectEffect(l_Life[i], { StageObjPos[i].x,StageObjPos[i].y-3.f,StageObjPos[i].z }, 1.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
 		}
 	}
 	l_Life[TITLE] = 50;
 	if (!m_Birth[TITLE] && !m_BirthFinish[TITLE]) {
-		ParticleEmitter::GetInstance()->SelectEffect(l_Life[TITLE], { StageObjPos[TITLE].x,StageObjPos[TITLE].y - 3.f,StageObjPos[TITLE].z }, 1.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
+		//ParticleEmitter::GetInstance()->SelectEffect(l_Life[TITLE], { StageObjPos[TITLE].x,StageObjPos[TITLE].y - 3.f,StageObjPos[TITLE].z }, 1.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
 	}
 	if (m_SelectState != SELECT_LAST) {
 		l_Life[SEVEN] = 50;
-		if (m_Color[SEVEN].x < 1.f) {
-			ParticleEmitter::GetInstance()->SelectEffect(l_Life[SEVEN], { StageObjPos[SEVEN].x,StageObjPos[SEVEN].y - 3.f,StageObjPos[SEVEN].z }, 1.0f, 0.0f, { 0.8f,0.2f,0.8f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
+		if (SceneSave::GetInstance()->GetClearFlag(SeceneCategory::kSevenStage)) {
+			ParticleEmitter::GetInstance()->SelectEffect(l_Life[SEVEN], { StageObjPos[SEVEN].x,StageObjPos[SEVEN].y - 3.f,StageObjPos[SEVEN].z }, 1.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
 		}
 	}
 }

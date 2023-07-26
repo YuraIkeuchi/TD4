@@ -60,6 +60,8 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	text_ = make_unique<BossText>();
 	text_->Initialize(dxCommon);
 	text_->Display();
+	SelectScene::GetIns()->SetTexSpeed(300.f);
+	SelectScene::GetIns()->SetTexScl(30000.f);
 
 	//メッセージウィンドウ生成
 	messagewindow_ = make_unique<MessageWindow>();
@@ -80,6 +82,8 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		menu->Update();
 		if (menu->ReturnSelect()) {
 			sceneChanger_->ChangeStart();
+			SelectScene::GetIns()->SetTexSpeed(180.f);
+			SelectScene::GetIns()->SetTexScl(12500.f);
 			sceneChanger_->ChangeScene("SELECT", SceneChanger::Reverse);
 		}
 		return;
@@ -105,7 +109,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	ui->Update();
 	menu->Update();
 	messagewindow_->Update(girl_color_, sutopon_color_);
-	if (SelectScene::GetIns()->GetCloseScl() < 10000.f) {
+	if (SelectScene::GetIns()->GetCloseScl() < 20000.f) {
 		SelectScene::GetIns()->Upda();
 	}
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
@@ -165,7 +169,7 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon)
 	sceneChanger_->Draw();
 	camerawork->feedDraw();
 	IKESprite::PreDraw();
-	//SelectScene::GetIns()->Draw_Sprite();
+	SelectScene::GetIns()->Draw_Sprite();
 	IKESprite::PostDraw();
 }
 
@@ -290,6 +294,8 @@ void FirstStageActor::MainUpdate(DebugCamera* camera)
 		if (camerawork->GetEndDeath()) {
 			sceneChanger_->ChangeStart();
 			SelectScene::GetIns()->ResetParama();
+			SelectScene::GetIns()->SetTexSpeed(180.f);
+			SelectScene::GetIns()->SetTexScl(12500.f);
 			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
 
 		}
