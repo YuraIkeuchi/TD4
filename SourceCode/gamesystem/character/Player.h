@@ -92,7 +92,7 @@ private:
 	//パラメーターセット
 	void SetParam();
 	//吸収エフェクトの生成
-	void BirthAbs();
+	void BirthAbs(const XMFLOAT4& color);
 private:
 	//各アニメーション
 	enum class AnimeName
