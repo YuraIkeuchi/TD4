@@ -110,14 +110,15 @@ void SevenStageActor::Draw(DirectXCommon* dxCommon) {
 	if (PlayPostEffect) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
+		FrontDraw(dxCommon);
 		IKESprite::PreDraw();
-		//SelectScene::GetIns()->Draw_Sprite();
+		SelectScene::GetIns()->Draw_Sprite();
 		IKESprite::PostDraw();
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
-		FrontDraw(dxCommon);
+	//	FrontDraw(dxCommon);
 		dxCommon->PostDraw();
 	} else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
@@ -191,7 +192,7 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	IKESprite::PreDraw();
 	//blackwindow->Draw();
 	camerawork->feedDraw();
-	SelectScene::GetIns()->Draw_Sprite();
+//	SelectScene::GetIns()->Draw_Sprite();
 	IKESprite::PostDraw();
 }
 //IMGui‚Ì•`‰æ

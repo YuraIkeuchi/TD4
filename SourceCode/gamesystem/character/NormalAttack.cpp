@@ -15,9 +15,9 @@ void NormalAttack::Upda()
 
 	float SummonSpeed = 2.f;
 	m_Position = {
-					m_Position.x + move.m128_f32[0] * SummonSpeed,
+					m_Position.x + move.m128_f32[0] * 6,
 				m_Position.y,
-				m_Position.z + move.m128_f32[2] * SummonSpeed
+				m_Position.z + move.m128_f32[2] * 6
 	};
 
 	boss->SetPosition(m_Position);

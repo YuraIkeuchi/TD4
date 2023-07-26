@@ -250,8 +250,8 @@ void ShotAttack::Phase_Shot()
 		if (BulAlpha[i] <= 0.f)BulAlive[i] = false;
 	}
 	//if (BulAlpha[0] >= 1.f)BulPos[0] = boss->GetPosition();
-	BulPos[0].x += move[0].m128_f32[0] * WalkSpeed;
-	BulPos[0].z += move[0].m128_f32[2] * WalkSpeed;
+	BulPos[0].x += move[0].m128_f32[0] * 6.f;
+	BulPos[0].z += move[0].m128_f32[2] * 6.f;
 	//弾を薄く
 	BulAlpha[0] -= 0.01f;
 	for (auto i = 1; i < BulSize; i++)
@@ -260,8 +260,8 @@ void ShotAttack::Phase_Shot()
 	
 		//if (BulAlpha[i] >= 1.f)BulPos[i] = boss->GetPosition();
 		//進行スピード
-		BulPos[i].x += move[i].m128_f32[0] * WalkSpeed;
-		BulPos[i].z += move[i].m128_f32[2] * WalkSpeed;
+		BulPos[i].x += move[i].m128_f32[0] *6.f;
+		BulPos[i].z += move[i].m128_f32[2]*6.f;
 		//弾を薄く
 		BulAlpha[i] -= 0.01f;
 		}

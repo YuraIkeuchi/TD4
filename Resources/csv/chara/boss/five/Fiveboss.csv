@@ -3,7 +3,7 @@ pos,0
 //HP
 hp,27
 //歩くスピード
-WalkSpeed,4
+WalkSpeed,6
 //ガード続く時間
 GuardTime,240
 //ノックバック頻度
