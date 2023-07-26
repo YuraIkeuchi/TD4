@@ -28,7 +28,6 @@ bool SevenBoss::Initialize() {
 	m_Scale = { 1.5f,1.5f,1.5f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	ActionTimer = 1;
-
 	m_InterVal = 100;
 	m_Radius = 3.0f;
 	m_AfterAlpha = 1.0f;
@@ -278,7 +277,7 @@ void SevenBoss::Draw(DirectXCommon* dxCommon) {
 //ImGui
 void SevenBoss::ImGui_Origin() {
 	ImGui::Begin("Seven");
-	ImGui::Text("End:%d", m_EndTimer);
+	ImGui::Text("InterVal:%d", m_InterVal);
 	ImGui::Text("Vanish:%d", m_VanishTarget);
 	ImGui::End();
 
@@ -299,7 +298,7 @@ void SevenBoss::InterValMove() {
 	else {
 		l_LimitTimer = m_StrongLimit[STATE_INTER];
 	}
-	//m_InterVal++;
+	m_InterVal++;
 
 	//ˆê’èŽžŠÔ—§‚Á‚½Œã‚Éƒ{ƒX‚É‹ß‚Ã‚­‚ÆÁ‚¦‚é
 	if (m_InterVal >= 100) {
@@ -742,7 +741,7 @@ void SevenBoss::AppearAction() {
 	//sin”g‚É‚æ‚Á‚Äã‰º‚É“®‚­
 	m_SinAngle += 2.0f;
 	m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
-	m_Position.y = (sin(m_SinAngle2) * 1.0f + 5.0f);
+	m_Position.y = (sin(m_SinAngle2) * 0.5f + 5.0f);
 	m_AppearTimer++;
 	if (m_AppearTimer >= 2250) {
 		if (Helper::GetInstance()->CheckMax(m_Position.z, 25.0f, -0.05f)) {

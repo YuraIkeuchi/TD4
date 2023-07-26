@@ -64,6 +64,7 @@ public:
 		CLOSECAMERA,
 		CLOSELAST,
 		CLOSEHOME,
+		CLOSEBRO,
 		PHOTO_IN,
 		PHOTO_IN_Change,
 		PHOTO_IN_Control,

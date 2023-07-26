@@ -14,7 +14,7 @@ void SelectSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	//共通の初期化
 	BaseInitialize(dxCommon);
 	//オーディオ
-	Audio::GetInstance()->LoopWave(AUDIO_BATTLE, VolumManager::GetInstance()->GetBGMVolum() + 1.0f);
+	Audio::GetInstance()->LoopWave(AUDIO_LOAD, VolumManager::GetInstance()->GetBGMVolum() + 0.5f);
 	//ポストエフェクト
 	PlayPostEffect = true;
 	//パーティクル全削除
@@ -110,9 +110,9 @@ void SelectSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	camerawork->DefUpda(camera);
 
 	lightgroup->SetSpotLightDir(0, XMVECTOR({0,-1,0,0 }));
-	lightgroup->SetSpotLightPos(0, {SelectScene::GetIns()->GetNowSelePos().x, 20.0f, SelectScene::GetIns()->GetNowSelePos().z});
+	lightgroup->SetSpotLightPos(0, {SelectScene::GetIns()->GetNowSelePos().x, 30.0f, SelectScene::GetIns()->GetNowSelePos().z});
 	lightgroup->SetSpotLightColor(0,{1,1,1});
-	lightgroup->SetSpotLightAtten(0, {0.005f,0.f,0.005f});
+	lightgroup->SetSpotLightAtten(0, {0.003f,0.f,0.003f});
 	lightgroup->SetSpotLightFactorAngle(0, XMFLOAT2(spotLightFactorAngle));
 	
 	lightgroup->Update();

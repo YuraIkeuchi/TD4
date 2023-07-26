@@ -94,7 +94,7 @@ void SixStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGr
 	sceneChanger_->Update();
 	//プレイヤー
 	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
-		SceneSave::GetInstance()->SetClearFlag(kSixStage, true);
+		SceneSave::GetInstance()->SetClearFlag(kFiveStage, true);
 		lightgroup->SetCircleShadowActive(0, false);
 	}
 	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
@@ -297,7 +297,7 @@ void SixStageActor::MainUpdate(DebugCamera* camera) {
 
 	if (PlayerDestroy()) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
-		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kSixStage, true);
+		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kFiveStage, true);
 		sceneChanger_->ChangeStart();
 		sceneChanger_->ChangeSceneLose("GAMEOVER");
 	}

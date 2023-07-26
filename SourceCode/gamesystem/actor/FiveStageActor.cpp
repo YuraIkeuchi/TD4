@@ -82,7 +82,7 @@ void FiveStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 
 	//ƒvƒŒƒCƒ„[
 	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
-		SceneSave::GetInstance()->SetClearFlag(kFiveStage, true);
+		SceneSave::GetInstance()->SetClearFlag(kSixStage, true);
 		lightgroup->SetCircleShadowActive(0, false);
 	}
 
@@ -244,7 +244,7 @@ void FiveStageActor::MainUpdate(DebugCamera* camera) {
 
 	if (PlayerDestroy()) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
-		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kFiveStage, true);
+		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kSixStage, true);
 		sceneChanger_->ChangeStart();
 		SelectScene::GetIns()->SetTexSpeed(180.f);
 		SelectScene::GetIns()->SetTexScl(12500.f);

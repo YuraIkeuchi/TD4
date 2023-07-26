@@ -41,10 +41,14 @@ protected:
 
 	float WalkSpeed;
 	float GuardTimes;
+
+	XMFLOAT3 SutoPos, SutoRot;
 public:
 	void FollowPlayer();
 	int GetCanRand() { return CanRand; }
 	void SetCanRand(int num) { CanRand = num; }
 	void SetDam(float dam) { Dam = dam; }
+	void SetSutoPos(XMFLOAT3 pos) { SutoPos = pos; }
+	void SetSutoRot(XMFLOAT3 rot) { SutoRot = rot; }
 };
 
