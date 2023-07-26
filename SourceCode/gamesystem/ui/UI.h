@@ -31,6 +31,7 @@ private:
 		HeartOne=0,
 		HeartTwo,
 		HeartThree,
+		Heart,
 		UnderStatusGaugeMax,
 		ExtraGauge,
 		StatusGauge,
@@ -60,6 +61,8 @@ private:
 	float m_PlayerCircleRot = 0.f;
 
 	float m_limit = 0.f;
+	float m_frame = 0.0f;
+	float m_vel = 1 / 10.0f;
 	int bullet_type_ = 0;
 	int oldbullet_type_ = 0;
 	XMFLOAT2 m_Circle = { 640.0f,360.0f };
