@@ -55,7 +55,7 @@ void InterCD::CollideBul(vector<InterBullet*> bullet)
 	const float l_Radius = 1.5f;
 	for (InterBullet* _bullet : bullet) {
 		if (_bullet != nullptr && _bullet->GetAlive()) {
-			if (Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, l_Radius, m_Position.x, m_Position.z, l_Radius)) {
+			if (Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, _bullet->GetRadius(), m_Position.x, m_Position.z, l_Radius)) {
 				BirthEffect();
 				_bullet->SetAlive(false);
 				m_HP -= _bullet->GetPower();

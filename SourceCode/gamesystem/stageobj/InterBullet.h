@@ -48,6 +48,7 @@ public:
 	const int& GetBulletType() { return m_BulletType; }
 	const int& GetPowerState() { return m_PowerState; }
 	const float& GetPower() { return m_DamagePower; }
+	const float& GetRadius() { return m_Radius; }
 
 	void SetAlive(const bool Alive) { m_Alive = Alive; }
 	void SetAngle(const XMFLOAT2& Angle) { m_Angle = Angle; }
@@ -59,7 +60,6 @@ public:
 	void SetTargetPos(const XMFLOAT3& TargetPos) { m_TargetPos = TargetPos; }
 	void SetNumMag(const float NumMag) { m_NumMag = NumMag; }
 public:
-
 	XMFLOAT2 m_Angle = {};//’e‚ÌŠp“x
 	float m_AddSpeed = {};//‰Á‘¬“x
 	int m_BulletType = {};//’e‚ÌŽí—Þ
@@ -79,4 +79,7 @@ public:
 	bool m_InArea = false;
 
 	float m_NumMag = 0.0f;
+
+	//’e‚Ì“–‚½‚è”»’è‚Ì”¼Œa
+	float m_Radius = {};
 };

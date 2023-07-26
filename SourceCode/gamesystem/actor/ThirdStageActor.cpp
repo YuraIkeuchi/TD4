@@ -116,6 +116,7 @@ void ThirdStageActor::Draw(DirectXCommon* dxCommon) {
 
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
+		//ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 	else {
@@ -125,6 +126,7 @@ void ThirdStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
+		//ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 }
@@ -180,8 +182,9 @@ void ThirdStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void ThirdStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	Player::GetInstance()->ImGuiDraw();
-	camerawork->ImGuiDraw();
+	//Player::GetInstance()->ImGuiDraw();
+	//camerawork->ImGuiDraw();
+	enemymanager->ImGuiDraw();
 }
 //登場シーン
 void ThirdStageActor::IntroUpdate(DebugCamera* camera) {

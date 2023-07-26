@@ -152,6 +152,7 @@ void SixStageActor::Draw(DirectXCommon* dxCommon) {
 
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
+		ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	} else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
@@ -160,6 +161,7 @@ void SixStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
+		ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 }
@@ -211,8 +213,10 @@ void SixStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void SixStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
+	/*
+	camerawork->ImGuiDraw();*/
+	enemymanager->ImGuiDraw();
 	Player::GetInstance()->ImGuiDraw();
-	camerawork->ImGuiDraw();
 }
 //登場シーン
 void SixStageActor::IntroUpdate(DebugCamera* camera) {

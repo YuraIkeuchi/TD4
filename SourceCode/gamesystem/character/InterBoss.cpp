@@ -76,7 +76,7 @@ void InterBoss::CollideBul(vector<InterBullet*> bullet,Type type)
 	for (InterBullet* _bullet : bullet) {
 		if (_bullet != nullptr && _bullet->GetAlive() && !_bullet->GetBossCatch()) {
 			bool JudgColide;
-			if (type == Type::CIRCLE)JudgColide=Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, m_Radius, m_Position.x, m_Position.z, m_Radius);
+			if (type == Type::CIRCLE)JudgColide=Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, _bullet->GetRadius(), m_Position.x, m_Position.z, m_Radius);
 			if (type == Type::SPHERE)JudgColide=Collision::SphereCollision(_bullet->GetPosition(), m_Radius, m_Position, m_Radius);
 			if (JudgColide)
 			{
@@ -95,7 +95,12 @@ void InterBoss::CollideBul(vector<InterBullet*> bullet,Type type)
 				Recv = true;
 				_bullet->SetAlive(false);
 				//弾の大きさによって与えるダメージが違う
-				m_HP -= _bullet->GetPower() * m_Magnification;
+				if (_bullet->GetPowerState() == POWER_NONE) {
+					m_HP -= _bullet->GetPower() * m_Magnification;
+				}
+				else {
+					m_HP -= _bullet->GetPower();
+				}
 				if (m_HP <1.f) {
 					if (SceneName == "FIRSTSTAGE")
 					{

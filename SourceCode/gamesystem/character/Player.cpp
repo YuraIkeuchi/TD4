@@ -55,7 +55,6 @@ bool Player::Initialize()
 	//CSV読み込み
 	return true;
 }
-
 //CSV読み込み
 void Player::LoadCSV() {
 	auto LimitSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player/player.csv", "POWER_NUM")));
@@ -272,13 +271,16 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 }
 //ImGui
 void Player::ImGuiDraw() {
-	ImGui::Begin("Player");
-	ImGui::Text("PpsX:%f", m_Position.x);
-	ImGui::Text("PpsX:%f", m_Position.y);
-	ImGui::Text("PpsX:%f", m_Position.z);
-	ImGui::End();
+	//弾の削除(言霊)
+	for (int i = 0; i < attackbullets.size(); i++) {
+		if (attackbullets[i] == nullptr) {
+			continue;
+		}
 
-	playerattach->ImGuiDraw();
+		if (attackbullets[i]->GetAlive()) {
+			attackbullets[i]->ImGuiDraw();
+		}
+	}
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
@@ -624,7 +626,7 @@ void Player::BulletUpdate(std::vector<InterBullet*> bullets) {
 }
 //弾の生成
 void Player::BirthShot(const std::string& bulletName, bool Super) {
-	float l_ShotMag = false;
+	float l_ShotMag = 0.0f;
 	const int l_BulletNum = m_BulletNum;
 	XMVECTOR move2 = { 0.0f, 0.0f, 0.1f, 0.0f };
 	XMMATRIX matRot2 = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
@@ -634,49 +636,69 @@ void Player::BirthShot(const std::string& bulletName, bool Super) {
 	l_Angle2.y = move2.m128_f32[2];
 	//攻撃の弾
 	if (bulletName == "Attack") {
-		for (int i = 0; i < m_BulletNum; i++) {
-			XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
+		if (m_ChargeType == POWER_NONE) {			//チャージしていないやつ
+			for (int i = 0; i < m_BulletNum; i++) {
+				XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
 
-			XMMATRIX matRot;
-			//弾の状況によって数と角度を決めている
-			if (l_BulletNum == 1) {
-				matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
-				l_ShotMag = 1.0f;
-			}
-			else if (l_BulletNum == 2) {
-				l_ShotMag = 0.6f;
-				if (i == 0) {
-					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 5.0f));
-				}
-				else {
-					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y - 5.0f));
-				}
-			}
-			else {
-				l_ShotMag = 0.65f;
-				if (i == 0) {
-					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y - 10.0f));
-				}
-				else if (i == 1) {
-					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 10.0f));
-				}
-				else {
+				XMMATRIX matRot;
+				//弾の状況によって数と角度を決めている
+				if (l_BulletNum == 1) {
 					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
+					l_ShotMag = 1.0f;
 				}
-			}
-			move = XMVector3TransformNormal(move, matRot);
-			XMFLOAT2 l_Angle;
-			l_Angle.x = move.m128_f32[0];
-			l_Angle.y = move.m128_f32[2];
+				else if (l_BulletNum == 2) {
+					l_ShotMag = 0.6f;
+					if (i == 0) {
+						matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 5.0f));
+					}
+					else {
+						matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y - 5.0f));
+					}
+				}
+				else {
+					l_ShotMag = 0.65f;
+					if (i == 0) {
+						matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y - 10.0f));
+					}
+					else if (i == 1) {
+						matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 10.0f));
+					}
+					else {
+						matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
+					}
+				}
+				move = XMVector3TransformNormal(move, matRot);
+				XMFLOAT2 l_Angle;
+				l_Angle.x = move.m128_f32[0];
+				l_Angle.y = move.m128_f32[2];
 
+				InterBullet* newbullet;
+				newbullet = new AttackBullet();
+				newbullet->SetPowerState(m_ChargeType);
+				newbullet->Initialize();
+				newbullet->SetPosition(viewbullet->GetPosition());
+				newbullet->SetNumMag(l_ShotMag);
+				newbullet->SetAngle(l_Angle);
+				attackbullets.push_back(newbullet);
+			}
+		}
+		else {			//チャージしたやつ
+			XMVECTOR move2 = { 0.0f, 0.0f, 0.1f, 0.0f };
+			XMMATRIX matRot2;
+			matRot2 = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
+			l_ShotMag = 1.0f;
+
+			move2 = XMVector3TransformNormal(move2, matRot2);
+			XMFLOAT2 l_Angle2;
+			l_Angle2.x = move2.m128_f32[0];
+			l_Angle2.y = move2.m128_f32[2];
 			InterBullet* newbullet;
 			newbullet = new AttackBullet();
+			newbullet->SetPowerState(m_ChargeType);
 			newbullet->Initialize();
 			newbullet->SetPosition(viewbullet->GetPosition());
 			newbullet->SetNumMag(l_ShotMag);
-			//newbullet->SetScale({ 1.5f,1.5f,1.5f });
-			newbullet->SetPowerState(m_ChargeType);
-			newbullet->SetAngle(l_Angle);
+			newbullet->SetAngle(l_Angle2);
 			attackbullets.push_back(newbullet);
 		}
 	}
