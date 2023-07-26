@@ -273,11 +273,22 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 }
 //ImGui
 void Player::ImGuiDraw() {
-	ImGui::Begin("Player");
-	ImGui::Text("PpsX:%f", m_Position.x);
-	ImGui::Text("PpsX:%f", m_Position.y);
-	ImGui::Text("PpsX:%f", m_Position.z);
-	ImGui::End();
+	//ImGui::Begin("Player");
+	//ImGui::Text("PpsX:%f", m_Position.x);
+	//ImGui::Text("PpsX:%f", m_Position.y);
+	//ImGui::Text("PpsX:%f", m_Position.z);
+	//ImGui::End();
+
+	////弾の削除(言霊)
+	//for (int i = 0; i < attackbullets.size(); i++) {
+	//	if (attackbullets[i] == nullptr) {
+	//		continue;
+	//	}
+
+	//	if (attackbullets[i]->GetAlive()) {
+	//		attackbullets[i]->ImGuiDraw();
+	//	}
+	//}
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
@@ -488,36 +499,39 @@ void Player::Bullet_Management() {
 		//チャージ中に飢餓ゲージが切れた場合弾が自動で放たれる
 		if (m_ChargePower != 0.0f && (HungerGauge::GetInstance()->GetCatchCount() >= l_TargetCount)) {
 			if ((HungerGauge::GetInstance()->GetNowHunger() == 0.0f) || (m_ChargePower > HungerGauge::GetInstance()->GetNowHunger())) {
-				if (m_ChargeType < POWER_STRONG) {
-					Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
-				}
-				else {
-					Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Charge.wav", VolumManager::GetInstance()->GetSEVolum());
-				}
-				for (auto i = 0; i < ABS_NUM; i++) {
-					m_Birthabs[i] = false;
-				}
-				BirthShot("Attack", true);
-				playerattach->SetAlive(true);
-				//減る飢餓ゲージ量を決める
-				if (m_ChargeType != POWER_NONE) {
-					if (m_ChargeType == POWER_MIDDLE) {
-						m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_NONE];
-					}
-					else if (m_ChargeType == POWER_STRONG) {
-						m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_MIDDLE];
-					}
-					else if (m_ChargeType == POWER_UNLIMITED) {
-						m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_STRONG];
-					}
-					m_Frame = {};
-					m_SubHunger = true;
-				}
-				ResetBullet();
+				m_ChargePower = HungerGauge::GetInstance()->GetNowHunger();
+				HungerGauge::GetInstance()->SetIsStop(true);
+				//if (m_ChargeType < POWER_STRONG) {
+				//	Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
+				//}
+				//else {
+				//	Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Charge.wav", VolumManager::GetInstance()->GetSEVolum());
+				//}
+				//for (auto i = 0; i < ABS_NUM; i++) {
+				//	m_Birthabs[i] = false;
+				//}
+				//BirthShot("Attack", true);
+				//playerattach->SetAlive(true);
+				////減る飢餓ゲージ量を決める
+				//if (m_ChargeType != POWER_NONE) {
+				//	if (m_ChargeType == POWER_MIDDLE) {
+				//		m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_NONE];
+				//	}
+				//	else if (m_ChargeType == POWER_STRONG) {
+				//		m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_MIDDLE];
+				//	}
+				//	else if (m_ChargeType == POWER_UNLIMITED) {
+				//		m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_STRONG];
+				//	}
+				//	m_Frame = {};
+				//	m_SubHunger = true;
+				//}
+				//ResetBullet();
 			}
 		}
 
 		if (!Input::GetInstance()->PushButton(Input::B) && m_ChargePower != 0.0f) {
+			HungerGauge::GetInstance()->SetIsStop(false);
 			if (m_ChargeType < POWER_STRONG) {
 				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
 				BirthShot("Attack", false);
@@ -649,7 +663,7 @@ void Player::BulletUpdate(std::vector<InterBullet*> bullets) {
 }
 //弾の生成
 void Player::BirthShot(const std::string& bulletName, bool Super) {
-
+	float l_ShotMag = false;
 	const int l_BulletNum = m_BulletNum;
 	XMVECTOR move2 = { 0.0f, 0.0f, 0.1f, 0.0f };
 	XMMATRIX matRot2 = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
@@ -666,8 +680,10 @@ void Player::BirthShot(const std::string& bulletName, bool Super) {
 			//弾の状況によって数と角度を決めている
 			if (l_BulletNum == 1) {
 				matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
+				l_ShotMag = 1.0f;
 			}
 			else if (l_BulletNum == 2) {
+				l_ShotMag = 0.6f;
 				if (i == 0) {
 					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 5.0f));
 				}
@@ -676,6 +692,7 @@ void Player::BirthShot(const std::string& bulletName, bool Super) {
 				}
 			}
 			else {
+				l_ShotMag = 0.65f;
 				if (i == 0) {
 					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y - 10.0f));
 				}
@@ -695,6 +712,7 @@ void Player::BirthShot(const std::string& bulletName, bool Super) {
 			newbullet = new AttackBullet();
 			newbullet->Initialize();
 			newbullet->SetPosition(viewbullet->GetPosition());
+			newbullet->SetNumMag(l_ShotMag);
 			//newbullet->SetScale({ 1.5f,1.5f,1.5f });
 			newbullet->SetPowerState(m_ChargeType);
 			newbullet->SetAngle(l_Angle);

@@ -441,12 +441,13 @@ void SelectScene::StateManager() {
 	//debugよう
 	m_Scale[TITLE] = { 0.025f,0.1f,0.025f };
 	//m_Wide = true;
-
-	
 	//
 	//クリア状況に応じてOBJの大きさだったりが違う
 	if (m_SelectState == SELECT_FIRST) {		//ここは牛乳のみ
-
+		if (SceneSave::GetInstance()->GetClearFlag(SeceneCategory::kFirstStage))
+		{
+			m_SelectState = SELECT_LAST;
+		}
 	}
 	else if (m_SelectState == SELECT_SECOND) {//牛乳をクリアしてラスボス以外出現する
 		bool temp[ObjNum] = {};

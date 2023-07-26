@@ -57,6 +57,7 @@ public:
 	void SetInArea(const bool InArea) { m_InArea = InArea; }
 	void SetBossCatch(const bool BossCatch) { m_BossCatch = BossCatch; }
 	void SetTargetPos(const XMFLOAT3& TargetPos) { m_TargetPos = TargetPos; }
+	void SetNumMag(const float NumMag) { m_NumMag = NumMag; }
 public:
 
 	XMFLOAT2 m_Angle = {};//’e‚ÌŠp“x
@@ -76,4 +77,6 @@ public:
 	XMFLOAT3 m_TargetPos = {};
 
 	bool m_InArea = false;
+
+	float m_NumMag = 0.0f;
 };

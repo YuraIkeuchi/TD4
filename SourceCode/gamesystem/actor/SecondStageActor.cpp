@@ -250,7 +250,7 @@ void SecondStageActor::Draw(DirectXCommon* dxCommon) {
 
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
-
+		ImGuiDraw(dxCommon);
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	} else {
@@ -260,7 +260,7 @@ void SecondStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-	
+		ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 }
@@ -329,10 +329,6 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 //IMGuiの描画
 void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	Player::GetInstance()->ImGuiDraw();
-	camerawork->ImGuiDraw();
-	ImGui::Begin("Second");
-	ImGui::Text("Timer:%d", m_DeathTimer);
-	ImGui::End();
 }
 
 

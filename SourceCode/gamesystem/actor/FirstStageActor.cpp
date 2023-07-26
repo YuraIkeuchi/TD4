@@ -60,13 +60,17 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	text_ = make_unique<BossText>();
 	text_->Initialize(dxCommon);
 	text_->Display();
-	SelectScene::GetIns()->SetTexSpeed(300.f);
-	SelectScene::GetIns()->SetTexScl(30000.f);
+	text_->SetWindowInvisible();
 
 	//メッセージウィンドウ生成
 	messagewindow_ = make_unique<MessageWindow>();
 	messagewindow_->Initialize();
 	messagewindow_->Display();
+	messagewindow_->Invisible(false);
+
+	SelectScene::GetIns()->SetTexSpeed(300.f);
+	SelectScene::GetIns()->SetTexScl(30000.f);
+
 	sutopon_color_ = { 1.f,1.f,1.f,0.5f };
 	girl_color_ = { 1.3f,1.3f,1.3f,0.5f };
 }
@@ -84,6 +88,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 			sceneChanger_->ChangeStart();
 			SelectScene::GetIns()->SetTexSpeed(180.f);
 			SelectScene::GetIns()->SetTexScl(12500.f);
+
 			sceneChanger_->ChangeScene("SELECT", SceneChanger::Reverse);
 		}
 		return;
@@ -144,11 +149,10 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon)
 {
 
 	if (tolk_F == true) {
-		text_->SpriteDraw(dxCommon);
 		IKESprite::PreDraw();
 		messagewindow_->Draw();
 		IKESprite::PostDraw();
-
+		text_->SpriteDraw(dxCommon);
 	}
 	//パーティクル描画
 	if (!camerawork->GetFeedEnd() && m_SceneState == SceneState::MainState) {
@@ -177,10 +181,10 @@ void FirstStageActor::BackDraw(DirectXCommon* dxCommon)
 {
 
 	if (tolk_F == true) {
-		text_->SpriteDraw(dxCommon);
 		IKESprite::PreDraw();
 		messagewindow_->Draw();
 		IKESprite::PostDraw();
+		text_->SpriteDraw(dxCommon);
 	}
 	IKESprite::PreDraw();
 	backScreen_->Draw();
@@ -236,7 +240,6 @@ void FirstStageActor::IntroUpdate(DebugCamera* camera)
 	}
 	text_->Display();
 	messagewindow_->Display();
-	messagewindow_->SetBack(true);
 	//テキスト関係
 	if (m_AppTimer == 1) {
 		text_->SelectText(TextManager::Name_Cap::CAP1);
@@ -294,8 +297,9 @@ void FirstStageActor::MainUpdate(DebugCamera* camera)
 		if (camerawork->GetEndDeath()) {
 			sceneChanger_->ChangeStart();
 			SelectScene::GetIns()->ResetParama();
-			SelectScene::GetIns()->SetTexSpeed(180.f);
+				SelectScene::GetIns()->SetTexSpeed(180.f);
 			SelectScene::GetIns()->SetTexScl(12500.f);
+
 			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
 
 		}
@@ -310,6 +314,9 @@ void FirstStageActor::MainUpdate(DebugCamera* camera)
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kFirstStage, true);
 		sceneChanger_->ChangeStart();
+		SelectScene::GetIns()->SetTexSpeed(180.f);
+		SelectScene::GetIns()->SetTexScl(12500.f);
+
 		sceneChanger_->ChangeSceneLose("GAMEOVER");
 	}
 
@@ -356,33 +363,28 @@ void FirstStageActor::CheckHp()
 void FirstStageActor::TalkUpdate()
 {
 	if (tolk_F != true) { return; }
-	
+
 
 	m_AppTimer++;
 	text_->Display();
-	messagewindow_->SetBack(false);
-	messagewindow_->Invisible();
+	messagewindow_->Invisible(true);
 	if (m_AppTimer == 2) {
 		text_->SelectText(TextManager::Name_First::CHARGE1);
 		sutopon_color_ = { 1.f,1.f,1.f,0.5f };
 		text_->ChangeColor({ 1.f,1.f,1.f,1.f });
-	}
-	else if (m_AppTimer == 150) {
+	} else if (m_AppTimer == 150) {
 		text_->SelectText(TextManager::Name_First::CHARGE2);
 		sutopon_color_ = { 1.f,1.f,1.f,0.5f };
 		girl_color_ = { 1.3f,1.3f,1.3f,1.f };
 		text_->ChangeColor({ 0.9f,0.6f,0.8f,1.f });
-	}
-	else if (m_AppTimer == 300) {
+	} else if (m_AppTimer == 300) {
 		text_->SelectText(TextManager::Name_First::CHARGE3);
 		text_->ChangeColor({ 0.f,1.f,1.f,1.f });
 		sutopon_color_ = { 1.f,1.f,1.f,1.f };
 		girl_color_ = { 1.3f,1.3f,1.3f,0.5f };
-	}
-	else if (m_AppTimer == 450) {
+	} else if (m_AppTimer == 450) {
 		text_->SelectText(TextManager::Name_First::CHARGE4);
-	}
-	else if (m_AppTimer == 625) {
+	} else if (m_AppTimer == 625) {
 		quarter_hp_ = -100.f;
 	}
 }

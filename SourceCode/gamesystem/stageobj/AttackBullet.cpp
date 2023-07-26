@@ -31,9 +31,9 @@ bool AttackBullet::Initialize() {
 }
 //ImGui•`‰æ
 void AttackBullet::ImGui_Origin() {
-	//ImGui::Begin("Attack");
-	//ImGui::Text("Power:%f", m_DamagePower);
-	//ImGui::End();
+	ImGui::Begin("Attack");
+	ImGui::Text("Power:%f", m_DamagePower);
+	ImGui::End();
 }
 //ƒIƒŠƒWƒiƒ‹•`‰æ
 void AttackBullet::Draw_Origin() {
@@ -67,19 +67,19 @@ void AttackBullet::NormalShot() {
 	const float l_AddRot = 20.0f;
 	if (m_Alive) {
 		if (m_PowerState == POWER_NONE) {
-			m_DamagePower = m_Power[0];
+			m_DamagePower = m_Power[0] * m_NumMag;
 			//m_Color = { 1.0f,1.0f,1.0f,1.0f };
 		}
 		else if (m_PowerState == POWER_MIDDLE) {
-			m_DamagePower = m_Power[1];
+			m_DamagePower = m_Power[1] * m_NumMag;
 			//m_Color = { 1.0f,0.0f,0.0f,1.0f };
 		}
 		else if (m_PowerState == POWER_STRONG) {
-			m_DamagePower = m_Power[2];
+			m_DamagePower = m_Power[2] * m_NumMag;
 			//m_Color = { 0.0f,1.0f,0.0f,1.0f };
 		}
 		else {
-			m_DamagePower = m_Power[3];
+			m_DamagePower = m_Power[3] * m_NumMag;
 			//m_Color = { 1.0f,0.0f,0.0f,1.0f };
 		}
 		//ˆÚ“®‚ð‰ÁŽZ
