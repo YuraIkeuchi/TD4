@@ -581,3 +581,9 @@ void LoadStageObj::AwakeInit() {
 		ghosts[i]->DeleteBullet();
 	}
 }
+//クリア
+void LoadStageObj::AllClear() {
+	ghosts.clear();
+	foods.clear();
+	hearts.clear();
+}

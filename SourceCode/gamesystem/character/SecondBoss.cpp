@@ -937,7 +937,7 @@ void SecondBoss::DeadAction_Throw() {
 		m_Rotation.z += 0.09f;
 	}
 	RotFrontSpeed = 3.f;
-	Player::GetInstance()->SetPosition({ 0,0,10 });
+	//Player::GetInstance()->SetPosition({ 0,0,10 });
 	Obj_SetParam();
 }
 //ボス撃破シーン
@@ -982,7 +982,7 @@ void SecondBoss::DeadAction() {
 
 	Obj_SetParam();
 
-	Player::GetInstance()->SetPosition({ 0,0,0 });
+	//Player::GetInstance()->SetPosition({ 0,0,0 });
 	Helper::GetInstance()->Clamp(m_Rotation.z, -90.f, 90.f);
 	Helper::GetInstance()->Clamp(DeathSpeed, 0.f, 3.f);
 	Helper::GetInstance()->Clamp(RotFrontSpeed, 0.f, 2.f);

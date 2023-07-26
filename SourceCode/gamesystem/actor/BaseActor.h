@@ -110,4 +110,6 @@ protected:
 	XMFLOAT4 sutopon_color_{ 1.f,1.f,1.f,0.f };
 
 	int textT;
+	
+	int m_DeathTimer = 0;
 };

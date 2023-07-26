@@ -29,6 +29,7 @@ public:
 	bool DisplayCheck();
 	void SetNotBlack() { notBlack = true; }
 	void SetBack(bool flag) { this->notBlack = flag; }
+	void Invisible() { this->invisible = false; }
 private:
 	unique_ptr<IKESprite> window_;
 	unique_ptr<IKESprite> blackback_;
@@ -43,6 +44,7 @@ private:
 
 
 	bool notBlack = false;
+	bool invisible = true;
 	float maxframe = 20.f;
 	float nowframe = 0.f;
 	float frame = 0.f;

@@ -434,7 +434,7 @@ void SelectScene::ViewTips() {
 void SelectScene::StateManager() {
 	//debugよう
 	m_Scale[TITLE] = { 0.025f,0.1f,0.025f };
-	//m_Wide = true;
+	m_Wide = true;
 
 	m_SelectState =SELECT_SECOND;
 	//

@@ -42,7 +42,7 @@ void FourthStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 
 	//各クラス
 	//プレイヤー
-	Player::GetInstance()->InitState({ 0.0f,5.0f,-70.0f });
+	Player::GetInstance()->InitState({ 0.0f,-2.0f,-70.0f });
 
 	Player::GetInstance()->SetCanShot(false);
 	Player::GetInstance()->MoveStop(true);
@@ -129,9 +129,6 @@ void FourthStageActor::Draw(DirectXCommon* dxCommon) {
 
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
-
-		//ImGuiDraw(dxCommon);
-
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	} else {
@@ -141,7 +138,6 @@ void FourthStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-		//ImGuiDraw(dxCommon);
 
 		dxCommon->PostDraw();
 	}
@@ -363,6 +359,7 @@ void FourthStageActor::MainUpdate(DebugCamera* camera) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		//フェード前
 		if (!camerawork->GetFeedEnd()) {
+			Player::GetInstance()->DeathUpdate();
 			enemymanager->SetDeadThrow(true);
 			enemymanager->DeadUpdate();
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_BEFORE);
@@ -370,6 +367,7 @@ void FourthStageActor::MainUpdate(DebugCamera* camera) {
 		}
 		//フェード後
 		else {
+			m_DeathTimer++;
 			PlayPostEffect = false;
 			isVisible = true;
 			XMFLOAT3 pos = apple->GetPosition();
@@ -378,10 +376,11 @@ void FourthStageActor::MainUpdate(DebugCamera* camera) {
 			apple->SetPosition(pos);
 			HungerGauge::GetInstance()->SetNowHunger(0);
 			HungerGauge::GetInstance()->Update();
-			Player::GetInstance()->InitState({ 0.0f,0.0f,-5.0f });
+			loadobj->AllClear();
 			enemymanager->SetDeadThrow(false);
 			enemymanager->DeadUpdate();
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_FOURTH);
+			Player::GetInstance()->DeathUpdateAfter(m_DeathTimer);
 		}
 
 		if (camerawork->GetEndDeath()) {
@@ -389,8 +388,6 @@ void FourthStageActor::MainUpdate(DebugCamera* camera) {
 			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
 
 		}
-
-		Player::GetInstance()->DeathUpdate();
 	} else {
 		Player::GetInstance()->Update();
 	}

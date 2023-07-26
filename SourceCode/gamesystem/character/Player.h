@@ -29,8 +29,10 @@ public:
 	void ImGuiDraw();
 	//ボス登場シーンの動き
 	void AppearUpdate();
-	//ボス撃破シーンの動き
+	//ボス撃破シーンの動き(フェード前)
 	void DeathUpdate();
+	//フェードあと
+	void DeathUpdateAfter(int Timer);
 	//ダークコトコ登場シーンの動き
 	void DarkAppearUpdate(int Timer);
 	//ラスボス登場シーンの動き

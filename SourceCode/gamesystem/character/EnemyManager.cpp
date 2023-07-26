@@ -160,3 +160,9 @@ void EnemyManager::Awake() {
 void EnemyManager::DeleteObj() {
 	boss->SetDeleteObj(true);
 }
+
+void EnemyManager::UpdateStop()
+{
+	boss->SetStateReset(true);
+
+}

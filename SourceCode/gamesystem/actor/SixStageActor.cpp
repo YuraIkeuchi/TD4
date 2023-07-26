@@ -19,7 +19,7 @@ void SixStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Lig
 	ParticleEmitter::GetInstance()->AllDelete();
 
 	//各クラス
-	Player::GetInstance()->InitState({ 0.0f,5.0f,-5.0f });
+	Player::GetInstance()->InitState({ 0.0f,-2.0f,-5.0f });
 
 	backScreen_ = IKESprite::Create(ImageManager::PLAY, { 0,0 });
 	backScreen_->SetSize({ 1280.0f,720.0f });
@@ -152,8 +152,6 @@ void SixStageActor::Draw(DirectXCommon* dxCommon) {
 
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
-		//ImGuiDraw(dxCommon);
-		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	} else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
@@ -162,7 +160,6 @@ void SixStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-		//ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 }
@@ -182,9 +179,9 @@ void SixStageActor::BackDraw(DirectXCommon* dxCommon) {
 			ParticleEmitter::GetInstance()->BackDrawAll();
 		}
 	}
+	Player::GetInstance()->Draw(dxCommon);
 	////各クラスの描画
 	if (!camerawork->GetFeedEnd()) {
-		Player::GetInstance()->Draw(dxCommon);
 		loadobj->Draw(dxCommon);
 	}
 	enemymanager->Draw(dxCommon);
@@ -214,6 +211,8 @@ void SixStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void SixStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
+	Player::GetInstance()->ImGuiDraw();
+	camerawork->ImGuiDraw();
 }
 //登場シーン
 void SixStageActor::IntroUpdate(DebugCamera* camera) {
@@ -274,14 +273,17 @@ void SixStageActor::MainUpdate(DebugCamera* camera) {
 			enemymanager->SetDeadThrow(true);
 			enemymanager->DeadUpdate();
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_BEFORE);
+			Player::GetInstance()->DeathUpdate();
 		}
 		//フェード後
 		else {
+			m_DeathTimer++;
 			PlayPostEffect = false;
-			Player::GetInstance()->InitState({ 0.0f,0.0f,-5.0f });
+			loadobj->AllClear();
 			enemymanager->SetDeadThrow(false);
 			enemymanager->DeadUpdate();
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_SIX);
+			Player::GetInstance()->DeathUpdateAfter(m_DeathTimer);
 		}
 
 		if (camerawork->GetEndDeath()) {
@@ -289,8 +291,6 @@ void SixStageActor::MainUpdate(DebugCamera* camera) {
 			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
 
 		}
-
-		Player::GetInstance()->DeathUpdate();
 	} else {
 		Player::GetInstance()->Update();
 	}
