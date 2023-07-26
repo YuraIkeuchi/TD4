@@ -28,7 +28,6 @@ bool SevenBoss::Initialize() {
 	m_Scale = { 1.5f,1.5f,1.5f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	ActionTimer = 1;
-
 	m_InterVal = 100;
 	m_Radius = 3.0f;
 	m_AfterAlpha = 1.0f;
@@ -278,7 +277,7 @@ void SevenBoss::Draw(DirectXCommon* dxCommon) {
 //ImGui
 void SevenBoss::ImGui_Origin() {
 	ImGui::Begin("Seven");
-	ImGui::Text("End:%d", m_EndTimer);
+	ImGui::Text("InterVal:%d", m_InterVal);
 	ImGui::Text("Vanish:%d", m_VanishTarget);
 	ImGui::End();
 
@@ -299,7 +298,7 @@ void SevenBoss::InterValMove() {
 	else {
 		l_LimitTimer = m_StrongLimit[STATE_INTER];
 	}
-	//m_InterVal++;
+	m_InterVal++;
 
 	//ˆê’èŠÔ—§‚Á‚½Œã‚Éƒ{ƒX‚É‹ß‚Ã‚­‚ÆÁ‚¦‚é
 	if (m_InterVal >= 100) {
@@ -742,7 +741,7 @@ void SevenBoss::AppearAction() {
 	//sin”g‚É‚æ‚Á‚Äã‰º‚É“®‚­
 	m_SinAngle += 2.0f;
 	m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
-	m_Position.y = (sin(m_SinAngle2) * 1.0f + 5.0f);
+	m_Position.y = (sin(m_SinAngle2) * 0.5f + 5.0f);
 	m_AppearTimer++;
 	if (m_AppearTimer >= 2250) {
 		if (Helper::GetInstance()->CheckMax(m_Position.z, 25.0f, -0.05f)) {
@@ -833,7 +832,7 @@ void SevenBoss::CatchBul(vector<InterBullet*> bullet)
 				_bullet->SetBossCatch(true);
 			}
 
-			if (Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, l_StunRadius, m_Position.x, m_Position.z, l_StunRadius) && (!m_Stun)) {
+			if (Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, _bullet->GetRadius(), m_Position.x, m_Position.z, l_StunRadius) && (!m_Stun)) {
 				BirthExplosion();
 				Audio::GetInstance()->PlayWave("Resources/Sound/SE/Explo.wav", VolumManager::GetInstance()->GetSEVolum() * 1.3f);
 				bossstuneffect->SetAlive(true);
@@ -894,8 +893,8 @@ void SevenBoss::VanishCollide(vector<InterBullet*> bullet)
 	const float l_VanishRadius = m_Radius + 5.0f;
 	for (InterBullet* _bullet : bullet) {
 		if (_bullet != nullptr && _bullet->GetAlive() && !_bullet->GetInArea()) {
-		
-			if (Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, l_VanishRadius, m_Position.x, m_Position.z, l_VanishRadius) && (!m_Stun) && (!m_Vanish)) {
+			const float l_VanishRadius2 = _bullet->GetRadius() + 5.0f;
+			if (Collision::CircleCollision(_bullet->GetPosition().x, _bullet->GetPosition().z, l_VanishRadius, m_Position.x, m_Position.z, l_VanishRadius2) && (!m_Stun) && (!m_Vanish)) {
 				//—”w’è
 				mt19937 mt{ std::random_device{}() };
 				uniform_int_distribution<int> l_RandomRange(1, 100);

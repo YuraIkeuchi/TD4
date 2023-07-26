@@ -20,8 +20,6 @@ void Player::LoadResource() {
 
 	viewbullet.reset(new ViewBullet());
 
-	playerattach.reset(new PlayerAttach());
-
 	skirtobj.reset(new IKEObject3d());
 	skirtobj->Initialize();
 	skirtobj->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::SKIRT));
@@ -40,6 +38,7 @@ bool Player::Initialize()
 
 	viewbullet->Initialize();
 
+	playerattach.reset(new PlayerAttach());
 	playerattach->Initialize();
 
 	//11
@@ -56,7 +55,6 @@ bool Player::Initialize()
 	//CSV読み込み
 	return true;
 }
-
 //CSV読み込み
 void Player::LoadCSV() {
 	auto LimitSize = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/player/player.csv", "POWER_NUM")));
@@ -273,22 +271,16 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 }
 //ImGui
 void Player::ImGuiDraw() {
-	//ImGui::Begin("Player");
-	//ImGui::Text("PpsX:%f", m_Position.x);
-	//ImGui::Text("PpsX:%f", m_Position.y);
-	//ImGui::Text("PpsX:%f", m_Position.z);
-	//ImGui::End();
+	//弾の削除(言霊)
+	for (int i = 0; i < attackbullets.size(); i++) {
+		if (attackbullets[i] == nullptr) {
+			continue;
+		}
 
-	////弾の削除(言霊)
-	//for (int i = 0; i < attackbullets.size(); i++) {
-	//	if (attackbullets[i] == nullptr) {
-	//		continue;
-	//	}
-
-	//	if (attackbullets[i]->GetAlive()) {
-	//		attackbullets[i]->ImGuiDraw();
-	//	}
-	//}
+		if (attackbullets[i]->GetAlive()) {
+			attackbullets[i]->ImGuiDraw();
+		}
+	}
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
@@ -440,10 +432,6 @@ void Player::Bullet_Management() {
 			}
 		}
 	}
-	if (Input::GetInstance()->TriggerButton(Input::B)) {
-	
-	}
-	
 
 	//弾を打った瞬間チャージ量分飢餓ゲージを減らす
 	if (m_SubHunger) {
@@ -473,7 +461,7 @@ void Player::Bullet_Management() {
 			else if (m_ChargePower >= m_PowerLimit[POWER_NONE] && m_ChargePower < m_PowerLimit[POWER_MIDDLE]) {
 				m_ChargeType = POWER_MIDDLE;
 				if (!m_Birthabs[POWER_MIDDLE - 1]) {
-					BirthAbs();
+					BirthAbs({ 1.0f,1.0f,0.0f,1.0f });
 					m_Birthabs[POWER_MIDDLE - 1] = true;
 					Audio::GetInstance()->PlayWave("Resources/Sound/SE/charge.wav", VolumManager::GetInstance()->GetSEVolum());
 				}
@@ -481,15 +469,16 @@ void Player::Bullet_Management() {
 			else if (m_ChargePower >= m_PowerLimit[POWER_MIDDLE] && m_ChargePower < m_PowerLimit[POWER_STRONG]) {
 				m_ChargeType = POWER_STRONG;
 				if (!m_Birthabs[POWER_STRONG - 1]) {
-					BirthAbs();
+					BirthAbs({ 1.0f,0.3f,0.0f,1.0f });
 					m_Birthabs[POWER_STRONG - 1] = true;
 					Audio::GetInstance()->PlayWave("Resources/Sound/SE/charge.wav", VolumManager::GetInstance()->GetSEVolum());
 				}
 			}
 			else {
+				m_ChargePower = m_PowerLimit[POWER_STRONG];
 				m_ChargeType = POWER_UNLIMITED;
 				if (!m_Birthabs[POWER_UNLIMITED - 1]) {
-					BirthAbs();
+					BirthAbs({ 1.0f,0.0f,0.0f,1.0f });
 					m_Birthabs[POWER_UNLIMITED - 1] = true;
 					Audio::GetInstance()->PlayWave("Resources/Sound/SE/charge.wav", VolumManager::GetInstance()->GetSEVolum());
 				}
@@ -501,32 +490,6 @@ void Player::Bullet_Management() {
 			if ((HungerGauge::GetInstance()->GetNowHunger() == 0.0f) || (m_ChargePower > HungerGauge::GetInstance()->GetNowHunger())) {
 				m_ChargePower = HungerGauge::GetInstance()->GetNowHunger();
 				HungerGauge::GetInstance()->SetIsStop(true);
-				//if (m_ChargeType < POWER_STRONG) {
-				//	Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Shot.wav", VolumManager::GetInstance()->GetSEVolum());
-				//}
-				//else {
-				//	Audio::GetInstance()->PlayWave("Resources/Sound/SE/Shot_Charge.wav", VolumManager::GetInstance()->GetSEVolum());
-				//}
-				//for (auto i = 0; i < ABS_NUM; i++) {
-				//	m_Birthabs[i] = false;
-				//}
-				//BirthShot("Attack", true);
-				//playerattach->SetAlive(true);
-				////減る飢餓ゲージ量を決める
-				//if (m_ChargeType != POWER_NONE) {
-				//	if (m_ChargeType == POWER_MIDDLE) {
-				//		m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_NONE];
-				//	}
-				//	else if (m_ChargeType == POWER_STRONG) {
-				//		m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_MIDDLE];
-				//	}
-				//	else if (m_ChargeType == POWER_UNLIMITED) {
-				//		m_LimitHunger = HungerGauge::GetInstance()->GetNowHunger() - m_PowerLimit[POWER_STRONG];
-				//	}
-				//	m_Frame = {};
-				//	m_SubHunger = true;
-				//}
-				//ResetBullet();
 			}
 		}
 
@@ -663,7 +626,7 @@ void Player::BulletUpdate(std::vector<InterBullet*> bullets) {
 }
 //弾の生成
 void Player::BirthShot(const std::string& bulletName, bool Super) {
-	float l_ShotMag = false;
+	float l_ShotMag = 0.0f;
 	const int l_BulletNum = m_BulletNum;
 	XMVECTOR move2 = { 0.0f, 0.0f, 0.1f, 0.0f };
 	XMMATRIX matRot2 = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
@@ -673,49 +636,69 @@ void Player::BirthShot(const std::string& bulletName, bool Super) {
 	l_Angle2.y = move2.m128_f32[2];
 	//攻撃の弾
 	if (bulletName == "Attack") {
-		for (int i = 0; i < m_BulletNum; i++) {
-			XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
+		if (m_ChargeType == POWER_NONE) {			//チャージしていないやつ
+			for (int i = 0; i < m_BulletNum; i++) {
+				XMVECTOR move = { 0.0f, 0.0f, 0.1f, 0.0f };
 
-			XMMATRIX matRot;
-			//弾の状況によって数と角度を決めている
-			if (l_BulletNum == 1) {
-				matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
-				l_ShotMag = 1.0f;
-			}
-			else if (l_BulletNum == 2) {
-				l_ShotMag = 0.6f;
-				if (i == 0) {
-					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 5.0f));
-				}
-				else {
-					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y - 5.0f));
-				}
-			}
-			else {
-				l_ShotMag = 0.65f;
-				if (i == 0) {
-					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y - 10.0f));
-				}
-				else if (i == 1) {
-					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 10.0f));
-				}
-				else {
+				XMMATRIX matRot;
+				//弾の状況によって数と角度を決めている
+				if (l_BulletNum == 1) {
 					matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
+					l_ShotMag = 1.0f;
 				}
-			}
-			move = XMVector3TransformNormal(move, matRot);
-			XMFLOAT2 l_Angle;
-			l_Angle.x = move.m128_f32[0];
-			l_Angle.y = move.m128_f32[2];
+				else if (l_BulletNum == 2) {
+					l_ShotMag = 0.6f;
+					if (i == 0) {
+						matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 5.0f));
+					}
+					else {
+						matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y - 5.0f));
+					}
+				}
+				else {
+					l_ShotMag = 0.65f;
+					if (i == 0) {
+						matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y - 10.0f));
+					}
+					else if (i == 1) {
+						matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y + 10.0f));
+					}
+					else {
+						matRot = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
+					}
+				}
+				move = XMVector3TransformNormal(move, matRot);
+				XMFLOAT2 l_Angle;
+				l_Angle.x = move.m128_f32[0];
+				l_Angle.y = move.m128_f32[2];
 
+				InterBullet* newbullet;
+				newbullet = new AttackBullet();
+				newbullet->SetPowerState(m_ChargeType);
+				newbullet->Initialize();
+				newbullet->SetPosition(viewbullet->GetPosition());
+				newbullet->SetNumMag(l_ShotMag);
+				newbullet->SetAngle(l_Angle);
+				attackbullets.push_back(newbullet);
+			}
+		}
+		else {			//チャージしたやつ
+			XMVECTOR move2 = { 0.0f, 0.0f, 0.1f, 0.0f };
+			XMMATRIX matRot2;
+			matRot2 = XMMatrixRotationY(XMConvertToRadians(m_Rotation.y));
+			l_ShotMag = 1.0f;
+
+			move2 = XMVector3TransformNormal(move2, matRot2);
+			XMFLOAT2 l_Angle2;
+			l_Angle2.x = move2.m128_f32[0];
+			l_Angle2.y = move2.m128_f32[2];
 			InterBullet* newbullet;
 			newbullet = new AttackBullet();
+			newbullet->SetPowerState(m_ChargeType);
 			newbullet->Initialize();
 			newbullet->SetPosition(viewbullet->GetPosition());
 			newbullet->SetNumMag(l_ShotMag);
-			//newbullet->SetScale({ 1.5f,1.5f,1.5f });
-			newbullet->SetPowerState(m_ChargeType);
-			newbullet->SetAngle(l_Angle);
+			newbullet->SetAngle(l_Angle2);
 			attackbullets.push_back(newbullet);
 		}
 	}
@@ -1069,14 +1052,14 @@ void Player::SetParam() {
 	fbxmodels->Update(m_LoopFlag, m_AnimationSpeed, m_StopFlag);
 }
 //パーティクル
-void Player::BirthAbs() {
+void Player::BirthAbs(const XMFLOAT4& color) {
 	for (int i = 0; i < 20;i++) {
 		//ノーツの発生
 		AbsorptionEffect* neweffect;
 		neweffect = new AbsorptionEffect();
 		neweffect->Initialize();
 		neweffect->SetBasePos(m_Position);
-		neweffect->SetColor({ 1.0f,1.0f,0.0f,1.0f });
+		neweffect->SetColor(color);
 		neweffect->SetAddFrame(0.05f);
 		abseffect.push_back(neweffect);
 	}

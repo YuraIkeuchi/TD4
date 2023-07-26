@@ -14,10 +14,13 @@ UI::~UI() {
 void UI::Initialize() {
 	sprites[HeartOne] = CreateUi(ImageManager::PlayerHPGauge, m_PlayerHpPos, m_PlayerHpSize, { 1.5f, 1.5f, 1.5f,1 });
 	TexList.emplace_back(std::move(sprites[HeartOne]));
-	for (int i = HeartTwo; i < UnderStatusGaugeMax; i++) {
+	for (int i = HeartTwo; i < Heart; i++) {
 		sprites[i] = CreateUi(ImageManager::WHITE, { m_PlayerHpPos.x + 70.0f,m_PlayerHpPos.y + 35.0f }, m_PlayerHpSize, { 1.5f, 1.5f, 1.5f,1 });
 		TexList.emplace_back(std::move(sprites[i]));
 	}
+	sprites[Heart] = CreateUi(ImageManager::HEART, { 50.f, 680.f }, { 69 * 0.6f,60 * 0.6f }, { 1.5f, 1.5f, 1.5f,1 });
+	sprites[Heart].Tex->SetAnchorPoint({ 0.5f,0.5f });
+	TexList.emplace_back(std::move(sprites[Heart]));
 	{//ゲージ下敷き
 		sprites[UnderStatusGaugeMax] = CreateUi(ImageManager::UnderGauge, m_GaugePos, m_GaugeSize, { 1.5f, 1.5f, 1.5f,1.f });
 		sprites[UnderStatusGaugeMax].Tex->SetAnchorPoint({ 0,0 });
@@ -131,19 +134,25 @@ void UI::SeachBoss() {
 
 void UI::PlayerLife() {
 	float percent = (Player::GetInstance()->GetHP() / Player::GetInstance()->GetMaxHP());
+	m_frame += m_vel;
+	TexList[Heart].Size = { TexList[Heart].Size.x - (sinf(m_frame) * 0.5f) , TexList[Heart].Size.y - (sinf(m_frame) * 0.5f) };
+
 	//ライフ処理
 	TexList[HeartThree].Size = { percent * m_PlayerHpSize.x * 0.68f ,m_PlayerHpSize.y * 0.32f };
 	TexList[HeartTwo].Size = {
 		Ease(In,Quad,0.3f,TexList[HeartTwo].Size.x,TexList[HeartThree].Size.x),
 		Ease(In,Quad,0.3f,TexList[HeartTwo].Size.y,TexList[HeartThree].Size.y),
 	};
-	if (percent>=0.5f) {
+	if (percent >= 0.5f) {
+		m_vel = 1 / 8.0f;
 		TexList[HeartThree].Color = { 0,1,0,1 };
 		TexList[HeartTwo].Color = { 1,0,0,1 };
 	} else if (percent >= 0.25f) {
+		m_vel = 1 / 8.0f;
 		TexList[HeartThree].Color = { 1,1,0,1 };
 		TexList[HeartTwo].Color = { 0.5f,0,0,1 };
-	} else  {
+	} else {
+		m_vel = 1 / 4.0f;
 		TexList[HeartThree].Color = { 1,0,0,1 };
 		TexList[HeartTwo].Color = { 0,0,0,1 };
 	}
@@ -174,10 +183,6 @@ void UI::PlayerGauge() {
 			TexList[ChargeGauge].Color = { 1.0f,0.0f,0.0f,1.0f };
 		}
 	}
-
-
-
-
 
 }
 

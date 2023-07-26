@@ -178,15 +178,12 @@ void SixBoss::Draw(DirectXCommon* dxCommon) {
 //ImGui
 void SixBoss::ImGui_Origin() {
 	ImGui::Begin("Six");
-	ImGui::Text("End:%d", m_EndTimer);
+	ImGui::Text("HP:%f", m_HP);
 	ImGui::End();
-	for (size_t i = 0; i < cd.size(); i++) {
-		cd[i]->ImGuiDraw();
-	}
 }
 //インターバル
 void SixBoss::InterValMove() {
-	m_MoveInterVal++;
+	//m_MoveInterVal++;
 	m_AreaState = AREA_SET;
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> l_RandomMove(0, 3);
@@ -483,7 +480,7 @@ void SixBoss::DeadAction() {
 	m_DeathTimer++;
 	const int l_BaseTarget = 50;
 	if (m_DeathTimer == 1) {
-		m_Position = { 0.0f,30.0f,45.0f };
+		m_Position = { 0.0f,30.0f,15.0f };
 		m_Rotation = { 0.0f,0.0f,0.0f };
 	}
 	else if (m_DeathTimer >= 2 && m_DeathTimer < 300) {
@@ -500,7 +497,7 @@ void SixBoss::DeadAction() {
 		m_Gravity = 0.05f;
 		//飛ぶような感じにするため重力を入れる
 		m_AddPower -= m_Gravity;
-		Helper::GetInstance()->CheckMax(m_Position.y, 6.0f, m_AddPower);
+		Helper::GetInstance()->CheckMax(m_Position.y, 2.0f, m_AddPower);
 	}
 
 	Obj_SetParam();

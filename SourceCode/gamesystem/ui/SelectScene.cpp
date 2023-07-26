@@ -442,6 +442,8 @@ void SelectScene::StateManager() {
 	m_Scale[TITLE] = { 0.025f,0.1f,0.025f };
 	//m_Wide = true;
 	m_SelectState = SELECT_SECOND;
+	m_Wide = true;
+	//
 	//クリア状況に応じてOBJの大きさだったりが違う
 	if (m_SelectState == SELECT_FIRST) {		//ここは牛乳のみ
 		if (SceneSave::GetInstance()->GetClearFlag(SeceneCategory::kFirstStage))

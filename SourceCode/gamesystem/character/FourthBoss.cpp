@@ -31,7 +31,7 @@ FourthBoss::FourthBoss() {
 		photoSpot[i].reset(photoSpot_);
 	}
 
-	photo[Photo_In] = IKESprite::Create(ImageManager::PHOTO_IN, { 0,0 }, {1,1,1,0.5f});
+	photo[Photo_In] = IKESprite::Create(ImageManager::PHOTO_IN, { 0,0 }, { 1,1,1,0.5f });
 	photo[Photo_In_Change] = IKESprite::Create(ImageManager::PHOTO_IN_Change, { 0,0 }, { 1,1,1,0.5f });
 	photo[Photo_In_Control] = IKESprite::Create(ImageManager::PHOTO_IN_Control, { 0,0 }, { 1,1,1,0.5f });
 	photo[Photo_In_Sub] = IKESprite::Create(ImageManager::PHOTO_IN_Sub, { 0,0 }, { 1,1,1,0.5f });
@@ -82,7 +82,7 @@ void FourthBoss::SkipInitialize() {
 
 //行動
 void FourthBoss::Action() {
-	if (m_HP < 0.1f) return;
+	if (m_HP <= 0.0f) return;
 	if (IsPinch()) { isStrong = true; }
 	for (int i = 0; i < kPhotoSpotMax; i++) {
 		photoSpot[i]->Update();
@@ -441,8 +441,8 @@ void FourthBoss::ExplosionUpdate() {
 	ActionTimer++;
 	float RotTimerMax = ActionTimerMax[(size_t)phase] / 10.0f;
 	float RotTimer = ActionTimer / RotTimerMax;
-	Helper::GetInstance()->Clamp(RotTimer,0.f,1.f);
-	m_Rotation.z = Ease(InOut,Circ, RotTimer,0,390.0f);
+	Helper::GetInstance()->Clamp(RotTimer, 0.f, 1.f);
+	m_Rotation.z = Ease(InOut, Circ, RotTimer, 0, 390.0f);
 
 
 	m_Position.y += add;
@@ -466,7 +466,7 @@ void FourthBoss::ExplosionUpdate() {
 	mt19937 mt{ std::random_device{}() };
 	uniform_int_distribution<int> l_Randlife(10, 40);
 	int l_Life = int(l_Randlife(mt));
-	ParticleEmitter::GetInstance()->Explosion(l_Life, m_Position, l_AddSize, s_scale, e_scale, s_color, e_color,0);
+	ParticleEmitter::GetInstance()->Explosion(l_Life, m_Position, l_AddSize, s_scale, e_scale, s_color, e_color, 0);
 	if (ActionTimer >= ActionTimerMax[(size_t)phase] && !isShutter) {
 		isShutter = true;
 	}
@@ -474,7 +474,7 @@ void FourthBoss::ExplosionUpdate() {
 	if (ShutterEffect()) {
 		if (ShutterFeed()) {
 			ShutterReset();
-			add = 5.0f;			
+			add = 5.0f;
 			m_Rotation.z = 0.0f;
 			subtimer = 0.4f;
 			ActionTimer = 0;
@@ -579,18 +579,15 @@ void FourthBoss::EndRollAction() {
 		if (m_EndTimer == 1) {
 			m_Position = { -30.0f,40.0f,15.0f };
 			m_Rotation = { 0.0f,90.0f,0.0f };
-		}
-		else if (m_EndTimer == 600) {
+		} else if (m_EndTimer == 600) {
 			_EndState = END_WALK;
 		}
-	}
-	else if (_EndState == END_WALK) {
+	} else if (_EndState == END_WALK) {
 		m_AddPower -= m_Gravity;
 		if (Helper::GetInstance()->CheckMax(m_Position.y, 0.0f, m_AddPower)) {
 			_EndState = END_DIR_CAMERA;
 		}
-	}
-	else {
+	} else {
 
 	}
 	//OBJのステータスのセット

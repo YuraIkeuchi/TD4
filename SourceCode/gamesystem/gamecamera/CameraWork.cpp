@@ -115,7 +115,7 @@ void CameraWork::DefUpda(DebugCamera* camera) {
 //通常のカメラ
 void CameraWork::DefaultCam() {
 	if (FeedF) {
-		feed->FeedIn(Feed::FeedType::WHITE, 0.01f, FeedF);
+		feed->FeedIn(Feed::FeedType::WHITE, 1.0f/30.0f, FeedF);
 		if (feed->GetFeedEnd()) {
 			AppearEndF = true;
 			m_CameraSkip = false;
@@ -159,7 +159,7 @@ void CameraWork::BossAppear() {
 		}
 	}
 	if (FeedF) {
-		feed->FeedIn(Feed::FeedType::WHITE, 0.01f, FeedF);
+		feed->FeedIn(Feed::FeedType::WHITE, 1.0f/30.0f, FeedF);
 		if (feed->GetFeedEnd()) {
 			AppearEndF = true;
 			m_CameraSkip = false;
@@ -279,7 +279,7 @@ void CameraWork::SetBossDead_AfterSecond() {
 void CameraWork::SetBossDead_AfterThird() {
 	RadEffect = 0.f;
 	if (FeedF) {
-		feed->FeedIn(Feed::FeedType::WHITE, 0.01f, FeedF);
+		feed->FeedIn(Feed::FeedType::WHITE, 1.0f/30.0f, FeedF);
 	}
 
 	if (!m_LookPlayer) {
@@ -314,7 +314,7 @@ void CameraWork::SetBossDead_AfterThird() {
 void CameraWork::SetBossDead_AfterFourth() {
 	RadEffect = 0.f;
 	if (FeedF) {
-		feed->FeedIn(Feed::FeedType::WHITE, 0.01f, FeedF);
+		feed->FeedIn(Feed::FeedType::WHITE, 1.0f/30.0f, FeedF);
 	}
 
 	if (!m_LookPlayer) {
@@ -350,14 +350,14 @@ void CameraWork::SetBossDead_AfterFourth() {
 void CameraWork::SetBossDead_AfterFive() {
 	RadEffect = 0.f;
 	if (FeedF) {
-		feed->FeedIn(Feed::FeedType::WHITE, 0.01f, FeedF);
+		feed->FeedIn(Feed::FeedType::WHITE, 1.0f/30.0f, FeedF);
 	}
 
 	if (!m_LookPlayer) {
 		DeathTimer++;
 		m_eyePos.x = 0.0f;
 		m_eyePos.y = Player::GetInstance()->GetPosition().y + 3.0f;
-		m_eyePos.z = -20.0f;
+		m_eyePos.z = 0.0f;
 
 
 		m_targetPos = { boss->GetPosition().x,boss->GetPosition().y,boss->GetPosition().z };
@@ -385,7 +385,7 @@ void CameraWork::SetBossDead_AfterFive() {
 void CameraWork::SetBossDead_AfterSix() {
 	RadEffect = 0.f;
 	if (FeedF) {
-		feed->FeedIn(Feed::FeedType::WHITE, 0.01f, FeedF);
+		feed->FeedIn(Feed::FeedType::WHITE, 1.0f/30.0f, FeedF);
 	}
 	if (!m_LookPlayer) {
 		m_eyePos.x = 0.0f;
@@ -420,7 +420,7 @@ void CameraWork::SetBossDead_AfterSeven() {
 	const float l_AddFrame = 0.01f;
 	RadEffect = 0.f;
 	if (FeedF) {
-		feed->FeedIn(Feed::FeedType::WHITE, 0.01f, FeedF);
+		feed->FeedIn(Feed::FeedType::WHITE, 1.0f/30.0f, FeedF);
 	}
 	
 	//カメラ位置固定
