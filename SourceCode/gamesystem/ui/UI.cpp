@@ -39,13 +39,12 @@ void UI::Initialize() {
 		sprites[UnderBossGauge] = CreateUi(ImageManager::BossHPGauge, { WinApp::window_width-10,10 }, m_PlayerHpSize, { 1.5f, 1.5f, 1.5f,1 });
 		sprites[UnderBossGauge].Tex->SetAnchorPoint({ 1.0f,0.f });
 		TexList.emplace_back(std::move(sprites[UnderBossGauge]));
-	}
-	{//ゲージ
-		sprites[MiddleBossGauge] = CreateUi(ImageManager::WHITE, { 900,30 }, { 350,40 }, { 1.f, 1.f, 0.f,1 });
+		XMFLOAT2 pos = TexList[UnderBossGauge].Tex->GetPosition();
+		sprites[MiddleBossGauge] = CreateUi(ImageManager::WHITE, { pos.x-279.f,pos.y+17.f }, { 350,40 }, { 1.f, 1.f, 0.f,1 });
 		sprites[MiddleBossGauge].Tex->SetAnchorPoint({ 0,0.f });
 		TexList.emplace_back(std::move(sprites[MiddleBossGauge]));
 
-		sprites[BossGauge] = CreateUi(ImageManager::WHITE, { 900,30 }, { 350,40 }, { 1.f, 0.f, 0.f,1 });
+		sprites[BossGauge] = CreateUi(ImageManager::WHITE, { pos.x - 279.f,pos.y + 17.f}, { 350,40 }, { 1.f, 0.f, 0.f,1 });
 		sprites[BossGauge].Tex->SetAnchorPoint({ 0,0.f });
 		TexList.emplace_back(std::move(sprites[BossGauge]));
 	}
@@ -123,7 +122,6 @@ void UI::Update() {
 	if (m_limit == -240) {
 		m_limit = 120;
 	}
-
 	if (m_limit == 360) {
 		m_limit = 0;
 	}
@@ -164,7 +162,7 @@ void UI::Update() {
 
 
 	if (boss) {
-		TexList[BossGauge].Size = { boss->HpPercent() * 512.f * 0.6f * 0.9f ,128.f * 0.8f * 0.34f };
+		TexList[BossGauge].Size = { boss->HpPercent() * m_PlayerHpSize.x * 0.67f ,m_PlayerHpSize.y * 0.33f };
 		TexList[MiddleBossGauge].Size = {
 		Ease(In,Quad,0.3f,TexList[MiddleBossGauge].Size.x,TexList[BossGauge].Size.x),
 		Ease(In,Quad,0.3f,TexList[MiddleBossGauge].Size.y,TexList[BossGauge].Size.y),

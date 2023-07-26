@@ -34,8 +34,10 @@ void MessageWindow::Update(const XMFLOAT4& girlcolor, const XMFLOAT4& sutoponcol
 void MessageWindow::Draw()
 {
 	if (!notBlack) {
-		blackback_->Draw();
-		window_->Draw();
+		if (invisible) {
+			blackback_->Draw();
+			window_->Draw();
+		}
 	}
 	girl_->Draw();
 	sutopon_->Draw();

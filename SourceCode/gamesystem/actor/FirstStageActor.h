@@ -51,7 +51,7 @@ private:
 	float boss_hp_{};
 	float quarter_hp_{};
 	bool tolk_F = true;
-
+	bool isfirst = false;
 
 	enum AppState {
 		APP_START,

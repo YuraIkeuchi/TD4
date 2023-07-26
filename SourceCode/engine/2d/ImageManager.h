@@ -75,6 +75,12 @@ public:
 		RBBUTTON,
 		LBBUTTON,
 		tip1,
+		tip2,
+		tip3,
+		tip4,
+		tip5,
+		tip6,
+		tip7,
 		Challenge,
 		Cancel,
 		BOSS_ARROW,
@@ -95,6 +101,7 @@ public:
 		CATCH,
 		SLASHAREA,
 		DARKBOM,
+		SHADOW,
 	};
 	enum particleName
 	{

@@ -21,7 +21,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	ParticleEmitter::GetInstance()->AllDelete();
 
 	//各クラス
-	Player::GetInstance()->InitState({ 0.0f,5.0f,-5.0f });
+	Player::GetInstance()->InitState({ 0.0f,-2.0f,-5.0f });
 
 	backScreen_ = IKESprite::Create(ImageManager::PLAY, { 0,0 });
 	backScreen_->SetSize({ 1280.0f,720.0f });
@@ -65,6 +65,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	messagewindow_ = make_unique<MessageWindow>();
 	messagewindow_->Initialize();
 	messagewindow_->Display();
+	sutopon_color_ = { 1.f,1.f,1.f,1.f };
 }
 
 void FirstStageActor::Finalize()
@@ -138,10 +139,10 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon)
 {
 
 	if (tolk_F == true) {
+		text_->SpriteDraw(dxCommon);
 		IKESprite::PreDraw();
 		messagewindow_->Draw();
 		IKESprite::PostDraw();
-		text_->SpriteDraw(dxCommon);
 
 	}
 	//パーティクル描画
@@ -171,10 +172,10 @@ void FirstStageActor::BackDraw(DirectXCommon* dxCommon)
 {
 
 	if (tolk_F == true) {
+		text_->SpriteDraw(dxCommon);
 		IKESprite::PreDraw();
 		messagewindow_->Draw();
 		IKESprite::PostDraw();
-		text_->SpriteDraw(dxCommon);
 	}
 	IKESprite::PreDraw();
 	backScreen_->Draw();
@@ -263,15 +264,18 @@ void FirstStageActor::MainUpdate(DebugCamera* camera)
 			enemymanager->SetDeadThrow(true);
 			enemymanager->DeadUpdate();
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_BEFORE);
+			Player::GetInstance()->DeathUpdate();
 		}
 		//フェード後
 		else
 		{
+			m_DeathTimer++;
 			PlayPostEffect = false;
-			Player::GetInstance()->InitState({ 0.0f,0.0f,-5.0f });
 			enemymanager->SetDeadThrow(false);
 			enemymanager->DeadUpdate();
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_SIX);
+			loadobj->AllClear();
+			Player::GetInstance()->DeathUpdateAfter(m_DeathTimer);
 		}
 
 		if (camerawork->GetEndDeath()) {
@@ -280,8 +284,6 @@ void FirstStageActor::MainUpdate(DebugCamera* camera)
 			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
 
 		}
-
-		Player::GetInstance()->DeathUpdate();
 	}
 
 	else
@@ -327,7 +329,10 @@ void FirstStageActor::CheckHp()
 {
 	boss_hp_ = enemymanager->GetHp();
 	if (boss_hp_ <= quarter_hp_) {
+		if (isfirst) { return; }
+		enemymanager->UpdateStop();
 		tolk_F = true;
+		isfirst = true;
 	} else {
 		tolk_F = false;
 	}
@@ -336,9 +341,12 @@ void FirstStageActor::CheckHp()
 void FirstStageActor::TalkUpdate()
 {
 	if (tolk_F != true) { return; }
+	
+
 	m_AppTimer++;
 	text_->Display();
 	messagewindow_->SetBack(false);
+	messagewindow_->Invisible();
 	if (m_AppTimer == 2) {
 		text_->SelectText(TextManager::Name_First::CHARGE1);
 	}
@@ -349,6 +357,10 @@ void FirstStageActor::TalkUpdate()
 		text_->SelectText(TextManager::Name_First::CHARGE3);
 	}
 	else if (m_AppTimer == 450) {
+		text_->SelectText(TextManager::Name_First::CHARGE4);
+
+	}
+	else if (m_AppTimer == 625) {
 		quarter_hp_ = -100.f;
 	}
 }

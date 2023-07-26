@@ -75,6 +75,13 @@ void ImageManager::SecondLoad2D()
 	IKESprite::LoadTexture(LBBUTTON, L"Resources/2d/objicon/LB.png");
 	IKESprite::LoadTexture(RBBUTTON, L"Resources/2d/objicon/RB.png");
 	IKESprite::LoadTexture(tip1, L"Resources/2d/sceneback/tips1.png");
+	IKESprite::LoadTexture(tip2, L"Resources/2d/sceneback/tips2.png");
+	IKESprite::LoadTexture(tip3, L"Resources/2d/sceneback/tips3.png");
+	IKESprite::LoadTexture(tip4, L"Resources/2d/sceneback/tips4.png");
+	IKESprite::LoadTexture(tip5, L"Resources/2d/sceneback/tips5.png");
+	IKESprite::LoadTexture(tip6, L"Resources/2d/sceneback/tips6.png");
+	IKESprite::LoadTexture(tip7, L"Resources/2d/sceneback/tips7.png");
+
 	IKESprite::LoadTexture(Challenge, L"Resources/2d/objicon/Challenge.png");
 	IKESprite::LoadTexture(Cancel, L"Resources/2d/objicon/Cancel.png");
 
@@ -104,6 +111,7 @@ void ImageManager::SecondLoadTex2D()
 	IKETexture::LoadTexture(CATCH, L"Resources/2d/effect/effect1.png");
 	IKETexture::LoadTexture(SLASHAREA, L"Resources/2d/effect/DArea3.png");
 	IKETexture::LoadTexture(DARKBOM, L"Resources/2d/objicon/missileicon.png");
+	IKETexture::LoadTexture(SHADOW, L"Resources/2d/effect/shadow.png");
 }
 
 void ImageManager::LoadParticle()

@@ -107,6 +107,7 @@ void SmashShotAttack::Phase_Idle()
 
 void SmashShotAttack::Phase_Shot()
 {
+
 	//弾の向きをプレイヤーに
 	RottoPlayer();
 	//向いた方向に進む
@@ -157,7 +158,7 @@ void SmashShotAttack::Phase_Shot()
 	}
 
 	for (auto i = 0; i < BulSize; i++) {
-		if (BulPos[i].y <= 0.f)
+		if (BulPos[i].y <= -5.f)
 		{
 			BulPos[i] = boss->GetPosition();
 		}

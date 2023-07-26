@@ -29,7 +29,7 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 
 	//各クラス
 	//プレイヤー
-	Player::GetInstance()->InitState({ 0.0f,5.0f,-70.0f });
+	Player::GetInstance()->InitState({ 0.0f,-2.0f,-70.0f });
 
 	Player::GetInstance()->SetCanShot(false);
 	Player::GetInstance()->MoveStop(true);
@@ -165,11 +165,7 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	//音楽の音量が変わる
 	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 	VolumManager::GetInstance()->Update();
-	if (enemymanager->BossDestroy()) {
-		Player::GetInstance()->DeathUpdate();
-	} else {
-		Player::GetInstance()->Update();
-	}
+
 	//enemymanager->BattleUpdate();
 	ColEnemy(enemymanager->GetBulEnemy());
 	loadobj->SecondUpdate();
@@ -186,14 +182,16 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 			enemymanager->SetDeadThrow(true);
 			enemymanager->DeadUpdate();
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_BEFORE);
+			Player::GetInstance()->DeathUpdate();
 		}
 		//フェード後
 		else {
-			Player::GetInstance()->InitState({ 0.0f,0.0f,-5.0f });
-
+			m_DeathTimer++;
+			loadobj->AllClear();
 			enemymanager->SetDeadThrow(false);
 			enemymanager->DeadUpdate();
 			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_FIRST);
+			Player::GetInstance()->DeathUpdateAfter(m_DeathTimer);
 		}
 
 
@@ -203,10 +201,7 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::ReverseType::NonReverse);
 		}
 	} else {
-		//if (camerawork->FinishAppear()) {
-			//m_SceneState = SceneState::MainState;
-		//	camerawork->SetCameraState(CAMERA_NORMAL);
-		//}
+		Player::GetInstance()->Update();
 	}
 	XMFLOAT3 Position = enemymanager->GetBoss()->GetPosition();
 	XMVECTOR tex2DPos = { Position.x, Position.y, Position.z };
@@ -252,8 +247,6 @@ void SecondStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
 
-		//ImGuiDraw(dxCommon);
-
 		postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	} else {
@@ -263,8 +256,7 @@ void SecondStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-		//ImGuiDraw(dxCommon);
-
+	
 		dxCommon->PostDraw();
 	}
 }
@@ -332,10 +324,11 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void SecondStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	//Player::GetInstance()->ImGuiDraw();
-	//enemymanager->ImGuiDraw();
-	//loadobj->ImGuiDraw();
-	//SceneSave::GetInstance()->ImGuiDraw();
+	Player::GetInstance()->ImGuiDraw();
+	camerawork->ImGuiDraw();
+	ImGui::Begin("Second");
+	ImGui::Text("Timer:%d", m_DeathTimer);
+	ImGui::End();
 }
 
 

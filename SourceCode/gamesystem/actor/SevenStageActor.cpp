@@ -20,7 +20,7 @@ void SevenStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	ParticleEmitter::GetInstance()->AllDelete();
 
 	//各クラス
-	Player::GetInstance()->InitState({ 0.0f,5.0f,-5.0f });
+	Player::GetInstance()->InitState({ 0.0f,-2.0f,-5.0f });
 
 	backScreen_ = IKESprite::Create(ImageManager::PLAY, { 0,0 });
 	backScreen_->SetSize({ 1280.0f,720.0f });
@@ -110,7 +110,6 @@ void SevenStageActor::Draw(DirectXCommon* dxCommon) {
 	if (PlayPostEffect) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		BackDraw(dxCommon);
-		FrontDraw(dxCommon);
 		IKESprite::PreDraw();
 		//SelectScene::GetIns()->Draw_Sprite();
 		IKESprite::PostDraw();
@@ -118,8 +117,7 @@ void SevenStageActor::Draw(DirectXCommon* dxCommon) {
 
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
-		//ImGuiDraw(dxCommon);
-		postEffect->ImGuiDraw();
+		FrontDraw(dxCommon);
 		dxCommon->PostDraw();
 	} else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
@@ -128,7 +126,6 @@ void SevenStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-		ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 }
@@ -199,6 +196,7 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void SevenStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
+	Player::GetInstance()->ImGuiDraw();
 }
 //登場シーン
 void SevenStageActor::IntroUpdate(DebugCamera* camera) {
@@ -263,6 +261,7 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 		}
 		//フェード後
 		else {
+			loadobj->AllClear();
 			text_->Display();
 			m_EndTimer++;
 			PlayPostEffect = false;
@@ -387,6 +386,7 @@ void SevenStageActor::TextRead() {
 //覚醒時のテキスト
 void SevenStageActor::AwakeText() {
 	if (m_AwakeTimer == 1) {
+		WhoRead("none");
 		text_->SelectText(TextManager::AWAKE_FIRST);
 	} else if (m_AwakeTimer == 200) {
 		text_->SelectText(TextManager::AWAKE_SECOND);
@@ -452,7 +452,8 @@ void SevenStageActor::WhoRead(const string& name) {
 		sutopon_color_ = { 0.5f,0.5f,0.5f,0.5f };
 		girl_color_ = { 0.5f,0.5f,0.5f,0.5f };
 	}
-	else {
-		assert(0);
+	else if(name == "none") {
+		sutopon_color_ = { 0.0f,0.0f,0.0f,0.0f };
+		girl_color_ = { 0.0f,0.0f,0.0f,0.0f };
 	}
 }

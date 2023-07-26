@@ -51,6 +51,8 @@ public:
 	//覚醒
 	void Awake();
 	void DeleteObj();
+
+	void UpdateStop();
 public:
 	void HealHP(const float power);
 public://getter setter

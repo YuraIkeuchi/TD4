@@ -1102,11 +1102,11 @@
     <ClInclude Include="SourceCode\gamesystem\character\ShadowSlashAttack.h">
       <Filter>gamesystem\charactor\Boss\Five</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\gamesystem\character\KnockAttack.h">
-      <Filter>gamesystem\charactor\Boss\Five\NewFilter1</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\character\DarkSutoponShot.h">
       <Filter>gamesystem\charactor\Boss\Five\NewFilter1</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\character\KnockAttack.h">
+      <Filter>gamesystem\charactor\Boss\Five</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
