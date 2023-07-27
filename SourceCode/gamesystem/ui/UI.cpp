@@ -6,6 +6,7 @@
 #include "EnemyManager.h"
 #include <Easing.h>
 #include <Helper.h>
+#include <random>
 UI::~UI() {
 	TexList.clear();
 }
@@ -43,14 +44,14 @@ void UI::Initialize() {
 		TexList.emplace_back(std::move(sprites[ChargeGauge]));
 	}
 	{//ゲージ
-		sprites[UnderBossGauge] = CreateUi(ImageManager::BossHPGauge, { WinApp::window_width - 10,10 }, m_PlayerHpSize, { 1.5f, 1.5f, 1.5f,1 });
+		sprites[UnderBossGauge] = CreateUi(ImageManager::BossHPGauge, m_UnderBossPos, m_PlayerHpSize, { 1.5f, 1.5f, 1.5f,1 });
 		sprites[UnderBossGauge].Tex->SetAnchorPoint({ 1.0f,0.f });
 		TexList.emplace_back(std::move(sprites[UnderBossGauge]));
 		XMFLOAT2 pos = TexList[UnderBossGauge].Tex->GetPosition();
-		sprites[MiddleBossGauge] = CreateUi(ImageManager::WHITE, { pos.x - 279.f,pos.y + 17.f }, { 350,40 }, { 1.f, 1.f, 0.f,1 });
+		sprites[MiddleBossGauge] = CreateUi(ImageManager::WHITE, m_MiddleBossPos, { 350,40 }, { 1.f, 1.f, 0.f,1 });
 		sprites[MiddleBossGauge].Tex->SetAnchorPoint({ 0,0.f });
 		TexList.emplace_back(std::move(sprites[MiddleBossGauge]));
-		sprites[BossGauge] = CreateUi(ImageManager::WHITE, { pos.x - 279.f,pos.y + 17.f }, { 350,40 }, { 1.f, 0.f, 0.f,1 });
+		sprites[BossGauge] = CreateUi(ImageManager::WHITE, m_BossPos, { 350,40 }, { 1.f, 0.f, 0.f,1 });
 		sprites[BossGauge].Tex->SetAnchorPoint({ 0,0.f });
 		TexList.emplace_back(std::move(sprites[BossGauge]));
 	}
@@ -70,6 +71,9 @@ void UI::Initialize() {
 		sprites[ArrowBoss].Tex->SetAnchorPoint({ 0.5,0.5f });
 		TexList.emplace_back(std::move(sprites[ArrowBoss]));
 		TexList[ArrowBoss].IsVisible = false;
+	}
+	if (boss) {
+		bossHpOld = boss->GetHP();
 	}
 }
 
@@ -188,7 +192,7 @@ void UI::PlayerGauge() {
 			TexList[ChargeGauge].Color = { 1.0f,0.0f,0.0f,1.0f };
 		}
 	}
-	if (hungerGauge->GetCatchCount() > 0&& hungerGauge->GetAdditional() > 0.f) {
+	if (hungerGauge->GetCatchCount() > 0 && hungerGauge->GetAdditional() > 0.f) {
 		if (state == GaugeState::nom4l) {
 			state = GaugeState::ch4nge;
 		}
@@ -212,7 +216,7 @@ void UI::PlayerGauge() {
 			Ease(Out,Quad,ch4ngeTimer,1.5f,5.f),
 			1.f };
 		Helper::GetInstance()->Clamp(ch4ngeTimer, 0.0f, 1.0f);
-		if (ch4ngeTimer==1.0f) {
+		if (ch4ngeTimer == 1.0f) {
 			state = GaugeState::extr4;
 			ch4ngeTimer = 0.0f;
 		}
@@ -310,6 +314,43 @@ void UI::BossLife() {
 		Ease(In,Quad,0.3f,TexList[MiddleBossGauge].Size.x,TexList[BossGauge].Size.x),
 		Ease(In,Quad,0.3f,TexList[MiddleBossGauge].Size.y,TexList[BossGauge].Size.y),
 		};
+
+		if (bossHpOld != boss->GetHP()) {
+			if (!isCrush) {
+				isCrush = true;
+			}
+		}
+		bossHpOld = boss->GetHP();
+
+
+		if (isCrush) {
+			TexList[UnderBossGauge].Position = {
+					m_UnderBossPos.x,
+					m_UnderBossPos.y + power
+			};
+			for (int i = MiddleBossGauge; i <= BossGauge; i++) {
+				TexList[i].Position = {
+					m_MiddleBossPos.x,
+					m_MiddleBossPos.y + power
+				};
+			}
+			crushTimer += 1 / 15.0f;
+
+			power = power - 1.0f;
+			power *= -1.0f;
+			Helper::GetInstance()->Clamp(power, -18.0f, 20.0f);
+			Helper::GetInstance()->Clamp(crushTimer, 0.0f, 1.0f);
+
+			if (crushTimer == 1.0f) {
+				isCrush = false;
+				TexList[UnderBossGauge].Position = m_UnderBossPos;
+				TexList[MiddleBossGauge].Position = m_MiddleBossPos;
+				TexList[BossGauge].Position = m_BossPos;
+				power = 10.0f;
+				crushTimer = 0.0f;
+			}
+		}
+
 	} else {
 		TexList[UnderBossGauge].IsVisible = false;
 		TexList[MiddleBossGauge].IsVisible = false;

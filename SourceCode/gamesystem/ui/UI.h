@@ -59,6 +59,11 @@ private:
 
 	XMFLOAT2 m_PlayerCireclePos = { WinApp::window_width - 100 ,WinApp::window_height };
 	XMFLOAT2 m_PlayerCircleSize = { 240.f,240.f };
+
+	XMFLOAT2 m_UnderBossPos = { WinApp::window_width - 10,10 };
+	XMFLOAT2 m_MiddleBossPos = { m_UnderBossPos.x - 279.f,m_UnderBossPos.y + 17.f };
+	XMFLOAT2 m_BossPos = { m_UnderBossPos.x - 279.f,m_UnderBossPos.y + 17.f };
+
 	float m_PlayerCircleRot = 0.f;
 
 	float m_limit = 0.f;
@@ -79,6 +84,11 @@ private:
 	};
 	GaugeState state = GaugeState::nom4l;
 	float ch4ngeTimer = 0.f;
+
+	float bossHpOld = 0.0f;
+	bool isCrush = false;
+	float power = 10.0f;
+	float crushTimer = 0.0f;
 public:
 	//初期化
 	void Initialize();
