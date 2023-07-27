@@ -572,6 +572,9 @@
     <ClCompile Include="SourceCode\gamesystem\character\DarkSutoponShot.cpp">
       <Filter>gamesystem\charactor\Boss\Five\NewFilter1</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\effect\HitStop.cpp">
+      <Filter>gamesystem\effect\HitStop</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
@@ -1108,6 +1111,9 @@
     <ClInclude Include="SourceCode\gamesystem\character\KnockAttack.h">
       <Filter>gamesystem\charactor\Boss\Five</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\effect\HitStop.h">
+      <Filter>gamesystem\effect\HitStop</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
@@ -1507,6 +1513,9 @@
     </Filter>
     <Filter Include="gamesystem\scene\EndRoll">
       <UniqueIdentifier>{cc3076ca-66ef-4952-b4dc-38fbeb169a69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\effect\HitStop">
+      <UniqueIdentifier>{d01ba126-acbe-4f5a-9e22-7ce91db4caf8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

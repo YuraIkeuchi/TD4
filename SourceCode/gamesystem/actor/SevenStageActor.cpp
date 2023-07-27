@@ -6,6 +6,7 @@
 #include "Menu.h"
 #include "SelectScene.h"
 #include "Helper.h"
+#include "HitStop.h"
 //‰Šú‰»
 void SevenStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	dxCommon->SetFullScreen(true);
@@ -73,7 +74,9 @@ void SevenStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		}
 		return;
 	}
-	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+	if (!HitStop::GetInstance()->GetHitStop()) {
+		(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+	}
 	sceneChanger_->Update();
 
 	//ƒvƒŒƒCƒ„[
@@ -102,6 +105,7 @@ void SevenStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	ui->Update();
 	menu->Update();
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
+	HitStop::GetInstance()->Update();
 }
 //•`‰æ
 void SevenStageActor::Draw(DirectXCommon* dxCommon) {

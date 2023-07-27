@@ -7,6 +7,7 @@
 #include "Menu.h"
 #include "Helper.h"
 #include "SelectScene.h"
+#include "HitStop.h"
 
 void FiveStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
@@ -78,8 +79,10 @@ void FiveStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	}
 
 	enemymanager->SetGhost(loadobj->GetGhost());
-	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
 
+	if (!HitStop::GetInstance()->GetHitStop()) {
+		(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+	}
 	//ƒvƒŒƒCƒ„[
 	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
 		SceneSave::GetInstance()->SetClearFlag(kSixStage, true);
@@ -109,6 +112,7 @@ void FiveStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	sceneChanger_->Update();
 	ui->Update();
 	menu->Update();
+	HitStop::GetInstance()->Update();
 }
 
 void FiveStageActor::Draw(DirectXCommon* dxCommon) {
