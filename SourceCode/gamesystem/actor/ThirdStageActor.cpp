@@ -6,6 +6,7 @@
 #include "Menu.h"
 #include "SelectScene.h"
 #include "Helper.h"
+#include "HitStop.h"
 //初期化
 void ThirdStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	dxCommon->SetFullScreen(true);
@@ -74,8 +75,9 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		}
 		return;
 	}
-
-	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+	if (!HitStop::GetInstance()->GetHitStop()) {
+		(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+	}
 	sceneChanger_->Update();
 	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
 	lightgroup->SetCircleShadowCasterPos(0, XMFLOAT3({ Player::GetInstance()->GetPosition().x, 0.0f, Player::GetInstance()->GetPosition().z }));
@@ -105,6 +107,7 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	menu->Update();
 	ui->Update();
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
+	HitStop::GetInstance()->Update();
 }
 //描画
 void ThirdStageActor::Draw(DirectXCommon* dxCommon) {

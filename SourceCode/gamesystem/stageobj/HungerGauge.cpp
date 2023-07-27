@@ -27,16 +27,25 @@ bool HungerGauge::Initialize() {
 
 //更新
 void HungerGauge::Update() {
-	if (isStop) { return; }
 	float l_Limit = 50.0f;
 	float l_AdditionalLimit = 10.0f;
 	//一定ずつで減少していく(超過分がなくなった場合)
 	if (Helper::GetInstance()->CheckMax(m_Additional, 0.0f, -m_SubExtra)) {
-		if (m_CatchCount <= 5 && m_CatchCount > 0) {
-			m_NowHunger -= m_SubHunger[m_CatchCount - 1];
+		if (!isStop) {
+			if (m_CatchCount <= 5 && m_CatchCount > 0) {
+				m_NowHunger -= m_SubHunger[m_CatchCount - 1];
+			}
+			else {
+				m_NowHunger -= m_SubHunger[SUB_MAX - 1];
+			}
 		}
 		else {
-			m_NowHunger -= m_SubHunger[SUB_MAX - 1];
+			if (m_CatchCount <= 5 && m_CatchCount > 0) {
+				m_NowHunger -= m_SubHunger[m_CatchCount - 1] * 0.8f;
+			}
+			else {
+				m_NowHunger -= m_SubHunger[SUB_MAX - 1] * 0.8f;
+			}
 		}
 	}
 	//飢餓ゲージの最大数が決まっている

@@ -192,7 +192,7 @@ void SelectScene::Upda() {
 	m_Birth[TITLE] = true;
 	for (int i = 0; i < MAX; i++) {
 		if (IconColor[i] < 1.f) { continue; }
-		if (Input::GetInstance()->TriggerButton(Input::B) && (m_Birth[i])) {
+		if (Input::GetInstance()->TriggerButton(Input::B)/* && (m_Birth[i])*/) {
 			TipsAct[i] = true;
 		}
 	}

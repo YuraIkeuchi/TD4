@@ -6,6 +6,7 @@
 #include "SelectScene.h"
 #include "Helper.h"
 #include <HungerGauge.h>
+#include "HitStop.h"
 const XMVECTOR kSkyBlue{ 0.f,1.f,1.f,1.f };
 const XMVECTOR kPink{ 0.9f,0.6f,0.8f,1.f };
 
@@ -99,7 +100,9 @@ void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	}
 	if (isVisible) { apple->Update(); }
 
-	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+	if (!HitStop::GetInstance()->GetHitStop()) {
+		(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+	}
 	sceneChanger_->Update();
 	camerawork->Update(camera);
 	menu->Update();
@@ -119,6 +122,7 @@ void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	lightgroup->SetCircleShadowAtten(0, XMFLOAT3(circleShadowAtten));
 	lightgroup->SetCircleShadowFactorAngle(0, XMFLOAT2(circleShadowFactorAngle));
 	lightgroup->Update();
+	HitStop::GetInstance()->Update();
 }
 //描画
 void FourthStageActor::Draw(DirectXCommon* dxCommon) {
