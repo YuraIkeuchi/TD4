@@ -271,16 +271,9 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 }
 //ImGui
 void Player::ImGuiDraw() {
-	//弾の削除(言霊)
-	for (int i = 0; i < attackbullets.size(); i++) {
-		if (attackbullets[i] == nullptr) {
-			continue;
-		}
-
-		if (attackbullets[i]->GetAlive()) {
-			attackbullets[i]->ImGuiDraw();
-		}
-	}
+	ImGui::Begin("Player");
+	ImGui::Text("Type:%d", m_ChargeType);
+	ImGui::End();
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)

@@ -5,6 +5,7 @@
 #include "BackObj.h"
 #include "SelectScene.h"
 #include "Helper.h"
+#include "HitStop.h"
 //初期化
 void SixStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	dxCommon->SetFullScreen(true);
@@ -90,7 +91,9 @@ void SixStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGr
 		}
 		return;
 	}
-	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+	if (!HitStop::GetInstance()->GetHitStop()) {
+		(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+	}
 	sceneChanger_->Update();
 	//プレイヤー
 	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
@@ -135,6 +138,7 @@ void SixStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGr
 	lightgroup->Update();
 	menu->Update();
 	ui->Update();
+	HitStop::GetInstance()->Update();
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 }
 //描画
@@ -217,6 +221,7 @@ void SixStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	camerawork->ImGuiDraw();*/
 	enemymanager->ImGuiDraw();
 	Player::GetInstance()->ImGuiDraw();
+	HitStop::GetInstance()->ImGuiDraw();
 }
 //登場シーン
 void SixStageActor::IntroUpdate(DebugCamera* camera) {

@@ -231,6 +231,7 @@
     <ClCompile Include="SourceCode\gamesystem\effect\BossStunEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\BreakEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\ConfuEffect.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\effect\HitStop.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\InterEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\effect\NoteEffect.cpp" />
     <ClCompile Include="SourceCode\gamesystem\gamecamera\CameraWork.cpp" />
@@ -411,6 +412,7 @@
     <ClInclude Include="SourceCode\gamesystem\effect\BossStunEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\BreakEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\ConfuEffect.h" />
+    <ClInclude Include="SourceCode\gamesystem\effect\HitStop.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\InterEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\effect\NoteEffect.h" />
     <ClInclude Include="SourceCode\gamesystem\gamecamera\CameraWork.h" />

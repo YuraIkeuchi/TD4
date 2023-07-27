@@ -3,6 +3,7 @@
 #include "Helper.h"
 #include <random>
 #include "Player.h"
+#include "HitStop.h"
 //更新
 void InterBoss::Update() {
 	//陦悟虚
@@ -108,6 +109,9 @@ void InterBoss::CollideBul(vector<InterBullet*> bullet,Type type)
 					}
 				}
 				BirthEffect();
+				if (m_HP != 0.0f && _bullet->GetPowerState() == POWER_UNLIMITED) {
+					HitStop::GetInstance()->SetHitStop(true);
+				}
 			}
 		}
 	}

@@ -7,6 +7,7 @@
 #include "Menu.h"
 #include "Helper.h"
 #include "SelectScene.h"
+#include "HitStop.h"
 
 void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup)
 {
@@ -93,7 +94,9 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		}
 		return;
 	}
-	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+	if (!HitStop::GetInstance()->GetHitStop()) {
+		(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
+	}
 	//プレイヤー
 	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
 		SceneSave::GetInstance()->SetClearFlag(kFirstStage, true);
@@ -118,6 +121,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		SelectScene::GetIns()->Upda();
 	}
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
+	HitStop::GetInstance()->Update();
 }
 
 void FirstStageActor::Draw(DirectXCommon* dxCommon)

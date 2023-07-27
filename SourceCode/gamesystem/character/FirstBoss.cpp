@@ -221,7 +221,7 @@ void FirstBoss::Draw(DirectXCommon* dxCommon)
 void FirstBoss::InterValMove()
 {
 	if (m_Rotation.x != 0) {
-		XMFLOAT3 s_rot = m_Rotation;
+		XMFLOAT3 s_rot = m_Rotation; 
 		returntimer_ += 1.f / 60.f;
 		XMFLOAT3 e_rot{ 0.f,90.f,0.f };
 		Helper::GetInstance()->Clamp(returntimer_, 0.0f, 1.0f);
