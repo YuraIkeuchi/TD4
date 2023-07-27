@@ -1,5 +1,6 @@
 #include "HitStop.h"
 #include "imgui.h"
+#include "CsvLoader.h"
 HitStop* HitStop::GetInstance()
 {
 	static HitStop instance;
@@ -7,6 +8,9 @@ HitStop* HitStop::GetInstance()
 	return &instance;
 }
 
+void HitStop::LoadCSV() {
+	m_TargetTimer = static_cast<int>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/effect/HitStop.csv", "Timer")));
+}
 void HitStop::Update() {
 	if (m_HitStop) {
 		m_StopTimer++;
@@ -19,6 +23,6 @@ void HitStop::Update() {
 void HitStop::ImGuiDraw() {
 	ImGui::Begin("Hit");
 	ImGui::Text("Hit:%d", m_HitStop);
-	ImGui::Text("Timer:%d", m_HitStop);
+	ImGui::Text("Timer:%d", m_TargetTimer);
 	ImGui::End();
 }

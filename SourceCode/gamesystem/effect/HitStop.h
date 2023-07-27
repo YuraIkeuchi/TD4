@@ -3,6 +3,7 @@
 class HitStop {
 public:
 	static HitStop* GetInstance();
+	void LoadCSV();
 	//更新処理のみ
 	void Update();
 	void ImGuiDraw();
@@ -13,5 +14,5 @@ public:
 private:
 	bool m_HitStop = false;//ヒットストップ
 	int m_StopTimer = 0;//ヒットストップの時間
-	int m_TargetTimer = 20;//指定の時間
+	int m_TargetTimer = 0;//指定の時間
 };
