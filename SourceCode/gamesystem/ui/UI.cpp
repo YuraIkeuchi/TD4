@@ -25,6 +25,10 @@ void UI::Initialize() {
 		sprites[UnderStatusGaugeMax] = CreateUi(ImageManager::UnderGauge, m_GaugePos, m_GaugeSize, { 1.5f, 1.5f, 1.5f,1.f });
 		sprites[UnderStatusGaugeMax].Tex->SetAnchorPoint({ 0,0 });
 		TexList.emplace_back(std::move(sprites[UnderStatusGaugeMax]));
+
+		sprites[UnderExtraGaugeMax] = CreateUi(ImageManager::EXGauge, m_GaugePos, m_GaugeSize, { 1.5f, 1.5f, 1.5f,1.f });
+		sprites[UnderExtraGaugeMax].Tex->SetAnchorPoint({ 0,0 });
+		TexList.emplace_back(std::move(sprites[UnderExtraGaugeMax]));
 	}
 	{//ゲージ
 		sprites[ExtraGauge] = CreateUi(ImageManager::WHITE, m_GaugePosMini, m_GaugeSizeMini, { 0.5f, 0.5f, 1.f,1.f });
@@ -160,14 +164,15 @@ void UI::PlayerLife() {
 }
 
 void UI::PlayerGauge() {
+	HungerGauge* hungerGauge = HungerGauge::GetInstance();
 	//Gauge処理
-	if (HungerGauge::GetInstance()->GetCatchCount() == 0) {
+	if (hungerGauge->GetCatchCount() == 0) {
 		TexList[StatusGauge].IsVisible = false;
 		TexList[ExtraGauge].IsVisible = false;
 		TexList[ChargeGauge].IsVisible = false;
 	} else {
-		TexList[StatusGauge].Size = { HungerGauge::GetInstance()->GetPercentage() * m_GaugeSizeMini.x,m_GaugeSizeMini.y };
-		TexList[ExtraGauge].Size = { HungerGauge::GetInstance()->GetPercentageExtra() * m_GaugeSizeMini.x,m_GaugeSizeMini.y };
+		TexList[StatusGauge].Size = { hungerGauge->GetPercentage() * m_GaugeSizeMini.x,m_GaugeSizeMini.y };
+		TexList[ExtraGauge].Size = { hungerGauge->GetPercentageExtra() * m_GaugeSizeMini.x,m_GaugeSizeMini.y };
 		TexList[ChargeGauge].Size = { Player::GetInstance()->GetPercentage() * m_GaugeSizeMini.x,m_GaugeSizeMini.y };
 		TexList[StatusGauge].IsVisible = true;
 		TexList[ExtraGauge].IsVisible = true;
@@ -183,7 +188,57 @@ void UI::PlayerGauge() {
 			TexList[ChargeGauge].Color = { 1.0f,0.0f,0.0f,1.0f };
 		}
 	}
-
+	if (hungerGauge->GetCatchCount() > 0&& hungerGauge->GetAdditional() > 0.f) {
+		if (state == GaugeState::nom4l) {
+			state = GaugeState::ch4nge;
+		}
+	} else {
+		if (state == GaugeState::extr4) {
+			state = GaugeState::b4ck;
+		}
+	}
+	switch (state) {
+	case UI::GaugeState::nom4l:
+		TexList[UnderStatusGaugeMax].IsVisible = true;
+		TexList[UnderExtraGaugeMax].IsVisible = false;
+		TexList[UnderExtraGaugeMax].Color = { 1.5f, 1.5f, 1.5f,1.f };
+		break;
+	case UI::GaugeState::ch4nge:
+		ch4ngeTimer += 1.f / 15.f;
+		TexList[UnderStatusGaugeMax].Color
+			= {
+			Ease(Out,Quad,ch4ngeTimer,1.5f,5.f),
+			Ease(Out,Quad,ch4ngeTimer,1.5f,5.f),
+			Ease(Out,Quad,ch4ngeTimer,1.5f,5.f),
+			1.f };
+		Helper::GetInstance()->Clamp(ch4ngeTimer, 0.0f, 1.0f);
+		if (ch4ngeTimer==1.0f) {
+			state = GaugeState::extr4;
+			ch4ngeTimer = 0.0f;
+		}
+		break;
+	case UI::GaugeState::extr4:
+		TexList[UnderStatusGaugeMax].IsVisible = false;
+		TexList[UnderStatusGaugeMax].Color = { 1.5f, 1.5f, 1.5f,1.f };
+		TexList[UnderExtraGaugeMax].IsVisible = true;
+		break;
+	case UI::GaugeState::b4ck:
+		ch4ngeTimer += 1.f / 15.f;
+		TexList[UnderExtraGaugeMax].Color
+			= {
+			Ease(Out,Quad,ch4ngeTimer,1.5f,5.f),
+			Ease(Out,Quad,ch4ngeTimer,1.5f,5.f),
+			Ease(Out,Quad,ch4ngeTimer,1.5f,5.f),
+			1.f };
+		Helper::GetInstance()->Clamp(ch4ngeTimer, 0.0f, 1.0f);
+		if (ch4ngeTimer == 1.0f) {
+			state = GaugeState::nom4l;
+			ch4ngeTimer = 0.0f;
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void UI::BulletChange() {

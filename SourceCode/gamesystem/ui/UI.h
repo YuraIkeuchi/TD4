@@ -28,11 +28,12 @@ private:
 		bool IsVisible = true;
 	};
 	enum  SpriteName {
-		HeartOne=0,
+		HeartOne = 0,
 		HeartTwo,
 		HeartThree,
 		Heart,
 		UnderStatusGaugeMax,
+		UnderExtraGaugeMax,
 		ExtraGauge,
 		StatusGauge,
 		ChargeGauge,
@@ -49,14 +50,14 @@ private:
 	std::array<SpriteData, UiMax> sprites = {};
 
 	XMFLOAT2 m_GaugePos = { 430,623.f };
-	XMFLOAT2 m_GaugePosMini = { 430+42.0f,597+50.0f };
+	XMFLOAT2 m_GaugePosMini = { 430 + 42.0f,597 + 50.0f };
 	XMFLOAT2 m_GaugeSize = { 512 * 0.9f,100 * 0.9f };
 	XMFLOAT2 m_GaugeSizeMini = { 419,45 };
 
 	XMFLOAT2 m_PlayerHpPos = { 15.f, 640.f };
-	XMFLOAT2 m_PlayerHpSize = { 512.f * 0.6f, 128.f*0.6f};
+	XMFLOAT2 m_PlayerHpSize = { 512.f * 0.6f, 128.f * 0.6f };
 
-	XMFLOAT2 m_PlayerCireclePos = { WinApp::window_width-100 ,WinApp::window_height };
+	XMFLOAT2 m_PlayerCireclePos = { WinApp::window_width - 100 ,WinApp::window_height };
 	XMFLOAT2 m_PlayerCircleSize = { 240.f,240.f };
 	float m_PlayerCircleRot = 0.f;
 
@@ -69,6 +70,15 @@ private:
 	std::vector<SpriteData>TexList = {};
 
 	bool m_Look = false;
+
+	enum class GaugeState :int {
+		nom4l = 0,
+		ch4nge,
+		extr4,
+		b4ck,
+	};
+	GaugeState state = GaugeState::nom4l;
+	float ch4ngeTimer = 0.f;
 public:
 	//初期化
 	void Initialize();
