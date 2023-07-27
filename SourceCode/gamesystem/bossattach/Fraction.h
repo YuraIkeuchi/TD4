@@ -51,7 +51,7 @@ private:
     unique_ptr<IKETexture> tex;
     XMFLOAT3 boss_pos_{};
     XMFLOAT3 m_Scale{};
-    XMFLOAT3 m_Position{};
+    XMFLOAT3 m_Position{0.f,-1000.f,0.f};
     XMFLOAT3 m_Rotation{};
     XMFLOAT4 m_Color{ 1.f,1.f,1.f,1.f };
     XMFLOAT3 pop_pos_{};
