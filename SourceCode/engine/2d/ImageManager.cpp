@@ -94,6 +94,7 @@ void ImageManager::SecondLoad2D()
 	IKESprite::LoadTexture(NOTE, L"Resources/2d/objicon/onp.png");
 	IKESprite::LoadTexture(NOTE2, L"Resources/2d/objicon/onp2.png");
 
+	IKESprite::LoadTexture(HITODAMA, L"Resources/2d/objicon/way.png");
 }
 
 //テクスチャの読み込み
