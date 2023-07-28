@@ -72,6 +72,22 @@ void UI::Initialize() {
 		TexList.emplace_back(std::move(sprites[ArrowBoss]));
 		TexList[ArrowBoss].IsVisible = false;
 	}
+	//ウェイ
+	{
+		const int w = 54;
+		const int h = 60;
+		const int l = 10;
+		for (int i = HitodamaWay1;  i < HitodamaWay4; i++) {
+			sprites[i] = CreateUi(ImageManager::HITODAMA, { 0,0 }, { WinApp::window_width/2,WinApp::window_height/2 }, {1.f,1.f,1.f,1.f});
+			int number_index_y = i / l;
+			int number_index_x = i % l;
+			sprites[i].Tex->SetTextureRect({ static_cast<float>(number_index_x) * w,static_cast<float>(number_index_y) * h },
+				{ static_cast<float>(w),static_cast<float>(h) });
+			sprites[i].Tex->SetScale(1.f);
+			sprites[i].Tex->SetAnchorPoint({ 0.5f,0.5f });
+
+		}
+	}
 	if (boss) {
 		bossHpOld = boss->GetHP();
 	}
@@ -167,8 +183,13 @@ void UI::PlayerLife() {
 
 }
 
-void UI::PlayerGauge() {
+void UI::PlayerGauge()	 {
 	HungerGauge* hungerGauge = HungerGauge::GetInstance();
+
+	for (int i = HitodamaWay1; i < HitodamaWay4; i++) {
+		TexList[i].IsVisible = true;
+	}
+
 	//Gauge処理
 	if (hungerGauge->GetCatchCount() == 0) {
 		TexList[StatusGauge].IsVisible = false;
