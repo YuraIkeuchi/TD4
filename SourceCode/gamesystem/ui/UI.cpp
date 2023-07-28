@@ -93,21 +93,83 @@ void UI::Initialize() {
 		TexList[ArrowBoss].IsVisible = false;
 	}
 	//ウェイ
+	for (int i = HitodamaWay1; i <= HitodamaWay4; i++) {
+		sprites[i] = CreateUi(ImageManager::HITODAMA, { WinApp::window_width / 2,WinApp::window_height / 2 }, { 128,128 }, { 1.3f,1.3f,1.3f,1.f });
+		sprites[i].IsContinue = true;
+		sprites[i].IsVisible = true;
+		TexList.emplace_back(std::move(sprites[i]));
+	}
 	{
 		const int w = 128;
 		const int h = 128;
 		const int l = 4;
 		for (int i = HitodamaWay1;  i <= HitodamaWay4; i++) {
-			sprites[i] = CreateUi(ImageManager::HITODAMA, { WinApp::window_width / 2,WinApp::window_height / 2 }, {w,h}, {1.f,1.f,1.f,1.f});
+			TexList[i].Tex = IKESprite::Create(ImageManager::HITODAMA, { WinApp::window_width / 2,WinApp::window_height / 2 });
 			int number_index_y = i / l;
 			int number_index_x = i % l;
-			sprites[i].Tex->SetTextureRect({ static_cast<float>(number_index_x) * w,static_cast<float>(number_index_y) * h },
+			TexList[i].Tex->SetTextureRect({ static_cast<float>(number_index_x) * w,static_cast<float>(number_index_y) * h },
 				{ static_cast<float>(w),static_cast<float>(h) });
-			sprites[i].Tex->SetScale(1.f);
-			sprites[i].Tex->SetAnchorPoint({ 0.5f,0.5f });
-
+			TexList[i].Tex->SetSize({ 128.f,128.f });
+			TexList[i].Tex->SetScale(1.f);
+			TexList[i].Size = { 64.f,64.f };
+			TexList[i].Position = { 1020,670 };
+			TexList[i].Tex->SetAnchorPoint({ 0.5f,0.5f });
+			TexList[i].IsContinue = true;
 		}
 	}
+
+	//ウェイ
+	for (int i = HitodamaWay1_1; i <= HitodamaWay4_1; i++) {
+		sprites[i] = CreateUi(ImageManager::HITODAMA, { WinApp::window_width / 2,WinApp::window_height / 2 }, { 128,128 }, { 1.3f,1.3f,1.3f,1.f });
+		sprites[i].IsContinue = true;
+		sprites[i].IsVisible = true;
+		TexList.emplace_back(std::move(sprites[i]));
+	}
+	{
+		const int w = 128;
+		const int h = 128;
+		const int l = 4;
+		for (int i = HitodamaWay1_1; i <= HitodamaWay4_1; i++) {
+			TexList[i].Tex = IKESprite::Create(ImageManager::HITODAMA, { WinApp::window_width / 2,WinApp::window_height / 2 });
+			int number_index_y = i / l;
+			int number_index_x = i % l;
+			TexList[i].Tex->SetTextureRect({ static_cast<float>(number_index_x) * w,static_cast<float>(number_index_y) * h },
+				{ static_cast<float>(w),static_cast<float>(h) });
+			TexList[i].Tex->SetSize({ 128.f,128.f });
+			TexList[i].Tex->SetScale(1.f);
+			TexList[i].Size = { 64.f,64.f };
+			TexList[i].Position = { 1045,600 };
+			TexList[i].Tex->SetAnchorPoint({ 0.5f,0.5f });
+			TexList[i].IsContinue = true;
+		}
+	}
+
+	//ウェイ
+	for (int i = HitodamaWay1_2; i <= HitodamaWay4_2; i++) {
+		sprites[i] = CreateUi(ImageManager::HITODAMA, { WinApp::window_width / 2,WinApp::window_height / 2 }, { 128,128 }, { 1.3f,1.3f,1.3f,1.f });
+		sprites[i].IsContinue = true;
+		sprites[i].IsVisible = true;
+		TexList.emplace_back(std::move(sprites[i]));
+	}
+	{
+		const int w = 128;
+		const int h = 128;
+		const int l = 4;
+		for (int i = HitodamaWay1_2; i <= HitodamaWay4_2; i++) {
+			TexList[i].Tex = IKESprite::Create(ImageManager::HITODAMA, { WinApp::window_width / 2,WinApp::window_height / 2 });
+			int number_index_y = i / l;
+			int number_index_x = i % l;
+			TexList[i].Tex->SetTextureRect({ static_cast<float>(number_index_x) * w,static_cast<float>(number_index_y) * h },
+				{ static_cast<float>(w),static_cast<float>(h) });
+			TexList[i].Tex->SetSize({ 128.f,128.f });
+			TexList[i].Tex->SetScale(1.f);
+			TexList[i].Size = { 64.f,64.f };
+			TexList[i].Position = { 1100,560 };
+			TexList[i].Tex->SetAnchorPoint({ 0.5f,0.5f });
+			TexList[i].IsContinue = true;
+		}
+	}
+
 	if (boss) {
 		bossHpOld = boss->GetHP();
 	}
@@ -137,7 +199,18 @@ void UI::Draw() {
 		if (TexList[i].Tex == nullptr) { continue; }
 		if (!TexList[i].IsVisible) { continue; }
 		if (TexList[i].IsContinue) {
-			TexList[circle].Tex->Draw();
+			if (i > PlayerCircle) {
+				if (HungerGauge::GetInstance()->GetCatchCount() >= 1) {
+					TexList[hitodama].Tex->Draw();
+				}
+				if (HungerGauge::GetInstance()->GetCatchCount() >= 3) {
+					TexList[hitodama_1].Tex->Draw();
+				}
+				if (HungerGauge::GetInstance()->GetCatchCount() >= 6) {
+					TexList[hitodama_2].Tex->Draw();
+				}
+			}
+			else { TexList[circle].Tex->Draw(); }
 			continue;
 		}
 		TexList[i].Tex->Draw();
@@ -209,10 +282,6 @@ void UI::PlayerLife() {
 
 void UI::PlayerGauge()	 {
 	HungerGauge* hungerGauge = HungerGauge::GetInstance();
-
-	for (int i = HitodamaWay1; i < HitodamaWay4; i++) {
-		TexList[i].IsVisible = false;
-	}
 
 	//Gauge処理
 	if (hungerGauge->GetCatchCount() == 0) {
@@ -357,12 +426,38 @@ void UI::BulletChange() {
 		if (circle > CircleCover_6) {
 			circle = CircleCover;
 		}
-
 		circleTimer = 0;
 	}
 
+	hitodamaTimer++;
+	Helper::GetInstance()->Clamp(hitodamaTimer, 0, 10);
+	if (hitodamaTimer == 10) {
+		hitodama++;
+		if (hitodama > HitodamaWay4) {
+			hitodama = HitodamaWay1;
+		}
+		hitodamaTimer = 0;
+	}
 
+	hitodamaTimer_1++;
+	Helper::GetInstance()->Clamp(hitodamaTimer_1, 0, 10);
+	if (hitodamaTimer_1 == 10) {
+		hitodama_1++;
+		if (hitodama_1 > HitodamaWay4_1) {
+			hitodama_1 = HitodamaWay1_1;
+		}
+		hitodamaTimer_1 = 0;
+	}
 
+	hitodamaTimer_2++;
+	Helper::GetInstance()->Clamp(hitodamaTimer_2, 0, 10);
+	if (hitodamaTimer_2 == 10) {
+		hitodama_2++;
+		if (hitodama_2 > HitodamaWay4_2) {
+			hitodama_2 = HitodamaWay1_2;
+		}
+		hitodamaTimer_2 = 0;
+	}
 }
 
 void UI::BossLife() {
