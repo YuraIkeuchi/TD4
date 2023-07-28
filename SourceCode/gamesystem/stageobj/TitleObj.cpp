@@ -1,6 +1,7 @@
 #include "TItleObj.h"
 #include "ModelManager.h"
 #include "Helper.h"
+#include "Easing.h"
 
 TitleObj* TitleObj::GetInstance()
 {
@@ -21,7 +22,6 @@ void TitleObj::LoadResource() {
 		ghostobj[i]->Initialize();
 		ghostobj[i]->SetModel(ghostmodel);
 		ghostobj[i]->SetScale({ 0.15f,0.15f,0.15f });
-		ghostobj[i]->SetRotation({ 0.0f,270.0f,0.0f });
 	}
 	ghostobj[0]->SetPosition({ -5.0f,-1.0f,-13.0f });
 	ghostobj[1]->SetPosition({ -1.0f,-1.0f,-13.0f });
@@ -46,17 +46,23 @@ void TitleObj::LoadResource() {
 	foodobj->Initialize();
 	foodobj->SetModel(foodmodel);
 	foodobj->SetPosition({ -3.0f,-1.0f,-13.0f });
-	foodobj->SetScale({ 0.2f,0.2f,0.2f });
+	foodobj->SetScale({ 0.12f,0.12f,0.12f });
 }
 
 //初期化
 void TitleObj::Initialize() {
-
+	for (auto i = 0; i < ghostobj.size(); i++) {
+		m_GhostPos[i] = { (1.0f * i) + (-3.0f),-1.0f,(i * 1.0f) + (- 13.0f)};
+		m_GhostRot[i] = { 0.0f,270.0f,0.0f };
+	}
 }
 
 //更新
 void TitleObj::Update() {
+	GhostUpdate();
 	for (auto i = 0; i < ghostobj.size(); i++) {
+		ghostobj[i]->SetPosition(m_GhostPos[i]);
+		ghostobj[i]->SetRotation(m_GhostRot[i]);
 		ghostobj[i]->Update();
 	}
 	for (auto i = 0; i < treeobj.size(); i++) {
@@ -64,6 +70,7 @@ void TitleObj::Update() {
 	}
 
 	groundobj->Update();
+	foodobj->SetPosition({ m_GhostPos[1].x,m_GhostPos[1].y + 0.2f,m_GhostPos[1].z - 0.7f});
 	foodobj->Update();
 }
 
@@ -80,4 +87,37 @@ void TitleObj::Draw(DirectXCommon* dxCommon) {
 	groundobj->Draw();
 	foodobj->Draw();
 	IKEObject3d::PostDraw();
+}
+//ゴーストの更新
+void TitleObj::GhostUpdate() {
+	m_SinAngle.x += 2.0f;
+	m_SinAngle.y += 3.0f;
+
+	//sin波によって上下に動く
+	m_SinAngle2.x = m_SinAngle.x * (3.14f / 180.0f);
+	m_SinAngle2.y = m_SinAngle.y * (3.14f / 180.0f);
+	m_GhostPos[0].x = (sin(-m_SinAngle2.x) * 0.5f + (-6.0f));
+	m_GhostPos[0].y = (sin(-m_SinAngle2.y) * 0.5f + (-1.0f));
+	m_GhostPos[1].x = (sin(m_SinAngle2.x) * 0.5f + (-4.0f));
+	m_GhostPos[1].y = (sin(m_SinAngle2.y) * 0.5f + (-1.0f));
+
+	//偶に回転する
+	m_RotTimer++;
+
+	if (m_RotTimer == 50) {
+		m_Rot = true;
+		m_AfterRot = m_GhostRot[0].y + 360.0f;
+	}
+
+	//
+	if (m_Rot) {
+		if (Helper::GetInstance()->FrameCheck(m_Frame, 0.01f)) {
+			m_Frame = {};
+			m_RotTimer = {};
+			m_GhostRot[0].y = 270.0f;
+			m_Rot = false;
+		}
+
+		m_GhostRot[0].y = Ease(In, Cubic, m_Frame, m_GhostRot[0].y, m_AfterRot);
+	}
 }

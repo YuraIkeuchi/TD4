@@ -31,6 +31,9 @@ public:
 	void ImGuiDraw();
 
 private:
+	void GhostUpdate();
+
+private:
 	static const int GHOST_NUM = 2;
 	static const int TREE_NUM = 4;
 private:
@@ -43,4 +46,15 @@ private:
 	array<unique_ptr<IKEObject3d>, TREE_NUM> treeobj;
 	unique_ptr<IKEObject3d> foodobj;
 	unique_ptr<IKEObject3d> groundobj;
+
+	array<XMFLOAT3, GHOST_NUM> m_GhostPos = {};
+	array<XMFLOAT3, GHOST_NUM> m_GhostRot = {};
+
+	XMFLOAT3 m_SinAngle = {};
+	XMFLOAT3 m_SinAngle2 = {};
+
+	float m_Frame = {};
+	bool m_Rot = false;
+	int m_RotTimer = {};
+	float m_AfterRot = {};
 };

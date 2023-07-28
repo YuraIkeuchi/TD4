@@ -20,6 +20,7 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	TitleSprite = IKESprite::Create(ImageManager::TITLE, { 0.0f,0.0f });
 	TitleWordSprite= IKESprite::Create(ImageManager::TITLEWORD, pos);
 	TitleWordSprite->SetSize(size);
+	TitleWordSprite->SetScale(0.5f);
 	PlayPostEffect = true;
 	menu = make_unique<Menu>();
 	menu->Initialize();
@@ -42,7 +43,7 @@ void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		Audio::GetInstance()->StopWave(AUDIO_TITLE);
 	}
 	frame += 0.01f;
-	TitleWordSprite->SetPosition({pos.x+(sinf(frame*5.0f) * 25.0f), pos.y + (sinf(frame) *50.0f)});
+	TitleWordSprite->SetPosition({pos.x+(sinf(frame*5.0f) * 25.0f), pos.y + (sinf(frame) *30.0f)});
 
 	if (sceneChanger_->GetEasingStart()) {
 		string str = "LOAD";
@@ -77,7 +78,7 @@ void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
-		ImGuiDraw(dxCommon);
+		//ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 	else {
@@ -87,7 +88,7 @@ void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw();
-		ImGuiDraw(dxCommon);
+		//ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 }
@@ -95,7 +96,7 @@ void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
 //前面描画
 void TitleSceneActor::FrontDraw() {
 	IKESprite::PreDraw();
-	//TitleWordSprite->Draw();
+	TitleWordSprite->Draw();
 	SelectScene::GetIns()->Draw_Sprite();
 	IKESprite::PostDraw();
 	menu->Draw();
