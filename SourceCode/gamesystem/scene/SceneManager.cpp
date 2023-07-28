@@ -67,7 +67,7 @@ void SceneManager::AsyncLoad()
 {
 	std::thread t = std::thread([&] {
 		ImageManager::GetInstance()->SecondLoad2D(), ImageManager::GetInstance()->SecondLoadTex2D(), ModelManager::GetInstance()->SecondInitialize(),
-			BackObj::GetInstance()->LoadMap(), AudioManager::GetInstance()->SecondLoadAudio(), Player::GetInstance()->LoadResource(), HitStop::GetInstance()->LoadCSV(); });
+			BackObj::GetInstance()->LoadMap(), AudioManager::GetInstance()->SecondLoadAudio(), HitStop::GetInstance()->LoadCSV(); });
 
 	t.join();
 	// ロード状態=ロード終了

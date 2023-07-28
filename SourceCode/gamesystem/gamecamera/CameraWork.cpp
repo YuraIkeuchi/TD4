@@ -96,6 +96,7 @@ void (CameraWork::* CameraWork::stateTable[])() = {
 	&CameraWork::SetBossDead_AfterSix,//6ボスのやられたとき（フェード後）
 	&CameraWork::SetBossDead_AfterSeven,//7ボスのやられたとき（フェード後）
 	&CameraWork::StrongCamera,//ボス覚醒カメラ
+	&CameraWork::TitleCamera,//タイトルカメラ
 };
 //XV
 void CameraWork::Update(DebugCamera* camera) {
@@ -1199,7 +1200,11 @@ void CameraWork::StrongCamera() {
 		}
 	}
 }
-
+//タイトルカメラ
+void CameraWork::TitleCamera() {
+	m_eyePos = { 0.0f,0.0f,-20.0f };
+	m_targetPos = { 0.0f,0.0f,10.0f };
+}
 void CameraWork::SetEaseCamera() {
 	m_eyePos = {
 Ease(In,Cubic,m_Frame,m_eyePos.x,m_AfterEye.x),

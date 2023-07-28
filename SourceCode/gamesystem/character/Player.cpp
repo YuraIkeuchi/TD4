@@ -13,6 +13,7 @@ Player* Player::GetInstance()
 }
 //リソース読み込み
 void Player::LoadResource() {
+
 	fbxmodels.reset(new IKEFBXObject3d());
 	fbxmodels->Initialize();
 	fbxmodels->SetModel(ModelManager::GetInstance()->GetFBXModel(ModelManager::PLAYER));
@@ -274,6 +275,7 @@ void Player::ImGuiDraw() {
 	ImGui::Begin("Player");
 	ImGui::Text("Type:%d", m_ChargeType);
 	ImGui::End();
+	playerattach->ImGuiDraw();
 }
 //FBXのアニメーション管理(アニメーションの名前,ループするか,カウンタ速度)
 void Player::AnimationControl(AnimeName name, const bool& loop, int speed)
@@ -1056,4 +1058,20 @@ void Player::BirthAbs(const XMFLOAT4& color) {
 		neweffect->SetAddFrame(0.05f);
 		abseffect.push_back(neweffect);
 	}
+}
+//タイトルの更新
+void Player::TitleUpdate() {
+	AnimationControl(AnimeName::IDLE, true, 1);
+	m_Position = { -3.0f,-5.0f,0.0f };
+	m_Rotation = { 0.0f,180.0f,0.0f };
+	m_Color = { 1.0f,1.0f,1.0f,1.0f };
+	m_Scale = { 0.6f,0.4f,0.6f };
+
+	index = 15;
+	fbxmodels->GetBoneIndexMat(index, skirtmat);
+	skirtobj->FollowUpdate(skirtmat);
+	skirtobj->SetColor(m_Color);
+
+	playerattach->TitleUpdate();
+	SetParam();
 }

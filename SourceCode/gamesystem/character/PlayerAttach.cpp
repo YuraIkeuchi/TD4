@@ -39,6 +39,11 @@ void PlayerAttach::Draw(DirectXCommon* dxCommon) {
 }
 //ImGui
 void PlayerAttach::ImGuiDraw() {
+	ImGui::Begin("SU");
+	ImGui::Text("PosX:%f", m_Position.x);
+	ImGui::Text("PosY:%f", m_Position.y);
+	ImGui::Text("PosZ:%f", m_Position.z);
+	ImGui::End();
 }
 void PlayerAttach::Particle() {
 	XMFLOAT4 s_color = { 1.0f,0.0f,0.0f,1.0f };
@@ -242,5 +247,17 @@ void PlayerAttach::DeathUpdate() {
 	m_SinAngle += 3.5f;
 	m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
 	m_Position.y = (sin(m_SinAngle2) * 0.5f + 3.0f);
+	Obj_SetParam();
+}
+void PlayerAttach::TitleUpdate() {
+	m_Color = { 1.0f,1.0f,1.0f,1.0f };
+	m_Scale = { 0.4f,0.4f,0.4f };
+
+	m_Position.x = -7.0f;
+	m_Position.z = 0.0f;
+	//sinîgÇ…ÇÊÇ¡Çƒè„â∫Ç…ìÆÇ≠
+	m_SinAngle += 3.5f;
+	m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);
+	m_Position.y = (sin(m_SinAngle2) * 0.5f + (-3.0f));
 	Obj_SetParam();
 }

@@ -78,6 +78,7 @@ void Framework::Initialize(DirectXCommon* dxCommon)
 	Font::Initialize(dxcommon);
 	
 	SceneSave::GetInstance()->AllReset();
+	//
 }
 
 void Framework::Finalize()
