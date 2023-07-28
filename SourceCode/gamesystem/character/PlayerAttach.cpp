@@ -246,8 +246,8 @@ void PlayerAttach::TitleUpdate() {
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Scale = { 0.4f,0.4f,0.4f };
 
-	m_Position.x = -1.0f;
-	m_Position.z = -8.0f;
+	m_Position.x = -2.0f;
+	m_Position.z = -12.0f;
 	//sinîgÇ…ÇÊÇ¡Çƒè„â∫Ç…ìÆÇ≠
 	m_SinAngle += 3.5f;
 	m_SinAngle2 = m_SinAngle * (3.14f / 180.0f);

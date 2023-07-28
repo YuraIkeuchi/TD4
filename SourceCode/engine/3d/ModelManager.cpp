@@ -20,6 +20,7 @@ void ModelManager::StartInitialize()
 	LoadModel(Food, "food");
 	LoadModel(Ghost, "ghost");
 	LoadModel(Ground, "ground");
+	LoadModel(HOME, "home");
 	LoadFBXModel(PLAYER, "kotoko");
 }
 

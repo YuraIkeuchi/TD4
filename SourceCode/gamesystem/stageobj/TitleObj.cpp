@@ -16,6 +16,7 @@ void TitleObj::LoadResource() {
 	foodmodel = ModelManager::GetInstance()->GetModel(ModelManager::Food);
 	treemodel = ModelManager::GetInstance()->GetModel(ModelManager::TREE);
 	groundmodel = ModelManager::GetInstance()->GetModel(ModelManager::Ground);
+	homemodel = ModelManager::GetInstance()->GetModel(ModelManager::HOME);
 
 	for (auto i = 0; i < ghostobj.size(); i++) {
 		ghostobj[i].reset(new IKEObject3d());
@@ -47,13 +48,20 @@ void TitleObj::LoadResource() {
 	foodobj->SetModel(foodmodel);
 	foodobj->SetPosition({ -3.0f,-1.0f,-13.0f });
 	foodobj->SetScale({ 0.12f,0.12f,0.12f });
+
+	homeobj.reset(new IKEObject3d());
+	homeobj->Initialize();
+	homeobj->SetModel(homemodel);
+	homeobj->SetPosition({ -7.0f,-1.0f,-5.0f });
+	homeobj->SetRotation({ 0.0f,70.0f,0.0f });
+	homeobj->SetScale({ 0.7f,0.7f,0.7f });
 }
 
 //初期化
 void TitleObj::Initialize() {
 	for (auto i = 0; i < ghostobj.size(); i++) {
 		m_GhostPos[i] = { (1.0f * i) + (-3.0f),-1.0f,(i * 1.0f) + (- 13.0f)};
-		m_GhostRot[i] = { 0.0f,270.0f,0.0f };
+		m_GhostRot[i] = { 0.0f,270.0f,-10.0f };
 	}
 }
 
@@ -70,7 +78,8 @@ void TitleObj::Update() {
 	}
 
 	groundobj->Update();
-	foodobj->SetPosition({ m_GhostPos[1].x,m_GhostPos[1].y + 0.2f,m_GhostPos[1].z - 0.7f});
+	homeobj->Update();
+	foodobj->SetPosition({ m_GhostPos[1].x + 0.2f,m_GhostPos[1].y + 0.3f,m_GhostPos[1].z - 0.7f});
 	foodobj->Update();
 }
 
@@ -83,9 +92,10 @@ void TitleObj::Draw(DirectXCommon* dxCommon) {
 	for (auto i = 0; i < treeobj.size(); i++) {
 		treeobj[i]->Draw();
 	}
-
-	groundobj->Draw();
 	foodobj->Draw();
+	homeobj->Draw();
+	groundobj->Draw();
+
 	IKEObject3d::PostDraw();
 }
 //ゴーストの更新
@@ -98,12 +108,16 @@ void TitleObj::GhostUpdate() {
 	m_SinAngle2.y = m_SinAngle.y * (3.14f / 180.0f);
 	m_GhostPos[0].x = (sin(-m_SinAngle2.x) * 0.5f + (-6.0f));
 	m_GhostPos[0].y = (sin(-m_SinAngle2.y) * 0.5f + (-1.0f));
-	m_GhostPos[1].x = (sin(m_SinAngle2.x) * 0.5f + (-4.0f));
+	m_GhostPos[0].z = -10.0f;
+	m_GhostPos[1].x = (sin(m_SinAngle2.x) * 0.5f + (-3.0f));
 	m_GhostPos[1].y = (sin(m_SinAngle2.y) * 0.5f + (-1.0f));
+	m_GhostPos[1].z = -12.0f;
 
 	//偶に回転する
 	m_RotTimer++;
 
+	m_GhostRot[1].y = Helper::GetInstance()->DirRotation(m_GhostPos[1], { 0.0f,3.0f,-20.0f }, 270.0f);
+	m_GhostRot[0].y = Helper::GetInstance()->DirRotation(m_GhostPos[0], { 0.0f,3.0f,-20.0f }, 270.0f);
 	if (m_RotTimer == 50) {
 		m_Rot = true;
 		m_AfterRot = m_GhostRot[0].y + 360.0f;
@@ -114,7 +128,7 @@ void TitleObj::GhostUpdate() {
 		if (Helper::GetInstance()->FrameCheck(m_Frame, 0.01f)) {
 			m_Frame = {};
 			m_RotTimer = {};
-			m_GhostRot[0].y = 270.0f;
+			m_GhostRot[0].y = Helper::GetInstance()->DirRotation(m_GhostPos[0], { 0.0f,3.0f,-20.0f }, 270.0f);
 			m_Rot = false;
 		}
 

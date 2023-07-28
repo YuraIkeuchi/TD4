@@ -25,7 +25,14 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	TitleSprite = IKESprite::Create(ImageManager::TITLE, { 0.0f,0.0f });
 	TitleWordSprite= IKESprite::Create(ImageManager::TITLEWORD, pos);
 	TitleWordSprite->SetSize(size);
-	TitleWordSprite->SetScale(0.5f);
+	TitleWordSprite->SetScale(0.3f);
+
+	for (auto i = 0; i < TitlePartsSprite.size(); i++) {
+		TitlePartsSprite[i] = IKESprite::Create(ImageManager::TITLEWORD, {});
+		m_PartsSize[i] = { 100.0f,100.0f };
+		m_PartsPos[i] = { 1000.0f,(100.0f * i) + 350.0f };
+		TitlePartsSprite[i]->SetScale(0.5f);
+	}
 	PlayPostEffect = true;
 	menu = make_unique<Menu>();
 	menu->Initialize();
@@ -110,6 +117,10 @@ void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
 void TitleSceneActor::FrontDraw() {
 	IKESprite::PreDraw();
 	TitleWordSprite->Draw();
+	//TitlePartsSprite[2]->Draw();
+	for (int i = 0; i < 2; i++) {
+		TitlePartsSprite[i]->Draw();
+	}
 	SelectScene::GetIns()->Draw_Sprite();
 	
 		
@@ -146,15 +157,17 @@ void TitleSceneActor::Finalize() {
 void TitleSceneActor::SceneSelect() {
 	Input* input = Input::GetInstance();
 
-	if (_SelectType == NORMAL_SCENE && (input->TiltPushStick(Input::L_DOWN)) || (input->TriggerButton(Input::DOWN))) {
-		_SelectType = SELECT_SCENE;
-	}
-	else if (_SelectType == SELECT_SCENE && (input->TiltPushStick(Input::L_UP)) || (input->TriggerButton(Input::UP))) {
-		_SelectType = NORMAL_SCENE;
+	if (!m_Change) {
+		if (_SelectType == NORMAL_SCENE && (input->TiltPushStick(Input::L_DOWN)) || (input->TriggerButton(Input::DOWN))) {
+			_SelectType = SELECT_SCENE;
+		}
+		else if (_SelectType == SELECT_SCENE && (input->TiltPushStick(Input::L_UP)) || (input->TriggerButton(Input::UP))) {
+			_SelectType = NORMAL_SCENE;
+		}
 	}
 
-	if ((input->TriggerButton(input->B) || input->Pushkey(DIK_SPACE)) &&
-		!sceneChanger_->GetEasingStart()) {
+	if ((input->TriggerButton(input->B) &&
+		!sceneChanger_->GetEasingStart())) {
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Decide.wav", VolumManager::GetInstance()->GetSEVolum());
 		sceneChanger_->ChangeStart();
 		Audio::GetInstance()->StopWave(AUDIO_TITLE);
@@ -165,5 +178,41 @@ void TitleSceneActor::SceneSelect() {
 		else {
 			s_Skip = true;
 		}
+
+		m_Change = true;
+	}
+
+	TitleMove();
+}
+//パーツの動き(タイトル)
+void TitleSceneActor::TitleMove() {
+	if (_SelectType == NORMAL_SCENE) {
+		m_Angle[NORMAL_SCENE] += 2.0f;
+		m_Angle2[NORMAL_SCENE] = m_Angle[NORMAL_SCENE] * (3.14f / 180.0f);
+		//選択時座標が上下に動く
+		m_PartsPos[SELECT_AREA] = m_PartsPos[NORMAL_SCENE];
+		m_Angle[SELECT_SCENE] = 0.0f;
+		//選択時サイズも少し変わる
+		m_PartsSize[NORMAL_SCENE] = { (sin(m_Angle2[NORMAL_SCENE]) * 16.0f) + (100.0f),
+			(sin(m_Angle2[NORMAL_SCENE]) * 16.0f) + (100.0f) };
+		m_PartsSize[SELECT_AREA] = m_PartsSize[NORMAL_SCENE];
+		m_PartsSize[SELECT_SCENE] = { 100.0f,100.0f };
+	}
+	else {
+		m_Angle[SELECT_SCENE] += 2.0f;
+		m_Angle2[SELECT_SCENE] = m_Angle[SELECT_SCENE] * (3.14f / 180.0f);
+		//選択時座標が上下に動く
+		m_PartsPos[SELECT_AREA] = m_PartsPos[SELECT_SCENE];
+		m_Angle[NORMAL_SCENE] = 0.0f;
+		//選択時サイズも少し変わる
+		m_PartsSize[SELECT_SCENE] = { (sin(m_Angle2[SELECT_SCENE]) * 16.0f) + (100.0f),
+			(sin(m_Angle2[SELECT_SCENE]) * 16.0f - 16.0f) + (100.0f) };
+		m_PartsSize[SELECT_AREA] = m_PartsSize[SELECT_SCENE];
+		m_PartsSize[NORMAL_SCENE] = { 100.0f,100.0f };
+	}
+
+	for (auto i = 0; i < TitlePartsSprite.size(); i++) {
+		TitlePartsSprite[i]->SetPosition(m_PartsPos[i]);
+		TitlePartsSprite[i]->SetSize(m_PartsSize[i]);
 	}
 }
