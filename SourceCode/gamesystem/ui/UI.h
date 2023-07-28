@@ -53,6 +53,14 @@ private:
 		HitodamaWay2,
 		HitodamaWay3,
 		HitodamaWay4,
+		HitodamaWay1_1,
+		HitodamaWay2_1,
+		HitodamaWay3_1,
+		HitodamaWay4_1,
+		HitodamaWay1_2,
+		HitodamaWay2_2,
+		HitodamaWay3_2,
+		HitodamaWay4_2,
 		UiMax,
 	};
 
@@ -87,6 +95,14 @@ private:
 	int circle = CircleCover;
 	int circleTimer = 0;
 
+	int hitodama = HitodamaWay1;
+	int hitodamaTimer = 0;
+
+	int hitodama_1 = HitodamaWay1_1;
+	int hitodamaTimer_1 = 0;
+
+	int hitodama_2 = HitodamaWay1_2;
+	int hitodamaTimer_2 = 0;
 
 	bool m_Look = false;
 
@@ -103,6 +119,8 @@ private:
 	bool isCrush = false;
 	float power = 10.0f;
 	float crushTimer = 0.0f;
+
+	bool dis[3] = { false,false,false };
 public:
 	//初期化
 	void Initialize();
