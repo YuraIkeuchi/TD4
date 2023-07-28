@@ -26,6 +26,7 @@ private:
 		XMFLOAT4 Color = { 1,1,1,1 };
 		//表示なフラグ
 		bool IsVisible = true;
+		bool IsContinue = false;
 	};
 	enum  SpriteName {
 		HeartOne = 0,
@@ -41,6 +42,11 @@ private:
 		MiddleBossGauge,
 		BossGauge,
 		CircleCover,
+		CircleCover_2,
+		CircleCover_3,
+		CircleCover_4,
+		CircleCover_5,
+		CircleCover_6,
 		PlayerCircle,
 		ArrowBoss,
 		UiMax,
@@ -73,6 +79,10 @@ private:
 	int oldbullet_type_ = 0;
 	XMFLOAT2 m_Circle = { 640.0f,360.0f };
 	std::vector<SpriteData>TexList = {};
+
+	int circle = CircleCover;
+	int circleTimer = 0;
+
 
 	bool m_Look = false;
 
