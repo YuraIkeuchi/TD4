@@ -35,13 +35,7 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 }
 //更新
 void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
-	Input* input = Input::GetInstance();
-	if ((input->TriggerButton(input->B) || input->Pushkey(DIK_SPACE)) &&
-		!sceneChanger_->GetEasingStart()) {
-		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Decide.wav", VolumManager::GetInstance()->GetSEVolum());
-		sceneChanger_->ChangeStart();
-		Audio::GetInstance()->StopWave(AUDIO_TITLE);
-	}
+	
 	frame += 0.01f;
 	TitleWordSprite->SetPosition({pos.x+(sinf(frame*5.0f) * 25.0f), pos.y + (sinf(frame) *30.0f)});
 
@@ -67,6 +61,9 @@ void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	TitleObj::GetInstance()->Update();
 	menu->Update();
 	camerawork->Update(camera);
+
+	//セレクト
+	SceneSelect();
 }
 //描画
 void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
@@ -78,7 +75,7 @@ void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
-		//ImGuiDraw(dxCommon);
+		ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 	else {
@@ -88,7 +85,7 @@ void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw();
-		//ImGuiDraw(dxCommon);
+		ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 }
@@ -116,8 +113,36 @@ void TitleSceneActor::BackDraw(DirectXCommon* dxCommon)
 //ImGui描画
 void TitleSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
 	Player::GetInstance()->ImGuiDraw();
+	ImGui::Begin("Title");
+	ImGui::Text("%d",(int)_SelectType);
+	ImGui::End();
 }
 //解放
 void TitleSceneActor::Finalize() {
 
+}
+
+void TitleSceneActor::SceneSelect() {
+	Input* input = Input::GetInstance();
+
+	if (_SelectType == NORMAL_SCENE && (input->TiltPushStick(Input::L_DOWN)) || (input->TriggerButton(Input::DOWN))) {
+		_SelectType = SELECT_SCENE;
+	}
+	else if (_SelectType == SELECT_SCENE && (input->TiltPushStick(Input::L_UP)) || (input->TriggerButton(Input::UP))) {
+		_SelectType = NORMAL_SCENE;
+	}
+
+	if ((input->TriggerButton(input->B) || input->Pushkey(DIK_SPACE)) &&
+		!sceneChanger_->GetEasingStart()) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Decide.wav", VolumManager::GetInstance()->GetSEVolum());
+		sceneChanger_->ChangeStart();
+		Audio::GetInstance()->StopWave(AUDIO_TITLE);
+
+		if (_SelectType == NORMAL_SCENE) {
+			s_Skip = false;
+		}
+		else {
+			s_Skip = true;
+		}
+	}
 }

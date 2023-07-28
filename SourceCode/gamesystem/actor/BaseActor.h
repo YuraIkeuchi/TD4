@@ -112,4 +112,7 @@ protected:
 	int textT;
 	
 	int m_DeathTimer = 0;
+
+protected:
+	static bool s_Skip;
 };

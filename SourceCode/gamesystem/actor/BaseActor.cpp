@@ -3,7 +3,7 @@
 #include "Player.h"
 #include"Menu.h"
 bool BaseActor::s_GameLoop = false;
-
+bool BaseActor::s_Skip = false;
 void (BaseActor::* BaseActor::stateTable[])(DebugCamera* camera) = {
 	&BaseActor::IntroUpdate,//—v‘f0
 	&BaseActor::MainUpdate, //—v‘f1
