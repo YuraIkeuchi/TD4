@@ -21,6 +21,7 @@ enum CameraState {
 	CAMERA_BOSSDEAD_AFTER_SIX,
 	CAMERA_BOSSDEAD_AFTER_SEVEN,
 	CAMERA_BOSS_STRONG,
+	CAMERA_TITLE,
 };
 
 //ボス登場シーンのカメラの動き(2個目のボスがこの量なだけでボスによってはへらしてもいいよ)
@@ -72,6 +73,7 @@ private:
 	//ゲームシーン以外で使うカメラ更新(this変数で変更可能)
 	void SpecialUpdate();//更新
 	void StrongCamera();
+	void TitleCamera();//タイトルカメラ
 public:
 	//void EditorCamera();
 	void BossDefeatcamera();

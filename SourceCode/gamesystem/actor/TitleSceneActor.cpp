@@ -1,10 +1,10 @@
 ﻿#include "TitleSceneActor.h"
 #include "input.h"
-#include <Easing.h>
 #include "ImageManager.h"
 #include "ParticleEmitter.h"
 #include "Menu.h"
 #include "SelectScene.h"
+#include "TItleObj.h"
 //初期化
 void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	//共通の初期化
@@ -20,9 +20,18 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	TitleSprite = IKESprite::Create(ImageManager::TITLE, { 0.0f,0.0f });
 	TitleWordSprite= IKESprite::Create(ImageManager::TITLEWORD, pos);
 	TitleWordSprite->SetSize(size);
+	TitleWordSprite->SetScale(0.5f);
 	PlayPostEffect = true;
 	menu = make_unique<Menu>();
 	menu->Initialize();
+
+	camerawork->SetCameraState(CAMERA_TITLE);
+	camerawork->Update(camera);
+
+	//各クラス
+	Player::GetInstance()->LoadResource();
+	Player::GetInstance()->InitState({ 0.0f,-2.0f,-30.0f });
+	TitleObj::GetInstance()->Initialize();
 }
 //更新
 void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -34,7 +43,7 @@ void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		Audio::GetInstance()->StopWave(AUDIO_TITLE);
 	}
 	frame += 0.01f;
-	TitleWordSprite->SetPosition({pos.x+(sinf(frame*5.0f) * 25.0f), pos.y + (sinf(frame) *50.0f)});
+	TitleWordSprite->SetPosition({pos.x+(sinf(frame*5.0f) * 25.0f), pos.y + (sinf(frame) *30.0f)});
 
 	if (sceneChanger_->GetEasingStart()) {
 		string str = "LOAD";
@@ -54,7 +63,10 @@ void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 			SelectScene::GetIns()->ResetParama();
 	}
 
+	Player::GetInstance()->TitleUpdate();
+	TitleObj::GetInstance()->Update();
 	menu->Update();
+	camerawork->Update(camera);
 }
 //描画
 void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
@@ -66,6 +78,7 @@ void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
+		//ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 	else {
@@ -75,6 +88,7 @@ void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw();
+		//ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 }
@@ -82,7 +96,6 @@ void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
 //前面描画
 void TitleSceneActor::FrontDraw() {
 	IKESprite::PreDraw();
-	TitleSprite->Draw();
 	TitleWordSprite->Draw();
 	SelectScene::GetIns()->Draw_Sprite();
 	IKESprite::PostDraw();
@@ -92,9 +105,17 @@ void TitleSceneActor::FrontDraw() {
 //背面描画
 void TitleSceneActor::BackDraw(DirectXCommon* dxCommon)
 {
+	IKESprite::PreDraw();
+	TitleSprite->Draw();
+	IKESprite::PostDraw();
+	IKEObject3d::PreDraw();
+	Player::GetInstance()->Draw(dxCommon);
+	TitleObj::GetInstance()->Draw(dxCommon);
+	IKEObject3d::PostDraw();
 }
 //ImGui描画
 void TitleSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
+	Player::GetInstance()->ImGuiDraw();
 }
 //解放
 void TitleSceneActor::Finalize() {

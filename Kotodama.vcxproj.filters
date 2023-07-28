@@ -575,6 +575,9 @@
     <ClCompile Include="SourceCode\gamesystem\effect\HitStop.cpp">
       <Filter>gamesystem\effect\HitStop</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\stageobj\TitleObj.cpp">
+      <Filter>gamesystem\stageobj\TitleObj</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
@@ -1114,6 +1117,9 @@
     <ClInclude Include="SourceCode\gamesystem\effect\HitStop.h">
       <Filter>gamesystem\effect\HitStop</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\stageobj\TItleObj.h">
+      <Filter>gamesystem\stageobj\TitleObj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
@@ -1516,6 +1522,9 @@
     </Filter>
     <Filter Include="gamesystem\effect\HitStop">
       <UniqueIdentifier>{d01ba126-acbe-4f5a-9e22-7ce91db4caf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamesystem\stageobj\TitleObj">
+      <UniqueIdentifier>{c69a7af8-15f3-498c-b647-45e98406a7ca}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

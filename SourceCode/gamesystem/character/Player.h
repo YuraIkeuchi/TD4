@@ -42,6 +42,8 @@ public:
 	void LastDeadUpdate(int Timer);
 	//エンドロールの更新
 	void EndRollUpdate(int Timer);
+	//タイトルの更新
+	void TitleUpdate();
 	//キャラの状態
 	enum CharaState
 	{
