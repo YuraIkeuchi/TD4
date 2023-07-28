@@ -65,6 +65,9 @@ private:
 		ReturnButton,
 		SutoponBar,
 		Confirm_FIRST,
+		Confirm_SECOND,
+		Confirm_THIRD,
+		Confirm_FOUR,
 		Check_HOME,
 		Check_OK,
 		Check_NO,
@@ -101,7 +104,16 @@ private:
 	XMFLOAT2(half_Width - 200.f,half_Height + 120.f),
 	XMFLOAT2(half_Width + 200.f,half_Height + 120.f),
 	};
+	enum {
+		CFIRST = Confirm_FIRST,
+		CSECOND,
+		CFTHIRD,
+		CFOUR
+	};
 
+
+	int confirmIndex = CFIRST;
+	int confirmIndexOld = CFIRST;
 
 
 	bool moveBar = false;

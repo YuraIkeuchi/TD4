@@ -30,7 +30,11 @@ void Menu::Initialize() {
 	sprites_[SceneBackButton] = CreateSprite(ImageManager::MENU_SCENECHANGE, buttonPos[1], 30.0f);
 	sprites_[ReturnButton] = CreateSprite(ImageManager::MENU_RESET, buttonPos[2], 30.0f);
 	sprites_[SutoponBar] = CreateSprite(ImageManager::MENU_FRAME, buttonPos[0], 30.0f);
-	sprites_[Confirm_FIRST] = CreateSprite(ImageManager::EXPLANATION, { half_Width,half_Height }, 15.0f);
+	sprites_[Confirm_FIRST] = CreateSprite(ImageManager::EXPLANATION_1, { half_Width,half_Height }, 15.0f);
+	sprites_[Confirm_SECOND] = CreateSprite(ImageManager::EXPLANATION_2, { half_Width,half_Height }, 15.0f);
+	sprites_[Confirm_THIRD] = CreateSprite(ImageManager::EXPLANATION_3, { half_Width,half_Height }, 15.0f);
+	sprites_[Confirm_FOUR] = CreateSprite(ImageManager::EXPLANATION_4, { half_Width,half_Height }, 15.0f);
+
 	sprites_[Check_HOME] = CreateSprite(ImageManager::CHECK_HOME, { half_Width,half_Height }, 15.0f);
 	sprites_[Check_OK] = CreateSprite(ImageManager::CHECK_OK, checkPos[0], 15.0f);
 	sprites_[Check_NO] = CreateSprite(ImageManager::CHECK_NO, checkPos[1], 15.0f);
@@ -38,6 +42,7 @@ void Menu::Initialize() {
 
 	for (int i = 0; i < SpriteMax; i++) {
 		sprites_[i].sprite->SetAnchorPoint({ 0.5f,0.5f });
+		sprites_[i].sprite->SetColor({ 1.2f,1.2f,1.2f,1 });
 	}
 }
 
@@ -118,7 +123,8 @@ void Menu::OpenUpdate() {
 void Menu::SelectUpdate() {
 	if (TriggerMoveButton()) {
 		moveBar = true;
-		if (Input::GetInstance()->TiltPushStick(Input::L_RIGHT)) {
+		if (Input::GetInstance()->TiltPushStick(Input::L_RIGHT) ||
+			Input::GetInstance()->TriggerButton(Input::RIGHT)) {
 			barIndex++;
 		} else {
 			barIndex--;
@@ -155,6 +161,9 @@ void Menu::SelectUpdate() {
 		if (moveBar) { return; }
 		switch (barIndex) {
 		case CONFIRM:
+			isOpen = true;
+			confirmIndex = CFIRST;
+			confirmIndexOld = CFIRST;
 			_state = State::CONFIRM;
 			break;
 		case SCENEBACK:
@@ -203,7 +212,8 @@ void Menu::CheckUpdate() {
 	if (isSelectBack) { return; }
 	if (TriggerMoveButton()) {
 		moveBar = true;
-		if (Input::GetInstance()->TiltPushStick(Input::L_RIGHT)) {
+		if (Input::GetInstance()->TiltPushStick(Input::L_RIGHT) ||
+			Input::GetInstance()->TriggerButton(Input::RIGHT)) {
 			barIndex++;
 		} else {
 			barIndex--;
@@ -259,12 +269,12 @@ void Menu::CheckOpenCloseUpdate() {
 		for (int i = Check_HOME; i <= Check_BAR; i++) {
 			sprites_[(size_t)i].isVisible = true;
 			sprites_[(size_t)i].start_size = { 0.0f,0.0f };
-			if (i!=Check_HOME) {
+			if (i != Check_HOME) {
 				sprites_[(size_t)i].end_size = { 300.0f,150.0f };
 				sprites_[(size_t)i].start_pos = { half_Width ,half_Height };
 			}
 		}
-		sprites_[(size_t)Check_HOME].end_size = {880, 520};;
+		sprites_[(size_t)Check_HOME].end_size = { 880, 520 };;
 		sprites_[(size_t)Check_OK].end_pos = checkPos[0];
 		sprites_[(size_t)Check_NO].end_pos = checkPos[1];
 		sprites_[(size_t)Check_BAR].end_pos = checkPos[0];
@@ -303,7 +313,7 @@ void Menu::CheckOpenCloseUpdate() {
 
 			}
 		}
-		sprites_[(size_t)Check_HOME].start_size = {880,520};
+		sprites_[(size_t)Check_HOME].start_size = { 880,520 };
 		sprites_[(size_t)Check_OK].start_pos = checkPos[0];
 		sprites_[(size_t)Check_NO].start_pos = checkPos[1];
 		sprites_[(size_t)Check_BAR].start_pos = checkPos[1];
@@ -343,29 +353,102 @@ void Menu::CheckOpenCloseUpdate() {
 }
 
 void Menu::ConfirmUpdate() {
-	sprites_[(size_t)Confirm_FIRST].isVisible = true;
-	if (!isFinish) {
-		sprites_[(size_t)Confirm_FIRST].start_size = { 0.0f,0.0f };
-		sprites_[(size_t)Confirm_FIRST].end_size = { 1280.0f,720.0f };
+	sprites_[(size_t)Confirm_FIRST].isVisible = false;
+	sprites_[(size_t)Confirm_SECOND].isVisible = false;
+	sprites_[(size_t)Confirm_THIRD].isVisible = false;
+	sprites_[(size_t)Confirm_FOUR].isVisible = false;
+	sprites_[(size_t)confirmIndex].isVisible = true;
+	sprites_[(size_t)confirmIndexOld].isVisible = true;
+	if (isOpen) {
+		sprites_[(size_t)confirmIndex].start_size = { 0.0f, 0.0f };
+		sprites_[(size_t)confirmIndex].end_size = { 1280.0f,720.0f };
+		if (!Helper::GetInstance()->FrameCheck(sprites_[confirmIndex].easingFrame, 1 / sprites_[confirmIndex].kFrameMax)) {
+			sprites_[confirmIndex].size = {
+				Ease(InOut,Circ,sprites_[confirmIndex].easingFrame,sprites_[confirmIndex].start_size.x,sprites_[confirmIndex].end_size.x),
+				Ease(InOut,Circ,sprites_[confirmIndex].easingFrame,sprites_[confirmIndex].start_size.y,sprites_[confirmIndex].end_size.y),
+			};
+			sprites_[confirmIndexOld].size = sprites_[confirmIndex].size;
+		} else {
+			for (int i = CFIRST; i <= CFOUR; i++) {
+				sprites_[i].size = sprites_[confirmIndex].size;
+			}
+			isOpen = false;
+			sprites_[confirmIndex].easingFrame = 0.0f;
+		}
+		return;
 	}
-	if (!Helper::GetInstance()->FrameCheck(sprites_[Confirm_FIRST].easingFrame, 1 / sprites_[Confirm_FIRST].kFrameMax)) {
-		sprites_[(size_t)Confirm_FIRST].size = {
-			Ease(Out,Quad,sprites_[Confirm_FIRST].easingFrame,sprites_[Confirm_FIRST].start_size.x,sprites_[Confirm_FIRST].end_size.x),
-			Ease(Out,Quad,sprites_[Confirm_FIRST].easingFrame,sprites_[Confirm_FIRST].start_size.y,sprites_[Confirm_FIRST].end_size.y)
-		};
-	} else {
-		if (isFinish) {
-			_state = State::SELECT;
+	if (isFinish) {
+		sprites_[(size_t)confirmIndex].start_size = { 1280.0f,720.0f };
+		sprites_[(size_t)confirmIndex].end_size = { 0.0f, 0.0f };
+		if (!Helper::GetInstance()->FrameCheck(sprites_[confirmIndex].easingFrame, 1 / sprites_[confirmIndex].kFrameMax)) {
+			sprites_[confirmIndex].size = {
+				Ease(InOut,Circ,sprites_[confirmIndex].easingFrame,sprites_[confirmIndex].start_size.x,sprites_[confirmIndex].end_size.x),
+				Ease(InOut,Circ,sprites_[confirmIndex].easingFrame,sprites_[confirmIndex].start_size.y,sprites_[confirmIndex].end_size.y),
+			};
+			sprites_[confirmIndexOld].size = sprites_[confirmIndex].size;
+		} else {
+			for (int i = CFIRST; i <= CFOUR;i++) {
+				sprites_[i].size = sprites_[confirmIndex].size;
+			}
 			isFinish = false;
+			sprites_[confirmIndex].easingFrame = 0.0f;
+			_state = State::SELECT;
+		}
+		return;
+	}
+
+	if (TriggerMoveButton()) {
+		if (Input::GetInstance()->TiltPushStick(Input::L_RIGHT) ||
+			Input::GetInstance()->TriggerButton(Input::RIGHT)) {
+			if (confirmIndex == CFOUR) { return; }
+			confirmIndex++;
+		} else {
+			if (confirmIndex == CFIRST) { return; }
+			confirmIndex--;
+		}
+		sprites_[confirmIndex].easingFrame = 0.0f;
+		sprites_[confirmIndexOld].easingFrame = 0.0f;
+		moveBar = true;
+	}
+	if (moveBar) {
+		if (confirmIndexOld < confirmIndex) {
+			sprites_[confirmIndex].start_pos = { window_Width + half_Width,half_Height };
+			sprites_[confirmIndex].end_pos = { half_Width,half_Height };
+			if (!Helper::GetInstance()->FrameCheck(sprites_[confirmIndex].easingFrame, 1 / sprites_[confirmIndex].kFrameMax)) {
+				sprites_[confirmIndex].pos = {
+					Ease(InOut,Circ,sprites_[confirmIndex].easingFrame,sprites_[confirmIndex].start_pos.x,sprites_[confirmIndex].end_pos.x),
+					half_Height
+				};
+			} else {
+				moveBar = false;
+				confirmIndexOld = confirmIndex;
+			}
+		} else {
+			sprites_[confirmIndexOld].end_pos = { window_Width + half_Width,half_Height };
+			sprites_[confirmIndexOld].start_pos = { half_Width,half_Height };
+
+			if (!Helper::GetInstance()->FrameCheck(sprites_[confirmIndexOld].easingFrame, 1 / sprites_[confirmIndexOld].kFrameMax)) {
+				sprites_[confirmIndexOld].pos = {
+					Ease(InOut,Circ,sprites_[confirmIndexOld].easingFrame,sprites_[confirmIndexOld].start_pos.x,sprites_[confirmIndexOld].end_pos.x),
+					half_Height
+				};
+			} else {
+				moveBar = false;
+				confirmIndexOld = confirmIndex;
+			}
+
 		}
 	}
-	if (Input::GetInstance()->TriggerButton(Input::B) ||
-		Input::GetInstance()->TriggerButton(Input::A)) {
-		if (sprites_[Confirm_FIRST].easingFrame != 1.0f) { return; }
+
+
+
+	if (Input::GetInstance()->TriggerButton(Input::DOWN)||
+		Input::GetInstance()->TiltPushStick(Input::L_DOWN)) {
+		if (moveBar) { return; }
 		isFinish = true;
-		sprites_[(size_t)Confirm_FIRST].start_size = { 1280.0f,720.0f };
-		sprites_[(size_t)Confirm_FIRST].end_size = { 0.0f, 0.0f };
-		sprites_[Confirm_FIRST].easingFrame = 0.0f;
+		sprites_[(size_t)confirmIndex].start_size = { 1280.0f,720.0f };
+		sprites_[(size_t)confirmIndex].end_size = { 0.0f, 0.0f };
+		sprites_[confirmIndex].easingFrame = 0.0f;
 	}
 }
 
@@ -417,10 +500,12 @@ Menu::SpriteInfo Menu::CreateSprite(UINT num, XMFLOAT2 pos, float easingFrame) {
 
 bool Menu::TriggerMoveButton() {
 	if (moveBar) { return false; }
-	if (Input::GetInstance()->TiltPushStick(Input::L_RIGHT, 0.0f)) {
+	if (Input::GetInstance()->TiltPushStick(Input::L_RIGHT, 0.0f) ||
+		Input::GetInstance()->TriggerButton(Input::RIGHT)) {
 		return true;
 	}
-	if (Input::GetInstance()->TiltPushStick(Input::L_LEFT, 0.0f)) {
+	if (Input::GetInstance()->TiltPushStick(Input::L_LEFT, 0.0f) ||
+		Input::GetInstance()->TriggerButton(Input::LEFT)) {
 		return true;
 	}
 	return false;

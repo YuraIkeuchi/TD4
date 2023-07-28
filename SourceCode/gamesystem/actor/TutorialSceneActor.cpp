@@ -422,7 +422,7 @@ void TutorialSceneActor::CompleteState() {
 		SceneSave::GetInstance()->SetClearFlag(kTutorialStage,true);
 		Audio::GetInstance()->StopWave(AUDIO_LOAD);
 	}
-	sceneChanger_->ChangeScene("FIRSTSTAGE", SceneChanger::NonReverse);
+	sceneChanger_->ChangeScene("SELECT", SceneChanger::NonReverse);
 
 }
 
@@ -565,7 +565,7 @@ void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 		Audio::GetInstance()->StopWave(AUDIO_LOAD);
 		Player::GetInstance()->SetCanShot(true);
 		Player::GetInstance()->MoveStop(false);
-		sceneChanger_->ChangeScene("FIRSTSTAGE", SceneChanger::NonReverse);
+		sceneChanger_->ChangeScene("SELECT", SceneChanger::NonReverse);
 	}
 
 	//プレイヤー

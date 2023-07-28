@@ -56,10 +56,30 @@ void UI::Initialize() {
 		TexList.emplace_back(std::move(sprites[BossGauge]));
 	}
 	{
-		sprites[CircleCover] = CreateUi(ImageManager::CIRCLECOVER, { m_PlayerCireclePos.x,m_PlayerCireclePos.y - 40.f }, { 350.f,350.f }, { 1.f,1.f,1.f,1.f });
-		sprites[CircleCover].Tex->SetAnchorPoint({ 0.5,0.5f });
-		TexList.emplace_back(std::move(sprites[CircleCover]));
+		for (int i = CircleCover; i <= CircleCover_6; i++) {
+			sprites[i] = CreateUi(ImageManager::CIRCLECOVER, { m_PlayerCireclePos.x,m_PlayerCireclePos.y - 40.f }, { 350.f,350.f }, { 1.f,1.f,1.f,1.f });
+			sprites[i].IsContinue = true;
+			sprites[i].IsVisible = true;
+			TexList.emplace_back(std::move(sprites[i]));
+		}
+
+		const int w = 600;
+		const int h = 600;
+		const int l = 6;
+		for (int i = 0; i < l; i++) {
+			TexList[CircleCover + i].Tex = IKESprite::Create(ImageManager::CIRCLECOVER, { m_PlayerCireclePos.x -( i * 350.f),m_PlayerCireclePos.y - 40.f });
+			int number_index_y = i / l;
+			int number_index_x = i % l;
+			TexList[CircleCover + i].Tex->SetTextureRect(
+				{ static_cast<float>(number_index_x) * w, static_cast<float>(number_index_y) * h },
+				{ static_cast<float>(w), static_cast<float>(h) });
+			TexList[CircleCover + i].Tex->SetSize({ 350.f,350.f });
+			TexList[CircleCover + i].Tex->SetScale(1.0f);
+			TexList[CircleCover + i].Tex->SetAnchorPoint({ 0.5f,0.5f });
+		}
+
 	}
+
 	{
 		sprites[PlayerCircle] = CreateUi(ImageManager::CIRCLE, { m_PlayerCireclePos }, m_PlayerCircleSize, { 1.2f,1.2f,1.2f,1.f });
 		sprites[PlayerCircle].Tex->SetAnchorPoint({ 0.5,0.5f });
@@ -71,6 +91,22 @@ void UI::Initialize() {
 		sprites[ArrowBoss].Tex->SetAnchorPoint({ 0.5,0.5f });
 		TexList.emplace_back(std::move(sprites[ArrowBoss]));
 		TexList[ArrowBoss].IsVisible = false;
+	}
+	//ウェイ
+	{
+		const int w = 128;
+		const int h = 128;
+		const int l = 4;
+		for (int i = HitodamaWay1;  i <= HitodamaWay4; i++) {
+			sprites[i] = CreateUi(ImageManager::HITODAMA, { WinApp::window_width / 2,WinApp::window_height / 2 }, {w,h}, {1.f,1.f,1.f,1.f});
+			int number_index_y = i / l;
+			int number_index_x = i % l;
+			sprites[i].Tex->SetTextureRect({ static_cast<float>(number_index_x) * w,static_cast<float>(number_index_y) * h },
+				{ static_cast<float>(w),static_cast<float>(h) });
+			sprites[i].Tex->SetScale(1.f);
+			sprites[i].Tex->SetAnchorPoint({ 0.5f,0.5f });
+
+		}
 	}
 	if (boss) {
 		bossHpOld = boss->GetHP();
@@ -99,9 +135,12 @@ void UI::Draw() {
 	IKESprite::PreDraw();
 	for (auto i = 0; i < TexList.size(); i++) {
 		if (TexList[i].Tex == nullptr) { continue; }
-		if (TexList[i].IsVisible) {
-			TexList[i].Tex->Draw();
+		if (!TexList[i].IsVisible) { continue; }
+		if (TexList[i].IsContinue) {
+			TexList[circle].Tex->Draw();
+			continue;
 		}
+		TexList[i].Tex->Draw();
 	}
 	IKESprite::PostDraw();
 }
@@ -113,6 +152,7 @@ UI::SpriteData UI::CreateUi(UINT texNumber, XMFLOAT2 pos, XMFLOAT2 size, XMFLOAT
 	itr.Position = pos;
 	itr.Size = size;
 	itr.Color = color;
+	itr.IsContinue = false;
 	return itr;
 }
 
@@ -167,8 +207,13 @@ void UI::PlayerLife() {
 
 }
 
-void UI::PlayerGauge() {
+void UI::PlayerGauge()	 {
 	HungerGauge* hungerGauge = HungerGauge::GetInstance();
+
+	for (int i = HitodamaWay1; i < HitodamaWay4; i++) {
+		TexList[i].IsVisible = false;
+	}
+
 	//Gauge処理
 	if (hungerGauge->GetCatchCount() == 0) {
 		TexList[StatusGauge].IsVisible = false;
@@ -304,6 +349,20 @@ void UI::BulletChange() {
 	} else {
 		oldbullet_type_ = bullet_type_;
 	}
+
+	circleTimer++;
+	Helper::GetInstance()->Clamp(circleTimer, 0, 10);
+	if (circleTimer == 10) {
+		circle++;
+		if (circle > CircleCover_6) {
+			circle = CircleCover;
+		}
+
+		circleTimer = 0;
+	}
+
+
+
 }
 
 void UI::BossLife() {
@@ -325,18 +384,18 @@ void UI::BossLife() {
 
 		if (isCrush) {
 			TexList[UnderBossGauge].Position = {
-					m_UnderBossPos.x,
+					m_UnderBossPos.x - power,
 					m_UnderBossPos.y + power
 			};
 			for (int i = MiddleBossGauge; i <= BossGauge; i++) {
 				TexList[i].Position = {
-					m_MiddleBossPos.x,
+					m_MiddleBossPos.x - power,
 					m_MiddleBossPos.y + power
 				};
 			}
-			crushTimer += 1 / 15.0f;
+			crushTimer += 1 / 10.0f;
 
-			power = power - 1.0f;
+			power = power - 0.5f;
 			power *= -1.0f;
 			Helper::GetInstance()->Clamp(power, -18.0f, 20.0f);
 			Helper::GetInstance()->Clamp(crushTimer, 0.0f, 1.0f);
@@ -346,7 +405,7 @@ void UI::BossLife() {
 				TexList[UnderBossGauge].Position = m_UnderBossPos;
 				TexList[MiddleBossGauge].Position = m_MiddleBossPos;
 				TexList[BossGauge].Position = m_BossPos;
-				power = 10.0f;
+				power = 5.0f;
 				crushTimer = 0.0f;
 			}
 		}
