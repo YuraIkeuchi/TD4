@@ -16,6 +16,8 @@ public:
 	void Draw(DirectXCommon* dxCommon) override;
 	void BackDraw(DirectXCommon* dxCommon);
 	void ImGuiDraw(DirectXCommon* dxCommon);
+
+	void SceneSelect();
 	void FrontDraw();
 private:
 	static const int TITLE_MAX = 3;//タイトルパーツの最大数
@@ -28,4 +30,11 @@ private://メンバ変数
 	XMFLOAT2 size = { 708.0f,354.0f };
 	XMFLOAT2 pos = { 50.0f,20.0f };
 	float frame = 0.0f;
+
+	bool Change = false;
+	
+	enum SelectType {
+		NORMAL_SCENE,
+		SELECT_SCENE,
+	}_SelectType;
 };

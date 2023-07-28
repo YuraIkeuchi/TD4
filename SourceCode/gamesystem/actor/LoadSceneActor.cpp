@@ -95,6 +95,13 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 		Audio::GetInstance()->StopWave(AUDIO_LOAD);
 		str = "GAMEOVER";
 	}
+
+	if (!s_Skip) {
+		str = "TUTORIAL";
+	}
+	else {
+		str = "SELECT";
+	}
 	//一定時間でシーンが変わる
 	if (m_LoadTimer >= 200 && !SceneManager::GetInstance()->GetLoad()) {
 		SceneManager::GetInstance()->ChangeScene(str);
