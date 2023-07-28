@@ -41,11 +41,13 @@ private:
 	IKEModel* treemodel = nullptr;
 	IKEModel* foodmodel = nullptr;
 	IKEModel* groundmodel = nullptr;
+	IKEModel* homemodel = nullptr;
 
 	array<unique_ptr<IKEObject3d>, GHOST_NUM> ghostobj;
 	array<unique_ptr<IKEObject3d>, TREE_NUM> treeobj;
 	unique_ptr<IKEObject3d> foodobj;
 	unique_ptr<IKEObject3d> groundobj;
+	unique_ptr<IKEObject3d> homeobj;
 
 	array<XMFLOAT3, GHOST_NUM> m_GhostPos = {};
 	array<XMFLOAT3, GHOST_NUM> m_GhostRot = {};

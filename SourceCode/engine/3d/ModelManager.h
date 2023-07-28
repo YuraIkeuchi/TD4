@@ -50,7 +50,8 @@ public:
 		DOWNBOX,
 		TITLEMAP,
 		PEDKOTOKO,
-		TREE
+		TREE,
+		HOME
 	};
 	//FBXの名前
 	enum FBXName {

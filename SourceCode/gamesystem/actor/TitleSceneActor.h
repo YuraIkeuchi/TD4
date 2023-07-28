@@ -19,22 +19,28 @@ public:
 
 	void SceneSelect();
 	void FrontDraw();
+	void TitleMove();//タイトルの文字の動き
 private:
 	static const int TITLE_MAX = 3;//タイトルパーツの最大数
-	static const int MODE_MAX = 3;//モードパーツの最大数
-	static const int EXPLAIN_MAX = 3;//説明文の最大数
 private://メンバ変数
+	array<unique_ptr<IKESprite>, TITLE_MAX> TitlePartsSprite;
 	//スプライト
 	unique_ptr<IKESprite> TitleSprite;
 	unique_ptr<IKESprite> TitleWordSprite;
+	//タイトルのパーツに必要なもの
+	array<float, 3> m_Angle;
+	array<float, 3> m_Angle2;
+	array<XMFLOAT2, TITLE_MAX> m_PartsPos;
+	array<XMFLOAT2, TITLE_MAX> m_PartsSize;
 	XMFLOAT2 size = { 708.0f,354.0f };
-	XMFLOAT2 pos = { 50.0f,20.0f };
+	XMFLOAT2 pos = { 200.0f,150.0f };
 	float frame = 0.0f;
 
-	bool Change = false;
+	bool m_Change = false;
 	
 	enum SelectType {
 		NORMAL_SCENE,
 		SELECT_SCENE,
+		SELECT_AREA,
 	}_SelectType;
 };
