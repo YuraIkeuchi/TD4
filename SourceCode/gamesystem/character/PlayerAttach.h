@@ -35,6 +35,8 @@ public:
 	//エンドロールの動き
 	void EndRollUpdate(int Timer);
 	void DeathUpdate();
+	//タイトル
+	void TitleUpdate();
 public:
 	//gettersetter
 	void SetAlive(const bool Alive) { m_Alive = Alive; }

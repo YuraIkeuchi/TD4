@@ -13,20 +13,24 @@ ModelManager* ModelManager::GetInstance()
 //モデル読み込み(最初から読み込むもの)
 void ModelManager::StartInitialize()
 {
+	LoadModel(Bullet, "UVSphere");
+	LoadModel(SKIRT, "skirt");
+	LoadModel(Sutopon, "sutopon");
+	LoadModel(TREE, "tree");
+	LoadModel(Food, "food");
+	LoadModel(Ghost, "ghost");
+	LoadModel(Ground, "ground");
+	LoadFBXModel(PLAYER, "kotoko");
 }
 
 //モデル読み込み(非同期処理で読み込むもの)
 void ModelManager::SecondInitialize()
 {
-	LoadModel(Ground, "ground");
-	LoadModel(Bullet, "UVSphere");
+
 	LoadModel(Nucleus, "nucleus");
 	LoadModel(GhostBullet, "voice");
 	LoadModel(BulEnemy, "tri");
 	LoadModel(Tyuta, "tieyosi_idol");
-	LoadModel(Sutopon, "sutopon");
-	LoadModel(Food,"food");
-	LoadModel(Ghost,"ghost");
 	LoadModel(Buddy,"buddy");
 	LoadModel(MobUsa, "mobusa");
 	LoadModel(Camera, "A&J");
@@ -36,7 +40,7 @@ void ModelManager::SecondInitialize()
 	LoadModel(KIDO_OBJ, "kidokunobj");
 	LoadModel(DJ, "DJ");
 	LoadModel(CD, "CD");
-	LoadModel(SKIRT, "skirt");
+
 	LoadModel(NOTE, "NOTE");
 	LoadModel(UPBOX, "upbox");
 	LoadModel(WIDTH1, "width1");
@@ -54,7 +58,7 @@ void ModelManager::SecondInitialize()
 	LoadModel(NAIL, "Nail");
 	LoadModel(LASTBOSS, "burapon");
 		LoadModel(TITLEMAP, "LowPoly_Landscape");
-	LoadFBXModel(PLAYER, "kotoko");
+
 	LoadFBXModel(PLAYER2, "dkotoko");
 	LoadFBXModel(SIORI, "siori_idol");
 	LoadFBXModel(KIDO, "kidokun_idol");

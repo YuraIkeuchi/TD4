@@ -4,7 +4,7 @@
 #include "AudioManager.h"
 #include "Font.h"
 #include "SceneSave.h"
-
+#include "TItleObj.h"
 #include"Menu.h"
 void Framework::Run()
 {
@@ -78,6 +78,9 @@ void Framework::Initialize(DirectXCommon* dxCommon)
 	Font::Initialize(dxcommon);
 	
 	SceneSave::GetInstance()->AllReset();
+
+	//
+	TitleObj::GetInstance()->LoadResource();
 }
 
 void Framework::Finalize()

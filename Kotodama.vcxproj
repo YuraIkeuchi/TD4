@@ -275,6 +275,7 @@
     <ClCompile Include="SourceCode\gamesystem\stageobj\Heart.cpp" />
     <ClCompile Include="SourceCode\gamesystem\stageobj\HungerGauge.cpp" />
     <ClCompile Include="SourceCode\gamesystem\stageobj\InterBullet.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\stageobj\TitleObj.cpp" />
     <ClCompile Include="SourceCode\gamesystem\stageobj\ViewBullet.cpp" />
     <ClCompile Include="SourceCode\gamesystem\text\BossText.cpp" />
     <ClCompile Include="SourceCode\gamesystem\text\Text.cpp" />
@@ -456,6 +457,7 @@
     <ClInclude Include="SourceCode\gamesystem\stageobj\Heart.h" />
     <ClInclude Include="SourceCode\gamesystem\stageobj\HungerGauge.h" />
     <ClInclude Include="SourceCode\gamesystem\stageobj\InterBullet.h" />
+    <ClInclude Include="SourceCode\gamesystem\stageobj\TItleObj.h" />
     <ClInclude Include="SourceCode\gamesystem\stageobj\ViewBullet.h" />
     <ClInclude Include="SourceCode\gamesystem\text\BossText.h" />
     <ClInclude Include="SourceCode\gamesystem\text\Text.h" />
