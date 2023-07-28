@@ -82,6 +82,7 @@ public:
 		tip5,
 		tip6,
 		tip7,
+		tip8,
 		Challenge,
 		Cancel,
 		BOSS_ARROW,
@@ -103,6 +104,7 @@ public:
 		SLASHAREA,
 		DARKBOM,
 		SHADOW,
+		TITLETIPS
 	};
 	enum particleName
 	{

@@ -49,6 +49,7 @@ private://ƒƒ“ƒo•Ï”
 
 	string str = "SELECT";
 
+	bool feedf=true;
 	//Loading
 	enum {
 		text_L = 0,

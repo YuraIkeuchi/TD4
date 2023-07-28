@@ -8,6 +8,8 @@
 #include<string>
 #include <list>
 
+#include "Feed.h"
+
 //シーンチェンジクラス
 class SceneChanger {
 public:
@@ -27,6 +29,12 @@ public:
 	/// </summary>
 	void InitializeOver();
 
+	static Feed* feed;
+	static bool feedF;
+	static void FeedInit();
+	static void FeedChange();
+	void SetFeedF(bool f) { feedF = f; }
+	static void FeedDraw();
 	/// <summary>
 	/// 描画
 	/// </summary>

@@ -3,6 +3,9 @@
 #include <SceneManager.h>
 #include "Helper.h"
 
+Feed* SceneChanger::feed = nullptr;
+bool SceneChanger::feedF = false;
+
 SceneChanger::SceneChanger() {
 }
 
@@ -164,6 +167,31 @@ void SceneChanger::ChangeGameOver() {
 		for (std::unique_ptr<IKESprite>& sprite : over_sprites) {
 			sprite->SetAnchorPoint({ 0,0 });
 			sprite->SetSize({ size.x,size.y });
+		}
+	}
+}
+
+void SceneChanger::FeedInit()
+{
+	feed = new Feed();
+}
+
+void SceneChanger::FeedDraw()
+{
+	//if (!feedF)return;
+	IKESprite::PreDraw();
+	feed->Draw();
+	IKESprite::PostDraw();
+}
+
+
+
+void SceneChanger::FeedChange()
+{
+	if (feedF) {
+		feed->FeedIn(Feed::FeedType::BLACK, 0.01f, feedF);
+		if (feed->GetAlpha() >= 1.0f) {
+			SceneManager::GetInstance()->ChangeScene("LOAD");
 		}
 	}
 }

@@ -49,7 +49,8 @@ public:
 		WIDTH4,
 		DOWNBOX,
 		TITLEMAP,
-		PEDKOTOKO
+		PEDKOTOKO,
+		TITKOTOKO
 	};
 	//FBXの名前
 	enum FBXName {
