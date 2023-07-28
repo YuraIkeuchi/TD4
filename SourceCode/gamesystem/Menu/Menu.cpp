@@ -42,6 +42,7 @@ void Menu::Initialize() {
 
 	for (int i = 0; i < SpriteMax; i++) {
 		sprites_[i].sprite->SetAnchorPoint({ 0.5f,0.5f });
+		sprites_[i].sprite->SetColor({ 1.2f,1.2f,1.2f,1 });
 	}
 }
 
@@ -441,7 +442,8 @@ void Menu::ConfirmUpdate() {
 
 
 
-	if (Input::GetInstance()->TriggerButton(Input::DOWN)) {
+	if (Input::GetInstance()->TriggerButton(Input::DOWN)||
+		Input::GetInstance()->TiltPushStick(Input::L_DOWN)) {
 		if (moveBar) { return; }
 		isFinish = true;
 		sprites_[(size_t)confirmIndex].start_size = { 1280.0f,720.0f };

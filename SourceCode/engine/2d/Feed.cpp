@@ -5,8 +5,7 @@
 #include"ImageManager.h"
 #define WindowW 1920
 #define WindowH 1020
-Feed::Feed()
-{
+Feed::Feed() {
 	//初期化
 	FeedTex = IKESprite::Create(ImageManager::FEED, { 0,0 });
 	FeedTex->SetAnchorPoint({ 0.f,0.f });
@@ -16,8 +15,7 @@ Feed::Feed()
 	m_Alpha = 0.f;
 }
 
-void Feed::FeedIn(FeedType type, float feedspeed, bool& feedf)
-{
+void Feed::FeedIn(FeedType type, float feedspeed, bool& feedf) {
 	if (FeedTex == nullptr)return;
 	//テク椅子茶色指定
 	if (type == FeedType::BLACK)Color_RGB = { 0,0,0 };
@@ -25,8 +23,7 @@ void Feed::FeedIn(FeedType type, float feedspeed, bool& feedf)
 
 	//遷移
 	constexpr int inStaymax = 60;
-	switch (_phase)
-	{
+	switch (_phase) {
 	case FeedPhase::NON:
 		m_Alpha = 0.f;
 		FeedInCounter = 0;
@@ -40,18 +37,18 @@ void Feed::FeedIn(FeedType type, float feedspeed, bool& feedf)
 		if (FeedInCounter > inStaymax)_phase = FeedPhase::FEEDOUT;
 		break;
 	case FeedPhase::FEEDOUT:
-		m_Alpha -= (feedspeed);
+		m_Alpha -= (feedspeed) * 2.0f;
 		if (m_Alpha <= 0.f) {
 			//各種初期化
 			feedf = false;
-			
+
 			_phase = FeedPhase::END;
 		}
 		break;
 
-		case FeedPhase::END:
-			if (feedf)_phase = FeedPhase::NON;
-			break;
+	case FeedPhase::END:
+		if (feedf)_phase = FeedPhase::NON;
+		break;
 
 	}
 
@@ -60,12 +57,11 @@ void Feed::FeedIn(FeedType type, float feedspeed, bool& feedf)
 	Helper::GetInstance()->Clamp(m_Alpha, 0.f, 1.f);
 }
 
-void Feed::Draw()
-{
+void Feed::Draw() {
 	if (FeedTex == nullptr)return;
 	IKESprite::PreDraw();
 	FeedTex->Draw();
 	IKESprite::PostDraw();
 }
 
-bool Feed::GetFeedEnd(){ if (_phase == FeedPhase::FEEDOUT)return true; else return false; }
+bool Feed::GetFeedEnd() { if (_phase == FeedPhase::FEEDOUT)return true; else return false; }
