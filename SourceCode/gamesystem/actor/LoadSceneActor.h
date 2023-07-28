@@ -19,7 +19,6 @@ public:
 	void ImGuiDraw(DirectXCommon* dxCommon);
 	void SpriteDraw();
 private:
-	void CreateStage();
 	void IntroUpdate(DebugCamera* camera)override;
 	void MainUpdate(DebugCamera* camera)override;
 	void FinishUpdate(DebugCamera* camera)override;
@@ -29,7 +28,7 @@ private://ƒƒ“ƒo•Ï”
 	int m_LoadTimer = 0;
 	const int LoadTimerMax = 60;
 	//ã‰º‰^“®‚Ì’†S
-	const XMFLOAT2 CenterPos = { 100.f,630.0f };
+	const XMFLOAT2 CenterPos = { 130.f,630.0f-32.f };
 	//‰Á‘¬“x
 	const float AddMovingVal = 4.0f;
 	//•¶š‚ÌŠÔŠu
@@ -37,33 +36,28 @@ private://ƒƒ“ƒo•Ï”
 	//c²‚ÌŠÔŠu
 	const float space = 30.0f;
 
-	JsonData* m_JsonData = nullptr;
-	std::list<std::unique_ptr<IKEObject3d>> grounds;
-	std::map<std::string, std::unique_ptr<IKEModel>> models;
-
-	std::unique_ptr<IKEModel> modelSkydome = nullptr;
-	std::unique_ptr<IKEModel> modelGround = nullptr;
-	std::unique_ptr<IKEModel> modelFighter = nullptr;
-	std::unique_ptr<IKEModel> modelSphere = nullptr;
-	std::unique_ptr<IKEModel> modelPine = nullptr;
-
 	string str = "SELECT";
 
 	//Loading
 	enum {
+		BackScreen,
 		text_L = 0,
 		text_O,
 		text_A,
 		text_D,
 		text_I,
+		Sutopon_1,
+		Sutopon_2,
+		Sutopon_3,
+		Sutopon_4,
 		SpriteMax
 	};
 
+	int sutoponNow = Sutopon_1;
+	int sutoponTimer = 0;
 
 	std::array<std::unique_ptr<IKESprite>, SpriteMax> m_Sprites = {};
 	std::array<XMFLOAT2, SpriteMax> m_SpritesPos = {};
 	std::array<float, SpriteMax> m_SpritesAngle = {};
 	std::array<XMFLOAT2, SpriteMax> m_StopPos = {};
-
 };
-//m_SceneState = SceneState::FinishState;

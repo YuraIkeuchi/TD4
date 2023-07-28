@@ -12,11 +12,13 @@ void ImageManager::StartLoad2D()
 	
 	IKESprite::LoadTexture(TITLE, L"Resources/2d/sceneback/title2.png");
 	IKESprite::LoadTexture(TITLEWORD, L"Resources/2d/sceneback/gameTitle.png");
+	IKESprite::LoadTexture(SELECT, L"Resources/2d/sceneback/selectBack.png");
 	IKESprite::LoadTexture(LOADING_LO, L"Resources/2d/objicon/LoadText/01_Lo.png");
 	IKESprite::LoadTexture(LOADING_O, L"Resources/2d/objicon/LoadText/02_O.png");
 	IKESprite::LoadTexture(LOADING_DI, L"Resources/2d/objicon/LoadText/03_Di.png");
 	IKESprite::LoadTexture(LOADING_N, L"Resources/2d/objicon/LoadText/04_N.png");
 	IKESprite::LoadTexture(LOADING_G, L"Resources/2d/objicon/LoadText/05_G.png");
+	IKESprite::LoadTexture(SUTOPONMOVE, L"Resources/2d/objicon/sutopon_Anime.png");
 	IKESprite::LoadTexture(WHITE, L"Resources/2d/effect/white1x1.png");
 	IKESprite::LoadTexture(WINDOW, L"Resources/2d/objicon/ConversationWindow.png");
 	IKESprite::LoadTexture(BLACKWINDOW, L"Resources/2d/objicon/BlackWindow.png");
