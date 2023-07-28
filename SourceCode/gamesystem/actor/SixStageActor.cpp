@@ -297,7 +297,7 @@ void SixStageActor::MainUpdate(DebugCamera* camera) {
 
 		if (camerawork->GetEndDeath()) {
 			sceneChanger_->ChangeStart();
-			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
+			sceneChanger_->ChangeScene("SELECT", SceneChanger::NonReverse);
 
 		}
 	} else {

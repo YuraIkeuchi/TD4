@@ -347,7 +347,7 @@ void ThirdStageActor::MainUpdate(DebugCamera* camera) {
 		/*	SelectScene::GetIns()->SetTexSpeed(180.f);
 			SelectScene::GetIns()->SetTexScl(12500.f);*/
 
-			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
+			sceneChanger_->ChangeScene("SELECT", SceneChanger::NonReverse);
 		}
 	}
 	else
