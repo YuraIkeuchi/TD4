@@ -50,7 +50,7 @@ public:
 		DOWNBOX,
 		TITLEMAP,
 		PEDKOTOKO,
-		TITKOTOKO
+		TITKOTOKO,
 		TREE
 	};
 	//FBXの名前

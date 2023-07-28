@@ -64,7 +64,6 @@ void Feed::Draw() {
 	IKESprite::PostDraw();
 }
 
-<<<<<<< HEAD
 bool Feed::GetFeedEnd(){ if (_phase == FeedPhase::FEEDOUT)return true; else return false; }
 
 //
@@ -139,6 +138,3 @@ void Feed2::Draw2()
 }
 
 bool Feed2::GetFeedEnd2() { if (_phase == FeedPhase2::FEEDOUT)return true; else return false; }
-=======
-bool Feed::GetFeedEnd() { if (_phase == FeedPhase::FEEDOUT)return true; else return false; }
->>>>>>> 733fb78810fe32a279cdbd36daae277b04831e67

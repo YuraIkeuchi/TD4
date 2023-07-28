@@ -55,15 +55,9 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	//関数ポインタで状態管理
 	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
 	sceneChanger_->Update();
-<<<<<<< HEAD
 	if (feedf) {
 		Feed2::GetInstance()->FeedIn2(Feed2::FeedType2::BLACK, 0.02f, feedf);
-	}for (std::unique_ptr<IKEObject3d>& obj : grounds) {
-		obj->Update();
 	}
-=======
-
->>>>>>> 733fb78810fe32a279cdbd36daae277b04831e67
 	//1ステージ
 	if (Input::GetInstance()->TriggerKey(DIK_1)) {
 		Audio::GetInstance()->StopWave(AUDIO_LOAD);
