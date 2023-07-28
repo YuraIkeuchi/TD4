@@ -16,19 +16,21 @@ void ModelManager::StartInitialize()
 	LoadModel(Bullet, "UVSphere");
 	LoadModel(SKIRT, "skirt");
 	LoadModel(Sutopon, "sutopon");
+	LoadModel(TREE, "tree");
+	LoadModel(Food, "food");
+	LoadModel(Ghost, "ghost");
+	LoadModel(Ground, "ground");
 	LoadFBXModel(PLAYER, "kotoko");
 }
 
 //モデル読み込み(非同期処理で読み込むもの)
 void ModelManager::SecondInitialize()
 {
-	LoadModel(Ground, "ground");
+
 	LoadModel(Nucleus, "nucleus");
 	LoadModel(GhostBullet, "voice");
 	LoadModel(BulEnemy, "tri");
 	LoadModel(Tyuta, "tieyosi_idol");
-	LoadModel(Food,"food");
-	LoadModel(Ghost,"ghost");
 	LoadModel(Buddy,"buddy");
 	LoadModel(MobUsa, "mobusa");
 	LoadModel(Camera, "A&J");

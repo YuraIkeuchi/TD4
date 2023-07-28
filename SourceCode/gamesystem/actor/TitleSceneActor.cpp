@@ -4,6 +4,7 @@
 #include "ParticleEmitter.h"
 #include "Menu.h"
 #include "SelectScene.h"
+#include "TItleObj.h"
 //初期化
 void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
 	//共通の初期化
@@ -29,6 +30,7 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	//各クラス
 	Player::GetInstance()->LoadResource();
 	Player::GetInstance()->InitState({ 0.0f,-2.0f,-30.0f });
+	TitleObj::GetInstance()->Initialize();
 }
 //更新
 void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -61,6 +63,7 @@ void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	}
 
 	Player::GetInstance()->TitleUpdate();
+	TitleObj::GetInstance()->Update();
 	menu->Update();
 	camerawork->Update(camera);
 }
@@ -106,6 +109,7 @@ void TitleSceneActor::BackDraw(DirectXCommon* dxCommon)
 	IKESprite::PostDraw();
 	IKEObject3d::PreDraw();
 	Player::GetInstance()->Draw(dxCommon);
+	TitleObj::GetInstance()->Draw(dxCommon);
 	IKEObject3d::PostDraw();
 }
 //ImGui描画

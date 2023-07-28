@@ -1202,7 +1202,7 @@ void CameraWork::StrongCamera() {
 }
 //タイトルカメラ
 void CameraWork::TitleCamera() {
-	m_eyePos = { 0.0f,0.0f,-20.0f };
+	m_eyePos = { 0.0f,3.0f,-20.0f };
 	m_targetPos = { 0.0f,0.0f,10.0f };
 }
 void CameraWork::SetEaseCamera() {

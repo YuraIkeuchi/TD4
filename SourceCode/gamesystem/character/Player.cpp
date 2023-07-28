@@ -1062,7 +1062,7 @@ void Player::BirthAbs(const XMFLOAT4& color) {
 //タイトルの更新
 void Player::TitleUpdate() {
 	AnimationControl(AnimeName::IDLE, true, 1);
-	m_Position = { -3.0f,-5.0f,0.0f };
+	m_Position = { 1.0f,-2.0f,-8.0f };
 	m_Rotation = { 0.0f,180.0f,0.0f };
 	m_Color = { 1.0f,1.0f,1.0f,1.0f };
 	m_Scale = { 0.6f,0.4f,0.6f };
