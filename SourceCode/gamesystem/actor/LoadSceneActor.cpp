@@ -16,19 +16,34 @@ void LoadSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 		SceneManager::GetInstance()->SetLoad(true);
 		s_GameLoop = true;
 	}
-	CreateStage();
 
 
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
 
+	m_Sprites[BackScreen] = IKESprite::Create(ImageManager::SELECT, { 0,0 });
 
-	for (int i = 0; i < SpriteMax; i++) {
+	for (int i = text_L; i <= text_I; i++) {
 		m_SpritesPos[i].x = (i + 1) * 100.0f;
 		m_SpritesPos[i].y = 630.0f;
 		m_Sprites[i] = IKESprite::Create(ImageManager::LOADING_LO + i, m_SpritesPos[i]);
 		m_Sprites[i]->SetAnchorPoint({ 0.5f,0.5f });
 		m_Sprites[i]->SetSize({ 96.0f, 96.0f });
+	}
+
+	const int w = 128;
+	const int h = 128;
+	const int l = 4;
+	for (int i = 0; i < l; i++) {
+		m_Sprites[Sutopon_1 + i] = IKESprite::Create(ImageManager::SUTOPONMOVE, { 1280.f-140,720.f-120.f });
+		int number_index_y = i / l;
+		int number_index_x = i % l;
+		m_Sprites[Sutopon_1 + i]->SetTextureRect(
+			{ static_cast<float>(number_index_x) * w, static_cast<float>(number_index_y) * h },
+			{ static_cast<float>(w), static_cast<float>(h) });
+		m_Sprites[Sutopon_1 + i]->SetSize({ 128.f,128.f });
+		m_Sprites[Sutopon_1 + i]->SetScale(1.0f);
+		m_Sprites[Sutopon_1 + i]->SetAnchorPoint({ 0.5f,0.5f });
 	}
 
 	camerawork->SetCameraState(CAMERA_LOAD);
@@ -40,11 +55,15 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	//関数ポインタで状態管理
 	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
 	sceneChanger_->Update();
+<<<<<<< HEAD
 	if (feedf) {
 		Feed2::GetInstance()->FeedIn2(Feed2::FeedType2::BLACK, 0.02f, feedf);
 	}for (std::unique_ptr<IKEObject3d>& obj : grounds) {
 		obj->Update();
 	}
+=======
+
+>>>>>>> 733fb78810fe32a279cdbd36daae277b04831e67
 	//1ステージ
 	if (Input::GetInstance()->TriggerKey(DIK_1)) {
 		Audio::GetInstance()->StopWave(AUDIO_LOAD);
@@ -55,11 +74,11 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 		Audio::GetInstance()->StopWave(AUDIO_LOAD);
 		str = "SECONDSTAGE";
 	}
-	
+
 	//3ステージ
 	if (Input::GetInstance()->TriggerKey(DIK_3)) {
 		Audio::GetInstance()->StopWave(AUDIO_LOAD);
-		str="THIRDSTAGE";
+		str = "THIRDSTAGE";
 	}
 
 	//4ステージ
@@ -96,6 +115,13 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 		Audio::GetInstance()->StopWave(AUDIO_LOAD);
 		str = "GAMEOVER";
 	}
+
+	if (!s_Skip) {
+		str = "TUTORIAL";
+	}
+	else {
+		str = "SELECT";
+	}
 	//一定時間でシーンが変わる
 	if (m_LoadTimer >= 200 && !SceneManager::GetInstance()->GetLoad()) {
 		SceneManager::GetInstance()->ChangeScene(str);
@@ -128,75 +154,21 @@ void LoadSceneActor::Draw(DirectXCommon* dxCommon) {
 void LoadSceneActor::SpriteDraw() {
 
 	IKESprite::PreDraw();
-	for (std::unique_ptr<IKESprite>& sprite : m_Sprites) {
-		sprite->Draw();
+	for (int i = 0; i < Sutopon_1; i++) {
+		m_Sprites[i]->Draw();
 	}
+	m_Sprites[sutoponNow]->Draw();
 	IKESprite::PostDraw();
 	sceneChanger_->Draw();
 	//sceneChanger_->FeedDraw();
 	if (feedf)
 	Feed2::GetInstance()->Draw2();
 }
-//Json読み込み
-void LoadSceneActor::CreateStage() {
-	m_JsonData = JsonLoader::LoadFile("Introduction");
-
-
-	// モデル読み込み
-	modelSkydome = make_unique<IKEModel>();
-	modelSkydome->Initialize("skydome", false);
-	modelGround = make_unique<IKEModel>();
-	modelGround->Initialize("ground", false);
-	modelFighter = make_unique<IKEModel>();
-	modelFighter->Initialize("House", false);
-	modelPine = make_unique<IKEModel>();
-	modelPine->Initialize("Pine", false);
-
-	models.insert(std::make_pair("skydome", std::move(modelSkydome)));
-	models.insert(std::make_pair("ground", std::move(modelGround)));
-	models.insert(std::make_pair("House", std::move(modelFighter)));
-	models.insert(std::make_pair("Pine", std::move(modelPine)));
-
-
-	// レベルデータからオブジェクトを生成、配置
-	for (auto& objectData : m_JsonData->objects) {
-		// ファイル名から登録済みモデルを検索
-		IKEModel* model = nullptr;
-		decltype(models)::iterator it = models.find(objectData.fileName);
-		if (it != models.end()) {
-			model = it->second.get();
-		}
-
-		// モデルを指定して3Dオブジェクトを生成
-		std::unique_ptr<IKEObject3d> newObj = make_unique<IKEObject3d>();
-		newObj->Initialize();
-		newObj->SetModel(model);
-
-		// 座標
-		DirectX::XMFLOAT3 pos;
-		DirectX::XMStoreFloat3(&pos, objectData.translation);
-		newObj->SetPosition(pos);
-
-		// 回転角
-		DirectX::XMFLOAT3 rot;
-		DirectX::XMStoreFloat3(&rot, objectData.rotation);
-		newObj->SetRotation(rot);
-
-		// 座標
-		DirectX::XMFLOAT3 scale;
-		DirectX::XMStoreFloat3(&scale, objectData.scaling);
-		newObj->SetScale(scale);
-
-		// 配列に登録
-		grounds.push_back(std::move(newObj));
-	}
-
-}
 //ロード中の動き
 void LoadSceneActor::IntroUpdate(DebugCamera* camera) {
 	//�ŏ��̕�����������Ɠ�����
 	m_SpritesAngle[0] += AddMovingVal;
-	for (int i = 0; i < SpriteMax; i++) {
+	for (int i = text_L; i <= text_I; i++) {
 		if (i != 0 && m_SpritesAngle[i - 1] > AddMovingVal * 5.0f) {
 			m_SpritesAngle[i] += AddMovingVal;
 		}
@@ -204,8 +176,18 @@ void LoadSceneActor::IntroUpdate(DebugCamera* camera) {
 		m_SpritesPos[i].y = CenterPos.y + sinf(m_SpritesAngle[i] * PI / PI_180) * space;
 		m_Sprites[i]->SetPosition(m_SpritesPos[i]);
 	}
+	sutoponTimer++;
+	Helper::GetInstance()->Clamp(sutoponTimer, 0, 10);
+	if (sutoponTimer == 10) {
+		sutoponNow++;
+		if (sutoponNow > Sutopon_4) {
+			sutoponNow = Sutopon_1;
+		}
+		sutoponTimer = 0;
+	}
+
 	if (!SceneManager::GetInstance()->GetLoad()) {
-		for (int i = 0; i < SpriteMax; i++) {
+		for (int i = text_L; i <= text_I; i++) {
 			m_StopPos[i] = m_SpritesPos[i];
 		}
 		m_SceneState = SceneState::MainState;
@@ -214,9 +196,9 @@ void LoadSceneActor::IntroUpdate(DebugCamera* camera) {
 void LoadSceneActor::MainUpdate(DebugCamera* camera) {
 	m_LoadTimer++;
 	float frame = (float)m_LoadTimer / (float)LoadTimerMax;
-	for (int i = 0; i < SpriteMax; i++) {
+	for (int i = text_L; i <= text_I; i++) {
 		m_SpritesPos[i].x = Ease(In, Linear, frame, m_StopPos[i].x, CenterPos.x + static_cast<float>(i) * WordsInter);
-		m_SpritesPos[i].y = Ease(In, Linear, frame, m_StopPos[i].y, 630.0f);
+		m_SpritesPos[i].y = Ease(In, Linear, frame, m_StopPos[i].y, CenterPos.y);
 		m_Sprites[i]->SetPosition(m_SpritesPos[i]);
 
 	}
@@ -238,33 +220,22 @@ void LoadSceneActor::FinishUpdate(DebugCamera* camera) {
 	m_LoadTimer++;
 
 	float frame = (float)m_LoadTimer / (float)LoadTimerMax;
-	for (int i = 0; i < SpriteMax; i++) {
-		m_SpritesPos[i].x = (i + 1) * 100.0f;
-		m_SpritesPos[i].y = 630.0f;
-		m_Sprites[i]->SetPosition(m_SpritesPos[i]);
+
+	for (int i = text_L; i < SpriteMax; i++) {
 
 		float rot = Ease(In, Quad, frame, 0, PI_360);
 		m_Sprites[i]->SetRotation(rot);
 	}
-
 }
+
 //背面描画
 void LoadSceneActor::BackDraw(DirectXCommon* dxCommon) {
 
-	for (std::unique_ptr<IKEObject3d>& obj : grounds) {
-		obj->Draw();
-	}
 
 }
 //ImGuiの描画
 void LoadSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	/*ImGui::Begin("Load");
-	ImGui::SetWindowPos(ImVec2(0, 0));
-	ImGui::SetWindowSize(ImVec2(200, 200));
-	ImGui::SliderInt("LoadTimer", &m_LoadTimer, 0, 200);
 
-	ImGui::End();
-	camerawork->ImGuiDraw();*/
 }
 //解放
 void LoadSceneActor::Finalize() {

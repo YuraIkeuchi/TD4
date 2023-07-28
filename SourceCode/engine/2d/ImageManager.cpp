@@ -12,11 +12,13 @@ void ImageManager::StartLoad2D()
 	
 	IKESprite::LoadTexture(TITLE, L"Resources/2d/sceneback/title2.png");
 	IKESprite::LoadTexture(TITLEWORD, L"Resources/2d/sceneback/gameTitle.png");
+	IKESprite::LoadTexture(SELECT, L"Resources/2d/sceneback/selectBack.png");
 	IKESprite::LoadTexture(LOADING_LO, L"Resources/2d/objicon/LoadText/01_Lo.png");
 	IKESprite::LoadTexture(LOADING_O, L"Resources/2d/objicon/LoadText/02_O.png");
 	IKESprite::LoadTexture(LOADING_DI, L"Resources/2d/objicon/LoadText/03_Di.png");
 	IKESprite::LoadTexture(LOADING_N, L"Resources/2d/objicon/LoadText/04_N.png");
 	IKESprite::LoadTexture(LOADING_G, L"Resources/2d/objicon/LoadText/05_G.png");
+	IKESprite::LoadTexture(SUTOPONMOVE, L"Resources/2d/objicon/sutopon_Anime.png");
 	IKESprite::LoadTexture(WHITE, L"Resources/2d/effect/white1x1.png");
 	IKESprite::LoadTexture(WINDOW, L"Resources/2d/objicon/ConversationWindow.png");
 	IKESprite::LoadTexture(BLACKWINDOW, L"Resources/2d/objicon/BlackWindow.png");
@@ -54,7 +56,10 @@ void ImageManager::SecondLoad2D()
 	IKESprite::LoadTexture(CHECK_HOME, L"Resources/2d/sceneback/CheckSheet.png");
 	IKESprite::LoadTexture(CHECK_OK, L"Resources/2d/sceneback/CheckOk.png");
 	IKESprite::LoadTexture(CHECK_NO, L"Resources/2d/sceneback/CheckNo.png");
-	IKESprite::LoadTexture(EXPLANATION, L"Resources/2d/sceneback/Explanation.png");
+	IKESprite::LoadTexture(EXPLANATION_1, L"Resources/2d/sceneback/ex1.png");
+	IKESprite::LoadTexture(EXPLANATION_2, L"Resources/2d/sceneback/ex2.png");
+	IKESprite::LoadTexture(EXPLANATION_3, L"Resources/2d/sceneback/ex3.png");
+	IKESprite::LoadTexture(EXPLANATION_4, L"Resources/2d/sceneback/ex4.png");
 	IKESprite::LoadTexture(CLOSEMILK, L"Resources/2d/objicon/closeMilk.png");
 	IKESprite::LoadTexture(CLOSESYTOPON, L"Resources/2d/objicon/closeSutopon.png");
 	IKESprite::LoadTexture(CLOSEKIDO, L"Resources/2d/objicon/closekido.png");
@@ -93,6 +98,7 @@ void ImageManager::SecondLoad2D()
 	IKESprite::LoadTexture(NOTE, L"Resources/2d/objicon/onp.png");
 	IKESprite::LoadTexture(NOTE2, L"Resources/2d/objicon/onp2.png");
 
+	IKESprite::LoadTexture(HITODAMA, L"Resources/2d/objicon/way.png");
 }
 
 //テクスチャの読み込み

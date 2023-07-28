@@ -51,6 +51,7 @@ public:
 		TITLEMAP,
 		PEDKOTOKO,
 		TITKOTOKO
+		TREE
 	};
 	//FBXの名前
 	enum FBXName {
