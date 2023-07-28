@@ -90,6 +90,7 @@ public:
 		BOSS_ARROW,
 		NOTE,
 		NOTE2,
+		HITODAMA,
 	};
 	//テクスチャの名前
 	enum tex2dName

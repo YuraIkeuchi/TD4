@@ -43,6 +43,10 @@ private:
 		CircleCover,
 		PlayerCircle,
 		ArrowBoss,
+		HitodamaWay1,
+		HitodamaWay2,
+		HitodamaWay3,
+		HitodamaWay4,
 		UiMax,
 	};
 
