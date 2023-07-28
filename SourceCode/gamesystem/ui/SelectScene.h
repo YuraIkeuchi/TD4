@@ -75,7 +75,12 @@ private:
 	//土台
 	unique_ptr<IKEObject3d>Pedestal = nullptr;
 	XMFLOAT3 PedestalRot = { 0,0,0 };
-
+	std::unique_ptr<IKETexture>TitleTex;
+	std::unique_ptr<IKEObject3d>kotokoObj,sutoponObj;
+	bool JumpK, JumpS;
+	float JFrameK, JFrameS;
+	float KotokoYPos, SutoYPos;
+	void Jump();
 	//オブジェクト数（ステージ数）
 	static constexpr int ObjNum = 8;
 

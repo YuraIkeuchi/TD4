@@ -21,6 +21,9 @@ void SelectScene::ResetParama() {
 		ButtonNav_Challenge_CancelColAlpha[i] = 1.f;
 	}
 
+	KotokoYPos = -2.f;
+	SutoYPos = 2.f;
+
 	constexpr float PosRad = 25.f;
 	for (auto i = 0; i < ObjNum; i++) {
 		TipsPosY[i] = -360.f;
@@ -67,6 +70,17 @@ void SelectScene::Init() {
 		StageObjs[i].reset(new IKEObject3d());
 		StageObjs[i]->Initialize();
 	}
+	kotokoObj.reset(new IKEObject3d());
+	kotokoObj->Initialize();
+	kotokoObj->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::TITKOTOKO));
+
+	sutoponObj.reset(new IKEObject3d());
+	sutoponObj->Initialize();
+	sutoponObj->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Sutopon));
+
+	TitleTex.reset(IKETexture::Create(ImageManager::TITLETIPS, { 0,0,0 }, { 0.5f,0.5f,0.5f }, { 1,1,1,1 }));
+	TitleTex->TextureCreate();
+
 	StageObjs[FIRST]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::MILKCAP_NORMAL));
 	StageObjs[SECOND]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Tyuta));
 	StageObjs[THIRD]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::KIDO_OBJ));
@@ -88,12 +102,13 @@ void SelectScene::Init() {
 	ButtonNav_Challenge_Cancel[0] = IKESprite::Create(ImageManager::Challenge, { 0,0 });
 	ButtonNav_Challenge_Cancel[1] = IKESprite::Create(ImageManager::Cancel, { 0,0 });
 
+	
 	ButtonNav_RBLB[0]->SetAnchorPoint({ 0.5f,0.5f });
 	ButtonNav_RBLB[1]->SetAnchorPoint({ 0.5f,0.5f });
-	ButtonNav_RBLB[0]->SetPosition({ 400,650 });
-	ButtonNav_RBLB[1]->SetPosition({ 200,650 });
-	ButtonNav_RBLB[0]->SetSize({ 300,300 });
-	ButtonNav_RBLB[1]->SetSize({ 300,300 });
+	ButtonNav_RBLB[0]->SetPosition({ 800,650 });
+	ButtonNav_RBLB[1]->SetPosition({ 580,650 });
+	ButtonNav_RBLB[0]->SetSize({ 250,250 });
+	ButtonNav_RBLB[1]->SetSize({ 250,250 });
 
 	ButtonNav_Challenge_Cancel[0]->SetPosition({ 400,650 });
 	ButtonNav_Challenge_Cancel[1]->SetPosition({ 200,650 });
@@ -110,7 +125,7 @@ void SelectScene::Init() {
 	StageObj[FIVE] = IKESprite::Create(ImageManager::tip5, { 0,0 });
 	StageObj[SIX] = IKESprite::Create(ImageManager::tip6, { 0,0 });
 	StageObj[SEVEN] = IKESprite::Create(ImageManager::tip7, { 0,0 });
-	StageObj[TITLE] = IKESprite::Create(ImageManager::tip1, { 0,0 });
+	StageObj[TITLE] = IKESprite::Create(ImageManager::tip8, { 0,0 });
 	//ポストエフェクト用
 	BossIcon[FIRST] = IKESprite::Create(ImageManager::CLOSEMILK, { 0,0 });
 	BossIcon[SECOND] = IKESprite::Create(ImageManager::CLOSESYTOPON, { 0,0 });
@@ -171,6 +186,36 @@ void SelectScene::Init() {
 	MaxScl=15500.f;
 }
 
+void SelectScene::Jump()
+{	//落下の緩急
+	constexpr float Distortion = 0.5f;
+	//ジャンプ高さ
+	constexpr float Height = 4.f;
+	float GroundY = -3.f;
+	if (JumpK) {
+		JFrameK += 1.f / 30.f;
+		KotokoYPos = GroundY + (1.0f - pow(1.0f - sinf(PI * JFrameK), Distortion)) * Height;
+	}
+	else
+	{
+		JFrameK = 0.f;
+	}
+	if (JFrameK >= 1.f) {
+		JumpK = false;
+	}
+
+	if (JumpS) {
+		JFrameS += 1.f / 30.f;
+		SutoYPos = 2.f + (1.0f - pow(1.0f - sinf(PI * JFrameS), Distortion)) * Height;
+	} else
+	{
+		JFrameS = 0.f;
+	}
+	if (JFrameS >= 1.f) {
+		JumpS = false;
+	}
+}
+
 void SelectScene::Upda() {
 	constexpr float PosRad = 25.f;
 	//背景
@@ -181,6 +226,15 @@ void SelectScene::Upda() {
 	Pedestal->SetScale({ 15.f,15.f,15.f });
 	Pedestal->Update();
 
+	kotokoObj->SetPosition({ -20,KotokoYPos,-38 });
+	kotokoObj->SetRotation({ 0,120,0 });
+	kotokoObj->SetScale({ 3.7f,3.5f,3.7f });
+	kotokoObj->Update();
+
+	sutoponObj->SetRotation({ 20,5,-10 });
+	sutoponObj->SetPosition({ 17,SutoYPos,-42 });
+	sutoponObj->SetScale({3.1f,3.1f,3.1f });
+	sutoponObj->Update();
 
 	CloseIconView(CloseF);
 	Helper::GetInstance()->Clamp(closeScl, 0.f, MaxScl);
@@ -192,7 +246,7 @@ void SelectScene::Upda() {
 	m_Birth[TITLE] = true;
 	for (int i = 0; i < MAX; i++) {
 		if (IconColor[i] < 1.f) { continue; }
-		if (Input::GetInstance()->TriggerButton(Input::B)/* && (m_Birth[i])*/) {
+		if (Input::GetInstance()->TriggerButton(Input::B) && (m_Birth[i])) {
 			TipsAct[i] = true;
 		}
 	}
@@ -223,7 +277,7 @@ void SelectScene::Upda() {
 		}
 	}
 
-
+	Jump();
 	m_NowSelePos = {
 		Pedestal->GetPosition().x + sinf(180.f * (PI / PI_180)) * PosRad,
 		8.f,
@@ -260,28 +314,33 @@ void SelectScene::Upda() {
 	}
 	StageObjs[TITLE]->SetColor({ 1,1,1,1 });
 
+	TitleTex->SetScale({ 2,2,3 });
+	TitleTex->SetPosition(StageObjPos[TITLE]);
+	TitleTex->SetColor({ 1,1,1,1 });
+	TitleTex->Update();
+
 	if (!ChangeLastF) {
 		bool temp[ObjNum] = {};
 		for (auto i = 0; i < TipsAct.size(); i++)
 			temp[i] = TipsAct[i];
 		if (Helper::GetInstance()->All_OfF(temp, ObjNum)) {
 			if (TrigerSelect == NOINP ) {
-				if (Input::GetInstance()->TriggerButton(Input::RB)) {
+				if (Input::GetInstance()->TriggerButton(Input::RIGHT) || Input::GetInstance()->TriggerButton(Input::RB)) {
+					if (!JumpS)JumpS = true;
 					SelIndex++;
 					TrigerSelect = RB;
 				}
 
-				if (Input::GetInstance()->TriggerButton(Input::LB)) {
+				if (Input::GetInstance()->TriggerButton(Input::LEFT)|| Input::GetInstance()->TriggerButton(Input::LB)) {
+					if (!JumpK)JumpK = true;
 					SelIndex--;
 					TrigerSelect = LB;
+
 				}
 			}
 		}
 	}
-	if (Input::GetInstance()->TriggerButton(Input::Y))
-	{
-		ChangeLastF = true;
-	}
+	
 	ChangeStageRot();
 	m_Scale[TITLE] = { 0.01f,0.01f,0.01f };
 	if (!ChangeLastF)
@@ -300,8 +359,13 @@ void SelectScene::Draw_Obj(DirectXCommon* dxcomn) {
 	for (auto i = 0; i < ObjNum; i++) {
 		StageObjs[i]->Draw();
 	}
+	kotokoObj->Draw();
+	sutoponObj->Draw();
 	IKEObject3d::PostDraw();
 
+	IKETexture::PreDraw2(dxcomn, 1);
+	TitleTex->Draw();
+	IKETexture::PostDraw();
 }
 
 void SelectScene::Draw_Sprite() {
@@ -320,8 +384,14 @@ void SelectScene::ImGuiDraw() {
 }
 void SelectScene::Draw_SpriteBack() {
 	if (closeScl <= 0.f) { return; }
-	ButtonNav_RBLB[0]->Draw();
-	ButtonNav_RBLB[1]->Draw();
+	for (auto i = 0; i < ObjNum; i++) {
+		if (!TipsAct[0]&& !TipsAct[1] && !TipsAct[2] &&
+			!TipsAct[3] &&!TipsAct[4] &&!TipsAct[5] &&
+			!TipsAct[6]&& !TipsAct[7]) {
+			ButtonNav_RBLB[0]->Draw();
+			ButtonNav_RBLB[1]->Draw();
+		}
+	}
 	for (auto i = 0; i < ObjNum; i++) {
 		StageObj[i]->Draw();
 	}
@@ -345,6 +415,7 @@ void SelectScene::Draw_SpriteBack() {
 			ButtonNav_Challenge_Cancel[i]->SetPosition(ButtonNav_Pos[i]);
 			ButtonNav_Challenge_Cancel[i]->SetSize(ButtonNav_Challenge_CancelScl[i]);
 			ButtonNav_Challenge_Cancel[i]->SetColor({ 1,1,1,ButtonNav_Challenge_CancelColAlpha[i] });
+
 			ButtonNav_Challenge_Cancel[i]->Draw();
 		}
 	}
@@ -446,10 +517,7 @@ void SelectScene::StateManager() {
 	//
 	//クリア状況に応じてOBJの大きさだったりが違う
 	if (m_SelectState == SELECT_FIRST) {		//ここは牛乳のみ
-		if (SceneSave::GetInstance()->GetClearFlag(SeceneCategory::kFirstStage))
-		{
-			m_SelectState = SELECT_LAST;
-		}
+	
 	}
 	else if (m_SelectState == SELECT_SECOND) {//牛乳をクリアしてラスボス以外出現する
 		bool temp[ObjNum] = {};

@@ -200,6 +200,7 @@ void ShadowSlashAttack::Phase_Impact()
 
 	Swords_H[0].Scl.y += AddScl;
 	Swords_W[0].Scl.y += AddScl;
+	
 	for(auto i=1;i<SwordSize;i++)
 	{
 		if(Swords_H[i-1].Scl.y>0.5f)
@@ -236,14 +237,17 @@ void ShadowSlashAttack::Phase_Impact()
 		lines[0].end = { KotokoPos[0].x,60.f };
 		lines[1].start = { KotokoPos[1].x,KotokoPos[1].z };
 		lines[1].end = { 60,KotokoPos[1].z };
-		for (size_t i = 0; i < 2; i++) {
-			if (Player::GetInstance()->GetDamageInterVal() != 0)break;
-			//////////////
-			//”»’è•”
-			if (Collision::IsCollidingLineAndCircle(lines[i], points, 10.0f))
-			{
-				Player::GetInstance()->PlayerHit(KotokoPos[i]);
-				Player::GetInstance()->RecvDamage(Dam);
+		if (Swords_H[0].Scl.y > 2.f)
+		{
+			for (size_t i = 0; i < 2; i++) {
+				if (Player::GetInstance()->GetDamageInterVal() != 0)break;
+				//////////////
+				//”»’è•”
+				if (Collision::IsCollidingLineAndCircle(lines[i], points, 10.0f))
+				{
+					Player::GetInstance()->PlayerHit(KotokoPos[i]);
+					Player::GetInstance()->RecvDamage(Dam);
+				}
 			}
 		}
 	//}

@@ -12,10 +12,15 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	dxCommon->SetFullScreen(true);
 	//オーディオ
 	Audio::GetInstance()->LoopWave(AUDIO_TITLE, VolumManager::GetInstance()->GetBGMVolum()+2.0f);
-
+	feed = new Feed();
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
-	sceneChanger_->ChangeFeedStart();
+	sceneChanger_->FeedInit();
+	//sceneChanger_->ChangeFeedStart();
+	if(Feed2::GetInstance()==nullptr)
+	{
+		Feed2::GetInstance()->SetIni2();
+	}
 	//タイトル
 	TitleSprite = IKESprite::Create(ImageManager::TITLE, { 0.0f,0.0f });
 	TitleWordSprite= IKESprite::Create(ImageManager::TITLEWORD, pos);
@@ -42,15 +47,26 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 }
 //更新
 void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
+	Input* input = Input::GetInstance();
+	//
+	if (input->TriggerButton(input->B)) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Decide.wav", VolumManager::GetInstance()->GetSEVolum());
+		//sceneChanger_->ChangeStart();
+		Audio::GetInstance()->StopWave(AUDIO_TITLE);
+		//sceneChanger_->SetFeedF(true);
+		feedF = true;
+	}
+	if (feedF) {
+		Feed2::GetInstance()->FeedIn2(Feed2::FeedType2::BLACK, 0.02f, feedF);
+		if (Feed2::GetInstance()->GetAlpha2() >= 1.0f) {
+			SceneManager::GetInstance()->ChangeScene("LOAD");
+		}
+	}
+	//sceneChanger_->FeedChange();
 	
 	frame += 0.01f;
 	TitleWordSprite->SetPosition({pos.x+(sinf(frame*5.0f) * 25.0f), pos.y + (sinf(frame) *30.0f)});
 
-	if (sceneChanger_->GetEasingStart()) {
-		string str = "LOAD";
-		sceneChanger_->ChangeSceneExtra(str, SceneChanger::NonReverse);
-	}
-	sceneChanger_->Update();
 	lightgroup->Update();
 	ParticleEmitter::GetInstance()->FireEffect(100, { 0.0f,23.0f,0.0f }, 5.0f, 0.0f, { 1.0f,0.5f,0.0f,0.5f }, { 1.0f,0.5f,0.0f,0.5f });
 	//パーティクル更新
@@ -106,9 +122,14 @@ void TitleSceneActor::FrontDraw() {
 		TitlePartsSprite[i]->Draw();
 	}
 	SelectScene::GetIns()->Draw_Sprite();
+	
+		
 	IKESprite::PostDraw();
 	menu->Draw();
-	sceneChanger_->Draw();
+	if(feedF)
+	Feed2::GetInstance()->Draw2();
+	//sceneChanger_->FeedDraw();
+//	sceneChanger_->Draw();
 }
 //背面描画
 void TitleSceneActor::BackDraw(DirectXCommon* dxCommon)

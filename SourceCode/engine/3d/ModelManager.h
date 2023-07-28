@@ -52,6 +52,7 @@ public:
 		PEDKOTOKO,
 		TREE,
 		HOME
+		TITKOTOKO,
 	};
 	//FBXの名前
 	enum FBXName {

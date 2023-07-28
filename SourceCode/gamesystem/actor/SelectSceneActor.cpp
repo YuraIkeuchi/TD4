@@ -98,12 +98,12 @@ void SelectSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 
 	sceneChanger_->Update();
-	BackObj::GetInstance()->Update();
+	//BackObj::GetInstance()->Update();
 
 	SelectScene::GetIns()->Upda();
 	camerawork->SetEye({ SelectScene::GetIns()->GetPedestalPos().x,
 						SelectScene::GetIns()->GetPedestalPos().y + 20.f,
-						SelectScene::GetIns()->GetPedestalPos().z - 50.f
+						SelectScene::GetIns()->GetPedestalPos().z - 60.f
 		});
 	camerawork->SetTarget(SelectScene::GetIns()->GetPedestalPos());
 
@@ -124,7 +124,7 @@ void SelectSceneActor::Draw(DirectXCommon* dxCommon) {
 	//ポストエフェクトをかけるか
 	if (PlayPostEffect) {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
-		BackObj::GetInstance()->Draw(dxCommon);
+		//BackObj::GetInstance()->Draw(dxCommon);
 		BackDraw(dxCommon);
 		
 		IKESprite::PreDraw();

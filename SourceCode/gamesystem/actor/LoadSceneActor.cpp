@@ -55,7 +55,9 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	//関数ポインタで状態管理
 	(this->*stateTable[static_cast<size_t>(m_SceneState)])(camera);
 	sceneChanger_->Update();
-
+	if (feedf) {
+		Feed2::GetInstance()->FeedIn2(Feed2::FeedType2::BLACK, 0.02f, feedf);
+	}
 	//1ステージ
 	if (Input::GetInstance()->TriggerKey(DIK_1)) {
 		Audio::GetInstance()->StopWave(AUDIO_LOAD);
@@ -152,7 +154,9 @@ void LoadSceneActor::SpriteDraw() {
 	m_Sprites[sutoponNow]->Draw();
 	IKESprite::PostDraw();
 	sceneChanger_->Draw();
-
+	//sceneChanger_->FeedDraw();
+	if (feedf)
+	Feed2::GetInstance()->Draw2();
 }
 //ロード中の動き
 void LoadSceneActor::IntroUpdate(DebugCamera* camera) {
