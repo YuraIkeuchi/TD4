@@ -23,7 +23,7 @@ void UI::Initialize() {
 	sprites[Heart].Tex->SetAnchorPoint({ 0.5f,0.5f });
 	TexList.emplace_back(std::move(sprites[Heart]));
 	{//ゲージ下敷き
-		sprites[UnderStatusGaugeMax] = CreateUi(ImageManager::UnderGauge, m_GaugePos, m_GaugeSize, { 1.2f, 1.2f, 1.2f,1.f });
+		sprites[UnderStatusGaugeMax] = CreateUi(ImageManager::UnderGauge, m_GaugePos, m_GaugeSize, { 1.5f, 1.5f, 1.5f,1.f });
 		sprites[UnderStatusGaugeMax].Tex->SetAnchorPoint({ 0,0 });
 		TexList.emplace_back(std::move(sprites[UnderStatusGaugeMax]));
 
@@ -74,11 +74,11 @@ void UI::Initialize() {
 	}
 	//ウェイ
 	{
-		const int w = 54;
-		const int h = 60;
-		const int l = 10;
-		for (int i = HitodamaWay1;  i < HitodamaWay4; i++) {
-			sprites[i] = CreateUi(ImageManager::HITODAMA, { 0,0 }, { WinApp::window_width/2,WinApp::window_height/2 }, {1.f,1.f,1.f,1.f});
+		const int w = 128;
+		const int h = 128;
+		const int l = 4;
+		for (int i = HitodamaWay1;  i <= HitodamaWay4; i++) {
+			sprites[i] = CreateUi(ImageManager::HITODAMA, { WinApp::window_width / 2,WinApp::window_height / 2 }, {w,h}, {1.f,1.f,1.f,1.f});
 			int number_index_y = i / l;
 			int number_index_x = i % l;
 			sprites[i].Tex->SetTextureRect({ static_cast<float>(number_index_x) * w,static_cast<float>(number_index_y) * h },
@@ -187,7 +187,7 @@ void UI::PlayerGauge()	 {
 	HungerGauge* hungerGauge = HungerGauge::GetInstance();
 
 	for (int i = HitodamaWay1; i < HitodamaWay4; i++) {
-		TexList[i].IsVisible = true;
+		TexList[i].IsVisible = false;
 	}
 
 	//Gauge処理
@@ -226,9 +226,7 @@ void UI::PlayerGauge()	 {
 	case UI::GaugeState::nom4l:
 		TexList[UnderStatusGaugeMax].IsVisible = true;
 		TexList[UnderExtraGaugeMax].IsVisible = false;
-		TexList[UnderExtraGaugeMax].Color = { 1.2f, 1.2f, 1.2f,1.f };
-		sprites[ExtraGauge].Color = { 0.5f, 0.5f, 1.f,1.f };
-		TexList[StatusGauge].Color = { 0.0f, 1.0f, 1.0f, 1.0f };
+		TexList[UnderExtraGaugeMax].Color = { 1.5f, 1.5f, 1.5f,1.f };
 		break;
 	case UI::GaugeState::ch4nge:
 		ch4ngeTimer += 1.f / 15.f;
@@ -248,9 +246,6 @@ void UI::PlayerGauge()	 {
 		TexList[UnderStatusGaugeMax].IsVisible = false;
 		TexList[UnderStatusGaugeMax].Color = { 1.5f, 1.5f, 1.5f,1.f };
 		TexList[UnderExtraGaugeMax].IsVisible = true;
-		sprites[ExtraGauge].Color = { 0.25f, 0.25f, 1.f,1.f };
-		TexList[StatusGauge].Color = { 0.0f, 0.8f, 0.8f, 1.0f };
-
 		break;
 	case UI::GaugeState::b4ck:
 		ch4ngeTimer += 1.f / 15.f;
