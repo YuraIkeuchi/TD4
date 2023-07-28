@@ -35,6 +35,19 @@ FirstBoss::FirstBoss()
 	tex->SetPosition({ 0.0f,-500.0f,0.0f });
 	tex->SetTiling(2.0f);
 
+	for (auto i = 0; i < GuardSize; i++) {
+		guardtex[i].reset(new IKEObject3d());
+		guardtex[i]->Initialize();
+		guardAlpha[i] = 0.f;
+	}
+	guardtex[0]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::UPBOX));
+	guardtex[1]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::WIDTH1));
+	guardtex[2]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::WIDTH2));
+	guardtex[3]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::WIDTH3));
+	guardtex[4]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::WIDTH4));
+	guardtex[5]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::DOWNBOX));
+
+	GuardTimes = 10;
 	m_HP = 0.f;
 }
 
@@ -52,7 +65,7 @@ bool FirstBoss::Initialize()
 	DecisionCount=static_cast<float>(std::any_cast<double>(LoadCSV::LoadCsvParam("Resources/csv/chara/boss/first/Firstboss.csv", "DecisionCount")));
 	m_Radius = 5.2f;
 	m_MaxHp = m_HP;
-	half_hp_ = m_HP / 4;
+	half_hp_ = 10;
 	_charstate = CharaState::STATE_INTER;
 
 	m_TexColor = { 1.0f,1.0f,1.0f,0.0f };
@@ -82,17 +95,17 @@ void FirstBoss::Action()
 		statereset_ = false;
 	}
 
+
 	if (m_HP < half_hp_) {
 		m_Magnification = 0.3f;
+		e_scl = { 25.3f,25.3f,25.3f };
+		//GuardStart = true;
+		//GuardUpdate();
 	}
-
-	
-
 
 	if (bounce_ == Bounce::SOURCE) {
 		XMFLOAT3 s_scl = m_Scale;
 		bounceTimer += 1.0f / 60;
-		XMFLOAT3 e_scl{ 15.3f,15.3f,15.3f };
 		Helper::GetInstance()->Clamp(bounceTimer, 0.0f, 1.0f);
 		m_Scale = {
 		Ease(Out, Quart, bounceTimer, s_scl.x, e_scl.x),
@@ -189,6 +202,7 @@ void FirstBoss::DeathParticle()
 	for (int i = 0; i < 3; ++i) {
 		ParticleEmitter::GetInstance()->DeathEffect(50, { m_Position.x,(m_Position.y - 1.0f),m_Position.z }, s_scale, e_scale, s_color, e_color, l_velocity);
 	}
+	
 }
 
 void FirstBoss::ImGui_Origin()
@@ -216,6 +230,13 @@ void FirstBoss::Draw(DirectXCommon* dxCommon)
 			fraction->Draw(dxCommon);
 		}
 	}
+
+	IKEObject3d::PreDraw();
+	for (auto i = 0; i < GuardSize; i++) {
+		if (guardAlpha[i] <= 0.f)continue;
+		guardtex[i]->Draw();
+	}
+	IKEObject3d::PostDraw();
 }
 //攻撃後のインターバル
 void FirstBoss::InterValMove()
@@ -235,10 +256,10 @@ void FirstBoss::InterValMove()
 		}
 	}
 
-	if (m_Scale.x != 15.3f || m_Scale.y != 15.3f || m_Scale.z != 15.3f) {
+	if (m_Scale.x != e_scl.x || m_Scale.y != e_scl.y || m_Scale.z != e_scl.z) {
 		XMFLOAT3 s_scl = m_Scale;
 		returntimer_ += 1.f / 60.f;
-		XMFLOAT3 e_scl{ 15.3f,15.3f,15.3f };
+
 		Helper::GetInstance()->Clamp(returntimer_, 0.0f, 1.0f);
 		m_Scale = {
 		Ease(Out, Quart, bounceTimer, s_scl.x, e_scl.x),
@@ -568,11 +589,11 @@ void FirstBoss::Bounce()
 	bounceTimer += 1.0f / 60;
 	Helper::GetInstance()->Clamp(bounceTimer, 0.0f, 1.0f);
 	if (bounce_ == Bounce::UP) {
-		XMFLOAT3 e_scl{ 10.3f,15.3f,10.3f };
+		XMFLOAT3 E_scl{ e_scl.x-5.f,e_scl.y,e_scl.z-5.f };
 		m_Scale = {
-	Ease(In, Quart, bounceTimer, s_scl.x, e_scl.x),
-	Ease(In, Quart, bounceTimer, s_scl.y, e_scl.y),
-	Ease(In, Quart, bounceTimer, s_scl.z, e_scl.z)
+	Ease(In, Quart, bounceTimer, s_scl.x, E_scl.x),
+	Ease(In, Quart, bounceTimer, s_scl.y, E_scl.y),
+	Ease(In, Quart, bounceTimer, s_scl.z, E_scl.z)
 		};
 		if (bounceTimer >= 1) {
 			bounce_ = Bounce::DOWN;
@@ -580,11 +601,11 @@ void FirstBoss::Bounce()
 		}
 	}
 	else if (bounce_ == Bounce::DOWN) {
-		XMFLOAT3 e_scl{ 15.3f,5.3f,15.3f };
+		XMFLOAT3 E_scl{ e_scl.x,e_scl.y-10.f,e_scl.z };
 		m_Scale = {
-	Ease(In, Quart, bounceTimer, s_scl.x, e_scl.x),
-	Ease(In, Quart, bounceTimer, s_scl.y, e_scl.y),
-	Ease(In, Quart, bounceTimer, s_scl.z, e_scl.z)
+	Ease(In, Quart, bounceTimer, s_scl.x, E_scl.x),
+	Ease(In, Quart, bounceTimer, s_scl.y, E_scl.y),
+	Ease(In, Quart, bounceTimer, s_scl.z, E_scl.z)
 		};
 		if (bounceTimer >= 1) {
 			bounce_ = Bounce::UP;
@@ -609,6 +630,78 @@ void FirstBoss::Areia()
 	tex->SetColor({ m_TexColor.x,m_TexColor.y,m_TexColor.z,1 });
 
 	m_TexRot.y = Helper::GetInstance()->DirRotation(m_Position, e_pos, -PI_180);
+}
+
+void FirstBoss::GuardAreacreate()
+{
+	if (GuardStart) {
+		GuardTime++;
+		Helper::GetInstance()->FrameCheck(guardtexEaseT[5], 0.02f);
+		for (auto i = 5; i >= 0; i--) {
+			if (guardtexEaseT[i + 1] > 0.8f)
+				Helper::GetInstance()->FrameCheck(guardtexEaseT[i], 0.02f);
+		}
+
+		for (auto i = 0; i < GuardSize; i++)
+		{
+			if (guardtexEaseT[i] > 0.2f)
+				guardAlpha[i] += 0.05f;
+
+			guardScl[i] = {
+				Ease(In,Quad,guardtexEaseT[i],0.f,8.5f),
+				Ease(In,Quad,guardtexEaseT[i],0.f,8.f),
+				Ease(In,Quad,guardtexEaseT[i],0.f,8.5f)
+
+			};
+			Helper::GetInstance()->Clamp(guardAlpha[i], 0.f, 0.5f);
+		}
+	}
+}
+
+void FirstBoss::GuardUpdate()
+{
+	XMVECTOR positionA = {
+		m_Position.x,
+		m_Position.y,
+		m_Position.z
+	};
+	XMVECTOR positionB[GuardSize];
+	//プレイヤーと敵のベクトルの長さ(差)を求める
+	XMVECTOR SubVector[GuardSize];
+	//調整用
+	float RotY[GuardSize];
+
+	GuardAreacreate();
+
+	GuardEaseT += 0.01f;
+	for (auto i = 0; i < GuardSize; i++) {
+		if (guardtex[i] == nullptr)continue;
+		positionB[i] = { guardPos[i].x, guardPos[i].y, guardPos[i].z };
+		SubVector[i] = XMVectorSubtract(positionB[i], positionA); // positionA - positionB;
+		RotY[i] = atan2f(SubVector[i].m128_f32[0], SubVector[i].m128_f32[2]);
+
+		if (guardtexEaseT[4] >= 1.f) {
+			guardRot[i].y += 1.f;
+			guardRot[i].x += 5.f;
+			guardRot[i].z -= 5.f;// RotY[i] * 60.f;
+
+		}// Ease(In, Quad, GuardEaseT, 0.f, 180.f);
+		guardtex[i]->SetPosition(m_Position);
+		guardtex[i]->SetRotation(guardRot[i]);
+		guardtex[i]->SetScale({ guardScl[i] });
+
+		if (guardUvY[i] > 1.f)guardUvY[i] = 0.f;
+		guardUvY[i] += 0.001f;
+		guardtex[i]->SetUvScrollY(guardUvY[i]);
+		guardtex[i]->SetColor({ 1,1,1,guardAlpha[i] });
+		guardtex[i]->Update();
+	}
+	if (!GuardStart)
+	{
+		for (auto i = 0; i < GuardSize; i++) {
+			guardAlpha[i] -= 0.05f;
+		}
+	}
 }
 
 void FirstBoss::Invincible()
