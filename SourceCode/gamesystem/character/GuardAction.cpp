@@ -80,7 +80,6 @@ void GuardAction::Draw(DirectXCommon* dxCommon)
 		if (guardAlpha[i] <= 0.f)continue;
 		guardtex[i]->Draw();
 	}
-
 	IKEObject3d::PostDraw();
 }
 
@@ -122,6 +121,4 @@ void GuardAction::GuardAreacreate()
 			GuardStart = false;
 		}
 	}
-	//else {
-	
 }
