@@ -1,6 +1,5 @@
 ﻿#include "TitleSceneActor.h"
 #include "input.h"
-#include <Easing.h>
 #include "ImageManager.h"
 #include "ParticleEmitter.h"
 #include "Menu.h"

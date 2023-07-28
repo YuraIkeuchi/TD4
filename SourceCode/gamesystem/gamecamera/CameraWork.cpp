@@ -225,8 +225,8 @@ void CameraWork::SetBossDead_AfterFirst() {
 
 		if (boss->GetPosition().y <= 0.f) {
 			m_LookPlayer = true;
-			m_AfterEye = { Player::GetInstance()->GetPosition().x - 15.0f,2.0f,Player::GetInstance()->GetPosition().z };
-			m_AfterTarget = { Player::GetInstance()->GetPosition().x + 15.0f,2.0f,Player::GetInstance()->GetPosition().z };
+			m_AfterEye = { Player::GetInstance()->GetPosition().x - 15.0f,8.0f,Player::GetInstance()->GetPosition().z };
+			m_AfterTarget = { Player::GetInstance()->GetPosition().x + 15.0f,8.0f,Player::GetInstance()->GetPosition().z };
 			m_Frame = {};
 		}
 	}
@@ -257,8 +257,8 @@ void CameraWork::SetBossDead_AfterSecond() {
 
 		if (boss->GetPosition().y <= 0.f) {
 			m_LookPlayer = true;
-			m_AfterEye = { Player::GetInstance()->GetPosition().x - 15.0f,2.0f,Player::GetInstance()->GetPosition().z };
-			m_AfterTarget = { Player::GetInstance()->GetPosition().x + 15.0f,2.0f,Player::GetInstance()->GetPosition().z };
+			m_AfterEye = { Player::GetInstance()->GetPosition().x - 15.0f,8.0f,Player::GetInstance()->GetPosition().z };
+			m_AfterTarget = { Player::GetInstance()->GetPosition().x + 15.0f,8.0f,Player::GetInstance()->GetPosition().z };
 			m_Frame = {};
 		}
 	}
@@ -293,8 +293,8 @@ void CameraWork::SetBossDead_AfterThird() {
 		DeathTimer++;
 		if (DeathTimer == 250) {
 			m_LookPlayer = true;
-			m_AfterEye = { Player::GetInstance()->GetPosition().x - 15.0f,2.0f,Player::GetInstance()->GetPosition().z };
-			m_AfterTarget = { Player::GetInstance()->GetPosition().x + 15.0f,2.0f,Player::GetInstance()->GetPosition().z };
+			m_AfterEye = { Player::GetInstance()->GetPosition().x - 15.0f,8.0f,Player::GetInstance()->GetPosition().z };
+			m_AfterTarget = { Player::GetInstance()->GetPosition().x + 15.0f,8.0f,Player::GetInstance()->GetPosition().z };
 			m_Frame = {};
 		}
 	}
@@ -329,8 +329,8 @@ void CameraWork::SetBossDead_AfterFourth() {
 
 		if (DeathTimer == 350) {
 			m_LookPlayer = true;
-			m_AfterEye = { Player::GetInstance()->GetPosition().x - 15.0f,2.0f,Player::GetInstance()->GetPosition().z };
-			m_AfterTarget = { Player::GetInstance()->GetPosition().x + 15.0f,2.0f,Player::GetInstance()->GetPosition().z };
+			m_AfterEye = { Player::GetInstance()->GetPosition().x - 15.0f,8.0f,Player::GetInstance()->GetPosition().z };
+			m_AfterTarget = { Player::GetInstance()->GetPosition().x + 15.0f,8.0f,Player::GetInstance()->GetPosition().z };
 			m_Frame = {};
 		}
 	}
@@ -363,8 +363,8 @@ void CameraWork::SetBossDead_AfterFive() {
 		m_targetPos = { boss->GetPosition().x,boss->GetPosition().y,boss->GetPosition().z };
 		if (DeathTimer == 200) {
 			m_LookPlayer = true;
-			m_AfterEye = { Player::GetInstance()->GetPosition().x - 15.0f,2.0f,Player::GetInstance()->GetPosition().z };
-			m_AfterTarget = { Player::GetInstance()->GetPosition().x + 15.0f,2.0f,Player::GetInstance()->GetPosition().z };
+			m_AfterEye = { Player::GetInstance()->GetPosition().x - 15.0f,8.0f,Player::GetInstance()->GetPosition().z };
+			m_AfterTarget = { Player::GetInstance()->GetPosition().x + 15.0f,8.0f,Player::GetInstance()->GetPosition().z };
 			m_Frame = {};
 		}
 	}
@@ -398,8 +398,8 @@ void CameraWork::SetBossDead_AfterSix() {
 		DeathTimer++;
 		if (DeathTimer == 350) {
 			m_LookPlayer = true;
-			m_AfterEye = { Player::GetInstance()->GetPosition().x - 15.0f,2.0f,Player::GetInstance()->GetPosition().z };
-			m_AfterTarget = { Player::GetInstance()->GetPosition().x + 15.0f,2.0f,Player::GetInstance()->GetPosition().z };
+			m_AfterEye = { Player::GetInstance()->GetPosition().x - 15.0f,8.0f,Player::GetInstance()->GetPosition().z };
+			m_AfterTarget = { Player::GetInstance()->GetPosition().x + 15.0f,8.0f,Player::GetInstance()->GetPosition().z };
 			m_Frame = {};
 		}
 	}
@@ -490,15 +490,6 @@ void CameraWork::EditorCamera() {
 }
 //ImGui
 void CameraWork::ImGuiDraw() {
-	ImGui::Begin("Camera");
-	ImGui::Text("eyeX:%f", m_eyePos.x);
-	ImGui::Text("eyeY:%f", m_eyePos.y);
-	ImGui::Text("eyeZ:%f", m_eyePos.z);
-	ImGui::Text("targetX:%f", m_targetPos.x);
-	ImGui::Text("targetY:%f", m_targetPos.y);
-	ImGui::Text("targetZ:%f", m_targetPos.z);
-	ImGui::Text("Timer:%d", DeathTimer);
-	ImGui::End();
 }
 void CameraWork::SpecialUpdate() {
 
