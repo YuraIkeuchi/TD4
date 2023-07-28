@@ -51,7 +51,7 @@ public:
 		TITLEMAP,
 		PEDKOTOKO,
 		TREE,
-		HOME
+		HOME,
 		TITKOTOKO,
 	};
 	//FBXの名前
