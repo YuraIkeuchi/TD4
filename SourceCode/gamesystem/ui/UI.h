@@ -52,7 +52,7 @@ private:
 	XMFLOAT2 m_GaugePos = { 430,623.f };
 	XMFLOAT2 m_GaugePosMini = { 430 + 42.0f,597 + 50.0f };
 	XMFLOAT2 m_GaugeSize = { 512 * 0.9f,100 * 0.9f };
-	XMFLOAT2 m_GaugeSizeMini = { 419,45 };
+	XMFLOAT2 m_GaugeSizeMini = { 377,45 };
 
 	XMFLOAT2 m_PlayerHpPos = { 15.f, 640.f };
 	XMFLOAT2 m_PlayerHpSize = { 512.f * 0.6f, 128.f * 0.6f };

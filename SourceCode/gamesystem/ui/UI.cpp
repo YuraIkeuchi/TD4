@@ -325,12 +325,12 @@ void UI::BossLife() {
 
 		if (isCrush) {
 			TexList[UnderBossGauge].Position = {
-					m_UnderBossPos.x,
+					m_UnderBossPos.x + power,
 					m_UnderBossPos.y + power
 			};
 			for (int i = MiddleBossGauge; i <= BossGauge; i++) {
 				TexList[i].Position = {
-					m_MiddleBossPos.x,
+					m_MiddleBossPos.x + power,
 					m_MiddleBossPos.y + power
 				};
 			}

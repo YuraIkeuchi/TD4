@@ -54,7 +54,10 @@ void ImageManager::SecondLoad2D()
 	IKESprite::LoadTexture(CHECK_HOME, L"Resources/2d/sceneback/CheckSheet.png");
 	IKESprite::LoadTexture(CHECK_OK, L"Resources/2d/sceneback/CheckOk.png");
 	IKESprite::LoadTexture(CHECK_NO, L"Resources/2d/sceneback/CheckNo.png");
-	IKESprite::LoadTexture(EXPLANATION, L"Resources/2d/sceneback/Explanation.png");
+	IKESprite::LoadTexture(EXPLANATION_1, L"Resources/2d/sceneback/ex1.png");
+	IKESprite::LoadTexture(EXPLANATION_2, L"Resources/2d/sceneback/ex2.png");
+	IKESprite::LoadTexture(EXPLANATION_3, L"Resources/2d/sceneback/ex3.png");
+	IKESprite::LoadTexture(EXPLANATION_4, L"Resources/2d/sceneback/ex4.png");
 	IKESprite::LoadTexture(CLOSEMILK, L"Resources/2d/objicon/closeMilk.png");
 	IKESprite::LoadTexture(CLOSESYTOPON, L"Resources/2d/objicon/closeSutopon.png");
 	IKESprite::LoadTexture(CLOSEKIDO, L"Resources/2d/objicon/closekido.png");
