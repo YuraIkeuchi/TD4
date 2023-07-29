@@ -100,10 +100,6 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		SelectScene::GetIns()->Upda();
 
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
-	//if (Input::GetInstance()->TriggerButton(Input::Y)) {
-	//	SelectScene::GetIns()->ResetParama();
-	//	SceneManager::GetInstance()->ChangeScene("SELECT");
-	//}
 	menu->Update();
 	ui->Update();
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
@@ -181,6 +177,7 @@ void ThirdStageActor::FrontDraw(DirectXCommon* dxCommon) {
 			text_->SpriteDraw(dxCommon);
 		}
 	}
+	ClearText::GetInstance()->Draw();
 	menu->Draw();
 	sceneChanger_->Draw();
 	IKESprite::PostDraw();
@@ -384,6 +381,8 @@ void ThirdStageActor::MainUpdate(DebugCamera* camera) {
 
 	postEffect->SetRadCenter(XMFLOAT2(tex2DPos.m128_f32[0], tex2DPos.m128_f32[1]));
 	postEffect->SetRadPower(camerawork->GetEffectPower());
+
+	ClearText::GetInstance()->Update();
 }
 //撃破シーン
 void ThirdStageActor::FinishUpdate(DebugCamera* camera) {
