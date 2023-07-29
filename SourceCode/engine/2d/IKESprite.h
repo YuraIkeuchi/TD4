@@ -36,6 +36,7 @@ public: // サブクラス
 	{
 		XMFLOAT4 color; // 色 (RGBA)
 		XMMATRIX mat; // ３Ｄ変換行列
+		XMFLOAT2 offset;//オフセット値
 	};
 
 public: // 静的メンバ関数
@@ -145,7 +146,8 @@ public: // メンバ関数
 
 	void SetRadCenter(XMFLOAT2 pos) { RadCenterPos = pos; }
 	void SetRadPower(float p) { RadPowers = p; }
-
+	//オフセットの設定
+	void SetAddOffset(float addoffset) { this->addoffset = addoffset; }
 	void SetCloseRad(float r) { closeRad = r; }
 
 protected: // メンバ変数
@@ -167,6 +169,10 @@ protected: // メンバ変数
 	XMFLOAT2 anchorpoint = {0, 0};
 	// ワールド行列
 	XMMATRIX matWorld{};
+	//オフセット
+	float addoffset = 0.0f;
+	//オフセット値
+	XMFLOAT2 offset = { 0.0f,0.0f };
 	// 色
 	XMFLOAT4 color = {1, 1, 1, 1};
 	// 左右反転

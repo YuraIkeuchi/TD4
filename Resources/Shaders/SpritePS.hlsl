@@ -5,5 +5,7 @@ SamplerState smp : register(s0); // 0番スロットに設定されたサンプラー
 
 float4 main(VSOutput input) : SV_TARGET
 {
-	return tex.Sample(smp, input.uv) * color;
+	// テクスチャマッピング
+	float2 offsetscroll = float2(offset.x, offset.y);
+	return tex.Sample(smp, input.uv + offsetscroll) * color;
 }
