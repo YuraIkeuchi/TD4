@@ -163,6 +163,7 @@ void FiveStageActor::FrontDraw(DirectXCommon* dxCommon)
 		}
 	}
 	IKESprite::PostDraw();
+	ClearText::GetInstance()->Draw();
 	menu->Draw();
 	sceneChanger_->Draw();
 	camerawork->feedDraw();
@@ -277,6 +278,8 @@ void FiveStageActor::MainUpdate(DebugCamera* camera) {
 
 	postEffect->SetRadCenter(XMFLOAT2(tex2DPos.m128_f32[0], tex2DPos.m128_f32[1]));
 	postEffect->SetRadPower(camerawork->GetEffectPower());
+
+	ClearText::GetInstance()->Update();
 }
 
 void FiveStageActor::FinishUpdate(DebugCamera* camera) {

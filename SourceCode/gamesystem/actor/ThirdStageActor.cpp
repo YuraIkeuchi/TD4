@@ -67,8 +67,8 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	if (menu->Pause()) {
 		menu->Update();
 		if (menu->ReturnSelect()) {
-			/*SelectScene::GetIns()->SetTexSpeed(180.f);
-			SelectScene::GetIns()->SetTexScl(12500.f);*/
+			SelectScene::GetIns()->SetTexSpeed(180.f);
+			SelectScene::GetIns()->SetTexScl(12500.f);
 
 			sceneChanger_->ChangeStart();
 			sceneChanger_->ChangeScene("SELECT", SceneChanger::Reverse);
@@ -100,10 +100,6 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	//	SelectScene::GetIns()->Upda();
 
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
-	//if (Input::GetInstance()->TriggerButton(Input::Y)) {
-	//	SelectScene::GetIns()->ResetParama();
-	//	SceneManager::GetInstance()->ChangeScene("SELECT");
-	//}
 	menu->Update();
 	ui->Update();
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
@@ -182,6 +178,7 @@ void ThirdStageActor::FrontDraw(DirectXCommon* dxCommon) {
 			text_->SpriteDraw(dxCommon);
 		}
 	}
+	ClearText::GetInstance()->Draw();
 	menu->Draw();
 	sceneChanger_->Draw();
 	IKESprite::PostDraw();
@@ -344,8 +341,8 @@ void ThirdStageActor::MainUpdate(DebugCamera* camera) {
 
 		if (camerawork->GetEndDeath()) {
 			sceneChanger_->ChangeStart();
-		/*	SelectScene::GetIns()->SetTexSpeed(180.f);
-			SelectScene::GetIns()->SetTexScl(12500.f);*/
+			SelectScene::GetIns()->SetTexSpeed(180.f);
+			SelectScene::GetIns()->SetTexScl(12500.f);
 
 			sceneChanger_->ChangeScene("SELECT", SceneChanger::NonReverse);
 		}
@@ -359,8 +356,8 @@ void ThirdStageActor::MainUpdate(DebugCamera* camera) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kThirdStage, true);
 		sceneChanger_->ChangeStart();
-	/*	SelectScene::GetIns()->SetTexSpeed(180.f);
-		SelectScene::GetIns()->SetTexScl(12500.f);*/
+		SelectScene::GetIns()->SetTexSpeed(180.f);
+		SelectScene::GetIns()->SetTexScl(12500.f);
 
 		sceneChanger_->ChangeSceneLose("GAMEOVER");
 	}
@@ -387,6 +384,8 @@ void ThirdStageActor::MainUpdate(DebugCamera* camera) {
 
 	postEffect->SetRadCenter(XMFLOAT2(tex2DPos.m128_f32[0], tex2DPos.m128_f32[1]));
 	postEffect->SetRadPower(camerawork->GetEffectPower());
+
+	ClearText::GetInstance()->Update();
 }
 //撃破シーン
 void ThirdStageActor::FinishUpdate(DebugCamera* camera) {

@@ -137,7 +137,6 @@ void FirstStageActor::Draw(DirectXCommon* dxCommon)
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->ImGuiDraw();
-		ClearText::GetInstance()->ImGuiDraw();
 		camerawork->ImGuiDraw();
 		dxCommon->PostDraw();
 	} else {
@@ -147,7 +146,6 @@ void FirstStageActor::Draw(DirectXCommon* dxCommon)
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-		ClearText::GetInstance()->ImGuiDraw();
 		camerawork->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
@@ -306,7 +304,7 @@ void FirstStageActor::MainUpdate(DebugCamera* camera)
 		if (camerawork->GetEndDeath()) {
 			sceneChanger_->ChangeStart();
 			SelectScene::GetIns()->ResetParama();
-				SelectScene::GetIns()->SetTexSpeed(180.f);
+			SelectScene::GetIns()->SetTexSpeed(180.f);
 			SelectScene::GetIns()->SetTexScl(12500.f);
 			sceneChanger_->ChangeScene("SELECT", SceneChanger::NonReverse);
 

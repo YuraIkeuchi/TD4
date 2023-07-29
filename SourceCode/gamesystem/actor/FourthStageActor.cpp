@@ -211,6 +211,7 @@ void FourthStageActor::FrontDraw(DirectXCommon* dxCommon) {
 		}
 		IKESprite::PostDraw();
 	}
+	ClearText::GetInstance()->Draw();
 	menu->Draw();
 	sceneChanger_->Draw();
 	camerawork->feedDraw();
@@ -422,7 +423,6 @@ void FourthStageActor::MainUpdate(DebugCamera* camera) {
 	ColEnemy(enemymanager->GetBulEnemy());
 	loadobj->FourthUpdate();
 	ParticleEmitter::GetInstance()->Update();
-	camerawork->Update(camera);
 
 	XMFLOAT3 Position = enemymanager->GetBoss()->GetPosition();
 	XMVECTOR tex2DPos = { Position.x, Position.y, Position.z };
@@ -433,6 +433,8 @@ void FourthStageActor::MainUpdate(DebugCamera* camera) {
 
 	postEffect->SetRadCenter(XMFLOAT2(tex2DPos.m128_f32[0], tex2DPos.m128_f32[1]));
 	postEffect->SetRadPower(camerawork->GetEffectPower());
+
+	ClearText::GetInstance()->Update();
 }
 
 void FourthStageActor::FinishUpdate(DebugCamera* camera) {

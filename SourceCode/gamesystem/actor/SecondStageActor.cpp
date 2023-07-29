@@ -221,6 +221,8 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	postEffect->SetRadPower(camerawork->GetEffectPower());
 	sceneChanger_->Update();
 
+	ClearText::GetInstance()->Update();
+
 	if (_Tscne != TextScene::ENDTEXT)
 		text_->Display();
 
@@ -323,6 +325,7 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 		if (camerawork->GetAppearEndF() && camerawork->GetCameraState() == CameraState::CAMERA_NORMAL) {
 			ui->Draw();
 		}
+		ClearText::GetInstance()->Draw();
 		menu->Draw();
 		sceneChanger_->Draw();
 		

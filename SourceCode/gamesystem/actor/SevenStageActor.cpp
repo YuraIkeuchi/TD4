@@ -328,6 +328,7 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 
 	postEffect->SetRadCenter(XMFLOAT2(tex2DPos.m128_f32[0], tex2DPos.m128_f32[1]));
 	postEffect->SetRadPower(camerawork->GetEffectPower());
+
 }
 //Œ‚”jƒV[ƒ“
 void SevenStageActor::FinishUpdate(DebugCamera* camera) {

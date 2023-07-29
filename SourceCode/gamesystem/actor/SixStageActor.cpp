@@ -209,6 +209,7 @@ void SixStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	if (m_SceneState == SceneState::IntroState) {
 		text_->SpriteDraw(dxCommon);
 	}
+	ClearText::GetInstance()->Draw();
 	menu->Draw();
 	sceneChanger_->Draw();
 	camerawork->feedDraw();
@@ -332,6 +333,8 @@ void SixStageActor::MainUpdate(DebugCamera* camera) {
 	tex2DPos = Helper::GetInstance()->PosDivi(tex2DPos, camera->GetViewPort(), false);
 	postEffect->SetRadCenter(XMFLOAT2(tex2DPos.m128_f32[0], tex2DPos.m128_f32[1]));
 	postEffect->SetRadPower(camerawork->GetEffectPower());
+
+	ClearText::GetInstance()->Update();
 }
 //撃破シーン
 void SixStageActor::FinishUpdate(DebugCamera* camera) {
