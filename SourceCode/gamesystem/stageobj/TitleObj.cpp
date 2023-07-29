@@ -104,7 +104,7 @@ void TitleObj::Draw(DirectXCommon* dxCommon) {
 	foodobj->Draw();
 	homeobj->Draw();
 	groundobj->Draw();
-	BackSkyDome->Draw();
+	//BackSkyDome->Draw();
 	IKEObject3d::PostDraw();
 }
 //ゴーストの更新
