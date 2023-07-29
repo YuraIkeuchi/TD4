@@ -2,6 +2,7 @@
 #include "VariableCommon.h"
 #include <Easing.h>
 #include "Player.h"
+#include "ClearText.h"
 #include "Helper.h"
 CameraWork::CameraWork(XMFLOAT3 eye, XMFLOAT3 target) {
 	m_eyePos = eye;
@@ -234,7 +235,9 @@ void CameraWork::SetBossDead_AfterFirst() {
 	else {
 		if (Helper::GetInstance()->FrameCheck(m_Frame, 0.01f)) {
 			DeathTimer++;
-
+			if (DeathTimer == 1) {
+				ClearText::GetInstance()->SetAlive(true);
+			}
 			if (DeathTimer == 50) {
 				m_EndDeath = true;
 			}
@@ -266,7 +269,9 @@ void CameraWork::SetBossDead_AfterSecond() {
 	else {
 		if (Helper::GetInstance()->FrameCheck(m_Frame, 0.01f)) {
 			DeathTimer++;
-
+			if (DeathTimer == 1) {
+				ClearText::GetInstance()->SetAlive(true);
+			}
 			if (DeathTimer == 50) {
 				m_EndDeath = true;
 			}
@@ -302,7 +307,9 @@ void CameraWork::SetBossDead_AfterThird() {
 	else {
 		if (Helper::GetInstance()->FrameCheck(m_Frame, 0.01f)) {
 			DeathTimer++;
-
+			if (DeathTimer == 251) {
+				ClearText::GetInstance()->SetAlive(true);
+			}
 			if (DeathTimer == 300) {
 				m_EndDeath = true;
 			}
@@ -328,7 +335,7 @@ void CameraWork::SetBossDead_AfterFourth() {
 
 		DeathTimer++;
 
-		if (DeathTimer == 350) {
+		if (DeathTimer == 170) {
 			m_LookPlayer = true;
 			m_AfterEye = { Player::GetInstance()->GetPosition().x - 15.0f,8.0f,Player::GetInstance()->GetPosition().z };
 			m_AfterTarget = { Player::GetInstance()->GetPosition().x + 15.0f,8.0f,Player::GetInstance()->GetPosition().z };
@@ -338,8 +345,10 @@ void CameraWork::SetBossDead_AfterFourth() {
 	else {
 		if (Helper::GetInstance()->FrameCheck(m_Frame, 0.01f)) {
 			DeathTimer++;
-
-			if (DeathTimer == 400) {
+			if (DeathTimer == 171) {
+				ClearText::GetInstance()->SetAlive(true);
+			}
+			if (DeathTimer == 220) {
 				m_EndDeath = true;
 			}
 		}
@@ -371,6 +380,9 @@ void CameraWork::SetBossDead_AfterFive() {
 	}
 	else {
 		if (Helper::GetInstance()->FrameCheck(m_Frame, 0.01f)) {
+			if (DeathTimer == 201) {
+				ClearText::GetInstance()->SetAlive(true);
+			}
 			DeathTimer++;
 
 			if (DeathTimer == 250) {
@@ -406,6 +418,9 @@ void CameraWork::SetBossDead_AfterSix() {
 	}
 	else {
 		if (Helper::GetInstance()->FrameCheck(m_Frame, 0.01f)) {
+			if (DeathTimer == 351) {
+				ClearText::GetInstance()->SetAlive(true);
+			}
 			DeathTimer++;
 
 			if (DeathTimer == 400) {
@@ -491,6 +506,9 @@ void CameraWork::EditorCamera() {
 }
 //ImGui
 void CameraWork::ImGuiDraw() {
+	ImGui::Begin("Camera");
+	ImGui::Text("Timer:%d", DeathTimer);
+	ImGui::End();
 }
 void CameraWork::SpecialUpdate() {
 

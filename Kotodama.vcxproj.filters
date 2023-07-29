@@ -578,6 +578,9 @@
     <ClCompile Include="SourceCode\gamesystem\stageobj\TitleObj.cpp">
       <Filter>gamesystem\stageobj\TitleObj</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\gamesystem\text\ClearText.cpp">
+      <Filter>gamesystem\Text</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\engine\camera\DebugCamera.h">
@@ -1119,6 +1122,9 @@
     </ClInclude>
     <ClInclude Include="SourceCode\gamesystem\stageobj\TItleObj.h">
       <Filter>gamesystem\stageobj\TitleObj</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\gamesystem\text\ClearText.h">
+      <Filter>gamesystem\Text</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

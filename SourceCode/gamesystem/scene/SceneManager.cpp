@@ -4,6 +4,7 @@
 #include "AudioManager.h"
 #include "BackObj.h"
 #include "HitStop.h"
+#include "ClearText.h"
 #include<cassert>
 void SceneManager::Finalize() {
 	//最後のシーンの終了と開放
@@ -67,7 +68,7 @@ void SceneManager::AsyncLoad()
 {
 	std::thread t = std::thread([&] {
 		ImageManager::GetInstance()->SecondLoad2D(), ImageManager::GetInstance()->SecondLoadTex2D(), ModelManager::GetInstance()->SecondInitialize(),
-			BackObj::GetInstance()->LoadMap(), AudioManager::GetInstance()->SecondLoadAudio(), HitStop::GetInstance()->LoadCSV(); });
+			BackObj::GetInstance()->LoadMap(), AudioManager::GetInstance()->SecondLoadAudio(), HitStop::GetInstance()->LoadCSV(), ClearText::GetInstance()->LoadResource(); });
 
 	t.join();
 	// ロード状態=ロード終了

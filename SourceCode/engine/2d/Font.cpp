@@ -29,7 +29,7 @@ void Font::LoadFont(DirectXCommon* dxcommon)
 	_heapForSpriteFont = dxcommon->CreateDescriptorHeapForSproteFont();
 	_spritefont = new DirectX::SpriteFont(dxcommon->GetDev(),
 		resUploadBatch,
-		L"Resources/font/newUD.spritefont",
+		L"Resources/font/keifont.spritefont",
 		_heapForSpriteFont->GetCPUDescriptorHandleForHeapStart(),
 		_heapForSpriteFont->GetGPUDescriptorHandleForHeapStart());
 

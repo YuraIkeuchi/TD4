@@ -278,6 +278,7 @@
     <ClCompile Include="SourceCode\gamesystem\stageobj\TitleObj.cpp" />
     <ClCompile Include="SourceCode\gamesystem\stageobj\ViewBullet.cpp" />
     <ClCompile Include="SourceCode\gamesystem\text\BossText.cpp" />
+    <ClCompile Include="SourceCode\gamesystem\text\ClearText.cpp" />
     <ClCompile Include="SourceCode\gamesystem\text\Text.cpp" />
     <ClCompile Include="SourceCode\gamesystem\text\TextManager.cpp" />
     <ClCompile Include="SourceCode\gamesystem\ui\SelectScene.cpp" />
@@ -460,6 +461,7 @@
     <ClInclude Include="SourceCode\gamesystem\stageobj\TItleObj.h" />
     <ClInclude Include="SourceCode\gamesystem\stageobj\ViewBullet.h" />
     <ClInclude Include="SourceCode\gamesystem\text\BossText.h" />
+    <ClInclude Include="SourceCode\gamesystem\text\ClearText.h" />
     <ClInclude Include="SourceCode\gamesystem\text\Text.h" />
     <ClInclude Include="SourceCode\gamesystem\text\TextManager.h" />
     <ClInclude Include="SourceCode\gamesystem\ui\SelectScene.h" />
