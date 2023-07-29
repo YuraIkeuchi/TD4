@@ -137,6 +137,8 @@ void FirstStageActor::Draw(DirectXCommon* dxCommon)
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->ImGuiDraw();
+		ClearText::GetInstance()->ImGuiDraw();
+		camerawork->ImGuiDraw();
 		dxCommon->PostDraw();
 	} else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
@@ -145,6 +147,8 @@ void FirstStageActor::Draw(DirectXCommon* dxCommon)
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
+		ClearText::GetInstance()->ImGuiDraw();
+		camerawork->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 }
@@ -173,6 +177,7 @@ void FirstStageActor::FrontDraw(DirectXCommon* dxCommon)
 		}
 	}
 	IKESprite::PostDraw();
+	ClearText::GetInstance()->Draw();
 	menu->Draw();
 	sceneChanger_->Draw();
 	camerawork->feedDraw();
@@ -343,6 +348,8 @@ void FirstStageActor::MainUpdate(DebugCamera* camera)
 
 	postEffect->SetRadCenter(XMFLOAT2(tex2DPos.m128_f32[0], tex2DPos.m128_f32[1]));
 	postEffect->SetRadPower(camerawork->GetEffectPower());
+
+	ClearText::GetInstance()->Update();
 }
 
 void FirstStageActor::FinishUpdate(DebugCamera* camera)

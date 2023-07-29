@@ -26,7 +26,6 @@ private:
 private://メンバ変数
 	array<unique_ptr<IKESprite>, TITLE_MAX> TitlePartsSprite;
 	//スプライト
-	unique_ptr<IKESprite> TitleSprite;
 	unique_ptr<IKESprite> TitleWordSprite;
 	//タイトルのパーツに必要なもの
 	array<float, TITLE_MAX> m_Angle;

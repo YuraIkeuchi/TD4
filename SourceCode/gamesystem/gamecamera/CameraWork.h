@@ -76,6 +76,7 @@ private:
 	void TitleCamera();//タイトルカメラ
 public:
 	//void EditorCamera();
+	void ClearDraw();
 	void BossDefeatcamera();
 	void feedDraw();
 

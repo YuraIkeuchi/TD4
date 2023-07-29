@@ -11,6 +11,7 @@
 #include "Menu.h"
 #include "EnemyManager.h"
 #include "LoadStageObj.h"
+#include "ClearText.h"
 #include"Font.h"
 #include<SceneSave.h>
 

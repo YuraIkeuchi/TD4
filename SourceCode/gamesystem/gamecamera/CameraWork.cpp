@@ -2,6 +2,7 @@
 #include "VariableCommon.h"
 #include <Easing.h>
 #include "Player.h"
+#include "ClearText.h"
 #include "Helper.h"
 CameraWork::CameraWork(XMFLOAT3 eye, XMFLOAT3 target) {
 	m_eyePos = eye;
@@ -406,6 +407,9 @@ void CameraWork::SetBossDead_AfterSix() {
 	}
 	else {
 		if (Helper::GetInstance()->FrameCheck(m_Frame, 0.01f)) {
+			if (DeathTimer == 351) {
+				ClearText::GetInstance()->SetAlive(true);
+			}
 			DeathTimer++;
 
 			if (DeathTimer == 400) {
@@ -491,6 +495,9 @@ void CameraWork::EditorCamera() {
 }
 //ImGui
 void CameraWork::ImGuiDraw() {
+	ImGui::Begin("Camera");
+	ImGui::Text("Timer:%d", DeathTimer);
+	ImGui::End();
 }
 void CameraWork::SpecialUpdate() {
 

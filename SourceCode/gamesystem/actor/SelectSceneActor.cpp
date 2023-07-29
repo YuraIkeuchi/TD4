@@ -58,6 +58,8 @@ void SelectSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	spotLightPos[0] = {SelectScene::GetIns()->GetNowSelePos().x,10.0f,SelectScene::GetIns()->GetNowSelePos().z};
 	spotLightDir[0] = { 0, -1, 0 };
 	spotLightColor[0] = { 1, 1, 1 };
+
+	ClearText::GetInstance()->Initialize();
 }
 //çXêV
 void SelectSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
