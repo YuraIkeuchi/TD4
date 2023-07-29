@@ -73,12 +73,13 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	if (menu->Pause()) {
 		menu->Update();
 		if (menu->ReturnSelect()) {
+			SelectScene::GetIns()->ResetParama();
 			sceneChanger_->ChangeStart();
 			sceneChanger_->ChangeScene("SELECT", SceneChanger::Reverse);
 		}
 		return;
 	}
-	
+
 	constexpr int IntervalTextC = 200;
 	messagewindow_->DisplayCharacter(sutopon_color_);
 	if (_Tscne == TextScene::NON) {
@@ -164,6 +165,7 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 		if (PlayerDestroy()) {
 			Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 			SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kSecondStage, true);
+			//SelectScene::GetIns()->ResetParama();
 			sceneChanger_->ChangeStart();
 			sceneChanger_->ChangeSceneLose("GAMEOVER");
 		}
@@ -205,8 +207,7 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 				SelectScene::GetIns()->ResetParama();
 				sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::ReverseType::NonReverse);
 			}
-		}
-		else {
+		} else {
 			Player::GetInstance()->Update();
 		}
 	}
@@ -328,7 +329,7 @@ void SecondStageActor::FrontDraw(DirectXCommon* dxCommon) {
 		ClearText::GetInstance()->Draw();
 		menu->Draw();
 		sceneChanger_->Draw();
-		
+
 		IKESprite::PostDraw();
 		camerawork->feedDraw();
 	}

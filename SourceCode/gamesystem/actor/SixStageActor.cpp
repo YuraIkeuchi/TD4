@@ -87,6 +87,8 @@ void SixStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGr
 		menu->Update();
 		if (menu->ReturnSelect()) {
 			sceneChanger_->ChangeStart();
+			SelectScene::GetIns()->ResetParama();
+
 			sceneChanger_->ChangeScene("SELECT", SceneChanger::Reverse);
 		}
 		return;
@@ -97,7 +99,7 @@ void SixStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGr
 	sceneChanger_->Update();
 	//プレイヤー
 	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
-		SceneSave::GetInstance()->SetClearFlag(kSixStage, true);
+		SceneSave::GetInstance()->SetClearFlag(kFiveStage, true);
 		lightgroup->SetCircleShadowActive(0, false);
 	}
 	lightgroup->SetCircleShadowDir(0, XMVECTOR({ circleShadowDir[0], circleShadowDir[1], circleShadowDir[2], 0 }));
@@ -298,6 +300,7 @@ void SixStageActor::MainUpdate(DebugCamera* camera) {
 
 		if (camerawork->GetEndDeath()) {
 			sceneChanger_->ChangeStart();
+			SelectScene::GetIns()->ResetParama();
 			sceneChanger_->ChangeScene("SELECT", SceneChanger::NonReverse);
 
 		}
@@ -309,6 +312,7 @@ void SixStageActor::MainUpdate(DebugCamera* camera) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kSixStage, true);
 		sceneChanger_->ChangeStart();
+		//SelectScene::GetIns()->ResetParama();
 		sceneChanger_->ChangeSceneLose("GAMEOVER");
 	}
 
