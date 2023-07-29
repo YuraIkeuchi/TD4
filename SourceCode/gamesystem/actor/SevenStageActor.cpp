@@ -69,6 +69,7 @@ void SevenStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	if (menu->Pause()) {
 		menu->Update();
 		if (menu->ReturnSelect()) {
+			SelectScene::GetIns()->ResetParama();
 			sceneChanger_->ChangeStart();
 			sceneChanger_->ChangeScene("SELECT", SceneChanger::Reverse);
 		}
@@ -122,7 +123,7 @@ void SevenStageActor::Draw(DirectXCommon* dxCommon) {
 
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
-	//	FrontDraw(dxCommon);
+		//	FrontDraw(dxCommon);
 		dxCommon->PostDraw();
 	} else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
@@ -196,7 +197,7 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 	IKESprite::PreDraw();
 	//blackwindow->Draw();
 	camerawork->feedDraw();
-//	SelectScene::GetIns()->Draw_Sprite();
+	//	SelectScene::GetIns()->Draw_Sprite();
 	IKESprite::PostDraw();
 }
 //IMGui‚Ì•`‰æ
@@ -284,6 +285,7 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 
 		if (camerawork->GetEndDeath()) {
 			sceneChanger_->ChangeStart();
+			//SelectScene::GetIns()->ResetParama();
 			sceneChanger_->ChangeScene("ENDROLL", SceneChanger::NonReverse);
 
 		}
@@ -300,6 +302,7 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kSevenStage, true);
 		sceneChanger_->ChangeStart();
+		//SelectScene::GetIns()->ResetParama();
 		sceneChanger_->ChangeSceneLose("GAMEOVER");
 	}
 
@@ -448,16 +451,13 @@ void SevenStageActor::WhoRead(const string& name) {
 	if (name == "sutopon") {
 		sutopon_color_ = { 1.0f,1.0f,1.0f,1.0f };
 		girl_color_ = { 0.5f,0.5f,0.5f,0.5f };
-	}
-	else if (name == "girl") {
+	} else if (name == "girl") {
 		girl_color_ = { 1.0f,1.0f,1.0f,1.0f };
 		sutopon_color_ = { 0.5f,0.5f,0.5f,0.5f };
-	}
-	else if(name == "boss") {
+	} else if (name == "boss") {
 		sutopon_color_ = { 0.5f,0.5f,0.5f,0.5f };
 		girl_color_ = { 0.5f,0.5f,0.5f,0.5f };
-	}
-	else if(name == "none") {
+	} else if (name == "none") {
 		sutopon_color_ = { 0.0f,0.0f,0.0f,0.0f };
 		girl_color_ = { 0.0f,0.0f,0.0f,0.0f };
 	}

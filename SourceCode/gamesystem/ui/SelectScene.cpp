@@ -4,7 +4,7 @@
 #include "SceneManager.h"
 #include "Easing.h"
 #include "ParticleEmitter.h"
-//
+
 SelectScene* SelectScene::GetIns() {
 	static SelectScene ins;
 	return &ins;
@@ -21,9 +21,9 @@ void SelectScene::ResetParama() {
 		ButtonNav_Challenge_CancelColAlpha[i] = 1.f;
 	}
 
-	KotokoYPos = -2.f;
-	SutoYPos = 2.f;
-
+	KotokoYPos = -10.f;
+	SutoYPos = 0.f;
+	//
 	constexpr float PosRad = 25.f;
 	for (auto i = 0; i < ObjNum; i++) {
 		TipsPosY[i] = -360.f;
@@ -42,7 +42,7 @@ void SelectScene::ResetParama() {
 	StageObjs[FOUR]->SetScale({ 3.f,3.f,3.f });
 	StageObjs[FOUR]->SetRotation({ 0.0f,0.0f,0.0f });
 	StageObjs[FIVE]->SetScale({ 0.2f,0.2f,0.2f });
-	StageObjs[TITLE]->SetScale({ 4.2f,4.2f,4.2f });
+	StageObjs[TITLE]->SetScale({ 8.2f,5.2f,8.2f });
 	TrigerSelect = NOINP;
 	CloseF = false;
 
@@ -73,6 +73,8 @@ void SelectScene::Init() {
 	kotokoObj.reset(new IKEObject3d());
 	kotokoObj->Initialize();
 	kotokoObj->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::TITKOTOKO));
+	KotokoYPos = -7.f;
+	SutoYPos = 2.f;
 
 	sutoponObj.reset(new IKEObject3d());
 	sutoponObj->Initialize();
@@ -88,7 +90,7 @@ void SelectScene::Init() {
 	StageObjs[FIVE]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::DJ));
 	StageObjs[SIX]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::PEDKOTOKO));
 	StageObjs[SEVEN]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::LASTBOSS));
-	StageObjs[TITLE]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::TITLEMAP));
+	StageObjs[TITLE]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::HOME));
 
 
 	BackSkyDome.reset(new IKEObject3d());
@@ -102,7 +104,7 @@ void SelectScene::Init() {
 	ButtonNav_Challenge_Cancel[0] = IKESprite::Create(ImageManager::Challenge, { 0,0 });
 	ButtonNav_Challenge_Cancel[1] = IKESprite::Create(ImageManager::Cancel, { 0,0 });
 
-	
+
 	ButtonNav_RBLB[0]->SetAnchorPoint({ 0.5f,0.5f });
 	ButtonNav_RBLB[1]->SetAnchorPoint({ 0.5f,0.5f });
 	ButtonNav_RBLB[0]->SetPosition({ 800,650 });
@@ -143,14 +145,14 @@ void SelectScene::Init() {
 	}
 	ButtonNav_Pos[0] = { 820,560 };
 	ButtonNav_Pos[1] = { 450,560 };
-	constexpr float PosRad = 25.f;
+	constexpr float PosRad = 30.f;
 	for (auto i = 0; i < ObjNum; i++) {
 		TipsPosY[i] = -360.f;
 		StageObjRotAngle[i] = static_cast<float>(i) * (360.f / static_cast<float>(ObjNum)) + 180.f;
 		//位置の初期化
 		StageObjPos[i].x = Pedestal->GetPosition().x + sinf(StageObjRotAngle[i] * (PI / PI_180)) * PosRad;
 		StageObjPos[i].z = Pedestal->GetPosition().z + cosf(StageObjRotAngle[i] * (PI / PI_180)) * PosRad;
-		StageObjPos[i].y = Pedestal->GetPosition().y + 8.f;
+		StageObjPos[i].y = Pedestal->GetPosition().y + 4.f;
 		//BossIcon.
 		StageObjRot[i].y = 90;
 		StageObjs[i]->SetPosition(StageObjPos[i]);
@@ -158,13 +160,13 @@ void SelectScene::Init() {
 		m_Scale[i] = { 0.0f,0.0f,0.0f };
 		AfterScale[i] = { 1.0f,1.0f,1.0f };
 	}
-	AfterScale[SECOND] = { 0.70f,0.70f,0.70f };
+	AfterScale[SECOND] = { 0.50f,0.50f,0.50f };
 	m_Scale[FIRST] = { 5.0f,5.0f,5.0f };
 	AfterScale[FIRST] = { 5.0f,5.0f,5.0f };
 	m_Birth[FIRST] = true;
 	m_BirthFinish[FIRST] = true;
-	AfterScale[THIRD] = { 4.0f,4.0f,4.0f };
-	AfterScale[FOUR] = { 3.0f,3.0f,3.0f };
+	AfterScale[THIRD] = { 3.0f,3.0f,3.0f };
+	AfterScale[FOUR] = { 2.70f,2.70f,2.70f };
 	StageObjs[FOUR]->SetRotation({ 0.0f,90.0f,0.0f });
 	StageObjRot[FOUR].z = 190;
 	StageObjRot[FOUR].x = 190;
@@ -174,16 +176,16 @@ void SelectScene::Init() {
 
 	//一回開放したら大きさを合わせる
 	for (auto i = 0; i < ObjNum; i++) {
-	//	if (m_Birth[i]) {
-			m_Scale[i] = AfterScale[i];
+		//	if (m_Birth[i]) {
+		m_Scale[i] = AfterScale[i];
 		//}
 		TipsAct[i] = false;
 	}
 	m_Color[FIRST] = { 1,1,1 };
 	m_Color[TITLE] = { 1,1,1 };
 
-	MaxSpeed=180.f;
-	MaxScl=15500.f;
+	MaxSpeed = 180.f;
+	MaxScl = 15500.f;
 }
 
 void SelectScene::Jump()
@@ -191,12 +193,12 @@ void SelectScene::Jump()
 	constexpr float Distortion = 0.5f;
 	//ジャンプ高さ
 	constexpr float Height = 4.f;
-	float GroundY = -3.f;
+
+	float GroundY = -9.f;
 	if (JumpK) {
 		JFrameK += 1.f / 30.f;
 		KotokoYPos = GroundY + (1.0f - pow(1.0f - sinf(PI * JFrameK), Distortion)) * Height;
-	}
-	else
+	} else
 	{
 		JFrameK = 0.f;
 	}
@@ -206,7 +208,7 @@ void SelectScene::Jump()
 
 	if (JumpS) {
 		JFrameS += 1.f / 30.f;
-		SutoYPos = 2.f + (1.0f - pow(1.0f - sinf(PI * JFrameS), Distortion)) * Height;
+		SutoYPos = 0.f + (1.0f - pow(1.0f - sinf(PI * JFrameS), Distortion)) * Height;
 	} else
 	{
 		JFrameS = 0.f;
@@ -217,7 +219,7 @@ void SelectScene::Jump()
 }
 
 void SelectScene::Upda() {
-	constexpr float PosRad = 25.f;
+	constexpr float PosRad = 28.f;
 	//背景
 	SkydomeRotY += 0.5f;
 	BackSkyDome->SetRotation({ 0,SkydomeRotY,0 });
@@ -227,26 +229,35 @@ void SelectScene::Upda() {
 	Pedestal->Update();
 
 	kotokoObj->SetPosition({ -20,KotokoYPos,-38 });
-	kotokoObj->SetRotation({ 0,120,0 });
+	kotokoObj->SetRotation({ 0,140,0 });
 	kotokoObj->SetScale({ 3.7f,3.5f,3.7f });
 	kotokoObj->Update();
 
 	sutoponObj->SetRotation({ 20,5,-10 });
-	sutoponObj->SetPosition({ 17,SutoYPos,-42 });
-	sutoponObj->SetScale({3.1f,3.1f,3.1f });
+	sutoponObj->SetPosition({ 18,SutoYPos,-42 });
+	sutoponObj->SetScale({ 3.1f,3.1f,3.1f });
 	sutoponObj->Update();
 
+	for (auto i = 0; i < ObjNum; i++) {
+		if (TipsAct[i])
+		{
+			//	JumpK = true;
+				//JumpS = true;
+		}
+	}
 	CloseIconView(CloseF);
 	Helper::GetInstance()->Clamp(closeScl, 0.f, MaxScl);
 	Helper::GetInstance()->Clamp(closeRad, 0.f, 1500.f);
-	if(!ChangeLastF)
-	RotPedestal();
+	if (!ChangeLastF)
+		RotPedestal();
 
 	//Selectは常時出す
 	m_Birth[TITLE] = true;
 	for (int i = 0; i < MAX; i++) {
 		if (IconColor[i] < 1.f) { continue; }
 		if (Input::GetInstance()->TriggerButton(Input::B) && (m_Birth[i])) {
+			JumpK = true;
+			JumpS = true;
 			TipsAct[i] = true;
 		}
 	}
@@ -259,9 +270,9 @@ void SelectScene::Upda() {
 	ChangeEffect("SIXSTAGE", Stage::FIVE, FIVE);
 	ChangeEffect("SEVENSTAGE", Stage::SEVEN, SEVEN);
 	ChangeEffect("TITLE", Stage::TITLE, TITLE);
-	
+
 	for (int i = 0; i < MAX; i++) {
-		if (closeScl >= MaxScl-2000.f) {
+		if (closeScl >= MaxScl - 2000.f) {
 			BossIcon[i]->SetAnchorPoint({ 0.5f,0.5f });
 			BossIcon[i]->SetSize({ 0,0 });
 			BossIcon[i]->SetPosition({ 1280 / 2,720 / 2 });
@@ -280,7 +291,7 @@ void SelectScene::Upda() {
 	Jump();
 	m_NowSelePos = {
 		Pedestal->GetPosition().x + sinf(180.f * (PI / PI_180)) * PosRad,
-		8.f,
+		4.f,
 		Pedestal->GetPosition().z + cosf(180 * (PI / PI_180)) * PosRad };
 
 	for (auto i = 0; i < ObjNum; i++) {
@@ -294,7 +305,7 @@ void SelectScene::Upda() {
 
 		Helper::GetInstance()->Clamp(IconColor[i], 0.3f, 1.f);
 	}
-
+	StageObjPos[TITLE].y = 0.f;
 	ViewTips();
 	for (auto i = 0; i < ObjNum; i++) {
 		StageObjPos[i].x = Pedestal->GetPosition().x + sinf(StageObjRotAngle[i] * (PI / PI_180)) * PosRad;
@@ -303,13 +314,13 @@ void SelectScene::Upda() {
 		StageObj[i]->SetSize({ 800.f,500.f });
 		StageObj[i]->SetPosition({ 640,TipsPosY[i] });
 		StageObj[i]->SetAnchorPoint({ 0.5f,0.5f });
-		StageObjs[i]->SetColor({ m_Color[i].x, m_Color[i].y, m_Color[i].z,1.f});
+		StageObjs[i]->SetColor({ m_Color[i].x, m_Color[i].y, m_Color[i].z,1.f });
 
 		StageObjs[i]->SetRotation({ StageObjRot[i] });
 
 		//StageObjs[FOUR]->SetRotation({90,StageObjRot[FOUR].y,0 });
 		StageObjs[i]->SetPosition(StageObjPos[i]);
-		StageObjs[i]->SetScale(m_Scale[i]);
+		StageObjs[i]->SetScale({ m_Scale[i].x * 1.5f,m_Scale[i].y * 1.5f,m_Scale[i].z * 1.5f });
 		StageObjs[i]->Update();
 	}
 	StageObjs[TITLE]->SetColor({ 1,1,1,1 });
@@ -319,30 +330,30 @@ void SelectScene::Upda() {
 	TitleTex->SetColor({ 1,1,1,1 });
 	TitleTex->Update();
 
-	if (!ChangeLastF) {
-		bool temp[ObjNum] = {};
-		for (auto i = 0; i < TipsAct.size(); i++)
-			temp[i] = TipsAct[i];
-		if (Helper::GetInstance()->All_OfF(temp, ObjNum)) {
-			if (TrigerSelect == NOINP ) {
-				if (Input::GetInstance()->TriggerButton(Input::RIGHT) || Input::GetInstance()->TriggerButton(Input::RB)) {
-					if (!JumpS)JumpS = true;
-					SelIndex++;
-					TrigerSelect = RB;
-				}
+	//if (!ChangeLastF) {
+	bool temp[ObjNum] = {};
+	for (auto i = 0; i < TipsAct.size(); i++)
+		temp[i] = TipsAct[i];
+	if (Helper::GetInstance()->All_OfF(temp, ObjNum)) {
+		if (TrigerSelect == NOINP) {
+			if (Input::GetInstance()->TriggerButton(Input::RIGHT) || Input::GetInstance()->TriggerButton(Input::RB)) {
+				if (!JumpS)JumpS = true;
+				SelIndex++;
+				TrigerSelect = RB;
+			}
 
-				if (Input::GetInstance()->TriggerButton(Input::LEFT)|| Input::GetInstance()->TriggerButton(Input::LB)) {
-					if (!JumpK)JumpK = true;
-					SelIndex--;
-					TrigerSelect = LB;
+			if (Input::GetInstance()->TriggerButton(Input::LEFT) || Input::GetInstance()->TriggerButton(Input::LB)) {
+				if (!JumpK)JumpK = true;
+				SelIndex--;
+				TrigerSelect = LB;
 
-				}
 			}
 		}
 	}
-	
+	//}
+
 	ChangeStageRot();
-	m_Scale[TITLE] = { 0.01f,0.01f,0.01f };
+	m_Scale[TITLE] = { 1.01f,1.01f,1.01f };
 	if (!ChangeLastF)
 		CLastEaseTime = 0.f;
 	//セレクトのステート管理
@@ -385,9 +396,9 @@ void SelectScene::ImGuiDraw() {
 void SelectScene::Draw_SpriteBack() {
 	if (closeScl <= 0.f) { return; }
 	for (auto i = 0; i < ObjNum; i++) {
-		if (!TipsAct[0]&& !TipsAct[1] && !TipsAct[2] &&
-			!TipsAct[3] &&!TipsAct[4] &&!TipsAct[5] &&
-			!TipsAct[6]&& !TipsAct[7]) {
+		if (!TipsAct[0] && !TipsAct[1] && !TipsAct[2] &&
+			!TipsAct[3] && !TipsAct[4] && !TipsAct[5] &&
+			!TipsAct[6] && !TipsAct[7]) {
 			ButtonNav_RBLB[0]->Draw();
 			ButtonNav_RBLB[1]->Draw();
 		}
@@ -403,7 +414,7 @@ void SelectScene::Draw_SpriteBack() {
 			ButtonNav_Challenge_CancelScl[cancel].y += 5.0f;
 			ButtonNav_Challenge_CancelColAlpha[cancel] -= 0.02f;
 			ButtonNav_Challenge_CancelColAlpha[notCancel] -= 0.04f;
-			if (ButtonNav_Challenge_CancelColAlpha[cancel]<0.0f) {
+			if (ButtonNav_Challenge_CancelColAlpha[cancel] < 0.0f) {
 				JudgChal = false;
 				for (auto i = 0; i < 2; i++) {
 					ButtonNav_Challenge_CancelScl[i] = { 200,150 };
@@ -446,19 +457,19 @@ void SelectScene::CloseIconView(bool closeF) {
 	//定数わっしょい　良い方法模索中。。。
 	constexpr float texScl = 6500.f;
 	constexpr float MinScl = 2000.f;
-	constexpr float SubRad = 0.5f;
+	constexpr float SubRad = 0.52f;
 
 	if (closeF && !sin) {
 		closeScl -= SclingSpeed;
 		if (closeScl <= MinScl) {
-			SclingSpeed = 105.f;
+			SclingSpeed = 115.f;
 			closeRad -= SclingSpeed * SubRad;
 		} else
 			SclingSpeed = 160.f;
 	}
 	if (sin) {
 		if (closeScl >= MinScl)
-			SclingSpeed =MaxSpeed;
+			SclingSpeed = MaxSpeed;
 		else
 			SclingSpeed = 100.f;
 
@@ -475,8 +486,8 @@ void SelectScene::ChangeEffect(std::string name, Stage stage, UINT iconnum) {
 		Player::GetInstance()->MoveStop(false);
 		Player::GetInstance()->SetCanShot(true);
 		//ResetParama();
-		for(auto i=0;i<ObjNum;i++)
-		OldObjAngle[i]= StageObjRotAngle[i];
+		for (auto i = 0; i < ObjNum; i++)
+			OldObjAngle[i] = StageObjRotAngle[i];
 		Audio::GetInstance()->StopWave(AUDIO_LOAD);
 		SceneManager::GetInstance()->ChangeScene(name);
 		CloseF = false;
@@ -510,16 +521,16 @@ void SelectScene::ViewTips() {
 
 void SelectScene::StateManager() {
 	//debugよう
-	m_Scale[TITLE] = { 0.025f,0.1f,0.025f };
+	m_Scale[TITLE] = { 0.7025f,0.71f,0.75f };
+
 	//m_Wide = true;
 	m_SelectState = SELECT_SECOND;
 	m_Wide = true;
 	//
 	//クリア状況に応じてOBJの大きさだったりが違う
 	if (m_SelectState == SELECT_FIRST) {		//ここは牛乳のみ
-	
-	}
-	else if (m_SelectState == SELECT_SECOND) {//牛乳をクリアしてラスボス以外出現する
+
+	} else if (m_SelectState == SELECT_SECOND) {//牛乳をクリアしてラスボス以外出現する
 		bool temp[ObjNum] = {};
 		for (auto i = 0; i < TipsAct.size(); i++)
 			temp[i] = TipsAct[i];
@@ -534,8 +545,8 @@ void SelectScene::StateManager() {
 			}
 			if (m_Wide) {			//ボスを大きくする
 				for (auto i = 1; i < ObjNum - 2; i++) {
-					if(m_Color[i-1].x>0.5f)
-					Helper::GetInstance()->FrameCheck(ObjColEase[i], 0.05f);
+					if (m_Color[i - 1].x > 0.5f)
+						Helper::GetInstance()->FrameCheck(ObjColEase[i], 0.05f);
 
 					m_Color[i] = { Ease(In,Cubic,ObjColEase[i],0,1),
 						Ease(In,Cubic,ObjColEase[i],0,1),
@@ -543,22 +554,20 @@ void SelectScene::StateManager() {
 					};
 					m_BirthFinish[i] = true;
 				}
-			}
-			else {			//大きくなる前はパーティクルを出すようにしている
-				
+			} else {			//大きくなる前はパーティクルを出すようにしている
+
 				//クリア状況に応じてOBJの大きさだったりが違う
 
 			}
 		}
 
 		if (SceneSave::GetInstance()->AllClear()) {			//ラスボス以外倒したら(いまはちえよしまで)ラスボスが出現する
-			ChangeLastF = true;
+			//ChangeLastF = true;
 			m_SelectState = SELECT_LAST;
 			m_Wide = false;
 			m_BirthTimer = {};
 		}
-	}
-	else {			//ラスボスゾーンの出現
+	} else {			//ラスボスゾーンの出現
 		bool temp[ObjNum] = {};
 		for (auto i = 0; i < TipsAct.size(); i++)
 			temp[i] = TipsAct[i];
@@ -574,33 +583,31 @@ void SelectScene::StateManager() {
 			}
 
 			if (m_Wide) {//ラスボスのOBJを大きくする
-				
+
 				m_BirthFinish[SEVEN] = true;
-			}
-			else {
+			} else {
 				BirthParticle();
 			}
 		}
 	}
-	if(m_SelectState == SELECT_LAST)
+	if (m_SelectState == SELECT_LAST)
 	{
-		
-	}
-	else {
+
+	} else {
 		m_Birth[SEVEN] = false;
 		m_BirthFinish[SEVEN] = false;
 	}
-		BirthParticle();
+	BirthParticle();
 }
 
 //パーティクル
 void SelectScene::BirthParticle() {
 	int l_Life[ObjNum];
 
-	for (auto i = 0; i < ObjNum-2; i++) {
+	for (auto i = 0; i < ObjNum - 2; i++) {
 		l_Life[i] = 50;
-		if (SceneSave::GetInstance()->GetClearFlag((SeceneCategory)(i+1))) {
-			ParticleEmitter::GetInstance()->SelectEffect(l_Life[i], { StageObjPos[i].x,StageObjPos[i].y-3.f,StageObjPos[i].z }, 1.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
+		if (SceneSave::GetInstance()->GetClearFlag((SeceneCategory)(i + 1))) {
+			ParticleEmitter::GetInstance()->SelectEffect(l_Life[i], { StageObjPos[i].x,StageObjPos[i].y - 3.f,StageObjPos[i].z }, 1.0f, 0.0f, { 0.8f,0.5f,0.4f,1.0f }, { 1.0f,1.0f,1.0f,1.0f });
 		}
 	}
 	l_Life[TITLE] = 50;
@@ -617,24 +624,22 @@ void SelectScene::BirthParticle() {
 
 void SelectScene::ChangeStageRot()
 {
-	if(!ChangeLastF)return;
+	if (!SceneSave::GetInstance()->AllClear())return;
+	if (CLastEaseTime >= 1.f)return;
 	Helper::GetInstance()->FrameCheck(ObjColEase[SEVEN], 0.04f);
-	m_Color[SEVEN] = {Ease(In,Cubic,ObjColEase[SEVEN],0,1),
+	m_Color[SEVEN] = { Ease(In,Cubic,ObjColEase[SEVEN],0,1),
 		Ease(In,Cubic,ObjColEase[SEVEN],0,1),
 			Ease(In,Cubic,ObjColEase[SEVEN],0,1),
 	};
 
 	Helper::GetInstance()->FrameCheck(CLastEaseTime, 1.f / 120.f);
-	if(CLastEaseTime>=1.f)
-	{
-		ChangeLastF = false;
-	}
 
-	for(auto i=0;i<ObjNum-2;i++)
+
+	for (auto i = 0; i < ObjNum - 2; i++)
 	{
-		StageObjRotAngle[i]=Ease(In, Quad, CLastEaseTime, StageObjRotAngle[i],180 -(SEVEN-i)*360.f/ObjNum);
+		StageObjRotAngle[i] = Ease(In, Quad, CLastEaseTime, StageObjRotAngle[i], 180 - (SEVEN - i) * 360.f / ObjNum);
 	}
 	StageObjRotAngle[SEVEN] = Ease(In, Quad, CLastEaseTime, StageObjRotAngle[SEVEN], 180);
-	StageObjRotAngle[TITLE] = Ease(In, Quad, CLastEaseTime, StageObjRotAngle[TITLE],  180- (SEVEN - TITLE) * 360.f / ObjNum);
+	StageObjRotAngle[TITLE] = Ease(In, Quad, CLastEaseTime, StageObjRotAngle[TITLE], 180 - (SEVEN - TITLE) * 360.f / ObjNum);
 
 }

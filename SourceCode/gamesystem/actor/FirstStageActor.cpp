@@ -87,6 +87,7 @@ void FirstStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 		menu->Update();
 		if (menu->ReturnSelect()) {
 			sceneChanger_->ChangeStart();
+			SelectScene::GetIns()->ResetParama();
 			SelectScene::GetIns()->SetTexSpeed(180.f);
 			SelectScene::GetIns()->SetTexScl(12500.f);
 
@@ -317,6 +318,7 @@ void FirstStageActor::MainUpdate(DebugCamera* camera)
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kFirstStage, true);
 		sceneChanger_->ChangeStart();
+		//SelectScene::GetIns()->ResetParama();
 		SelectScene::GetIns()->SetTexSpeed(180.f);
 		SelectScene::GetIns()->SetTexScl(12500.f);
 

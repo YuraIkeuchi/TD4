@@ -4,6 +4,7 @@
 #include "ImageManager.h"
 #include "VariableCommon.h"
 #include "Audio.h"
+#include "SelectScene.h"
 
 //‰Šú‰»
 void GameOverSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
@@ -47,6 +48,7 @@ void GameOverSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 		if (sceneChanger_->GetEasingStart()) { return; }
 		sceneChanger_->ChangeStart();
 		if (input->TriggerButton(input->A)) {
+			SelectScene::GetIns()->ResetParama();
 			str = "TITLE";
 			Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Over.wav", VolumManager::GetInstance()->GetSEVolum());
 		} else {

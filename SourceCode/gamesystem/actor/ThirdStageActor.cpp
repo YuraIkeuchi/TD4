@@ -16,7 +16,7 @@ void ThirdStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	Audio::GetInstance()->LoopWave(AUDIO_BATTLE, VolumManager::GetInstance()->GetBGMVolum() + 1.0f);
 
 	//ポストエフェクト
-	PlayPostEffect =true;
+	PlayPostEffect = true;
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
 
@@ -67,8 +67,8 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	if (menu->Pause()) {
 		menu->Update();
 		if (menu->ReturnSelect()) {
-			/*SelectScene::GetIns()->SetTexSpeed(180.f);
-			SelectScene::GetIns()->SetTexScl(12500.f);*/
+			SelectScene::GetIns()->SetTexSpeed(180.f);
+			SelectScene::GetIns()->SetTexScl(12500.f);
 
 			sceneChanger_->ChangeStart();
 			sceneChanger_->ChangeScene("SELECT", SceneChanger::Reverse);
@@ -96,8 +96,8 @@ void ThirdStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	lightgroup->Update();
 	//if (SelectScene::GetIns()->GetCloseScl() < 10000.f)
 	//	SelectScene::GetIns()->Upda();
-	//if (SelectScene::GetIns()->GetCloseScl() < 15000.f)
-	//	SelectScene::GetIns()->Upda();
+	if (SelectScene::GetIns()->GetCloseScl() < 15000.f)
+		SelectScene::GetIns()->Upda();
 
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 	//if (Input::GetInstance()->TriggerButton(Input::Y)) {
@@ -118,7 +118,7 @@ void ThirdStageActor::Draw(DirectXCommon* dxCommon) {
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
 		IKESprite::PreDraw();
-		//SelectScene::GetIns()->Draw_Sprite();
+		SelectScene::GetIns()->Draw_Sprite();
 		IKESprite::PostDraw();
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 
@@ -126,8 +126,7 @@ void ThirdStageActor::Draw(DirectXCommon* dxCommon) {
 		postEffect->Draw(dxCommon->GetCmdList());
 		//ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
-	}
-	else {
+	} else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
@@ -247,8 +246,7 @@ void ThirdStageActor::IntroUpdate(DebugCamera* camera) {
 			if (Input::GetInstance()->TriggerButton(Input::Y)) {
 				enemymanager->DirSet(DIR_ANGER);
 				m_AppState = AppState::EMO_ANGER;
-			}
-			else if (Input::GetInstance()->TriggerButton(Input::X)) {
+			} else if (Input::GetInstance()->TriggerButton(Input::X)) {
 				enemymanager->DirSet(DIR_JOY);
 				m_AppState = AppState::EMO_JOY;
 			}
@@ -264,8 +262,7 @@ void ThirdStageActor::IntroUpdate(DebugCamera* camera) {
 				m_AppState = AppState::EMO_ANGER2;
 				camerawork->SetApproach(true);
 			}
-		}
-		else if (m_AppState == AppState::EMO_ANGER2) {
+		} else if (m_AppState == AppState::EMO_ANGER2) {
 			for (int i = 0; i < 3; i++) {
 				text_->ChangeColor(i, { 1.0f,0.0f,0.0f,1.0f });
 			}
@@ -282,8 +279,7 @@ void ThirdStageActor::IntroUpdate(DebugCamera* camera) {
 				m_AppState = AppState::EMO_JOY2;
 				camerawork->SetApproach(true);
 			}
-		}
-		else if (m_AppState == AppState::EMO_JOY2) {
+		} else if (m_AppState == AppState::EMO_JOY2) {
 			for (int i = 0; i < 3; i++) {
 				text_->ChangeColor(i, { 1.0f,0.0f,0.0f,1.0f });
 			}
@@ -344,13 +340,13 @@ void ThirdStageActor::MainUpdate(DebugCamera* camera) {
 
 		if (camerawork->GetEndDeath()) {
 			sceneChanger_->ChangeStart();
-		/*	SelectScene::GetIns()->SetTexSpeed(180.f);
-			SelectScene::GetIns()->SetTexScl(12500.f);*/
+			SelectScene::GetIns()->ResetParama();
+			SelectScene::GetIns()->SetTexSpeed(180.f);
+			SelectScene::GetIns()->SetTexScl(12500.f);
 
-			sceneChanger_->ChangeScene("SELECT", SceneChanger::NonReverse);
+			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
 		}
-	}
-	else
+	} else
 	{
 		Player::GetInstance()->Update();
 	}
@@ -359,8 +355,9 @@ void ThirdStageActor::MainUpdate(DebugCamera* camera) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kThirdStage, true);
 		sceneChanger_->ChangeStart();
-	/*	SelectScene::GetIns()->SetTexSpeed(180.f);
-		SelectScene::GetIns()->SetTexScl(12500.f);*/
+		//SelectScene::GetIns()->ResetParama();
+		SelectScene::GetIns()->SetTexSpeed(180.f);
+		SelectScene::GetIns()->SetTexScl(12500.f);
 
 		sceneChanger_->ChangeSceneLose("GAMEOVER");
 	}

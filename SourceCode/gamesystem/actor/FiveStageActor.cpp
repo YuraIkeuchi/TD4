@@ -17,7 +17,7 @@ void FiveStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	//オーディオ
 	Audio::GetInstance()->LoopWave(AUDIO_BATTLE, VolumManager::GetInstance()->GetBGMVolum() + 1.0f);
 	//ポストエフェクト
-	PlayPostEffect =true;
+	PlayPostEffect = true;
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
 
@@ -73,6 +73,7 @@ void FiveStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 		menu->Update();
 		if (menu->ReturnSelect()) {
 			sceneChanger_->ChangeStart();
+			SelectScene::GetIns()->ResetParama();
 			sceneChanger_->ChangeScene("SELECT", SceneChanger::Reverse);
 		}
 		return;
@@ -85,7 +86,7 @@ void FiveStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	}
 	//プレイヤー
 	if (enemymanager->BossDestroy() && camerawork->GetFeedEnd()) {
-		SceneSave::GetInstance()->SetClearFlag(kFiveStage, true);
+		SceneSave::GetInstance()->SetClearFlag(kSixStage, true);
 		lightgroup->SetCircleShadowActive(0, false);
 	}
 
@@ -105,7 +106,7 @@ void FiveStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 		SelectScene::GetIns()->Upda();
 	}
 
-		
+
 
 	postEffect->SetCloseRad(SelectScene::GetIns()->GetCloseIconRad());
 
@@ -200,7 +201,7 @@ void FiveStageActor::IntroUpdate(DebugCamera* camera) {
 		_AppState = APP_END;
 		m_SceneState = SceneState::MainState;
 		camerawork->SetCameraState(CAMERA_NORMAL);
-		
+
 	}
 
 	//各クラス更新
@@ -238,6 +239,7 @@ void FiveStageActor::MainUpdate(DebugCamera* camera) {
 
 		if (camerawork->GetEndDeath()) {
 			sceneChanger_->ChangeStart();
+			SelectScene::GetIns()->ResetParama();
 			SelectScene::GetIns()->SetTexSpeed(180.f);
 			SelectScene::GetIns()->SetTexScl(12500.f);
 			sceneChanger_->ChangeScene("SELECT", SceneChanger::NonReverse);
@@ -250,6 +252,7 @@ void FiveStageActor::MainUpdate(DebugCamera* camera) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kFiveStage, true);
 		sceneChanger_->ChangeStart();
+		//SelectScene::GetIns()->ResetParama();
 		SelectScene::GetIns()->SetTexSpeed(180.f);
 		SelectScene::GetIns()->SetTexScl(12500.f);
 		sceneChanger_->ChangeSceneLose("GAMEOVER");

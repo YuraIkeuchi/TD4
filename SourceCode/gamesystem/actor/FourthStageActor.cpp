@@ -91,7 +91,7 @@ void FourthStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 		menu->Update();
 		if (menu->ReturnSelect()) {
 			sceneChanger_->ChangeStart();
-
+			SelectScene::GetIns()->ResetParama();
 			SelectScene::GetIns()->SetTexSpeed(180.f);
 			SelectScene::GetIns()->SetTexScl(12500.f);
 			sceneChanger_->ChangeScene("SELECT", SceneChanger::Reverse);
@@ -394,6 +394,7 @@ void FourthStageActor::MainUpdate(DebugCamera* camera) {
 		}
 
 		if (camerawork->GetEndDeath()) {
+			SelectScene::GetIns()->ResetParama();
 			SelectScene::GetIns()->SetTexSpeed(180.f);
 			SelectScene::GetIns()->SetTexScl(12500.f);
 			sceneChanger_->ChangeStart();
@@ -408,7 +409,7 @@ void FourthStageActor::MainUpdate(DebugCamera* camera) {
 		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kFourthStage, true);
 		sceneChanger_->ChangeStart();
-
+		//SelectScene::GetIns()->ResetParama();
 		SelectScene::GetIns()->SetTexSpeed(180.f);
 		SelectScene::GetIns()->SetTexScl(12500.f);
 		sceneChanger_->ChangeSceneLose("GAMEOVER");
