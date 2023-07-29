@@ -27,12 +27,21 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	TitleWordSprite->SetSize(size);
 	TitleWordSprite->SetScale(0.3f);
 
-	for (auto i = 0; i < TitlePartsSprite.size(); i++) {
-		TitlePartsSprite[i] = IKESprite::Create(ImageManager::TITLEWORD, {});
-		m_PartsSize[i] = { 100.0f,100.0f };
+	const int TitleCount = TITLE_MAX;
+	const float l_Width_Cut = 256.0f;
+	const float l_Height_Cut = 64.0f;
+	for (int i = 0; i < TitlePartsSprite.size(); i++) {
+		TitlePartsSprite[i] = IKESprite::Create(ImageManager::TITLESELECT, { 0.0f,0.0f });
+		int number_index_y = i / TitleCount;
+		int number_index_x = i % TitleCount;
+		TitlePartsSprite[i]->SetTextureRect(
+			{ static_cast<float>(number_index_x) * l_Width_Cut, static_cast<float>(number_index_y) * l_Height_Cut },
+			{ static_cast<float>(l_Width_Cut), static_cast<float>(l_Height_Cut) });
+		TitlePartsSprite[i]->SetAnchorPoint({ 0.5f,0.5f });
+		m_PartsSize[i] = { l_Width_Cut,l_Height_Cut };
 		m_PartsPos[i] = { 1000.0f,(100.0f * i) + 350.0f };
-		TitlePartsSprite[i]->SetScale(0.5f);
 	}
+
 	PlayPostEffect = true;
 	menu = make_unique<Menu>();
 	menu->Initialize();
@@ -117,8 +126,8 @@ void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
 void TitleSceneActor::FrontDraw() {
 	IKESprite::PreDraw();
 	TitleWordSprite->Draw();
-	//TitlePartsSprite[2]->Draw();
-	for (int i = 0; i < 2; i++) {
+	TitlePartsSprite[3]->Draw();
+	for (int i = 0; i < 3; i++) {
 		TitlePartsSprite[i]->Draw();
 	}
 	SelectScene::GetIns()->Draw_Sprite();
@@ -135,7 +144,7 @@ void TitleSceneActor::FrontDraw() {
 void TitleSceneActor::BackDraw(DirectXCommon* dxCommon)
 {
 	IKESprite::PreDraw();
-	TitleSprite->Draw();
+	//TitleSprite->Draw();
 	IKESprite::PostDraw();
 	IKEObject3d::PreDraw();
 	Player::GetInstance()->Draw(dxCommon);
@@ -144,10 +153,6 @@ void TitleSceneActor::BackDraw(DirectXCommon* dxCommon)
 }
 //ImGui描画
 void TitleSceneActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	Player::GetInstance()->ImGuiDraw();
-	ImGui::Begin("Title");
-	ImGui::Text("%d",(int)_SelectType);
-	ImGui::End();
 }
 //解放
 void TitleSceneActor::Finalize() {
@@ -158,11 +163,39 @@ void TitleSceneActor::SceneSelect() {
 	Input* input = Input::GetInstance();
 
 	if (!m_Change) {
-		if (_SelectType == NORMAL_SCENE && (input->TiltPushStick(Input::L_DOWN)) || (input->TriggerButton(Input::DOWN))) {
-			_SelectType = SELECT_SCENE;
+		if (_SelectType < SELECT_CREDIT) {
+			//ボタンの場合
+			if(input->TriggerButton(Input::DOWN)){
+				_SelectType++;
+			}
+
+			//スティックの場合
+			if (input->TiltPushStick(Input::L_DOWN)) {
+				if (!m_StickDOWN) {
+					_SelectType++;
+					m_StickDOWN = true;
+				}
+			}
+			else {
+				m_StickDOWN = false;
+			}
 		}
-		else if (_SelectType == SELECT_SCENE && (input->TiltPushStick(Input::L_UP)) || (input->TriggerButton(Input::UP))) {
-			_SelectType = NORMAL_SCENE;
+		if (_SelectType > NORMAL_SCENE) {
+			//ボタンの場合
+			if (input->TriggerButton(Input::UP)) {
+				_SelectType--;
+			}
+
+			//スティックの場合
+			if (input->TiltPushStick(Input::L_UP)) {
+				if (!m_StickUP) {
+					_SelectType--;
+					m_StickUP = true;
+				}
+			}
+			else {
+				m_StickUP = false;
+			}
 		}
 	}
 
@@ -192,23 +225,41 @@ void TitleSceneActor::TitleMove() {
 		//選択時座標が上下に動く
 		m_PartsPos[SELECT_AREA] = m_PartsPos[NORMAL_SCENE];
 		m_Angle[SELECT_SCENE] = 0.0f;
+		m_Angle[SELECT_CREDIT] = 0.0f;
 		//選択時サイズも少し変わる
-		m_PartsSize[NORMAL_SCENE] = { (sin(m_Angle2[NORMAL_SCENE]) * 16.0f) + (100.0f),
-			(sin(m_Angle2[NORMAL_SCENE]) * 16.0f) + (100.0f) };
+		m_PartsSize[NORMAL_SCENE] = { (sin(m_Angle2[NORMAL_SCENE]) * 16.0f) + (256.0f),
+			(sin(m_Angle2[NORMAL_SCENE]) * 16.0f) + (64.0f) };
 		m_PartsSize[SELECT_AREA] = m_PartsSize[NORMAL_SCENE];
-		m_PartsSize[SELECT_SCENE] = { 100.0f,100.0f };
+		m_PartsSize[SELECT_SCENE] = { 256.0f,64.0f };
+		m_PartsSize[SELECT_CREDIT] = { 256.0f,64.0f };
 	}
-	else {
+	else if(_SelectType == SELECT_SCENE) {
 		m_Angle[SELECT_SCENE] += 2.0f;
 		m_Angle2[SELECT_SCENE] = m_Angle[SELECT_SCENE] * (3.14f / 180.0f);
 		//選択時座標が上下に動く
 		m_PartsPos[SELECT_AREA] = m_PartsPos[SELECT_SCENE];
 		m_Angle[NORMAL_SCENE] = 0.0f;
+		m_Angle[SELECT_CREDIT] = 0.0f;
 		//選択時サイズも少し変わる
-		m_PartsSize[SELECT_SCENE] = { (sin(m_Angle2[SELECT_SCENE]) * 16.0f) + (100.0f),
-			(sin(m_Angle2[SELECT_SCENE]) * 16.0f - 16.0f) + (100.0f) };
+		m_PartsSize[SELECT_SCENE] = { (sin(m_Angle2[SELECT_SCENE]) * 16.0f) + (256.0f),
+			(sin(m_Angle2[SELECT_SCENE]) * 16.0f - 16.0f) + (64.0f) };
 		m_PartsSize[SELECT_AREA] = m_PartsSize[SELECT_SCENE];
-		m_PartsSize[NORMAL_SCENE] = { 100.0f,100.0f };
+		m_PartsSize[NORMAL_SCENE] = { 256.0f,64.0f };
+		m_PartsSize[SELECT_CREDIT] = { 256.0f,64.0f };
+	}
+	else {
+		m_Angle[SELECT_CREDIT] += 2.0f;
+		m_Angle2[SELECT_CREDIT] = m_Angle[SELECT_CREDIT] * (3.14f / 180.0f);
+		//選択時座標が上下に動く
+		m_PartsPos[SELECT_AREA] = m_PartsPos[SELECT_CREDIT];
+		m_Angle[NORMAL_SCENE] = 0.0f;
+		m_Angle[SELECT_SCENE] = 0.0f;
+		//選択時サイズも少し変わる
+		m_PartsSize[SELECT_CREDIT] = { (sin(m_Angle2[SELECT_CREDIT]) * 16.0f) + (256.0f),
+			(sin(m_Angle2[SELECT_CREDIT]) * 16.0f - 16.0f) + (64.0f) };
+		m_PartsSize[SELECT_AREA] = m_PartsSize[SELECT_CREDIT];
+		m_PartsSize[NORMAL_SCENE] = { 256.0f,64.0f };
+		m_PartsSize[SELECT_SCENE] = { 256.0f,64.0f };
 	}
 
 	for (auto i = 0; i < TitlePartsSprite.size(); i++) {

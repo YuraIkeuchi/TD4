@@ -25,7 +25,7 @@ void ImageManager::StartLoad2D()
 	IKESprite::LoadTexture(GIRL, L"Resources/2d/objicon/40E32961-2FAD-4C47-B412-6CAD5C0BFEE2.png");
 	IKESprite::LoadTexture(SUTOPON, L"Resources/2d/objicon/sutopon.png");
 	IKESprite::LoadTexture(PLAY, L"Resources/2d/sceneback/game.png");
-
+	IKESprite::LoadTexture(TITLESELECT, L"Resources/2d/sceneback/titleSelect.png");
 }
 
 //非同期処理で読み込むスプライト

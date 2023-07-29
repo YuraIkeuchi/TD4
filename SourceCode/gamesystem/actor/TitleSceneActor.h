@@ -22,15 +22,15 @@ public:
 	void FrontDraw();
 	void TitleMove();//タイトルの文字の動き
 private:
-	static const int TITLE_MAX = 3;//タイトルパーツの最大数
+	static const int TITLE_MAX = 4;//タイトルパーツの最大数
 private://メンバ変数
 	array<unique_ptr<IKESprite>, TITLE_MAX> TitlePartsSprite;
 	//スプライト
 	unique_ptr<IKESprite> TitleSprite;
 	unique_ptr<IKESprite> TitleWordSprite;
 	//タイトルのパーツに必要なもの
-	array<float, 3> m_Angle;
-	array<float, 3> m_Angle2;
+	array<float, TITLE_MAX> m_Angle;
+	array<float, TITLE_MAX> m_Angle2;
 	array<XMFLOAT2, TITLE_MAX> m_PartsPos;
 	array<XMFLOAT2, TITLE_MAX> m_PartsSize;
 	Feed* feed;
@@ -44,6 +44,12 @@ private://メンバ変数
 	enum SelectType {
 		NORMAL_SCENE,
 		SELECT_SCENE,
+		SELECT_CREDIT,
 		SELECT_AREA,
-	}_SelectType;
+	};
+
+	int _SelectType = NORMAL_SCENE;
+
+	bool m_StickUP = false;
+	bool m_StickDOWN = false;
 };
