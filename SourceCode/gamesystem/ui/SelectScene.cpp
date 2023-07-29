@@ -248,7 +248,7 @@ void SelectScene::Upda() {
 	CloseIconView(CloseF);
 	Helper::GetInstance()->Clamp(closeScl, 0.f, MaxScl);
 	Helper::GetInstance()->Clamp(closeRad, 0.f, 1500.f);
-	if (!ChangeLastF)
+	if (CLastEaseTime <= 0.01f|| CLastEaseTime >= 1.f)
 		RotPedestal();
 
 	//Selectは常時出す
@@ -354,7 +354,7 @@ void SelectScene::Upda() {
 
 	ChangeStageRot();
 	m_Scale[TITLE] = { 1.01f,1.01f,1.01f };
-	if (!ChangeLastF)
+	if (m_SelectState != SELECT_LAST)
 		CLastEaseTime = 0.f;
 	//セレクトのステート管理
 	StateManager();
@@ -555,7 +555,27 @@ void SelectScene::StateManager() {
 					m_BirthFinish[i] = true;
 				}
 			} else {			//大きくなる前はパーティクルを出すようにしている
+				bool temp[ObjNum] = {};
+				for (auto i = 0; i < TipsAct.size(); i++)
+					temp[i] = TipsAct[i];
+				if (Helper::GetInstance()->All_OfF(temp, ObjNum)) {
+					m_BirthTimer++;
+					//m_Birth[SEVEN] = true;			//ラスボスの出現
 
+					if (m_BirthTimer == 150) {
+						m_Birth[SEVEN] = true;
+						m_BirthFinish[SEVEN] = true;
+						m_Wide = true;
+						m_BirthTimer = {};
+					}
+
+					if (m_Wide) {//ラスボスのOBJを大きくする
+
+						m_BirthFinish[SEVEN] = true;
+					} else {
+						BirthParticle();
+					}
+				}
 				//クリア状況に応じてOBJの大きさだったりが違う
 
 			}
@@ -567,7 +587,9 @@ void SelectScene::StateManager() {
 			m_Wide = false;
 			m_BirthTimer = {};
 		}
-	} else {			//ラスボスゾーンの出現
+	} else {	
+				m_Birth[SEVEN] = true;
+				m_BirthFinish[SEVEN] = true;		//ラスボスゾーンの出現
 		bool temp[ObjNum] = {};
 		for (auto i = 0; i < TipsAct.size(); i++)
 			temp[i] = TipsAct[i];
@@ -576,8 +598,6 @@ void SelectScene::StateManager() {
 			//m_Birth[SEVEN] = true;			//ラスボスの出現
 
 			if (m_BirthTimer == 150) {
-				m_Birth[SEVEN] = true;
-				m_BirthFinish[SEVEN] = true;
 				m_Wide = true;
 				m_BirthTimer = {};
 			}
@@ -594,8 +614,6 @@ void SelectScene::StateManager() {
 	{
 
 	} else {
-		m_Birth[SEVEN] = false;
-		m_BirthFinish[SEVEN] = false;
 	}
 	BirthParticle();
 }
@@ -624,7 +642,7 @@ void SelectScene::BirthParticle() {
 
 void SelectScene::ChangeStageRot()
 {
-	if (!SceneSave::GetInstance()->AllClear())return;
+	if (m_SelectState != SELECT_LAST)return;
 	if (CLastEaseTime >= 1.f)return;
 	Helper::GetInstance()->FrameCheck(ObjColEase[SEVEN], 0.04f);
 	m_Color[SEVEN] = { Ease(In,Cubic,ObjColEase[SEVEN],0,1),
@@ -632,7 +650,7 @@ void SelectScene::ChangeStageRot()
 			Ease(In,Cubic,ObjColEase[SEVEN],0,1),
 	};
 
-	Helper::GetInstance()->FrameCheck(CLastEaseTime, 1.f / 120.f);
+	Helper::GetInstance()->FrameCheck(CLastEaseTime, 0.04f);
 
 
 	for (auto i = 0; i < ObjNum - 2; i++)
