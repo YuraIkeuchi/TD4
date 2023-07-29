@@ -48,6 +48,7 @@ private:
 	unique_ptr<IKEObject3d> foodobj;
 	unique_ptr<IKEObject3d> groundobj;
 	unique_ptr<IKEObject3d> homeobj;
+	unique_ptr<IKEObject3d>BackSkyDome = nullptr;
 
 	array<XMFLOAT3, GHOST_NUM> m_GhostPos = {};
 	array<XMFLOAT3, GHOST_NUM> m_GhostRot = {};
@@ -59,4 +60,5 @@ private:
 	bool m_Rot = false;
 	int m_RotTimer = {};
 	float m_AfterRot = {};
+	XMFLOAT3 m_DomeRot = {};
 };

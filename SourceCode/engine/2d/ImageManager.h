@@ -94,6 +94,7 @@ public:
 		NOTE,
 		NOTE2,
 		HITODAMA,
+		TITLESELECT,
 	};
 	//テクスチャの名前
 	enum tex2dName

@@ -22,6 +22,7 @@ void ModelManager::StartInitialize()
 	LoadModel(Ground, "ground");
 	LoadModel(HOME, "home");
 	LoadFBXModel(PLAYER, "kotoko");
+	LoadModel(Skydome, "skydome");
 }
 
 //モデル読み込み(非同期処理で読み込むもの)
@@ -37,7 +38,6 @@ void ModelManager::SecondInitialize()
 	LoadModel(Camera, "A&J");
 	LoadModel(Heart, "heart");
 	LoadModel(Pedestal, "dodai");
-	LoadModel(Skydome, "skydome");
 	LoadModel(KIDO_OBJ, "kidokunobj");
 	LoadModel(DJ, "DJ");
 	LoadModel(CD, "CD");

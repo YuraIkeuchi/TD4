@@ -55,6 +55,12 @@ void TitleObj::LoadResource() {
 	homeobj->SetPosition({ -7.0f,-1.0f,-5.0f });
 	homeobj->SetRotation({ 0.0f,70.0f,0.0f });
 	homeobj->SetScale({ 0.7f,0.7f,0.7f });
+
+	BackSkyDome.reset(new IKEObject3d());
+	BackSkyDome->Initialize();
+	BackSkyDome->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Skydome));
+	BackSkyDome->SetScale({ 7.f,7.f,7.f });
+	BackSkyDome->SetAddOffset(3.0f);
 }
 
 //初期化
@@ -81,6 +87,9 @@ void TitleObj::Update() {
 	homeobj->Update();
 	foodobj->SetPosition({ m_GhostPos[1].x + 0.2f,m_GhostPos[1].y + 0.3f,m_GhostPos[1].z - 0.7f});
 	foodobj->Update();
+	m_DomeRot.y += 0.05f;
+	BackSkyDome->SetRotation(m_DomeRot);
+	BackSkyDome->Update();
 }
 
 //描画
@@ -95,7 +104,7 @@ void TitleObj::Draw(DirectXCommon* dxCommon) {
 	foodobj->Draw();
 	homeobj->Draw();
 	groundobj->Draw();
-
+	BackSkyDome->Draw();
 	IKEObject3d::PostDraw();
 }
 //ゴーストの更新
