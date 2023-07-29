@@ -28,8 +28,8 @@ void ThirdStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	//シーンチェンジャー
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
-	//SelectScene::GetIns()->SetTexSpeed(200.f);
-	//SelectScene::GetIns()->SetTexScl(20000.f);
+	SelectScene::GetIns()->SetTexSpeed(200.f);
+	SelectScene::GetIns()->SetTexScl(20000.f);
 
 	enemymanager = std::make_unique<EnemyManager>("THIRDSTAGE");
 	//enemymanager->Initialize(dxCommon);
@@ -55,7 +55,7 @@ void ThirdStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 
 	lightgroup->SetCircleShadowActive(0, true);
 	lightgroup->SetCircleShadowActive(1, true);
-
+	//SelectScene::GetIns()->ResetParama();
 	//SelectScene::GetIns()->Init();
 	menu = make_unique<Menu>();
 	menu->Initialize();
