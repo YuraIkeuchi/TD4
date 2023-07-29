@@ -123,7 +123,7 @@ void Player::Update()
 	//doubleがatof()関数の戻り値なので変更できない<any_cast<float>で処理通らなかった>
 	//つまるところstd::any_cast<double>(〇〇)は固定(static_castで変換)
 	/*①*/m_AddSpeed = static_cast<float>(std::any_cast<double>(sp));
-
+	m_HitPlayer = true;
 	Input* input = Input::GetInstance();
 	/*FBXのカウンタdoubleにしたほうが調整ききやすそう*/
 
@@ -273,7 +273,7 @@ void Player::BulletDraw(std::vector<InterBullet*> bullets, DirectXCommon* dxComm
 //ImGui
 void Player::ImGuiDraw() {
 	ImGui::Begin("Player");
-	ImGui::Text("Type:%d", m_ChargeType);
+	ImGui::Text("Type:%d", m_DamageInterVal);
 	ImGui::End();
 	playerattach->ImGuiDraw();
 }
@@ -758,6 +758,7 @@ void Player::isOldPos()
 //プレイヤーのダメージ判定
 void Player::RecvDamage(float Damage) {
 	if (m_HitPlayer) {
+
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Damage.wav", VolumManager::GetInstance()->GetSEVolum());
 		m_HP -= Damage;
 		m_DamageInterVal = 50;
@@ -908,6 +909,7 @@ void Player::AwakeInit() {
 	HungerGauge::GetInstance()->SetCatchCount(0);
 	HungerGauge::GetInstance()->SetNowHunger(0.0f);
 	BulletDelete();
+	AnimationControl(AnimeName::IDLE, true, 1);
 }
 //ラスボス登場
 void Player::LastAppearUpdate(int Timer) {
