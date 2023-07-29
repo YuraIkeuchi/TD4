@@ -4,6 +4,7 @@ cbuffer cbuff0 : register(b0)
 float2 toeColor;*/
 float4 color; // 色(RGBA)
 matrix mat; // ３Ｄ変換行列
+float2 offset;//オフセット
 };
 
 // 頂点シェーダーからピクセルシェーダーへのやり取りに使用する構造体

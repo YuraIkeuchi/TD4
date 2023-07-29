@@ -413,6 +413,7 @@ bool IKESprite::Initialize()
 	{
 		constMap->color = color;
 		constMap->mat = matProjection;
+		constMap->offset = offset;
 		constBuff->Unmap(0, nullptr);
 	}
 
@@ -488,7 +489,7 @@ void IKESprite::Draw()
 	this->matWorld = XMMatrixIdentity();
 	this->matWorld *= XMMatrixRotationZ(XMConvertToRadians(rotation));
 	this->matWorld *= XMMatrixTranslation(position.x, position.y, 0.0f);
-
+	offset.x += addoffset;
 	// 定数バッファにデータ転送
 	ConstBufferData* constMap = nullptr;
 	HRESULT result = this->constBuff->Map(0, nullptr, (void**)&constMap);
@@ -496,6 +497,7 @@ void IKESprite::Draw()
 	{
 		constMap->color = this->color;
 		constMap->mat = this->matWorld * matProjection; // 行列の合成	
+		constMap->offset = offset;
 		this->constBuff->Unmap(0, nullptr);
 	}
 
