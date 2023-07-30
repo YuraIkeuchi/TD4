@@ -123,8 +123,6 @@ void SevenStageActor::Draw(DirectXCommon* dxCommon) {
 
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
-		ImGuiDraw(dxCommon);
-		//	FrontDraw(dxCommon);
 		dxCommon->PostDraw();
 	} else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
@@ -133,7 +131,6 @@ void SevenStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-		ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 }
