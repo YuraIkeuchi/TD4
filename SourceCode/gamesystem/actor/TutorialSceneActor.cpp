@@ -592,7 +592,6 @@ void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	XMFLOAT3 color[3] = { {1,1,1},{1,1,1},{1,1,1} };
 
 	//音楽の音量が変わる
-	Audio::GetInstance()->VolumChange(0, VolumManager::GetInstance()->GetBGMVolum());
 	VolumManager::GetInstance()->Update();
 	sceneChanger_->Update();
 	//状態移行(stateに合わせる)
