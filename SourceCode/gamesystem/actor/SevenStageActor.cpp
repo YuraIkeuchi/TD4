@@ -258,7 +258,6 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 	}
 	//カメラワークのセット
 	if (enemymanager->BossDestroy()) {
-		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		//フェード前
 		if (!camerawork->GetFeedEnd()) {
 			enemymanager->SetDeadThrow(true);
@@ -287,7 +286,7 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 			sceneChanger_->ChangeStart();
 			//SelectScene::GetIns()->ResetParama();
 			sceneChanger_->ChangeScene("ENDROLL", SceneChanger::NonReverse);
-
+			Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		}
 
 		Player::GetInstance()->DeathUpdate();

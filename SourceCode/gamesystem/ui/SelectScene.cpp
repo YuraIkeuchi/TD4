@@ -394,7 +394,7 @@ void SelectScene::ImGuiDraw() {
 	ImGui::Text("%d", m_SelectState);
 	ImGui::End();
 
-	SceneSave::GetInstance()->ImGuiDraw();
+	//SceneSave::GetInstance()->ImGuiDraw();
 }
 void SelectScene::Draw_SpriteBack() {
 	if (closeScl <= 0.f) { return; }
