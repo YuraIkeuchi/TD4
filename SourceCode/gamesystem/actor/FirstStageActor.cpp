@@ -298,7 +298,7 @@ void FirstStageActor::MainUpdate(DebugCamera* camera)
 			PlayPostEffect = false;
 			enemymanager->SetDeadThrow(false);
 			enemymanager->DeadUpdate();
-			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_SIX);
+			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_FIRST);
 			loadobj->AllClear();
 			Player::GetInstance()->DeathUpdateAfter(m_DeathTimer);
 		}
