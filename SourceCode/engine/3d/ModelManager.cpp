@@ -58,8 +58,9 @@ void ModelManager::SecondInitialize()
 	LoadModel(CAP, "cap");
 	LoadModel(NAIL, "Nail");
 	LoadModel(LASTBOSS, "burapon");
-		LoadModel(TITLEMAP, "LowPoly_Landscape");
-		LoadModel(TITKOTOKO, "titlekotoko");
+	LoadModel(TITLEMAP, "LowPoly_Landscape");
+	LoadModel(TITKOTOKO, "titlekotoko");
+	LoadModel(THORN, "thorn");
 	LoadFBXModel(PLAYER, "kotoko");
 
 	LoadFBXModel(PLAYER2, "dkotoko");

@@ -53,6 +53,7 @@ public:
 		TREE,
 		HOME,
 		TITKOTOKO,
+		THORN,
 	};
 	//FBXの名前
 	enum FBXName {
