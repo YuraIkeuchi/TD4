@@ -108,7 +108,8 @@ private:
 		RB, LB
 	}TrigerSelect = NOINP;
 private:
-	unique_ptr<IKEObject3d>BackSkyDome = nullptr;
+	//スプライト
+	unique_ptr<IKESprite> BackSprite;
 
 	array<unique_ptr<IKESprite>, 2>ButtonNav_RBLB = {};
 	array<unique_ptr<IKESprite>, 2>ButtonNav_Challenge_Cancel = {};

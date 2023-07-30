@@ -15,9 +15,7 @@ void EndRollActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 	camerawork->SetTarget({ 0,5,0 });
 	camerawork->SetCameraState(CAMERA_NORMAL);
 	camerawork->DefUpda(camera);
-	//オーディオ
-	//Audio::GetInstance()->LoadSound(3, "Resources/Sound/BGM/jto3s-8fzcz.wav");
-	//Audio::GetInstance()->LoopWave(3, VolumManager::GetInstance()->GetBGMVolum());
+	Audio::GetInstance()->LoopWave(AUDIO_TITLE, VolumManager::GetInstance()->GetBGMVolum() + 2.0f);
 	//シーンチェンジャー
 	PlayPostEffect = false;
 	sceneChanger_ = make_unique<SceneChanger>();
@@ -36,6 +34,8 @@ void EndRollActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 
 	backScreen_ = IKESprite::Create(ImageManager::PLAY, { 0,0 });
 	backScreen_->SetSize({ 1280.0f,720.0f });
+
+	SceneSave::GetInstance()->SetEndRoll(true);
 }
 //更新
 void EndRollActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {

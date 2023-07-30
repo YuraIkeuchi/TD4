@@ -27,6 +27,7 @@ void FourthStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	sceneChanger_->Initialize();
 
 	backScreen_ = IKESprite::Create(ImageManager::PLAY, { 0,0 });
+	backScreen_->SetAddOffset(-0.0005f);
 	backScreen_->SetSize({ 1280.0f,720.0f });
 
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Food);

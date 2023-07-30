@@ -11,7 +11,9 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	BaseInitialize(dxCommon);
 	dxCommon->SetFullScreen(true);
 	//オーディオ
-	Audio::GetInstance()->LoopWave(AUDIO_TITLE, VolumManager::GetInstance()->GetBGMVolum()+2.0f);
+	if (!SceneSave::GetInstance()->GetEndRoll()) {
+		Audio::GetInstance()->LoopWave(AUDIO_TITLE, VolumManager::GetInstance()->GetBGMVolum() + 2.0f);
+	}
 	feed = new Feed();
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
@@ -23,7 +25,7 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	}
 	//タイトル
 	TitleSprite = IKESprite::Create(ImageManager::PLAY, { 0.0f,0.0f });
-	TitleSprite->SetAddOffset(-0.001f);
+	TitleSprite->SetAddOffset(-0.0005f);
 	TitleWordSprite= IKESprite::Create(ImageManager::TITLEWORD, pos);
 	TitleWordSprite->SetSize(size);
 	TitleWordSprite->SetScale(0.3f);
@@ -62,9 +64,10 @@ void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	if (input->TriggerButton(input->B)) {
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Decide.wav", VolumManager::GetInstance()->GetSEVolum());
 		//sceneChanger_->ChangeStart();
-		Audio::GetInstance()->StopWave(AUDIO_TITLE);
+		//Audio::GetInstance()->StopWave(AUDIO_TITLE);
 		//sceneChanger_->SetFeedF(true);
 		feedF = true;
+		SceneSave::GetInstance()->SetEndRoll(false);
 	}
 	if (feedF) {
 		Feed2::GetInstance()->FeedIn2(Feed2::FeedType2::BLACK, 0.02f, feedF);
@@ -122,7 +125,6 @@ void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PostDraw();
 	}
 }
-
 //前面描画
 void TitleSceneActor::FrontDraw() {
 	IKESprite::PreDraw();
@@ -204,7 +206,7 @@ void TitleSceneActor::SceneSelect() {
 		!sceneChanger_->GetEasingStart())) {
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Decide.wav", VolumManager::GetInstance()->GetSEVolum());
 		sceneChanger_->ChangeStart();
-		Audio::GetInstance()->StopWave(AUDIO_TITLE);
+		//Audio::GetInstance()->StopWave(AUDIO_TITLE);
 
 		if (_SelectType == NORMAL_SCENE) {
 			s_Skip = false;
