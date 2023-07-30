@@ -81,12 +81,12 @@ void TextManager::Initialize(DirectXCommon* dxcomon)
 
 	CreateCapWord(Name_Cap::NO, L" ", L" ", L" ");
 	CreateCapWord(Name_Cap::KOTO3, L"どうしようどうやったら元に戻せるんだろう",L" ", L" ");
-	CreateCapWord(Name_Cap::CAP1, L"やあ、ストポン!", L"ひさしぶりだね", L"　");
+	CreateCapWord(Name_Cap::CAP1, L"やあ、ストポン!", L"久しぶりだね", L"　");
 	CreateCapWord(Name_Cap::SUTO1, L"ミルクキャップ、、", L"", L"　");
-	CreateCapWord(Name_Cap::CAP2, L"さいきんガラスを", L"もりにまくのが", L"たのしくてしょうがないんだ");
-	CreateCapWord(Name_Cap::SUTO2, L"おまえ、そんなことしてあぶないだろ!", L"", L"　");
-	CreateCapWord(Name_Cap::CAP3, L"いいんだよ", L"よわかったあのころとはちがうんだ", L"じゃまするならきみもようしゃしないよ");
-	CreateCapWord(Name_Cap::SUTO3, L"ダメだ、しょうきじゃない", L"コトコ!ミルクキャップをしょうきにもどすぞ", L"　");
+	CreateCapWord(Name_Cap::CAP2, L"最近ガラスを", L"森に巻くのが", L"楽しくてしょうがないんだ");
+	CreateCapWord(Name_Cap::SUTO2, L"お前、そんなことして危ないだろ!", L"", L"　");
+	CreateCapWord(Name_Cap::CAP3, L"いいんだよ", L"弱かったあの頃とは違うんだ", L"邪魔するなら君も容赦しないよ");
+	CreateCapWord(Name_Cap::SUTO3, L"ダメだ、正気じゃない", L"コトコ!ミルクキャップを正気に戻すぞ", L"　");
 	CreateCapWord(Name_Cap::KOTO1, L"うん!", L"", L"　");
 
 
