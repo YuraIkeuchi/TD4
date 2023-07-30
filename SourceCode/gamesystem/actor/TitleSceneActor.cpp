@@ -11,7 +11,9 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	BaseInitialize(dxCommon);
 	dxCommon->SetFullScreen(true);
 	//オーディオ
-	Audio::GetInstance()->LoopWave(AUDIO_TITLE, VolumManager::GetInstance()->GetBGMVolum()+2.0f);
+	if (!SceneSave::GetInstance()->GetEndRoll()) {
+		Audio::GetInstance()->LoopWave(AUDIO_TITLE, VolumManager::GetInstance()->GetBGMVolum() + 2.0f);
+	}
 	feed = new Feed();
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
@@ -62,9 +64,10 @@ void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	if (input->TriggerButton(input->B)) {
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Decide.wav", VolumManager::GetInstance()->GetSEVolum());
 		//sceneChanger_->ChangeStart();
-		Audio::GetInstance()->StopWave(AUDIO_TITLE);
+		//Audio::GetInstance()->StopWave(AUDIO_TITLE);
 		//sceneChanger_->SetFeedF(true);
 		feedF = true;
+		SceneSave::GetInstance()->SetEndRoll(false);
 	}
 	if (feedF) {
 		Feed2::GetInstance()->FeedIn2(Feed2::FeedType2::BLACK, 0.02f, feedF);
@@ -203,7 +206,7 @@ void TitleSceneActor::SceneSelect() {
 		!sceneChanger_->GetEasingStart())) {
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Decide.wav", VolumManager::GetInstance()->GetSEVolum());
 		sceneChanger_->ChangeStart();
-		Audio::GetInstance()->StopWave(AUDIO_TITLE);
+		//Audio::GetInstance()->StopWave(AUDIO_TITLE);
 
 		if (_SelectType == NORMAL_SCENE) {
 			s_Skip = false;

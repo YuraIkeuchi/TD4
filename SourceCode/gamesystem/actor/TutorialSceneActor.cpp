@@ -420,7 +420,7 @@ void TutorialSceneActor::CompleteState() {
 		conversation == 12) {
 		sceneChanger_->ChangeStart();
 		SceneSave::GetInstance()->SetClearFlag(kTutorialStage,true);
-		Audio::GetInstance()->StopWave(AUDIO_LOAD);
+		//Audio::GetInstance()->StopWave(AUDIO_TITLE);
 	}
 	sceneChanger_->ChangeScene("SELECT", SceneChanger::NonReverse);
 
@@ -563,9 +563,9 @@ void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	if (skip == true) {
 		sceneChanger_->ChangeStart();
 		SceneSave::GetInstance()->SetClearFlag(kTutorialStage, true);
-		Audio::GetInstance()->StopWave(AUDIO_LOAD);
 		Player::GetInstance()->SetCanShot(true);
 		Player::GetInstance()->MoveStop(false);
+		//Audio::GetInstance()->StopWave(AUDIO_TITLE);
 		sceneChanger_->ChangeScene("SELECT", SceneChanger::NonReverse);
 	}
 

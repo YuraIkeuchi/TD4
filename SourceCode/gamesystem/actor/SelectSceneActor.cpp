@@ -13,6 +13,8 @@ void SelectSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	dxCommon->SetFullScreen(true);
 	//共通の初期化
 	BaseInitialize(dxCommon);
+	Audio::GetInstance()->StopWave(AUDIO_TITLE);
+	Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 	//オーディオ
 	Audio::GetInstance()->LoopWave(AUDIO_LOAD, VolumManager::GetInstance()->GetBGMVolum() + 0.5f);
 	//ポストエフェクト
