@@ -791,6 +791,7 @@ void CameraWork::ThirdBossAppear() {
 				m_CameraTimer = {};
 				m_AppearType = APPEAR_END;
 				boss->SetFinishApp(true);
+				m_CameraSkip = true;
 			}
 		}
 		m_eyePos = {

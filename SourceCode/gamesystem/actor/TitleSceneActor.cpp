@@ -23,7 +23,7 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	}
 	//タイトル
 	TitleSprite = IKESprite::Create(ImageManager::PLAY, { 0.0f,0.0f });
-	TitleSprite->SetAddOffset(-0.001f);
+	TitleSprite->SetAddOffset(-0.0005f);
 	TitleWordSprite= IKESprite::Create(ImageManager::TITLEWORD, pos);
 	TitleWordSprite->SetSize(size);
 	TitleWordSprite->SetScale(0.3f);
@@ -122,7 +122,6 @@ void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PostDraw();
 	}
 }
-
 //前面描画
 void TitleSceneActor::FrontDraw() {
 	IKESprite::PreDraw();

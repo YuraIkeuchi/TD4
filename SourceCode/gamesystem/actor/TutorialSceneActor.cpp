@@ -547,6 +547,7 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	sceneChanger_ = make_unique<SceneChanger>();
 	sceneChanger_->Initialize();
 	backScreen_ = IKESprite::Create(ImageManager::PLAY, { 0,0 });
+	backScreen_->SetAddOffset(-0.0005f);
 	backScreen_->SetSize({ 1280.0f,720.0f });
 
 	lightgroup->SetCircleShadowActive(0, false);
