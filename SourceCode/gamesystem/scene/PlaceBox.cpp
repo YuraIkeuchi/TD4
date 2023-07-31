@@ -314,7 +314,7 @@ void PlaceMap::Initialize()
 
 		for(int j=0;j<MapStage[i].size();j++)
 		{
-			MapStage[i][j]=IKESprite::Create(ImageManager::NON, { 0.f,0.f });
+			MapStage[i][j]=IKESprite::Create(ImageManager::GAMEOVER, { 0.f,0.f });
 			MapStage[i][j]->SetAnchorPoint({ 0.50f,0.50f });
 			MapStage[i][j]->SetSize({ 50.f,50.f });
 
@@ -359,9 +359,9 @@ void PlaceMap::CollideMap()
 UINT PlaceMap::ChangeSprite()
 {
 	if (_icon == Icon::BOX)
-		return ImageManager::CUBE;
+		return ImageManager::GAMEOVER;
 	if (_icon == Icon::CUBE)
-		return ImageManager::CUBE;
+		return ImageManager::GAMEOVER;
 
 	return ImageManager::PLAY;
 }
@@ -398,7 +398,7 @@ void PlaceMap::ImguiDraw()
 				{
 					if (MapStage[i][j] == nullptr)
 					{
-						MapStage[i][j]=IKESprite::Create(ImageManager::NON, { 0.f,0.f });
+						MapStage[i][j]=IKESprite::Create(ImageManager::GAMEOVER, { 0.f,0.f });
 						MapStage[i][j]->SetAnchorPoint({ 0.50f,0.50f });
 						MapStage[i][j]->SetSize({ 50.f,50.f });
 
