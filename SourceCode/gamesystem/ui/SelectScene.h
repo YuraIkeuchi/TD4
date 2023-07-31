@@ -110,7 +110,10 @@ private:
 private:
 	//スプライト
 	unique_ptr<IKESprite> BackSprite;
-
+	unique_ptr<IKESprite> SelQuestSub[2];
+	float SelSubAlpha[2];
+	float SelQuestalpha;
+	unique_ptr<IKESprite> SelQuestSprite;
 	array<unique_ptr<IKESprite>, 2>ButtonNav_RBLB = {};
 	array<unique_ptr<IKESprite>, 2>ButtonNav_Challenge_Cancel = {};
 	array<unique_ptr<IKESprite>, ObjNum>StageName = {};

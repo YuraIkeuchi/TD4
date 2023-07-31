@@ -99,6 +99,14 @@ void SelectScene::Init() {
 
 	BackSprite = IKESprite::Create(ImageManager::PLAY, { 0.0f,0.0f });
 	BackSprite->SetAddOffset(-0.0005f);
+	SelQuestSprite= IKESprite::Create(ImageManager::SELQUEsT, { 0.0f,0.0f });
+	SelQuestSub[0] = IKESprite::Create(ImageManager::SELQUEStsuB, {0.0f,0.0f});
+	SelQuestSub[1] = IKESprite::Create(ImageManager::SELQUEStsuB, { 0.0f,0.0f });
+
+	SelQuestalpha = 1.f;
+	SelSubAlpha[0] = 1.f;
+	SelSubAlpha[1] = 1.f;
+	//SelQuestSprite->SetAddOffset(-0.0005f);
 
 	ButtonNav_RBLB[0] = IKESprite::Create(ImageManager::RBBUTTON, { 0,0 });
 	ButtonNav_RBLB[1] = IKESprite::Create(ImageManager::LBBUTTON, { 0,0 });
@@ -254,7 +262,7 @@ void SelectScene::Upda() {
 	m_Birth[TITLE] = true;
 	for (int i = 0; i < MAX; i++) {
 		if (IconColor[i] < 1.f) { continue; }
-		if (Input::GetInstance()->TriggerButton(Input::B)/* && (m_Birth[i])*/) {
+		if (Input::GetInstance()->TriggerButton(Input::B) && (m_Birth[i])) {
 			JumpK = true;
 			JumpS = true;
 			TipsAct[i] = true;
@@ -381,11 +389,13 @@ void SelectScene::Draw_Obj(DirectXCommon* dxcomn) {
 }
 
 void SelectScene::Draw_Sprite() {
+	
 	for (auto i = 0; i < ObjNum; i++) {
 		if (!BossIcon[i]) { continue; }
 		if (_stages != i)continue;
 		BossIcon[i]->Draw();
 	}
+	
 }
 
 void SelectScene::ImGuiDraw() {
@@ -398,6 +408,45 @@ void SelectScene::ImGuiDraw() {
 }
 void SelectScene::Draw_SpriteBack() {
 	if (closeScl <= 0.f) { return; }
+		
+		bool temp[ObjNum] = {};
+		for (auto i = 0; i < TipsAct.size(); i++) {
+			temp[i] = !TipsAct[i];
+			if (TipsAct[i])
+			{
+				SelQuestalpha -= 0.1f;
+				SelSubAlpha[0] -= 0.1f;
+				SelSubAlpha[1] -= 0.1f;
+			}
+			if(!TipsAct[0]&& !TipsAct[1] && !TipsAct[2] &&
+				!TipsAct[3] && !TipsAct[4] && !TipsAct[5] &&
+				!TipsAct[6] && !TipsAct[7] )
+			{
+				SelQuestalpha += 0.1f;
+				SelSubAlpha[0] += 0.1f;
+				SelSubAlpha[1] += 0.1f;
+			}
+		}
+	
+	Helper::GetInstance()->Clamp(SelQuestalpha, 0.f, 1.f);
+	Helper::GetInstance()->Clamp(SelSubAlpha[0], 0.f, 1.f);
+	Helper::GetInstance()->Clamp(SelSubAlpha[1], 0.f, 1.f);
+	if (SelQuestSprite != nullptr) {
+		SelQuestSprite->SetSize({ 400,200 });
+		SelQuestSprite->SetPosition({ 780,0 });
+		SelQuestSprite->SetColor({ 1,1,1,SelQuestalpha });
+
+		SelQuestSprite->Draw();
+
+		SelQuestSub[0]->SetPosition({ 1030,150 });
+			SelQuestSub[0]->SetSize({ 180,180 });
+			SelQuestSub[0]->SetColor({ 1,1,1,SelSubAlpha[0]});
+			SelQuestSub[1]->SetSize({ 100,100 });
+			SelQuestSub[1]->SetPosition({ 1190,300 });
+			SelQuestSub[1]->SetColor({ 1,1,1,SelSubAlpha[1] });
+		SelQuestSub[0]->Draw();
+		SelQuestSub[1]->Draw();
+	}
 	for (auto i = 0; i < ObjNum; i++) {
 		if (!TipsAct[0] && !TipsAct[1] && !TipsAct[2] &&
 			!TipsAct[3] && !TipsAct[4] && !TipsAct[5] &&
@@ -433,6 +482,7 @@ void SelectScene::Draw_SpriteBack() {
 			ButtonNav_Challenge_Cancel[i]->Draw();
 		}
 	}
+	
 }
 
 

@@ -99,6 +99,9 @@ void ImageManager::SecondLoad2D()
 	IKESprite::LoadTexture(NOTE2, L"Resources/2d/objicon/onp2.png");
 
 	IKESprite::LoadTexture(HITODAMA, L"Resources/2d/objicon/way.png");
+
+	IKESprite::LoadTexture(SELQUEsT, L"Resources/2d/sceneback/doko.png");
+	IKESprite::LoadTexture(SELQUEStsuB, L"Resources/2d/sceneback/dokosub.png");
 }
 
 //テクスチャの読み込み
