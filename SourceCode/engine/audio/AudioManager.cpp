@@ -16,7 +16,6 @@ void AudioManager::StartLoadAudio() {
 }
 
 void AudioManager::SecondLoadAudio() {
-	Audio::GetInstance()->LoadSound(AUDIO_TUTORIAL, "Resources/Sound/BGM/BGM_tutorial.wav");
 	Audio::GetInstance()->LoadSound(AUDIO_BATTLE, "Resources/Sound/BGM/BGM_boss.wav");
 	Audio::GetInstance()->LoadSound(AUDIO_BATTLE2, "Resources/Sound/BGM/gamePlayBack2.wav");
 }

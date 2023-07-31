@@ -98,7 +98,7 @@ void ImageManager::SecondLoad2D()
 	IKESprite::LoadTexture(SELQUEsT, L"Resources/2d/sceneback/doko.png");
 	IKESprite::LoadTexture(SELQUEStsuB, L"Resources/2d/sceneback/dokosub.png");
 	IKESprite::LoadTexture(CLEARLOGO, L"Resources/2d/sceneback/clearLogo.png");
-	IKESprite::LoadTexture(FIN, L"Resources/2d/sceneback/fin.png");
+	IKESprite::LoadTexture(FIN, L"Resources/2d/sceneback/dokosub.png");
 }
 
 //テクスチャの読み込み
