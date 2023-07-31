@@ -26,6 +26,7 @@ void SecondStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	sceneChanger_->Initialize();
 
 	backScreen_ = IKESprite::Create(ImageManager::PLAY, { 0,0 });
+	backScreen_->SetAddOffset(-0.0005f);
 	backScreen_->SetSize({ 1280.0f,720.0f });
 
 	//各クラス
@@ -205,7 +206,7 @@ void SecondStageActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 			if (camerawork->GetEndDeath()) {
 				sceneChanger_->ChangeStart();
 				SelectScene::GetIns()->ResetParama();
-				sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::ReverseType::NonReverse);
+				sceneChanger_->ChangeScene("SELECT", SceneChanger::ReverseType::NonReverse);
 			}
 		} else {
 			Player::GetInstance()->Update();
@@ -257,8 +258,8 @@ void SecondStageActor::Draw(DirectXCommon* dxCommon) {
 
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
-		ImGuiDraw(dxCommon);
-		postEffect->ImGuiDraw();
+		/*ImGuiDraw(dxCommon);
+		postEffect->ImGuiDraw();*/
 		dxCommon->PostDraw();
 	} else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
@@ -267,7 +268,7 @@ void SecondStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-		ImGuiDraw(dxCommon);
+		//ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 }

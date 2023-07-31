@@ -18,7 +18,6 @@ public:
 	//スプライトの名前
 	enum texName
 	{
-		TITLE,
 		TITLEWORD,
 		SELECT,
 		LOADING_LO,
@@ -32,10 +31,6 @@ public:
 		GAMEOVER_1,
 		GAMEOVER_2,
 		GAMEOVER_3,
-		GAMECLEAR,
-		MASTERCLEAR,
-		CUBE,
-		NON,
 		WHITE,
 		WINDOW,
 		BLACKWINDOW,
@@ -44,7 +39,6 @@ public:
 		BossHPGauge,
 		UnderGauge,
 		Gauge,
-		TopGauge,
 		EXGauge,
 		GIRL,
 		SUTOPON,
@@ -95,6 +89,10 @@ public:
 		NOTE2,
 		HITODAMA,
 		TITLESELECT,
+		SELQUEsT,
+		SELQUEStsuB,
+		CLEARLOGO,
+		CREDIT
 	};
 	//テクスチャの名前
 	enum tex2dName
@@ -119,7 +117,6 @@ public:
 		Smoke,
 		Heal,
 		Photo,
-
 	};
 
 public:

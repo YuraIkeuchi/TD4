@@ -15,10 +15,6 @@ BackObj* BackObj::GetInstance()
 }
 //ƒ}ƒbƒv“Ç‚Ýž‚Ý
 void BackObj::LoadMap() {
-	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::Ground);
-	m_Object.reset(new IKEObject3d());
-	m_Object->Initialize();
-	m_Object->SetModel(m_Model);
 
 	jsonData = JsonLoader::LoadFile("GameScene");
 

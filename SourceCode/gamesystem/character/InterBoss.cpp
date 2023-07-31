@@ -97,10 +97,10 @@ void InterBoss::CollideBul(vector<InterBullet*> bullet,Type type)
 				_bullet->SetAlive(false);
 				//弾の大きさによって与えるダメージが違う
 				if (_bullet->GetPowerState() == POWER_NONE) {
-					m_HP -=20* _bullet->GetPower() * m_Magnification;
+					m_HP -= _bullet->GetPower() * m_Magnification;
 				}
 				else {
-					m_HP -= 20 * _bullet->GetPower();
+					m_HP -=  _bullet->GetPower();
 				}
 				if (m_HP <1.f) {
 					if (SceneName == "FIRSTSTAGE")
@@ -135,7 +135,7 @@ void InterBoss::BirthEffect() {
 	neweffect->SetPosition(m_Position);
 	//if (SceneName == "FIRSTSTAGE")
 	//	neweffect->SetPosition(EffectFirstPos);
-	if (m_HP <= 0.0f) {
+	if (m_HP <= 0.0f && m_Slow) {
 		neweffect->SetLife(1000);
 		neweffect->SetDiviSpeed(8.0f);
 	} else {

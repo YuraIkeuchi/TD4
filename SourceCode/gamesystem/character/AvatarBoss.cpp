@@ -58,6 +58,7 @@ bool AvatarBoss::Initialize() {
 	m_TexColor = { 1.0f,1.0f,1.0f,0.0f };
 	m_TexRot = { 90.0f,0.0f,0.0f };
 	m_TexScale = { 0.2f,3.0f,0.6f };
+	m_Slow = false;
 	return true;
 }
 //スキップ時の初期化

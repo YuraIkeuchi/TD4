@@ -215,17 +215,20 @@ void CameraWork::SetBossDead_Before() {
 }
 //フェード後の撃破アクション(1ボス)
 void CameraWork::SetBossDead_AfterFirst() {
-	RadEffect = 0;
+	RadEffect = 0.f;
+	if (FeedF) {
+		feed->FeedIn(Feed::FeedType::WHITE, 1.0f / 30.0f, FeedF);
+	}
 	if (!m_LookPlayer) {
-		m_eyePos = {
-		boss->GetPosition().x,
-		Player::GetInstance()->GetPosition().y + 5.f ,
-		boss->GetPosition().z - 25.f
-		};
-		m_targetPos.x = boss->GetPosition().x;
-		m_targetPos.z = boss->GetPosition().z;
+		m_eyePos.x = 0.0f;
+		m_eyePos.y = Player::GetInstance()->GetPosition().y + 20.0f;
+		m_eyePos.z = Player::GetInstance()->GetPosition().z + 10.0f;
 
-		if (boss->GetPosition().y <= 0.f) {
+
+		m_targetPos = { boss->GetPosition().x,boss->GetPosition().y,boss->GetPosition().z };
+
+		DeathTimer++;
+		if (DeathTimer == 160) {
 			m_LookPlayer = true;
 			m_AfterEye = { Player::GetInstance()->GetPosition().x - 15.0f,8.0f,Player::GetInstance()->GetPosition().z };
 			m_AfterTarget = { Player::GetInstance()->GetPosition().x + 15.0f,8.0f,Player::GetInstance()->GetPosition().z };
@@ -234,18 +237,18 @@ void CameraWork::SetBossDead_AfterFirst() {
 	}
 	else {
 		if (Helper::GetInstance()->FrameCheck(m_Frame, 0.01f)) {
-			DeathTimer++;
-			if (DeathTimer == 1) {
+			if (DeathTimer == 161) {
 				ClearText::GetInstance()->SetAlive(true);
 			}
-			if (DeathTimer == 50) {
+			DeathTimer++;
+
+			if (DeathTimer == 210) {
 				m_EndDeath = true;
 			}
 		}
 
 		SetEaseCamera();
 	}
-	FeedF = false;
 }
 //フェード後の撃破アクション(2ボス)
 void CameraWork::SetBossDead_AfterSecond() {
@@ -791,6 +794,7 @@ void CameraWork::ThirdBossAppear() {
 				m_CameraTimer = {};
 				m_AppearType = APPEAR_END;
 				boss->SetFinishApp(true);
+				m_CameraSkip = true;
 			}
 		}
 		m_eyePos = {

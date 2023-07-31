@@ -5,7 +5,7 @@
 #include "Helper.h"
 AttackNote::AttackNote() {
 	m_Model = ModelManager::GetInstance()->GetModel(ModelManager::NOTE);
-	m_Model2 = ModelManager::GetInstance()->GetModel(ModelManager::Nucleus);
+	m_Model2 = ModelManager::GetInstance()->GetModel(ModelManager::THORN);
 	m_Object.reset(new IKEObject3d());
 	m_Object->Initialize();
 	m_Object->SetModel(m_Model);

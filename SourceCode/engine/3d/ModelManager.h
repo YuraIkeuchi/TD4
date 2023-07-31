@@ -33,11 +33,8 @@ public:
 		KIDO_OBJ,
 		CD,
 		GLASS1,
-		GLASS2,
-		GLASS3,
 		MILKCAP_NORMAL,
 		MILKCAP_BREAK,
-		CAP,
 		SKIRT,
 		NOTE,
 		NAIL,
@@ -48,11 +45,11 @@ public:
 		WIDTH3,
 		WIDTH4,
 		DOWNBOX,
-		TITLEMAP,
 		PEDKOTOKO,
 		TREE,
 		HOME,
 		TITKOTOKO,
+		THORN,
 	};
 	//FBXの名前
 	enum FBXName {

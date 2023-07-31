@@ -25,6 +25,7 @@ void FirstStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	Player::GetInstance()->InitState({ 0.0f,-2.0f,-5.0f });
 
 	backScreen_ = IKESprite::Create(ImageManager::PLAY, { 0,0 });
+	backScreen_->SetAddOffset(-0.0005f);
 	backScreen_->SetSize({ 1280.0f,720.0f });
 	//シーンチェンジャー
 	sceneChanger_ = make_unique<SceneChanger>();
@@ -137,8 +138,8 @@ void FirstStageActor::Draw(DirectXCommon* dxCommon)
 
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
-		postEffect->ImGuiDraw();
-		camerawork->ImGuiDraw();
+	/*	postEffect->ImGuiDraw();
+		camerawork->ImGuiDraw();*/
 		dxCommon->PostDraw();
 	} else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
@@ -147,7 +148,7 @@ void FirstStageActor::Draw(DirectXCommon* dxCommon)
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-		camerawork->ImGuiDraw();
+		//camerawork->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 }
@@ -297,7 +298,7 @@ void FirstStageActor::MainUpdate(DebugCamera* camera)
 			PlayPostEffect = false;
 			enemymanager->SetDeadThrow(false);
 			enemymanager->DeadUpdate();
-			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_SIX);
+			camerawork->SetCameraState(CAMERA_BOSSDEAD_AFTER_FIRST);
 			loadobj->AllClear();
 			Player::GetInstance()->DeathUpdateAfter(m_DeathTimer);
 		}

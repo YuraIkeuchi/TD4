@@ -51,16 +51,12 @@ void ModelManager::SecondInitialize()
 	LoadModel(DOWNBOX, "downbox");
 
 	LoadModel(GLASS1, "glass1");
-	LoadModel(GLASS2, "glass2");
-	LoadModel(GLASS3, "glass3");
 	LoadModel(MILKCAP_NORMAL, "milkCap_normal");
 	LoadModel(MILKCAP_BREAK, "milkCap_break");
-	LoadModel(CAP, "cap");
 	LoadModel(NAIL, "Nail");
 	LoadModel(LASTBOSS, "burapon");
-		LoadModel(TITLEMAP, "LowPoly_Landscape");
-		LoadModel(TITKOTOKO, "titlekotoko");
-	LoadFBXModel(PLAYER, "kotoko");
+	LoadModel(TITKOTOKO, "titlekotoko");
+	LoadModel(THORN, "thorn");
 
 	LoadFBXModel(PLAYER2, "dkotoko");
 	LoadFBXModel(SIORI, "siori_idol");

@@ -174,7 +174,7 @@ void FirstBoss::DeadAction()
 		m_Position = { 0.0f,0.0f,20.0f };
 		m_Rotation = { 20.0f,0.0f,0.0f };
 	}
-	else if (m_DeathTimer >= 2 && m_DeathTimer < 300) {
+	else if (m_DeathTimer >= 2 && m_DeathTimer < 120) {
 		m_Rotation.y += 10.f;
 		DeathParticle();
 	}

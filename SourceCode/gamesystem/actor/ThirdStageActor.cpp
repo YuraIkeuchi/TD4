@@ -24,6 +24,7 @@ void ThirdStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	Player::GetInstance()->InitState({ 0.0f,-2.0f,-30.0f });
 
 	backScreen_ = IKESprite::Create(ImageManager::PLAY, { 0,0 });
+	backScreen_->SetAddOffset(-0.0005f);
 	backScreen_->SetSize({ 1280.0f,720.0f });
 	//シーンチェンジャー
 	sceneChanger_ = make_unique<SceneChanger>();
@@ -186,9 +187,6 @@ void ThirdStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void ThirdStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	//Player::GetInstance()->ImGuiDraw();
-	//camerawork->ImGuiDraw();
-	enemymanager->ImGuiDraw();
 }
 //登場シーン
 void ThirdStageActor::IntroUpdate(DebugCamera* camera) {
@@ -341,7 +339,7 @@ void ThirdStageActor::MainUpdate(DebugCamera* camera) {
 			SelectScene::GetIns()->SetTexSpeed(180.f);
 			SelectScene::GetIns()->SetTexScl(12500.f);
 
-			sceneChanger_->ChangeScene("GAMECLEAR", SceneChanger::NonReverse);
+			sceneChanger_->ChangeScene("SELECT", SceneChanger::NonReverse);
 		}
 	} else
 	{

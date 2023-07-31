@@ -9,8 +9,6 @@ void LoadSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	//オーディオ
 	SelectScene::GetIns()->Init();
 
-	Audio::GetInstance()->LoopWave(AUDIO_LOAD, VolumManager::GetInstance()->GetBGMVolum() + 0.5f);
-
 	BaseInitialize(dxCommon, { 0,10,200 }, { 0,0,-200 });
 	if (!s_GameLoop) {
 		SceneManager::GetInstance()->SetLoad(true);
@@ -58,53 +56,7 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	if (feedf) {
 		Feed2::GetInstance()->FeedIn2(Feed2::FeedType2::BLACK, 0.02f, feedf);
 	}
-	//1ステージ
-	if (Input::GetInstance()->TriggerKey(DIK_1)) {
-		Audio::GetInstance()->StopWave(AUDIO_LOAD);
-		str = "FIRSTSTAGE";
-	}
-	//2ステージ
-	if (Input::GetInstance()->TriggerKey(DIK_2)) {
-		Audio::GetInstance()->StopWave(AUDIO_LOAD);
-		str = "SECONDSTAGE";
-	}
-
-	//3ステージ
-	if (Input::GetInstance()->TriggerKey(DIK_3)) {
-		Audio::GetInstance()->StopWave(AUDIO_LOAD);
-		str = "THIRDSTAGE";
-	}
-
-	//4ステージ
-	if (Input::GetInstance()->TriggerKey(DIK_4)) {
-		Audio::GetInstance()->StopWave(AUDIO_LOAD);
-		str = "FOURTHSTAGE";
-	}
-	//5ステージ
-	if (Input::GetInstance()->TriggerKey(DIK_5)) {
-		Audio::GetInstance()->StopWave(AUDIO_LOAD);
-		str = "FIVESTAGE";
-	}
-	//6ステージ
-	if (Input::GetInstance()->TriggerKey(DIK_6)) {
-		Audio::GetInstance()->StopWave(AUDIO_LOAD);
-		str = "SIXSTAGE";
-	}
-	//7ステージ
-	if (Input::GetInstance()->TriggerKey(DIK_7)) {
-		Audio::GetInstance()->StopWave(AUDIO_LOAD);
-		str = "SEVENSTAGE";
-	}
-	//7ステージ
-	if (Input::GetInstance()->TriggerKey(DIK_9)) {
-		Audio::GetInstance()->StopWave(AUDIO_LOAD);
-		str = "TUTORIAL";
-	}
-	//エンドロール
-	if (Input::GetInstance()->TriggerKey(DIK_E)) {
-		Audio::GetInstance()->StopWave(AUDIO_LOAD);
-		str = "ENDROLL";
-	}
+	
 	if (Input::GetInstance()->TriggerKey(DIK_0)) {
 		Audio::GetInstance()->StopWave(AUDIO_LOAD);
 		str = "GAMEOVER";
@@ -131,14 +83,14 @@ void LoadSceneActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
 		SpriteDraw();
-		ImGuiDraw(dxCommon);
+		//ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	} else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
-		ImGuiDraw(dxCommon);
+		//ImGuiDraw(dxCommon);
 		BackDraw(dxCommon);
 		SpriteDraw();
 		dxCommon->PostDraw();
@@ -206,7 +158,6 @@ void LoadSceneActor::MainUpdate(DebugCamera* camera) {
 void LoadSceneActor::FinishUpdate(DebugCamera* camera) {
 	//一定時間でシーンが変わる
 	if (m_LoadTimer >= LoadTimerMax) {
-		Audio::GetInstance()->StopWave(AUDIO_LOAD);
 		sceneChanger_->ChangeStart();
 		sceneChanger_->ChangeScene(str, SceneChanger::NonReverse);
 		return;

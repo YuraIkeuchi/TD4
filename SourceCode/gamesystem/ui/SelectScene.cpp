@@ -59,6 +59,11 @@ void SelectScene::ResetParama() {
 	_stages = Stage::MAX;
 
 	JudgChal = false;
+
+	SceneSave::GetInstance()->AllClear();
+	if (SceneSave::GetInstance()->GetClearFlag(kFirstStage)) {
+		SelectScene::GetIns()->SetSelectState(SELECT_SECOND);
+	}
 }
 
 void SelectScene::Init() {
@@ -92,11 +97,16 @@ void SelectScene::Init() {
 	StageObjs[SEVEN]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::LASTBOSS));
 	StageObjs[TITLE]->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::HOME));
 
+	BackSprite = IKESprite::Create(ImageManager::PLAY, { 0.0f,0.0f });
+	BackSprite->SetAddOffset(-0.0005f);
+	SelQuestSprite= IKESprite::Create(ImageManager::SELQUEsT, { 0.0f,0.0f });
+	SelQuestSub[0] = IKESprite::Create(ImageManager::SELQUEStsuB, {0.0f,0.0f});
+	SelQuestSub[1] = IKESprite::Create(ImageManager::SELQUEStsuB, { 0.0f,0.0f });
 
-	BackSkyDome.reset(new IKEObject3d());
-	BackSkyDome->Initialize();
-	BackSkyDome->SetModel(ModelManager::GetInstance()->GetModel(ModelManager::Skydome));
-	BackSkyDome->SetScale({ 7.f,7.f,7.f });
+	SelQuestalpha = 1.f;
+	SelSubAlpha[0] = 1.f;
+	SelSubAlpha[1] = 1.f;
+	//SelQuestSprite->SetAddOffset(-0.0005f);
 
 	ButtonNav_RBLB[0] = IKESprite::Create(ImageManager::RBBUTTON, { 0,0 });
 	ButtonNav_RBLB[1] = IKESprite::Create(ImageManager::LBBUTTON, { 0,0 });
@@ -220,10 +230,7 @@ void SelectScene::Jump()
 
 void SelectScene::Upda() {
 	constexpr float PosRad = 28.f;
-	//背景
-	SkydomeRotY += 0.5f;
-	BackSkyDome->SetRotation({ 0,SkydomeRotY,0 });
-	BackSkyDome->Update();
+
 	//土台
 	Pedestal->SetScale({ 15.f,15.f,15.f });
 	Pedestal->Update();
@@ -362,10 +369,12 @@ void SelectScene::Upda() {
 }
 
 void SelectScene::Draw_Obj(DirectXCommon* dxcomn) {
+	IKESprite::PreDraw();
+	BackSprite->Draw();
+	IKESprite::PostDraw();
 	size_t t = ObjNum;
 
 	IKEObject3d::PreDraw();
-	BackSkyDome->Draw();
 	Pedestal->Draw();
 	for (auto i = 0; i < ObjNum; i++) {
 		StageObjs[i]->Draw();
@@ -380,21 +389,64 @@ void SelectScene::Draw_Obj(DirectXCommon* dxcomn) {
 }
 
 void SelectScene::Draw_Sprite() {
+	
 	for (auto i = 0; i < ObjNum; i++) {
 		if (!BossIcon[i]) { continue; }
 		if (_stages != i)continue;
 		BossIcon[i]->Draw();
 	}
+	
 }
 
 void SelectScene::ImGuiDraw() {
-	ImGui::Begin("Select");
-	ImGui::Text("Scene%d", (int)_stages);
-	ImGui::Text("%d", m_SelectState);
-	ImGui::End();
+	//ImGui::Begin("Select");
+	//ImGui::Text("Scene%d", (int)_stages);
+	//ImGui::Text("%d", m_SelectState);
+	//ImGui::End();
+
+	//SceneSave::GetInstance()->ImGuiDraw();
 }
 void SelectScene::Draw_SpriteBack() {
 	if (closeScl <= 0.f) { return; }
+		
+		bool temp[ObjNum] = {};
+		for (auto i = 0; i < TipsAct.size(); i++) {
+			temp[i] = !TipsAct[i];
+			if (TipsAct[i])
+			{
+				SelQuestalpha -= 0.1f;
+				SelSubAlpha[0] -= 0.1f;
+				SelSubAlpha[1] -= 0.1f;
+			}
+			if(!TipsAct[0]&& !TipsAct[1] && !TipsAct[2] &&
+				!TipsAct[3] && !TipsAct[4] && !TipsAct[5] &&
+				!TipsAct[6] && !TipsAct[7] )
+			{
+				SelQuestalpha += 0.1f;
+				SelSubAlpha[0] += 0.1f;
+				SelSubAlpha[1] += 0.1f;
+			}
+		}
+	
+	Helper::GetInstance()->Clamp(SelQuestalpha, 0.f, 1.f);
+	Helper::GetInstance()->Clamp(SelSubAlpha[0], 0.f, 1.f);
+	Helper::GetInstance()->Clamp(SelSubAlpha[1], 0.f, 1.f);
+	if (SelQuestSprite != nullptr) {
+		SelQuestSprite->SetSize({ 400,200 });
+		SelQuestSprite->SetPosition({ 780,0 });
+		SelQuestSprite->SetColor({ 1,1,1,SelQuestalpha });
+
+		SelQuestSprite->Draw();
+
+		SelQuestSub[0]->SetPosition({ 1030,150 });
+			SelQuestSub[0]->SetSize({ 180,180 });
+			SelQuestSub[0]->SetColor({ 1,1,1,SelSubAlpha[0]});
+			SelQuestSub[1]->SetSize({ 100,100 });
+			SelQuestSub[1]->SetPosition({ 1190,300 });
+			SelQuestSub[1]->SetColor({ 1,1,1,SelSubAlpha[1] });
+		SelQuestSub[0]->Draw();
+		SelQuestSub[1]->Draw();
+	}
 	for (auto i = 0; i < ObjNum; i++) {
 		if (!TipsAct[0] && !TipsAct[1] && !TipsAct[2] &&
 			!TipsAct[3] && !TipsAct[4] && !TipsAct[5] &&
@@ -430,6 +482,7 @@ void SelectScene::Draw_SpriteBack() {
 			ButtonNav_Challenge_Cancel[i]->Draw();
 		}
 	}
+	
 }
 
 
@@ -524,8 +577,8 @@ void SelectScene::StateManager() {
 	m_Scale[TITLE] = { 0.7025f,0.71f,0.75f };
 
 	//m_Wide = true;
-	m_SelectState = SELECT_SECOND;
-	m_Wide = true;
+	//m_SelectState = SELECT_SECOND;
+	//m_Wide = true;
 	//
 	//クリア状況に応じてOBJの大きさだったりが違う
 	if (m_SelectState == SELECT_FIRST) {		//ここは牛乳のみ
@@ -554,30 +607,6 @@ void SelectScene::StateManager() {
 					};
 					m_BirthFinish[i] = true;
 				}
-			} else {			//大きくなる前はパーティクルを出すようにしている
-				bool temp[ObjNum] = {};
-				for (auto i = 0; i < TipsAct.size(); i++)
-					temp[i] = TipsAct[i];
-				if (Helper::GetInstance()->All_OfF(temp, ObjNum)) {
-					m_BirthTimer++;
-					//m_Birth[SEVEN] = true;			//ラスボスの出現
-
-					if (m_BirthTimer == 150) {
-						m_Birth[SEVEN] = true;
-						m_BirthFinish[SEVEN] = true;
-						m_Wide = true;
-						m_BirthTimer = {};
-					}
-
-					if (m_Wide) {//ラスボスのOBJを大きくする
-
-						m_BirthFinish[SEVEN] = true;
-					} else {
-						BirthParticle();
-					}
-				}
-				//クリア状況に応じてOBJの大きさだったりが違う
-
 			}
 		}
 

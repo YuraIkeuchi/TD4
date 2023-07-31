@@ -238,6 +238,8 @@ protected:
 	}_EndState = END_SET;
 
 	bool m_EndStop = false;
+
+	bool m_Slow = true;
 private:
 
 	enum class ActionList {

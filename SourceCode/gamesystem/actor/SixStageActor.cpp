@@ -23,6 +23,7 @@ void SixStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Lig
 	Player::GetInstance()->InitState({ 0.0f,-2.0f,-5.0f });
 
 	backScreen_ = IKESprite::Create(ImageManager::PLAY, { 0,0 });
+	backScreen_->SetAddOffset(-0.0005f);
 	backScreen_->SetSize({ 1280.0f,720.0f });
 	//シーンチェンジャー
 	sceneChanger_ = make_unique<SceneChanger>();
@@ -158,7 +159,7 @@ void SixStageActor::Draw(DirectXCommon* dxCommon) {
 
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
-		ImGuiDraw(dxCommon);
+		//ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	} else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
@@ -167,7 +168,7 @@ void SixStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-		ImGuiDraw(dxCommon);
+		//ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 }
@@ -220,11 +221,6 @@ void SixStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void SixStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	/*
-	camerawork->ImGuiDraw();*/
-	enemymanager->ImGuiDraw();
-	Player::GetInstance()->ImGuiDraw();
-	HitStop::GetInstance()->ImGuiDraw();
 }
 //登場シーン
 void SixStageActor::IntroUpdate(DebugCamera* camera) {

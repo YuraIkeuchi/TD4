@@ -11,7 +11,7 @@ ClearText* ClearText::GetInstance()
 
 void ClearText::LoadResource() {
 	//ƒ^ƒCƒgƒ‹
-	ClearSprite = IKESprite::Create(ImageManager::TITLEWORD, {640.0f,200.0f});
+	ClearSprite = IKESprite::Create(ImageManager::CLEARLOGO, {640.0f,200.0f});
 	ClearSprite->SetAnchorPoint({ 0.5f,0.5f });
 }
 
@@ -30,8 +30,8 @@ void ClearText::Update() {
 		}
 	}
 
-	m_Size = { Ease(In,Cubic,m_Frame,m_Size.x,100.0f),
-	Ease(In,Cubic,m_Frame,m_Size.y,100.0f) };
+	m_Size = { Ease(In,Cubic,m_Frame,m_Size.x,512.0f),
+	Ease(In,Cubic,m_Frame,m_Size.y,300.0f) };
 
 	ClearSprite->SetSize(m_Size);
 }

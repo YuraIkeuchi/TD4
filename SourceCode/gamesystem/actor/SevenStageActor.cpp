@@ -24,6 +24,7 @@ void SevenStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	Player::GetInstance()->InitState({ 0.0f,-2.0f,-5.0f });
 
 	backScreen_ = IKESprite::Create(ImageManager::PLAY, { 0,0 });
+	backScreen_->SetAddOffset(-0.0005f);
 	backScreen_->SetSize({ 1280.0f,720.0f });
 	//シーンチェンジャー
 	sceneChanger_ = make_unique<SceneChanger>();
@@ -201,7 +202,7 @@ void SevenStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void SevenStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	Player::GetInstance()->ImGuiDraw();
+	//Player::GetInstance()->ImGuiDraw();
 }
 //登場シーン
 void SevenStageActor::IntroUpdate(DebugCamera* camera) {
@@ -257,7 +258,6 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 	}
 	//カメラワークのセット
 	if (enemymanager->BossDestroy()) {
-		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		//フェード前
 		if (!camerawork->GetFeedEnd()) {
 			enemymanager->SetDeadThrow(true);
@@ -286,7 +286,7 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 			sceneChanger_->ChangeStart();
 			//SelectScene::GetIns()->ResetParama();
 			sceneChanger_->ChangeScene("ENDROLL", SceneChanger::NonReverse);
-
+			Audio::GetInstance()->StopWave(AUDIO_BATTLE);
 		}
 
 		Player::GetInstance()->DeathUpdate();
