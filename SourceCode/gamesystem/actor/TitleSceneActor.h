@@ -28,6 +28,7 @@ private://メンバ変数
 	//スプライト
 	unique_ptr<IKESprite> TitleSprite;
 	unique_ptr<IKESprite> TitleWordSprite;
+	unique_ptr<IKESprite> CreditSprite;
 	//タイトルのパーツに必要なもの
 	array<float, TITLE_MAX> m_Angle;
 	array<float, TITLE_MAX> m_Angle2;
@@ -36,7 +37,7 @@ private://メンバ変数
 	Feed* feed;
 	bool feedF;
 	XMFLOAT2 size = { 708.0f,354.0f };
-	XMFLOAT2 pos = { 200.0f,150.0f };
+	XMFLOAT2 pos = { 150.0f,100.0f };
 	float frame = 0.0f;
 
 	bool m_Change = false;
@@ -52,4 +53,7 @@ private://メンバ変数
 
 	bool m_StickUP = false;
 	bool m_StickDOWN = false;
+
+	bool m_Credit = false;
+	XMFLOAT2 m_CreditSize = { 0.0f,0.0f };
 };

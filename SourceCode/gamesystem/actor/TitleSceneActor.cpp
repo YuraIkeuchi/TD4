@@ -27,8 +27,10 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	TitleSprite = IKESprite::Create(ImageManager::PLAY, { 0.0f,0.0f });
 	TitleSprite->SetAddOffset(-0.0005f);
 	TitleWordSprite= IKESprite::Create(ImageManager::TITLEWORD, pos);
-	TitleWordSprite->SetSize(size);
 	TitleWordSprite->SetScale(0.3f);
+
+	CreditSprite = IKESprite::Create(ImageManager::CREDIT,{640.0f,360.0f});
+	CreditSprite->SetAnchorPoint({ 0.5f,0.5f });
 
 	const int TitleCount = TITLE_MAX;
 	const float l_Width_Cut = 256.0f;
@@ -59,26 +61,15 @@ void TitleSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 }
 //更新
 void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightGroup* lightgroup) {
+	//セレクト
+	SceneSelect();
 	Input* input = Input::GetInstance();
-	//
-	if (input->TriggerButton(input->B)) {
-		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Decide.wav", VolumManager::GetInstance()->GetSEVolum());
-		//sceneChanger_->ChangeStart();
-		//Audio::GetInstance()->StopWave(AUDIO_TITLE);
-		//sceneChanger_->SetFeedF(true);
-		feedF = true;
-		SceneSave::GetInstance()->SetEndRoll(false);
-	}
 	if (feedF) {
 		Feed2::GetInstance()->FeedIn2(Feed2::FeedType2::BLACK, 0.02f, feedF);
 		if (Feed2::GetInstance()->GetAlpha2() >= 1.0f) {
 			SceneManager::GetInstance()->ChangeScene("LOAD");
 		}
 	}
-	//sceneChanger_->FeedChange();
-	
-	frame += 0.01f;
-	TitleWordSprite->SetPosition({pos.x+(sinf(frame*5.0f) * 25.0f), pos.y + (sinf(frame) *30.0f)});
 
 	lightgroup->Update();
 	ParticleEmitter::GetInstance()->FireEffect(100, { 0.0f,23.0f,0.0f }, 5.0f, 0.0f, { 1.0f,0.5f,0.0f,0.5f }, { 1.0f,0.5f,0.0f,0.5f });
@@ -98,8 +89,7 @@ void TitleSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Light
 	menu->Update();
 	camerawork->Update(camera);
 
-	//セレクト
-	SceneSelect();
+
 }
 //描画
 void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
@@ -135,7 +125,7 @@ void TitleSceneActor::FrontDraw() {
 	}
 	SelectScene::GetIns()->Draw_Sprite();
 	
-		
+	CreditSprite->Draw();
 	IKESprite::PostDraw();
 	menu->Draw();
 	if(feedF)
@@ -165,7 +155,7 @@ void TitleSceneActor::Finalize() {
 void TitleSceneActor::SceneSelect() {
 	Input* input = Input::GetInstance();
 
-	if (!m_Change) {
+	if (!m_Change && !m_Credit) {
 		if (_SelectType < SELECT_CREDIT) {
 			//ボタンの場合
 			if(input->TriggerButton(Input::DOWN)){
@@ -205,18 +195,39 @@ void TitleSceneActor::SceneSelect() {
 	if ((input->TriggerButton(input->B) &&
 		!sceneChanger_->GetEasingStart())) {
 		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Button_Decide.wav", VolumManager::GetInstance()->GetSEVolum());
-		sceneChanger_->ChangeStart();
-		//Audio::GetInstance()->StopWave(AUDIO_TITLE);
 
-		if (_SelectType == NORMAL_SCENE) {
-			s_Skip = false;
+		if (_SelectType != SELECT_CREDIT) {
+			sceneChanger_->ChangeStart();;
+			feedF = true;
+			SceneSave::GetInstance()->SetEndRoll(false);
+			if (_SelectType == NORMAL_SCENE) {
+				s_Skip = false;
+			}
+			else if(_SelectType == SELECT_SCENE) {
+				s_Skip = true;
+			}
+			m_Change = true;
 		}
 		else {
-			s_Skip = true;
+			m_Credit = true;
 		}
-
-		m_Change = true;
 	}
+
+	//クレジットを開いているかどうか
+	if (!m_Credit) {
+		m_CreditSize = { Ease(In,Cubic,0.5f,m_CreditSize.x,0.0f),
+		Ease(In,Cubic,0.5f,m_CreditSize.y,0.0f), };
+	}
+	else {
+		m_CreditSize = { Ease(In,Cubic,0.5f,m_CreditSize.x,1280.0f),
+		Ease(In,Cubic,0.5f,m_CreditSize.y,720.0f), };
+
+		if (input->TriggerButton(input->BACK)) {
+			m_Credit = false;
+		}
+	}
+
+	CreditSprite->SetSize(m_CreditSize);
 
 	TitleMove();
 }

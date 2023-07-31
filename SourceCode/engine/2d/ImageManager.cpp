@@ -25,6 +25,7 @@ void ImageManager::StartLoad2D()
 	IKESprite::LoadTexture(SUTOPON, L"Resources/2d/objicon/sutopon.png");
 	IKESprite::LoadTexture(PLAY, L"Resources/2d/sceneback/game.png");
 	IKESprite::LoadTexture(TITLESELECT, L"Resources/2d/sceneback/titleSelect.png");
+	IKESprite::LoadTexture(CREDIT, L"Resources/2d/sceneback/credit-export.png");
 }
 
 //非同期処理で読み込むスプライト
@@ -96,6 +97,7 @@ void ImageManager::SecondLoad2D()
 
 	IKESprite::LoadTexture(SELQUEsT, L"Resources/2d/sceneback/doko.png");
 	IKESprite::LoadTexture(SELQUEStsuB, L"Resources/2d/sceneback/dokosub.png");
+	IKESprite::LoadTexture(CLEARLOGO, L"Resources/2d/sceneback/clearLogo.png");
 }
 
 //テクスチャの読み込み

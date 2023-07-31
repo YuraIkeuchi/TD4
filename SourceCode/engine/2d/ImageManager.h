@@ -90,7 +90,9 @@ public:
 		HITODAMA,
 		TITLESELECT,
 		SELQUEsT,
-		SELQUEStsuB
+		SELQUEStsuB,
+		CLEARLOGO,
+		CREDIT
 	};
 	//テクスチャの名前
 	enum tex2dName
