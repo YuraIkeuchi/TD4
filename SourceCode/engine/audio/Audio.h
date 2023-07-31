@@ -10,7 +10,8 @@ enum AudioLoad {
 	AUDIO_TITLE,
 	AUDIO_LOAD,
 	AUDIO_TUTORIAL,
-	AUDIO_BATTLE
+	AUDIO_BATTLE,
+	AUDIO_BATTLE2
 };
 //オーディオのコールバック
 class XAudio2VoiceCallBack : public IXAudio2VoiceCallback {

@@ -37,7 +37,7 @@ private://メンバ変数
 	Feed* feed;
 	bool feedF;
 	XMFLOAT2 size = { 708.0f,354.0f };
-	XMFLOAT2 pos = { 150.0f,100.0f };
+	XMFLOAT2 pos = { 100.0f,60.0f };
 	float frame = 0.0f;
 
 	bool m_Change = false;

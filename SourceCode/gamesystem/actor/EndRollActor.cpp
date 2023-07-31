@@ -32,6 +32,9 @@ void EndRollActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Ligh
 		photo[i]->SetSize({ 1280,360 });
 	}
 
+	fin = IKESprite::Create(ImageManager::FIN, { 1000,600 });
+	fin->SetAnchorPoint({ 0.5f,0.5f });
+
 	backScreen_ = IKESprite::Create(ImageManager::PLAY, { 0,0 });
 	backScreen_->SetSize({ 1280.0f,720.0f });
 
@@ -73,6 +76,9 @@ void EndRollActor::Draw(DirectXCommon* dxCommon) {
 }
 //‘O–Ê•`‰æ
 void EndRollActor::FrontDraw() {
+	IKESprite::PreDraw();
+	fin->Draw();
+	IKESprite::PostDraw();
 	sceneChanger_->Draw();
 }
 void EndRollActor::IntroUpdate(DebugCamera* camera) {
@@ -106,7 +112,22 @@ void EndRollActor::IntroUpdate(DebugCamera* camera) {
 		m_Sepia = Ease(In, Cubic, m_Frame, m_Sepia, l_EndSepia);
 	}
 
-	if (m_EndTimer == 1900) {
+	if (m_EndTimer == 1850) {
+		m_Fin = true;
+	}
+	else if (m_EndTimer == 1980) {
+		Audio::GetInstance()->PlayWave("Resources/Sound/SE/Voice_Clear.wav", VolumManager::GetInstance()->GetSEVolum() + 0.2f);
+	}
+
+
+	if (m_Fin) {
+		m_Size = { Ease(In,Cubic,0.5f,m_Size.x,300.0f),
+			Ease(In,Cubic,0.5f,m_Size.y,128.0f),
+		};
+	}
+
+	fin->SetSize(m_Size);
+	if (m_EndTimer == 2100) {
 		m_Change = true;
 	}
 	if (m_Change) {
