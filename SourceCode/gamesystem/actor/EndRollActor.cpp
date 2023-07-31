@@ -60,7 +60,7 @@ void EndRollActor::Draw(DirectXCommon* dxCommon) {
 		postEffect->Draw(dxCommon->GetCmdList());
 		//ImGuiDraw(dxCommon);
 		FrontDraw();
-		postEffect->ImGuiDraw();
+		//postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	}
 	else {
@@ -144,10 +144,6 @@ void EndRollActor::BackDraw(DirectXCommon* dxCommon) {
 }
 //ImGui•`‰æ
 void EndRollActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	///endobj->ImGuiDraw();
-	ImGui::Begin("End");
-	ImGui::Text("Timer:%d", m_EndTimer);
-	ImGui::End();
 }
 //‰ð•ú
 void EndRollActor::Finalize() {

@@ -258,8 +258,8 @@ void SecondStageActor::Draw(DirectXCommon* dxCommon) {
 
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
-		ImGuiDraw(dxCommon);
-		postEffect->ImGuiDraw();
+		/*ImGuiDraw(dxCommon);
+		postEffect->ImGuiDraw();*/
 		dxCommon->PostDraw();
 	} else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
@@ -268,7 +268,7 @@ void SecondStageActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw(dxCommon);
-		ImGuiDraw(dxCommon);
+		//ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 }

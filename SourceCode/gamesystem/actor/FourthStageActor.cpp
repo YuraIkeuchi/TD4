@@ -140,7 +140,7 @@ void FourthStageActor::Draw(DirectXCommon* dxCommon) {
 
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
-		postEffect->ImGuiDraw();
+		//postEffect->ImGuiDraw();
 		dxCommon->PostDraw();
 	} else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());

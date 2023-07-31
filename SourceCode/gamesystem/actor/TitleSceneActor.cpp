@@ -101,7 +101,7 @@ void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
-		ImGuiDraw(dxCommon);
+		//ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 	else {
@@ -111,7 +111,7 @@ void TitleSceneActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		BackDraw(dxCommon);
 		FrontDraw();
-		ImGuiDraw(dxCommon);
+		//ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	}
 }

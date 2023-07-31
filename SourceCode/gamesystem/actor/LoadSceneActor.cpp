@@ -83,14 +83,14 @@ void LoadSceneActor::Draw(DirectXCommon* dxCommon) {
 		dxCommon->PreDraw();
 		postEffect->Draw(dxCommon->GetCmdList());
 		SpriteDraw();
-		ImGuiDraw(dxCommon);
+		//ImGuiDraw(dxCommon);
 		dxCommon->PostDraw();
 	} else {
 		postEffect->PreDrawScene(dxCommon->GetCmdList());
 		postEffect->Draw(dxCommon->GetCmdList());
 		postEffect->PostDrawScene(dxCommon->GetCmdList());
 		dxCommon->PreDraw();
-		ImGuiDraw(dxCommon);
+		//ImGuiDraw(dxCommon);
 		BackDraw(dxCommon);
 		SpriteDraw();
 		dxCommon->PostDraw();
