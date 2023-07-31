@@ -291,6 +291,6 @@ void FiveStageActor::FinishUpdate(DebugCamera* camera) {
 }
 
 void FiveStageActor::ImGuiDraw() {
-	Player::GetInstance()->ImGuiDraw();
-	camerawork->ImGuiDraw();
+	//Player::GetInstance()->ImGuiDraw();
+	//camerawork->ImGuiDraw();
 }

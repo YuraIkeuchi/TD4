@@ -399,10 +399,10 @@ void SelectScene::Draw_Sprite() {
 }
 
 void SelectScene::ImGuiDraw() {
-	ImGui::Begin("Select");
-	ImGui::Text("Scene%d", (int)_stages);
-	ImGui::Text("%d", m_SelectState);
-	ImGui::End();
+	//ImGui::Begin("Select");
+	//ImGui::Text("Scene%d", (int)_stages);
+	//ImGui::Text("%d", m_SelectState);
+	//ImGui::End();
 
 	//SceneSave::GetInstance()->ImGuiDraw();
 }

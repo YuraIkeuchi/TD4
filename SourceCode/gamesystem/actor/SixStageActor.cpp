@@ -221,11 +221,6 @@ void SixStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void SixStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	/*
-	camerawork->ImGuiDraw();*/
-	enemymanager->ImGuiDraw();
-	Player::GetInstance()->ImGuiDraw();
-	HitStop::GetInstance()->ImGuiDraw();
 }
 //登場シーン
 void SixStageActor::IntroUpdate(DebugCamera* camera) {

@@ -187,9 +187,6 @@ void ThirdStageActor::FrontDraw(DirectXCommon* dxCommon) {
 }
 //IMGuiの描画
 void ThirdStageActor::ImGuiDraw(DirectXCommon* dxCommon) {
-	//Player::GetInstance()->ImGuiDraw();
-	//camerawork->ImGuiDraw();
-	enemymanager->ImGuiDraw();
 }
 //登場シーン
 void ThirdStageActor::IntroUpdate(DebugCamera* camera) {
