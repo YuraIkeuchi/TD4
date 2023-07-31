@@ -92,7 +92,8 @@ public:
 		SELQUEsT,
 		SELQUEStsuB,
 		CLEARLOGO,
-		CREDIT
+		CREDIT,
+		FIN
 	};
 	//テクスチャの名前
 	enum tex2dName

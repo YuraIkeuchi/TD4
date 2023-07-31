@@ -15,6 +15,7 @@ void SelectSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, 
 	BaseInitialize(dxCommon);
 	Audio::GetInstance()->StopWave(AUDIO_TITLE);
 	Audio::GetInstance()->StopWave(AUDIO_BATTLE);
+	Audio::GetInstance()->StopWave(AUDIO_BATTLE2);
 	//オーディオ
 	Audio::GetInstance()->LoopWave(AUDIO_LOAD, VolumManager::GetInstance()->GetBGMVolum() + 0.5f);
 	//ポストエフェクト

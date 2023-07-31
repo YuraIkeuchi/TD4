@@ -15,8 +15,7 @@ void GameOverSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	camerawork->SetCameraState(CAMERA_NORMAL);
 	camerawork->DefUpda(camera);
 	//オーディオ
-	//Audio::GetInstance()->LoadSound(3, "Resources/Sound/BGM/jto3s-8fzcz.wav");
-	//Audio::GetInstance()->LoopWave(3, VolumManager::GetInstance()->GetBGMVolum());
+	Audio::GetInstance()->PlayWave("Resources/Sound/SE/gameOverSE.wav", VolumManager::GetInstance()->GetSEVolum());
 	//シーンチェンジャー
 	PlayPostEffect = false;
 	sceneChanger_ = make_unique<SceneChanger>();

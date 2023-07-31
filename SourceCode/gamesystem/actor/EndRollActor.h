@@ -50,5 +50,8 @@ private://ƒƒ“ƒo•Ï”
 		SpriteMax,
 	};
 	array<unique_ptr<IKESprite>, SpriteMax> photo = {};
+	unique_ptr<IKESprite> fin;
+	XMFLOAT2 m_Size = {};
+	bool m_Fin = false;
 	bool m_Change = false;
 };

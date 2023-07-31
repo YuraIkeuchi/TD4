@@ -12,7 +12,7 @@ void SixStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Lig
 	//共通の初期化
 	BaseInitialize(dxCommon);
 	//オーディオ
-	Audio::GetInstance()->LoopWave(AUDIO_BATTLE, VolumManager::GetInstance()->GetBGMVolum() + 1.0f);
+	Audio::GetInstance()->LoopWave(AUDIO_BATTLE2, VolumManager::GetInstance()->GetBGMVolum() + 0.1f);
 
 	//ポストエフェクト
 	PlayPostEffect = true;
@@ -275,7 +275,7 @@ void SixStageActor::MainUpdate(DebugCamera* camera) {
 	Input* input = Input::GetInstance();
 	//カメラワークのセット
 	if (enemymanager->BossDestroy()) {
-		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
+		Audio::GetInstance()->StopWave(AUDIO_BATTLE2);
 		//フェード前
 		if (!camerawork->GetFeedEnd()) {
 			enemymanager->SetDeadThrow(true);
@@ -305,7 +305,7 @@ void SixStageActor::MainUpdate(DebugCamera* camera) {
 	}
 
 	if (PlayerDestroy()) {
-		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
+		Audio::GetInstance()->StopWave(AUDIO_BATTLE2);
 		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kSixStage, true);
 		sceneChanger_->ChangeStart();
 		//SelectScene::GetIns()->ResetParama();

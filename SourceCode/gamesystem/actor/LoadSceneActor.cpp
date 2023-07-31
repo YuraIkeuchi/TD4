@@ -10,6 +10,7 @@ void LoadSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, Li
 	SelectScene::GetIns()->Init();
 
 	BaseInitialize(dxCommon, { 0,10,200 }, { 0,0,-200 });
+
 	if (!s_GameLoop) {
 		SceneManager::GetInstance()->SetLoad(true);
 		s_GameLoop = true;
@@ -58,7 +59,7 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	}
 	
 	if (Input::GetInstance()->TriggerKey(DIK_0)) {
-		Audio::GetInstance()->StopWave(AUDIO_LOAD);
+		Audio::GetInstance()->StopWave(AUDIO_TITLE);
 		str = "GAMEOVER";
 	}
 
@@ -71,6 +72,7 @@ void LoadSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, LightG
 	//一定時間でシーンが変わる
 	if (m_LoadTimer >= 200 && !SceneManager::GetInstance()->GetLoad()) {
 		SceneManager::GetInstance()->ChangeScene(str);
+		Audio::GetInstance()->StopWave(AUDIO_TITLE);
 	}
 }
 //描画

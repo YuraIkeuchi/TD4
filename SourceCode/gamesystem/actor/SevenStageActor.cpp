@@ -13,7 +13,7 @@ void SevenStageActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera, L
 	//共通の初期化
 	BaseInitialize(dxCommon);
 	//オーディオ
-	Audio::GetInstance()->LoopWave(AUDIO_BATTLE, VolumManager::GetInstance()->GetBGMVolum() + 1.0f);
+	Audio::GetInstance()->LoopWave(AUDIO_BATTLE2, VolumManager::GetInstance()->GetBGMVolum() + 0.1f);
 
 	//ポストエフェクト
 	PlayPostEffect = true;
@@ -286,7 +286,7 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 			sceneChanger_->ChangeStart();
 			//SelectScene::GetIns()->ResetParama();
 			sceneChanger_->ChangeScene("ENDROLL", SceneChanger::NonReverse);
-			Audio::GetInstance()->StopWave(AUDIO_BATTLE);
+			Audio::GetInstance()->StopWave(AUDIO_BATTLE2);
 		}
 
 		Player::GetInstance()->DeathUpdate();
@@ -298,7 +298,7 @@ void SevenStageActor::MainUpdate(DebugCamera* camera) {
 	}
 
 	if (PlayerDestroy()) {
-		Audio::GetInstance()->StopWave(AUDIO_BATTLE);
+		Audio::GetInstance()->StopWave(AUDIO_BATTLE2);
 		SceneSave::GetInstance()->SetLoseFlag(SeceneCategory::kSevenStage, true);
 		sceneChanger_->ChangeStart();
 		//SelectScene::GetIns()->ResetParama();

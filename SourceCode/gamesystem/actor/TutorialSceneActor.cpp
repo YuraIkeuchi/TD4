@@ -420,7 +420,7 @@ void TutorialSceneActor::CompleteState() {
 		conversation == 12) {
 		sceneChanger_->ChangeStart();
 		SceneSave::GetInstance()->SetClearFlag(kTutorialStage,true);
-		//Audio::GetInstance()->StopWave(AUDIO_TITLE);
+		Audio::GetInstance()->StopWave(AUDIO_LOAD);
 	}
 	sceneChanger_->ChangeScene("SELECT", SceneChanger::NonReverse);
 
@@ -501,15 +501,15 @@ void TutorialSceneActor::Initialize(DirectXCommon* dxCommon, DebugCamera* camera
 	dxCommon->SetFullScreen(true);
 	//共通の初期化
 	BaseInitialize(dxCommon);
+	Audio::GetInstance()->StopWave(AUDIO_TITLE);
 	//オーディオ
-	Audio::GetInstance()->LoadSound(2, "Resources/Sound/BGM/BGM_tutorial.wav");
-	//Audio::GetInstance()->LoopWave(2, VolumManager::GetInstance()->GetBGMVolum() + 0.5f);
+	Audio::GetInstance()->LoopWave(AUDIO_LOAD, VolumManager::GetInstance()->GetBGMVolum() + 0.5f);
 	//ポストエフェクト
 	PlayPostEffect = false;
 	//パーティクル全削除
 	ParticleEmitter::GetInstance()->AllDelete();
 	//各クラス
-	Player::GetInstance()->InitState({ 0.0f,5.0f,0.0f });
+	Player::GetInstance()->InitState({ 0.0f,-2.0f,0.0f });
 	Player::GetInstance()->SetCanShot(false);
 	//カメラ更新
 	camerawork->Update(camera);
@@ -565,7 +565,7 @@ void TutorialSceneActor::Update(DirectXCommon* dxCommon, DebugCamera* camera, Li
 		SceneSave::GetInstance()->SetClearFlag(kTutorialStage, true);
 		Player::GetInstance()->SetCanShot(true);
 		Player::GetInstance()->MoveStop(false);
-		//Audio::GetInstance()->StopWave(AUDIO_TITLE);
+		Audio::GetInstance()->StopWave(AUDIO_LOAD);
 		sceneChanger_->ChangeScene("SELECT", SceneChanger::NonReverse);
 	}
 
